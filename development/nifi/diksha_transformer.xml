@@ -6402,7 +6402,7 @@
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>split_file_failure</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>INPUT_PORT</type>
                         </inputPorts>
                         <inputPorts>
@@ -6416,7 +6416,7 @@
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>split_wait</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>INPUT_PORT</type>
                         </inputPorts>
                         <inputPorts>
@@ -6430,7 +6430,7 @@
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>split_file_process_success</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>INPUT_PORT</type>
                         </inputPorts>
                         <labels>
@@ -7743,7 +7743,7 @@ Check whether the file contains record or not</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>diksha_zip_output</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <outputPorts>
@@ -7757,7 +7757,7 @@ Check whether the file contains record or not</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>diksha_file</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <processors>
@@ -7870,7 +7870,7 @@ Check whether the file contains record or not</label>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -7956,7 +7956,7 @@ Check whether the file contains record or not</label>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -8174,7 +8174,7 @@ Check whether the file contains record or not</label>
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -8302,7 +8302,7 @@ where request_id='${request_list_id}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -8388,7 +8388,7 @@ where request_id='${request_list_id}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -8494,7 +8494,7 @@ where request_id='${request_list_id}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -8568,7 +8568,7 @@ where request_id='${request_list_id}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ConvertRecord</type>
                         </processors>
@@ -8680,7 +8680,7 @@ where request_id='${request_list_id}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -8786,7 +8786,7 @@ where request_id='${request_list_id}';</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -8852,7 +8852,7 @@ where request_id='${request_list_id}';</value>
 <autoTerminate>false</autoTerminate>
 <name>split</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitJson</type>
                         </processors>
@@ -8938,7 +8938,7 @@ where request_id='${request_list_id}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -9004,7 +9004,7 @@ where request_id='${request_list_id}';</value>
 <autoTerminate>false</autoTerminate>
 <name>split</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitJson</type>
                         </processors>
@@ -9330,7 +9330,7 @@ where request_id='${request_list_id}';</value>
 <autoTerminate>false</autoTerminate>
 <name>Retry</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.InvokeHTTP</type>
                         </processors>
@@ -9461,7 +9461,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -9587,7 +9587,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -9924,7 +9924,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>Retry</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.InvokeHTTP</type>
                         </processors>
@@ -10053,7 +10053,7 @@ WHERE date='${diksha_api_summary_rollup_date:format('yyyy-MM-dd HH:mm:ss','IST')
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -10119,7 +10119,7 @@ WHERE date='${diksha_api_summary_rollup_date:format('yyyy-MM-dd HH:mm:ss','IST')
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UnpackContent</type>
                         </processors>
@@ -10277,7 +10277,7 @@ order by requested_on desc limit 1;</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -10345,7 +10345,7 @@ order by requested_on desc limit 1;</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -10453,7 +10453,7 @@ order by requested_on desc limit 1;</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -10569,7 +10569,7 @@ order by requested_on desc limit 1;</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -10683,7 +10683,7 @@ order by requested_on desc limit 1;</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -10903,7 +10903,7 @@ order by requested_on desc limit 1;</value>
 <autoTerminate>true</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.MergeContent</type>
                         </processors>
@@ -11052,7 +11052,7 @@ order by requested_on desc limit 1;</value>
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -11114,7 +11114,7 @@ order by requested_on desc limit 1;</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -11451,7 +11451,7 @@ order by requested_on desc limit 1;</value>
 <autoTerminate>false</autoTerminate>
 <name>Retry</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.InvokeHTTP</type>
                         </processors>
@@ -11520,7 +11520,7 @@ ${execution.error}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -11846,7 +11846,7 @@ ${execution.error}</value>
 <autoTerminate>false</autoTerminate>
 <name>Retry</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.InvokeHTTP</type>
                         </processors>
@@ -11932,7 +11932,7 @@ ${execution.error}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -12059,7 +12059,7 @@ ${execution.error}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -12175,7 +12175,7 @@ ${execution.error}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -12241,7 +12241,7 @@ ${execution.error}</value>
 <autoTerminate>false</autoTerminate>
 <name>split</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitJson</type>
                         </processors>
@@ -12299,7 +12299,7 @@ ${execution.error}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -12396,7 +12396,7 @@ ${execution.error}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -12620,7 +12620,7 @@ ${execution.error}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.FetchS3Object</type>
                         </processors>
@@ -12702,7 +12702,7 @@ ${execution.error}</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnContent</type>
                         </processors>
@@ -12814,7 +12814,7 @@ ${execution.error}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -12882,7 +12882,7 @@ ${execution.error}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -12968,7 +12968,7 @@ ${execution.error}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -13117,7 +13117,7 @@ ${execution.error}</value>
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -13231,7 +13231,7 @@ ${execution.error}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -13387,7 +13387,7 @@ ${execution.error}</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -13456,7 +13456,7 @@ File url = ${invokehttp.request.url}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -13524,7 +13524,7 @@ File url = ${invokehttp.request.url}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -13896,7 +13896,7 @@ File url = ${invokehttp.request.url}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -14022,7 +14022,7 @@ File url = ${invokehttp.request.url}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -14134,7 +14134,7 @@ File url = ${invokehttp.request.url}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -14200,7 +14200,7 @@ File url = ${invokehttp.request.url}</value>
 <autoTerminate>false</autoTerminate>
 <name>split</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitJson</type>
                         </processors>
@@ -14258,7 +14258,7 @@ File url = ${invokehttp.request.url}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -14411,7 +14411,7 @@ where cqube_process_status ='SUBMITTED'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -14473,7 +14473,7 @@ where cqube_process_status ='SUBMITTED'</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -14639,7 +14639,7 @@ where cqube_process_status ='SUBMITTED'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -14778,7 +14778,7 @@ VALUES
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -14864,7 +14864,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -14951,7 +14951,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -15037,7 +15037,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -15139,7 +15139,7 @@ VALUES
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -15264,7 +15264,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>output stream</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteStreamCommand</type>
                         </processors>
@@ -15350,7 +15350,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -15467,7 +15467,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutFile</type>
                         </processors>
@@ -15581,7 +15581,7 @@ VALUES
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -15953,7 +15953,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -16022,7 +16022,7 @@ ${execution.error}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -16080,7 +16080,7 @@ ${execution.error}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -16208,7 +16208,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -16322,7 +16322,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -16542,7 +16542,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>true</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.MergeContent</type>
                         </processors>
@@ -16659,7 +16659,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutFile</type>
                         </processors>
@@ -16784,7 +16784,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>false</autoTerminate>
 <name>output stream</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteStreamCommand</type>
                         </processors>
@@ -16886,7 +16886,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -16990,7 +16990,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -17249,7 +17249,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.ListS3</type>
                         </processors>
@@ -17586,7 +17586,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>false</autoTerminate>
 <name>Retry</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.InvokeHTTP</type>
                         </processors>
@@ -17711,7 +17711,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>false</autoTerminate>
 <name>output stream</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteStreamCommand</type>
                         </processors>
@@ -17775,7 +17775,7 @@ ${filename:startsWith('diksha_api_progress_exhaust_batch_ids')})}</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -17843,7 +17843,7 @@ ${filename:startsWith('diksha_api_progress_exhaust_batch_ids')})}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -17911,7 +17911,7 @@ ${filename:startsWith('diksha_api_progress_exhaust_batch_ids')})}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -18100,7 +18100,7 @@ VALUES
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -18237,7 +18237,7 @@ VALUES
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -18323,7 +18323,7 @@ VALUES
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -18423,7 +18423,7 @@ ${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_select_less_column
 <autoTerminate>true</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -18550,7 +18550,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -18646,7 +18646,7 @@ where ff_uuid='${ff_uuid:trim()}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -18733,7 +18733,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
     </entry>
     <entry>
         <key>Support Fragmented Transactions</key>
-        <value>true</value>
+        <value>false</value>
     </entry>
     <entry>
         <key>database-session-autocommit</key>
@@ -18774,7 +18774,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -18892,7 +18892,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteStreamCommand</type>
                         </processors>
@@ -18978,7 +18978,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -19247,7 +19247,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -19397,7 +19397,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -19483,7 +19483,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -19591,7 +19591,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -19697,7 +19697,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -19809,7 +19809,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -19938,7 +19938,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -20052,7 +20052,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -20121,7 +20121,7 @@ Request url = ${invokehttp.request.url}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -20231,7 +20231,7 @@ Request url = ${invokehttp.request.url}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -20385,7 +20385,7 @@ order by requested_on</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -20577,7 +20577,7 @@ order by requested_on</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
                         </processors>
@@ -20645,7 +20645,7 @@ order by requested_on</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -20774,7 +20774,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -20842,7 +20842,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -20910,7 +20910,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -20997,7 +20997,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -21113,7 +21113,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -21229,7 +21229,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -21343,7 +21343,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -21425,7 +21425,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnContent</type>
                         </processors>
@@ -21483,7 +21483,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -21551,7 +21551,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -21660,7 +21660,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.FetchFile</type>
                         </processors>
@@ -21774,7 +21774,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -21860,7 +21860,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -21922,7 +21922,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -21988,7 +21988,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>false</autoTerminate>
 <name>split</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitJson</type>
                         </processors>
@@ -22104,7 +22104,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -22368,7 +22368,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.DeleteS3Object</type>
                         </processors>
@@ -22514,7 +22514,7 @@ values('${requestId}','#{diksha_api_progress_exhaust_encryption_key}','${batchId
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -22655,7 +22655,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -22760,7 +22760,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -22839,7 +22839,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -23063,7 +23063,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.FetchS3Object</type>
                         </processors>
@@ -23503,7 +23503,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -23561,7 +23561,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -23645,7 +23645,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -23713,7 +23713,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -23811,7 +23811,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>records</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -23918,7 +23918,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -23980,7 +23980,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>valid_zip</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -24086,7 +24086,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -24182,7 +24182,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.EvaluateJsonPath</type>
                         </processors>
@@ -24519,7 +24519,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>Retry</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.InvokeHTTP</type>
                         </processors>
@@ -24623,7 +24623,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -24737,7 +24737,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -24853,7 +24853,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -24939,7 +24939,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -25026,7 +25026,7 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -25161,7 +25161,7 @@ where b.cqube_process_status &lt;&gt; 'SUCCESS'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -25229,7 +25229,7 @@ where b.cqube_process_status &lt;&gt; 'SUCCESS'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -25315,7 +25315,7 @@ where b.cqube_process_status &lt;&gt; 'SUCCESS'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -25449,7 +25449,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -32646,7 +32646,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>diksha_wait_zip</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>INPUT_PORT</type>
                         </inputPorts>
                         <inputPorts>
@@ -32659,7 +32659,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>diksha_input</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>INPUT_PORT</type>
                         </inputPorts>
                         <labels>
@@ -33012,7 +33012,7 @@ null values validation</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>diksha_split_failure</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <outputPorts>
@@ -33026,7 +33026,7 @@ null values validation</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>diksha_split_success</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <outputPorts>
@@ -33040,7 +33040,7 @@ null values validation</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>diksha_split_wait</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <processors>
@@ -33193,7 +33193,7 @@ school_id is null</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -33346,7 +33346,7 @@ school_id is null</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -33415,7 +33415,7 @@ file: ${filename} Error while getting null values</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -33568,7 +33568,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("(select SUM(CASE when collection_id 
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -33747,7 +33747,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("(select SUM(CASE when collection_id 
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -33760,7 +33760,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("(select SUM(CASE when collection_id 
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
                         </processors>
@@ -33822,7 +33822,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("(select SUM(CASE when collection_id 
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -33949,7 +33949,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -34048,7 +34048,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -34061,7 +34061,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -34190,7 +34190,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -34259,7 +34259,7 @@ starting the transaction to aggregation flow</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -34341,9 +34341,9 @@ ${query_type:startsWith('diksha_tpd_cluster_wise'):or(
 ${query_type:startsWith('diksha_tpd_school_wise')}  )}  )}  )}</value>
     </entry>
 </properties>
-<runDurationMillis>25</runDurationMillis>
+<runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -34360,7 +34360,7 @@ ${query_type:startsWith('diksha_tpd_school_wise')}  )}  )}  )}</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -34449,7 +34449,7 @@ ${query_type:startsWith('diksha_tpd_school_wise')}  )}  )}  )}</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -34462,7 +34462,7 @@ ${query_type:startsWith('diksha_tpd_school_wise')}  )}  )}  )}</value>
 <autoTerminate>false</autoTerminate>
 <name>valid</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ValidateCsv</type>
                         </processors>
@@ -34590,7 +34590,7 @@ or school_id is null</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -34684,7 +34684,7 @@ or school_id is null</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -34758,7 +34758,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -34858,7 +34858,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -34924,7 +34924,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>false</autoTerminate>
 <name>split</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitJson</type>
                         </processors>
@@ -35003,9 +35003,9 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
         <value>#{diksha_sum_of_dup}</value>
     </entry>
 </properties>
-<runDurationMillis>1000</runDurationMillis>
+<runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -35022,7 +35022,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>false</autoTerminate>
 <name>sum_of_dup</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -35125,7 +35125,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -35279,7 +35279,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("SELECT ff_uuid,collection_id,collect
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -35339,7 +35339,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -35348,7 +35348,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -35478,7 +35478,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -35577,7 +35577,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -35590,7 +35590,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.CountText</type>
                         </processors>
@@ -35648,7 +35648,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -35747,7 +35747,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -35760,7 +35760,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -35822,7 +35822,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -35971,7 +35971,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -36196,7 +36196,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_temp_tb},'None')} )}</va
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -36280,7 +36280,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_temp_tb},'None')} )}</va
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -36406,7 +36406,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_temp_tb},'None')} )}</va
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -36534,7 +36534,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -36758,7 +36758,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -36816,7 +36816,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -36885,7 +36885,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -36954,7 +36954,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -37178,7 +37178,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -37236,7 +37236,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -37304,7 +37304,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -37368,7 +37368,7 @@ ${query_type:startsWith('diksha_tpd_r2_raw')})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -37474,7 +37474,7 @@ ${query_type:startsWith('diksha_tpd_r2_raw')})})}</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -37483,7 +37483,7 @@ ${query_type:startsWith('diksha_tpd_r2_raw')})})}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -37612,7 +37612,7 @@ ${filename:startsWith('diksha_tpd_mapping'):ifElse("delete from diksha_tpd_mappi
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -37837,7 +37837,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{save_to_diksha_tpd_dup},'None')} )}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -37963,7 +37963,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{save_to_diksha_tpd_dup},'None')} )}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -38022,7 +38022,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{save_to_diksha_tpd_dup},'None')} )}
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -38031,7 +38031,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{save_to_diksha_tpd_dup},'None')} )}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -38100,7 +38100,7 @@ file: ${filename} Error while getting null values</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -38255,7 +38255,7 @@ where ff_uuid='${emission_ff_uuid:trim()}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -38344,7 +38344,7 @@ where ff_uuid='${emission_ff_uuid:trim()}';</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -38357,7 +38357,7 @@ where ff_uuid='${emission_ff_uuid:trim()}';</value>
 <autoTerminate>false</autoTerminate>
 <name>valid</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ValidateCsv</type>
                         </processors>
@@ -38426,7 +38426,7 @@ Mirror data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -38877,7 +38877,7 @@ ${query_type:startsWith('diksha_tpd_r2_raw_overall'):ifElse('diksha_raw_data/tpd
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -38979,7 +38979,7 @@ ${query_type:startsWith('diksha_tpd_r2_raw_overall'):ifElse('diksha_raw_data/tpd
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -39037,7 +39037,7 @@ ${query_type:startsWith('diksha_tpd_r2_raw_overall'):ifElse('diksha_raw_data/tpd
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -39124,7 +39124,7 @@ ${query_type:startsWith('diksha_tpd_r2_raw_overall'):ifElse('diksha_raw_data/tpd
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -39137,7 +39137,7 @@ ${query_type:startsWith('diksha_tpd_r2_raw_overall'):ifElse('diksha_raw_data/tpd
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -39197,7 +39197,7 @@ file: ${filename} columns did not match.</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -39206,7 +39206,7 @@ file: ${filename} columns did not match.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -39225,7 +39225,7 @@ file: ${filename} columns did not match.</value>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>4</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>record-reader</key>
@@ -39291,7 +39291,7 @@ status from flowfile</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -39308,7 +39308,7 @@ status from flowfile</value>
 <autoTerminate>true</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -39368,7 +39368,7 @@ Mirror data validation of file:${filename} started</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -39377,7 +39377,7 @@ Mirror data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -39505,7 +39505,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete  from diksha_tpd_staging wher
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -39661,7 +39661,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("SELECT collection_id,collection_name
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -39710,7 +39710,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("SELECT collection_id,collection_name
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -39723,7 +39723,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("SELECT collection_id,collection_name
 <autoTerminate>false</autoTerminate>
 <name>valid_columns</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -39902,7 +39902,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("SELECT collection_id,collection_name
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -39915,7 +39915,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("SELECT collection_id,collection_name
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
                         </processors>
@@ -39977,7 +39977,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("SELECT collection_id,collection_name
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -40121,7 +40121,7 @@ collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -40134,7 +40134,7 @@ collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -40313,7 +40313,7 @@ collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -40326,7 +40326,7 @@ collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
                         </processors>
@@ -40396,7 +40396,7 @@ Total null values: ${executesql.row.count}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -40465,7 +40465,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -40577,7 +40577,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.CountText</type>
                         </processors>
@@ -40639,7 +40639,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -40769,7 +40769,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_null_to_log_db},'None')}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -40997,7 +40997,7 @@ ${filename:startsWith('diksha_tpd'):ifElse(#{diksha_tpd_staging_table_name},'Non
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -41057,7 +41057,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -41066,7 +41066,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -41172,7 +41172,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -41181,7 +41181,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -41287,7 +41287,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -41436,7 +41436,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -41538,9 +41538,9 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 )} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
 </properties>
-<runDurationMillis>25</runDurationMillis>
+<runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -41565,7 +41565,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -41651,7 +41651,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -41777,7 +41777,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -41843,7 +41843,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall')}
 <autoTerminate>false</autoTerminate>
 <name>split</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitJson</type>
                         </processors>
@@ -41972,7 +41972,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -42050,7 +42050,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>splits</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitRecord</type>
                         </processors>
@@ -42153,7 +42153,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -42221,7 +42221,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -42354,7 +42354,7 @@ from diksha_tpd_mapping_temp) sq Where rn =1
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -42440,7 +42440,7 @@ from diksha_tpd_mapping_temp) sq Where rn =1
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -42568,7 +42568,7 @@ where ff_uuid='${emission_ff_uuid:trim()}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -42668,7 +42668,7 @@ where ff_uuid='${emission_ff_uuid:trim()}';</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -42824,7 +42824,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -42935,9 +42935,9 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse(#{diksha_tpd_scho
         <value>false</value>
     </entry>
 </properties>
-<runDurationMillis>1000</runDurationMillis>
+<runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -42950,7 +42950,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse(#{diksha_tpd_scho
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -43041,7 +43041,7 @@ ${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_less_datatype_vali
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -43054,7 +43054,7 @@ ${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_less_datatype_vali
 <autoTerminate>false</autoTerminate>
 <name>valid</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ValidateCsv</type>
                         </processors>
@@ -43169,7 +43169,7 @@ ${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_less_datatype_vali
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -43229,7 +43229,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -43238,7 +43238,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -43322,7 +43322,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -43452,7 +43452,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -43583,7 +43583,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -43725,7 +43725,7 @@ from  diksha_tpd_staging  where ff_uuid='${zip_identifier}'</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -43738,7 +43738,7 @@ from  diksha_tpd_staging  where ff_uuid='${zip_identifier}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -43890,7 +43890,7 @@ from  diksha_tpd_staging  where ff_uuid='${zip_identifier}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -43976,7 +43976,7 @@ from  diksha_tpd_staging  where ff_uuid='${zip_identifier}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -44034,7 +44034,7 @@ from  diksha_tpd_staging  where ff_uuid='${zip_identifier}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -44161,7 +44161,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -44230,7 +44230,7 @@ file: ${filename} null values are found.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -44324,7 +44324,7 @@ file: ${filename} null values are found.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -44384,7 +44384,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -44393,7 +44393,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -44469,7 +44469,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>yes_dup</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -44529,7 +44529,7 @@ file: ${filename} blank lines validation started.</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -44538,7 +44538,7 @@ file: ${filename} blank lines validation started.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -44690,7 +44690,7 @@ file: ${filename} blank lines validation started.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -44792,7 +44792,7 @@ file: ${filename} blank lines validation started.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -44852,7 +44852,7 @@ file: ${filename} Error while extracting columns from file.</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -44861,7 +44861,7 @@ file: ${filename} Error while extracting columns from file.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -44989,7 +44989,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -45116,7 +45116,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -45265,7 +45265,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -45457,7 +45457,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
                         </processors>
@@ -45587,7 +45587,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -45686,7 +45686,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -45699,7 +45699,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -45761,7 +45761,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -45887,7 +45887,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -45994,7 +45994,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -46003,7 +46003,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -46065,7 +46065,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -46216,7 +46216,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -46304,7 +46304,7 @@ ${diksha_columns:equals('false'):ifElse('${base_dir}/cqube/nifi/nifi_queries/${d
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -46372,7 +46372,7 @@ ${diksha_columns:equals('false'):ifElse('${base_dir}/cqube/nifi/nifi_queries/${d
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -46500,7 +46500,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -46562,7 +46562,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -46651,7 +46651,7 @@ where ff_uuid= '${files_uuid}'</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -46664,7 +46664,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -46722,7 +46722,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -46827,7 +46827,7 @@ ${query_type:startsWith('diksha_tpd_school_wise'):ifElse('/time_range','/type')}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -46927,7 +46927,7 @@ ${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_select_less_column
 <autoTerminate>true</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -47217,7 +47217,7 @@ ${filename:startsWith('diksha_tpd'):and(${filename:startsWith('diksha_tpd_mappin
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -47360,7 +47360,7 @@ HAVING  COUNT(*) &gt; 1</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -47373,7 +47373,7 @@ HAVING  COUNT(*) &gt; 1</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -47442,7 +47442,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -47518,7 +47518,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -47892,7 +47892,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -47999,7 +47999,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -48008,7 +48008,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -48089,7 +48089,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -48102,7 +48102,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -48196,7 +48196,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -48347,7 +48347,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -48423,7 +48423,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 <autoTerminate>false</autoTerminate>
 <name>yes_dup</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -48501,7 +48501,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
 <autoTerminate>false</autoTerminate>
 <name>splits</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitRecord</type>
                         </processors>
@@ -48628,7 +48628,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -48722,7 +48722,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -48848,7 +48848,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -48934,7 +48934,7 @@ ${filename:startsWith('diksha_tpd'):ifElse("delete from  diksha_tpd_staging wher
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -49078,7 +49078,7 @@ collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -49091,7 +49091,7 @@ collection_created_for,total_count,total_time_spent,ff_uuid from  diksha_content
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -49219,7 +49219,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -49309,7 +49309,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -49398,7 +49398,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -49411,7 +49411,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -49520,7 +49520,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.FetchFile</type>
                         </processors>
@@ -49619,7 +49619,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -49632,7 +49632,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -49694,7 +49694,7 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -49707,5 +49707,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/15/2021 18:41:28 IST</timestamp>
+    <timestamp>02/17/2021 21:14:50 IST</timestamp>
 </template>
