@@ -121,7 +121,7 @@
         <div class="col-lg-1"> </div>
         <div class="col-lg-10" id="r1">
             <app-bar-chart *ngIf="chartData.length > 0" [category]="category" [data]="chartData"
-                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [reportName]="reportName" [level]="level">
+                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [reportName]="report" [level]="level">
             </app-bar-chart>
             <div *ngIf="chartData.length === 0" style="position: absolute; left: 40%; top: 120px;color: red;">
                 No Data Available
