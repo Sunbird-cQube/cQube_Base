@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import * as Highcharts from 'highcharts/highstock'
+import { post } from "jquery";
 
 @Component({
   selector: 'app-bar-chart',

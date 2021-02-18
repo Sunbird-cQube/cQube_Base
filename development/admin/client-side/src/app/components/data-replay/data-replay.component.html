@@ -1,0 +1,185 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12" style="padding-top: 20px !important;">
+            <h4>Data Replay</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8" style="padding-top: 20px !important;">
+            <table #DataTable id="table" class="display nowrap" width="100%"
+                style="font-size: 12px; text-align: center;">
+                <thead>
+                    <tr>
+                        <th>Data Source</th>
+                        <th>Options for Replay</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Student Attendance</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 350px;">
+                                <select class="time" required id="stdyear"
+                                    [ngStyle]="{float: months1.length > 0 ? 'left' : ''}"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectStdYear($event.target.value)">
+                                    <option *ngFor="let year of years1; let i = index;" [value]="year.value"
+                                        [selected]="i==0">
+                                        {{year.value}}</option>
+                                </select>
+                                <app-multi-select *ngIf="months1.length > 0" #multiSelect [selection]="'Select Months'"
+                                    [width1]="'140px'" [width2]="'130px'"
+                                    style="float: left; margin-left: 30px;margin-top: 1px; width: 120px;"
+                                    [list]="months1" [text]="'Months'" (shareCheckedList)="shareCheckedList1($event)">
+                                </app-multi-select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Teacher Attendance</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 350px;">
+                                <select class="time" required id="tchryear"
+                                    [ngStyle]="{float: months2.length > 0 ? 'left' : ''}"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectTchrYear($event.target.value)">
+                                    <option *ngFor="let year of years2; let i = index;" [value]="year.value"
+                                        [selected]="i==0">
+                                        {{year.value}}</option>
+                                </select>
+                                <app-multi-select *ngIf="months2.length > 0" #multiSelect [selection]="'Select Months'"
+                                    [width1]="'140px'" [width2]="'130px'"
+                                    style="float: left; margin-left: 30px;margin-top: 1px;" [list]="months2"
+                                    [text]="'Months'" (shareCheckedList)="shareCheckedList2($event)">
+                                </app-multi-select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CRC</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 500px;">
+                                <div style="float: left;">
+                                    <span style="float: left;margin: 8px 5px 0px 0px;">From Date:</span> <input
+                                        type="text" (bsValueChange)="onSelectFromDate()"
+                                        style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
+                                        placeholder="Select from date" class="form-control" #dp="bsDatepicker"
+                                        bsDatepicker [(ngModel)]="fromDate"
+                                        [bsConfig]="{dateInputFormat: 'DD-MM-YYYY'}">
+                                </div>
+                                <div style="float: left; margin-left: 30px;">
+                                    <span style="float: left;margin: 8px 5px 0px 0px;">To Date:</span> <input
+                                        [disabled]="fromDate == undefined" type="text"
+                                        (bsValueChange)="onSelectToDate()"
+                                        style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
+                                        placeholder="Select to date" class="form-control" #dp="bsDatepicker"
+                                        bsDatepicker [(ngModel)]="toDate" [bsConfig]="{dateInputFormat: 'DD-MM-YYYY'}">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Summary Rollup</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 500px;">
+                                <div style="float: left;">
+                                    <span style="float: left;margin: 8px 5px 0px 0px;">From Date:</span> <input
+                                        type="text" (bsValueChange)="onSelectFromDate()"
+                                        style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
+                                        placeholder="Select from date" class="form-control" #dp="bsDatepicker"
+                                        bsDatepicker [(ngModel)]="summaryFromDate"
+                                        [bsConfig]="{dateInputFormat: 'DD-MM-YYYY'}">
+                                </div>
+                                <div style="float: left; margin-left: 30px;">
+                                    <span style="float: left;margin: 8px 5px 0px 0px;">To Date:</span> <input
+                                        [disabled]="summaryFromDate == undefined" type="text"
+                                        (bsValueChange)="onSelectToDate()"
+                                        style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
+                                        placeholder="Select to date" class="form-control" #dp="bsDatepicker"
+                                        bsDatepicker [(ngModel)]="summaryToDate"
+                                        [bsConfig]="{dateInputFormat: 'DD-MM-YYYY'}">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Semester</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 150px;">
+                                <app-multi-select #multiSelect [selection]="'Select Semesters'" style="margin-top: 1px;"
+                                    [width1]="'150px'" [width2]="'140px'" [list]="semesters" [text]="'Semesters'"
+                                    (shareCheckedList)="shareCheckedList3($event)">
+                                </app-multi-select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Periodic Assessment Test</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 155px;">
+                                <app-multi-select #multiSelect [selection]="'Select Exam Codes'"
+                                    style="margin-top: 1px;" [width1]="'155px'" [width2]="'145px'" [list]="months2"
+                                    (shareCheckedList)="shareCheckedList2($event)">
+                                </app-multi-select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>TPD</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 140px;">
+                                <app-multi-select #multiSelect [selection]="'Select Batch Ids'" style="margin-top: 1px;"
+                                    [width1]="'140px'" [width2]="'130px'" [list]="batchIds" [text]="'Batch Ids'"
+                                    (shareCheckedList)="shareCheckedList4($event)">
+                                </app-multi-select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>UDISE</td>
+                        <td>
+                            <select class="time" required id="udise"
+                                style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                (change)="onSelecUdise($event.target.value)">
+                                <option *ngFor="let option of options; let i = index;" [value]="option.id"
+                                    [selected]="i==0">
+                                    {{option.value}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Infrastructure</td>
+                        <td>
+                            <select class="time" required id="infrastructure"
+                                style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                (change)="onSelectInfrastructure($event.target.value)">
+                                <option *ngFor="let option of options; let i = index;" [value]="option.id"
+                                    [selected]="i==0">
+                                    {{option.value}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Static</td>
+                        <td>
+                            <select class="time" required id="static"
+                                style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                (change)="onSelectStatic($event.target.value)">
+                                <option *ngFor="let option of options; let i = index;" [value]="option.id"
+                                    [selected]="i==0">
+                                    {{option.value}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="top: 20px; position: relative;">
+                <button class="btn btn-primary" (click)="onSubmit()" style="float: right;">Submit</button>
+                <button class="btn btn-secondary" (click)="onCancel()" style="margin-right: 30px;float: right;">
+                    Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
