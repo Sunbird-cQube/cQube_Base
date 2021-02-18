@@ -1245,7 +1245,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -1999,7 +1999,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -2215,7 +2215,7 @@ ${query_type:startsWith('comp_district_wise'):ifElse(#{comp_district_jolt_spec},
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -2992,7 +2992,7 @@ file:${filename},Error while extracting "${query_type}" query.</value>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -3014,5 +3014,5 @@ file:${filename},Error while extracting "${query_type}" query.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>11/12/2020 20:31:37 IST</timestamp>
+    <timestamp>02/18/2021 11:48:12 IST</timestamp>
 </template>
