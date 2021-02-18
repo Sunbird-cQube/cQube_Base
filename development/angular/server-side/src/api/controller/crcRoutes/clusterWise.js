@@ -32,11 +32,11 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
 
     var clusterData = jsonData
 
-    let distId = req.params.distId;
+    // let distId = req.params.distId;
     let blockId = req.params.blockId;
 
     let filterData = clusterData.data.filter(obj => {
-      return (obj.districtId == distId && obj.blockId == blockId);
+      return (obj.blockId == blockId);
     });
     if (filterData.length > 0) {
       logger.info('---  crc cluster per block api response sent ---');
