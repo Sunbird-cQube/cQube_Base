@@ -15,7 +15,10 @@ const dataSource = require('./controller/data-replay/getDataSources');
 router.use('/getDataSource', dataSource);
 
 const getMonthAndYear = require('./controller/data-replay/getMonthAndYear');
-router.use('/getMonthYear', getMonthAndYear);
+router.use('/', getMonthAndYear);
+
+const saveDataToS3 = require('./controller/data-replay/saveDatatoS3');
+router.use('/savetoS3', saveDataToS3);
 
 // user details routes
 router.use('/addUser', addUser);

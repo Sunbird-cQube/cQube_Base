@@ -19,5 +19,13 @@ export class DataReplayService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/getMonthYear`, data);
   }
+  getSemesters() {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/getSemesters`, {});
+  }
+  saveDataToS3(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/savetoS3`, data);
+  }
 
 }

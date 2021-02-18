@@ -7,16 +7,16 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class MultiSelectComponent implements OnInit {
   @Input() list: any[];
-
+  @Input() selection;
+  @Input() width1;
+  @Input() width2;
+  @Input() text;
   @Output() shareCheckedList = new EventEmitter();
   @Output() shareIndividualCheckedList = new EventEmitter();
 
   status;
-  @Input() checkedList: any[];
-  currentSelected: {};
-  constructor() {
-    this.checkedList = [];
-  }
+  checkedList: any = [];
+  constructor() { }
 
   showDropDown;
 
