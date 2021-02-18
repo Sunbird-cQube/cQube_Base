@@ -662,7 +662,7 @@ export class CrcReportComponent implements OnInit {
     this.tableData = [];
     this.chartData = [];
     this.reportData = [];
-    this.title = localStorage.getItem('block');
+    this.title = localStorage.getItem('block').replace(/^"(.+(?="$))"$/, '$1');
     this.titleName = localStorage.getItem('dist');
     var distId = localStorage.getItem('distId');
     var blockId = localStorage.getItem('blockId');
