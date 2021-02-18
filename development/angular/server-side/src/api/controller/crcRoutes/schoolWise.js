@@ -29,13 +29,10 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         var jsonData = await s3File.readS3File(fileName);
 
         var schoolData = jsonData
-
-        let distId = req.params.distId;
-        let blockId = req.params.blockId;
         let clusterId = req.params.clusterId;
 
         let filterData = schoolData.data.filter(obj => {
-            return (obj.districtId == distId && obj.blockId == blockId && obj.clusterId == clusterId);
+            return (obj.clusterId == clusterId);
         });
         if (filterData.length > 0) {
             logger.info('--- crc school per cluster api response sent ---');

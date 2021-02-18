@@ -76,12 +76,10 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         let fileName = `semester/cluster_sem_opt_json_${req.body.sem}.json`
         var myData = await s3File.readS3File(fileName);
         let clusterData = myData.data;
-
-        let distId = req.params.distId
         let blockId = req.params.blockId
 
         filterData = clusterData.filter(obj => {
-            return (obj.district_id == distId && obj.block_id == blockId)
+            return (obj.block_id == blockId)
         })
 
 
