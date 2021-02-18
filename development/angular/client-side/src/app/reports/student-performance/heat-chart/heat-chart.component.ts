@@ -62,7 +62,7 @@ export class HeatChartComponent implements OnInit {
   data;
 
   // to download the excel report
-  public fileName: any = `District_wise_report_${this.year}`
+  public fileName: any = ``
   public reportData: any = [];
 
   public metaData: any;
@@ -74,6 +74,8 @@ export class HeatChartComponent implements OnInit {
   pageOfItems: Array<any>;
   pageSize = 40;
   currentPage = 1;
+
+  reportName = 'periodic_assessment_test_heatmap';
 
   getHeight(event) {
     this.height = event.target.innerHeight;
@@ -106,6 +108,8 @@ export class HeatChartComponent implements OnInit {
       this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
+      
+      this.fileName = `${this.reportName}_overall_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
       this.commonFunc();
     }, err => {
       this.metaData = [];
@@ -158,7 +162,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   resetToInitPage() {
-    this.fileName = "District_wise_report";
+    this.fileName = `${this.reportName}_overall_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.resetOnAllGrades();
     this.year = this.years[this.years.length - 1];
     this.commonFunc();
@@ -366,9 +370,9 @@ export class HeatChartComponent implements OnInit {
 
       }
 
-       // <br> <b>Total Schools: ${totalSchools}</b>
-        // <br> <b>Total Students: ${totalStudents}</b>
-        
+      // <br> <b>Total Schools: ${totalSchools}</b>
+      // <br> <b>Total Students: ${totalStudents}</b>
+
       obj += `<br> <b>Grade: ${grade}</b>
         <br> <b>Subject: ${subject}</b>
         <br> <b>ExamDate: ${exam_date}</b>
@@ -391,7 +395,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedMonth() {
-    this.fileName = "Month_wise_report";
+    this.fileName = `${this.reportName}_${this.grade}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.fetchFilters(this.metaData);
     this.grade = 'all';
     this.examDate = 'all';
@@ -403,7 +407,7 @@ export class HeatChartComponent implements OnInit {
     if (!this.month) {
       alert("Please select month!");
     } else {
-      this.fileName = "Grade_wise_report";
+      this.fileName = `${this.reportName}_${this.grade}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
       if (this.grade !== 'all') {
         this.gradeSelected = true;
       } else {
@@ -435,7 +439,7 @@ export class HeatChartComponent implements OnInit {
     if (!this.month) {
       alert("Please select month!");
     } else {
-      this.fileName = "Subject_wise_report";
+      this.fileName = `${this.reportName}_${this.grade}_${this.subject}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
       this.levelWiseFilter();
     }
   }
@@ -444,7 +448,7 @@ export class HeatChartComponent implements OnInit {
     if (!this.month) {
       alert("Please select month!");
     } else {
-      this.fileName = "ExamDate_wise_report";
+      this.fileName = `${this.reportName}_${this.grade}_${this.examDate}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
       this.levelWiseFilter();
     }
   }
@@ -453,15 +457,15 @@ export class HeatChartComponent implements OnInit {
     if (!this.month) {
       alert("Please select month!");
     } else {
-      this.fileName = "ViewBy_report";
+      this.fileName = `${this.reportName}_${this.grade}_${this.viewBy}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
       this.levelWiseFilter();
     }
   }
 
   selectedDistrict(districtId) {
     this.currentPage = 1;
-    this.fileName = "Block_wise_report";
     this.level = 'block';
+    this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_district_${districtId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.block = undefined;
     this.cluster = undefined;
     this.blockHidden = false;
@@ -504,8 +508,8 @@ export class HeatChartComponent implements OnInit {
 
   selectedBlock(blockId) {
     this.currentPage = 1;
-    this.fileName = "Cluster_wise_report";
     this.level = 'cluster';
+    this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_block_${blockId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -551,8 +555,8 @@ export class HeatChartComponent implements OnInit {
 
   selectedCluster(clusterId) {
     this.currentPage = 1;
-    this.fileName = "School_wise_report";
     this.level = 'school';
+    this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_cluster_${clusterId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
     this.reportData = [];

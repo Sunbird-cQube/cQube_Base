@@ -95,7 +95,7 @@
     <div class="row" style="height: 76vh;">
         <div class="col-sm-6">
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <span style="font-size: 13px; font-weight: bold;">X-Axis:</span> &nbsp;<select id="x_axis"
                         style="padding: 4px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
@@ -107,7 +107,7 @@
                         </option>
                     </select>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <span style="font-size: 13px; font-weight: bold;">Y-Axis:</span> &nbsp;<select id="y_axis"
                         style="padding: 4px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);"
                         [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
@@ -118,6 +118,12 @@
                             {{yaxis.value}}
                         </option>
                     </select>
+                </div>
+                <div class="col-sm-4">
+                    <a class="float-right" href="javascript: void(0)" id="crcHealthcard" (click)="goToHealthCard()"
+                        style="font-weight: bold;right: 15px; top: 20px; position: absolute; text-decoration: underline; font-size: 13px; color: #3100cc">Access
+                        Health
+                        Card</a>
                 </div>
             </div>
 
@@ -172,10 +178,7 @@
                         {{cluster.clusterName}}
                     </option>
                 </select>
-                <a class="float-right" href="javascript: void(0)" id="crcHealthcard" (click)="goToHealthCard()"
-                    style="font-weight: bold;right: 15px; position: absolute; text-decoration: underline; font-size: 13px; color: #3100cc">Access
-                    Health
-                    Card</a>
+
             </div>
             <p style="text-align: justify; font-size: 11px;padding-top: 10px;">
                 <strong> NOTE:</strong> The table provides information about the various metrics (calculated from the

@@ -118,7 +118,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   }
 
   resetToInitPage() {
-    this.fileName = `${this.reportName}_all_district_${this.timePeriod}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.commonService.dateAndTime}`;
     this.skul = true;
     this.dist = false;
     this.blok = false;
@@ -131,17 +131,18 @@ export class DikshaTPDContentProgressComponent implements OnInit {
     this.timePeriod = 'All';
     document.getElementById('home').style.display = 'none';
     this.selectedCourses = [];
-    this.courses = this.courses.map(course => {
+    var courses = this.courses.map(course => {
       course.status = false;
       return course;
     });
+    this.courses = courses;
     if (this.multiSelect)
       this.multiSelect.checkedList = [];
     this.commonFunc();
   }
 
   commonFunc = () => {
-    this.fileName = `${this.reportName}_all_district_${this.timePeriod}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.commonService.dateAndTime}`;
     this.commonService.errMsg();
     this.level = 'district';
     this.reportData = [];
@@ -331,8 +332,8 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   }
 
   selectedDistrict(districtId) {
-    this.fileName = `${this.reportName}_${this.timePeriod}_${districtId}_${this.commonService.dateAndTime}`;
     this.level = 'block';
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
     this.block = undefined;
     this.cluster = undefined;
     this.blockHidden = false;
@@ -373,8 +374,8 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
-    this.fileName = `${this.reportName}_${this.timePeriod}_${blockId}_${this.commonService.dateAndTime}`;
     this.level = 'cluster';
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
     this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -418,8 +419,8 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
-    this.fileName = `${this.reportName}_${this.timePeriod}_${clusterId}_${this.commonService.dateAndTime}`;
     this.level = 'school';
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
     this.reportData = [];

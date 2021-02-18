@@ -1955,6 +1955,8 @@ ff_uuid varchar(255),
 created_on_file_process  TIMESTAMP without time zone default current_timestamp
 );
 
+alter table crc_inspection_dup add column  IF NOT EXISTS visit_date date;
+
 create table if not exists district_dup
   (
 district_id  bigint  not null,

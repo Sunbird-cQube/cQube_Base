@@ -35,65 +35,7 @@
             <script src="${script}" type="text/javascript"></script>
         </#list>
     </#if>
-    <script  type="text/javascript">
-    function onChange(){
-        if(document.getElementById("password1").value.length > 0){
-            document.getElementById("togglePassword").style.display = 'block';
-        }else{
-            document.getElementById("togglePassword").style.display = 'none';
-        }
-    }
-
-    function myFun(){
-        if(document.getElementById("password1").value.length > 0 && document.getElementById("username1").value.length > 0){
-            document.getElementById("login").style.backgroundColor = "#31D08C";
-            document.getElementById("login").style.color = "white";
-            document.getElementById("signinSymbol").style.display = "none";
-            document.getElementById("signinSymbolWithInput").style.display = "block"; 
-        }else{
-            document.getElementById("login").style.color = "#899BFF";
-            document.getElementById("login").style.backgroundColor = "transparent";
-            document.getElementById("signinSymbol").style.display = "block";
-            document.getElementById("signinSymbolWithInput").style.display = "none";
-        }
-    }
-    function test(el){
-      $(el).toggleClass('fa-eye-slash');
-      var className = $(el).attr('class');
-   }
-
-  function onClick(el){
-       document.getElementById("kc-login").style.display = "none";
-   }
-   $(window).on('load', function(){
-       if ($('#totp').length || $('#otp').length || $('#kc-passwd-update-form').length){
-           document.getElementById("kc-form-login1").style.display = "none";
-           document.getElementById("kc-login").style.display = "block";
-           document.getElementById('kc-passwd-update-form).style.display = 'block';
-       }else{
-           document.getElementById("kc-form-login1").style.display = "block";
-       }
-    });
-
-    $(document).ready(function(){
-        $('#totp').on('input', function(){
-            document.getElementsByClassName("btn-primary")[0].style.backgroundColor = "#31D08C";
-        });
-    });
-
-        $(document).ready(function() { 
-		var $winwidth = $(window).width();
-		$(".background").attr({
-			width: $winwidth
-		});
-		$(window).bind("resize", function(){ 
-			var $winwidth = $(window).width();
-			$(".background").attr({
-				width: $winwidth
-			});
-		 });
-	}); 
-    </script>
+    <script  type="text/javascript" src="${url.resourcesPath}/script/test.js"> </script>
 </head>
 
 <body>
@@ -134,10 +76,10 @@
                                 <div>
                                    <form autocomplete="off" id="kc-form-login1" class="form" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
                                         <label>User ID </label><br/>
-                                        <input id="username1" oninput="myFun();" class="login-field" placeholder="${msg("Enter your user ID")}" type="text" name="username" tabindex="1">
+                                        <input id="username1" oninput="myFun()" class="login-field" placeholder="${msg("Enter your user ID")}" type="text" name="username" tabindex="1">
                                         <br/><br/>
                                         <label>Password</label><br/>
-                                        <input id="password1" oninput="onChange(); myFun();" class="login-field" placeholder="${msg("Enter your password")}" type="password" name="password" tabindex="2">
+                                        <input id="password1" oninput="onChange(), myFun()" class="login-field" placeholder="${msg("Enter your password")}" type="password" name="password" tabindex="2">
                                         <i class="far fa-eye" id="togglePassword" onclick="if (password1.type == 'text') password1.type = 'password';
                                             else password1.type = 'text'; test(this)" style="display:none;"></i>
                                         <br/><br/>

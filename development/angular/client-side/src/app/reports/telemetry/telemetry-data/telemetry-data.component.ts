@@ -74,6 +74,8 @@ export class TelemetryDataComponent implements OnInit {
   public lat: any;
   public lng: any;
 
+  reportName = 'telemerty';
+
   constructor(
     public http: HttpClient,
     public service: TelemetryService,
@@ -161,8 +163,8 @@ export class TelemetryDataComponent implements OnInit {
         }
         globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
 
-        var fileName = "District_wise_report";
-        this.genericFun(this.data, options, fileName);
+        this.fileName = `${this.reportName}_allDistricts_${this.timePeriod}_${this.commonService.dateAndTime}`;
+        this.genericFun(this.data, options, this.fileName);
 
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.districtName > b.districtName) ? 1 : ((b.districtName > a.districtName) ? -1 : 0));
@@ -227,9 +229,9 @@ export class TelemetryDataComponent implements OnInit {
             for (let i = 0; i < this.blockMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, "#42a7f5", 3.5, 1, 1, options.level);
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "lat", "lng");
-              // to download the report
-              this.fileName = "Block_wise_report";
             }
+            // to download the report
+            this.fileName = `${this.reportName}_allBlocks_${this.timePeriod}_${this.commonService.dateAndTime}`;
             this.schoolCount = this.data['footer'];
 
             this.commonService.loaderAndErr(this.data);
@@ -297,9 +299,9 @@ export class TelemetryDataComponent implements OnInit {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, "#42a7f5", 2.5, 1, 1, options.level);
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "lat", "lng");
-              // to download the report
-              this.fileName = "Cluster_wise_report";
             }
+            // to download the report
+            this.fileName = `${this.reportName}_allClusters_${this.timePeriod}_${this.commonService.dateAndTime}`;
             this.schoolCount = this.data['footer'];
 
             this.commonService.loaderAndErr(this.data);
@@ -363,10 +365,9 @@ export class TelemetryDataComponent implements OnInit {
             for (let i = 0; i < this.schoolMarkers.length; i++) {
               var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, "#42a7f5", 2, 1.5, 0, options.level);
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "lat", "lng");
-              // to download the report
-              this.fileName = "School_wise_report";
             }
-
+            // to download the report
+            this.fileName = `${this.reportName}_allSchools_${this.timePeriod}_${this.commonService.dateAndTime}`;
             this.schoolCount = this.data['footer'];
 
             this.commonService.loaderAndErr(this.data);
@@ -709,7 +710,7 @@ export class TelemetryDataComponent implements OnInit {
     Object.keys(details).forEach(key => {
       if (key !== lng) {
         orgObject[key] = details[key];
-       
+
       }
     });
     var yourData;

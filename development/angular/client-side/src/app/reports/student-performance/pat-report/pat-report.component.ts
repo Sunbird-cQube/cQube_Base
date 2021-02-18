@@ -82,6 +82,7 @@ export class PATReportComponent implements OnInit {
   distFilter = [];
   blockFilter = [];
   clusterFilter = [];
+  reportName = 'periodic_assessment_test';
 
   timeRange = [{ key: 'all', value: "Overall" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: 'last_30_days', value: "Last 30 Days" }];
   period = 'all';
@@ -117,6 +118,8 @@ export class PATReportComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
+
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
 
     if (params && params.level) {
       let data = params.data;
@@ -215,12 +218,14 @@ export class PATReportComponent implements OnInit {
   }
 
   onGradeSelect(data) {
+    this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject?this.subject: ''}_all${this.level}_${this.commonService.dateAndTime}`;
     this.grade = data;
     this.subjectHidden = false;
     this.subject = '';
     this.levelWiseFilter();
   }
   onSubjectSelect(data) {
+    this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject}_all${this.level}_${this.commonService.dateAndTime}`;
     this.subject = data;
     this.levelWiseFilter();
   }
@@ -252,6 +257,7 @@ export class PATReportComponent implements OnInit {
 
   linkClick() {
     document.getElementById('home').style.display = 'none';
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
     this.grade = undefined;
     this.subject = undefined;
     this.subjectHidden = true;
@@ -273,7 +279,6 @@ export class PATReportComponent implements OnInit {
       this.reportData = [];
       this.commonService.errMsg();
       this.level = 'district';
-      this.fileName = "Dist_wise_report";
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -371,7 +376,7 @@ export class PATReportComponent implements OnInit {
       this.districtId = undefined;
       this.blockId = undefined;
       this.level = 'block_wise';
-      this.fileName = "Block_wise_report";
+      this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allBlocks_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -505,7 +510,7 @@ export class PATReportComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = "cluster_wise";
-      this.fileName = "Cluster_wise_report";
+      this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allClusters_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -632,7 +637,7 @@ export class PATReportComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = 'school_wise';
-      this.fileName = "School_wise_report";
+      this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allSchools_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -753,7 +758,7 @@ export class PATReportComponent implements OnInit {
     this.blockId = undefined;
     this.reportData = [];
     this.level = 'block';
-    var fileName = "Block_per_dist_report";
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
     var myData = this.distFilter.find(a => a.Details.district_id == districtId);
     var grades = [];
     if (myData['Grades']) {
@@ -812,7 +817,7 @@ export class PATReportComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      this.genericFun(res, options, fileName);
+      this.genericFun(res, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.Details.block_name > b.Details.block_name) ? 1 : ((b.Details.block_name > a.Details.block_name) ? -1 : 0));
     }, err => {
@@ -846,7 +851,7 @@ export class PATReportComponent implements OnInit {
     this.clusterId = undefined;
     this.reportData = [];
     this.level = 'cluster';
-    var fileName = "Cluster_per_block_report";
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
     var myData = this.blockFilter.find(a => a.Details.block_id == blockId);
     var grades = [];
     Object.keys(myData['Grades']).forEach(grade => {
@@ -909,7 +914,7 @@ export class PATReportComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      this.genericFun(res, options, fileName);
+      this.genericFun(res, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.Details.cluster_name > b.Details.cluster_name) ? 1 : ((b.Details.cluster_name > a.Details.cluster_name) ? -1 : 0));
     }, err => {
@@ -935,6 +940,7 @@ export class PATReportComponent implements OnInit {
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
+    this.level = 'school';
     if (this.level != 'school') {
       this.subjectHidden = true;
       this.grade = undefined;
@@ -1014,13 +1020,13 @@ export class PATReportComponent implements OnInit {
           level: "school"
         }
         this.level = options.level;
-        var fileName = "School_per_cluster_report";
+        this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
 
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-        this.genericFun(res, options, fileName);
+        this.genericFun(res, options, this.fileName);
       }, err => {
         this.data = [];
         this.commonService.loaderAndErr(this.data);

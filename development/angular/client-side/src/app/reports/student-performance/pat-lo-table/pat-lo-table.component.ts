@@ -53,7 +53,7 @@ export class PATLOTableComponent implements OnInit {
   data;
 
   // to download the excel report
-  public fileName: any = `District_wise_report_${this.year}`
+  public fileName: any = ``
   public reportData: any = [];
 
   public metaData: any;
@@ -61,6 +61,8 @@ export class PATLOTableComponent implements OnInit {
   state: string;
   months: string[];
   month: string = '';
+
+  reportName = 'periodic_assessment_test_loTable';
 
   constructor(
     public http: HttpClient,
@@ -89,6 +91,9 @@ export class PATLOTableComponent implements OnInit {
       this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
+     
+      this.fileName = `${this.reportName}_overall_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
+
       this.commonFunc();
     }, err => {
       this.metaData = [];
@@ -125,7 +130,7 @@ export class PATLOTableComponent implements OnInit {
 
   resetToInitPage() {
     this.resetTable();
-    this.fileName = "District_wise_report";
+    this.fileName = `${this.reportName}_overall_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.skul = true;
     this.dist = false;
     this.blok = false;
@@ -164,8 +169,8 @@ export class PATLOTableComponent implements OnInit {
     this.myData = this.service.patLOTableDistData(a).subscribe(response => {
       this.resetTable();
       this.reportData = response['tableData'];
-      this.districtNames = response['districtDetails'];
-      this.districtNames = this.districtNames.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
+      var districtNames = response['districtDetails'];
+      this.districtNames = districtNames.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
       this.createTable(this.reportData);
       this.commonService.loaderAndErr(this.reportData);
     }, err => {
@@ -243,7 +248,7 @@ export class PATLOTableComponent implements OnInit {
   }
 
   selectedMonth() {
-    this.fileName = "Month_wise_report";
+    this.fileName = `${this.reportName}_${this.grade}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.fetchFilters(this.metaData);
     this.grade = 'all';
     this.examDate = 'all';
@@ -253,29 +258,29 @@ export class PATLOTableComponent implements OnInit {
   }
 
   selectedGrade() {
-    this.fileName = "Grade_wise_report";
+    this.fileName = `${this.reportName}_${this.grade}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.levelWiseFilter();
   }
 
   selectedSubject() {
-    this.fileName = "Subject_wise_report";
+    this.fileName = `${this.reportName}_${this.grade}_${this.subject}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.levelWiseFilter();
   }
 
   selectedExamDate() {
-    this.fileName = "ExamDate_wise_report";
+    this.fileName = `${this.reportName}_${this.grade}_${this.examDate}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.levelWiseFilter();
   }
 
   selectedViewBy() {
-    this.fileName = "ViewBy_report";
+    this.fileName = `${this.reportName}_${this.grade}_${this.viewBy}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.levelWiseFilter();
   }
 
   selectedDistrict(districtId) {
     this.resetTable();
-    this.fileName = "Block_wise_report";
     this.level = 'block';
+    this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_district_${districtId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.block = undefined;
     this.cluster = undefined;
     this.blockHidden = false;
@@ -296,8 +301,8 @@ export class PATLOTableComponent implements OnInit {
 
     this.service.patLOTableBlockData(a).subscribe(response => {
       this.reportData = response['tableData'];
-      this.blockNames = response['blockDetails'];
-      this.blockNames = this.blockNames.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
+      var blockNames = response['blockDetails'];
+      this.blockNames = blockNames.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
 
       this.createTable(this.reportData);
       var dist = this.districtNames.find(a => a.district_id == districtId);
@@ -318,8 +323,8 @@ export class PATLOTableComponent implements OnInit {
 
   selectedBlock(blockId) {
     this.resetTable();
-    this.fileName = "Cluster_wise_report";
     this.level = 'cluster';
+    this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_block_${blockId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -339,8 +344,8 @@ export class PATLOTableComponent implements OnInit {
 
     this.service.patLOTableClusterData(a).subscribe(response => {
       this.reportData = response['tableData'];
-      this.clusterNames = response['clusterDetails'];
-      this.clusterNames = this.clusterNames.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
+      var clusterNames = response['clusterDetails'];
+      this.clusterNames = clusterNames.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
       this.createTable(this.reportData);
       var block = this.blockNames.find(a => a.block_id == blockId);
       this.blockHierarchy = {
@@ -362,8 +367,8 @@ export class PATLOTableComponent implements OnInit {
 
   selectedCluster(clusterId) {
     this.resetTable();
-    this.fileName = "School_wise_report";
     this.level = 'school';
+    this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_cluster_${clusterId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
 

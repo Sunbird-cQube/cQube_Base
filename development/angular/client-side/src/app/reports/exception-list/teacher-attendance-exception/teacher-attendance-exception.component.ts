@@ -76,9 +76,10 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
   params: any;
   yearMonth = true;
 
-  // timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
-  // period = 'overall';
-  // timePeriod = {};
+  reportName = 'teacher_attendance_exception';
+  timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
+  period = 'overall';
+  timePeriod = {};
 
   constructor(public http: HttpClient, public service: ExceptionReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
 
@@ -94,6 +95,10 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.skul = true;
+    this.timePeriod = {
+      period: 'overall',
+      report: 'tarException'
+    }
     this.service.getDateRange({ report: 'tarException' }).subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -111,8 +116,8 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
       this.month = this.months[this.months.length - 1].id;
       if (this.month) {
         this.month_year = {
-          month: this.month,
-          year: this.year
+          month: null,
+          year: null
         };
         this.districtWise();
       }
@@ -124,32 +129,37 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     });
   }
 
-  // showYearMonth() {
-  //   document.getElementById('home').style.display = 'block';
-  //   this.yearMonth = false;
-  //   this.month_year = {
-  //     month: this.month,
-  //     year: this.year
-  //   };
-  //   this.levelWiseFilter();
-  // }
+  showYearMonth() {
+    document.getElementById('home').style.display = 'block';
+    this.yearMonth = false;
+    this.month_year = {
+      month: this.month,
+      year: this.year
+    };
+    this.timePeriod = {
+      period: null,
+      report: 'tarException'
+    }
+    this.levelWiseFilter();
+  }
 
-  // onPeriodSelect() {
-  //   if (this.period != 'overall') {
-  //     document.getElementById('home').style.display = 'block';
-  //   } else {
-  //     document.getElementById('home').style.display = 'none';
-  //   }
-  //   this.yearMonth = true;
-  //   this.timePeriod = {
-  //     period: this.period
-  //   }
-  //   this.month_year = {
-  //     month: null,
-  //     year: null
-  //   };
-  //   this.levelWiseFilter();
-  // }
+  onPeriodSelect() {
+    if (this.period != 'overall') {
+      document.getElementById('home').style.display = 'block';
+    } else {
+      document.getElementById('home').style.display = 'none';
+    }
+    this.yearMonth = true;
+    this.timePeriod = {
+      period: this.period,
+      report: 'tarException'
+    }
+    this.month_year = {
+      month: null,
+      year: null
+    };
+    this.levelWiseFilter();
+  }
 
   public fileName: any;
   public reportData: any = [];
@@ -284,17 +294,35 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
   public myData;
   districtData = [];
 
+  onClickHome() {
+    this.yearMonth = true;
+    this.period = 'overall';
+    this.month_year = {
+      month: null,
+      year: null
+    };
+    this.timePeriod = {
+      period: this.period,
+      report: 'tarException'
+    }
+    this.districtWise();
+    document.getElementById('home').style.display = 'none';
+  }
+
   async districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `District_wise_report_${month.name.trim()}_${this.year}`;
+      if (this.month_year.month) {
+        this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+      } else {
+        this.fileName = `${this.reportName}_allDistricts_${this.period}_${this.commonService.dateAndTime}`;
+      }
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.month_year['report'] = 'tarException';
-      this.myData = this.service.dist_wise_data(this.month_year).subscribe(res => {
+      this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.districtData = this.mylatlngData = res['distData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData;;
@@ -341,13 +369,15 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.levelWise = "Block";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Block_wise_report_${month.name.trim()}_${this.year}`
-
-      this.month_year['report'] = 'tarException';
+      if (this.month_year.month) {
+        this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+      } else {
+        this.fileName = `${this.reportName}_allBlocks_${this.period}_${this.commonService.dateAndTime}`;
+      }
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.block_wise_data(this.month_year).subscribe(res => {
+      this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['blockData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData;
@@ -394,13 +424,15 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.levelWise = "Cluster";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Cluster_wise_report_${month.name.trim()}_${this.year}`
-
-      this.month_year['report'] = 'tarException';
+      if (this.month_year.month) {
+        this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+      } else {
+        this.fileName = `${this.reportName}_allClusters_${this.period}_${this.commonService.dateAndTime}`;
+      }
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.cluster_wise_data(this.month_year).subscribe(res => {
+      this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['clusterData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData;
@@ -460,13 +492,17 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.levelWise = "school";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `School_wise_report_${month.name.trim()}_${this.year}`
+      if (this.month_year.month) {
+        this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+      } else {
+        this.fileName = `${this.reportName}_allSchools_${this.period}_${this.commonService.dateAndTime}`;
+      }
 
       this.month_year['report'] = 'tarException';
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.school_wise_data(this.month_year).subscribe(res => {
+      this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData;
@@ -664,7 +700,11 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.hierName = '';
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Block_per_district_report_${month.name.trim()}_${this.year}`;
+      if (this.month_year.month) {
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_district_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+      } else {
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_district_${data}_${this.period}_${this.commonService.dateAndTime}`;
+      }
       this.distName = { district_id: data, district_name: obj.name };
       this.hierName = obj.name;
       localStorage.setItem('dist', obj.name);
@@ -674,12 +714,11 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
       this.myBlock = null;
 
       this.month_year['id'] = data;
-      this.month_year['report'] = 'tarException';
 
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.blockPerDist(this.month_year).subscribe(res => {
+      this.myData = this.service.blockPerDist({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.blockData = this.mylatlngData = res['blockData'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -761,7 +800,11 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.blockHidden = false;
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Cluster_per_block_report_${month.name.trim()}_${this.year}`;
+      if (this.month_year.month) {
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_block_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+      } else {
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_block_${data}_${this.period}_${this.commonService.dateAndTime}`;
+      }
       var blockNames = [];
       this.blocksNames.forEach(item => {
         if (item.distId && item.distId === Number(localStorage.getItem('distId'))) {
@@ -788,8 +831,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.month_year['id'] = data;
-      this.month_year['report'] = 'tarException';
-      this.myData = this.service.clusterPerBlock(this.month_year).subscribe(res => {
+      this.myData = this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.clusterData = this.mylatlngData = res['clusterDetails'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -879,8 +921,11 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
     this.blockHidden = false;
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
-      this.fileName = `Schools_per_cluster_report_${month.name.trim()}_${this.year}`;
-
+      if (this.month_year.month) {
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_cluster_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+      } else {
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_cluster_${data}_${this.period}_${this.commonService.dateAndTime}`;
+      }
       let obj = this.clusterNames.find(o => o.id == data);
       var blockNames = [];
       this.blocksNames.forEach(item => {
@@ -931,8 +976,7 @@ export class TeacherAttendanceExceptionComponent implements OnInit {
       }
 
       this.month_year['id'] = data;
-      this.month_year['report'] = 'tarException';
-      this.myData = this.service.schoolsPerCluster(this.month_year).subscribe(res => {
+      this.myData = this.service.schoolsPerCluster({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolsDetails'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {

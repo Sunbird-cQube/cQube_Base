@@ -3,12 +3,12 @@
         <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Teacher Attendance Exception Report for: <span id="state" (click)="districtWise()"
+                    Teacher Attendance Exception Report for: <span id="state" (click)="onClickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Teacher Attendance Exception Report for: <span id="state" (click)="districtWise()"
+                    Teacher Attendance Exception Report for: <span id="state" (click)="onClickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span>
                     <span id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -17,7 +17,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Teacher Attendance Exception Report for: <span id="state" (click)="districtWise()"
+                    Teacher Attendance Exception Report for: <span id="state" (click)="onClickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Teacher Attendance Exception Report for: <span id="state" (click)="districtWise()"
+                    Teacher Attendance Exception Report for: <span id="state" (click)="onClickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span>
                     <span id="dist" (click)="clickedMarker($event,distName)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -52,7 +52,7 @@
                         (click)="downloadReport($event)"></em>
                     <em class="fa fa-home" id="home" title="Home"
                         style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
-                        alt="Home" (click)="districtWise()"></em>
+                        alt="Home" (click)="onClickHome()"></em>
                 </div>
             </div>
         </div>
@@ -71,15 +71,15 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <!-- <select id="period"
+            <select id="period"
                 style="padding: 5px 2px 5px 2px;float: left;margin: 2px 15px 0px 0px; width: 90px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="period" (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
                 <option *ngFor="let period of timeRange,  let i =index" style="width: 100px;" [(ngValue)]="period.key">
                     {{period.value}}
                 </option>
-            </select> -->
-            <div style="float: left; margin: 2px 15px 0px 0px;">
+            </select>
+            <div [hidden]="yearMonth" style="float: left; margin: 2px 15px 0px 0px;">
                 <select id="year"
                     style="padding: 5px 2px 5px 2px; color: white; border-radius: 4px; font-size: 11px; width: 100px; font-weight: bold; background-color: rgb(152, 160, 163)"
                     [(ngModel)]="year" name="year" (change)="getYear()">

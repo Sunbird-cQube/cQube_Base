@@ -28,6 +28,7 @@
     "file-saver": "^2.0.5",
     "jquery": "^3.5.1",
     "keycloak-js": "^10.0.2",
+    "moment": "^2.29.1",
     "ngx-bootstrap": "^6.2.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",

@@ -217,7 +217,7 @@ export class UdiseReportComponent implements OnInit {
       this.errMsg();
       this.indiceFilter = [];
       this.level = 'district';
-      this.fileName = `${this.reportName}_${this.indiceData}_all_districts_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_${this.indiceData}_allDistricts_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -308,7 +308,7 @@ export class UdiseReportComponent implements OnInit {
       this.districtId = undefined;
       this.blockId = undefined;
       this.level = 'block_wise';
-      this.fileName = `${this.reportName}_${this.indiceData}_all_blocks_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_${this.indiceData}_allBlocks_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -340,7 +340,7 @@ export class UdiseReportComponent implements OnInit {
           this.blockMarkers = [];
 
           this.blockMarkers = result;
-          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
+          var colors = this.commonService.getRelativeColors(this.blockMarkers, this.indiceData);
           this.schoolCount = 0;
           if (this.blockMarkers.length !== 0) {
             for (let i = 0; i < this.blockMarkers.length; i++) {
@@ -400,7 +400,7 @@ export class UdiseReportComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = "cluster_wise";
-      this.fileName = `${this.reportName}_${this.indiceData}_all_clusters_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_${this.indiceData}_allClusters_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -430,7 +430,7 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.clusterMarkers = [];
           this.clusterMarkers = result;
-          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
+          var colors = this.commonService.getRelativeColors(this.clusterMarkers, this.indiceData);
           this.schoolCount = 0;
           if (this.clusterMarkers.length !== 0) {
             for (let i = 0; i < this.clusterMarkers.length; i++) {
@@ -489,7 +489,7 @@ export class UdiseReportComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = 'school_wise';
-      this.fileName = `${this.reportName}_${this.indiceData}_all_schools_${this.commonService.dateAndTime}`;
+      this.fileName = `${this.reportName}_${this.indiceData}_allSchools_${this.commonService.dateAndTime}`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -519,7 +519,7 @@ export class UdiseReportComponent implements OnInit {
           let result = this.data
           this.schoolCount = 0;
           this.schoolMarkers = result;
-          var colors = this.commonService.getRelativeColors(this.markers, this.indiceData);
+          var colors = this.commonService.getRelativeColors(this.schoolMarkers, this.indiceData);
           this.schoolCount = 0;
           if (this.schoolMarkers.length !== 0) {
             for (let i = 0; i < this.schoolMarkers.length; i++) {

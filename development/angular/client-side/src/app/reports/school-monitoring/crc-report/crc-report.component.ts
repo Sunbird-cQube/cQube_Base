@@ -173,7 +173,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   getBlocks(distId, blockId?: any): void {
-    this.service.crcBlockWiseData(distId,{ timePeriod: this.period }).subscribe((result: any) => {
+    this.service.crcBlockWiseData(distId, { timePeriod: this.period }).subscribe((result: any) => {
       this.crcBlocksNames = result;
       this.reportData = this.crcBlocksNames = this.crcBlocksNames.visits;
 
@@ -193,7 +193,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   getClusters(distId, blockId, clusterId): void {
-    this.service.crcClusterWiseData(distId, blockId,{ timePeriod: this.period }).subscribe((result: any) => {
+    this.service.crcClusterWiseData(distId, blockId, { timePeriod: this.period }).subscribe((result: any) => {
       this.crcClusterNames = result.visits;
       this.reportData = this.crcClusterNames;
 
@@ -230,7 +230,7 @@ export class CrcReportComponent implements OnInit {
       this.myClusterData(this.clustName);
     }
   }
-  onClockHome(){
+  onClockHome() {
     this.period = 'overall';
     document.getElementById('home').style.display = 'none';
     this.districtWise();
@@ -244,7 +244,7 @@ export class CrcReportComponent implements OnInit {
     this.scatterChart.destroy();
     this.reportData = [];
     this.tableHead = "District Name";
-    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_allDistricts_${this.commonService.dateAndTime}`;
     this.blockHidden = true;
     this.clusterHidden = true;
     this.crcDistrictsNames = [];
@@ -343,7 +343,7 @@ export class CrcReportComponent implements OnInit {
 
   distWise() {
     this.reportData = [];
-    this.fileName = `${this.reportName}_all_districts_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_allDistricts_${this.commonService.dateAndTime}`;
     if (JSON.parse(localStorage.getItem('resData')) !== null) {
       this.chartData = [];
       this.result = JSON.parse(localStorage.getItem('resData'));
@@ -360,7 +360,7 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_all_blocks_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_allBlocks_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -384,7 +384,7 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_all_clusters_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_allClusters_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -408,7 +408,7 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName('dwnld');
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_all_schools_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_allSchools_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -435,7 +435,7 @@ export class CrcReportComponent implements OnInit {
     this.downloadType = '';
     this.blockHidden = false;
     this.clusterHidden = true;
-    this.fileName = `${this.reportName}_blocks_of_district_${data}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_blocks_of_district_${data}_${this.commonService.dateAndTime}`;
     this.myBlock = '';
     this.crcBlocksNames = [];
     this.visitedSchools = 0;
@@ -540,7 +540,7 @@ export class CrcReportComponent implements OnInit {
     this.downloadType = '';
     this.clusterHidden = false;
     this.blockHidden = false;
-    this.fileName = `${this.reportName}_clusters_of_block_${data}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_clusters_of_block_${data}_${this.commonService.dateAndTime}`;
     this.myCluster = '';
     this.crcClusterNames = [];
     this.visitedSchools = 0;
@@ -568,7 +568,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcClusterWiseData(localStorage.getItem('distId'), data,{ timePeriod: this.period }).subscribe((result: any) => {
+    this.myData = this.service.crcClusterWiseData(localStorage.getItem('distId'), data, { timePeriod: this.period }).subscribe((result: any) => {
       if (!fromParam) {
         $('#table').DataTable().destroy();
         $('#table').empty();
@@ -651,7 +651,7 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
-    this.fileName = `${this.reportName}_schools_of_cluster_${data}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_schools_of_cluster_${data}_${this.commonService.dateAndTime}`;
     this.crcSchoolNames = [];
     this.visitedSchools = 0;
     this.notVisitedSchools = 0;
@@ -679,7 +679,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcSchoolWiseData(distId, blockId, data,{ timePeriod: this.period }).subscribe(async (result: any) => {
+    this.myData = this.service.crcSchoolWiseData(distId, blockId, data, { timePeriod: this.period }).subscribe(async (result: any) => {
       if (!fromParam) {
         $('#table').DataTable().destroy();
         $('#table').empty();

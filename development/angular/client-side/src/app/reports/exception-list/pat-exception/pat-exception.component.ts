@@ -78,6 +78,8 @@ export class PATExceptionComponent implements OnInit {
   allSubjects: string[];
   subject = '';
 
+  reportName = 'periodic_assessment_test_exception';
+
   constructor(
     public http: HttpClient,
     public service: ExceptionReportService,
@@ -97,6 +99,7 @@ export class PATExceptionComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     document.getElementById('spinner').style.display = 'none';
+    this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
     this.districtWise();
   }
 
@@ -105,6 +108,7 @@ export class PATExceptionComponent implements OnInit {
   }
 
   onGradeSelect(data) {
+    this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject ? this.subject : ''}_all_${this.commonService.dateAndTime}`;
     this.grade = data;
     this.subject = '';
     this.levelWiseFilter();
@@ -138,6 +142,7 @@ export class PATExceptionComponent implements OnInit {
   }
 
   homeClick() {
+    this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
     this.grade = 'all';
     this.period = 'overall';
     this.subject = '';
@@ -199,8 +204,8 @@ export class PATExceptionComponent implements OnInit {
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
           globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-          var fileName = "District_wise_report";
-          this.genericFun(this.data, options, fileName);
+          this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allBlocks_${this.commonService.dateAndTime}`;
+          this.genericFun(this.data, options, this.fileName);
 
           // sort the districtname alphabetically
           this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
@@ -231,6 +236,8 @@ export class PATExceptionComponent implements OnInit {
       this.levelWise = "block";
       this.schoolCount = '';
 
+      this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allBlocks_${this.commonService.dateAndTime}`;
+
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
@@ -257,10 +264,14 @@ export class PATExceptionComponent implements OnInit {
         this.myData = this.service.patExceptionBlock({ grade: this.grade, timePeriod: this.period }).subscribe(res => {
           this.data = res
           let options = {
+            radius: 4,
+            fillOpacity: 1,
+            strokeWeight: 0.01,
+            weight: 1,
             mapZoom: this.commonService.zoomLevel,
             centerLat: this.lat,
             centerLng: this.lng,
-            level: "Block"
+            level: 'block'
           }
           if (this.data['data'].length > 0) {
             let result = this.data['data']
@@ -273,66 +284,14 @@ export class PATExceptionComponent implements OnInit {
             if (this.grade != 'all') {
               this.allSubjects = this.data['subjects'];
             }
-            var updatedMarkers = [];
-            var markersWithSubject = [];
-            this.markers.map(item => {
-              var keys = Object.keys(item);
-              var start = 7;
-              if (this.grade && this.grade != 'all') {
-                var obj1 = {}
-                if (this.subject != '') {
-                  if (item.subjects && item.subjects[0][`${this.subject}`] && Object.keys(item.subjects[0]).includes(this.subject)) {
-                    for (let i = 0; i < start; i++) {
-                      obj1[`${keys[i]}`] = item[`${keys[i]}`];
-                    }
-                    obj1['subject'] = this.subject;
-                    var keys2 = Object.keys(item.subjects[0][`${this.subject}`]);
-                    for (let i = 0; i < keys2.length; i++) {
-                      obj1[`${keys2[i]}`] = item.subjects[0][`${this.subject}`][`${keys2[i]}`];
-                    }
-                    markersWithSubject.push(obj1);
-                  } else if (!item.subjects) {
-                    markersWithSubject.push(item);
-                  }
-                }
-              }
-              var obj = {};
-              Object.keys(item).forEach(key => {
-                if (key !== 'subjects') {
-                  obj[key] = item[key];
-                }
-              });
-              updatedMarkers.push(obj);
-            })
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.genericFun(this.data, options, this.fileName);
 
-            if (this.grade != 'all' && this.subject != '') {
-              markersWithSubject = markersWithSubject.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
-              this.markers = markersWithSubject;
-            } else if (this.grade != 'all' && this.subject == '') {
-              updatedMarkers = updatedMarkers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
-              this.markers = updatedMarkers;
-            } else {
-              this.markers = this.markers.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
-            }
-            this.blockMarkers = this.markers;
-            if (this.blockMarkers.length !== 0) {
-              for (let i = 0; i < this.blockMarkers.length; i++) {
-                var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].block_latitude, this.blockMarkers[i].block_longitude, this.commonService.relativeColorGredient(this.blockMarkers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.1, 1, options.level);
-                this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "block_latitude", "block_longitude");
-
-                // to download the report
-                this.fileName = "Block_wise_report";
-              }
-
-              this.commonService.restrictZoom(globalMap);
-              globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-              globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
-
-              this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-
-              this.commonService.loaderAndErr(this.data);
-              this.changeDetection.markForCheck();
-            }
+            this.commonService.loaderAndErr(this.data);
+            this.changeDetection.markForCheck();
+            // }
           }
         }, err => {
           this.data = [];
@@ -373,6 +332,7 @@ export class PATExceptionComponent implements OnInit {
       // to show and hide the dropdowns
       this.blockHidden = true;
       this.clusterHidden = true;
+      this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allClusters_${this.commonService.dateAndTime}`;
 
       this.service.gradeMetaData(this.period).subscribe(res => {
         if (res['data']['cluster']) {
@@ -387,10 +347,14 @@ export class PATExceptionComponent implements OnInit {
         this.myData = this.service.patExceptionCluster({ grade: this.grade, timePeriod: this.period }).subscribe(res => {
           this.data = res
           let options = {
+            radius: 1,
+            fillOpacity: 1,
+            strokeWeight: 0.01,
+            weight: 1,
             mapZoom: this.commonService.zoomLevel,
             centerLat: this.lat,
             centerLng: this.lng,
-            level: "Cluster"
+            level: 'cluster'
           }
           if (this.data['data'].length > 0) {
             let result = this.data['data'];
@@ -406,35 +370,35 @@ export class PATExceptionComponent implements OnInit {
             }
             var updatedMarkers = [];
             var markersWithSubject = [];
-            this.markers.map(item => {
-              var keys = Object.keys(item);
+            for (let i = 0; i < this.markers.length; i++) {
+              var keys = Object.keys(this.markers[i]);
               var start = 9;
               if (this.grade && this.grade != 'all') {
                 var obj1 = {}
                 if (this.subject != '') {
-                  if (item.subjects && item.subjects[0][`${this.subject}`] && Object.keys(item.subjects[0]).includes(this.subject)) {
+                  if (this.markers[i].subjects && this.markers[i].subjects[0][`${this.subject}`] && Object.keys(this.markers[i].subjects[0]).includes(this.subject)) {
                     for (let i = 0; i < start; i++) {
-                      obj1[`${keys[i]}`] = item[`${keys[i]}`];
+                      obj1[`${keys[i]}`] = this.markers[i][`${keys[i]}`];
                     }
                     obj1['subject'] = this.subject;
-                    var keys2 = Object.keys(item.subjects[0][`${this.subject}`]);
+                    var keys2 = Object.keys(this.markers[i].subjects[0][`${this.subject}`]);
                     for (let i = 0; i < keys2.length; i++) {
-                      obj1[`${keys2[i]}`] = item.subjects[0][`${this.subject}`][`${keys2[i]}`];
+                      obj1[`${keys2[i]}`] = this.markers[i].subjects[0][`${this.subject}`][`${keys2[i]}`];
                     }
                     markersWithSubject.push(obj1);
-                  } else if (!item.subjects) {
-                    markersWithSubject.push(item);
+                  } else if (!this.markers[i].subjects) {
+                    markersWithSubject.push(this.markers[i]);
                   }
                 }
               }
               var obj = {};
-              Object.keys(item).forEach(key => {
+              Object.keys(this.markers[i]).forEach(key => {
                 if (key !== 'subjects') {
-                  obj[key] = item[key];
+                  obj[key] = this.markers[i][key];
                 }
               });
               updatedMarkers.push(obj);
-            })
+            }
 
             if (this.grade != 'all' && this.subject != '') {
               markersWithSubject = markersWithSubject.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
@@ -450,8 +414,6 @@ export class PATExceptionComponent implements OnInit {
               for (let i = 0; i < this.clusterMarkers.length; i++) {
                 var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].cluster_latitude, this.clusterMarkers[i].cluster_longitude, this.commonService.relativeColorGredient(this.clusterMarkers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 1, 0.01, 0.5, options.level);
                 this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "cluster_latitude", "cluster_longitude");
-                // to download the report
-                this.fileName = "Cluster_wise_report";
               }
 
               this.commonService.restrictZoom(globalMap);
@@ -488,6 +450,7 @@ export class PATExceptionComponent implements OnInit {
       this.commonService.errMsg();
       this.levelWise = "school";
       this.schoolCount = '';
+      this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allSchools_${this.commonService.dateAndTime}`;
 
       this.reportData = [];
       // these are for showing the hierarchy names based on selection
@@ -530,35 +493,35 @@ export class PATExceptionComponent implements OnInit {
             }
             var updatedMarkers = [];
             var markersWithSubject = [];
-            this.markers.map(item => {
-              var keys = Object.keys(item);
+            for (let i = 0; i < this.markers.length; i++) {
+              var keys = Object.keys(this.markers[i]);
               var start = 11;
               if (this.grade && this.grade != 'all') {
                 var obj1 = {}
                 if (this.subject != '') {
-                  if (item.subjects && item.subjects[0][`${this.subject}`] && Object.keys(item.subjects[0]).includes(this.subject)) {
+                  if (this.markers[i].subjects && this.markers[i].subjects[0][`${this.subject}`] && Object.keys(this.markers[i].subjects[0]).includes(this.subject)) {
                     for (let i = 0; i < start; i++) {
-                      obj1[`${keys[i]}`] = item[`${keys[i]}`];
+                      obj1[`${keys[i]}`] = this.markers[i][`${keys[i]}`];
                     }
                     obj1['subject'] = this.subject;
-                    var keys2 = Object.keys(item.subjects[0][`${this.subject}`]);
+                    var keys2 = Object.keys(this.markers[i].subjects[0][`${this.subject}`]);
                     for (let i = 0; i < keys2.length; i++) {
-                      obj1[`${keys2[i]}`] = item.subjects[0][`${this.subject}`][`${keys2[i]}`];
+                      obj1[`${keys2[i]}`] = this.markers[i].subjects[0][`${this.subject}`][`${keys2[i]}`];
                     }
                     markersWithSubject.push(obj1);
-                  } else if (!item.subjects) {
-                    markersWithSubject.push(item);
+                  } else if (!this.markers[i].subjects) {
+                    markersWithSubject.push(this.markers[i]);
                   }
                 }
               }
               var obj = {};
-              Object.keys(item).forEach(key => {
+              Object.keys(this.markers[i]).forEach(key => {
                 if (key !== 'subjects') {
-                  obj[key] = item[key];
+                  obj[key] = this.markers[i][key];
                 }
               });
               updatedMarkers.push(obj);
-            })
+            }
 
             if (this.grade != 'all' && this.subject != '') {
               markersWithSubject = markersWithSubject.sort((a, b) => (parseInt(a.percentage_schools_with_missing_data) < parseInt(b.percentage_schools_with_missing_data)) ? 1 : -1)
@@ -574,8 +537,6 @@ export class PATExceptionComponent implements OnInit {
               for (let i = 0; i < this.schoolMarkers.length; i++) {
                 var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].school_latitude, this.schoolMarkers[i].school_longitude, 'red', 0, 0, 0.3, options.level);
                 this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "school_latitude", "school_longitude");
-                // to download the report
-                this.fileName = "School_wise_report";
               }
 
               globalMap.doubleClickZoom.enable();
@@ -657,8 +618,8 @@ export class PATExceptionComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      var fileName = "Block_per_dist_report";
-      this.genericFun(this.data, options, fileName);
+      this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_${options.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
+      this.genericFun(this.data, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }, err => {
@@ -731,8 +692,8 @@ export class PATExceptionComponent implements OnInit {
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
       globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      var fileName = "Cluster_per_block_report";
-      this.genericFun(this.data, options, fileName);
+      this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_${options.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
+      this.genericFun(this.data, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }, err => {
@@ -820,8 +781,8 @@ export class PATExceptionComponent implements OnInit {
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
         globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-        var fileName = "School_per_cluster_report";
-        this.genericFun(this.data, options, fileName);
+        this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_${options.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
+        this.genericFun(this.data, options, this.fileName);
       }, err => {
         this.data = [];
         this.commonService.loaderAndErr(this.data);

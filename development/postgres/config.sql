@@ -4110,7 +4110,7 @@ completion_date,progress,certificate_status,total_score,nested_collection_progre
 from diksha_tpd_content_temp as tpd_temp left join (select dtm.uuid,CASE WHEN dtm.school_id not in (select shd.school_id from school_hierarchy_details shd) 
 THEN 9999 ELSE dtm.school_id END from diksha_tpd_mapping dtm) as cr_mapping 
 on tpd_temp.uuid=cr_mapping.uuid)
-on conflict(collection_id,uuid,enrolment_date,batch_id) do update
+on conflict(collection_id,uuid,batch_id) do update
 set collection_id=excluded.collection_id,collection_name=excluded.collection_name,batch_id=excluded.batch_id,
 batch_name=excluded.batch_name,uuid=excluded.uuid,state=excluded.state,org_name=excluded.org_name,school_id=excluded.school_id,
 enrolment_date=excluded.enrolment_date,completion_date=excluded.completion_date,progress=excluded.progress,

@@ -76,6 +76,7 @@ export class StudengtAttendanceComponent implements OnInit {
   params: any;
   yearMonth = true;
   selected = "absolute";
+  reportName = 'student_attendance';
 
   getColor(data) {
     this.selected = data;
@@ -435,9 +436,9 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `District_wise_report_${month.name.trim()}_${this.year}`;
+        this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
       } else {
-        this.fileName = `District_wise_report_${this.period}`;
+        this.fileName = `${this.reportName}_allDistricts_${this.period}_${this.commonService.dateAndTime}`;
       }
       if (this.myData) {
         this.myData.unsubscribe();
@@ -492,9 +493,9 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `Block_wise_report_${month.name.trim()}_${this.year}`
+        this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
       } else {
-        this.fileName = `Block_wise_report_${this.period}`
+        this.fileName = `${this.reportName}_allBlocks_${this.period}_${this.commonService.dateAndTime}`;
       }
 
       if (this.myData) {
@@ -550,9 +551,9 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `Cluster_wise_report_${month.name.trim()}_${this.year}`
+        this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
       } else {
-        this.fileName = `Cluster_wise_report_${this.period}`
+        this.fileName = `${this.reportName}_allClusters_${this.period}_${this.commonService.dateAndTime}`;
       }
 
       if (this.myData) {
@@ -620,9 +621,9 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `School_wise_report_${month.name.trim()}_${this.year}`
+        this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
       } else {
-        this.fileName = `School_wise_report_${this.period}`
+        this.fileName = `${this.reportName}_allSchools_${this.period}_${this.commonService.dateAndTime}`;
       }
 
       if (this.myData) {
@@ -830,9 +831,9 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `Block_per_district_report_${month.name}_${this.year}`;
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_district_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
       } else {
-        this.fileName = `Block_per_district_report_${this.period}`;
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_district_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
       this.distName = { district_id: data, district_name: obj.name };
       this.hierName = obj.name;
@@ -933,9 +934,9 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `Cluster_per_block_report_${month.name.trim()}_${this.year}`;
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_block_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
       } else {
-        this.fileName = `Cluster_per_block_report_${this.period}`;
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_block_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
       var blockNames = [];
       this.blocksNames.forEach(item => {
@@ -1056,9 +1057,9 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `Schools_per_cluster_report_${month.name.trim()}_${this.year}`;
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_cluster_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
       } else {
-        this.fileName = `Schools_per_cluster_report_${this.period}`;
+        this.fileName = `${this.reportName}_${this.levelWise}s_of_cluster_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
 
       let obj = this.clusterNames.find(o => o.id == data);
