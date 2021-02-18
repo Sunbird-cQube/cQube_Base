@@ -4138,7 +4138,7 @@ count(distinct(uuid)) as total_enrolled,'Last_Day' as time_range,
 tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
-where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date = (select now()::DATE)
+where collection_name is not null and enrolment_date = (select now()::DATE)
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
 union
 select collection_id,collection_name,
@@ -4146,7 +4146,7 @@ count(distinct(uuid)) as total_enrolled,'Last_7_Day' as time_range,
 tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
-where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '7 DAY')::Date) and 
+where collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '7 DAY')::Date) and 
 (select (now()::Date))
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
 union
@@ -4155,7 +4155,7 @@ count(distinct(uuid)) as total_enrolled,'Last_30_Day' as time_range,
 tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
-where org_name='DIKSHA Custodian Org' and collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '30 DAY')::Date) and 
+where collection_name is not null and enrolment_date between (select ((now()::Date)-INTERVAL '30 DAY')::Date) and 
 (select (now()::Date))
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id
 union
@@ -4164,7 +4164,7 @@ count(distinct(uuid)) as total_enrolled,'All' as time_range,
 tpd.school_id,cluster_id,block_id,district_id from diksha_tpd_trans as tpd inner join (
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details
 where school_name is not null and district_name is not null and cluster_name is not null and block_name is not null) as scl_hry on tpd.school_id=scl_hry.school_id
-where org_name='DIKSHA Custodian Org' and collection_name is not null 
+where collection_name is not null 
 group by collection_id,collection_name,tpd.school_id,cluster_id,block_id,district_id) as a
 left join school_teachers_count as cnt on a.school_id=cnt.school_id;
 
@@ -7112,5 +7112,60 @@ drop view if exists crc_district_report_last_30_days;
 select crc_time_selection_district('last_1_day');
 select crc_time_selection_district('last_7_days');
 select crc_time_selection_district('last_30_days');
+
+
+create or replace FUNCTION teacher_attendance_exception_time_selection(period text)
+RETURNS text AS
+$$
+DECLARE
+teacher_attendance_no_schools_time_selection text;
+number_of_days text;
+BEGIN
+
+
+IF period='last_1_day' THEN
+number_of_days:='1day';
+ELSE IF period='last_7_days' THEN
+number_of_days:='7day';
+ELSE IF period='last_30_days' THEN
+number_of_days:='30day';
+ELSE IF period='overall' THEN
+number_of_days:='overall';
+ELSE
+return 0;
+END IF;
+END IF;
+END IF;
+END IF;
+
+teacher_attendance_no_schools_time_selection := 'create or replace view teacher_attendance_exception_'||period||' as 
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+ b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ 	inner join school_geo_master as b on a.school_id=b.school_id
+where a.school_id!=9999 AND a.school_id not in 
+(select distinct e.x_axis as school_id from (SELECT school_id AS x_axis 
+FROM teacher_attendance_agg_'||period||'  WHERE block_latitude IS NOT NULL AND block_latitude <> 0 
+AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL 
+AND school_name IS NOT NULL and cluster_name is not null
+GROUP BY school_id,school_name,school_latitude,school_longitude,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as e)
+and cluster_name is not null';
+Execute teacher_attendance_no_schools_time_selection;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+drop view if exists teacher_attendance_exception_last_1_day cascade;
+drop view if exists teacher_attendance_exception_last_30_days cascade;
+drop view if exists teacher_attendance_exception_last_7_days cascade;
+drop view if exists teacher_attendance_exception_overall cascade;
+
+
+select teacher_attendance_exception_time_selection('last_1_day');
+select teacher_attendance_exception_time_selection('last_7_days');
+select teacher_attendance_exception_time_selection('last_30_days');
+select teacher_attendance_exception_time_selection('overall');
+
 
 

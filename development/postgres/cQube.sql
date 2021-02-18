@@ -1363,11 +1363,6 @@ updated_on  TIMESTAMP without time zone
 
 create index if not exists crc_inspection_trans_id on crc_inspection_trans(school_id,crc_id);
 
-
-alter table crc_inspection_trans add column  IF NOT EXISTS visit_date date;
-alter table crc_inspection_dup add column  IF NOT EXISTS visit_date date;
-
-
 /* crc_location_trans */
 
 create table if not exists crc_location_trans
@@ -5570,4 +5565,6 @@ create table if not exists teacher_attendance_exception_agg
 primary key(school_id,month,year));
 
 
+alter table crc_inspection_trans add column  IF NOT EXISTS visit_date date;
+alter table crc_inspection_dup add column  IF NOT EXISTS visit_date date;
 
