@@ -24,12 +24,10 @@ router.post('/schoolWise/:distId/:blockId/:clusterId',  async (req, res) => {
         let fileName = `infra/infra_school_map.json`;
         var schoolData = await s3File.readS3File(fileName);
 
-        let distId = req.params.distId;
-        let blockId = req.params.blockId;
         let clusterId = req.params.clusterId;
 
         let filterData = schoolData.data.filter(obj => {
-            return (obj.details.district_id == distId && obj.details.block_id == blockId && parseInt(obj.details.cluster_id) == clusterId)
+            return (parseInt(obj.details.cluster_id) == clusterId)
         })
 
         let mydata = filterData;
