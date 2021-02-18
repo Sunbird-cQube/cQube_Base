@@ -133,13 +133,13 @@ export class CrcReportComponent implements OnInit {
         this.myDistrict = data.districtId;
         this.myBlock = data.id;
         this.getDistricts(params.level);
-        this.getBlocks(data.districtId, data.id);
+        this.getBlocks(params.level, data.districtId, data.id);
       } else if (params.level === 'cluster') {
         this.myDistrict = data.districtId;
         this.myBlock = data.blockId;
         this.myCluster = data.id;
         this.getDistricts(params.level);
-        this.getBlocks(data.districtId);
+        this.getBlocks(params.level, data.districtId, data.blockId);
         this.getClusters(data.districtId, data.blockId, data.id);
       }
     } else {
@@ -172,13 +172,12 @@ export class CrcReportComponent implements OnInit {
     });
   }
 
-  getBlocks(distId, blockId?: any): void {
+  getBlocks(level, distId, blockId?: any): void {
     this.service.crcBlockWiseData(distId, { timePeriod: this.period }).subscribe((result: any) => {
       this.crcBlocksNames = result;
       this.reportData = this.crcBlocksNames = this.crcBlocksNames.visits;
-
       for (var i = 0; i < this.crcBlocksNames.length; i++) {
-        if (blockId == this.crcBlocksNames[i].districtId) {
+        if (blockId == this.crcBlocksNames[i].blockId) {
           localStorage.setItem('block', this.crcBlocksNames[i].blockName);
           localStorage.setItem('blockId', blockId);
         }
@@ -187,7 +186,7 @@ export class CrcReportComponent implements OnInit {
       }
       this.crcBlocksNames.sort((a, b) => (a.blockName > b.blockName) ? 1 : ((b.blockName > a.blockName) ? -1 : 0));
 
-      if (blockId)
+      if (level === 'block')
         this.myBlockData(blockId, true);
     });
   }
@@ -200,6 +199,9 @@ export class CrcReportComponent implements OnInit {
       localStorage.setItem('clusterId', clusterId);
 
       for (var i = 0; i < this.crcClusterNames.length; i++) {
+        if (clusterId == this.crcClusterNames[i].clusterId) {
+          localStorage.setItem('cluster', this.crcClusterNames[i].clusterName);
+        }
         this.clusterNames.push({ id: this.crcClusterNames[i].clusterId, name: this.crcClusterNames[i].clusterName });
       }
       this.crcClusterNames.sort((a, b) => (a.clusterName > b.clusterName) ? 1 : ((b.clusterName > a.clusterName) ? -1 : 0));
@@ -643,7 +645,6 @@ export class CrcReportComponent implements OnInit {
   }
 
   myClusterData(data: any, fromParam = false) {
-
     this.scatterChart.destroy();
     this.modes = [];
     this.downloadType = '';
