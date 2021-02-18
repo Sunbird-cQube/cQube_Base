@@ -27950,7 +27950,7 @@ where ff_uuid= '${files_uuid}';
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -28272,7 +28272,7 @@ VALUES
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -28372,8 +28372,8 @@ VALUES
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
-<yieldDuration>60 sec</yieldDuration>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>Notify</name>
@@ -28440,7 +28440,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -29012,7 +29012,7 @@ file:${filename} is added to log summary table</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -29098,7 +29098,7 @@ file:${filename} is added to log summary table</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -29286,7 +29286,7 @@ file:${filename} is added to log summary table</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -29359,7 +29359,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -29427,7 +29427,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -29495,7 +29495,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -29703,7 +29703,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -29840,7 +29840,7 @@ file:${filename} with total,blank count are added to log summary table</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -29939,9 +29939,9 @@ file:${filename} with total,blank count are added to log summary table</value>
         <key>attribute-cache-regex</key>
     </entry>
 </properties>
-<runDurationMillis>1000</runDurationMillis>
+<runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -30453,7 +30453,7 @@ VALUES
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -30579,7 +30579,7 @@ VALUES
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -30963,7 +30963,7 @@ VALUES
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -31450,7 +31450,7 @@ VALUES
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -31518,7 +31518,7 @@ VALUES
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -31586,7 +31586,7 @@ VALUES
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -31672,7 +31672,7 @@ VALUES
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -32324,7 +32324,7 @@ VALUES
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -32771,7 +32771,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -32974,7 +32974,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -33508,7 +33508,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -33680,7 +33680,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
@@ -33702,5 +33702,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/17/2021 21:00:11 IST</timestamp>
+    <timestamp>02/18/2021 11:50:12 IST</timestamp>
 </template>
