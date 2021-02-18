@@ -27,6 +27,7 @@ const Config = {
 const accessKeyId = process.env.ACCESS_KEY_ID;
 const secretAccessKey = process.env.SECRET_ACCESS_KEY;
 const bucketName = process.env.OUTPUT_BUCKET;
+const rawBucketName = process.env.RAW_BUCKET;
 
 var s3 = new aws.S3({ 'accessKeyId': accessKeyId, 'secretAccessKey': secretAccessKey });
 var s3_download = new aws.S3({ 'accessKeyId': accessKeyId, 'secretAccessKey': secretAccessKey, signatureVersion: 'v4', region: process.env.AWS_REGION });
@@ -35,9 +36,15 @@ var getParams = {
     Key: '', // replace file location with your s3 file location
 };
 
+var getParams1 = {
+    Bucket: rawBucketName, //replace example bucket with your s3 bucket name
+    Key: '', // replace file location with your s3 file location
+};
+
 module.exports = {
     Config,
     s3,
     s3_download,
-    getParams
+    getParams,
+    getParams1
 };

@@ -18,7 +18,12 @@ router.post('/distWise', auth.authController, async function (req, res) {
                 fileName = `exception_list/student_attendance_completion/district_${year}_${month}.json`;
             }
         } else {
-            fileName = `exception_list/teacher_attendance_completion/district_${year}_${month}.json`;
+            if (timePeriod != null) {
+                fileName = `exception_list/teacher_attendance_completion/${timePeriod}/district.json`;
+            } else {
+                fileName = `exception_list/teacher_attendance_completion/district_${year}_${month}.json`;
+            }
+
         }
         var jsonData = await s3File.readS3File(fileName);
         var districtAttendanceData = jsonData.data;

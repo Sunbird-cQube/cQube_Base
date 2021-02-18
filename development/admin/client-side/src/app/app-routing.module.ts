@@ -10,6 +10,7 @@ import { ListUsersComponent } from './components/users/list-users/list-users.com
 import { S3FilesDownloadComponent } from './components/s3-files-download/s3-files-download.component';
 import { SummaryStatistictsComponent } from './components/summary-statisticts/summary-statisticts.component';
 import { NifiShedularComponent } from './components/nifi-shedular/nifi-shedular.component';
+import { DataReplayComponent } from './components/data-replay/data-replay.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,9 @@ const routes: Routes = [
       },
       {
         path: 'nifi-shedular', component: NifiShedularComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'data-replay', component: DataReplayComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
