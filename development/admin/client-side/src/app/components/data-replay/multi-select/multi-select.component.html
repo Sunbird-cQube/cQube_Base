@@ -3,7 +3,7 @@
         <button class="btn btn-secondary" (click)="showDropDown=!showDropDown"
             style="font-size: 12px;padding: 8px; cursor:initial;" [ngStyle]="{width: width1}">
             <span *ngIf="checkedList.length<=0">{{selection}}</span>
-            <span *ngIf="checkedList.length>0">{{checkedList.length}}
+            <span *ngIf="checkedList.length>0">{{checkedList.length }}
                 {{text}} Selected</span>
             <em class="fa fa-angle-down" style="margin-top:2px; font-weight: bold; font-size: 15px;"></em>
         </button>
