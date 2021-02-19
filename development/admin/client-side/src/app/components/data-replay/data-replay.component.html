@@ -34,6 +34,9 @@
                                     style="float: left; margin-left: 30px;margin-top: 1px; width: 120px;"
                                     [list]="months1" [text]="'Months'" (shareCheckedList)="shareCheckedList1($event)">
                                 </app-multi-select>
+                                <!-- <br> <br>
+                                <span *ngIf="selectedStdYear && selectedMonths1.length == 0"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{monthErr}}</span> -->
                             </div>
                         </td>
                     </tr>
@@ -54,13 +57,34 @@
                                     style="float: left; margin-left: 30px;margin-top: 1px;" [list]="months2"
                                     [text]="'Months'" (shareCheckedList)="shareCheckedList2($event)">
                                 </app-multi-select>
+                                <!-- <br> <br>
+                                <span *ngIf="selectedTchrYear && selectedMonths2.length == 0"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{monthErr}}</span> -->
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>CRC</td>
                         <td>
-                            <div style="margin: 0px auto; width: 500px;">
+                            <div style="margin: 0px auto; width: 350px;">
+                                <select class="time" required id="tchryear"
+                                    [ngStyle]="{float: months2.length > 0 ? 'left' : ''}"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectTchrYear($event.target.value)">
+                                    <option *ngFor="let year of years2; let i = index;" [value]="year.value"
+                                        [selected]="i==0">
+                                        {{year.value}}</option>
+                                </select>
+                                <app-multi-select *ngIf="months2.length > 0" #multiSelect [selection]="'Select Months'"
+                                    [width1]="'140px'" [width2]="'130px'"
+                                    style="float: left; margin-left: 30px;margin-top: 1px;" [list]="months2"
+                                    [text]="'Months'" (shareCheckedList)="shareCheckedList2($event)">
+                                </app-multi-select>
+                                <!-- <br> <br>
+                                <span *ngIf="selectedTchrYear && selectedMonths2.length == 0"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{monthErr}}</span> -->
+                            </div>
+                            <!-- <div style="margin: 0px auto; width: 500px;">
                                 <div style="float: left;">
                                     <span style="float: left;margin: 8px 5px 0px 0px;">From Date:</span> <input
                                         type="text" (bsValueChange)="onSelectFromDate()"
@@ -77,7 +101,7 @@
                                         placeholder="Select to date" class="form-control" #dp="bsDatepicker"
                                         bsDatepicker [(ngModel)]="toDate" [bsConfig]="{dateInputFormat: 'DD-MM-YYYY'}">
                                 </div>
-                            </div>
+                            </div> -->
                         </td>
                     </tr>
                     <tr>
@@ -182,4 +206,7 @@
             </div>
         </div>
     </div>
+</div>
+<div id="spinner" style="display: block;">
+    <div id="loader" class="loading">Loading&#8230;</div>
 </div>

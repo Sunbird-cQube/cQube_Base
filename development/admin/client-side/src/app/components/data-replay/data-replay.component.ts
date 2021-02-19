@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { DataReplayService } from 'src/app/services/data-replay.service';
 import { Router } from '@angular/router';
 import { MultiSelectComponent } from './multi-select/multi-select.component';
@@ -29,13 +29,15 @@ export class DataReplayComponent implements OnInit {
   selectedBatchIds;
   options = [{ id: '', value: "Select" }, { id: 'No', value: 'No' }, { id: 'Yes', value: 'Yes' }];
 
-  @ViewChild(MultiSelectComponent) multiSelect: MultiSelectComponent;
+  monthErr ='';
+  @ViewChildren(MultiSelectComponent) multiSelect: QueryList<MultiSelectComponent>;
 
   constructor(private service: DataReplayService, public router: Router) { }
   getMonthYears1: any;
   getMonthYears2: any;
   public currTime;
   ngOnInit(): void {
+    document.getElementById('spinner').style.display = 'block';
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
     this.service.getMonthYear({ report: 'sar' }).subscribe(res => {
@@ -53,6 +55,7 @@ export class DataReplayComponent implements OnInit {
       years.forEach(year => {
         this.years2.push({ value: year, selected: year == "Select Year" ? true : false })
       })
+      document.getElementById('spinner').style.display = 'none';
     })
     this.service.getSemesters().subscribe(res => {
       this.semesters = res;
@@ -209,16 +212,26 @@ export class DataReplayComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formObj);
+    document.getElementById('spinner').style.display = 'block';
     if (Object.keys(this.formObj).length > 0) {
-      var date = new Date();
-      this.currTime = `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + (date.getDate())).slice(-2)}${("0" + (date.getHours())).slice(-2)}${("0" + (date.getMinutes())).slice(-2)}${("0" + (date.getSeconds())).slice(-2)}`;
-      this.service.saveDataToS3({ formData: this.formObj, timeStamp: this.currTime }).subscribe(res => {
-        this.onCancel();
-        alert(res['msg']);
-      })
+      if (this.fromDate && !this.toDate || this.summaryFromDate && !this.summaryToDate) {
+        alert("Please select toDate also along with fromDate");
+        document.getElementById('spinner').style.display = 'none';
+      } else if (this.selectedStdYear && this.selectedMonths1.length == 0 || this.selectedTchrYear && this.selectedMonths2.length == 0) {
+        alert("Please select months also along with year");
+        document.getElementById('spinner').style.display = 'none';
+      } else {
+        var date = new Date();
+        this.currTime = `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + (date.getDate())).slice(-2)}${("0" + (date.getHours())).slice(-2)}${("0" + (date.getMinutes())).slice(-2)}${("0" + (date.getSeconds())).slice(-2)}`;
+        this.service.saveDataToS3({ formData: this.formObj, timeStamp: this.currTime }).subscribe(res => {
+          this.onCancel();
+          document.getElementById('spinner').style.display = 'none';
+          alert(res['msg']);
+        })
+      }
     } else {
       alert("Please select some options");
+      document.getElementById('spinner').style.display = 'none';
     }
   }
   onCancel() {
@@ -248,7 +261,7 @@ export class DataReplayComponent implements OnInit {
       return batch;
     });
     if (this.multiSelect)
-      this.multiSelect.checkedList = [];
+      this.multiSelect.forEach((child) => { child.resetSelected() })
 
     document.getElementById('udise')['value'] = "";
     document.getElementById('infrastructure')['value'] = "";
