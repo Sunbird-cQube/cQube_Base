@@ -7,8 +7,9 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
     try {
         var blockId = req.body.blockId;
         var clusterId = req.body.id;
+        var timePeriod = req.body.timePeriod;
         logger.info('---healthCard cluster wise api ---');
-        let fileName = `healthCard/cluster/${blockId}.json`;
+        let fileName = `healthCard/cluster/${timePeriod}/${blockId}.json`;
         var clusterData = await s3File.readS3File(fileName);
         clusterData = clusterData.filter(a => {
             if (a.cluster_id == clusterId) {

@@ -29,14 +29,13 @@
                                         [selected]="i==0">
                                         {{year.value}}</option>
                                 </select>
-                                <app-multi-select *ngIf="months1.length > 0" #multiSelect [selection]="'Select Months'"
+                                <app-multi-select *ngIf="months1.length > 0" #multiSelect1 [selection]="'Select Months'"
                                     [width1]="'140px'" [width2]="'130px'"
                                     style="float: left; margin-left: 30px;margin-top: 1px; width: 120px;"
                                     [list]="months1" [text]="'Months'" (shareCheckedList)="shareCheckedList1($event)">
                                 </app-multi-select>
-                                <!-- <br> <br>
-                                <span *ngIf="selectedStdYear && selectedMonths1.length == 0"
-                                    style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{monthErr}}</span> -->
+                                <span *ngIf="selectedStdYear !=  'Select Year' && stdMonthErr != ''"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{stdMonthErr}}</span>
                             </div>
                         </td>
                     </tr>
@@ -52,14 +51,13 @@
                                         [selected]="i==0">
                                         {{year.value}}</option>
                                 </select>
-                                <app-multi-select *ngIf="months2.length > 0" #multiSelect [selection]="'Select Months'"
+                                <app-multi-select *ngIf="months2.length > 0" #multiSelect2 [selection]="'Select Months'"
                                     [width1]="'140px'" [width2]="'130px'"
                                     style="float: left; margin-left: 30px;margin-top: 1px;" [list]="months2"
                                     [text]="'Months'" (shareCheckedList)="shareCheckedList2($event)">
                                 </app-multi-select>
-                                <!-- <br> <br>
-                                <span *ngIf="selectedTchrYear && selectedMonths2.length == 0"
-                                    style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{monthErr}}</span> -->
+                                <span *ngIf="selectedTchrYear != 'Select Year' && tchrMonthErr != ''"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{tchrMonthErr}}</span>
                             </div>
                         </td>
                     </tr>
@@ -67,22 +65,24 @@
                         <td>CRC</td>
                         <td>
                             <div style="margin: 0px auto; width: 350px;">
-                                <select class="time" required id="tchryear"
-                                    [ngStyle]="{float: months2.length > 0 ? 'left' : ''}"
+                                <select class="time" required id="crcyear"
+                                    [ngStyle]="{float: months3.length > 0 ? 'left' : ''}"
                                     style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
-                                    (change)="onSelectTchrYear($event.target.value)">
-                                    <option *ngFor="let year of years2; let i = index;" [value]="year.value"
+                                    (change)="onSelectCRCYear($event.target.value)">
+                                    <option *ngFor="let year of years3; let i = index;" [value]="year.value"
                                         [selected]="i==0">
                                         {{year.value}}</option>
                                 </select>
-                                <app-multi-select *ngIf="months2.length > 0" #multiSelect [selection]="'Select Months'"
-                                    [width1]="'140px'" [width2]="'130px'"
-                                    style="float: left; margin-left: 30px;margin-top: 1px;" [list]="months2"
-                                    [text]="'Months'" (shareCheckedList)="shareCheckedList2($event)">
+                                <app-multi-select *ngIf="months3.length > 0" #multiSelect3 [selection]="'Select Months'"
+                                    [width1]="'140px'" [width2]="'130px'" id="crcMonths"
+                                    style="float: left; margin-left: 30px;margin-top: 1px;" [list]="months3"
+                                    [text]="'Months'" (shareCheckedList)="shareCheckedList5($event)">
                                 </app-multi-select>
-                                <!-- <br> <br>
-                                <span *ngIf="selectedTchrYear && selectedMonths2.length == 0"
-                                    style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{monthErr}}</span> -->
+                                <div *ngIf="selectedCRCYear != 'Select Year' && crcMonthErr != ''">
+                                    <span
+                                        style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{crcMonthErr}}</span>
+                                </div>
+
                             </div>
                             <!-- <div style="margin: 0px auto; width: 500px;">
                                 <div style="float: left;">
@@ -125,6 +125,8 @@
                                         bsDatepicker [(ngModel)]="summaryToDate"
                                         [bsConfig]="{dateInputFormat: 'DD-MM-YYYY'}">
                                 </div>
+                                <span *ngIf="toDateErr != ''"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 300px;">{{toDateErr}}</span>
                             </div>
                         </td>
                     </tr>

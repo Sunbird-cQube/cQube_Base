@@ -128,6 +128,16 @@
             <div style="height: 120px auto;margin-top: 5px; border-radius: 20px;">
                 <div class="row">
                     <div class="col-lg-12">
+                        <div style="float: left;">
+                            <select id="period"
+                                style="padding: 5px 2px 5px 2px;margin: 2px 15px 0px 0px;  color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                                [(ngModel)]="period" (change)="onPeriodSelect()">
+                                <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
+                                <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
+                                    {{period.value}}
+                                </option>
+                            </select>
+                        </div>
                         <div style="float: right;">
                             <em aria-disabled="true" class="fa fa-cloud-download" aria-hidden="true" id="download"
                                 title="Download Report"
@@ -137,14 +147,14 @@
                         <div style="float: right;">
                             <em class="fa fa-home" aria-hidden="true" id="home" title="Home"
                                 style="cursor: pointer;font-size: 30px; float: right; margin-right: 10px;  color: #3100cc;"
-                                alt="Home" (click)="stateData()"></em>
+                                alt="Home" (click)="onHomeSelect()"></em>
                         </div>
                     </div>
-                    <div class="col-lg-12" *ngIf="exist">
+                    <!-- <div class="col-lg-12" *ngIf="exist">
                         <div>
                             <div *ngIf="!showAll" style="height: 30px;"></div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row" style="padding-top: 15px !important;">
                     <div class="col-lg-4 col-md-3 col-sm-12">
@@ -292,16 +302,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="healthCardData['student_attendance']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="attdLink"><a href="javascript:void(0)"
-                                        (click)="goToReport('/attendance/student-attendance')">Click
-                                        to Access
-                                        Report</a></p>
-                            </div>
-                        </div>
                         <div *ngIf="!healthCardData['student_attendance']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['student_attendance']">
+                        <p *ngIf="showLink" class="link" id="attdLink"><a href="javascript:void(0)"
+                                (click)="goToReport('/attendance/student-attendance')">Click
+                                to Access
+                                Report</a></p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="semPer" style="margin-bottom:10px !important">
@@ -449,18 +457,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="healthCardData['student_semester']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="semLink">
-                                    <a href="javascript:void(0)"
-                                        (click)="goToReport('/student-performance/semester-report')">Click
-                                        to Access
-                                        Report</a>
-                                </p>
-                            </div>
-                        </div>
                         <div *ngIf="!healthCardData['student_semester']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['student_semester']">
+                        <p *ngIf="showLink" class="link" id="semLink">
+                            <a href="javascript:void(0)"
+                                (click)="goToReport('/student-performance/semester-report')">Click
+                                to Access
+                                Report</a>
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="pat" style="margin-bottom:10px !important">
@@ -587,18 +593,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="healthCardData['pat_performance']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="patLink">
-                                    <a href="javascript:void(0)"
-                                        (click)="goToReport('/student-performance/pat-report')">Click
-                                        to Access
-                                        Report</a>
-                                </p>
-                            </div>
-                        </div>
                         <div *ngIf="!healthCardData['pat_performance']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['pat_performance']">
+                        <p *ngIf="showLink" class="link" id="patLink">
+                            <a href="javascript:void(0)" (click)="goToReport('/student-performance/pat-report')">Click
+                                to Access
+                                Report</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -730,19 +733,16 @@
                                         *ngFor="let list of healthCardData['school_infrastructure']['areas_to_focus'], let i=index">
                                         {{healthCardData['school_infrastructure']['areas_to_focus'][i]}}</li>
                                 </ul>
-
-                            </div>
-                        </div>
-                        <div class="row" *ngIf="healthCardData['school_infrastructure']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="infraLink"><a href="javascript: void(0)"
-                                        (click)="goToReport('/infrastructure/school-infra-map')">Click to Access
-                                        Report</a>
-                                </p>
                             </div>
                         </div>
                         <div *ngIf="!healthCardData['school_infrastructure']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['school_infrastructure']">
+                        <p *ngIf="showLink" class="link" id="infraLink"><a href="javascript: void(0)"
+                                (click)="goToReport('/infrastructure/school-infra-map')">Click to Access
+                                Report</a>
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="udise" style="margin-bottom:10px !important">
@@ -883,16 +883,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="healthCardData['udise']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="udiseLink"><a href="javascript: void(0)"
-                                        (click)="goToReport('/infrastructure/udise-report')">Click to Access
-                                        Report</a>
-                                </p>
-                            </div>
-                        </div>
                         <div *ngIf="!healthCardData['udise']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['udise']">
+                        <p *ngIf="showLink" class="link" id="udiseLink"><a href="javascript: void(0)"
+                                (click)="goToReport('/infrastructure/udise-report')">Click to Access
+                                Report</a>
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="crc" style="margin-bottom:10px !important">
@@ -1005,23 +1003,21 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row" *ngIf="healthCardData['crc_visit']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="crcLink"><a href="javascript: void(0)"
-                                        (click)="goToReport('/crc/crc-report')">Click to Access
-                                        Report</a>
-                                </p>
-                            </div>
-                        </div>
                         <div *ngIf="!healthCardData['crc_visit']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['crc_visit']">
+                        <p *ngIf="showLink" class="link" id="crcLink"><a href="javascript: void(0)"
+                                (click)="goToReport('/crc/crc-report')">Click to Access
+                                Report</a>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-        <div *ngIf="err" style="position: absolute; top: 45%; left: 45%; color: red;">
-            No Data Found
-        </div>
+    </div>
+    <div *ngIf="err" style="position: absolute; top: 45%; left: 45%; color: red;">
+        No Data Found
     </div>
 </div>
 <div id="spinner" style="display: block;">
