@@ -43,7 +43,7 @@ exports.restartNifiProcess = async function () {
                     })
                     url = `${process.env.NIFI_URL}/flow/process-groups/${myJob.groupId}`;
                     logger.info(`--- ${myJob.groupName} - Nifi processor group scheduling started ---`);
-                    let response = await startFun(url, myJob.groupId, myJob.state);
+                    let response = await startFun(url, myJob.groupId, "RUNNING");
                     myJob.scheduleUpdatedAt = `${new Date()}`;
                     await fs.writeFile(filePath, JSON.stringify(schedularData), function (err) {
                         if (err) throw err;
