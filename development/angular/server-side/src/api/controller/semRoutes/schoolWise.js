@@ -75,13 +75,10 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         var myData = await s3File.readS3File(fileName);
 
         let schoolData = myData.data;
-
-        let distId = req.params.distId;
-        let blockId = req.params.blockId;
         let clusterId = req.params.clusterId;
 
         filterData = schoolData.filter(obj => {
-            return (obj.district_id == distId && obj.block_id == blockId && obj.cluster_id == clusterId)
+            return (obj.cluster_id == clusterId)
         });
 
         filterData = filterData.filter(function (el) {

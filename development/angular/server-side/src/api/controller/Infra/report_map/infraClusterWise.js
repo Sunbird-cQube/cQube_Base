@@ -24,11 +24,10 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         let fileName = `infra/infra_cluster_map.json`;
         var clusterData = await s3File.readS3File(fileName);
 
-        let distId = req.params.distId;
         let blockId = req.params.blockId;
 
         let filterData = clusterData.data.filter(obj => {
-            return (obj.details.district_id == distId && obj.details.block_id == blockId)
+            return (obj.details.block_id == blockId)
         })
         let mydata = filterData;
         logger.info('---Infra clusterperBlock api response sent---');
