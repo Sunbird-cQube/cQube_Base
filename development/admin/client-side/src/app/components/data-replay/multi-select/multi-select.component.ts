@@ -30,6 +30,10 @@ export class MultiSelectComponent implements OnInit {
     this.shareCheckedlist();
   }
 
+  resetSelected() {
+    this.checkedList = [];
+  }
+
   getSelected() {
     this.shareCheckedlist();
   }

@@ -19,9 +19,9 @@ export class HealthCardService {
     return this.http.post(`${this.baseUrl}/healthCard/metaData`, { level });
   }
 
-  stateData() {
+  stateData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/healthCard/stateData`, {});
+    return this.http.post(`${this.baseUrl}/healthCard/stateData`, data);
   }
 
   districtWiseData(data) {
