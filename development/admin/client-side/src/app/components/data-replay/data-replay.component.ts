@@ -2,6 +2,7 @@ import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/
 import { DataReplayService } from 'src/app/services/data-replay.service';
 import { Router } from '@angular/router';
 import { MultiSelectComponent } from './multi-select/multi-select.component';
+import data from '../../../assets/dataReplayConfig.json';
 declare const $;
 
 @Component({
@@ -11,6 +12,7 @@ declare const $;
 })
 export class DataReplayComponent implements OnInit {
   dataSources: any = [];
+  dataSourceName = '';
   formObj: any = {};
   years1 = [];
   months1 = [];
@@ -79,10 +81,23 @@ export class DataReplayComponent implements OnInit {
     this.service.getSemesters().subscribe(res => {
       this.semesters = res;
     })
-    this.service.getDataSources().subscribe(res => {
-      this.dataSources = res;
-      this.createDataTable();
-    });
+    // this.service.getDataSources().subscribe(res => {
+    data.map(item => {
+      if (item.status == true) {
+        this.dataSources.push(item);
+      }
+    })
+    this.dataSources.unshift({ template: 'Select Data Source', status: true, sourceName: 'Select Data Source' });
+    this.createDataTable();
+    // });       
+  }
+
+  onSelectDataSource(data) {
+    this.dataSourceName = data;
+    if (data != 'Select Data Source') {
+    } else {
+      this.dataSourceName = '';
+    }
   }
 
   createDataTable() {
@@ -268,16 +283,16 @@ export class DataReplayComponent implements OnInit {
     document.getElementById('spinner').style.display = 'block';
     if (Object.keys(this.formObj).length > 0) {
       if (this.summaryFromDate && !this.summaryToDate) {
-        this.toDateErr = "Please select toDate also along with fromDate";
+        alert("Please select toDate also along with fromDate");
         document.getElementById('spinner').style.display = 'none';
       } else if (this.selectedStdYear && this.selectedMonths1.length == 0) {
-        this.stdMonthErr = this.monthErrMsg;
+        alert(this.monthErrMsg);
         document.getElementById('spinner').style.display = 'none';
       } else if (this.selectedTchrYear && this.selectedMonths2.length == 0) {
-        this.tchrMonthErr = this.monthErrMsg;
+        alert(this.monthErrMsg);
         document.getElementById('spinner').style.display = 'none';
       } else if (this.selectedCRCYear && this.selectedCRCMonths.length == 0) {
-        this.crcMonthErr = this.monthErrMsg;
+        alert(this.monthErrMsg);
         document.getElementById('spinner').style.display = 'none';
       } else {
         var date = new Date();
@@ -295,9 +310,8 @@ export class DataReplayComponent implements OnInit {
   }
   onCancel() {
     this.formObj = {};
-    document.getElementById('stdyear')['value'] = 'Select Year';
-    document.getElementById('tchryear')['value'] = 'Select Year';
-    document.getElementById('crcyear')['value'] = 'Select Year';
+    document.getElementById('dataSources')['value'] = 'Select Data Source';
+    this.onSelectDataSource('Select Data Source');
     this.onSelectStdYear('Select Year');
     this.onSelectTchrYear('Select Year');
     this.onSelectCRCYear('Select Year');
@@ -325,10 +339,6 @@ export class DataReplayComponent implements OnInit {
     });
     if (this.multiSelect)
       this.multiSelect.forEach((child) => { child.resetSelected() })
-
-    document.getElementById('udise')['value'] = "";
-    document.getElementById('infrastructure')['value'] = "";
-    document.getElementById('static')['value'] = "";
   }
 
 }

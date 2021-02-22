@@ -13,7 +13,7 @@
                 <label *ngFor="let a of list" style="margin-left: 0px;">
                     <input type="checkbox" [(ngModel)]="a.status" style="float: left;margin-top: 2px;"
                         (change)="getSelectedValue(a.id,a.status);getSelected()">
-                    <span style="font-size: 12px;">{{a.name}}</span>
+                    <span style="font-size: 12px; margin-left: 5px;">{{a.name}}</span>
                 </label>
             </div>
         </div>
