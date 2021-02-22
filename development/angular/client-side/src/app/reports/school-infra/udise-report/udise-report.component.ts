@@ -1033,11 +1033,18 @@ export class UdiseReportComponent implements OnInit {
       popupFood.push(stringLine);
     }
     function toTitleCase(phrase) {
-      return phrase
+      var key = phrase
         .toLowerCase()
         .split(' ')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
+      key = key.replace("Nsqf", "NSQF");
+      key = key.replace("Ict", "ICT");
+      key = key.replace("Crc", "CRC");
+      key = key.replace("Cctv", "CCTV");
+      key = key.replace("Cwsn", "CWSN");
+      key = key.replace("Ff Uuid", "UUID");
+      return key;
     }
     return popupFood;
   }
