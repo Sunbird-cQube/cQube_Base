@@ -129,6 +129,10 @@ export class StudengtAttendanceComponent implements OnInit {
         this.params = JSON.parse(sessionStorage.getItem('report-level-info'));
         let params = this.params;
 
+        if (this.params)
+          this.period = this.params.timePeriod;
+
+
         if (params && params.level) {
           let data = params.data;
           if (params.level === 'district') {
@@ -453,7 +457,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         if (this.markers.length > 0) {
           for (var i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
@@ -511,7 +515,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
@@ -571,7 +575,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
@@ -638,7 +642,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
@@ -865,7 +869,7 @@ export class StudengtAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         this.studentCount = res['studentCount'];
         this.schoolCount = res['schoolCount'];
 
@@ -984,7 +988,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
         // sorted.pop();
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         for (var i = 0; i < sorted.length; i++) {
           var color = this.commonService.color(this.markers[i], 'attendance');
           this.clusterIds.push(sorted[i]['cluster_id']);
@@ -1131,7 +1135,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         for (var i = 0; i < sorted.length; i++) {
           var color = this.commonService.color(this.markers[i], 'attendance');
           var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 3.5, 0.1, 1, this.levelWise);
@@ -1261,6 +1265,7 @@ export class StudengtAttendanceComponent implements OnInit {
       data.level = 'state';
       data.value = null
     }
+    data['timePeriod'] = this.period;
 
     sessionStorage.setItem('health-card-info', JSON.stringify(data));
     this._router.navigate(['/healthCard']);

@@ -1,6 +1,12 @@
 [
 {
-"health_card_index_state":"select * from health_card_index_state"
+"health_card_index_state_all":"select * from health_card_index_state"
+},
+{
+"health_card_index_state_overall":"select * from health_card_index_state"
+},
+{
+"health_card_index_state_last_30_days":"select * from health_card_index_state_last30"
 },
 {
 "health_card_index_meta_district":"select distinct(district_id)as district_id,Initcap(district_name)as district_name from school_hierarchy_details  where school_name is not null and cluster_name is not null and block_name is not null and district_name is not null"
@@ -15,15 +21,39 @@
 "health_card_index_meta_school":"select distinct(school_id)as school_id,initcap(school_name)as school_name,block_id from school_hierarchy_details  where school_name is not null and cluster_name is not null and block_name is not null and district_name is not null;"
 },
 {
-"health_card_index_district":"select * from health_card_index_district;"
+"health_card_index_district_all":"select * from health_card_index_district;"
 },
 {
-"health_card_index_block":"select * from health_card_index_block;"
+"health_card_index_block_all":"select * from health_card_index_block;"
 },
 {
-"health_card_index_cluster":"select * from health_card_index_cluster;"
+"health_card_index_cluster_all":"select * from health_card_index_cluster;"
 },
 {
-"health_card_index_school":"select * from health_card_index_school;"
+"health_card_index_school_all":"select * from health_card_index_school;"
+},
+{
+"health_card_index_district_overall":"Select * from health_card_index_district_overall where district_id!=9999;"
+},
+{
+"health_card_index_block_overall":"Select * from health_card_index_block_overall where block_id!=9999;"
+},
+{
+"health_card_index_cluster_overall":"Select * from health_card_index_cluster_overall where cluster_id!=9999;"
+},
+{
+"health_card_index_school_overall":"Select * from health_card_index_school_overall where school_id!=9999;"
+},
+{
+"health_card_index_district_last_30_days":"Select * from health_card_index_district_last30 where district_id!=9999;"
+},
+{
+"health_card_index_block_last_30_days":"Select * from health_card_index_block_last30 where block_id!=9999;"
+},
+{
+"health_card_index_cluster_last_30_days":"Select * from health_card_index_cluster_last30 where cluster_id!=9999;"
+},
+{
+"health_card_index_school_last_30_days":"Select * from health_card_index_school_last30 where school_id!=9999;"
 }
 ]

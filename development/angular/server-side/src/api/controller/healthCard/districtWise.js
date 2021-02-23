@@ -9,7 +9,6 @@ router.post('/distWise', auth.authController, async (req, res) => {
         logger.info('---healthCard dist wise api ---');
         var timePeriod = req.body.timePeriod;
         let fileName = `healthCard/district/${timePeriod}/${districtId}.json`;
-        console.log(fileName);
 
         var districtData = await s3File.readS3File(fileName);
         logger.info('--- healthCard dist wise api response sent ---');
