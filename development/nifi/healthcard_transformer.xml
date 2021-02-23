@@ -1307,7 +1307,7 @@
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                 </processors>
@@ -1373,7 +1373,7 @@
                         <autoTerminate>false</autoTerminate>
                         <name>split</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.SplitJson</type>
                 </processors>
@@ -1470,7 +1470,7 @@
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
                 </processors>
@@ -1538,7 +1538,7 @@
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -1730,7 +1730,7 @@
                         <autoTerminate>true</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExtractText</type>
                 </processors>
@@ -1842,7 +1842,7 @@
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -1935,7 +1935,7 @@ ${query_type:startsWith('health_card_index_school')} )} )} )}</value>
                         <autoTerminate>true</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -2021,7 +2021,7 @@ ${query_type:startsWith('health_card_index_school')} )} )} )}</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -2091,7 +2091,7 @@ file:${filename},Error while partitioning "${query_type
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -2327,16 +2327,26 @@ file:${filename},Error while partitioning "${query_type
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>${query_type:startsWith('health_card_index_state'):ifElse('healthCard/stateData.json',
+<value>${query_type:startsWith('health_card_index_state_all'):ifElse('healthCard/stateData.json',
 ${query_type:startsWith('health_card_index_meta_district'):ifElse('healthCard/district/metaData.json',
 ${query_type:startsWith('health_card_index_meta_block'):ifElse('healthCard/block/metaData.json',
 ${query_type:startsWith('health_card_index_meta_cluster'):ifElse('healthCard/cluster/metaData.json',
 ${query_type:startsWith('health_card_index_meta_school'):ifElse('healthCard/school/metaData.json',
-${query_type:startsWith('health_card_index_district'):ifElse('healthCard/district/${partition_by_level}.json',
-${query_type:startsWith('health_card_index_block'):ifElse('healthCard/block/${partition_by_level}.json',
-${query_type:startsWith('health_card_index_cluster'):ifElse('healthCard/cluster/${partition_by_level}.json',
-${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${partition_by_level}.json','None')}
-)} )} )} )} )} )} )} )}</value>
+${query_type:startsWith('health_card_index_district_all'):ifElse('healthCard/district/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_block_all'):ifElse('healthCard/block/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_cluster_all'):ifElse('healthCard/cluster/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_school_all'):ifElse('healthCard/school/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_state_overall'):ifElse('healthCard/overall/state.json',
+${query_type:startsWith('health_card_index_district_overall'):ifElse('healthCard/district/overall/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_block_overall'):ifElse('healthCard/block/overall/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_cluster_overall'):ifElse('healthCard/cluster/overall/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_school_overall'):ifElse('healthCard/school/overall/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_state_last_30_days'):ifElse('healthCard/last_30_days/state.json',
+${query_type:startsWith('health_card_index_district_last_30_days'):ifElse('healthCard/district/last_30_days/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_block_last_30_days'):ifElse('healthCard/block/last_30_days/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_cluster_last_30_days'):ifElse('healthCard/cluster/last_30_days/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_school_last_30_days'):ifElse('healthCard/school/last_30_days/${partition_by_level}.json','None')}
+)} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
@@ -2472,7 +2482,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                 </processors>
@@ -2584,7 +2594,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -2767,7 +2777,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
-                    <name>comp_ extract_query</name>
+                    <name>healthcard_extract_query</name>
                     <relationships>
                         <autoTerminate>false</autoTerminate>
                         <name>matched</name>
@@ -2776,7 +2786,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExtractText</type>
                 </processors>
@@ -2888,7 +2898,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -3016,7 +3026,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                             </entry>
                             <entry>
 <key>dbf-user-logical-types</key>
-<value>true</value>
+<value>false</value>
                             </entry>
                             <entry>
 <key>esql-max-rows</key>
@@ -3046,7 +3056,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -3112,7 +3122,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                         <autoTerminate>false</autoTerminate>
                         <name>split</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.SplitJson</type>
                 </processors>
@@ -3224,7 +3234,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -3293,7 +3303,7 @@ file:${filename},Error while extracting "${query_type}" query.</value>
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -3402,7 +3412,7 @@ file:${filename},Error while extracting "${query_type}" query.</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.FetchFile</type>
                 </processors>
@@ -3484,7 +3494,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('/block_id','None')}
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                 </processors>
@@ -3596,7 +3606,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('/block_id','None')}
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -3727,7 +3737,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>STOPPED</state>
+                    <state>RUNNING</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -3736,5 +3746,5 @@ file:${filename},Error while executing "${query_type}" query.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/18/2021 11:50:24 IST</timestamp>
+    <timestamp>02/23/2021 12:52:11 IST</timestamp>
 </template>
