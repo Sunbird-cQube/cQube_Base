@@ -118,6 +118,14 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.state = this.commonService.state;
 
     this.params = JSON.parse(sessionStorage.getItem('health-card-info'));
+    
+    if (this.params) {
+      if (this.params.timePeriod == 'overall' || this.params.timePeriod == 'last_30_days') {
+        this.period = this.params.timePeriod;
+      } else {
+        this.period = 'overall';
+      }
+    }
 
     if (this.params && this.params.level) {
       this.level = this.params.level;
@@ -129,6 +137,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       document.getElementById('home').style.display = "none";
       this.stateData();
     }
+    console.log(this.period)
   }
 
   onPeriodSelect() {
@@ -158,12 +167,13 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   onHomeSelect() {
     this.stateData();
     this.period = "overall";
+    document.getElementById('home').style.display = "none";
   }
   stateData() {
     document.getElementById('spinner').style.display = 'block';
     if (this.period != 'overall') {
       document.getElementById('home').style.display = "block";
-    }else{
+    } else {
       document.getElementById('home').style.display = "none";
     }
     this.semLength = 2;
@@ -893,7 +903,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   }
 
   goToReport(route: string): void {
-    sessionStorage.setItem('report-level-info', JSON.stringify({ level: this.level == 'state' ? undefined : this.level, data: this.level == 'state' ? null : this.selectedLevelData }));
+    sessionStorage.setItem('report-level-info', JSON.stringify({ level: this.level == 'state' ? undefined : this.level, data: this.level == 'state' ? null : this.selectedLevelData, timePeriod: this.period }));
     this._router.navigate([route]);
   }
 
