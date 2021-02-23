@@ -124,6 +124,8 @@ export class CrcReportComponent implements OnInit {
     this.createChart(["clg"], [], '', {});
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
 
+    if (params)
+      this.period = params.timePeriod;
     if (params && params.level) {
       let data = params.data;
       if (params.level === 'district') {
@@ -887,6 +889,7 @@ export class CrcReportComponent implements OnInit {
       data.level = 'state';
       data.value = null
     }
+    data['timePeriod'] = this.period;
 
     sessionStorage.setItem('health-card-info', JSON.stringify(data));
     this._router.navigate(['/healthCard']);

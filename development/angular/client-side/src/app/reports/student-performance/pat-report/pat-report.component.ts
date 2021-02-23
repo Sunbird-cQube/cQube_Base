@@ -121,6 +121,13 @@ export class PATReportComponent implements OnInit {
 
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
 
+    if (params) {
+      if (params.timePeriod == 'overall') {
+        params.timePeriod = 'all';
+      }
+      this.period = params.timePeriod;
+    }
+
     if (params && params.level) {
       let data = params.data;
       if (params.level === 'district') {
@@ -218,7 +225,7 @@ export class PATReportComponent implements OnInit {
   }
 
   onGradeSelect(data) {
-    this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject?this.subject: ''}_all${this.level}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject ? this.subject : ''}_all${this.level}_${this.commonService.dateAndTime}`;
     this.grade = data;
     this.subjectHidden = false;
     this.subject = '';
@@ -1379,6 +1386,8 @@ export class PATReportComponent implements OnInit {
       data.level = 'state';
       data.value = null
     }
+
+    data['timePeriod'] = this.period == 'all' ? 'overall' : this.period;
 
     sessionStorage.setItem('health-card-info', JSON.stringify(data));
     this._router.navigate(['/healthCard']);

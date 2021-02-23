@@ -6,8 +6,8 @@ const s3File = require('../../lib/reads3File');
 router.post('/stateData', auth.authController, async (req, res) => {
     try {
         logger.info('---healthCard stateData api ---');
-    //    var timePeriod = req.body.timePeriod;
-        let fileName = `healthCard/stateData.json`;
+        var timePeriod = req.body.timePeriod;
+        let fileName = `healthCard/${timePeriod}/state.json`;
         var data = await s3File.readS3File(fileName);
         logger.info('--- healthCard stateData api response sent ---');
         res.status(200).send({ data });
