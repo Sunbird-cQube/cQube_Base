@@ -8,20 +8,21 @@ router.post('/distWise', auth.authController, async (req, res) => {
         logger.info('---PAT dist wise api ---');
         var period = req.body.data.period;
         var grade = req.body.data.grade;
+        var report = req.body.data.report;
         let fileName;
 
         var districtData = {}
         if (period == '') {
             if (grade) {
-                fileName = `pat/all/district/${grade}.json`
+                fileName = `${report}/all/district/${grade}.json`
             } else {
-                fileName = `pat/all/pat_district.json`
+                fileName = `${report}/all/${report}_district.json`
             }
         } else {
             if (grade) {
-                fileName = `pat/${period}/district/${grade}.json`
+                fileName = `${report}/${period}/district/${grade}.json`
             } else {
-                fileName = `pat/${period}/pat_district.json`
+                fileName = `${report}/${period}/${report}_district.json`
             }
         }
 
@@ -41,11 +42,12 @@ router.post('/grades', async (req, res, next) => {
         logger.info('---grades metadata api ---');
         var fileName;
         var period = req.body.data.period;
+        var report = req.body.data.report;
 
         if (period == '' || period == undefined) {
-            fileName = `pat/all/pat_metadata.json`;
+            fileName = `${report}/all/${report}_metadata.json`;
         } else {
-            fileName = `pat/${period}/pat_metadata.json`;
+            fileName = `${report}/${period}/${report}_metadata.json`;
         }
 
         var data = await s3File.readS3File(fileName);

@@ -38,6 +38,8 @@ export class DashboardComponent implements OnInit {
   patExcptTooltip
   sarExcptTooltip;
   tarExpTooltip;
+  satTooltip;
+  satHeatChartTooltip;
 
   hiddenPass = false;
   edate: Date;
@@ -71,6 +73,8 @@ export class DashboardComponent implements OnInit {
   patExcptViews;
   sarExcptViews;
   tarExpViews;
+  satViews;
+  satHeatChartViews
 
 
   //for coming soon page
@@ -235,6 +239,8 @@ export class DashboardComponent implements OnInit {
     this.patExcptViews = "";
     this.sarExcptViews = "";
     this.tarExpViews = "";
+    this.satViews = "";
+    this.satHeatChartViews = "";
 
     var myStr = this.removeUnderscore(views[0].time_range);
     this.timePeriod = " (" + myStr + ")";
@@ -321,6 +327,12 @@ export class DashboardComponent implements OnInit {
       }
       if (element.reportid == 'tarExp') {
         this.tarExpViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'sat') {
+        this.satViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'satHeatChart') {
+        this.satHeatChartViews = element.number_of_views + " (" + timeStr + ")";
       }
 
     });
