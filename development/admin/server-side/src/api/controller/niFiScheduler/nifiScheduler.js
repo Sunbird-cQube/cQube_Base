@@ -27,8 +27,12 @@ router.get('/getProcessorDetails/:id', auth.authController, async (req, res) => 
         let groupId = req.params.id
         let url = `${process.env.NIFI_URL}/flow/process-groups/${groupId}`
         let getGroupDetails = await axios.get(url);
+        let names = await axios.get(`${process.env.NIFI_URL}/flow/process-groups/${groupId}`);
+        let processorGroups = [];
+        names.data.processGroupFlow.flow.processGroups.forEach(item => {
+            processorGroups.push(item.status.name);
+        })
         var groupObj = []
-        let processorGroups = process.env.NIFI_PROCESSORS.split(',')
         processorGroups.forEach(groupName => {
             getGroupDetails.data.processGroupFlow.flow.processGroups.forEach(result => {
                 let state
