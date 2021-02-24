@@ -77,5 +77,9 @@ export class SummaryService {
     return this.http.post(`${this.baseUrl}/summary/teacherAttedndance`, {});
   }
 
+  getSATSummary(){
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/summary/summarySAT`, {});
+  }
 
 }

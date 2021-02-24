@@ -134,7 +134,7 @@ export class ExceptionReportService {
 
   gradeMetaData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/pat/grades`, { data });
+    return this.http.post(`${this.baseUrl}/patExcetpion/grades`, { data });
   }
 
 

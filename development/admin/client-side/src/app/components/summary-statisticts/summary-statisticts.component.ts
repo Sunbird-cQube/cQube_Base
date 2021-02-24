@@ -24,6 +24,7 @@ export class SummaryStatistictsComponent implements OnInit {
   tableData11: any = [];
   tableData12: any = [];
   tableData13: any = [];
+  tableData14: any = [];
   constructor(private router: Router, private service: SummaryService) { }
 
   ngOnInit(): void {
@@ -123,6 +124,13 @@ export class SummaryStatistictsComponent implements OnInit {
       this.tableData13 = res;
       if (this.tableData13.length > 0) {
         this.tableWithSubHeaders(this.tableData13, "table14");
+        document.getElementById('spinner').style.display = 'none';
+      }
+    });
+    this.service.getSATSummary().subscribe((res: any) => {
+      this.tableData14 = res;
+      if (this.tableData14.length > 0) {
+        this.tableWithSubHeaders(this.tableData14, "table15");
         document.getElementById('spinner').style.display = 'none';
       }
     });
