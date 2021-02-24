@@ -5570,3 +5570,245 @@ primary key(school_id,month,year));
 alter table crc_inspection_trans add column  IF NOT EXISTS visit_date date;
 alter table crc_inspection_dup add column  IF NOT EXISTS visit_date date;
 
+
+/* Semester validation tables */
+
+create table if not exists sat_null_col(
+filename varchar(200) ,
+ff_uuid varchar(200),
+count_null_exam_id int,
+count_null_question_id int,
+count_null_assessment_year int,
+count_null_medium int,
+count_null_standard int,
+count_null_subject_id int,
+count_null_subject_name int,
+count_null_exam_type_id int,
+count_null_exam_type int,
+count_null_exam_code int,
+count_null_exam_date int,
+count_null_total_questions int,
+count_null_total_marks int,
+count_null_question_title int,
+count_null_question int,
+count_null_question_marks int,
+count_null_id int,
+count_null_student_uid int,
+count_null_school_id int,
+count_null_studying_class int,
+count_null_obtained_marks int,
+count_null_grade int
+);
+
+create table if not exists semester_exam_mst_dup(
+exam_id	int,
+assessment_year	varchar(20),
+medium	varchar(20),
+standard	int,
+division	varchar(20),
+subject_id	int,
+subject_name	varchar(50),
+exam_type_id	int,
+exam_type	varchar(50),
+exam_code	varchar(100),
+exam_date	date,
+total_questions	int,
+total_marks	int,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists semester_exam_qst_mst_dup(
+question_id	int,
+exam_id	int,
+indicator_id	int,
+indicator_title	varchar(20),
+indicator	text,
+question_title	varchar(20),
+question	text,
+question_marks	numeric,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists semester_exam_result_dup(
+id	int,
+exam_id	int,
+exam_code	varchar(100),
+student_id	bigint,
+student_uid	bigint,
+school_id	bigint,
+studying_class	int,
+section	varchar(20),
+question_id	int,
+obtained_marks	numeric,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists sat_subject_details_dup(subject_id int,subject varchar(100),grade smallint,num_of_times int,
+ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
+
+create table if not exists sat_school_grade_enrolment_dup(school_id bigint,grade smallint,students_count int,num_of_times int,
+ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
+
+/*SAT data tables*/
+
+create table if not exists semester_exam_mst(
+exam_id  int,
+assessment_year  varchar(20),
+medium  varchar(20),
+standard  int,
+division  varchar(20),
+subject_id  int,
+subject_name  varchar(50),
+exam_type_id  int,
+exam_type  varchar(50),
+exam_code  varchar(100),
+exam_date  date,
+total_questions  int,
+total_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp,
+primary key(exam_id,assessment_year)
+);
+
+create table if not exists semester_exam_qst_mst(
+question_id  int primary key not null,
+exam_id  int,
+indicator_id  int,
+indicator_title varchar(20),
+indicator  text,
+question_title  varchar(20),
+question  text,
+question_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp
+);
+
+create table if not exists semester_exam_result_temp(
+id  int primary key not null,
+ffuid text,
+exam_id  int,
+exam_code  varchar(100),
+student_id  bigint,
+student_uid  bigint,
+school_id  bigint,
+studying_class  int,
+section  varchar(20),
+question_id  int,
+obtained_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp
+);
+
+create table if not exists semester_exam_result_staging_1(
+id  int,
+ff_uuid text,
+exam_id  int,
+exam_code  varchar(100),
+student_id  bigint,
+student_uid  bigint,
+school_id  bigint,
+studying_class  int,
+section  varchar(20),
+question_id  int,
+obtained_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp
+);
+
+create table if not exists semester_exam_result_staging_2(
+id  int,
+ff_uuid text,
+exam_id  int,
+exam_code  varchar(100),
+student_id  bigint,
+student_uid  bigint,
+school_id  bigint,
+studying_class  int,
+section  varchar(20),
+question_id  int,
+obtained_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp
+);
+
+create table if not exists semester_exam_result_trans(
+id  int,
+exam_id  int,
+exam_code  varchar(100),
+student_id  bigint,
+student_uid  bigint,
+school_id  bigint,
+studying_class  int,
+section  varchar(20),
+question_id  int,
+obtained_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp,
+primary key(exam_code, student_uid, question_id)
+);
+
+create table if not exists semester_exam_school_result
+(id  serial,
+academic_year  varchar(50),
+exam_code  varchar(100),
+school_id  bigint,
+grade  smallint,
+school_name  varchar(200),
+school_latitude  double precision,
+school_longitude  double precision,
+district_id  bigint,
+district_name  varchar(100),
+district_latitude  double precision,
+district_longitude  double precision,
+block_id  bigint,
+block_name  varchar(100),
+block_latitude  double precision,
+block_longitude  double precision,
+cluster_id  bigint,
+cluster_name  varchar(100),
+cluster_latitude  double precision,
+cluster_longitude  double precision,
+subject  text,
+obtained_marks  numeric,
+total_marks  numeric,
+students_count   int,
+created_on  timestamp,
+updated_on  timestamp,
+primary key(academic_year,exam_code,school_id)
+);
+
+alter table semester_exam_school_result add COLUMN if not exists exam_date date;
+
+alter table semester_exam_school_result add COLUMN if not exists students_attended int;
+
+create table if not exists semester_exam_school_qst_result
+(id  serial,
+academic_year  varchar(50),
+exam_code varchar(100),
+exam_date  date,
+school_id  bigint,
+grade  smallint,
+school_name  varchar(200),
+district_id  bigint,
+district_name  varchar(100),
+block_id  bigint,
+block_name  varchar(100),
+cluster_id  bigint,
+cluster_name  varchar(100),
+subject  text,
+question_id	int,
+indicator	text,
+obtained_marks  numeric,
+total_marks  numeric,
+students_attended   int,
+total_students int,
+created_on  timestamp,
+updated_on  timestamp,
+primary key(academic_year,exam_code,school_id,question_id)
+);
