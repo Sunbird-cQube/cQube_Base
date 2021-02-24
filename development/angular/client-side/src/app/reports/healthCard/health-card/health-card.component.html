@@ -130,7 +130,7 @@
                     <div class="col-lg-12">
                         <div style="float: left;">
                             <select id="period"
-                                style="padding: 5px 2px 5px 2px;margin: 2px 15px 0px 0px;  color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                                style="padding: 6.3px; margin: 5px 15px 0px 0px;  color: black; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: #f5f6fb"
                                 [(ngModel)]="period" (change)="onPeriodSelect()">
                                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
                                 <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
@@ -150,13 +150,8 @@
                                 alt="Home" (click)="onHomeSelect()"></em>
                         </div>
                     </div>
-                    <!-- <div class="col-lg-12" *ngIf="exist">
-                        <div>
-                            <div *ngIf="!showAll" style="height: 30px;"></div>
-                        </div>
-                    </div> -->
                 </div>
-                <div class="row" style="padding-top: 15px !important;">
+                <div class="row" style="padding-top: 12px !important;">
                     <div class="col-lg-4 col-md-3 col-sm-12">
                         <label for="" style="font-size: 13px; font-weight: bold;">Choose Level</label>
                         <select id="level"
