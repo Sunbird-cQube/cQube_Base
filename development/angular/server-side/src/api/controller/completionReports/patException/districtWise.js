@@ -40,4 +40,26 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
     }
 });
 
+router.post('/grades', async (req, res, next) => {
+    try {
+        logger.info('---grades metadata api ---');
+        var fileName;
+        var period = req.body.data.period;
+
+        if (period == '' || period == undefined) {
+            fileName = `pat/all/pat_metadata.json`;
+        } else {
+            fileName = `pat/${period}/pat_metadata.json`;
+        }
+        console.log(fileName)
+
+        var data = await s3File.readS3File(fileName);
+        logger.info('---grades metadata api response sent---');
+        res.status(200).send({ data: data });
+    } catch (e) {
+        logger.error(`Error :: ${e}`)
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+    }
+})
+
 module.exports = router

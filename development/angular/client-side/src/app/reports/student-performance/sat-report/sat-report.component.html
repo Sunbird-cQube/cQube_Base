@@ -1,0 +1,182 @@
+<div class="container-fluid" style="padding-top:15px !important;">
+    <div class="row">
+        <div class="col-sm-8">
+            <div *ngIf='skul'>
+                <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    Semester Assessment Test Report for: <span (click)="linkClick()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
+            </div>
+            <div *ngIf='dist'>
+                <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    Semester Assessment Test Report for: <span (click)="linkClick()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
+                        (click)="ondistLinkClick(districtHierarchy.distId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{districtHierarchy.districtName}}</span> </p>
+            </div>
+            <div *ngIf="blok">
+                <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    Semester Assessment Test Report for: <span (click)="linkClick()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
+                        (click)="ondistLinkClick(blockHierarchy.distId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{blockHierarchy.districtName}}</span><span>/ </span><span
+                        (click)="onblockLinkClick(blockHierarchy.blockId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{blockHierarchy.blockName}}</span></p>
+            </div>
+
+            <div *ngIf="clust">
+                <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    Semester Assessment Test Report for: <span (click)="linkClick()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
+                        (click)="ondistLinkClick(clusterHierarchy.distId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.districtName}}</span><span>/ </span><span
+                        (click)="onblockLinkClick(clusterHierarchy.blockId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.blockName}}</span><span>/ </span><span
+                        (click)="onclusterLinkClick(clusterHierarchy.clusterId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.clusterName}}</span></p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-7">
+                    <p id="errMsg"
+                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
+                    </p>
+                </div>
+                <div class="col-sm-5">
+                    <em class="fa fa-cloud-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
+                        (click)="downloadReport()"></em>
+                    <em class="fa fa-home" id="home" title="Home"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
+                        alt="Home" (click)="linkClick()"></em>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p style="text-align: justify; font-size: 11px;">
+                <strong> About the dashboard:</strong> This dashboard provides information about student's performance
+                in the Semester Assessment Test across all subjects and grades. The data has been collated at various
+                administrative levels (i.e. District, Block, Cluster and School) and this dashboard allows you to view
+                and download the data at these various administrative levels.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <select id="period"
+                style="padding: 5px 2px 5px 2px;float: left;width: 100px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="period" (change)="onPeriodSelect()">
+                <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
+                <option *ngFor="let period of timeRange,  let i =index" style="width: 100px;" [(ngValue)]="period.key">
+                    {{period.value}}
+                </option>
+            </select>
+            <button class="btn btn-secondary" id="block"
+                style="font-size: 11px; width: 65px; float: left;margin: 0px 7px 10px 15px;padding: 4px; background-color: rgb(152, 160, 163);"
+                (click)="blockClick()">&nbsp;<strong>Blocks</strong> </button>
+            <button class="btn btn-secondary" id="cluster"
+                style="font-size: 11px; width: 65px; float: left;margin: 0px 7px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
+                (click)="clusterClick()">&nbsp;<strong>Clusters</strong> </button>
+            <button class="btn btn-secondary" id="school"
+                style="font-size: 11px; width: 65px; float: left;margin: 0px 0px 10px 0px;padding: 4px; background-color: rgb(152, 160, 163);"
+                (click)="schoolClick()">&nbsp;<strong>Schools</strong> </button>
+
+            <select [hidden]="" id="grades"
+                style="margin-left: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="grade" (change)="onGradeSelect(grade)">
+                <option [value]="grade" disabled selected="selected">Choose a Grade</option>
+                <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="grade.grade">
+                    {{grade.grade}}
+                </option>
+            </select>
+
+            <select [hidden]="subjectHidden" id="subjects"
+                style="margin-left: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="subject" (change)="onSubjectSelect(subject)">
+                <option [value]="subject" disabled selected="selected">Choose a Subject</option>
+                <option *ngFor="let subject of allSubjects,  let i =index" [(ngValue)]="allSubjects[i]">
+                    {{allSubjects[i]}}
+                </option>
+            </select>
+        </div>
+        <div class="col-sm-6">
+            <select id="choose_dist"
+                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="districtId" (change)="ondistLinkClick(districtId)">
+                <option [value]="districtId" disabled selected="selected">Choose a District</option>
+                <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.Details.district_id"
+                    style=" font-size: 11px;">
+                    {{dist.Details.district_name}}
+                </option>
+            </select>
+
+            <select [hidden]="blockHidden" id="choose_block"
+                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="blockId" (change)="onblockLinkClick(blockId)">
+                <option [value]="blockId" disabled selected="selected">Choose a Block</option>
+                <option *ngFor="let block of blockMarkers" [(ngValue)]="block.Details.block_id"
+                    style="font-size: 11px;">
+                    {{block.Details.block_name}}
+                </option>
+            </select>
+
+            <select [hidden]="clusterHidden" id="choose_cluster"
+                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="clusterId" (change)="onclusterLinkClick(clusterId)">
+                <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
+                <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.Details.cluster_id"
+                    style="font-size: 11px; "
+                    [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
+                    {{cluster.Details.cluster_name}}
+                </option>
+            </select>
+            <a class="float-right" href="javascript: void(0)" id="patHealthcard" (click)="goToHealthCard()"
+                style="font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Access Health
+                Card</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div #mapContainer id="satMap" class="active" style="width: 100%; height: 70vh"></div>
+        </div>
+    </div>
+    <div class="row"
+        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px; padding: 2px 0px 2px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
+        <div class="col-sm-3">
+            <div
+                style="border-radius: 15px; background-color: #f5f6fb; height: 22px; width: 150px; border: 1px solid gray;font-size: 13px;">
+                <div id="absolute" (click)="getColor('absolute')"
+                    [ngStyle]="{'background-color' : selected == 'absolute' ? '#3100cc' : '#f5f6fb'}"
+                    style="border-radius: 15px; height: 20px; width: 50%;  float: left; cursor: pointer;">
+                    <p [ngStyle]="{'color' : selected == 'absolute' ? 'white' : 'black'}"
+                        style="text-align: center; padding: 0px;">
+                        Absolute</p>
+                </div>
+                <div id="relative" (click)="getColor('relative')"
+                    [ngStyle]="{'background-color' : selected == 'relative' ? '#3100cc' : '#f5f6fb'}"
+                    style="border-radius: 15px; height: 20px; width: 50%;float: left;cursor: pointer;">
+                    <p [ngStyle]="{'color' : selected == 'relative' ? 'white' : 'black'}"
+                        style="text-align: center; padding: 0px;">
+                        Relative</p>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-sm-4">
+            <span id="schools" style="text-align: center;">Number of Schools: {{schoolCount}}</span>
+        </div>
+        <div class="col-sm-5">
+            <span id="students" style="text-align: center;">Number of Students: {{studentCount}}</span>
+        </div> -->
+    </div>
+</div>
+<div id="spinner">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>

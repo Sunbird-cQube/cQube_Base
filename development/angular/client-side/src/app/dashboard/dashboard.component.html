@@ -781,6 +781,81 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-6 col-md-12 col-sm-12" style="padding:  20px 0px 0px 0px">
+                <div class="row outer12">
+                    <div class="col-lg-6 col-md-6  col-sm-6">
+                        <div class="card card-stats"
+                            style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);;" id="sat"
+                            [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/sat-report']"
+                            (click)="fetchTelemetry($event,'sat')">
+                            <div class="card-body ">
+                                <div class="row">
+                                    <app-info [tooltipText]="satTooltip"
+                                        style="position: absolute; right:10px; top:0px">
+                                    </app-info>
+                                    <div class="col-3 col-md-2">
+                                        <div class="icon-big text-center icon-warning">
+                                            <div class="iconDiv" style="background-color: #008b77;">
+                                                <img class="ic-equalizer1" src="../../assets/ic_location_on.svg" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9 col-md-10">
+                                        <div class="numbers" style="font-size: 13px; text-align: center;">
+                                            <p class="card-category">Semester <br> Assessment </p>
+                                            <p class="card-title">Test</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="views">
+                                        <p *ngIf="satViews;else other_content" id="views">views:
+                                            {{satViews}}</p>
+                                        <ng-template #other_content>
+                                            <p id="errViews">views: 0 {{timePeriod}}</p>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="card card-stats"
+                            style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);;" id="satHeatChart"
+                            [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/sat-heat-chart']"
+                            (click)="fetchTelemetry($event,'satHeatChart')">
+                            <div class="card-body ">
+                                <div class="row">
+                                    <app-info [tooltipText]="satHeatChartTooltip"
+                                        style="position: absolute; right:10px; top:0px"></app-info>
+                                    <div class="col-3 col-md-2">
+                                        <div class="icon-big text-center icon-warning">
+                                            <div class="iconDiv" style="background-color: #008b77;">
+                                                <img class="ic-equalizer1" src="../../assets/ic_grid_on.svg" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-9 col-md-10">
+                                        <div class="numbers" style="font-size: 13px; text-align: center;">
+                                            <p class="card-category">Semester Assessment <br> Test </p>
+                                            <p class="card-title">Heat Chart</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="views">
+                                        <p *ngIf="satHeatChartViews;else other_content" id="views">views:
+                                            {{satHeatChartViews}}</p>
+                                        <ng-template #other_content>
+                                            <p id="errViews">views: 0 {{timePeriod}}</p>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row" style="padding: 20px;">
