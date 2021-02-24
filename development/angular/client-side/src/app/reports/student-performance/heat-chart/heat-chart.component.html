@@ -2,12 +2,12 @@
     <div class="row">
         <div class="col-sm-8">
             <div *ngIf='skul'>
-                <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist" style=" color: #284d8a;font-size: 1.5vw; line-height: 1.2em; margin-top: 5px;">
                     Periodic Assessment Test LO Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
-                <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="block" style=" color: #284d8a;font-size: 1.5vw; line-height: 1.2em; margin-top: 5px;">
                     Periodic Assessment Test LO Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="selectedDistrict(districtHierarchy.distId)"
@@ -15,7 +15,7 @@
                         {{districtHierarchy.districtName}}</span> </p>
             </div>
             <div *ngIf="blok">
-                <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="cluster" style=" color: #284d8a;font-size: 1.5vw; line-height: 1.2em; margin-top: 5px;">
                     Periodic Assessment Test LO Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="selectedDistrict(blockHierarchy.distId)"
@@ -27,7 +27,7 @@
             </div>
 
             <div *ngIf="clust">
-                <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="school" style=" color: #284d8a;font-size: 1.5vw; line-height: 1.2em; margin-top: 5px;">
                     Periodic Assessment Test LO Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="selectedDistrict(clusterHierarchy.distId)"
