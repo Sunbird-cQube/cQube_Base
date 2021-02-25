@@ -1,6 +1,6 @@
 <div class="container-fluid" style="padding-top:15px !important;">
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-lg-7 col-md-12 col-sm-12">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
                     Student Attendance Report for: <span id="state" (click)="onClickHome()"
@@ -39,17 +39,27 @@
                 </p>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-lg-5 col-md-12 col-sm-12">
             <div class="row">
-                <div class="col-sm-0">
-
+                <div class="col-sm-4">
+                    <select [disabled]="markers.length == 0" id="academicYear"
+                        style="padding: 5px 2px 5px 2px;float: left;margin: 2px 15px 0px 0px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                        [(ngModel)]="academicYear">
+                        <option [value]="academicYear" disabled selected="selected">Choose Academic Year</option>
+                        <option *ngFor="let year of academicYears,  let i =index" [(ngValue)]="academicYears[i]">
+                            {{academicYears[i]}}
+                        </option>
+                    </select>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <a *ngIf="academicYear" href="javascript: void(0)"
+                        style="text-decoration: underline; font-size: 12px; color: #3100cc;font-weight: bold;"
+                        id="downloadRaw" (click)="downloadRaw()">Download Raw Data</a>
                     <p id="errMsg"
                         style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <em class="fa fa-cloud-download" title="Download Report" id="download"
                         style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                         (click)="downloadReport($event)"></em>

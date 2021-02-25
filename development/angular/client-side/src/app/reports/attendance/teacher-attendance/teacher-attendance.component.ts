@@ -80,6 +80,9 @@ export class TeacherAttendanceComponent implements OnInit {
   timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
   period = 'overall';
   timePeriod = {};
+  rawFileName: string;
+  academicYear: any;
+  academicYears: any;
 
   constructor(public http: HttpClient, public service: TeacherAttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
 
@@ -155,6 +158,9 @@ export class TeacherAttendanceComponent implements OnInit {
       this.getMonthYear = {};
       this.commonService.loaderAndErr(this.markers);
     });
+    this.service.getRawMeta({report: 'tar'}).subscribe(res => {
+      this.academicYears = res;
+    })
   }
 
   showYearMonth() {
@@ -1294,6 +1300,15 @@ export class TeacherAttendanceComponent implements OnInit {
   //   sessionStorage.setItem('health-card-info', JSON.stringify(data));
   //   this._router.navigate(['/healthCard']);
   // }
+
+  downloadRaw() {
+    this.rawFileName = `teacher_attendance/raw/${this.levelWise.toLowerCase()}_${this.academicYear}.csv`;
+    this.service.downloadFile({ fileName: this.rawFileName }).subscribe(res => {
+      window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      alert("No Raw Data File Available in Bucket");
+    })
+  }
 
 
 }
