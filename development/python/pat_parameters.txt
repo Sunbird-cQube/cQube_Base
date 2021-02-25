@@ -298,8 +298,7 @@ HAVING  COUNT(*) > 1""",
           "total_schools": "data.[&1].total_schools",
           "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "total_schools_with_missing_data": "allBlocksFooter.total_schools_with_missing_data[]",
-          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
-          "semester": "data.[&1].semester"
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
         }
       },
       "footer": "&"
@@ -1081,8 +1080,7 @@ where subject_id is null or grade is null""",
           "total_schools": "data.[&1].total_schools",
           "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "total_schools_with_missing_data": "allBlocksFooter.total_schools_with_missing_data[]",
-          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
-          "semester": "data.[&1].semester"
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
         }
       },
       "footer": "&"
