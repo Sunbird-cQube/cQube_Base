@@ -86,6 +86,9 @@ export class StudengtAttendanceComponent implements OnInit {
   timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
   period = 'overall';
   timePeriod = {};
+  academicYears: any = [];
+  academicYear;
+  rawFileName;
 
   constructor(public http: HttpClient, public service: AttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
 
@@ -157,6 +160,10 @@ export class StudengtAttendanceComponent implements OnInit {
       this.getMonthYear = {};
       this.commonService.loaderAndErr(this.markers);
     });
+
+    this.service.getRawMeta({ report: 'tar' }).subscribe(res => {
+      this.academicYears = res;
+    })
   }
 
   showYearMonth() {
@@ -431,6 +438,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   onClickHome() {
     this.yearMonth = true;
+    this.academicYear = undefined;
     this.period = 'overall';
     this.month_year = {
       month: null,
@@ -1278,6 +1286,15 @@ export class StudengtAttendanceComponent implements OnInit {
 
     sessionStorage.setItem('health-card-info', JSON.stringify(data));
     this._router.navigate(['/healthCard']);
+  }
+
+  downloadRaw() {
+    this.rawFileName = `attendance/raw/${this.levelWise.toLowerCase()}_${this.academicYear}.csv`;
+    this.service.downloadFile({ fileName: this.rawFileName }).subscribe(res => {
+      window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      alert("No Raw Data File Available in Bucket");
+    })
   }
 
 }

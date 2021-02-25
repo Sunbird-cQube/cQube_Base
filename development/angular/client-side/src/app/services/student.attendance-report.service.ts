@@ -13,7 +13,7 @@ export class AttendanceReportService {
   constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService, public service: AppServiceComponent) {
     this.baseUrl = service.baseUrl;
   }
-  
+
   //Attendance report
   dist_wise_data(data) {
     this.service.logoutOnTokenExpire();
@@ -55,6 +55,18 @@ export class AttendanceReportService {
     this.service.logoutOnTokenExpire();
     return this.http.get(`${this.baseUrl}/attendance/getDateRange`);
   }
+
+  getRawMeta(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/attendance/rawMeta`, data);
+  }
+
+  // download raw data
+  downloadFile(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/getDownloadUrl`, data);
+  }
+
   //capturing telemetry.....
   telemetrySar(date) {
     this.service.logoutOnTokenExpire();
