@@ -25,7 +25,7 @@ export class PATReportComponent implements OnInit {
   public dateRange: any = '';
 
   // to hide and show the hierarchy details
-  public skul: boolean = false;
+  public skul: boolean = true;
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
@@ -190,6 +190,9 @@ export class PATReportComponent implements OnInit {
       if (level === 'district') {
         this.ondistLinkClick(this.districtId);
       }
+    }, err => {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
     });
   }
 
@@ -204,6 +207,9 @@ export class PATReportComponent implements OnInit {
 
       if (blockId)
         this.onblockLinkClick(blockId);
+    }, err => {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
     });
   }
 
@@ -217,6 +223,9 @@ export class PATReportComponent implements OnInit {
       }
 
       this.onclusterLinkClick(clusterId);
+    }, err => {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
     });
   }
 
@@ -830,6 +839,7 @@ export class PATReportComponent implements OnInit {
     }, err => {
       this.data = [];
       this.commonService.loaderAndErr(this.data);
+      document.getElementById('spinner').style.display = 'none';
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';

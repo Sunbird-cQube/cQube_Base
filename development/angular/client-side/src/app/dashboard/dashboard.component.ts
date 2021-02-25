@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 })
 export class DashboardComponent implements OnInit {
   state;
-
+  semester = true;
   //tooltip texts::::::::::::::
   imrTooltip;
   crTooltip;
