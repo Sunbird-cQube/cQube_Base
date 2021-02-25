@@ -215,6 +215,9 @@ export class StudengtAttendanceComponent implements OnInit {
       } else {
         this.getBlocks();
       }
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -250,6 +253,9 @@ export class StudengtAttendanceComponent implements OnInit {
       } else {
         this.getClusters();
       }
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -284,6 +290,9 @@ export class StudengtAttendanceComponent implements OnInit {
       this.clusterNames = clustNames;
 
       this.clusterSelect({ type: 'click' }, this.myCluster);
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -480,8 +489,8 @@ export class StudengtAttendanceComponent implements OnInit {
         this.changeDetection.markForCheck();
       }, err => {
         this.dateRange = ''; this.changeDetection.detectChanges();
-        this.markers = [];
         this.districtsNames = [];
+        this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
     } else {

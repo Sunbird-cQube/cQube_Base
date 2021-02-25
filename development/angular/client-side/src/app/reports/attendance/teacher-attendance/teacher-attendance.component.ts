@@ -125,7 +125,7 @@ export class TeacherAttendanceComponent implements OnInit {
           month: null,
           year: null
         };
-        
+
         this.params = JSON.parse(sessionStorage.getItem('report-level-info'));
         let params = this.params;
 
@@ -213,6 +213,9 @@ export class TeacherAttendanceComponent implements OnInit {
       } else {
         this.getBlocks();
       }
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -248,6 +251,9 @@ export class TeacherAttendanceComponent implements OnInit {
       } else {
         this.getClusters();
       }
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -282,6 +288,9 @@ export class TeacherAttendanceComponent implements OnInit {
       this.clusterNames = clustNames;
 
       this.clusterSelect({ type: 'click' }, this.myCluster);
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 

@@ -285,8 +285,8 @@
                             </div>
                             <div *ngIf="dataSourceName == 'nifi_pat'" style="width: 155px;">
                                 <app-multi-select #multiSelect [selection]="'Select Exam Codes'"
-                                    style="margin-top: 1px;" [width1]="'155px'" [width2]="'145px'" [list]="months2"
-                                    (shareCheckedList)="shareCheckedList2($event)">
+                                    style="margin-top: 1px;" [width1]="'155px'" [width2]="'145px'" [list]="examCodes" [text]="'Exam Codes'"
+                                    (shareCheckedList)="shareCheckedList6($event)">
                                 </app-multi-select>
                             </div>
                             <div *ngIf="dataSourceName == 'nifi_tpd'" style="width: 140px;">

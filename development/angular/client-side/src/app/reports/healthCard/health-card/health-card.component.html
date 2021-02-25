@@ -130,7 +130,7 @@
                     <div class="col-lg-12">
                         <div style="float: left;">
                             <select id="period"
-                                style="padding: 6.3px; margin: 5px 15px 0px 0px;  color: black; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: #f5f6fb"
+                                style="padding: 6.3px; margin: 5px 15px 0px 0px;  color: black; border-radius: 4px; font-size: 12px; font-weight: bold; background-color: #f5f6fb"
                                 [(ngModel)]="period" (change)="onPeriodSelect()">
                                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
                                 <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
@@ -141,7 +141,7 @@
                         <div style="float: right;">
                             <em aria-disabled="true" class="fa fa-cloud-download" aria-hidden="true" id="download"
                                 title="Download Report"
-                                style="cursor: pointer;font-size: 30px; float: right; color: #3100cc;" alt="download">
+                                style="cursor: pointer;display: none; font-size: 30px; float: right; color: #3100cc;" alt="download">
                             </em>
                         </div>
                         <div style="float: right;">
@@ -151,27 +151,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" style="padding-top: 12px !important;">
+                <div class="row" style="padding-top: 8px !important;">
                     <div class="col-lg-4 col-md-3 col-sm-12">
-                        <label for="" style="font-size: 13px; font-weight: bold;">Choose Level</label>
+                        <label for="" style="font-size: 13px; font-weight: bold;line-height: 1em;">Choose Level</label>
                         <select id="level"
                             style="padding: 6.3px;width: 100%; margin-bottom: 10px;background-color: #f5f6fb; border-radius: 4px; font-size: 12px; font-weight: bold;"
                             [(ngModel)]="level" name="level" (change)="selectedLevel()">
                             <option [value]="level" disabled selected="selected">Choose Level
                             </option>
-                            <option *ngFor="let level of levels" [(ngValue)]="level.key" style=" font-size: 11px;">
+                            <option *ngFor="let level of levels" [(ngValue)]="level.key">
                                 {{level.name}}
                             </option>
                         </select>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="autocomplete" style="width:100%;">
-                            <span id="warning" style="font-size: 13px; float: left;"> Please enter at least 2
+                            <span id="warning" style="font-size: 13px; float: left;line-height: 1em;"> Please enter at least 2
                                 characters/digits</span>
                             <p style="line-height: 1em; float: left;">&nbsp;</p>
                             <input #searchInput id="myInput"
                                 style="border: 1px solid gray;background-color: #f5f6fb; padding: 6px; font-size: 12px; width: 100%; border-radius: 5px;margin-top: -5px;"
-                                type="search" class="clearable" autofocus autocomplete="off" name="districtName"
+                                type="search" class="clearable" autocomplete="off" name="districtName"
                                 [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
                             <br *ngIf="len < 2">
                             <br *ngIf="len >= 2" />

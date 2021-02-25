@@ -137,7 +137,6 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       document.getElementById('home').style.display = "none";
       this.stateData();
     }
-    console.log(this.period)
   }
 
   onPeriodSelect() {
@@ -161,13 +160,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.selectedLevel(true);
       }
     }
-    // document.getElementById('spinner').style.display = 'none';
   }
 
   onHomeSelect() {
-    this.stateData();
     this.period = "overall";
-    document.getElementById('home').style.display = "none";
+    this.stateData();
   }
   stateData() {
     document.getElementById('spinner').style.display = 'block';

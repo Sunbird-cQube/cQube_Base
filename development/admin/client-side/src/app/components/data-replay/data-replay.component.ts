@@ -20,6 +20,7 @@ export class DataReplayComponent implements OnInit {
   months2 = [];
   years3 = [];
   months3 = [];
+  examCodes = [];
 
   selectedStdYear;
   selectedTchrYear;
@@ -188,7 +189,7 @@ export class DataReplayComponent implements OnInit {
     this.selectedBatchIds = item;
     if (this.selectedBatchIds.length > 0) {
       var obj = {
-        batch_ids: this.selectedBatchIds
+        batch_id: this.selectedBatchIds
       }
       this.formObj['tpd'] = obj;
     } else {
@@ -196,15 +197,20 @@ export class DataReplayComponent implements OnInit {
     }
   }
 
-  selectedCRCYear;
-  selectedCRCMonths = [];
-  shareCheckedList5(item: any[]) {
-    this.selectedCRCMonths = item;
-    this.formObj['crc']['months'] = this.selectedCRCMonths;
-    if (item.length > 0) {
-      this.crcMonthErr = '';
+  selectedExamCodes;
+  shareCheckedList6(item: any[]) {
+    this.selectedExamCodes = item;
+    if (this.selectedExamCodes.length > 0) {
+      var obj = {
+        exam_code: this.selectedExamCodes
+      }
+      this.formObj['periodic_assessment_test'] = obj;
+    } else {
+      delete this.formObj['periodic_assessment_test'];
     }
   }
+
+  selectedCRCYear;
   onSelectCRCYear(value) {
     this.crcMonthErr = '';
     this.selectedCRCYear = value;
@@ -227,13 +233,22 @@ export class DataReplayComponent implements OnInit {
     }
   }
 
+  selectedCRCMonths = [];
+  shareCheckedList5(item: any[]) {
+    this.selectedCRCMonths = item;
+    this.formObj['crc']['months'] = this.selectedCRCMonths;
+    if (item.length > 0) {
+      this.crcMonthErr = '';
+    }
+  }
+
   onSelectFromDate() {
     this.toDateErr = '';
     if (this.summaryFromDate) {
       let date = `${("0" + (this.summaryFromDate.getDate())).slice(-2)}-${("0" + (this.summaryFromDate.getMonth() + 1)).slice(-2)}-${this.summaryFromDate.getFullYear()}`;
       this.formObj['summary_rollup'] = {
-        fromDate: date,
-        toDate: ''
+        from_date: date,
+        to_date: ''
       }
     }
   }
@@ -242,7 +257,7 @@ export class DataReplayComponent implements OnInit {
     this.toDateErr = '';
     if (this.summaryToDate) {
       let date = `${("0" + (this.summaryToDate.getDate())).slice(-2)}-${("0" + (this.summaryToDate.getMonth() + 1)).slice(-2)}-${this.summaryToDate.getFullYear()}`;
-      this.formObj['summary_rollup']['toDate'] = date;
+      this.formObj['summary_rollup']['to_date'] = date;
     }
   }
 
@@ -317,6 +332,12 @@ export class DataReplayComponent implements OnInit {
     this.onSelectCRCYear('Select Year');
     this.summaryFromDate = undefined;
     this.summaryToDate = undefined;
+    this.selectedStdYear = undefined;
+    this.selectedTchrYear = undefined;
+    this.selectedCRCYear = undefined;
+    this.selectedMonths1 = [];
+    this.selectedMonths2 = [];
+    this.selectedCRCMonths = [];
     this.months1 = this.months1.map(month => {
       month.status = false;
       return month;
