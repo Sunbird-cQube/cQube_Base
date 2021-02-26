@@ -333,6 +333,7 @@ export class SatHeatChartComponent implements OnInit {
       let subject;
       let exam_date;
       let name;
+      let marks_percentage;
       tooltipData.map(a => {
         if (point.x == a.x && point.y == a.y) {
           totalSchools = a.total_schools
@@ -347,6 +348,7 @@ export class SatHeatChartComponent implements OnInit {
             indicator = a.qusetion_id
           }
           name = a.name;
+          marks_percentage = a.marks_percentage
         }
       })
 
@@ -379,7 +381,8 @@ export class SatHeatChartComponent implements OnInit {
         <br> ${grades != "all" ? viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>` : ''}
        
         <br> <b>Students Attended: ${studentAttended}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>
+        <br> ${marks_percentage !== null ? `<b>Marks Percentage: ${marks_percentage}` + '%' : ''}</b>`
       return obj
     }
   }
