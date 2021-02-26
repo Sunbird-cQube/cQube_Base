@@ -82,7 +82,7 @@ export class SatReportComponent implements OnInit {
   distFilter = [];
   blockFilter = [];
   clusterFilter = [];
-  reportName = 'periodic_assessment_test';
+  reportName = 'semester_assessment_test';
 
   timeRange = [{ key: 'all', value: "Overall" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: 'last_30_days', value: "Last 30 Days" }];
   period = 'all';

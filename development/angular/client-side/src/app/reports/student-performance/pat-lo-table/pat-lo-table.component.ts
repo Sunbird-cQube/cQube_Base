@@ -70,7 +70,7 @@ export class PATLOTableComponent implements OnInit {
     public commonService: AppServiceComponent,
     public router: Router
   ) {
-    service.PATHeatMapMetaData().subscribe(res => {
+    service.PATHeatMapMetaData({ report: 'pat' }).subscribe(res => {
       this.metaData = res['data'];
       for (let i = 0; i < this.metaData.length; i++) {
         this.years.push(this.metaData[i]['year']);
@@ -91,7 +91,7 @@ export class PATLOTableComponent implements OnInit {
       this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
-     
+
       this.fileName = `${this.reportName}_overall_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
 
       this.commonFunc();

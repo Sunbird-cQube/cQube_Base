@@ -75,7 +75,7 @@ export class SatHeatChartComponent implements OnInit {
   pageSize = 40;
   currentPage = 1;
 
-  reportName = 'periodic_assessment_test_heatmap';
+  reportName = 'semester_assessment_test_heatmap';
 
   getHeight(event) {
     this.height = event.target.innerHeight;
