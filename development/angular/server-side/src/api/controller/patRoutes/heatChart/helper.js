@@ -66,7 +66,7 @@ const generalFun = (grade, data, level, viewBy) => {
             let colors = colorsHelper.colors;
             var keys;
             // if (grade == "") {
-                keys = Object.keys(colors);
+            keys = Object.keys(colors);
             // }
 
             var tooltipData = [];
@@ -85,7 +85,7 @@ const generalFun = (grade, data, level, viewBy) => {
                         total_schools: mark ? parseInt(mark.total_schools) : '',
                         total_students: mark ? parseInt(mark.total_students) : '',
                         name: mark ? mark.district_name && !mark.block_name && !mark.cluster_name && !mark.school_name ? mark.district_name : '' || mark.district_name && mark.block_name && !mark.cluster_name && !mark.school_name ? mark.block_name : '' || mark.block_name && mark.cluster_name && !mark.school_name ? mark.cluster_name : '' || mark.cluster_name && mark.school_name ? mark.school_name : '' : '',
-                        marks_percentage: mark ? parseFloat(mark.marks) : null,
+                        marks_percentage: mark && mark.percentage ? parseFloat(mark.percentage) : null,
 
                     })
                     mark = mark ? parseFloat(mark.marks) : null;
