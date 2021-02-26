@@ -63,12 +63,12 @@ const generalFun = (grade, data, level, viewBy) => {
             }
             let finalData = []
 
-            let colors = grade != "" ? colorsHelper.colors : colorsHelper.colors1
+            let colors = colorsHelper.colors;
             var keys;
-            if (grade == "") {
+            // if (grade == "") {
                 keys = Object.keys(colors);
-            }
-            
+            // }
+
             var tooltipData = [];
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
@@ -84,12 +84,14 @@ const generalFun = (grade, data, level, viewBy) => {
                         students_attended: mark ? parseInt(mark.students_attended) : '',
                         total_schools: mark ? parseInt(mark.total_schools) : '',
                         total_students: mark ? parseInt(mark.total_students) : '',
-                        name: mark ? mark.district_name && !mark.block_name && !mark.cluster_name && !mark.school_name ? mark.district_name : '' || mark.district_name && mark.block_name && !mark.cluster_name && !mark.school_name ? mark.block_name : '' || mark.block_name && mark.cluster_name && !mark.school_name ? mark.cluster_name : '' || mark.cluster_name && mark.school_name ? mark.school_name : '' : ''
+                        name: mark ? mark.district_name && !mark.block_name && !mark.cluster_name && !mark.school_name ? mark.district_name : '' || mark.district_name && mark.block_name && !mark.cluster_name && !mark.school_name ? mark.block_name : '' || mark.block_name && mark.cluster_name && !mark.school_name ? mark.cluster_name : '' || mark.cluster_name && mark.school_name ? mark.school_name : '' : '',
+                        marks_percentage: mark ? parseFloat(mark.marks) : null,
 
                     })
                     mark = mark ? parseFloat(mark.marks) : null;
 
-                    if (grade == "" && mark != null) {
+                    // if (grade == "" && mark != null) {
+                    if (mark != null) {
                         var color = '';
                         for (let i = 0; i < keys.length; i++) {
                             if (mark <= keys[i]) {
