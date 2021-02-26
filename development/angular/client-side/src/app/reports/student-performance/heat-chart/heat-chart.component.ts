@@ -108,7 +108,7 @@ export class HeatChartComponent implements OnInit {
       this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
-      
+
       this.fileName = `${this.reportName}_overall_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
       this.commonFunc();
     }, err => {
@@ -333,6 +333,7 @@ export class HeatChartComponent implements OnInit {
       let subject;
       let exam_date;
       let name;
+      let marks_percentage;
       tooltipData.map(a => {
         if (point.x == a.x && point.y == a.y) {
           totalSchools = a.total_schools
@@ -347,6 +348,7 @@ export class HeatChartComponent implements OnInit {
             indicator = a.qusetion_id
           }
           name = a.name;
+          marks_percentage = a.marks_percentage
         }
       })
 
@@ -375,11 +377,12 @@ export class HeatChartComponent implements OnInit {
 
       obj += `<br> <b>Grade: ${grade}</b>
         <br> <b>Subject: ${subject}</b>
-        <br> <b>ExamDate: ${exam_date}</b>
+        <br> <b>Exam Date: ${exam_date}</b>
         <br> ${grades != "all" ? viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>` : ''}
        
         <br> <b>Students Attended: ${studentAttended}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Marks: ${point.value}` : ''}</b>
+        <br> ${marks_percentage !== null ? `<b>Marks Percentage: ${marks_percentage}` + '%' : ''}</b>`
       return obj
     }
   }
