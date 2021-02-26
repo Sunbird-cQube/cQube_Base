@@ -87,7 +87,7 @@ export class SatHeatChartComponent implements OnInit {
     public commonService: AppServiceComponent,
     public router: Router
   ) {
-    service.PATHeatMapMetaData().subscribe(res => {
+    service.PATHeatMapMetaData({report: 'sat'}).subscribe(res => {
       this.metaData = res['data'];
       for (let i = 0; i < this.metaData.length; i++) {
         this.years.push(this.metaData[i]['year']);
@@ -177,6 +177,7 @@ export class SatHeatChartComponent implements OnInit {
     this.reportData = [];
     this.fetchFilters(this.metaData);
     let a = {
+      report: 'sat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -478,6 +479,7 @@ export class SatHeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
+      report: 'sat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -521,6 +523,7 @@ export class SatHeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
+      report: 'sat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -565,6 +568,7 @@ export class SatHeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
+      report: 'sat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
