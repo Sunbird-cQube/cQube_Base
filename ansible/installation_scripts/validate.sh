@@ -248,7 +248,7 @@ fi
 check_db_password(){
     len="${#2}"
     if test $len -ge 8 ; then
-        echo "$2" | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@#$%^&*]" > /dev/null 2>&1
+        echo "$2" | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@%^*!?]" > /dev/null 2>&1
         if [[ ! $? -eq 0 ]]; then
             echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
         fi

@@ -184,7 +184,7 @@
     url: http://localhost:{{ nifi_port }}/nifi-api/controller/config
     method: GET
   register: nifi_config  
-  tags: install
+  tags: [ install, update ]
     
 - name: Update the NiFi thread count
   uri:
