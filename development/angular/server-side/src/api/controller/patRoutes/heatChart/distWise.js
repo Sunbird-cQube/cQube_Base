@@ -17,7 +17,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
             } else if (viewBy == 'question_id')
                 fileName = `pat/heatChart/questionIdLevel/${year}/${month}/allData.json`;
         }
-
+        console.log(fileName)
         var data = await s3File.readS3File(fileName);
         let districtDetails = data.map(e => {
             return {
