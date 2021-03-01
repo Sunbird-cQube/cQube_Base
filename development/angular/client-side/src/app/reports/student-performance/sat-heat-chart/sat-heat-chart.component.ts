@@ -75,7 +75,7 @@ export class SatHeatChartComponent implements OnInit {
   pageSize = 40;
   currentPage = 1;
 
-  reportName = 'periodic_assessment_test_heatmap';
+  reportName = 'semester_assessment_test_heatmap';
 
   getHeight(event) {
     this.height = event.target.innerHeight;
@@ -87,7 +87,7 @@ export class SatHeatChartComponent implements OnInit {
     public commonService: AppServiceComponent,
     public router: Router
   ) {
-    service.PATHeatMapMetaData().subscribe(res => {
+    service.PATHeatMapMetaData({report: 'sat'}).subscribe(res => {
       this.metaData = res['data'];
       for (let i = 0; i < this.metaData.length; i++) {
         this.years.push(this.metaData[i]['year']);
@@ -177,6 +177,7 @@ export class SatHeatChartComponent implements OnInit {
     this.reportData = [];
     this.fetchFilters(this.metaData);
     let a = {
+      report: 'sat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -333,6 +334,7 @@ export class SatHeatChartComponent implements OnInit {
       let subject;
       let exam_date;
       let name;
+      let marks_percentage;
       tooltipData.map(a => {
         if (point.x == a.x && point.y == a.y) {
           totalSchools = a.total_schools
@@ -347,6 +349,7 @@ export class SatHeatChartComponent implements OnInit {
             indicator = a.qusetion_id
           }
           name = a.name;
+          marks_percentage = a.marks_percentage
         }
       })
 
@@ -379,7 +382,8 @@ export class SatHeatChartComponent implements OnInit {
         <br> ${grades != "all" ? viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>` : ''}
        
         <br> <b>Students Attended: ${studentAttended}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>
+        <br> ${marks_percentage !== null ? `<b>Marks Percentage: ${marks_percentage}` + '%' : ''}</b>`
       return obj
     }
   }
@@ -475,6 +479,7 @@ export class SatHeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
+      report: 'sat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -518,6 +523,7 @@ export class SatHeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
+      report: 'sat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -562,6 +568,7 @@ export class SatHeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
+      report: 'sat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,

@@ -68,4 +68,12 @@
             tags: update
             when: nifi_teacher_attendance
 
+          - role: nifi_data_replay
+            tags: update
+            when: nifi_data_replay
+
+          - role: nifi_sat
+            tags: update
+            when: nifi_sat
+
           - cqube_version

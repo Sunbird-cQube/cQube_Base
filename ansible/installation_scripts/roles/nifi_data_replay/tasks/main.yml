@@ -1,0 +1,2 @@
+- include_tasks: nifi_data_replay.yml
+  tags: [ install, update ]
