@@ -72,6 +72,14 @@
             tags: install
             when: nifi_teacher_attendance
 
+          - role: nifi_data_replay
+            tags: install
+            when: nifi_data_replay
+
+          - role: nifi_sat
+            tags: install
+            when: nifi_sat
+
           - { role: nifi_scheduler, tags: install }
           - cqube_version
           

@@ -191,8 +191,8 @@
     url: http://localhost:{{ nifi_port }}/nifi-api/controller/config
     method: PUT
     body_format: json
-    body: {"revision":{"version":"{{ nifi_config.json.revision.version }}"},"component":{"maxTimerDrivenThreadCount":"22","maxEventDrivenThreadCount":"10"}}
-  tags: install
+    body: {"revision":{"version":"{{ nifi_config.json.revision.version }}"},"component":{"maxTimerDrivenThreadCount":"10","maxEventDrivenThreadCount":"6"}}
+  tags: [ install, update ]
 
 - name: Create the prometheus task
   uri:

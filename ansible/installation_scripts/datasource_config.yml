@@ -10,3 +10,5 @@ nifi_pat: true
 nifi_composite: true
 nifi_healthcard: true
 nifi_teacher_attendance: true
+nifi_data_replay: true
+nifi_sat: true

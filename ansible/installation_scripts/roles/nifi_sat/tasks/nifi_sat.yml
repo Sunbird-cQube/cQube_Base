@@ -1,0 +1,294 @@
+- name: Fetch nifi root processor group id
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
+    method: GET
+  register: processor_id
+
+- name: Upload template
+  action: shell curl -POST http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_id.json.id }}/templates/upload -k -v -F template=@../../development/nifi/sat_transformer.xml
+  register: xml_output
+  args:
+    warn: false
+
+- name: Upload parameters
+  action: shell curl -d @{{ item }} -H Content-Type:application/json -X POST http://localhost:{{ nifi_port }}/nifi-api/parameter-contexts
+  with_items:
+     - nifi_json_files/sat.json
+     - nifi_json_files/raw.json
+  args:
+    warn: false
+
+- name: Get processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_id.json.id }}
+    method: GET
+  register: processor_group
+
+- name: Get template list
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/templates
+    method: GET
+  register: template_list
+
+- name: Instatiate template list
+  action: shell curl -X POST  -H 'Content-Type:application/json' -d '{ "originX":0.0, "originY":0.0, "templateId":"{{ item.template.id }}" }' http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ processor_group.json.processGroupFlow.id }}/template-instance
+  loop: "{{ template_list.json | json_query('templates[*]') }}"
+  when: item.template.name == 'sat_transformer'
+  no_log: True
+  args:
+    warn: false
+
+- name: Fetch nifi processor group id
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/root
+    method: GET
+  register: processor_id
+
+- name: Get processor group after instantiation of template
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ processor_id.json.id }}
+    method: GET
+  register: processor_group_temp
+
+#--- Fetching processor group id of sat processor ---
+- name: Get processor group id of the sat processor
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ item.id }}
+    method: GET
+  loop: "{{ processor_group_temp.json | json_query('processGroupFlow.flow.processGroups[*]') }}"
+  when: item.component.name == 'sat_transformer'
+  register: processor_group_template
+  no_log: True
+
+- set_fact:
+    sat_pg_id: "{{  processor_group_template | json_query('results[?item.component.name == `sat_transformer`]') }}"
+
+- name: Get multi processor group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ sat_pg_id[0].item.component.id }}
+    method: GET
+  register: multi_processor
+
+- name: Run jmesquery
+  debug: msg={{ multi_processor.json | json_query(jmesquery) }}
+  vars:
+    jmesquery: "processGroupFlow.flow.processGroups[*].{Name: component.name, ID: component.id,  Version: revision.version}"
+  register: output
+
+#--- Fetch ID and Version of each processor ---
+- name: Display ID of cqube raw processor
+  debug:
+    var: item
+  loop: "{{ output | json_query(sat_raw_id) }}"
+  vars:
+    sat_raw_id: "msg[?Name=='cQube_raw_data_fetch_sat'].ID"
+  register: raw_id
+
+- name: Display version of cqube raw processor
+  debug:
+    var: item
+  loop: "{{ output | json_query(sat_raw_version) }}"
+  vars:
+    sat_raw_version: "msg[?Name=='cQube_raw_data_fetch_sat'].Version"
+  register: raw_version
+
+- name: Display ID of sat processor
+  debug:
+    var: item
+  loop: "{{ output | json_query(sat_id) }}"
+  vars:
+    sat_id: "msg[?Name=='sat_processor'].ID"
+  register: sat_id
+
+- name: Display version of sat processor
+  debug:
+    var: item
+  loop: "{{ output | json_query(sat_version) }}"
+  vars:
+    sat_version: "msg[?Name=='sat_processor'].Version"
+  register: sat_version
+
+- name: Get Default Processor Group
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/parameter-contexts
+    method: GET
+  register: parameters
+
+#--- connection of processor groups to respective parameter contexts ---
+- name: Connection raw processor group to raw parameters
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ raw_id.results[0].item }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+            "version": "{{ raw_version.results[0].item }}",
+            "lastModifier": "Ansible"
+        },"component":
+              {"id": "{{ raw_id.results[0].item }}","parameterContext":{"id": "{{ item.component.id }}"}}
+     }
+  loop: "{{ parameters.json | json_query('parameterContexts[*]') }}"
+  when: item.component.name == 'cQube-raw-data-fetch-parameters'
+  no_log: true
+
+- name: Connection sat processor group to sat parameters
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ sat_id.results[0].item }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+            "version": "{{ sat_version.results[0].item }}",
+            "lastModifier": "Ansible"
+        },"component":
+              {"id": "{{ sat_id.results[0].item }}","parameterContext":{"id": "{{ item.component.id }}"}}
+     }
+  loop: "{{ parameters.json | json_query('parameterContexts[*]') }}"
+  when: item.component.name == 'sat_parameters'
+  no_log: true
+
+- name: Create DistributedMapCacheServer
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/process-groups/{{ raw_id.results[0].item }}/controller-services
+    method: POST
+    body_format: json
+    status_code: 201
+    body: {"revision": {"clientId": "ansible","version": 0,"lastModifier": "ansible"},"component":{"type":"org.apache.nifi.distributed.cache.server.map.DistributedMapCacheServer","properties" : { "Port": "4668"}}}
+
+#--- Run a python code to load required parameter values ---
+- name: Deleting params file if exists
+  file:
+    path: "{{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
+    state: absent
+
+- name: creating python code for parameters
+  template:
+    src: update_nifi_params.py.j2
+    dest: "{{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
+    mode: "0644"
+
+- name: Run python code
+  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/update_nifi_params.py"
+
+#--- starting of controllers---
+- name: Get controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ raw_id.results[0].item }}/controller-services
+    method: GET
+  register: controllers_list_raw
+
+- name: Get controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ sat_id.results[0].item }}/controller-services
+    method: GET
+  register: controllers_list_sat
+
+- name: Add s3 credentials parameters
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+             "version": "{{ item.revision.version }}",
+            "lastModifier": "Ansible"
+        },
+        "component": {"id": "{{ item.id }}", "name": "cQube_s3_sat_raw",
+        "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
+
+     }
+  loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'cQube_s3_sat_raw'
+  no_log: True
+
+- name: Add s3 credentials parameters
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+            "version": "{{ item.revision.version }}",
+           "lastModifier": "Ansible"
+       },
+       "component": {"id": "{{ item.id }}", "name": "cQube_s3_sat",
+       "properties" : { "Access Key" : "#{s3_access_key}", "Secret Key":"#{s3_secret_key}"}}
+
+    }
+  loop: "{{ controllers_list_sat.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'cQube_s3_sat'
+  no_log: True
+
+- name: Add postgre-source-pwd
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+             "version": "{{ item.revision.version }}",
+            "lastModifier": "Ansible"
+        },
+        "component": {"id": "{{ item.id }}", "name": "postgres_sat_raw",
+        "properties" : { "Password" : "#{db_password}"}}
+
+     }
+  loop: "{{ controllers_list_raw.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'postgres_sat_raw'
+  no_log: True
+
+- name: Add postgre-source-pwd
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}
+    method: PUT
+    body_format: json
+    body: {"revision": {
+             "version": "{{ item.revision.version }}",
+            "lastModifier": "Ansible"
+        },
+       "component": {"id": "{{ item.id }}", "name": "postgres_sat",
+       "properties" : { "Password" : "#{db_password}"}}
+
+    }
+  loop: "{{ controllers_list_sat.json | json_query('controllerServices[*]') }}"
+  when: item.component.name == 'postgres_sat'
+  no_log: True
+
+- name: Get updated raw controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ raw_id.results[0].item }}/controller-services
+    method: GET
+  register: controllers_list_raw_updated
+  no_log: True
+
+- name: Get updated sat controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ sat_id.results[0].item }}/controller-services
+    method: GET
+  register: controllers_list_sat_updated
+  no_log: True
+
+- name: Start controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}/run-status
+    method: PUT
+    body_format: json
+    body: {"revision": {
+            "version": "{{ item.revision.version }}",
+        },
+        "state":"ENABLED"
+        }
+  loop: "{{ controllers_list_raw_updated.json | json_query('controllerServices[*]') }}"
+  when: item.component.state == 'DISABLED'
+  no_log: True
+
+- name: Start controllers
+  uri:
+    url: http://localhost:{{ nifi_port }}/nifi-api/controller-services/{{ item.id }}/run-status
+    method: PUT
+    body_format: json
+    body: {"revision": {
+           "version": "{{ item.revision.version }}",
+           "lastModifier": "Ansible"
+       },
+       "state":"ENABLED"
+      }
+  loop: "{{ controllers_list_sat_updated.json | json_query('controllerServices[*]') }}"
+  when: item.component.state == 'DISABLED'
+  no_log: True
+

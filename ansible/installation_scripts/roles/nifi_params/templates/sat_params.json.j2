@@ -5,12 +5,17 @@
             "lastModifier": "Admin"
         },
         "component":{
-                "name":"diksha_parameters",
+                "name":"sat_parameters",
 
         "parameters":[
             {
-                "parameter":{"name":"base_dir",
-                        "value":"{{ base_dir }}"
+                "parameter":{"name":"s3_emission_bucket",
+                        "value":"{{ s3_emission_bucket }}"
+                            }
+            },
+            {
+                "parameter":{"name":"s3_input_bucket",
+                        "value":"{{ s3_input_bucket }}"
                             }
             },
             {
@@ -18,9 +23,19 @@
                         "value":"{{ s3_output_bucket }}"
                             }
             },
+            {
+                "parameter":{"name":"base_dir",
+                        "value":"{{ base_dir }}"
+                            }
+            },
 	    {
                 "parameter":{"name":"db_user",
                         "value":"{{ db_user }}"
+                            }
+            },
+            {
+                "parameter":{"name":"base_directory",
+                        "value":"{{ base_dir }}"
                             }
             },
             {
@@ -45,17 +60,17 @@
             },
 	    {
                 "parameter":{"name":"s3_access_key",
-                "sensitive": true,
+		"sensitive": true,	
                         "value":"{{ s3_access_key }}"
                             }
             },
-            {
+	    {
                 "parameter":{"name":"s3_secret_key",
                 "sensitive": true,
                         "value":"{{ s3_secret_key }}"
                             }
             },
-            {
+	    {
                 "parameter":{"name":"db_password",
                 "sensitive": true,
                         "value":"{{ db_password }}"
