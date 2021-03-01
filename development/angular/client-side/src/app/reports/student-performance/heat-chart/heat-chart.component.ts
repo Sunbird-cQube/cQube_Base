@@ -90,12 +90,12 @@ export class HeatChartComponent implements OnInit {
     service.PATHeatMapMetaData({report: 'pat',}).subscribe(res => {
       this.metaData = res['data'];
       for (let i = 0; i < this.metaData.length; i++) {
-        this.years.push(this.metaData[i]['year']);
+        this.years.push(this.metaData[i]['academic_year']);
       }
       this.year = this.years[this.years.length - 1];
       let i;
       for (i = 0; i < this.metaData.length; i++) {
-        if (this.metaData[i]['year'] == this.year) {
+        if (this.metaData[i]['academic_year'] == this.year) {
           this.months = (Object.keys(res['data'][i].data.months));
           this.grades = this.metaData[i].data['grades'];
           this.subjects = this.metaData[i].data['subjects'];
@@ -120,7 +120,7 @@ export class HeatChartComponent implements OnInit {
   fetchFilters(metaData) {
     let i;
     for (i = 0; i < metaData.length; i++) {
-      if (metaData[i]['year'] == this.year) {
+      if (metaData[i]['academic_year'] == this.year) {
         this.months = (Object.keys(this.metaData[i].data.months));
         this.grades = metaData[i].data['grades'];
         this.subjects = metaData[i].data['subjects'];
