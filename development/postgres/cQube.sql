@@ -5812,3 +5812,112 @@ created_on  timestamp,
 updated_on  timestamp,
 primary key(academic_year,exam_code,school_id,question_id)
 );
+
+-- Data replay
+
+create table if not exists del_data_source_details (data_source text,params text,table_name text, primary key(data_source,table_name));
+
+--Tables related to student_attendance
+
+insert into del_data_source_details values('student_attendance','month,year','student_attendance_meta') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('student_attendance','month,year','student_attendance_staging_1') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('student_attendance','month,year','student_attendance_staging_2') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('student_attendance','month,year','student_attendance_temp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('student_attendance','month,year','student_attendance_trans') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('student_attendance','month,year','school_student_total_attendance') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to teacher_attendance
+
+insert into del_data_source_details values('teacher_attendance','month,year','teacher_attendance_meta') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('teacher_attendance','month,year','teacher_attendance_staging_1') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('teacher_attendance','month,year','teacher_attendance_staging_2') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('teacher_attendance','month,year','teacher_attendance_temp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('teacher_attendance','month,year','teacher_attendance_trans') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('teacher_attendance','month,year','school_teacher_total_attendance') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to crc
+
+insert into del_data_source_details values('crc','month,year','crc_location_trans') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('crc','month,year','crc_inspection_trans') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('crc','month,year','crc_visits_frequency') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to periodic_assessment_test
+
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_mst') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_qst_mst') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_result_staging_1') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_result_staging_2') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_result_temp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_result_trans') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_school_qst_result') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_school_result') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to diksha_tpd
+
+insert into del_data_source_details values('diksha_tpd','batch_id','diksha_tpd_staging') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_tpd','batch_id','diksha_tpd_content_temp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_tpd','batch_id','diksha_tpd_trans') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_tpd','batch_id','diksha_tpd_agg') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to diksha_summary_rollup
+
+insert into del_data_source_details values('diksha_summary_rollup','batch_id','diksha_content_staging') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_summary_rollup','batch_id','diksha_content_temp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_summary_rollup','batch_id','diksha_content_trans') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_summary_rollup','batch_id','diksha_total_content') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to static
+
+insert into del_data_source_details values('static','all','block_tmp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','block_mst') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','district_tmp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','district_mst') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','cluster_tmp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','cluster_mst') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','school_master') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','school_tmp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','school_hierarchy_details') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','school_geo_master') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to infrastructure
+
+insert into del_data_source_details values('infrastructure','all','infrastructure_temp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('infrastructure','all','infrastructure_trans') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to udise
+
+insert into del_data_source_details values('udise','all','udise_sch_incen_cwsn') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_plcmnt_c12') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_reptr') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_basic_info') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_incentives') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_trng_prov') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmmarks_c10') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_class_cond') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_school_metrics_trans') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmmarks_c12') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_pgi_details') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_enr_caste') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_age') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmres_c10') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_profile') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_enr_sub_sec') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_by_stream') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmres_c12') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_recp_exp') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_exmres_c10') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_cwsn') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmres_c5') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_safety') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_exmres_c12') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_fresh') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmres_c8') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_staff_posn') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_faculty') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_medinstr') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_facility') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_tch_profile') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_plcmnt_c10') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_newadm') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing; 
+
+
