@@ -87,7 +87,7 @@ export class HeatChartComponent implements OnInit {
     public commonService: AppServiceComponent,
     public router: Router
   ) {
-    service.PATHeatMapMetaData({report: 'pat',}).subscribe(res => {
+    service.PATHeatMapMetaData({ report: 'pat', }).subscribe(res => {
       this.metaData = res['data'];
       for (let i = 0; i < this.metaData.length; i++) {
         this.years.push(this.metaData[i]['academic_year']);
@@ -334,7 +334,7 @@ export class HeatChartComponent implements OnInit {
       let subject;
       let exam_date;
       let name;
-      let marks_percentage;
+      let marks;
       tooltipData.map(a => {
         if (point.x == a.x && point.y == a.y) {
           totalSchools = a.total_schools
@@ -349,7 +349,7 @@ export class HeatChartComponent implements OnInit {
             indicator = a.qusetion_id
           }
           name = a.name;
-          marks_percentage = a.marks_percentage
+          marks = a.mark
         }
       })
 
@@ -382,8 +382,8 @@ export class HeatChartComponent implements OnInit {
         <br> ${grades != "all" ? viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>` : ''}
        
         <br> <b>Students Attended: ${studentAttended}</b>
-        <br> ${point.value !== null ? `<b>Marks: ${point.value}` : ''}</b>
-        <br> ${marks_percentage !== null ? `<b>Marks Percentage: ${marks_percentage}` + '%' : ''}</b>`
+        <br> ${marks !== null ? `<b>Marks: ${marks}` : ''}</b>
+        <br> ${point.value !== null ? `<b>Marks Percentage: ${point.value}` + '%' : ''}</b>`
       return obj
     }
   }
