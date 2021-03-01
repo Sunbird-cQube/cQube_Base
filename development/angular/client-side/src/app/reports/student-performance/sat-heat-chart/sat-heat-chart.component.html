@@ -3,12 +3,12 @@
         <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Semester Assessment Test LO Report for: <span (click)="resetToInitPage()"
+                    Semester Assessment Test Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Semester Assessment Test LO Report for: <span (click)="resetToInitPage()"
+                    Semester Assessment Test Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="selectedDistrict(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -16,7 +16,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Semester Assessment Test LO Report for: <span (click)="resetToInitPage()"
+                    Semester Assessment Test Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="selectedDistrict(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
-                    Semester Assessment Test LO Report for: <span (click)="resetToInitPage()"
+                    Semester Assessment Test Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="selectedDistrict(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -62,7 +62,7 @@
             <select [hidden]="" id="year"
                 style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="year" (change)="selectedYear()">
-                <option [value]="year" disabled selected="selected">Choose a Year</option>
+                <option [value]="year" disabled selected="selected">Choose Academic Year</option>
                 <option *ngFor="let year of years let i =index" [(ngValue)]="years[i]">
                     {{years[i]}}
                 </option>
