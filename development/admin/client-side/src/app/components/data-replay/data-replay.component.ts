@@ -120,8 +120,6 @@ export class DataReplayComponent implements OnInit {
     this.dataSources = this.dataSources.sort((a, b) => (a.sourceName > b.sourceName) ? 1 : ((b.sourceName > a.sourceName) ? -1 : 0));
     this.dataSources.unshift({ template: 'Select Data Source', status: true, sourceName: 'Select Data Source' });
 
-    console.log(this.dataSources);
-
     this.createDataTable();
     // });       
   }
@@ -359,14 +357,13 @@ export class DataReplayComponent implements OnInit {
         alert("Please selecte semester along with academic year");
         document.getElementById('spinner').style.display = 'none';
       } else {
-        console.log(this.formObj)
         var date = new Date();
         this.currTime = `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + (date.getDate())).slice(-2)}${("0" + (date.getHours())).slice(-2)}${("0" + (date.getMinutes())).slice(-2)}${("0" + (date.getSeconds())).slice(-2)}`;
-        // this.service.saveDataToS3({ formData: this.formObj, timeStamp: this.currTime }).subscribe(res => {
-        //   this.onCancel();
-        //   document.getElementById('spinner').style.display = 'none';
-        //   alert(res['msg']);
-        // })
+        this.service.saveDataToS3({ formData: this.formObj, timeStamp: this.currTime }).subscribe(res => {
+          this.onCancel();
+          document.getElementById('spinner').style.display = 'none';
+          alert(res['msg']);
+        })
       }
     } else {
       alert("Please select some options");
