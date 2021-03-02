@@ -19,10 +19,18 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 fileName = `${report}/all/${report}_school.json`;
             }
         } else {
-            if (grade) {
-                fileName = `${report}/${period}/school/${semester}/${grade}.json`;
+            if (report == 'pat') {
+                if (grade) {
+                    fileName = `${report}/${period}/school/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${report}_school.json`;
+                }
             } else {
-                fileName = `${report}/${period}/${semester}/${report}_school.json`;
+                if (grade) {
+                    fileName = `${report}/${period}/school/${semester}/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${semester}/${report}_school.json`;
+                }
             }
         }
         schoolData = await s3File.readS3File(fileName);
@@ -45,7 +53,11 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         if (period == '') {
             fileName = `${report}/all/${report}_school.json`;
         } else {
-            fileName = `${report}/${period}/${semester}/${report}_school.json`;
+            if (report == 'pat') {
+                fileName = `${report}/${period}/${report}_school.json`;
+            } else {
+                fileName = `${report}/${period}/${semester}/${report}_school.json`;
+            }
         }
 
         var schoolData = await s3File.readS3File(fileName);

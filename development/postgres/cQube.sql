@@ -5921,3 +5921,13 @@ insert into del_data_source_details values('udise','all','udise_nsqf_plcmnt_c10'
 insert into del_data_source_details values('udise','all','udise_sch_enr_newadm') on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing; 
 
 
+/* SAT adding semester */
+alter table semester_exam_mst_dup add column if not exists semester int;
+
+alter table semester_exam_mst add column if not exists semester int;
+alter table semester_exam_mst drop constraint if exists semester_exam_mst_pkey;
+alter table semester_exam_mst add primary key(exam_id,assessment_year,semester);
+
+alter table semester_exam_school_result add column if not exists semester int;
+
+
