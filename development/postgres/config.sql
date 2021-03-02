@@ -8685,7 +8685,7 @@ group by exam_id,school_id,student_uid) as a
 left join (select exam_id,assessment_year,semester from semester_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.district_id,b.assessment_year,semester )as b
- on d.academic_year=b.academic_year and d.district_id=b.district_id;
+ on d.academic_year=b.academic_year and d.district_id=b.district_id  and d.semester=b.semester;
 
 /*semester exam block*/
 
