@@ -9,6 +9,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
         var period = req.body.data.period;
         var grade = req.body.data.grade;
         var report = req.body.data.report;
+        var semester = req.body.data.sem;
         let fileName;
 
         var districtData = {}
@@ -20,9 +21,9 @@ router.post('/distWise', auth.authController, async (req, res) => {
             }
         } else {
             if (grade) {
-                fileName = `${report}/${period}/district/${grade}.json`
+                fileName = `${report}/${period}/district/${semester}/${grade}.json`;
             } else {
-                fileName = `${report}/${period}/${report}_district.json`
+                fileName = `${report}/${period}/${semester}/${report}_district.json`;
             }
         }
 
@@ -52,6 +53,22 @@ router.post('/grades', async (req, res, next) => {
 
         var data = await s3File.readS3File(fileName);
         logger.info('---grades metadata api response sent---');
+        res.status(200).send({ data: data });
+    } catch (e) {
+        logger.error(`Error :: ${e}`)
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+    }
+})
+
+router.post('/getSemesters', async (req, res, next) => {
+    try {
+        logger.info('---semester metadata api ---');
+        var fileName;
+        var period = req.body.period;
+        fileName = `sat/${period}/sat_semester_metadata.json`;
+
+        var data = await s3File.readS3File(fileName);
+        logger.info('---semester metadata api response sent---');
         res.status(200).send({ data: data });
     } catch (e) {
         logger.error(`Error :: ${e}`)
