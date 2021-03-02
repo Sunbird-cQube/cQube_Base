@@ -9,6 +9,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         var period = req.body.data.period;
         var grade = req.body.data.grade;
         var report = req.body.data.report;
+        var semester = req.body.data.sem;
         var fileName;
         var blockData = {}
 
@@ -19,10 +20,18 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                 fileName = `${report}/all/${report}_block.json`
             }
         } else {
-            if (grade) {
-                fileName = `${report}/${period}/block/${grade}.json`;
+            if (report == 'pat') {
+                if (grade) {
+                    fileName = `${report}/${period}/block/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${report}_block.json`;
+                }
             } else {
-                fileName = `${report}/${period}/${report}_block.json`
+                if (grade) {
+                    fileName = `${report}/${period}/block/${semester}/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${semester}/${report}_block.json`;
+                }
             }
         }
 
@@ -42,11 +51,16 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         logger.info('--- block wise PAT api ---');
         var period = req.body.data.period;
         var report = req.body.data.report;
+        var semester = req.body.data.sem;
         var fileName;
         if (period == "") {
             fileName = `${report}/all/${report}_block.json`;
         } else {
-            fileName = `${report}/${period}/${report}_block.json`;
+            if (report == 'pat') {
+                fileName = `${report}/${period}/${report}_block.json`;
+            } else {
+                fileName = `${report}/${period}/${semester}/${report}_block.json`;
+            }
         }
 
         var blockData = await s3File.readS3File(fileName);

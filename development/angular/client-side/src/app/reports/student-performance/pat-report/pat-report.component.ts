@@ -1119,11 +1119,11 @@ export class PATReportComponent implements OnInit {
       }
 
       if (this.selected != 'absolute') {
-        this.colors = this.commonService.getRelativeColors(this.markers, { value: this.grade ? 'Grade Performance' : this.grade && this.subject ? this.subject : 'Performance', selected: this.grade ? 'G' : this.grade && this.subject ? 'GS' : 'all', report: 'reports' });
+        this.colors = this.commonService.getRelativeColors(this.markers, { value: this.grade ? this.markers[0].Subjects ? 'Grade Performance' : this.grade : this.grade && this.subject ? this.subject : 'Performance', selected: this.grade ? 'G' : this.grade && this.subject ? 'GS' : 'all', report: 'reports' });
       }
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
-        var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, this.selected == 'absolute' ? colors[i] : this.commonService.relativeColorGredient(this.markers[i], { value: this.grade ? 'Grade Performance' : this.grade && this.subject ? this.subject : 'Performance', selected: this.grade ? 'G' : this.grade && this.subject ? 'GS' : 'all', report: 'reports' }, this.colors), options.radius, options.strokeWeight, 1, options.level);
+        var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, this.selected == 'absolute' ? colors[i] : this.commonService.relativeColorGredient(this.markers[i], { value: this.grade ? this.markers[i].Subjects ? 'Grade Performance' : this.grade : this.grade && this.subject ? this.subject : 'Performance', selected: this.grade ? 'G' : this.grade && this.subject ? 'GS' : 'all', report: 'reports' }, this.colors), options.radius, options.strokeWeight, 1, options.level);
         // data to show on the tooltip for the desired levels
         this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
 
