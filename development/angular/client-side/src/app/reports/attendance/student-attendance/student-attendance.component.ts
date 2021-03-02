@@ -1289,8 +1289,12 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   downloadRaw() {
-    this.rawFileName = `attendance/raw/${this.levelWise.toLowerCase()}_${this.academicYear}.csv`;
+    document.getElementById('spinner').style.display = 'block';
+    var selectedAcademicYear = this.academicYear;
+    this.rawFileName = `attendance/raw/${this.levelWise.toLowerCase()}_${selectedAcademicYear}.csv`;
     this.service.downloadFile({ fileName: this.rawFileName }).subscribe(res => {
+      this.academicYear = undefined;
+      document.getElementById('spinner').style.display = 'none';
       window.open(`${res['downloadUrl']}`, "_blank");
     }, err => {
       alert("No Raw Data File Available in Bucket");

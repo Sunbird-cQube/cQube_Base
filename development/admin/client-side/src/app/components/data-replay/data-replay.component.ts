@@ -12,6 +12,7 @@ declare const $;
 })
 export class DataReplayComponent implements OnInit {
   dataSources: any = [];
+  minDate;
   dataSourceName = '';
   formObj: any = {};
   years1 = [];
@@ -20,18 +21,18 @@ export class DataReplayComponent implements OnInit {
   months2 = [];
   years3 = [];
   months3 = [];
-  examCodes = [];
+  examCodes: any = [];
 
   selectedStdYear;
   selectedTchrYear;
-  fromDate;
-  toDate;
+  // fromDate;
+  // toDate;
   summaryFromDate;
   summaryToDate;
 
-  semesters: any;
+  semesters: any = [];
   selectedSemesters;
-  batchIds: any = [{ id: 1, name: "UID" }];
+  batchIds: any = [];
   selectedBatchIds;
   options = [{ id: '', value: "Select" }, { id: 'No', value: 'No' }, { id: 'Yes', value: 'Yes' }];
 
@@ -66,21 +67,43 @@ export class DataReplayComponent implements OnInit {
       })
     })
     this.service.getMonthYear({ report: 'tar' }).subscribe(res => {
-      this.getMonthYears3 = this.getMonthYears2 = res;
+      this.getMonthYears2 = res;
       var years = Object.keys(this.getMonthYears2);
       years.splice(0, 0, "Select Year");
       years.forEach(year => {
         this.years2.push({ value: year, selected: year == "Select Year" ? true : false })
       })
-      years = Object.keys(this.getMonthYears3);
+    })
+    this.service.getMonthYear({ report: 'crc' }).subscribe(res => {
+      this.getMonthYears3 = res;
+      var years = Object.keys(this.getMonthYears3);
       years.splice(0, 0, "Select Year");
       years.forEach(year => {
         this.years3.push({ value: year, selected: year == "Select Year" ? true : false })
       })
       document.getElementById('spinner').style.display = 'none';
     })
-    this.service.getSemesters().subscribe(res => {
-      this.semesters = res;
+
+    this.service.getBatchIds().subscribe((res: any) => {
+      var i = 1;
+      res.forEach(element => {
+        this.batchIds.push({ id: i, name: element.batch_id });
+        i++;
+      });
+    });
+
+    this.service.getExamCode().subscribe((res: any) => {
+      var i = 1;
+      res.forEach(element => {
+        this.examCodes.push({ id: i, name: element.exam_code });
+        i++;
+      });
+    })
+
+    this.service.getSemesters().subscribe((res: any) => {
+      res.forEach(element => {
+        this.semesters.push({ id: element.semester, name: "Semester " + element.semester });
+      });
     })
     // this.service.getDataSources().subscribe(res => {
     data.map(item => {
@@ -191,9 +214,9 @@ export class DataReplayComponent implements OnInit {
       var obj = {
         batch_id: this.selectedBatchIds
       }
-      this.formObj['tpd'] = obj;
+      this.formObj['diksha_tpd'] = obj;
     } else {
-      delete this.formObj['tpd'];
+      delete this.formObj['diksha_tpd'];
     }
   }
 
@@ -246,10 +269,11 @@ export class DataReplayComponent implements OnInit {
     this.toDateErr = '';
     if (this.summaryFromDate) {
       let date = `${("0" + (this.summaryFromDate.getDate())).slice(-2)}-${("0" + (this.summaryFromDate.getMonth() + 1)).slice(-2)}-${this.summaryFromDate.getFullYear()}`;
-      this.formObj['summary_rollup'] = {
+      this.formObj['diksha_summary_rollup'] = {
         from_date: date,
         to_date: ''
       }
+      this.minDate = new Date(this.summaryFromDate.getFullYear(), ((this.summaryFromDate.getMonth())), this.summaryFromDate.getDate() + 1);
     }
   }
 
@@ -257,7 +281,7 @@ export class DataReplayComponent implements OnInit {
     this.toDateErr = '';
     if (this.summaryToDate) {
       let date = `${("0" + (this.summaryToDate.getDate())).slice(-2)}-${("0" + (this.summaryToDate.getMonth() + 1)).slice(-2)}-${this.summaryToDate.getFullYear()}`;
-      this.formObj['summary_rollup']['to_date'] = date;
+      this.formObj['diksha_summary_rollup']['to_date'] = date;
     }
   }
 
@@ -358,6 +382,12 @@ export class DataReplayComponent implements OnInit {
       batch.status = false;
       return batch;
     });
+
+    this.examCodes = this.examCodes.map(code => {
+      code.status = false;
+      return code;
+    });
+
     if (this.multiSelect)
       this.multiSelect.forEach((child) => { child.resetSelected() })
   }
