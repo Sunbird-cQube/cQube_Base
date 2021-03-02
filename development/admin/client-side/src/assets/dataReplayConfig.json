@@ -32,12 +32,12 @@
     {
         "template": "nifi_summary",
         "status": true,
-        "sourceName": "Summary"
+        "sourceName": "Diksha ETB"
     },
     {
         "template": "nifi_tpd",
         "status": true,
-        "sourceName": "TPD"
+        "sourceName": "Diksha TPD"
     },
     {
         "template": "nifi_static",
