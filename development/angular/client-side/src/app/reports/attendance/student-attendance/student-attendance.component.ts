@@ -1292,6 +1292,7 @@ export class StudengtAttendanceComponent implements OnInit {
     document.getElementById('spinner').style.display = 'block';
     var selectedAcademicYear = this.academicYear;
     this.rawFileName = `attendance/raw/${this.levelWise.toLowerCase()}_${selectedAcademicYear}.csv`;
+    this.academicYear = undefined;
     this.service.downloadFile({ fileName: this.rawFileName }).subscribe(res => {
       this.academicYear = undefined;
       document.getElementById('spinner').style.display = 'none';

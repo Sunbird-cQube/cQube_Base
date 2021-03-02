@@ -96,5 +96,10 @@ export class PatReportService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/pat/lotable/schoolWise`, data);
   }
+
+  semMetaData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/getSemesters`, data);
+  }
 }
 

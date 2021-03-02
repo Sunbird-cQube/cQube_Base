@@ -27,7 +27,7 @@ const Config = {
 const accessKeyId = process.env.ACCESS_KEY_ID;
 const secretAccessKey = process.env.SECRET_ACCESS_KEY;
 const bucketName = process.env.OUTPUT_BUCKET;
-const rawBucketName = process.env.RAW_BUCKET;
+const rawBucketName = process.env.EMISSION_BUCKET_NAME;
 
 var s3 = new aws.S3({ 'accessKeyId': accessKeyId, 'secretAccessKey': secretAccessKey });
 var s3_download = new aws.S3({ 'accessKeyId': accessKeyId, 'secretAccessKey': secretAccessKey, signatureVersion: 'v4', region: process.env.AWS_REGION });
