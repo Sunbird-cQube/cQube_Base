@@ -112,6 +112,7 @@ export class SatReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.period = 'all';
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
@@ -120,7 +121,6 @@ export class SatReportComponent implements OnInit {
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.getSemesters();
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
 
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
@@ -179,7 +179,7 @@ export class SatReportComponent implements OnInit {
         this.getClusters(data.districtId, data.blockId, data.id);
       }
     } else {
-      this.districtWise();
+      this.getSemesters();
     }
   }
 
@@ -187,6 +187,7 @@ export class SatReportComponent implements OnInit {
     this.service.semMetaData({ period: this.period }).subscribe(res => {
       this.semesters = res['data'];
       this.semester = this.semesters[this.semesters.length - 1].id;
+      this.districtWise();
     });
   }
 
