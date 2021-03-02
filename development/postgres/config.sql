@@ -10552,7 +10552,7 @@ BEGIN
 IF p_data_source='student_attendance' or p_data_source='teacher_attendance' THEN
 FOR t_name in select table_name
 from del_data_source_details
-where data_source = p_data_source
+where data_source = p_data_source order by order_of_execution 
 LOOP
   foreach v_month in array p_month loop
     execute 'delete from '||t_name||' where year='||p_year||' and  month='||v_month;
@@ -10563,7 +10563,7 @@ END IF;
 IF p_data_source='crc' THEN
 FOR t_name in select table_name
 from del_data_source_details
-where data_source = p_data_source
+where data_source = p_data_source order by order_of_execution 
 LOOP
   foreach v_month in array p_month loop
     IF t_name='crc_inspection_trans' THEN
@@ -10592,7 +10592,7 @@ BEGIN
 IF p_data_source='periodic_assessment_test' THEN
 FOR t_name in select table_name
 from del_data_source_details
-where data_source = p_data_source
+where data_source = p_data_source order by order_of_execution 
 LOOP
   foreach v_exam_code in array p_exam_code loop
     IF t_name='periodic_exam_qst_mst' THEN
@@ -10618,7 +10618,7 @@ BEGIN
 IF p_data_source='diksha_tpd' THEN
 FOR t_name in select table_name
 from del_data_source_details
-where data_source = p_data_source
+where data_source = p_data_source order by order_of_execution 
 LOOP
   foreach v_batch_id in array p_batch_id loop
     IF t_name='diksha_tpd_agg' THEN
@@ -10646,7 +10646,7 @@ BEGIN
 IF p_data_source='diksha_summary_rollup' THEN
 FOR t_name in select table_name
 from del_data_source_details
-where data_source = p_data_source
+where data_source = p_data_source order by order_of_execution 
 LOOP
 execute 'delete from '||t_name||' where content_view_date >='''||p_from_date||'''::date and content_view_date<='''||p_to_date||'''::date';
 END LOOP;
@@ -10667,9 +10667,38 @@ BEGIN
 IF p_data_source='infrastructure' or p_data_source='static' or p_data_source='udise' THEN
 FOR t_name in select table_name
 from del_data_source_details
-where data_source = p_data_source
+where data_source = p_data_source order by order_of_execution 
 LOOP
 execute 'delete from '||t_name;
+END LOOP;
+END IF;
+return 0;
+END;
+$$  LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION semester_del_data(p_data_source text,p_academic_year text,VARIADIC p_semester int[] default null)
+RETURNS text AS
+$$
+DECLARE
+error_msg text;
+v_semester text;
+t_name text;
+BEGIN
+IF p_data_source='semester_assessment_test' THEN
+FOR t_name in select table_name
+from del_data_source_details
+where data_source = p_data_source order by order_of_execution 
+LOOP
+  foreach v_semester in array p_semester loop
+    IF t_name='semester_exam_qst_mst' THEN
+    execute 'delete from '||t_name||' where exam_id in (select distinct exam_id from semester_exam_mst where assessment_year= '''||p_academic_year||''' and semester= '||v_semester||')';
+    ELSE IF t_name='semester_exam_result_staging_2' or t_name='semester_exam_school_qst_result' or t_name='semester_exam_result_temp' or t_name='semester_exam_school_result' or t_name='semester_exam_result_staging_1' or t_name='semester_exam_result_trans' THEN
+    execute 'delete from '||t_name||' where exam_code in (select distinct exam_code from semester_exam_mst where assessment_year= '''||p_academic_year||''' and semester= '||v_semester||')';
+    ELSE
+    execute 'delete from '||t_name||'  where  assessment_year= '''||p_academic_year||''' and semester= '||v_semester;
+    END IF;
+    END IF;
+  end loop;
 END LOOP;
 END IF;
 return 0;
