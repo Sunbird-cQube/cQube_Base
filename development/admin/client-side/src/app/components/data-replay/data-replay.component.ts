@@ -31,7 +31,7 @@ export class DataReplayComponent implements OnInit {
   summaryToDate;
 
   semesters: any = [];
-  selectedSemesters;
+  selectedSemesters = [];
   batchIds: any = [];
   selectedBatchIds;
   options = [{ id: '', value: "Select" }, { id: 'No', value: 'No' }, { id: 'delete all data', value: 'Delete all data' }];
@@ -207,9 +207,14 @@ export class DataReplayComponent implements OnInit {
     }
   }
 
-  onSelectAcademicTear(data) {
+  onSelectAcademicYear(data) {
     this.selected_academic_year = data;
     if (this.selected_academic_year != 'Select Academic Year') {
+      var obj = {
+        academic_year: this.selected_academic_year,
+        semesters: []
+      }
+      this.formObj['semester'] = obj;
       this.allSemData.forEach(element => {
         this.semesters.push({ id: element.semester, name: "Semester " + element.semester });
       });
@@ -219,10 +224,7 @@ export class DataReplayComponent implements OnInit {
   shareCheckedList3(item: any[]) {
     this.selectedSemesters = item;
     if (this.selectedSemesters.length > 0) {
-      var obj = {
-        semesters: this.selectedSemesters
-      }
-      this.formObj['semester'] = obj;
+      this.formObj['semester'].semesters = this.selectedSemesters;
     } else {
       delete this.formObj['semester'];
     }
@@ -353,14 +355,18 @@ export class DataReplayComponent implements OnInit {
       } else if (this.selectedCRCYear && this.selectedCRCMonths.length == 0) {
         alert(this.monthErrMsg);
         document.getElementById('spinner').style.display = 'none';
+      } else if (this.selected_academic_year && this.selectedSemesters.length == 0) {
+        alert("Please selecte semester along with academic year");
+        document.getElementById('spinner').style.display = 'none';
       } else {
+        console.log(this.formObj)
         var date = new Date();
         this.currTime = `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + (date.getDate())).slice(-2)}${("0" + (date.getHours())).slice(-2)}${("0" + (date.getMinutes())).slice(-2)}${("0" + (date.getSeconds())).slice(-2)}`;
-        this.service.saveDataToS3({ formData: this.formObj, timeStamp: this.currTime }).subscribe(res => {
-          this.onCancel();
-          document.getElementById('spinner').style.display = 'none';
-          alert(res['msg']);
-        })
+        // this.service.saveDataToS3({ formData: this.formObj, timeStamp: this.currTime }).subscribe(res => {
+        //   this.onCancel();
+        //   document.getElementById('spinner').style.display = 'none';
+        //   alert(res['msg']);
+        // })
       }
     } else {
       alert("Please select some options");
@@ -379,6 +385,7 @@ export class DataReplayComponent implements OnInit {
     this.selectedStdYear = undefined;
     this.selectedTchrYear = undefined;
     this.selectedCRCYear = undefined;
+    this.semesters = [];
     this.selectedMonths1 = [];
     this.selectedMonths2 = [];
     this.selectedCRCMonths = [];
