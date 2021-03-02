@@ -325,7 +325,11 @@ export class AppServiceComponent {
                 dataSet = data;
             } else {
                 if (filter.selected == 'G' || filter.selected == 'GS') {
-                    dataSet = data.Subjects;
+                    if (data.Subjects) {
+                        dataSet = data.Subjects;
+                    } else {
+                        dataSet = data['Grade Wise Performance'];
+                    }
                 } else {
                     dataSet = data.Details;
                 }
@@ -367,7 +371,11 @@ export class AppServiceComponent {
                     }
                 } else {
                     if (filter.selected == 'G' || filter.selected == 'GS') {
-                        values.push(item.Subjects[`${filter.value}`]);
+                        if (item.Subjects) {
+                            values.push(item.Subjects[`${filter.value}`]);
+                        } else {
+                            values.push(item['Grade Wise Performance'][`${filter.value}`]);
+                        }
                     } else {
                         values.push(item.Details[`${filter.value}`]);
                     }

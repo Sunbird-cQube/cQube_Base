@@ -21,89 +21,106 @@
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
-    <mat-nav-list style="font-family: Arial;" class=sidenav>
-      <mat-toolbar style="height: 80px; background-color: white; border-bottom: 1px solid lightgray;">
-        <mat-toolbar-row style="color: rgb(84, 116, 223);">
-          <span class="span" style="font-size: 15px;"><strong>Logged in as: </strong><br>
-            <span>{{email}}</span></span>
-        </mat-toolbar-row>
-      </mat-toolbar>
-      <div *ngIf="!showsideMenu">
-        <a id="crtUsr" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/create-user']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Create User </td>
-        </a>
-        <a id="Chpass" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/change-password']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Change Password </td>
-        </a>
+    <div id="div1" style="height: 82vh; position:relative;">
+      <div id="div2" style="max-height:100%;overflow:auto;">
+        <div id="div3" style="height:1500px auto;">
+          <mat-nav-list style="font-family: Arial;" class=sidenav>
+            <mat-toolbar style="height: 80px; background-color: white; border-bottom: 1px solid lightgray;">
+              <mat-toolbar-row style="color: rgb(84, 116, 223);">
+                <span class="span" style="font-size: 15px;"><strong>Logged in as: </strong><br>
+                  <span>{{email}}</span></span>
+              </mat-toolbar-row>
+            </mat-toolbar>
+            <div *ngIf="!showsideMenu">
+              <a id="crtUsr" mat-list-item (click)="sidenav.toggle()"
+                style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/create-user']">
+                <td>
+                  <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+                </td>
+                <td>
+                  &nbsp;&nbsp; Create User </td>
+              </a>
+              <a id="Chpass" mat-list-item (click)="sidenav.toggle()"
+                style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/change-password']">
+                <td>
+                  <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+                </td>
+                <td>
+                  &nbsp;&nbsp; Change Password </td>
+              </a>
 
-        <a id="user" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/users']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Users List</td>
-        </a>
+              <a id="user" mat-list-item (click)="sidenav.toggle()"
+                style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/users']">
+                <td>
+                  <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+                </td>
+                <td>
+                  &nbsp;&nbsp; Users List</td>
+              </a>
 
-        <a id="logs" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/all-logs']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Logs </td>
-        </a>
+              <a id="logs" mat-list-item (click)="sidenav.toggle()"
+                style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/all-logs']">
+                <td>
+                  <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+                </td>
+                <td>
+                  &nbsp;&nbsp; Logs </td>
+              </a>
 
-        <a id="downloads" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/s3FileDownload']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; S3 File Download </td>
-        </a>
-        <a id="moniter" mat-list-item (click)="sidenav.toggle()" target=" "
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" href="{{grafanaUrl}}">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Monitoring Details </td>
-        </a>
-        <a id="summary" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/summary-statistics']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Summary Statistics </td>
-        </a>
-        <a id="nifi" mat-list-item (click)="sidenav.toggle()"
-          style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/nifi-shedular']">
-          <td>
-            <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
-          </td>
-          <td>
-            &nbsp;&nbsp; Nifi Scheduler </td>
-        </a>
+              <a id="downloads" mat-list-item (click)="sidenav.toggle()"
+                style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/s3FileDownload']">
+                <td>
+                  <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+                </td>
+                <td>
+                  &nbsp;&nbsp; S3 File Download </td>
+              </a>
+              <a id="moniter" mat-list-item (click)="sidenav.toggle()" target=" "
+                style="border-bottom: 1px solid lightgray; font-family: Arial;" href="{{grafanaUrl}}">
+                <td>
+                  <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+                </td>
+                <td>
+                  &nbsp;&nbsp; Monitoring Details </td>
+              </a>
+              <a id="summary" mat-list-item (click)="sidenav.toggle()"
+                style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/summary-statistics']">
+                <td>
+                  <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+                </td>
+                <td>
+                  &nbsp;&nbsp; Summary Statistics </td>
+              </a>
+              <a id="nifi" mat-list-item (click)="sidenav.toggle()"
+                style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/nifi-shedular']">
+                <td>
+                  <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+                </td>
+                <td>
+                  &nbsp;&nbsp; Nifi Scheduler </td>
+              </a>
 
+              <a id="dataReplay" mat-list-item (click)="sidenav.toggle()"
+                style="border-bottom: 1px solid lightgray; font-family: Arial;" [routerLink]="['/data-replay']">
+                <td>
+                  <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
+                </td>
+                <td>
+                  &nbsp;&nbsp; Data Replay </td>
+              </a>
+
+            </div>
+
+            <span class="toolbar-filler"></span>
+          </mat-nav-list>
+        </div>
       </div>
-
-      <span class="toolbar-filler"></span>
-    </mat-nav-list>
-    <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.11 </span>
-    <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 03/03/2021</span>
-
+    </div>
+    <!-- <hr> -->
+    <div>
+      <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.11 </span>
+      <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 03/03/2021</span>
+    </div>
   </mat-sidenav>
   <mat-sidenav-content>
     <div style="height: 93vh;">

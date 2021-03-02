@@ -27,7 +27,7 @@ router.post('/', auth.authController, async (req, res) => {
                         res.status(500).json({ errMsg: "Internal error" });
                     } else {
                         logger.info('--- upload new file successful---');
-                        res.status(200).json({ msg: "Successfully uploaded file" });
+                        res.status(200).json({ msg: "Data Replay Operation Successfully Initiated" });
                     }
                 });
             } else {
@@ -52,7 +52,7 @@ router.post('/', auth.authController, async (req, res) => {
                                     res.status(500).json({ errMsg: "Internal error" });
                                 } else {
                                     logger.info('--- update to file successful---');
-                                    res.status(200).json({ msg: "Successfully updated in file" });
+                                    res.status(200).json({ msg: "Data Replay Operation Successfully Initiated" });
                                 }
                             });
                         }
