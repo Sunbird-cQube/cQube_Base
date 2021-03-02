@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <select id="period"
                 style="padding: 5px 2px 5px 2px;float: left;width: 100px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="period" (change)="onPeriodSelect()">
@@ -106,10 +106,16 @@
                     {{allSubjects[i]}}
                 </option>
             </select>
-        </div>
-        <div class="col-sm-6">
+            <select id="choose_semester"
+                style="margin-left: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="semester" (change)="semSelect()">
+                <option [value]="semester" disabled selected="selected">Choose semester</option>
+                <option *ngFor="let sem of semesters" [(ngValue)]="sem.id">
+                    {{sem.name}}
+                </option>
+            </select>
             <select id="choose_dist"
-                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                style="margin-left: 10px; margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
                 [(ngModel)]="districtId" (change)="ondistLinkClick(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.Details.district_id"

@@ -9,6 +9,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         var period = req.body.data.period;
         var grade = req.body.data.grade;
         var report = req.body.data.report;
+        var semester = req.body.data.sem;
         var fileName;
         var clusterData = {}
 
@@ -20,9 +21,9 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
             }
         } else {
             if (grade) {
-                fileName = `${report}/${period}/cluster/${grade}.json`;
+                fileName = `${report}/${period}/cluster/${semester}/${grade}.json`;
             } else {
-                fileName = `${report}/${period}/${report}_cluster.json`;
+                fileName = `${report}/${period}/${semester}/${report}_cluster.json`;
             }
         }
 
@@ -41,11 +42,12 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         logger.info('---PAT clusterperBlock api ---');
         var period = req.body.data.period;
         var report = req.body.data.report;
+        var semester = req.body.data.sem;
         var fileName;
         if (period == '') {
             fileName = `${report}/all/${report}_cluster.json`;
         } else {
-            fileName = `${report}/${period}/${report}_cluster.json`;
+            fileName = `${report}/${period}/${semester}/${report}_cluster.json`;
         }
 
         var clusterData = await s3File.readS3File(fileName);

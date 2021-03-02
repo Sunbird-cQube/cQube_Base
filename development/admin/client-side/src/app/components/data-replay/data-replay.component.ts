@@ -34,7 +34,7 @@ export class DataReplayComponent implements OnInit {
   selectedSemesters;
   batchIds: any = [];
   selectedBatchIds;
-  options = [{ id: '', value: "Select" }, { id: 'No', value: 'No' }, { id: 'Yes', value: 'Yes' }];
+  options = [{ id: '', value: "Select" }, { id: 'No', value: 'No' }, { id: 'delete all data', value: 'Delete all data' }];
 
   //error messages
   monthErrMsg = "Please select months also along with year";
@@ -87,7 +87,7 @@ export class DataReplayComponent implements OnInit {
     this.service.getBatchIds().subscribe((res: any) => {
       var i = 1;
       res.forEach(element => {
-        this.batchIds.push({ id: i, name: element.batch_id });
+        this.batchIds.push({ id: element.batch_id, name: element.batch_id });
         i++;
       });
     });
@@ -95,7 +95,7 @@ export class DataReplayComponent implements OnInit {
     this.service.getExamCode().subscribe((res: any) => {
       var i = 1;
       res.forEach(element => {
-        this.examCodes.push({ id: i, name: element.exam_code });
+        this.examCodes.push({ id: element.exam_code, name: element.exam_code });
         i++;
       });
     })
@@ -111,12 +111,17 @@ export class DataReplayComponent implements OnInit {
         this.dataSources.push(item);
       }
     })
+    this.dataSources = this.dataSources.sort((a, b) => (a.sourceName > b.sourceName) ? 1 : ((b.sourceName > a.sourceName) ? -1 : 0));
     this.dataSources.unshift({ template: 'Select Data Source', status: true, sourceName: 'Select Data Source' });
+
+    console.log(this.dataSources);
+
     this.createDataTable();
     // });       
   }
 
   onSelectDataSource(data) {
+    this.formObj = {};
     this.dataSourceName = data;
     if (data != 'Select Data Source') {
     } else {
@@ -273,7 +278,7 @@ export class DataReplayComponent implements OnInit {
         from_date: date,
         to_date: ''
       }
-      this.minDate = new Date(this.summaryFromDate.getFullYear(), ((this.summaryFromDate.getMonth())), this.summaryFromDate.getDate() + 1);
+      this.minDate = new Date(this.summaryFromDate.getFullYear(), ((this.summaryFromDate.getMonth())), this.summaryFromDate.getDate());
     }
   }
 

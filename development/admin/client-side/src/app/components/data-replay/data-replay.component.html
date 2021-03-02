@@ -262,7 +262,7 @@
                                         style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
                                         placeholder="Select from date" class="form-control" #dp="bsDatepicker"
                                         bsDatepicker [(ngModel)]="summaryFromDate"
-                                        [bsConfig]="{dateInputFormat: 'DD-MM-YYYY', showWeekNumbers:false}">
+                                        [bsConfig]="{dateInputFormat: 'YYYY-MM-DD', showWeekNumbers:false}">
                                 </div>
                                 <div style="float: left; margin-left: 30px;">
                                     <input [disabled]="summaryFromDate == undefined" type="text"
@@ -270,7 +270,7 @@
                                         style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
                                         placeholder="Select to date" class="form-control" #dp="bsDatepicker"
                                         bsDatepicker [(ngModel)]="summaryToDate"
-                                        [bsConfig]="{dateInputFormat: 'DD-MM-YYYY', showWeekNumbers:false}">
+                                        [bsConfig]="{dateInputFormat: 'YYYY-MM-DD', showWeekNumbers:false}">
                                 </div>
                                 <span *ngIf="toDateErr != ''"
                                     style="color: red; font-size: 9px; float: left; margin-left: 200px;">{{toDateErr}}</span>
