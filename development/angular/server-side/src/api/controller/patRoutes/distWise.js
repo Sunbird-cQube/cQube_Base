@@ -20,10 +20,18 @@ router.post('/distWise', auth.authController, async (req, res) => {
                 fileName = `${report}/all/${report}_district.json`
             }
         } else {
-            if (grade) {
-                fileName = `${report}/${period}/district/${semester}/${grade}.json`;
+            if (report == 'pat') {
+                if (grade) {
+                    fileName = `${report}/${period}/district/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${report}_district.json`;
+                }
             } else {
-                fileName = `${report}/${period}/${semester}/${report}_district.json`;
+                if (grade) {
+                    fileName = `${report}/${period}/district/${semester}/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${semester}/${report}_district.json`;
+                }
             }
         }
 
