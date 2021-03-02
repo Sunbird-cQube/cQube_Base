@@ -158,7 +158,7 @@ export class TeacherAttendanceComponent implements OnInit {
       this.getMonthYear = {};
       this.commonService.loaderAndErr(this.markers);
     });
-    this.service.getRawMeta({report: 'tar'}).subscribe(res => {
+    this.service.getRawMeta({ report: 'tar' }).subscribe(res => {
       this.academicYears = res;
     })
   }
@@ -1302,8 +1302,12 @@ export class TeacherAttendanceComponent implements OnInit {
   // }
 
   downloadRaw() {
-    this.rawFileName = `teacher_attendance/raw/${this.levelWise.toLowerCase()}_${this.academicYear}.csv`;
+    document.getElementById('spinner').style.display = 'block';
+    var selectedAcademicYear = this.academicYear;
+    this.rawFileName = `teacher_attendance/raw/${this.levelWise.toLowerCase()}_${selectedAcademicYear}.csv`;
     this.service.downloadFile({ fileName: this.rawFileName }).subscribe(res => {
+      this.academicYear = undefined;
+      document.getElementById('spinner').style.display = 'none';
       window.open(`${res['downloadUrl']}`, "_blank");
     }, err => {
       alert("No Raw Data File Available in Bucket");
