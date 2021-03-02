@@ -172,6 +172,35 @@
                     <comments></comments>
                     <contents>
                         <connections>
+                            <id>0011b786-e5ff-3b9a-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>2800.0</x>
+<y>168.0</y>
+                            </bends>
+                            <destination>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>805cc49d-02bf-3baa-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>3810c32b-cf99-3415-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>027e54e1-7455-3fa9-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -1064,6 +1093,35 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>39426cd3-072e-349f-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>2768.0</x>
+<y>72.0</y>
+                            </bends>
+                            <destination>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>805cc49d-02bf-3baa-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>unmatched</selectedRelationships>
+                            <source>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>e4a3e6d9-a2a7-3112-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>399b9329-9cbf-3b68-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -1303,7 +1361,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
-<id>805cc49d-02bf-3baa-0000-000000000000</id>
+<id>e4a3e6d9-a2a7-3112-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -1887,7 +1945,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
-<id>805cc49d-02bf-3baa-0000-000000000000</id>
+<id>aaa28a99-9fde-3a72-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -2084,7 +2142,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
 <x>3712.0</x>
-<y>168.0</y>
+<y>160.0</y>
                             </bends>
                             <destination>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
@@ -3952,6 +4010,31 @@
                             <source>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
 <id>05481fbe-a3ca-3c8a-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>f8a78eab-59c4-384a-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>3810c32b-cf99-3415-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>stud_att_raw</selectedRelationships>
+                            <source>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>e4a3e6d9-a2a7-3112-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -9568,6 +9651,80 @@ delete from student_attendance_temp where ff_uuid='${zip_identifier}';</value>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
                         <processors>
+                            <id>3810c32b-cf99-3415-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <position>
+<x>2304.0</x>
+<y>272.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>record-reader</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+            <name>record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>include-zero-record-flowfiles</key>
+        <value>
+            <name>include-zero-record-flowfiles</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>record-reader</key>
+        <value>4e89d7c5-c7cc-3718-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>ceed919d-ca29-3ac0-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>include-zero-record-flowfiles</key>
+        <value>true</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>stud_att_json_csv</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.ConvertRecord</type>
+                        </processors>
+                        <processors>
                             <id>38bb443f-368b-3393-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
@@ -9739,11 +9896,11 @@ where ff_uuid= '${files_uuid}'</value>
 <properties>
     <entry>
         <key>record-reader</key>
-        <value>740411c3-47f6-301e-0000-000000000000</value>
+        <value>4e89d7c5-c7cc-3718-0000-000000000000</value>
     </entry>
     <entry>
         <key>record-writer</key>
-        <value>ceed919d-ca29-3ac0-0000-000000000000</value>
+        <value>a669c04a-a093-3102-0000-000000000000</value>
     </entry>
     <entry>
         <key>year</key>
@@ -13237,7 +13394,7 @@ where ff_uuid= '${files_uuid}'</value>
     </entry>
     <entry>
         <key>esqlrecord-record-writer</key>
-        <value>118ae12d-ab55-3aa7-0000-000000000000</value>
+        <value>a669c04a-a093-3102-0000-000000000000</value>
     </entry>
     <entry>
         <key>esqlrecord-normalize</key>
@@ -14526,8 +14683,12 @@ ${query_type:startsWith('stud_att_exception_school_by_month_year'):ifElse(#{stud
 ${query_type:startsWith('stud_att_exception_district_last'):or(${query_type:startsWith('stud_att_exception_district_overall')}):ifElse(#{stud_att_exception_district_jolt_spec},
 ${query_type:startsWith('stud_att_exception_block_last'):or(${query_type:startsWith('stud_att_exception_block_overall')}):ifElse(#{stud_att_exception_block_jolt_spec},
 ${query_type:startsWith('stud_att_exception_cluster_last'):or(${query_type:startsWith('stud_att_exception_cluster_overall')}):ifElse(#{stud_att_exception_cluster_jolt_spec},
-${query_type:startsWith('stud_att_exception_school_last'):or(${query_type:startsWith('stud_att_exception_school_overall')}):ifElse(#{stud_att_exception_school_jolt_spec},'None')} 
-)} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
+${query_type:startsWith('stud_att_exception_school_last'):or(${query_type:startsWith('stud_att_exception_school_overall')}):ifElse(#{stud_att_exception_school_jolt_spec},
+${query_type:startsWith('stud_att_raw_district'):ifElse(#{stud_att_raw_district_jolt_spec},
+${query_type:startsWith('stud_att_raw_block'):ifElse(#{stud_att_raw_block_jolt_spec},
+${query_type:startsWith('stud_att_raw_cluster'):ifElse(#{stud_att_raw_cluster_jolt_spec},
+${query_type:startsWith('stud_att_raw_school'):ifElse(#{stud_att_raw_school_jolt_spec},'None')} 
+)} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
     <entry>
         <key>Transform Cache Size</key>
@@ -15155,7 +15316,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -17699,6 +17860,71 @@ same id data validation of file:${filename} error while same id mirror data</val
                             <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
+                        </processors>
+                        <processors>
+                            <id>e4a3e6d9-a2a7-3112-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <position>
+<x>2296.0</x>
+<y>80.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.11.4</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>
+            <name>Routing Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>stud_att_raw</key>
+        <value>
+            <name>stud_att_raw</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>Route to Property name</value>
+    </entry>
+    <entry>
+        <key>stud_att_raw</key>
+        <value>${query_type:startsWith('stud_att_raw_district'):or(
+${query_type:startsWith('stud_att_raw_block'):or(
+${query_type:startsWith('stud_att_raw_cluster'):or(
+${query_type:startsWith('stud_att_raw_school')} )} )} )}</value>
+    </entry>
+</properties>
+<runDurationMillis>25</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>stud_att_route_after_jolt</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>stud_att_raw</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
                         <processors>
                             <id>e5974a98-3fb3-354d-0000-000000000000</id>
@@ -28045,5 +28271,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/25/2021 20:12:58 IST</timestamp>
+    <timestamp>03/01/2021 17:23:24 IST</timestamp>
 </template>

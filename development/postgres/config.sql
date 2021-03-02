@@ -10507,3 +10507,141 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
 ) ) as temp;
 
 
+
+/* implementation of delete data */
+
+CREATE OR REPLACE FUNCTION del_data(p_data_source text,p_year int default null,VARIADIC p_month int[] default null)
+RETURNS text AS
+$$
+DECLARE
+error_msg text;
+v_month int;
+t_name text;
+BEGIN
+
+IF p_data_source='student_attendance' or p_data_source='teacher_attendance' THEN
+FOR t_name in select table_name
+from del_data_source_details
+where data_source = p_data_source
+LOOP
+  foreach v_month in array p_month loop
+    execute 'delete from '||t_name||' where year='||p_year||' and  month='||v_month;
+  end loop;
+END LOOP;
+END IF;
+
+IF p_data_source='crc' THEN
+FOR t_name in select table_name
+from del_data_source_details
+where data_source = p_data_source
+LOOP
+  foreach v_month in array p_month loop
+    IF t_name='crc_inspection_trans' THEN
+    execute 'delete from '||t_name||' where visit_date is not null and extract(month from visit_date)='||v_month||' and extract(year from visit_date)='||p_year;
+    ELSE
+    execute 'delete from '||t_name||' where month='||v_month||' and year='||p_year;
+    END IF;
+  end loop;
+END LOOP;
+END IF;
+
+return 0;
+END;
+$$  LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION pat_del_data(p_data_source text,VARIADIC p_exam_code text[] default null)
+RETURNS text AS
+$$
+DECLARE
+error_msg text;
+v_exam_code text;
+v_batch_id text;
+t_name text;
+BEGIN
+IF p_data_source='periodic_assessment_test' THEN
+FOR t_name in select table_name
+from del_data_source_details
+where data_source = p_data_source
+LOOP
+  foreach v_exam_code in array p_exam_code loop
+    IF t_name='periodic_exam_qst_mst' THEN
+    execute 'delete from '||t_name||' where exam_id in (select distinct exam_id from periodic_exam_mst where exam_code  = '''||v_exam_code||''')';
+    ELSE
+    execute 'delete from '||t_name||' where exam_code = '''||v_exam_code||'''';
+    END IF;
+  end loop;
+END LOOP;
+END IF;
+return 0;
+END;
+$$  LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION diksha_tpd_del_data(p_data_source text,VARIADIC p_batch_id text[] default null)
+RETURNS text AS
+$$
+DECLARE
+error_msg text;
+v_batch_id text;
+t_name text;
+BEGIN
+IF p_data_source='diksha_tpd' THEN
+FOR t_name in select table_name
+from del_data_source_details
+where data_source = p_data_source
+LOOP
+  foreach v_batch_id in array p_batch_id loop
+    IF t_name='diksha_tpd_agg' THEN
+    execute 'delete from '||t_name||' where collection_id in (select distinct collection_id from diksha_tpd_trans where batch_id  = '''||v_batch_id||''')';
+    ELSE
+    execute 'delete from '||t_name||' where batch_id = '''||v_batch_id||'''';
+    END IF;
+  end loop;
+END LOOP;
+END IF;
+return 0;
+END;
+$$  LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION diksha_summary_rollup_del_data(p_data_source text,p_from_date date default null,p_to_date date default null)
+RETURNS text AS
+$$
+DECLARE
+error_msg text;
+v_exam_code text;
+v_batch_id text;
+t_name text;
+BEGIN
+
+IF p_data_source='diksha_summary_rollup' THEN
+FOR t_name in select table_name
+from del_data_source_details
+where data_source = p_data_source
+LOOP
+execute 'delete from '||t_name||' where content_view_date >='''||p_from_date||'''::date and content_view_date<='''||p_to_date||'''::date';
+END LOOP;
+END IF;
+return 0;
+END;
+$$  LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION all_del_data(p_data_source text)
+RETURNS text AS
+$$
+DECLARE
+error_msg text;
+v_exam_code text;
+v_batch_id text;
+t_name text;
+BEGIN
+IF p_data_source='infrastructure' or p_data_source='static' or p_data_source='udise' THEN
+FOR t_name in select table_name
+from del_data_source_details
+where data_source = p_data_source
+LOOP
+execute 'delete from '||t_name;
+END LOOP;
+END IF;
+return 0;
+END;
+$$  LANGUAGE plpgsql;

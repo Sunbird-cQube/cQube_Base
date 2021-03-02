@@ -17,8 +17,6 @@
           - python_flask
           - { role: kong, tags: install }
           - keycloak
-          - angular
-          - angular_admin
           - prometheus
           - { role: grafana, tags: install }
 
@@ -79,6 +77,9 @@
           - role: nifi_sat
             tags: install
             when: nifi_sat
+
+          - angular
+          - angular_admin
 
           - { role: nifi_scheduler, tags: install }
           - cqube_version
