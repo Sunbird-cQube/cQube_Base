@@ -43,6 +43,10 @@ export class DataReplayComponent implements OnInit {
   crcMonthErr = '';
   toDateErr = '';
 
+  allSemData: any;
+  academic_years: any = [];
+  selected_academic_year;
+
   @ViewChildren(MultiSelectComponent) multiSelect: QueryList<MultiSelectComponent>;
   @ViewChild('multiSelect1') multiSelect1: MultiSelectComponent;
   @ViewChild('multiSelect2') multiSelect2: MultiSelectComponent;
@@ -101,9 +105,11 @@ export class DataReplayComponent implements OnInit {
     })
 
     this.service.getSemesters().subscribe((res: any) => {
-      res.forEach(element => {
-        this.semesters.push({ id: element.semester, name: "Semester " + element.semester });
+      this.allSemData = res;
+      this.allSemData.forEach(element => {
+        this.academic_years.push(element.academic_year);
       });
+      this.academic_years.unshift('Select Academic Year');
     })
     // this.service.getDataSources().subscribe(res => {
     data.map(item => {
@@ -198,6 +204,15 @@ export class DataReplayComponent implements OnInit {
     this.formObj['teacher_attendance']['months'] = this.selectedMonths2;
     if (item.length > 0) {
       this.tchrMonthErr = '';
+    }
+  }
+
+  onSelectAcademicTear(data) {
+    this.selected_academic_year = data;
+    if (this.selected_academic_year != 'Select Academic Year') {
+      this.allSemData.forEach(element => {
+        this.semesters.push({ id: element.semester, name: "Semester " + element.semester });
+      });
     }
   }
 

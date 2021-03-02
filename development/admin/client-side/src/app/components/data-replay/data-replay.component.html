@@ -276,10 +276,23 @@
                                     style="color: red; font-size: 9px; float: left; margin-left: 200px;">{{toDateErr}}</span>
                             </div>
                             <div *ngIf="dataSourceName == 'nifi_semester'" style="width: 150px;">
-                                <app-multi-select #multiSelect [selection]="'Select Semesters'" style="margin-top: 1px;"
-                                    [width1]="'150px'" [width2]="'140px'" [list]="semesters" [text]="'Semesters'"
-                                    (shareCheckedList)="shareCheckedList3($event)">
-                                </app-multi-select>
+                                <div style="float: left;">
+                                    <select class="time" required id="semyear"
+                                        [ngStyle]="{float: semesters.length > 0 ? 'left' : ''}"
+                                        style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                        (change)="onSelectAcademicTear($event.target.value)">
+                                        <option *ngFor="let year of academic_years; let i = index;"
+                                            [value]="academic_years[i]" [selected]="i==0">
+                                            {{academic_years[i]}}</option>
+                                    </select>
+                                </div>
+                                <div *ngIf="" style="float: left; margin-left: 30px;">
+                                    <app-multi-select #multiSelect [selection]="'Select Semesters'"
+                                        style="margin-top: 1px;" [width1]="'150px'" [width2]="'140px'"
+                                        [list]="semesters" [text]="'Semesters'"
+                                        (shareCheckedList)="shareCheckedList3($event)">
+                                    </app-multi-select>
+                                </div>
                             </div>
                             <div *ngIf="dataSourceName == 'nifi_pat'" style="width: 155px;">
                                 <app-multi-select #multiSelect [selection]="'Select Exam Codes'"
