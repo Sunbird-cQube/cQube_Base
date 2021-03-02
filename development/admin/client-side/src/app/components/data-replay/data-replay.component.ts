@@ -31,7 +31,7 @@ export class DataReplayComponent implements OnInit {
   summaryToDate;
 
   semesters: any = [];
-  selectedSemesters;
+  selectedSemesters = [];
   batchIds: any = [];
   selectedBatchIds;
   options = [{ id: '', value: "Select" }, { id: 'No', value: 'No' }, { id: 'delete all data', value: 'Delete all data' }];
@@ -42,6 +42,10 @@ export class DataReplayComponent implements OnInit {
   tchrMonthErr = '';
   crcMonthErr = '';
   toDateErr = '';
+
+  allSemData: any;
+  academic_years: any = [];
+  selected_academic_year;
 
   @ViewChildren(MultiSelectComponent) multiSelect: QueryList<MultiSelectComponent>;
   @ViewChild('multiSelect1') multiSelect1: MultiSelectComponent;
@@ -101,9 +105,11 @@ export class DataReplayComponent implements OnInit {
     })
 
     this.service.getSemesters().subscribe((res: any) => {
-      res.forEach(element => {
-        this.semesters.push({ id: element.semester, name: "Semester " + element.semester });
+      this.allSemData = res;
+      this.allSemData.forEach(element => {
+        this.academic_years.push(element.academic_year);
       });
+      this.academic_years.unshift('Select Academic Year');
     })
     // this.service.getDataSources().subscribe(res => {
     data.map(item => {
@@ -113,8 +119,6 @@ export class DataReplayComponent implements OnInit {
     })
     this.dataSources = this.dataSources.sort((a, b) => (a.sourceName > b.sourceName) ? 1 : ((b.sourceName > a.sourceName) ? -1 : 0));
     this.dataSources.unshift({ template: 'Select Data Source', status: true, sourceName: 'Select Data Source' });
-
-    console.log(this.dataSources);
 
     this.createDataTable();
     // });       
@@ -201,13 +205,24 @@ export class DataReplayComponent implements OnInit {
     }
   }
 
+  onSelectAcademicYear(data) {
+    this.selected_academic_year = data;
+    if (this.selected_academic_year != 'Select Academic Year') {
+      var obj = {
+        academic_year: this.selected_academic_year,
+        semesters: []
+      }
+      this.formObj['semester'] = obj;
+      this.allSemData.forEach(element => {
+        this.semesters.push({ id: element.semester, name: "Semester " + element.semester });
+      });
+    }
+  }
+
   shareCheckedList3(item: any[]) {
     this.selectedSemesters = item;
     if (this.selectedSemesters.length > 0) {
-      var obj = {
-        semesters: this.selectedSemesters
-      }
-      this.formObj['semester'] = obj;
+      this.formObj['semester'].semesters = this.selectedSemesters;
     } else {
       delete this.formObj['semester'];
     }
@@ -338,6 +353,9 @@ export class DataReplayComponent implements OnInit {
       } else if (this.selectedCRCYear && this.selectedCRCMonths.length == 0) {
         alert(this.monthErrMsg);
         document.getElementById('spinner').style.display = 'none';
+      } else if (this.selected_academic_year && this.selectedSemesters.length == 0) {
+        alert("Please selecte semester along with academic year");
+        document.getElementById('spinner').style.display = 'none';
       } else {
         var date = new Date();
         this.currTime = `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + (date.getDate())).slice(-2)}${("0" + (date.getHours())).slice(-2)}${("0" + (date.getMinutes())).slice(-2)}${("0" + (date.getSeconds())).slice(-2)}`;
@@ -364,6 +382,7 @@ export class DataReplayComponent implements OnInit {
     this.selectedStdYear = undefined;
     this.selectedTchrYear = undefined;
     this.selectedCRCYear = undefined;
+    this.semesters = [];
     this.selectedMonths1 = [];
     this.selectedMonths2 = [];
     this.selectedCRCMonths = [];
