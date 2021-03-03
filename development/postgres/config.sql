@@ -10267,7 +10267,7 @@ drop view if exists teacher_attendance_all_months_data_school cascade;
 create or replace view teacher_attendance_all_months_data_dist as 
 select district_id,district_name,academic_year,t1[1] as Attendance_Percent_January,t1[2] as Teachers_Count_January,t1[3] as Total_Schools_January,t2[1] as Attendance_Percent_February,t2[2] as Teachers_Count_February,t2[3] as Total_Schools_February,t3[1] as Attendance_Percent_March,t3[2] as Teachers_Count_March,t3[3] as Total_Schools_March,t4[1] as Attendance_Percent_April,t4[2] as Teachers_Count_April,t4[3] as Total_Schools_April,t5[1] as Attendance_Percent_May,t5[2] as Teachers_Count_May,t5[3] as Total_Schools_May,t6[1] as Attendance_Percent_June,t6[2] as Teachers_Count_June,t6[3] as Total_Schools_June,t7[1] as Attendance_Percent_July,t7[2] as Teachers_Count_July,t7[3] as Total_Schools_July,t8[1] as Attendance_Percent_August,t8[2] as Teachers_Count_August,t8[3] as Total_Schools_August,t9[1] as Attendance_Percent_September,t9[2] as Teachers_Count_September,t9[3] as Total_Schools_September,t10[1] as Attendance_Percent_October,t10[2] as Teachers_Count_October,t10[3] as Total_Schools_October,t11[1] as Attendance_Percent_November,t11[2] as Teachers_Count_November,t11[3] as Total_Schools_November,t12[1] as Attendance_Percent_December,t12[2] as Teachers_Count_December,t12[3] as Total_Schools_December
  from (select * from crosstab(
-  'select att_res.academic_year,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.teachers_count,att_res.total_schools] from (
+  'select row_number() OVER (ORDER BY district_id)::int AS rn,att_res.academic_year,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.teachers_count,att_res.total_schools] from (
 SELECT district_id,INITCAP(district_name) AS district_name, 
 round(cast(Sum(total_present)*100.0/Sum(total_working_days) as numeric),1)AS attendance_pct,
 Sum(teachers_count) AS teachers_count,Count(DISTINCT(school_id)) AS total_schools,month,case when month in (6,7,8,9,10,11,12) then (year ||''-''|| substring(cast((year+1) as text),3,2)) else ((year-1) || ''-'' || substring(cast(year as text),3,2)) end as academic_year  
@@ -10279,6 +10279,7 @@ GROUP BY district_id,district_latitude,district_longitude,district_name ,year,mo
 ) as att_res',
   'select m from generate_series(1,12) m'
 ) as (
+  rn int,
   academic_year text,
   district_id bigint,
   district_name text,
@@ -10300,7 +10301,7 @@ GROUP BY district_id,district_latitude,district_longitude,district_name ,year,mo
 create or replace view teacher_attendance_all_months_data_block as 
 select block_id,block_name,district_id,district_name,academic_year,t1[1] as Attendance_Percent_January,t1[2] as Teachers_Count_January,t1[3] as Total_Schools_January,t2[1] as Attendance_Percent_February,t2[2] as Teachers_Count_February,t2[3] as Total_Schools_February,t3[1] as Attendance_Percent_March,t3[2] as Teachers_Count_March,t3[3] as Total_Schools_March,t4[1] as Attendance_Percent_April,t4[2] as Teachers_Count_April,t4[3] as Total_Schools_April,t5[1] as Attendance_Percent_May,t5[2] as Teachers_Count_May,t5[3] as Total_Schools_May,t6[1] as Attendance_Percent_June,t6[2] as Teachers_Count_June,t6[3] as Total_Schools_June,t7[1] as Attendance_Percent_July,t7[2] as Teachers_Count_July,t7[3] as Total_Schools_July,t8[1] as Attendance_Percent_August,t8[2] as Teachers_Count_August,t8[3] as Total_Schools_August,t9[1] as Attendance_Percent_September,t9[2] as Teachers_Count_September,t9[3] as Total_Schools_September,t10[1] as Attendance_Percent_October,t10[2] as Teachers_Count_October,t10[3] as Total_Schools_October,t11[1] as Attendance_Percent_November,t11[2] as Teachers_Count_November,t11[3] as Total_Schools_November,t12[1] as Attendance_Percent_December,t12[2] as Teachers_Count_December,t12[3] as Total_Schools_December
  from (select * from crosstab(
-  'select att_res.academic_year, att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.Teachers_count,att_res.total_schools] from (SELECT block_id,INITCAP(block_name) AS block_name,district_id,INITCAP(district_name) AS district_name,
+  'select row_number() OVER (ORDER BY district_id)::int AS rn,att_res.academic_year, att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.Teachers_count,att_res.total_schools] from (SELECT block_id,INITCAP(block_name) AS block_name,district_id,INITCAP(district_name) AS district_name,
 round(cast(Sum(total_present)*100.0/Sum(total_working_days) as numeric),1)AS attendance_pct,
 Sum(teachers_count) AS teachers_count,Count(DISTINCT(school_id)) AS total_schools,month,case when month in (6,7,8,9,10,11,12) then (year ||''-''|| substring(cast((year+1) as text),3,2)) else ((year-1) || ''-'' || substring(cast(year as text),3,2)) end as academic_year
 FROM school_teacher_total_attendance WHERE block_name IS NOT NULL AND block_latitude IS NOT NULL 
@@ -10309,6 +10310,7 @@ AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is 
 GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district_name,year,month) as att_res',
   'select m from generate_series(1,12) m'
 ) as (
+  rn int,
   academic_year text,
   block_id bigint,block_name text,
   district_id bigint,
@@ -10332,7 +10334,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
 create or replace view teacher_attendance_all_months_data_cluster as 
 select cluster_id,cluster_name,block_id,block_name,district_id,district_name,academic_year,t1[1] as Attendance_Percent_January,t1[2] as Teachers_Count_January,t1[3] as Total_Schools_January,t2[1] as Attendance_Percent_February,t2[2] as Teachers_Count_February,t2[3] as Total_Schools_February,t3[1] as Attendance_Percent_March,t3[2] as Teachers_Count_March,t3[3] as Total_Schools_March,t4[1] as Attendance_Percent_April,t4[2] as Teachers_Count_April,t4[3] as Total_Schools_April,t5[1] as Attendance_Percent_May,t5[2] as Teachers_Count_May,t5[3] as Total_Schools_May,t6[1] as Attendance_Percent_June,t6[2] as Teachers_Count_June,t6[3] as Total_Schools_June,t7[1] as Attendance_Percent_July,t7[2] as Teachers_Count_July,t7[3] as Total_Schools_July,t8[1] as Attendance_Percent_August,t8[2] as Teachers_Count_August,t8[3] as Total_Schools_August,t9[1] as Attendance_Percent_September,t9[2] as Teachers_Count_September,t9[3] as Total_Schools_September,t10[1] as Attendance_Percent_October,t10[2] as Teachers_Count_October,t10[3] as Total_Schools_October,t11[1] as Attendance_Percent_November,t11[2] as Teachers_Count_November,t11[3] as Total_Schools_November,t12[1] as Attendance_Percent_December,t12[2] as Teachers_Count_December,t12[3] as Total_Schools_December
  from (select * from crosstab(
-  'select att_res.academic_year, att_res.cluster_id,att_res.cluster_name,att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.Teachers_count,att_res.total_schools] from (SELECT cluster_id,INITCAP(cluster_name) AS cluster_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name) AS block_name,
+  'select row_number() OVER (ORDER BY district_id)::int AS rn,att_res.academic_year, att_res.cluster_id,att_res.cluster_name,att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.Teachers_count,att_res.total_schools] from (SELECT cluster_id,INITCAP(cluster_name) AS cluster_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name) AS block_name,
 round(cast(Sum(total_present)*100.0/Sum(total_working_days) as numeric),1)AS attendance_pct,
 Sum(teachers_count) AS teachers_count,Count(DISTINCT(school_id)) AS total_schools,month,case when month in (6,7,8,9,10,11,12) then (year ||''-''|| substring(cast((year+1) as text),3,2)) else ((year-1) || ''-'' || substring(cast(year as text),3,2)) end as academic_year
 FROM school_teacher_total_attendance WHERE cluster_latitude IS NOT NULL AND block_latitude IS NOT NULL 
@@ -10342,6 +10344,7 @@ GROUP BY cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,blo
 ) as att_res',
   'select m from generate_series(1,12) m'
 ) as (
+  rn int,
   academic_year text,
   cluster_id bigint,cluster_name text,
   block_id bigint,block_name text,
@@ -10366,7 +10369,7 @@ GROUP BY cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,blo
 create or replace view teacher_attendance_all_months_data_school as 
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,academic_year,t1[1] as Attendance_Percent_January,t1[2] as Teachers_Count_January,t1[3] as Total_Schools_January,t2[1] as Attendance_Percent_February,t2[2] as Teachers_Count_February,t2[3] as Total_Schools_February,t3[1] as Attendance_Percent_March,t3[2] as Teachers_Count_March,t3[3] as Total_Schools_March,t4[1] as Attendance_Percent_April,t4[2] as Teachers_Count_April,t4[3] as Total_Schools_April,t5[1] as Attendance_Percent_May,t5[2] as Teachers_Count_May,t5[3] as Total_Schools_May,t6[1] as Attendance_Percent_June,t6[2] as Teachers_Count_June,t6[3] as Total_Schools_June,t7[1] as Attendance_Percent_July,t7[2] as Teachers_Count_July,t7[3] as Total_Schools_July,t8[1] as Attendance_Percent_August,t8[2] as Teachers_Count_August,t8[3] as Total_Schools_August,t9[1] as Attendance_Percent_September,t9[2] as Teachers_Count_September,t9[3] as Total_Schools_September,t10[1] as Attendance_Percent_October,t10[2] as Teachers_Count_October,t10[3] as Total_Schools_October,t11[1] as Attendance_Percent_November,t11[2] as Teachers_Count_November,t11[3] as Total_Schools_November,t12[1] as Attendance_Percent_December,t12[2] as Teachers_Count_December,t12[3] as Total_Schools_December
  from (select * from crosstab(
-  'select att_res.academic_year,att_res.school_id,att_res.school_name, att_res.cluster_id,att_res.cluster_name,att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.Teachers_count,att_res.total_schools] from (SELECT school_id,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+  'select row_number() OVER (ORDER BY district_id)::int AS rn,att_res.academic_year,att_res.school_id,att_res.school_name, att_res.cluster_id,att_res.cluster_name,att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.Teachers_count,att_res.total_schools] from (SELECT school_id,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
 INITCAP(cluster_name) AS cluster_name, 
 round(cast(Sum(total_present)*100.0/Sum(total_working_days) as numeric),1)AS attendance_pct,
 Sum(teachers_count) AS teachers_count,Count(DISTINCT(school_id)) AS total_schools,month,case when month in (6,7,8,9,10,11,12) then (year ||''-''|| substring(cast((year+1) as text),3,2)) else ((year-1) || ''-'' || substring(cast(year as text),3,2)) end as academic_year 
@@ -10378,6 +10381,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
 ) as att_res',
   'select m from generate_series(1,12) m'
 ) as (
+  rn int,
   academic_year text,
   school_id bigint,school_name text,
   cluster_id bigint,cluster_name text,
@@ -10409,7 +10413,7 @@ drop view if exists student_attendance_all_months_data_school cascade;
 create or replace view student_attendance_all_months_data_dist as 
 select district_id,district_name,academic_year,t1[1] as Attendance_Percent_January,t1[2] as Students_Count_January,t1[3] as Total_Schools_January,t2[1] as Attendance_Percent_February,t2[2] as Students_Count_February,t2[3] as Total_Schools_February,t3[1] as Attendance_Percent_March,t3[2] as Students_Count_March,t3[3] as Total_Schools_March,t4[1] as Attendance_Percent_April,t4[2] as Students_Count_April,t4[3] as Total_Schools_April,t5[1] as Attendance_Percent_May,t5[2] as Students_Count_May,t5[3] as Total_Schools_May,t6[1] as Attendance_Percent_June,t6[2] as Students_Count_June,t6[3] as Total_Schools_June,t7[1] as Attendance_Percent_July,t7[2] as Students_Count_July,t7[3] as Total_Schools_July,t8[1] as Attendance_Percent_August,t8[2] as Students_Count_August,t8[3] as Total_Schools_August,t9[1] as Attendance_Percent_September,t9[2] as Students_Count_September,t9[3] as Total_Schools_September,t10[1] as Attendance_Percent_October,t10[2] as Students_Count_October,t10[3] as Total_Schools_October,t11[1] as Attendance_Percent_November,t11[2] as Students_Count_November,t11[3] as Total_Schools_November,t12[1] as Attendance_Percent_December,t12[2] as Students_Count_December,t12[3] as Total_Schools_December
  from (select * from crosstab(
-  'select att_res.academic_year,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.students_count,att_res.total_schools] from (SELECT district_id,INITCAP(district_name) AS district_name,month,case when month in (6,7,8,9,10,11,12) then (year ||''-''|| substring(cast((year+1) as text),3,2)) else ((year-1) || ''-'' || substring(cast(year as text),3,2)) end as academic_year, 
+  'select row_number() OVER (ORDER BY district_id)::int AS rn,att_res.academic_year,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.students_count,att_res.total_schools] from (SELECT district_id,INITCAP(district_name) AS district_name,month,case when month in (6,7,8,9,10,11,12) then (year ||''-''|| substring(cast((year+1) as text),3,2)) else ((year-1) || ''-'' || substring(cast(year as text),3,2)) end as academic_year, 
 Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS attendance_pct,
 Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools 
 FROM school_student_total_attendance WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
@@ -10418,6 +10422,7 @@ AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is 
 GROUP BY district_id,district_latitude,district_longitude,district_name ,year,month) as att_res',
   'select m from generate_series(1,12) m'
 ) as (
+  rn int,
   academic_year text,
   district_id bigint,
   district_name text,
@@ -10439,7 +10444,7 @@ GROUP BY district_id,district_latitude,district_longitude,district_name ,year,mo
 create or replace view student_attendance_all_months_data_block as 
 select block_id,block_name,district_id,district_name,academic_year,t1[1] as Attendance_Percent_January,t1[2] as Students_Count_January,t1[3] as Total_Schools_January,t2[1] as Attendance_Percent_February,t2[2] as Students_Count_February,t2[3] as Total_Schools_February,t3[1] as Attendance_Percent_March,t3[2] as Students_Count_March,t3[3] as Total_Schools_March,t4[1] as Attendance_Percent_April,t4[2] as Students_Count_April,t4[3] as Total_Schools_April,t5[1] as Attendance_Percent_May,t5[2] as Students_Count_May,t5[3] as Total_Schools_May,t6[1] as Attendance_Percent_June,t6[2] as Students_Count_June,t6[3] as Total_Schools_June,t7[1] as Attendance_Percent_July,t7[2] as Students_Count_July,t7[3] as Total_Schools_July,t8[1] as Attendance_Percent_August,t8[2] as Students_Count_August,t8[3] as Total_Schools_August,t9[1] as Attendance_Percent_September,t9[2] as Students_Count_September,t9[3] as Total_Schools_September,t10[1] as Attendance_Percent_October,t10[2] as Students_Count_October,t10[3] as Total_Schools_October,t11[1] as Attendance_Percent_November,t11[2] as Students_Count_November,t11[3] as Total_Schools_November,t12[1] as Attendance_Percent_December,t12[2] as Students_Count_December,t12[3] as Total_Schools_December
  from (select * from crosstab(
-  'select att_res.academic_year, att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.students_count,att_res.total_schools] from (SELECT block_id,INITCAP(block_name) AS block_name,district_id,INITCAP(district_name) AS district_name,
+  'select row_number() OVER (ORDER BY district_id)::int AS rn,att_res.academic_year, att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.students_count,att_res.total_schools] from (SELECT block_id,INITCAP(block_name) AS block_name,district_id,INITCAP(district_name) AS district_name,
 Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS attendance_pct,
 Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,month,case when month in (6,7,8,9,10,11,12) then (year ||''-''|| substring(cast((year+1) as text),3,2)) else ((year-1) || ''-'' || substring(cast(year as text),3,2)) end as academic_year  
 FROM school_student_total_attendance WHERE block_name IS NOT NULL AND block_latitude IS NOT NULL 
@@ -10448,6 +10453,7 @@ AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is 
 GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district_name,year,month) as att_res',
   'select m from generate_series(1,12) m'
 ) as (
+  rn int,
   academic_year text,
   block_id bigint,block_name text,
   district_id bigint,
@@ -10471,7 +10477,7 @@ GROUP BY block_id,block_name,block_latitude,block_longitude,district_id,district
 create or replace view student_attendance_all_months_data_cluster as 
 select cluster_id,cluster_name,block_id,block_name,district_id,district_name,academic_year,t1[1] as Attendance_Percent_January,t1[2] as Students_Count_January,t1[3] as Total_Schools_January,t2[1] as Attendance_Percent_February,t2[2] as Students_Count_February,t2[3] as Total_Schools_February,t3[1] as Attendance_Percent_March,t3[2] as Students_Count_March,t3[3] as Total_Schools_March,t4[1] as Attendance_Percent_April,t4[2] as Students_Count_April,t4[3] as Total_Schools_April,t5[1] as Attendance_Percent_May,t5[2] as Students_Count_May,t5[3] as Total_Schools_May,t6[1] as Attendance_Percent_June,t6[2] as Students_Count_June,t6[3] as Total_Schools_June,t7[1] as Attendance_Percent_July,t7[2] as Students_Count_July,t7[3] as Total_Schools_July,t8[1] as Attendance_Percent_August,t8[2] as Students_Count_August,t8[3] as Total_Schools_August,t9[1] as Attendance_Percent_September,t9[2] as Students_Count_September,t9[3] as Total_Schools_September,t10[1] as Attendance_Percent_October,t10[2] as Students_Count_October,t10[3] as Total_Schools_October,t11[1] as Attendance_Percent_November,t11[2] as Students_Count_November,t11[3] as Total_Schools_November,t12[1] as Attendance_Percent_December,t12[2] as Students_Count_December,t12[3] as Total_Schools_December
  from (select * from crosstab(
-  'select att_res.academic_year, att_res.cluster_id,att_res.cluster_name,att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.students_count,att_res.total_schools] from (SELECT cluster_id,INITCAP(cluster_name) AS cluster_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name) AS block_name,
+  'select row_number() OVER (ORDER BY district_id)::int AS rn,att_res.academic_year, att_res.cluster_id,att_res.cluster_name,att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.students_count,att_res.total_schools] from (SELECT cluster_id,INITCAP(cluster_name) AS cluster_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name) AS block_name,
 Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS attendance_pct,
 Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,month,case when month in (6,7,8,9,10,11,12) then (year ||''-''|| substring(cast((year+1) as text),3,2)) else ((year-1) || ''-'' || substring(cast(year as text),3,2)) end as academic_year   
 FROM school_student_total_attendance WHERE cluster_latitude IS NOT NULL AND block_latitude IS NOT NULL 
@@ -10481,6 +10487,7 @@ GROUP BY cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,blo
 ) as att_res',
   'select m from generate_series(1,12) m'
 ) as (
+  rn int,
   academic_year text,
   cluster_id bigint,cluster_name text,
   block_id bigint,block_name text,
@@ -10504,7 +10511,7 @@ GROUP BY cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,blo
 create or replace view student_attendance_all_months_data_school as 
 select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,academic_year,t1[1] as Attendance_Percent_January,t1[2] as Students_Count_January,t1[3] as Total_Schools_January,t2[1] as Attendance_Percent_February,t2[2] as Students_Count_February,t2[3] as Total_Schools_February,t3[1] as Attendance_Percent_March,t3[2] as Students_Count_March,t3[3] as Total_Schools_March,t4[1] as Attendance_Percent_April,t4[2] as Students_Count_April,t4[3] as Total_Schools_April,t5[1] as Attendance_Percent_May,t5[2] as Students_Count_May,t5[3] as Total_Schools_May,t6[1] as Attendance_Percent_June,t6[2] as Students_Count_June,t6[3] as Total_Schools_June,t7[1] as Attendance_Percent_July,t7[2] as Students_Count_July,t7[3] as Total_Schools_July,t8[1] as Attendance_Percent_August,t8[2] as Students_Count_August,t8[3] as Total_Schools_August,t9[1] as Attendance_Percent_September,t9[2] as Students_Count_September,t9[3] as Total_Schools_September,t10[1] as Attendance_Percent_October,t10[2] as Students_Count_October,t10[3] as Total_Schools_October,t11[1] as Attendance_Percent_November,t11[2] as Students_Count_November,t11[3] as Total_Schools_November,t12[1] as Attendance_Percent_December,t12[2] as Students_Count_December,t12[3] as Total_Schools_December
  from (select * from crosstab(
-  'select att_res.academic_year,att_res.school_id,att_res.school_name, att_res.cluster_id,att_res.cluster_name,att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.students_count,att_res.total_schools] from (SELECT school_id,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
+  'select row_number() OVER (ORDER BY district_id)::int AS rn,att_res.academic_year,att_res.school_id,att_res.school_name, att_res.cluster_id,att_res.cluster_name,att_res.block_id,att_res.block_name,att_res.district_id,att_res.district_name,att_res.month,array[att_res.attendance_pct,att_res.students_count,att_res.total_schools] from (SELECT school_id,INITCAP(school_name) AS school_name,district_id,INITCAP(district_name) AS district_name,block_id,INITCAP(block_name)AS block_name,cluster_id,
 INITCAP(cluster_name) AS cluster_name,
 Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS attendance_pct,
 Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,month,case when month in (6,7,8,9,10,11,12) then (year ||''-''|| substring(cast((year+1) as text),3,2)) else ((year-1) || ''-'' || substring(cast(year as text),3,2)) end as academic_year
@@ -10516,6 +10523,7 @@ GROUP BY school_id,school_name,crc_name,school_latitude,school_longitude,year,mo
 ) as att_res',
   'select m from generate_series(1,12) m'
 ) as (
+  rn int,
   academic_year text,
   school_id bigint,school_name text,
   cluster_id bigint,cluster_name text,

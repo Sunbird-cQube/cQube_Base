@@ -6091,7 +6091,7 @@
 </entry>
 <entry>
     <key>suppress-nulls</key>
-    <value>never-suppress</value>
+    <value>always-suppress</value>
 </entry>
 <entry>
     <key>output-grouping</key>
@@ -8875,7 +8875,7 @@ ${filename:startsWith('semester_exam_subject_details'):ifElse(#{sat_semester_exa
                             <id>0872c0c1-2009-31bf-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>5736.0</x>
+<x>5992.0</x>
 <y>1616.0</y>
                             </position>
                             <bundle>
@@ -9195,7 +9195,7 @@ file:${filename} Error during jolt transformation of "${query_type}" query.</val
                             <id>0fa6ba5b-462e-36ad-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>5960.0</x>
+<x>5992.0</x>
 <y>1424.0</y>
                             </position>
                             <bundle>
@@ -9409,7 +9409,7 @@ file:${filename} Error during jolt transformation of "${query_type}" query.</val
                             <id>12215110-7fce-3271-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>5968.0</x>
+<x>5992.0</x>
 <y>1248.0</y>
                             </position>
                             <bundle>
@@ -9719,7 +9719,7 @@ ${query_type:startsWith('sat_learning_outcome_p3_cluster')}
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
 <x>6576.0</x>
-<y>744.0</y>
+<y>736.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -12156,7 +12156,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
                             <id>427a7be7-9d23-3df5-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>5136.0</x>
+<x>5120.0</x>
 <y>728.0</y>
                             </position>
                             <bundle>
@@ -12359,7 +12359,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
                             <id>430a937f-305e-330f-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>5112.0</x>
+<x>5120.0</x>
 <y>1048.0</y>
                             </position>
                             <bundle>
@@ -12828,7 +12828,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
 <x>5840.0</x>
-<y>728.0</y>
+<y>736.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -15153,7 +15153,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
                             <id>6f486161-a3ac-3ad9-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>5096.0</x>
+<x>5120.0</x>
 <y>1424.0</y>
                             </position>
                             <bundle>
@@ -16179,7 +16179,7 @@ ${filename:startsWith('semester_exam_subject_details'):ifElse(#{sat_check_same_i
                             <id>828ab189-5c6a-3e65-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>5112.0</x>
+<x>5120.0</x>
 <y>1616.0</y>
                             </position>
                             <bundle>
@@ -17284,7 +17284,7 @@ ${filename:startsWith('semester_exam_subject_details'):ifElse(#{sat_semester_exa
                             <id>8e1b24a4-22c0-3dd1-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>4496.0</x>
+<x>4504.0</x>
 <y>1064.0</y>
                             </position>
                             <bundle>
@@ -18168,7 +18168,7 @@ ${filename:startsWith('semester_exam_subject_details'):ifElse(#{semester_exam_su
                             <id>9dabff72-9cf8-39a4-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>5112.0</x>
+<x>5120.0</x>
 <y>1248.0</y>
                             </position>
                             <bundle>
@@ -19082,7 +19082,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
                             <id>a5cf9050-a384-3469-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>5968.0</x>
+<x>5992.0</x>
 <y>1048.0</y>
                             </position>
                             <bundle>
@@ -19909,7 +19909,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -20888,7 +20888,7 @@ ${query_type:startsWith('sat_meta_last7')} )} )}</value>
                             <id>cdd1517b-03a4-34f8-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>5112.0</x>
+<x>5120.0</x>
 <y>2096.0</y>
                             </position>
                             <bundle>
@@ -21610,7 +21610,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -21938,8 +21938,8 @@ file: ${filename} processed records updated to log db</value>
                             <id>d852dbda-480e-3292-0000-000000000000</id>
                             <parentGroupId>39c26d67-1898-34f7-0000-000000000000</parentGroupId>
                             <position>
-<x>4496.0</x>
-<y>728.0</y>
+<x>4504.0</x>
+<y>736.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
@@ -33110,5 +33110,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/02/2021 20:18:38 IST</timestamp>
+    <timestamp>03/03/2021 14:04:30 IST</timestamp>
 </template>
