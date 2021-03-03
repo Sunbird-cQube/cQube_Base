@@ -2614,7 +2614,7 @@ from
 (select exam_id,school_id,student_uid
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.district_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id;
@@ -2667,7 +2667,7 @@ from
 (select exam_id,school_id,student_uid
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.block_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.block_id=b.block_id;
@@ -2720,7 +2720,7 @@ from
 (select exam_id,school_id,student_uid
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.cluster_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id;
@@ -2773,7 +2773,7 @@ from
 (select exam_id,school_id,student_uid
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by a.school_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.school_id=b.school_id;
@@ -2940,7 +2940,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.district_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id;
@@ -3002,7 +3002,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.block_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.block_id=b.block_id;
@@ -3064,7 +3064,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.cluster_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id;
@@ -3126,7 +3126,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by a.school_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.school_id=b.school_id;
@@ -3309,7 +3309,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.district_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id;
@@ -3371,7 +3371,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.block_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.block_id=b.block_id;
@@ -3433,7 +3433,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.cluster_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id;
@@ -3495,7 +3495,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by a.school_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.school_id=b.school_id;
