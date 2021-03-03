@@ -1,0 +1,173 @@
+<div class="container-fluid" style="padding-top:15px !important;" (window:resize)="getHeight($event)">
+    <div class="row">
+        <div class="col-sm-8">
+            <div *ngIf='skul'>
+                <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    Semester Assessment Test Report for: <span (click)="resetToInitPage()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
+            </div>
+            <div *ngIf='dist'>
+                <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    Semester Assessment Test Report for: <span (click)="resetToInitPage()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
+                        (click)="selectedDistrict(districtHierarchy.distId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{districtHierarchy.districtName}}</span> </p>
+            </div>
+            <div *ngIf="blok">
+                <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    Semester Assessment Test Report for: <span (click)="resetToInitPage()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
+                        (click)="selectedDistrict(blockHierarchy.distId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{blockHierarchy.districtName}}</span><span>/ </span><span
+                        (click)="selectedBlock(blockHierarchy.blockId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{blockHierarchy.blockName}}</span></p>
+            </div>
+
+            <div *ngIf="clust">
+                <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                    Semester Assessment Test Report for: <span (click)="resetToInitPage()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
+                        (click)="selectedDistrict(clusterHierarchy.distId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.districtName}}</span><span>/ </span><span
+                        (click)="selectedBlock(clusterHierarchy.blockId)"
+                        style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.blockName}}</span><span>/ </span><span>
+                        {{clusterHierarchy.clusterName}}</span></p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-7">
+                    <p id="errMsg"
+                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
+                    </p>
+                </div>
+                <div class="col-sm-5">
+                    <em class="fa fa-cloud-download" title="Download Report" id="download"
+                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
+                        (click)="downloadReport()"></em>
+                    <em class="fa fa-home" id="home" title="Home"
+                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
+                        alt="Home" (click)="resetToInitPage()"></em>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom: 10px;">
+            <select [hidden]="" id="year"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="year" (change)="selectedYear()">
+                <option [value]="year" disabled selected="selected">Choose Academic Year</option>
+                <option *ngFor="let year of years let i =index" [(ngValue)]="years[i]">
+                    {{years[i]}}
+                </option>
+            </select>
+            <select [hidden]="" id="month" required
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="month" (change)="selectedMonth()">
+                <option [value]="month" disabled selected="selected">Choose a Month</option>
+                <option *ngFor="let month of months let i =index" [(ngValue)]="months[i]">
+                    {{months[i]}}
+                </option>
+            </select>
+
+            <select [hidden]="" id="grade"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="grade" (change)="selectedGrade()">
+                <option [value]="grade" disabled selected="selected">Choose a Grade</option>
+                <option *ngFor="let grade of grades, let i =index" [(ngValue)]="grade.grade">
+                    <span *ngIf="grade.grade == 'all'; else other_content">
+                        All Grades
+                    </span>
+                    <ng-template #other_content> Grade {{grade.grade}}</ng-template>
+                </option>
+            </select>
+
+            <select *ngIf="gradeSelected" [hidden]="" id="subject"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="subject" (change)="selectedSubject()">
+                <option [value]="subject" disabled selected="selected">Choose a Subject</option>
+                <option *ngFor="let subject of subjects, let i =index" [(ngValue)]="subject.subject">
+                    <span *ngIf="subject.subject == 'all'; else other_content">
+                        All Subjects
+                    </span>
+                    <ng-template #other_content> {{subject.subject}}</ng-template>
+                </option>
+            </select>
+
+            <select *ngIf="gradeSelected" [hidden]="" id="examDate"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="examDate" (change)="selectedExamDate()">
+                <option [value]="examDate" disabled selected="selected">Choose an Examdate</option>
+                <option *ngFor="let examDate of examDates, let i =index" [(ngValue)]="examDate.exam_date">
+                    <span *ngIf="examDate.exam_date == 'all'; else other_content">
+                        All Dates
+                    </span>
+                    <ng-template #other_content> {{examDate.exam_date}}</ng-template>
+                </option>
+            </select>
+
+            <select *ngIf="gradeSelected" id="viewBy"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="viewBy" (change)="selectedViewBy()">
+                <option [value]="viewBy" disabled selected="selected">Choose View by</option>
+                <option *ngFor="let viewBy of allViews, let i =index" [(ngValue)]="viewBy.key">
+                    {{viewBy.value}}
+                </option>
+            </select>
+
+            <select id="district"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="district" (change)="selectedDistrict(district)">
+                <option [value]="district" disabled selected="selected">Choose a District</option>
+                <option *ngFor="let district of districtNames, let i =index" [(ngValue)]="district.district_id">
+                    {{district.district_name}}
+                </option>
+            </select>
+
+
+            <select [hidden]="blockHidden" id="block"
+                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="block" (change)="selectedBlock(block)">
+                <option [value]="block" disabled selected="selected">Choose a Block</option>
+                <option *ngFor="let block of blockNames, let i =index" [(ngValue)]="block.block_id">
+                    {{block.block_name}}
+                </option>
+            </select>
+            <select [hidden]="clusterHidden" id="cluster"
+                style="margin-right: 0px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+                [(ngModel)]="cluster" (change)="selectedCluster(cluster)">
+                <option [value]="cluster" disabled selected="selected">Choose a Cluster</option>
+                <option *ngFor="let cluster of clusterNames, let i =index" [(ngValue)]="cluster.cluster_id">
+                    {{cluster.cluster_name}}
+                </option>
+            </select>
+
+        </div>
+    </div>
+    <div class="row">
+        <!-- <div id="scrolly" [ngStyle]="{width: width,height: height > 700 ? '72vh' : '68vh'}">
+            <div class="col-md-12" id="container" [ngStyle]="{height: '100%', minWidth: (innerWidth-15)+'px'}">
+            </div>
+        </div> -->
+        <div class="col-md-12" id="container" [ngStyle]="{width: width,height: height > 776 ? '74vh' : '68vh'}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div style="position: relative; bottom: 0px; float: right; right: 0px;">
+                <ngb-pagination [collectionSize]="yLabel.length" [maxSize]="10" [(page)]="currentPage"
+                    [pageSize]="pageSize" (pageChange)="onChangePage()"></ngb-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="spinner">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>

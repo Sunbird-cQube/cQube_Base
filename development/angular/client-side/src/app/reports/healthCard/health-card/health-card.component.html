@@ -128,45 +128,51 @@
             <div style="height: 120px auto;margin-top: 5px; border-radius: 20px;">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div style="float: right;">
+                        <div style="float: left;">
+                            <select id="period"
+                                style="padding: 6.3px; margin: 5px 15px 0px 0px;  color: black; border-radius: 4px; font-size: 12px; font-weight: bold; background-color: #f5f6fb"
+                                [(ngModel)]="period" (change)="onPeriodSelect()">
+                                <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
+                                <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
+                                    {{period.value}}
+                                </option>
+                            </select>
+                        </div>
+                        <!-- <div style="float: right;">
                             <em aria-disabled="true" class="fa fa-cloud-download" aria-hidden="true" id="download"
                                 title="Download Report"
-                                style="cursor: pointer;font-size: 30px; float: right; color: #3100cc;" alt="download">
+                                style="cursor: pointer;display: none; font-size: 30px; float: right; color: #3100cc;" alt="download">
                             </em>
-                        </div>
+                        </div> -->
                         <div style="float: right;">
                             <em class="fa fa-home" aria-hidden="true" id="home" title="Home"
                                 style="cursor: pointer;font-size: 30px; float: right; margin-right: 10px;  color: #3100cc;"
-                                alt="Home" (click)="stateData()"></em>
-                        </div>
-                    </div>
-                    <div class="col-lg-12" *ngIf="exist">
-                        <div>
-                            <div *ngIf="!showAll" style="height: 30px;"></div>
+                                alt="Home" (click)="onHomeSelect()"></em>
                         </div>
                     </div>
                 </div>
-                <div class="row" style="padding-top: 15px !important;">
+                <div class="row" style="padding-top: 8px !important;">
                     <div class="col-lg-4 col-md-3 col-sm-12">
-                        <label for="" style="font-size: 13px; font-weight: bold;">Choose Level</label>
+                        <label for="" style="font-size: 13px; font-weight: bold;line-height: 1em;">Choose Level</label>
                         <select id="level"
                             style="padding: 6.3px;width: 100%; margin-bottom: 10px;background-color: #f5f6fb; border-radius: 4px; font-size: 12px; font-weight: bold;"
                             [(ngModel)]="level" name="level" (change)="selectedLevel()">
                             <option [value]="level" disabled selected="selected">Choose Level
                             </option>
-                            <option *ngFor="let level of levels" [(ngValue)]="level.key" style=" font-size: 11px;">
+                            <option *ngFor="let level of levels" [(ngValue)]="level.key">
                                 {{level.name}}
                             </option>
                         </select>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="autocomplete" style="width:100%;">
-                            <span id="warning" style="font-size: 13px; float: left;"> Please enter at least 2
+                            <span id="warning" style="font-size: 13px; float: left;line-height: 1em;"> Please enter at
+                                least 2
                                 characters/digits</span>
                             <p style="line-height: 1em; float: left;">&nbsp;</p>
                             <input #searchInput id="myInput"
                                 style="border: 1px solid gray;background-color: #f5f6fb; padding: 6px; font-size: 12px; width: 100%; border-radius: 5px;margin-top: -5px;"
-                                type="search" class="clearable" autofocus autocomplete="off" name="districtName"
+                                type="search" class="clearable" autocomplete="off" name="districtName"
                                 [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
                             <br *ngIf="len < 2">
                             <br *ngIf="len >= 2" />
@@ -292,16 +298,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="healthCardData['student_attendance']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="attdLink"><a href="javascript:void(0)"
-                                        (click)="goToReport('/attendance/student-attendance')">Click
-                                        to Access
-                                        Report</a></p>
-                            </div>
-                        </div>
                         <div *ngIf="!healthCardData['student_attendance']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['student_attendance']">
+                        <p *ngIf="showLink" class="link" id="attdLink"><a href="javascript:void(0)"
+                                (click)="goToReport('/attendance/student-attendance')">Click
+                                to Access
+                                Report</a></p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="semPer" style="margin-bottom:10px !important">
@@ -449,18 +453,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="healthCardData['student_semester']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="semLink">
-                                    <a href="javascript:void(0)"
-                                        (click)="goToReport('/student-performance/semester-report')">Click
-                                        to Access
-                                        Report</a>
-                                </p>
-                            </div>
-                        </div>
                         <div *ngIf="!healthCardData['student_semester']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['student_semester']">
+                        <p *ngIf="showLink" class="link" id="semLink">
+                            <a href="javascript:void(0)" (click)="goToReport('/student-performance/sat-report')">Click
+                                to Access
+                                Report</a>
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="pat" style="margin-bottom:10px !important">
@@ -495,27 +496,31 @@
                                                                 <td>:</td>
                                                                 <td>{{healthCardData['pat_performance'][key]}}</td>
                                                             </tr>
-                                                            <tr>
-                                                                <td colspan="3">
-                                                                    <strong
-                                                                        style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade_Wise_Performance
-                                                                    </strong>
-                                                                </td>
-                                                            </tr>
-                                                            <tr style="font-size: 12px;"
-                                                                *ngFor="let key of patPerformTooltip;let i=index">
-                                                                <td
-                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
-                                                                    {{patPerformTooltipKeys[i]}}</td>
-                                                                <td
-                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
-                                                                    :</td>
-                                                                <td
-                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
-                                                                    {{healthCardData['pat_performance']['grade_wise_performance'][key]}}
-                                                                    %
-                                                                </td>
-                                                            </tr>
+                                                            <ng-container
+                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance']">
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <strong
+                                                                            style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade_Wise_Performance
+                                                                        </strong>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="font-size: 12px;"
+                                                                    *ngFor="let key of patPerformTooltip;let i=index">
+                                                                    
+                                                                    <td
+                                                                        *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                        {{patPerformTooltipKeys[i]}}</td>
+                                                                    <td
+                                                                        *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                        :</td>
+                                                                    <td
+                                                                        *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                        {{healthCardData['pat_performance']['grade_wise_performance'][key]}}
+                                                                        %
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -587,18 +592,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="healthCardData['pat_performance']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="patLink">
-                                    <a href="javascript:void(0)"
-                                        (click)="goToReport('/student-performance/pat-report')">Click
-                                        to Access
-                                        Report</a>
-                                </p>
-                            </div>
-                        </div>
                         <div *ngIf="!healthCardData['pat_performance']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['pat_performance']">
+                        <p *ngIf="showLink" class="link" id="patLink">
+                            <a href="javascript:void(0)" (click)="goToReport('/student-performance/pat-report')">Click
+                                to Access
+                                Report</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -730,19 +732,16 @@
                                         *ngFor="let list of healthCardData['school_infrastructure']['areas_to_focus'], let i=index">
                                         {{healthCardData['school_infrastructure']['areas_to_focus'][i]}}</li>
                                 </ul>
-
-                            </div>
-                        </div>
-                        <div class="row" *ngIf="healthCardData['school_infrastructure']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="infraLink"><a href="javascript: void(0)"
-                                        (click)="goToReport('/infrastructure/school-infra-map')">Click to Access
-                                        Report</a>
-                                </p>
                             </div>
                         </div>
                         <div *ngIf="!healthCardData['school_infrastructure']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['school_infrastructure']">
+                        <p *ngIf="showLink" class="link" id="infraLink"><a href="javascript: void(0)"
+                                (click)="goToReport('/infrastructure/school-infra-map')">Click to Access
+                                Report</a>
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="udise" style="margin-bottom:10px !important">
@@ -883,16 +882,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" *ngIf="healthCardData['udise']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="udiseLink"><a href="javascript: void(0)"
-                                        (click)="goToReport('/infrastructure/udise-report')">Click to Access
-                                        Report</a>
-                                </p>
-                            </div>
-                        </div>
                         <div *ngIf="!healthCardData['udise']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['udise']">
+                        <p *ngIf="showLink" class="link" id="udiseLink"><a href="javascript: void(0)"
+                                (click)="goToReport('/infrastructure/udise-report')">Click to Access
+                                Report</a>
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12" id="crc" style="margin-bottom:10px !important">
@@ -1005,23 +1002,21 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row" *ngIf="healthCardData['crc_visit']">
-                            <div class="col-sm-12">
-                                <p *ngIf="showLink" class="link" id="crcLink"><a href="javascript: void(0)"
-                                        (click)="goToReport('/crc/crc-report')">Click to Access
-                                        Report</a>
-                                </p>
-                            </div>
-                        </div>
                         <div *ngIf="!healthCardData['crc_visit']" class="notFound"> No Data Available
                         </div>
+                    </div>
+                    <div *ngIf="healthCardData['crc_visit']">
+                        <p *ngIf="showLink" class="link" id="crcLink"><a href="javascript: void(0)"
+                                (click)="goToReport('/crc/crc-report')">Click to Access
+                                Report</a>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-        <div *ngIf="err" style="position: absolute; top: 45%; left: 45%; color: red;">
-            No Data Found
-        </div>
+    </div>
+    <div *ngIf="err" style="position: absolute; top: 45%; left: 45%; color: red;">
+        No Data Found
     </div>
 </div>
 <div id="spinner" style="display: block;">

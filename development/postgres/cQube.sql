@@ -1363,9 +1363,6 @@ updated_on  TIMESTAMP without time zone
 
 create index if not exists crc_inspection_trans_id on crc_inspection_trans(school_id,crc_id);
 
-
-alter table crc_inspection_trans add column  IF NOT EXISTS visit_date date;
-
 /* crc_location_trans */
 
 create table if not exists crc_location_trans
@@ -5570,4 +5567,393 @@ create table if not exists teacher_attendance_exception_agg
 primary key(school_id,month,year));
 
 
+alter table crc_inspection_trans add column  IF NOT EXISTS visit_date date;
+alter table crc_inspection_dup add column  IF NOT EXISTS visit_date date;
 
+
+/* Semester validation tables */
+
+create table if not exists sat_null_col(
+filename varchar(200) ,
+ff_uuid varchar(200),
+count_null_exam_id int,
+count_null_question_id int,
+count_null_assessment_year int,
+count_null_medium int,
+count_null_standard int,
+count_null_subject_id int,
+count_null_subject_name int,
+count_null_exam_type_id int,
+count_null_exam_type int,
+count_null_exam_code int,
+count_null_exam_date int,
+count_null_total_questions int,
+count_null_total_marks int,
+count_null_question_title int,
+count_null_question int,
+count_null_question_marks int,
+count_null_id int,
+count_null_student_uid int,
+count_null_school_id int,
+count_null_studying_class int,
+count_null_obtained_marks int,
+count_null_grade int
+);
+
+create table if not exists semester_exam_mst_dup(
+exam_id	int,
+assessment_year	varchar(20),
+medium	varchar(20),
+standard	int,
+division	varchar(20),
+subject_id	int,
+subject_name	varchar(50),
+exam_type_id	int,
+exam_type	varchar(50),
+exam_code	varchar(100),
+exam_date	date,
+total_questions	int,
+total_marks	int,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists semester_exam_qst_mst_dup(
+question_id	int,
+exam_id	int,
+indicator_id	int,
+indicator_title	varchar(20),
+indicator	text,
+question_title	varchar(20),
+question	text,
+question_marks	numeric,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists semester_exam_result_dup(
+id	int,
+exam_id	int,
+exam_code	varchar(100),
+student_id	bigint,
+student_uid	bigint,
+school_id	bigint,
+studying_class	int,
+section	varchar(20),
+question_id	int,
+obtained_marks	numeric,
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process  TIMESTAMP without time zone default current_timestamp
+);
+
+create table if not exists sat_subject_details_dup(subject_id int,subject varchar(100),grade smallint,num_of_times int,
+ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
+
+create table if not exists sat_school_grade_enrolment_dup(school_id bigint,grade smallint,students_count int,num_of_times int,
+ff_uuid varchar(255),created_on_file_process timestamp default current_timestamp);
+
+/*SAT data tables*/
+
+create table if not exists semester_exam_mst(
+exam_id  int,
+assessment_year  varchar(20),
+medium  varchar(20),
+standard  int,
+division  varchar(20),
+subject_id  int,
+subject_name  varchar(50),
+exam_type_id  int,
+exam_type  varchar(50),
+exam_code  varchar(100),
+exam_date  date,
+total_questions  int,
+total_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp,
+primary key(exam_id,assessment_year)
+);
+
+create table if not exists semester_exam_qst_mst(
+question_id  int primary key not null,
+exam_id  int,
+indicator_id  int,
+indicator_title varchar(20),
+indicator  text,
+question_title  varchar(20),
+question  text,
+question_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp
+);
+
+create table if not exists semester_exam_result_temp(
+id  int primary key not null,
+ffuid text,
+exam_id  int,
+exam_code  varchar(100),
+student_id  bigint,
+student_uid  bigint,
+school_id  bigint,
+studying_class  int,
+section  varchar(20),
+question_id  int,
+obtained_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp
+);
+
+create table if not exists semester_exam_result_staging_1(
+id  int,
+ff_uuid text,
+exam_id  int,
+exam_code  varchar(100),
+student_id  bigint,
+student_uid  bigint,
+school_id  bigint,
+studying_class  int,
+section  varchar(20),
+question_id  int,
+obtained_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp
+);
+
+create table if not exists semester_exam_result_staging_2(
+id  int,
+ff_uuid text,
+exam_id  int,
+exam_code  varchar(100),
+student_id  bigint,
+student_uid  bigint,
+school_id  bigint,
+studying_class  int,
+section  varchar(20),
+question_id  int,
+obtained_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp
+);
+
+create table if not exists semester_exam_result_trans(
+id  int,
+exam_id  int,
+exam_code  varchar(100),
+student_id  bigint,
+student_uid  bigint,
+school_id  bigint,
+studying_class  int,
+section  varchar(20),
+question_id  int,
+obtained_marks  numeric,
+created_on  timestamp,
+updated_on  timestamp,
+primary key(exam_code, student_uid, question_id)
+);
+
+create table if not exists semester_exam_school_result
+(id  serial,
+academic_year  varchar(50),
+exam_code  varchar(100),
+school_id  bigint,
+grade  smallint,
+school_name  varchar(200),
+school_latitude  double precision,
+school_longitude  double precision,
+district_id  bigint,
+district_name  varchar(100),
+district_latitude  double precision,
+district_longitude  double precision,
+block_id  bigint,
+block_name  varchar(100),
+block_latitude  double precision,
+block_longitude  double precision,
+cluster_id  bigint,
+cluster_name  varchar(100),
+cluster_latitude  double precision,
+cluster_longitude  double precision,
+subject  text,
+obtained_marks  numeric,
+total_marks  numeric,
+students_count   int,
+created_on  timestamp,
+updated_on  timestamp,
+primary key(academic_year,exam_code,school_id)
+);
+
+alter table semester_exam_school_result add COLUMN if not exists exam_date date;
+
+alter table semester_exam_school_result add COLUMN if not exists students_attended int;
+
+create table if not exists semester_exam_school_qst_result
+(id  serial,
+academic_year  varchar(50),
+exam_code varchar(100),
+exam_date  date,
+school_id  bigint,
+grade  smallint,
+school_name  varchar(200),
+district_id  bigint,
+district_name  varchar(100),
+block_id  bigint,
+block_name  varchar(100),
+cluster_id  bigint,
+cluster_name  varchar(100),
+subject  text,
+question_id	int,
+indicator	text,
+obtained_marks  numeric,
+total_marks  numeric,
+students_attended   int,
+total_students int,
+created_on  timestamp,
+updated_on  timestamp,
+primary key(academic_year,exam_code,school_id,question_id)
+);
+
+-- Data replay
+
+create table if not exists del_data_source_details (data_source text,params text,table_name text,order_of_execution int, primary key(data_source,table_name));
+
+--Tables related to student_attendance
+
+insert into del_data_source_details values('student_attendance','month,year','student_attendance_meta',3) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('student_attendance','month,year','student_attendance_staging_1',1) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('student_attendance','month,year','student_attendance_staging_2',2) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('student_attendance','month,year','student_attendance_temp',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('student_attendance','month,year','student_attendance_trans',5) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('student_attendance','month,year','school_student_total_attendance',6) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to teacher_attendance
+
+insert into del_data_source_details values('teacher_attendance','month,year','teacher_attendance_meta',3) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('teacher_attendance','month,year','teacher_attendance_staging_1',1) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('teacher_attendance','month,year','teacher_attendance_staging_2',2) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('teacher_attendance','month,year','teacher_attendance_temp',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('teacher_attendance','month,year','teacher_attendance_trans',5) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('teacher_attendance','month,year','school_teacher_total_attendance',6) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to crc
+
+insert into del_data_source_details values('crc','month,year','crc_location_trans',2) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('crc','month,year','crc_inspection_trans',3) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('crc','month,year','crc_visits_frequency',1) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to periodic_assessment_test
+
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_mst',8) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_qst_mst',7) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_result_staging_1',1) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_result_staging_2',2) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_result_temp',3) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_result_trans',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_school_qst_result',5) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_school_result',6) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to semester_assessment_test
+
+insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_mst',8) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_qst_mst',7) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_result_staging_1',1) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_result_staging_2',2) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_result_temp',3) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_result_trans',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_school_qst_result',5) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_school_result',6) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to diksha_tpd
+
+insert into del_data_source_details values('diksha_tpd','batch_id','diksha_tpd_staging',1) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_tpd','batch_id','diksha_tpd_content_temp',2) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_tpd','batch_id','diksha_tpd_trans',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_tpd','batch_id','diksha_tpd_agg',3) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to diksha_summary_rollup
+
+insert into del_data_source_details values('diksha_summary_rollup','batch_id','diksha_content_staging',1) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_summary_rollup','batch_id','diksha_content_temp',2) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_summary_rollup','batch_id','diksha_content_trans',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('diksha_summary_rollup','batch_id','diksha_total_content',3) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to static
+
+insert into del_data_source_details values('static','all','block_tmp',1) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','block_mst',2) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','district_tmp',3) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','district_mst',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','cluster_tmp',5) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','cluster_mst',6) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','school_master',7) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','school_tmp',8) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','school_hierarchy_details',9) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('static','all','school_geo_master',10) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to infrastructure
+
+insert into del_data_source_details values('infrastructure','all','infrastructure_temp',1) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('infrastructure','all','infrastructure_trans',2) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+
+--Tables related to udise
+
+insert into del_data_source_details values('udise','all','udise_sch_incen_cwsn',1) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_plcmnt_c12',2) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_reptr',3) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_basic_info',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_incentives',5) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_trng_prov',6) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmmarks_c10',7) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_class_cond',8) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_school_metrics_trans',9) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmmarks_c12',10) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_pgi_details',11) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_enr_caste',12) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_age',13) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmres_c10',14) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_profile',15) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_enr_sub_sec',16) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_by_stream',17) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmres_c12',18) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_recp_exp',19) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_exmres_c10',20) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_cwsn',21) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmres_c5',22) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_safety',23) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_exmres_c12',24) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_fresh',25) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_exmres_c8',26) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_staff_posn',27) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_faculty',28) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_medinstr',29) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_facility',30) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_tch_profile',31) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_nsqf_plcmnt_c10',32) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('udise','all','udise_sch_enr_newadm',33) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing; 
+
+/* SAT adding semester */
+alter table semester_exam_mst_dup add column if not exists semester int;
+
+alter table semester_exam_mst add column if not exists semester int;
+alter table semester_exam_mst drop constraint if exists semester_exam_mst_pkey;
+alter table semester_exam_mst add primary key(exam_id,assessment_year,semester);
+
+alter table semester_exam_school_result add column if not exists semester int;
+
+create table  if not exists data_replay_meta(
+filename text not null,
+ff_uuid text,
+cqube_process_status text,
+data_source text,
+batch_id text,
+from_date date,
+to_date date,
+exam_code text,
+semesters text,
+academic_year text,
+selection varchar(3),
+year int,
+months text,
+created_on timestamp default current_timestamp,
+updated_on timestamp,
+primary key(ff_uuid));

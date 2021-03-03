@@ -8,20 +8,30 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         logger.info('---PAT cluster wise api ---');
         var period = req.body.data.period;
         var grade = req.body.data.grade;
+        var report = req.body.data.report;
+        var semester = req.body.data.sem;
         var fileName;
         var clusterData = {}
 
         if (period == '') {
             if (grade) {
-                fileName = `pat/all/cluster/${grade}.json`;
+                fileName = `${report}/all/cluster/${grade}.json`;
             } else {
-                fileName = `pat/all/pat_cluster.json`;
+                fileName = `${report}/all/${report}_cluster.json`;
             }
         } else {
-            if (grade) {
-                fileName = `pat/${period}/cluster/${grade}.json`;
+            if (report == 'pat') {
+                if (grade) {
+                    fileName = `${report}/${period}/cluster/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${report}_cluster.json`;
+                }
             } else {
-                fileName = `pat/${period}/pat_cluster.json`;
+                if (grade) {
+                    fileName = `${report}/${period}/cluster/${semester}/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${semester}/${report}_cluster.json`;
+                }
             }
         }
 
@@ -39,11 +49,18 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
     try {
         logger.info('---PAT clusterperBlock api ---');
         var period = req.body.data.period;
+        var report = req.body.data.report;
+        var semester = req.body.data.sem;
         var fileName;
+
         if (period == '') {
-            fileName = `pat/all/pat_cluster.json`;
+            fileName = `${report}/all/${report}_cluster.json`;
         } else {
-            fileName = `pat/${period}/pat_cluster.json`;
+            if (report == 'pat') {
+                fileName = `${report}/${period}/${report}_cluster.json`;
+            } else {
+                fileName = `${report}/${period}/${semester}/${report}_cluster.json`;
+            }
         }
 
         var clusterData = await s3File.readS3File(fileName);

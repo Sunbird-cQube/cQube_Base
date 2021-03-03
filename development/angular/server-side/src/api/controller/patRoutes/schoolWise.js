@@ -8,19 +8,29 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         logger.info('---PAT school wise api ---');
         var period = req.body.data.period;
         var grade = req.body.data.grade;
+        var report = req.body.data.report;
+        var semester = req.body.data.sem;
         var fileName;
         var schoolData = {}
         if (period == '') {
             if (grade) {
-                fileName = `pat/all/school/${grade}.json`;
+                fileName = `${report}/all/school/${grade}.json`;
             } else {
-                fileName = `pat/all/pat_school.json`;
+                fileName = `${report}/all/${report}_school.json`;
             }
         } else {
-            if (grade) {
-                fileName = `pat/${period}/school/${grade}.json`;
+            if (report == 'pat') {
+                if (grade) {
+                    fileName = `${report}/${period}/school/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${report}_school.json`;
+                }
             } else {
-                fileName = `pat/${period}/pat_school.json`;
+                if (grade) {
+                    fileName = `${report}/${period}/school/${semester}/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${semester}/${report}_school.json`;
+                }
             }
         }
         schoolData = await s3File.readS3File(fileName);
@@ -37,11 +47,17 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
     try {
         logger.info('---PAT schoolPerCluster api ---');
         var period = req.body.data.period;
+        var report = req.body.data.report;
+        var semester = req.body.data.sem;
         var fileName;
         if (period == '') {
-            fileName = `pat/all/pat_school.json`;
+            fileName = `${report}/all/${report}_school.json`;
         } else {
-            fileName = `pat/${period}/pat_school.json`;
+            if (report == 'pat') {
+                fileName = `${report}/${period}/${report}_school.json`;
+            } else {
+                fileName = `${report}/${period}/${semester}/${report}_school.json`;
+            }
         }
 
         var schoolData = await s3File.readS3File(fileName);

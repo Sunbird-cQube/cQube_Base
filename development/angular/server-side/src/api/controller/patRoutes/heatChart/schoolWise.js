@@ -6,16 +6,16 @@ const helper = require('./helper');
 
 router.post('/schoolWise', auth.authController, async (req, res) => {
     try {
-        logger.info('---PAT heat map school wise api ---');
-        let { year, month, grade, subject_name, exam_date, blockId, clusterId, viewBy } = req.body
+        logger.info(`--- ${req.body.report} heat map school wise api ---`);
+        let { year, month, grade, subject_name, exam_date, blockId, clusterId, viewBy, report } = req.body
         let fileName = ''
         if (grade == "") {
-            fileName = `pat/heatmap-summary/${year}/${month}/clusters/${blockId}.json`
+            fileName = `${report}/heatmap-summary/${year}/${month}/clusters/${blockId}.json`
         } else {
             if (viewBy == 'indicator') {
-                fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/clusters/${blockId}.json`;
+                fileName = `${report}/heatChart/indicatorIdLevel/${year}/${month}/clusters/${blockId}.json`;
             } else if (viewBy == 'question_id')
-                fileName = `pat/heatChart/questionIdLevel/${year}/${month}/clusters/${blockId}.json`;
+                fileName = `${report}/heatChart/questionIdLevel/${year}/${month}/clusters/${blockId}.json`;
         }
         var data = await s3File.readS3File(fileName);
 
@@ -66,7 +66,7 @@ router.post('/schoolWise', auth.authController, async (req, res) => {
         data = data.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1)
         let result = await helper.generalFun(grade, data, 3, viewBy)
 
-        logger.info('--- PAT heat map school wise response sent ---');
+        logger.info(`--- ${req.body.report} heat map school wise response sent ---`);
         res.status(200).send({ schoolDetails, result, downloadData: data });
     } catch (e) {
         logger.error(`Error :: ${e}`)

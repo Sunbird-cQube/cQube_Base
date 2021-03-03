@@ -18,7 +18,11 @@ router.post('/blockWise', auth.authController, async (req, res) => {
                 fileName = `exception_list/student_attendance_completion/block_${year}_${month}.json`;
             }
         } else {
-            fileName = `exception_list/teacher_attendance_completion/block_${year}_${month}.json`;
+            if (timePeriod != null) {
+                fileName = `exception_list/teacher_attendance_completion/${timePeriod}/block.json`;
+            } else {
+                fileName = `exception_list/teacher_attendance_completion/block_${year}_${month}.json`;
+            }
         }
         var jsonData = await s3File.readS3File(fileName);
         var blocksAttendanceData = jsonData.data;
@@ -63,8 +67,11 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
                 fileName = `exception_list/student_attendance_completion/block_${year}_${month}.json`;
             }
         } else {
-            fileName = `exception_list/teacher_attendance_completion/block_${year}_${month}.json`;
-        }
+            if (timePeriod != null) {
+                fileName = `exception_list/teacher_attendance_completion/${timePeriod}/block.json`;
+            } else {
+                fileName = `exception_list/teacher_attendance_completion/block_${year}_${month}.json`;
+            }        }
         var jsonData = await s3File.readS3File(fileName);
         var blockData = [];
         var filterData = jsonData.data.filter(data => {

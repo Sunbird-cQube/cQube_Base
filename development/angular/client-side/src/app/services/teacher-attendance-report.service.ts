@@ -53,6 +53,18 @@ export class TeacherAttendanceReportService {
     this.service.logoutOnTokenExpire();
     return this.http.get(`${this.baseUrl}/teacher_attendance/getDateRange`);
   }
+
+  getRawMeta(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/attendance/rawMeta`, data);
+  }
+
+  // download raw data
+  downloadFile(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/getDownloadUrl`, data);
+  }
+
   //capturing telemetry.....
   telemetrySar(date) {
     this.service.logoutOnTokenExpire();

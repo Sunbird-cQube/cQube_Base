@@ -7,8 +7,9 @@ router.post('/schoolWise', auth.authController, async (req, res) => {
     try {
         var blockId = req.body.blockId;
         var schoolId = req.body.id;
+        var timePeriod = req.body.timePeriod;
         logger.info('---healthCard school wise api ---');
-        let fileName = `healthCard/school/${blockId}.json`;
+        let fileName = `healthCard/school/${timePeriod}/${blockId}.json`;
         var schoolData = await s3File.readS3File(fileName);
         schoolData = schoolData.filter(a => {
             if (a.school_id == schoolId) {

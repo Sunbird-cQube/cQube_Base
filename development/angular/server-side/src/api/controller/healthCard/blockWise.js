@@ -6,8 +6,9 @@ const s3File = require('../../lib/reads3File');
 router.post('/blockWise', auth.authController, async (req, res) => {
     try {
         var blockId = req.body.id;
+        var timePeriod = req.body.timePeriod;
         logger.info('---healthCard block wise api ---');
-        let fileName = `healthCard/block/${blockId}.json`;
+        let fileName = `healthCard/block/${timePeriod}/${blockId}.json`;
         var blockData = await s3File.readS3File(fileName);
         logger.info('--- healthCard block wise api response sent ---');
         res.status(200).send({ blockData });

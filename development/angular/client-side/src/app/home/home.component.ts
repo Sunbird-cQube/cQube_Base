@@ -11,6 +11,7 @@ import { environment } from '../../environments/environment';
 })
 export class HomeComponent implements OnInit {
   edate: Date;
+  semester = true;
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) { }
   email: any;

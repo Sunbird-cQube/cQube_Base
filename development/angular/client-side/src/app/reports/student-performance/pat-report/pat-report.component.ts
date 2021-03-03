@@ -25,7 +25,7 @@ export class PATReportComponent implements OnInit {
   public dateRange: any = '';
 
   // to hide and show the hierarchy details
-  public skul: boolean = false;
+  public skul: boolean = true;
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
@@ -121,6 +121,13 @@ export class PATReportComponent implements OnInit {
 
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
 
+    if (params) {
+      if (params.timePeriod == 'overall') {
+        params.timePeriod = 'all';
+      }
+      this.period = params.timePeriod;
+    }
+
     if (params && params.level) {
       let data = params.data;
       if (params.level === 'district') {
@@ -173,7 +180,7 @@ export class PATReportComponent implements OnInit {
   }
 
   getDistricts(level): void {
-    this.service.PATDistWiseData({ grade: this.grade, period: this.period }).subscribe(res => {
+    this.service.PATDistWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
       this.data = res['data'];
       this.districtMarkers = this.data;
       if (!this.districtMarkers[0]['Subjects']) {
@@ -183,11 +190,14 @@ export class PATReportComponent implements OnInit {
       if (level === 'district') {
         this.ondistLinkClick(this.districtId);
       }
+    }, err => {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
     });
   }
 
   getBlocks(distId, blockId?: any): void {
-    this.service.PATBlocksPerDistData(distId, { period: this.period }).subscribe(res => {
+    this.service.PATBlocksPerDistData(distId, { period: this.period, report: "pat" }).subscribe(res => {
       this.data = res['data'];
       this.blockMarkers = this.data;
 
@@ -197,11 +207,14 @@ export class PATReportComponent implements OnInit {
 
       if (blockId)
         this.onblockLinkClick(blockId);
+    }, err => {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
     });
   }
 
   getClusters(distId, blockId, clusterId): void {
-    this.service.PATClustersPerBlockData(distId, blockId, { period: this.period }).subscribe(res => {
+    this.service.PATClustersPerBlockData(distId, blockId, { period: this.period, report: "pat" }).subscribe(res => {
       this.data = res['data'];
       this.clusterMarkers = this.data;
 
@@ -210,6 +223,9 @@ export class PATReportComponent implements OnInit {
       }
 
       this.onclusterLinkClick(clusterId);
+    }, err => {
+      this.data = [];
+      this.commonService.loaderAndErr(this.data);
     });
   }
 
@@ -218,7 +234,7 @@ export class PATReportComponent implements OnInit {
   }
 
   onGradeSelect(data) {
-    this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject?this.subject: ''}_all${this.level}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject ? this.subject : ''}_all${this.level}_${this.commonService.dateAndTime}`;
     this.grade = data;
     this.subjectHidden = false;
     this.subject = '';
@@ -288,7 +304,7 @@ export class PATReportComponent implements OnInit {
       // to show and hide the dropdowns
       this.blockHidden = true;
       this.clusterHidden = true;
-      this.service.gradeMetaData(this.period).subscribe(res => {
+      this.service.gradeMetaData({ period: this.period, report: "pat" }).subscribe(res => {
         if (res['data']['district']) {
           this.allGrades = res['data']['district'];
         }
@@ -297,7 +313,7 @@ export class PATReportComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.PATDistWiseData({ grade: this.grade, period: this.period }).subscribe(res => {
+        this.myData = this.service.PATDistWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
           this.myDistData = res;
           this.data = res['data'];
           if (this.grade) {
@@ -388,7 +404,7 @@ export class PATReportComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      this.service.gradeMetaData(this.period).subscribe(res => {
+      this.service.gradeMetaData({ period: this.period, report: "pat" }).subscribe(res => {
         if (res['data']['block']) {
           this.allGrades = res['data']['block'];
         }
@@ -398,7 +414,7 @@ export class PATReportComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.PATBlockWiseData({ grade: this.grade, period: this.period }).subscribe(res => {
+        this.myData = this.service.PATBlockWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
           this.myBlockData = res['data'];
           this.data = res['data'];
           if (this.grade) {
@@ -522,7 +538,7 @@ export class PATReportComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      this.service.gradeMetaData(this.period).subscribe(res => {
+      this.service.gradeMetaData({ period: this.period, report: "pat" }).subscribe(res => {
         if (res['data']['cluster']) {
           this.allGrades = res['data']['cluster'];
         }
@@ -532,7 +548,7 @@ export class PATReportComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.PATClusterWiseData({ grade: this.grade, period: this.period }).subscribe(res => {
+        this.myData = this.service.PATClusterWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
           this.data = res['data']
           if (this.grade) {
             this.allSubjects = Object.keys(this.data[0].Subjects);
@@ -649,7 +665,7 @@ export class PATReportComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      this.service.gradeMetaData(this.period).subscribe(res => {
+      this.service.gradeMetaData({ period: this.period, report: "pat" }).subscribe(res => {
         if (res['data']['school']) {
           this.allGrades = res['data']['school'];
         }
@@ -659,7 +675,7 @@ export class PATReportComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.PATSchoolWiseData({ grade: this.grade, period: this.period }).subscribe(res => {
+        this.myData = this.service.PATSchoolWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
           this.data = res['data']
           if (this.grade) {
             this.allSubjects = Object.keys(this.data[0].Subjects);
@@ -771,7 +787,7 @@ export class PATReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.PATBlocksPerDistData(districtId, { period: this.period }).subscribe(res => {
+    this.myData = this.service.PATBlocksPerDistData(districtId, { period: this.period, report: "pat" }).subscribe(res => {
       this.data = res['data']
       // if (this.grade) {
       //   this.allSubjects = Object.keys(this.data[0].Subjects);
@@ -823,6 +839,7 @@ export class PATReportComponent implements OnInit {
     }, err => {
       this.data = [];
       this.commonService.loaderAndErr(this.data);
+      document.getElementById('spinner').style.display = 'none';
     });
     globalMap.addLayer(this.layerMarkers);
     document.getElementById('home').style.display = 'block';
@@ -862,7 +879,7 @@ export class PATReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.PATClustersPerBlockData(this.districtHierarchy.distId, blockId, { period: this.period }).subscribe(res => {
+    this.myData = this.service.PATClustersPerBlockData(this.districtHierarchy.distId, blockId, { period: this.period, report: "pat" }).subscribe(res => {
       this.data = res['data']
       // if (this.grade) {
       //   this.allSubjects = Object.keys(this.data[0].Subjects)
@@ -956,8 +973,8 @@ export class PATReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.PATBlockWiseData({ grade: this.grade, period: this.period }).subscribe((result: any) => {
-      this.myData = this.service.PATSchoolssPerClusterData(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { period: this.period }).subscribe(res => {
+    this.myData = this.service.PATBlockWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe((result: any) => {
+      this.myData = this.service.PATSchoolssPerClusterData(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { period: this.period, report: "pat" }).subscribe(res => {
         this.data = res['data'];
         // if (this.grade) {
         //   this.allSubjects = Object.keys(this.data[0].Subjects)
@@ -1102,11 +1119,11 @@ export class PATReportComponent implements OnInit {
       }
 
       if (this.selected != 'absolute') {
-        this.colors = this.commonService.getRelativeColors(this.markers, { value: this.grade ? 'Grade Performance' : this.grade && this.subject ? this.subject : 'Performance', selected: this.grade ? 'G' : this.grade && this.subject ? 'GS' : 'all', report: 'reports' });
+        this.colors = this.commonService.getRelativeColors(this.markers, { value: this.grade ? this.markers[0].Subjects ? 'Grade Performance' : this.grade : this.grade && this.subject ? this.subject : 'Performance', selected: this.grade ? 'G' : this.grade && this.subject ? 'GS' : 'all', report: 'reports' });
       }
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
-        var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, this.selected == 'absolute' ? colors[i] : this.commonService.relativeColorGredient(this.markers[i], { value: this.grade ? 'Grade Performance' : this.grade && this.subject ? this.subject : 'Performance', selected: this.grade ? 'G' : this.grade && this.subject ? 'GS' : 'all', report: 'reports' }, this.colors), options.radius, options.strokeWeight, 1, options.level);
+        var markerIcon = this.commonService.initMarkers(this.markers[i].Details.latitude, this.markers[i].Details.longitude, this.selected == 'absolute' ? colors[i] : this.commonService.relativeColorGredient(this.markers[i], { value: this.grade ? this.markers[i].Subjects ? 'Grade Performance' : this.grade : this.grade && this.subject ? this.subject : 'Performance', selected: this.grade ? 'G' : this.grade && this.subject ? 'GS' : 'all', report: 'reports' }, this.colors), options.radius, options.strokeWeight, 1, options.level);
         // data to show on the tooltip for the desired levels
         this.generateToolTip(this.markers[i], options.level, markerIcon, "latitude", "longitude");
 
@@ -1379,6 +1396,8 @@ export class PATReportComponent implements OnInit {
       data.level = 'state';
       data.value = null
     }
+
+    data['timePeriod'] = this.period == 'all' ? 'overall' : this.period;
 
     sessionStorage.setItem('health-card-info', JSON.stringify(data));
     this._router.navigate(['/healthCard']);

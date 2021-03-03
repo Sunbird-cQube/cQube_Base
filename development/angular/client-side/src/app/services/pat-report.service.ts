@@ -65,9 +65,9 @@ export class PatReportService {
     return this.http.post(`${this.baseUrl}/pat/heatChart/blockWise`, data);
   }
 
-  PATHeatMapMetaData() {
+  PATHeatMapMetaData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/pat/heatChart/metaData`, {});
+    return this.http.post(`${this.baseUrl}/pat/heatChart/metaData`, data);
   }
 
   PATHeatMapBlockData(data) {
@@ -95,6 +95,11 @@ export class PatReportService {
   patLOTableSchoolData(data) {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/pat/lotable/schoolWise`, data);
+  }
+
+  semMetaData(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/pat/getSemesters`, data);
   }
 }
 

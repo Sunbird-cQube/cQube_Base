@@ -18,7 +18,11 @@ router.post('/schoolWise', auth.authController, async function (req, res) {
                 fileName = `exception_list/student_attendance_completion/school_${year}_${month}.json`;
             }
         } else {
-            fileName = `exception_list/teacher_attendance_completion/school_${year}_${month}.json`;
+            if (timePeriod != null) {
+                fileName = `exception_list/teacher_attendance_completion/${timePeriod}/school.json`;
+            } else {
+                fileName = `exception_list/teacher_attendance_completion/school_${year}_${month}.json`;
+            }
         }
         var jsonData = await s3File.readS3File(fileName);
         var schoolsAttendanceData = jsonData.data
@@ -66,11 +70,14 @@ router.post('/schoolPerCluster', auth.authController, async (req, res) => {
                 fileName = `exception_list/student_attendance_completion/school_${year}_${month}.json`;
             }
         } else {
-            fileName = `exception_list/teacher_attendance_completion/school_${year}_${month}.json`;
+            if (timePeriod != null) {
+                fileName = `exception_list/teacher_attendance_completion/${timePeriod}/school.json`;
+            } else {
+                fileName = `exception_list/teacher_attendance_completion/school_${year}_${month}.json`;
+            }
         }
 
         var jsonData = await s3File.readS3File(fileName);
-        // res.send(jsonData)
         var schoolsDetails = [];
         var filterData = jsonData.data.filter(data => {
             return (data.cluster_id == clusterId)

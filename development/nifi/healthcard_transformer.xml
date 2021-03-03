@@ -80,6 +80,7 @@
                     <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
                     <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                     <name></name>
+                    <prioritizers>org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer</prioritizers>
                     <selectedRelationships>split</selectedRelationships>
                     <source>
                         <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
@@ -1460,7 +1461,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1day</schedulingPeriod>
+                        <schedulingPeriod>1000days</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -1829,7 +1830,7 @@
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -2327,16 +2328,22 @@ file:${filename},Error while partitioning "${query_type
                         <properties>
                             <entry>
 <key>Object Key</key>
-<value>${query_type:startsWith('health_card_index_state'):ifElse('healthCard/stateData.json',
+<value>${query_type:startsWith('health_card_index_state_all'):ifElse('healthCard/stateData.json',
 ${query_type:startsWith('health_card_index_meta_district'):ifElse('healthCard/district/metaData.json',
 ${query_type:startsWith('health_card_index_meta_block'):ifElse('healthCard/block/metaData.json',
 ${query_type:startsWith('health_card_index_meta_cluster'):ifElse('healthCard/cluster/metaData.json',
 ${query_type:startsWith('health_card_index_meta_school'):ifElse('healthCard/school/metaData.json',
-${query_type:startsWith('health_card_index_district'):ifElse('healthCard/district/${partition_by_level}.json',
-${query_type:startsWith('health_card_index_block'):ifElse('healthCard/block/${partition_by_level}.json',
-${query_type:startsWith('health_card_index_cluster'):ifElse('healthCard/cluster/${partition_by_level}.json',
-${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${partition_by_level}.json','None')}
-)} )} )} )} )} )} )} )}</value>
+${query_type:startsWith('health_card_index_state_overall'):ifElse('healthCard/overall/state.json',
+${query_type:startsWith('health_card_index_district_overall'):ifElse('healthCard/district/overall/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_block_overall'):ifElse('healthCard/block/overall/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_cluster_overall'):ifElse('healthCard/cluster/overall/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_school_overall'):ifElse('healthCard/school/overall/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_state_last_30_days'):ifElse('healthCard/last_30_days/state.json',
+${query_type:startsWith('health_card_index_district_last_30_days'):ifElse('healthCard/district/last_30_days/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_block_last_30_days'):ifElse('healthCard/block/last_30_days/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_cluster_last_30_days'):ifElse('healthCard/cluster/last_30_days/${partition_by_level}.json',
+${query_type:startsWith('health_card_index_school_last_30_days'):ifElse('healthCard/school/last_30_days/${partition_by_level}.json','None')}
+)} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
@@ -2571,7 +2578,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -2763,11 +2770,11 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
-                    <name>comp_ extract_query</name>
+                    <name>healthcard_extract_query</name>
                     <relationships>
                         <autoTerminate>false</autoTerminate>
                         <name>matched</name>
@@ -2875,7 +2882,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('healthCard/school/${
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -3016,7 +3023,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                             </entry>
                             <entry>
 <key>dbf-user-logical-types</key>
-<value>true</value>
+<value>false</value>
                             </entry>
                             <entry>
 <key>esql-max-rows</key>
@@ -3211,7 +3218,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -3583,7 +3590,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse('/block_id','None')}
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
                         <schedulingPeriod>0 sec</schedulingPeriod>
-                        <schedulingStrategy>EVENT_DRIVEN</schedulingStrategy>
+                        <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
                     <executionNodeRestricted>false</executionNodeRestricted>
@@ -3604,8 +3611,8 @@ ${query_type:startsWith('health_card_index_school'):ifElse('/block_id','None')}
                     <id>f44351dc-0c34-39fa-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <position>
-                        <x>1952.0</x>
-                        <y>984.0</y>
+                        <x>1944.0</x>
+                        <y>976.0</y>
                     </position>
                     <bundle>
                         <artifact>nifi-standard-nar</artifact>
@@ -3736,5 +3743,5 @@ file:${filename},Error while executing "${query_type}" query.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>01/13/2021 10:41:47 IST</timestamp>
+    <timestamp>03/03/2021 22:55:37 IST</timestamp>
 </template>

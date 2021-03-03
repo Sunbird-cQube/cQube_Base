@@ -62,7 +62,7 @@
   }
 
   .link{
-   position: relative;  top: 20px; left: 10px;color: white; font-weight: bold;
+   position: absolute;  bottom: 0px; left: 40px;color: white; height: 20px auto; font-weight: bold;
    text-decoration: underline;
    transition: transform .5s;
   }

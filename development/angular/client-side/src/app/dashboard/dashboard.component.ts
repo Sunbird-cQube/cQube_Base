@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 })
 export class DashboardComponent implements OnInit {
   state;
-
+  semester = true;
   //tooltip texts::::::::::::::
   imrTooltip;
   crTooltip;
@@ -38,6 +38,8 @@ export class DashboardComponent implements OnInit {
   patExcptTooltip
   sarExcptTooltip;
   tarExpTooltip;
+  satTooltip;
+  satHeatChartTooltip;
 
   hiddenPass = false;
   edate: Date;
@@ -71,6 +73,8 @@ export class DashboardComponent implements OnInit {
   patExcptViews;
   sarExcptViews;
   tarExpViews;
+  satViews;
+  satHeatChartViews
 
 
   //for coming soon page
@@ -134,6 +138,8 @@ export class DashboardComponent implements OnInit {
     this.patExcptTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their periodic assessment scores.`;
     this.tarExpTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their teacher attendance data.`;
     this.sarExcptTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their student attendance data.`;
+    this.satTooltip = `This geo-location-based dashboard provides insights on student Periodic Assessment Test (SAT) performance across ${this.state}.`;
+    this.satHeatChartTooltip = "This dashboard provides insights on student performance at the question level.";
   }
 
   changeDataSourceStatus() {
@@ -235,6 +241,8 @@ export class DashboardComponent implements OnInit {
     this.patExcptViews = "";
     this.sarExcptViews = "";
     this.tarExpViews = "";
+    this.satViews = "";
+    this.satHeatChartViews = "";
 
     var myStr = this.removeUnderscore(views[0].time_range);
     this.timePeriod = " (" + myStr + ")";
@@ -321,6 +329,12 @@ export class DashboardComponent implements OnInit {
       }
       if (element.reportid == 'tarExp') {
         this.tarExpViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'sat') {
+        this.satViews = element.number_of_views + " (" + timeStr + ")";
+      }
+      if (element.reportid == 'satHeatChart') {
+        this.satHeatChartViews = element.number_of_views + " (" + timeStr + ")";
       }
 
     });

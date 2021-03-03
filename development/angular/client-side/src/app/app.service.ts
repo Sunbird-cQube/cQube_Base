@@ -195,13 +195,31 @@ export class AppServiceComponent {
             popupFood.push(stringLine);
         }
         function toTitleCase(phrase) {
-            return phrase
+            var key = phrase
                 .toLowerCase()
                 .split(' ')
                 .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(' ');
+            key = key.replace("Nsqf", "NSQF");
+            key = key.replace("Ict", "ICT");
+            key = key.replace("Crc", "CRC");
+            key = key.replace("Cctv", "CCTV");
+            key = key.replace("Cwsn", "CWSN");
+            key = key.replace("Ff Uuid", "UUID");
+            return key;
         }
         return popupFood;
+    }
+
+    capitalize(key) {
+        key = key.replace("Id", "ID");
+        key = key.replace("Nsqf", "NSQF");
+        key = key.replace("Ict", "ICT");
+        key = key.replace("Crc", "CRC");
+        key = key.replace("Cctv", "CCTV");
+        key = key.replace("Cwsn", "CWSN");
+        key = key.replace("Ff Uuid", "UUID");
+        return key;
     }
 
 
@@ -217,13 +235,7 @@ export class AppServiceComponent {
                     .split(' ')
                     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(' ');
-                key = key.replace("Id", "ID");
-                key = key.replace("Nsqf", "NSQF");
-                key = key.replace("Ict", "ICT");
-                key = key.replace("Crc", "CRC");
-                key = key.replace("Cctv", "CCTV");
-                key = key.replace("Cwsn", "CWSN");
-                key = key.replace("Ff Uuid", "UUID");
+                key = this.capitalize(key);
                 updatedKeys.push(key);
             });
             const options = {
@@ -313,7 +325,11 @@ export class AppServiceComponent {
                 dataSet = data;
             } else {
                 if (filter.selected == 'G' || filter.selected == 'GS') {
-                    dataSet = data.Subjects;
+                    if (data.Subjects) {
+                        dataSet = data.Subjects;
+                    } else {
+                        dataSet = data['Grade Wise Performance'];
+                    }
                 } else {
                     dataSet = data.Details;
                 }
@@ -355,7 +371,11 @@ export class AppServiceComponent {
                     }
                 } else {
                     if (filter.selected == 'G' || filter.selected == 'GS') {
-                        values.push(item.Subjects[`${filter.value}`]);
+                        if (item.Subjects) {
+                            values.push(item.Subjects[`${filter.value}`]);
+                        } else {
+                            values.push(item['Grade Wise Performance'][`${filter.value}`]);
+                        }
                     } else {
                         values.push(item.Details[`${filter.value}`]);
                     }

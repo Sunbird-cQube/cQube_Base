@@ -86,6 +86,9 @@ export class StudengtAttendanceComponent implements OnInit {
   timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
   period = 'overall';
   timePeriod = {};
+  academicYears: any = [];
+  academicYear;
+  rawFileName;
 
   constructor(public http: HttpClient, public service: AttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
 
@@ -129,6 +132,10 @@ export class StudengtAttendanceComponent implements OnInit {
         this.params = JSON.parse(sessionStorage.getItem('report-level-info'));
         let params = this.params;
 
+        if (this.params)
+          this.period = this.params.timePeriod;
+
+
         if (params && params.level) {
           let data = params.data;
           if (params.level === 'district') {
@@ -153,6 +160,10 @@ export class StudengtAttendanceComponent implements OnInit {
       this.getMonthYear = {};
       this.commonService.loaderAndErr(this.markers);
     });
+
+    this.service.getRawMeta({ report: 'sar' }).subscribe(res => {
+      this.academicYears = res;
+    })
   }
 
   showYearMonth() {
@@ -211,6 +222,9 @@ export class StudengtAttendanceComponent implements OnInit {
       } else {
         this.getBlocks();
       }
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -246,6 +260,9 @@ export class StudengtAttendanceComponent implements OnInit {
       } else {
         this.getClusters();
       }
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -280,6 +297,9 @@ export class StudengtAttendanceComponent implements OnInit {
       this.clusterNames = clustNames;
 
       this.clusterSelect({ type: 'click' }, this.myCluster);
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -418,6 +438,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   onClickHome() {
     this.yearMonth = true;
+    this.academicYear = undefined;
     this.period = 'overall';
     this.month_year = {
       month: null,
@@ -453,7 +474,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         if (this.markers.length > 0) {
           for (var i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
@@ -476,8 +497,8 @@ export class StudengtAttendanceComponent implements OnInit {
         this.changeDetection.markForCheck();
       }, err => {
         this.dateRange = ''; this.changeDetection.detectChanges();
-        this.markers = [];
         this.districtsNames = [];
+        this.markers = [];
         this.commonService.loaderAndErr(this.markers);
       });
     } else {
@@ -511,7 +532,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
@@ -571,7 +592,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
@@ -638,7 +659,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
@@ -865,7 +886,7 @@ export class StudengtAttendanceComponent implements OnInit {
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         this.studentCount = res['studentCount'];
         this.schoolCount = res['schoolCount'];
 
@@ -984,7 +1005,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
         // sorted.pop();
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         for (var i = 0; i < sorted.length; i++) {
           var color = this.commonService.color(this.markers[i], 'attendance');
           this.clusterIds.push(sorted[i]['cluster_id']);
@@ -1131,7 +1152,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.schoolCount = res['schoolCount'];
 
         this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' }); 
+        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         for (var i = 0; i < sorted.length; i++) {
           var color = this.commonService.color(this.markers[i], 'attendance');
           var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 3.5, 0.1, 1, this.levelWise);
@@ -1261,9 +1282,24 @@ export class StudengtAttendanceComponent implements OnInit {
       data.level = 'state';
       data.value = null
     }
+    data['timePeriod'] = this.period;
 
     sessionStorage.setItem('health-card-info', JSON.stringify(data));
     this._router.navigate(['/healthCard']);
+  }
+
+  downloadRaw() {
+    document.getElementById('spinner').style.display = 'block';
+    var selectedAcademicYear = this.academicYear;
+    this.rawFileName = `attendance/raw/student_attendance_all_${this.levelWise.toLowerCase()}s_${selectedAcademicYear}.csv`;
+    this.academicYear = undefined;
+    this.service.downloadFile({ fileName: this.rawFileName }).subscribe(res => {
+      this.academicYear = undefined;
+      document.getElementById('spinner').style.display = 'none';
+      window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      alert("No Raw Data File Available in Bucket");
+    })
   }
 
 }

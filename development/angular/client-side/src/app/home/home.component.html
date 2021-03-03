@@ -161,7 +161,15 @@
                     expand_more</mat-icon>
                 </mat-list-item>
                 <div class="submenu6" [ngClass]="{'expanded' : showSubmenu6}" *ngIf="isShowing || isExpanded">
+                  <a mat-list-item [routerLink]="!nifi_semester ? ['/coming-soon'] :['/student-performance/sat-report']"
+                    (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'sat')" id="sat"
+                    (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">Semester Assesment
+                      Report</span></a>
                   <a mat-list-item
+                    [routerLink]="!nifi_semester ? ['/coming-soon'] :['/student-performance/sat-heat-chart']"
+                    (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'satHeatChart')" id="satHeatChart"
+                    (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">SAT Heatchart</span></a>
+                  <a mat-list-item [hidden]="semester"
                     [routerLink]="!nifi_semester ? ['/coming-soon'] :['/student-performance/semester-report']"
                     (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'sr')" id="semReport"
                     (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">Semester Report</span></a>
@@ -274,8 +282,8 @@
     </div>
     <hr>
     <div>
-      <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.10.1 </span>
-      <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 12/02/2021</span>
+      <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.11 </span>
+      <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 03/03/2021</span>
     </div>
   </mat-sidenav>
 

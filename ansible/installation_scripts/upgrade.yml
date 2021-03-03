@@ -15,8 +15,6 @@
           - python_flask
           - { role: kong, tags: update }
           - keycloak
-          - angular
-          - angular_admin
           - prometheus
           - nifi_install
           - { role: nifi_params, tags: update } 
@@ -67,5 +65,16 @@
           - role: nifi_teacher_attendance
             tags: update
             when: nifi_teacher_attendance
+
+          - role: nifi_data_replay
+            tags: update
+            when: nifi_data_replay
+
+          - role: nifi_sat
+            tags: update
+            when: nifi_sat
+
+          - angular
+          - angular_admin
 
           - cqube_version

@@ -87,15 +87,15 @@ export class HeatChartComponent implements OnInit {
     public commonService: AppServiceComponent,
     public router: Router
   ) {
-    service.PATHeatMapMetaData().subscribe(res => {
+    service.PATHeatMapMetaData({ report: 'pat', }).subscribe(res => {
       this.metaData = res['data'];
       for (let i = 0; i < this.metaData.length; i++) {
-        this.years.push(this.metaData[i]['year']);
+        this.years.push(this.metaData[i]['academic_year']);
       }
       this.year = this.years[this.years.length - 1];
       let i;
       for (i = 0; i < this.metaData.length; i++) {
-        if (this.metaData[i]['year'] == this.year) {
+        if (this.metaData[i]['academic_year'] == this.year) {
           this.months = (Object.keys(res['data'][i].data.months));
           this.grades = this.metaData[i].data['grades'];
           this.subjects = this.metaData[i].data['subjects'];
@@ -108,7 +108,7 @@ export class HeatChartComponent implements OnInit {
       this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
       this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
       this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
-      
+
       this.fileName = `${this.reportName}_overall_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
       this.commonFunc();
     }, err => {
@@ -120,7 +120,7 @@ export class HeatChartComponent implements OnInit {
   fetchFilters(metaData) {
     let i;
     for (i = 0; i < metaData.length; i++) {
-      if (metaData[i]['year'] == this.year) {
+      if (metaData[i]['academic_year'] == this.year) {
         this.months = (Object.keys(this.metaData[i].data.months));
         this.grades = metaData[i].data['grades'];
         this.subjects = metaData[i].data['subjects'];
@@ -146,7 +146,7 @@ export class HeatChartComponent implements OnInit {
   onChangePage() {
     let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
     let data = this.items.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
-    let tooltipData = this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
+    let tooltipData = this.toolTipData ? this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage) : null;
 
     data = data.map(record => {
       record.y %= this.pageSize;
@@ -177,6 +177,7 @@ export class HeatChartComponent implements OnInit {
     this.reportData = [];
     this.fetchFilters(this.metaData);
     let a = {
+      report: 'pat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -194,7 +195,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -333,6 +334,7 @@ export class HeatChartComponent implements OnInit {
       let subject;
       let exam_date;
       let name;
+      let marks;
       tooltipData.map(a => {
         if (point.x == a.x && point.y == a.y) {
           totalSchools = a.total_schools
@@ -347,6 +349,7 @@ export class HeatChartComponent implements OnInit {
             indicator = a.qusetion_id
           }
           name = a.name;
+          marks = a.mark
         }
       })
 
@@ -375,11 +378,12 @@ export class HeatChartComponent implements OnInit {
 
       obj += `<br> <b>Grade: ${grade}</b>
         <br> <b>Subject: ${subject}</b>
-        <br> <b>ExamDate: ${exam_date}</b>
+        <br> <b>Exam Date: ${exam_date}</b>
         <br> ${grades != "all" ? viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>` : ''}
        
         <br> <b>Students Attended: ${studentAttended}</b>
-        <br> ${point.value !== null ? `<b>Marks:${point.value}` : ''}</b>`
+        <br> ${marks !== null ? `<b>Marks: ${marks}` : ''}</b>
+        <br> ${point.value !== null ? `<b>Marks Percentage: ${point.value}` + '%' : ''}</b>`
       return obj
     }
   }
@@ -475,6 +479,7 @@ export class HeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
+      report: 'pat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -499,7 +504,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -518,6 +523,7 @@ export class HeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
+      report: 'pat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -547,7 +553,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -562,6 +568,7 @@ export class HeatChartComponent implements OnInit {
     this.reportData = [];
 
     let a = {
+      report: 'pat',
       year: this.year,
       month: this.month,
       grade: this.grade == 'all' ? '' : this.grade,
@@ -593,7 +600,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })

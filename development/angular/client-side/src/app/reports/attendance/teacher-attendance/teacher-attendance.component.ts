@@ -80,6 +80,9 @@ export class TeacherAttendanceComponent implements OnInit {
   timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
   period = 'overall';
   timePeriod = {};
+  rawFileName: string;
+  academicYear: any;
+  academicYears: any;
 
   constructor(public http: HttpClient, public service: TeacherAttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
 
@@ -125,7 +128,7 @@ export class TeacherAttendanceComponent implements OnInit {
           month: null,
           year: null
         };
-        
+
         this.params = JSON.parse(sessionStorage.getItem('report-level-info'));
         let params = this.params;
 
@@ -155,6 +158,9 @@ export class TeacherAttendanceComponent implements OnInit {
       this.getMonthYear = {};
       this.commonService.loaderAndErr(this.markers);
     });
+    this.service.getRawMeta({ report: 'tar' }).subscribe(res => {
+      this.academicYears = res;
+    })
   }
 
   showYearMonth() {
@@ -213,6 +219,9 @@ export class TeacherAttendanceComponent implements OnInit {
       } else {
         this.getBlocks();
       }
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -248,6 +257,9 @@ export class TeacherAttendanceComponent implements OnInit {
       } else {
         this.getClusters();
       }
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -282,6 +294,9 @@ export class TeacherAttendanceComponent implements OnInit {
       this.clusterNames = clustNames;
 
       this.clusterSelect({ type: 'click' }, this.myCluster);
+    }, err => {
+      this.markers = [];
+      this.commonService.loaderAndErr(this.markers);
     });
   }
 
@@ -421,6 +436,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
   onClickHome() {
     this.yearMonth = true;
+    this.academicYear = undefined;
     this.period = 'overall';
     this.month_year = {
       month: null,
@@ -1285,6 +1301,19 @@ export class TeacherAttendanceComponent implements OnInit {
   //   sessionStorage.setItem('health-card-info', JSON.stringify(data));
   //   this._router.navigate(['/healthCard']);
   // }
+
+  downloadRaw() {
+    document.getElementById('spinner').style.display = 'block';
+    var selectedAcademicYear = this.academicYear;
+    this.rawFileName = `teacher_attendance/raw/teacher_attendance_all_${this.levelWise.toLowerCase()}s_${selectedAcademicYear}.csv`;
+    this.service.downloadFile({ fileName: this.rawFileName }).subscribe(res => {
+      this.academicYear = undefined;
+      document.getElementById('spinner').style.display = 'none';
+      window.open(`${res['downloadUrl']}`, "_blank");
+    }, err => {
+      alert("No Raw Data File Available in Bucket");
+    })
+  }
 
 
 }
