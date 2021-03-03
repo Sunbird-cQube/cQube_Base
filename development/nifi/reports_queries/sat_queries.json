@@ -1,28 +1,43 @@
 [
 {
- "sat_exam_district_all": "Select * from semester_exam_district_all"
+ "sat_exam_district_all": "Select * from semester_exam_district_all "
 },
 {
-"sat_grade_district_all": "Select * from semester_grade_district_all"
+"sat_grade_district_all": "Select * from semester_grade_district_all where semester=1"
 },
+{
+"sat_grade_district_all": "Select * from semester_grade_district_all where semester=2"
+},
+
 {
 "sat_exam_block_all": "Select * from semester_exam_block_all"
 },
 {
-"sat_grade_block_all": "Select * from semester_grade_block_all"
+"sat_grade_block_all": "Select * from semester_grade_block_all where semester=1"
 },
+{
+"sat_grade_block_all": "Select * from semester_grade_block_all where semester=2"
+},
+
 {
 "sat_exam_cluster_all": "Select * from semester_exam_cluster_all"
 },
 {
-"sat_grade_cluster_all": "Select * from semester_grade_cluster_all"
+"sat_grade_cluster_all": "Select * from semester_grade_cluster_all where semester=1"
+},
+{
+"sat_grade_cluster_all": "Select * from semester_grade_cluster_all where semester=2"
 },
 {
 "sat_exam_school_all": "Select * from semester_exam_school_all"
 },
 {
-"sat_grade_school_all": "Select * from semester_grade_school_all"
+"sat_grade_school_all": "Select * from semester_grade_school_all where semester=1"
 },
+{
+"sat_grade_school_all": "Select * from semester_grade_school_all where semester=2"
+},
+
 {
 "sat_meta_all": "select json_object_agg(col,data) from ((select 'district' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_district_all group by grade)as d)union(select 'block' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_block_all group by grade)as d) union (select 'cluster' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_cluster_all group by grade)as d)union(select 'school' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_school_all group by grade)as d))as d"
 },
@@ -33,26 +48,44 @@
 "sat_exam_district_last30": "Select * from semester_exam_district_last30"
 },
 {
-"sat_grade_district_last30": "Select * from semester_grade_district_last30"
+"sat_grade_district_last30": "Select * from semester_grade_district_last30 where semester=1"
+},
+{
+"sat_grade_district_last30": "Select * from semester_grade_district_last30 where semester=2"
 },
 {
 "sat_exam_block_last30": "Select * from semester_exam_block_last30"
 },
 {
-"sat_grade_block_last30": "Select * from semester_grade_block_last30"
+"sat_grade_block_last30": "Select * from semester_grade_block_last30 where semester=1"
 },
+{
+"sat_grade_block_last30": "Select * from semester_grade_block_last30 where semester=2"
+},
+
 {
 "sat_exam_cluster_last30": "Select * from semester_exam_cluster_last30"
 },
 {
-"sat_grade_cluster_last30": "Select * from semester_grade_cluster_last30"
+"sat_grade_cluster_last30": "Select * from semester_grade_cluster_last30 where semester=1"
 },
+{
+"sat_grade_cluster_last30": "Select * from semester_grade_cluster_last30 where semester=2"
+},
+
 {
 "sat_exam_school_last30": "Select * from semester_exam_school_last30"
 },
 {
 "sat_grade_school_last30": "Select * from semester_grade_school_last30"
 },
+
+{"sat_grade_school_last30": "Select * from semester_grade_school_last30 where semester=1"
+},
+{
+"sat_grade_school_last30": "Select * from semester_grade_school_last30 where semester=2"
+},
+
 {
 "sat_meta_last30": "select json_object_agg(col,data) from  ((select 'district' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_district_all group by grade)as d) union (select 'block' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_block_all group by grade)as d) union (select 'cluster' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_cluster_all group by grade)as d) union (select 'school' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_school_all group by grade)as d))as d"
 },
@@ -63,25 +96,38 @@
 "sat_exam_district_last7": "Select * from semester_exam_district_last7"
 },
 {
-"sat_grade_district_last7": "Select * from semester_grade_district_last7"
+"sat_grade_district_last7": "Select * from semester_grade_district_last7 where semester=1"
+},
+{
+"sat_grade_district_last7": "Select * from semester_grade_district_last7 where semester=2"
 },
 {
 "sat_exam_block_last7": "Select * from semester_exam_block_last7"
 },
 {
-"sat_grade_block_last7": "Select * from semester_grade_block_last7"
+"sat_grade_block_last7": "Select * from semester_grade_block_last7 where semester=1"
 },
+{
+"sat_grade_block_last7": "Select * from semester_grade_block_last7 where semester=2"
+},
+
 {
 "sat_exam_cluster_last7": "Select * from semester_exam_cluster_last7"
 },
 {
-"sat_grade_cluster_last7": "Select * from semester_grade_cluster_last7"
+"sat_grade_cluster_last7": "Select * from semester_grade_cluster_last7 where semester=1"
+},
+{
+"sat_grade_cluster_last7": "Select * from semester_grade_cluster_last7 where semester=2"
 },
 {
 "sat_exam_school_last7": "Select * from semester_exam_school_last7"
 },
 {
-"sat_grade_school_last7": "Select * from semester_grade_school_last7"
+"sat_grade_school_last7": "Select * from semester_grade_school_last7 where semester=1"
+},
+{
+"sat_grade_school_last7": "Select * from semester_grade_school_last7 where semester=2"
 },
 {
 "sat_meta_last7": "select json_object_agg(col,data) from  ((select 'district' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_district_all group by grade)as d) union (select 'block' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_block_all group by grade)as d) union (select 'cluster' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_cluster_all group by grade)as d) union (select 'school' as col,json_agg(row_to_json(d))::jsonb as data from (select grade from semester_grade_school_all group by grade)as d))as d"
