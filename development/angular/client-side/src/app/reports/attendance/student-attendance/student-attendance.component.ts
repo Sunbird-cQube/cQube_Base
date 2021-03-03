@@ -161,7 +161,7 @@ export class StudengtAttendanceComponent implements OnInit {
       this.commonService.loaderAndErr(this.markers);
     });
 
-    this.service.getRawMeta({ report: 'tar' }).subscribe(res => {
+    this.service.getRawMeta({ report: 'sar' }).subscribe(res => {
       this.academicYears = res;
     })
   }
@@ -1291,7 +1291,7 @@ export class StudengtAttendanceComponent implements OnInit {
   downloadRaw() {
     document.getElementById('spinner').style.display = 'block';
     var selectedAcademicYear = this.academicYear;
-    this.rawFileName = `attendance/raw/${this.levelWise.toLowerCase()}_${selectedAcademicYear}.csv`;
+    this.rawFileName = `attendance/raw/student_attendance_all_${this.levelWise.toLowerCase()}s_${selectedAcademicYear}.csv`;
     this.academicYear = undefined;
     this.service.downloadFile({ fileName: this.rawFileName }).subscribe(res => {
       this.academicYear = undefined;
