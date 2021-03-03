@@ -8330,7 +8330,7 @@ create or replace view hc_pat_state_last30 as
         from periodic_exam_school_result  where exam_code in (select exam_code from pat_date_range where date_range='last30days')),
         (select json_object_agg(a_1.grade, a_1.percentage) as grade_wise_performance
                    from ( select ('grade '::text || periodic_exam_school_result.grade) as grade,
-                            round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (1)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (1)::numeric)), 1) as percentage
+                            round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (1)::numeric)), 1) as percentage
                            from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days')
                           group by periodic_exam_school_result.grade) a_1),
         (select sum(students_count) as students_count from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days')),
