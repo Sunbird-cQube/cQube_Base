@@ -160,7 +160,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.districtNames);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -358,7 +358,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -403,7 +403,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -446,7 +446,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })

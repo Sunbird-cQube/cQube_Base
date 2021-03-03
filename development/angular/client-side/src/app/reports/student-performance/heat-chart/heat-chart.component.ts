@@ -146,7 +146,7 @@ export class HeatChartComponent implements OnInit {
   onChangePage() {
     let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
     let data = this.items.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
-    let tooltipData = this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
+    let tooltipData = this.toolTipData ? this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage) : null;
 
     data = data.map(record => {
       record.y %= this.pageSize;
@@ -195,7 +195,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -504,7 +504,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -553,7 +553,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -600,7 +600,7 @@ export class HeatChartComponent implements OnInit {
     }, err => {
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
