@@ -134,6 +134,12 @@ cqube_emission
 ├── sat
 │   └── semester_exam_qst_mst.zip
 │       └── semester_exam_qst_mst.csv
+├── sat
+│   └── semester_exam_grade_details.zip
+│       └── semester_exam_grade_details.csv
+├── sat
+│   └── semester_exam_subject_details.zip
+│       └── semester_exam_subject_details.csv
 ```
 
 Transactional Files:
