@@ -33,7 +33,7 @@ export class PATLOTableComponent implements OnInit {
   examDates = [];
   allViews = [];
 
-  public year = '2020';
+  public year = '';
   public grade = 'all';
   public subject = 'all';
   public examDate = 'all';

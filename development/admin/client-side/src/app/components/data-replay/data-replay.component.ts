@@ -34,7 +34,10 @@ export class DataReplayComponent implements OnInit {
   selectedSemesters = [];
   batchIds: any = [];
   selectedBatchIds;
-  options = [{ id: '', value: "Select" }, { id: 'No', value: 'No' }, { id: 'delete all data', value: 'Delete all data' }];
+  options = [
+    { id: '', value: "Select" }, 
+    //{ id: 'No', value: 'No' }, 
+    { id: 'delete all data', value: 'Delete all data' }];
 
   //error messages
   monthErrMsg = "Please select months also along with year";

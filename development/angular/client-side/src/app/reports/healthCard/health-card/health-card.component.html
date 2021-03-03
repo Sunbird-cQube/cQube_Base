@@ -138,12 +138,12 @@
                                 </option>
                             </select>
                         </div>
-                        <div style="float: right;">
+                        <!-- <div style="float: right;">
                             <em aria-disabled="true" class="fa fa-cloud-download" aria-hidden="true" id="download"
                                 title="Download Report"
                                 style="cursor: pointer;display: none; font-size: 30px; float: right; color: #3100cc;" alt="download">
                             </em>
-                        </div>
+                        </div> -->
                         <div style="float: right;">
                             <em class="fa fa-home" aria-hidden="true" id="home" title="Home"
                                 style="cursor: pointer;font-size: 30px; float: right; margin-right: 10px;  color: #3100cc;"
@@ -166,7 +166,8 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="autocomplete" style="width:100%;">
-                            <span id="warning" style="font-size: 13px; float: left;line-height: 1em;"> Please enter at least 2
+                            <span id="warning" style="font-size: 13px; float: left;line-height: 1em;"> Please enter at
+                                least 2
                                 characters/digits</span>
                             <p style="line-height: 1em; float: left;">&nbsp;</p>
                             <input #searchInput id="myInput"
@@ -457,8 +458,7 @@
                     </div>
                     <div *ngIf="healthCardData['student_semester']">
                         <p *ngIf="showLink" class="link" id="semLink">
-                            <a href="javascript:void(0)"
-                                (click)="goToReport('/student-performance/semester-report')">Click
+                            <a href="javascript:void(0)" (click)="goToReport('/student-performance/sat-report')">Click
                                 to Access
                                 Report</a>
                         </p>
@@ -496,27 +496,31 @@
                                                                 <td>:</td>
                                                                 <td>{{healthCardData['pat_performance'][key]}}</td>
                                                             </tr>
-                                                            <tr>
-                                                                <td colspan="3">
-                                                                    <strong
-                                                                        style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade_Wise_Performance
-                                                                    </strong>
-                                                                </td>
-                                                            </tr>
-                                                            <tr style="font-size: 12px;"
-                                                                *ngFor="let key of patPerformTooltip;let i=index">
-                                                                <td
-                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
-                                                                    {{patPerformTooltipKeys[i]}}</td>
-                                                                <td
-                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
-                                                                    :</td>
-                                                                <td
-                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
-                                                                    {{healthCardData['pat_performance']['grade_wise_performance'][key]}}
-                                                                    %
-                                                                </td>
-                                                            </tr>
+                                                            <ng-container
+                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance']">
+                                                                <tr>
+                                                                    <td colspan="3">
+                                                                        <strong
+                                                                            style="text-decoration: underline;  font-size: 13px;line-height: 2em;">Grade_Wise_Performance
+                                                                        </strong>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="font-size: 12px;"
+                                                                    *ngFor="let key of patPerformTooltip;let i=index">
+                                                                    
+                                                                    <td
+                                                                        *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                        {{patPerformTooltipKeys[i]}}</td>
+                                                                    <td
+                                                                        *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                        :</td>
+                                                                    <td
+                                                                        *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
+                                                                        {{healthCardData['pat_performance']['grade_wise_performance'][key]}}
+                                                                        %
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
                                                         </tbody>
                                                     </table>
                                                 </div>

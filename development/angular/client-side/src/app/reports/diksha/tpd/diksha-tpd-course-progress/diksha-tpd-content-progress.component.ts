@@ -163,7 +163,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.districtNames);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -325,9 +325,9 @@ export class DikshaTPDContentProgressComponent implements OnInit {
 
   allDistricts = []; allBlocks = []; allClusters = [];
   selectedTimePeriod() {
-    this.districtNames = [];
-    this.blockNames = [];
-    this.clusterNames = [];
+    //this.districtNames = [];
+    //this.blockNames = [];
+    //this.clusterNames = [];
     this.levelWiseFilter();
   }
 
@@ -366,7 +366,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -412,7 +412,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -456,7 +456,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })

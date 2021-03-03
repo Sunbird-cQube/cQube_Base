@@ -231,7 +231,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.showAll = false;
     this.showLink = true;
     document.getElementById('home').style.display = 'block';
-    document.getElementById('download').style.display = 'block';
+    //document.getElementById('download').style.display = 'block';
     document.getElementById('spinner').style.display = 'block';
     this.exist = false;
     this.cdr.detectChanges();
@@ -607,11 +607,13 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     }
     if (healthCardData['pat_performance'] && healthCardData['pat_performance'] != null) {
       this.tooltipPat = Object.keys(healthCardData['pat_performance']);
-      this.patPerformTooltip = Object.keys(healthCardData['pat_performance']['grade_wise_performance']);
-      this.patPerformTooltip.filter(key => {
-        myKey = this.stringConverter(key);
-        this.patPerformTooltipKeys.push(myKey);
-      });
+      if (healthCardData['pat_performance']['grade_wise_performance']) {
+        this.patPerformTooltip = Object.keys(healthCardData['pat_performance']['grade_wise_performance']);
+        this.patPerformTooltip.filter(key => {
+          myKey = this.stringConverter(key);
+          this.patPerformTooltipKeys.push(myKey);
+        });
+      }
       this.tooltipPat = this.tooltipPat.filter((key) => {
         return !this.patPerformance.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
       });
@@ -686,7 +688,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   exist = false;
   onChange() {
     document.getElementById('home').style.display = 'none';
-    document.getElementById('download').style.display = 'none';
+    //document.getElementById('download').style.display = 'none';
 
     this.exist = true;
     this.cdr.detectChanges();
@@ -711,7 +713,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   levels = [{ key: 'district', name: 'District' }, { key: 'block', name: 'Block' }, { key: 'cluster', name: 'Cluster' }, { key: 'school', name: 'School' }];
   selectedLevel(callSubmit = false) {
     document.getElementById('home').style.display = 'none';
-    document.getElementById('download').style.display = 'none';
+    //document.getElementById('download').style.display = 'none';
     this.exist = true;
     this.cdr.detectChanges();
     document.getElementById('spinner').style.display = 'block';

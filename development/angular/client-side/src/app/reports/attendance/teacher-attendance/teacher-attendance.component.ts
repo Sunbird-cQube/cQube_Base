@@ -436,6 +436,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
   onClickHome() {
     this.yearMonth = true;
+    this.academicYear = undefined;
     this.period = 'overall';
     this.month_year = {
       month: null,
@@ -1304,7 +1305,7 @@ export class TeacherAttendanceComponent implements OnInit {
   downloadRaw() {
     document.getElementById('spinner').style.display = 'block';
     var selectedAcademicYear = this.academicYear;
-    this.rawFileName = `teacher_attendance/raw/${this.levelWise.toLowerCase()}_${selectedAcademicYear}.csv`;
+    this.rawFileName = `teacher_attendance/raw/teacher_attendance_all_${this.levelWise.toLowerCase()}s_${selectedAcademicYear}.csv`;
     this.service.downloadFile({ fileName: this.rawFileName }).subscribe(res => {
       this.academicYear = undefined;
       document.getElementById('spinner').style.display = 'none';

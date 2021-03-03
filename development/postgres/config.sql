@@ -18,6 +18,13 @@ drop function IF exists semester_no_schools;
 drop function IF exists insert_diksha_trans;
 drop function IF exists insert_diksha_agg;
 
+/* Drop views */
+
+drop view if exists student_attendance_agg_last_1_day cascade;
+drop view if exists student_attendance_agg_last_30_days cascade;
+drop view if exists student_attendance_agg_last_7_days cascade;
+drop view if exists student_attendance_agg_overall cascade;
+
 /* Create infra tables */
 
 CREATE OR REPLACE FUNCTION create_infra_table()
@@ -2607,7 +2614,7 @@ from
 (select exam_id,school_id,student_uid
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.district_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id;
@@ -2660,7 +2667,7 @@ from
 (select exam_id,school_id,student_uid
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.block_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.block_id=b.block_id;
@@ -2713,7 +2720,7 @@ from
 (select exam_id,school_id,student_uid
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.cluster_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id;
@@ -2766,7 +2773,7 @@ from
 (select exam_id,school_id,student_uid
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by a.school_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.school_id=b.school_id;
@@ -2933,7 +2940,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.district_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id;
@@ -2995,7 +3002,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.block_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.block_id=b.block_id;
@@ -3057,7 +3064,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.cluster_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id;
@@ -3119,7 +3126,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by a.school_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.school_id=b.school_id;
@@ -3302,7 +3309,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.district_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id;
@@ -3364,7 +3371,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.block_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.block_id=b.block_id;
@@ -3426,7 +3433,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.cluster_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id;
@@ -3488,7 +3495,7 @@ from
 from periodic_exam_result_trans where school_id in (select school_id from periodic_exam_school_result)
 and exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by exam_id,school_id,student_uid) as a
-left join (select exam_id,date_part('year',exam_date)::text as assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
+left join (select exam_id,assessment_year from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by a.school_id,b.assessment_year )as b
  on d.academic_year=b.academic_year and d.school_id=b.school_id;
@@ -4581,6 +4588,15 @@ select spd.district_id,initcap(spd.district_name)as district_name,spd.block_id,i
 initcap(spd.school_name) as school_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+(select min(a.visit_date) from 
+(select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
+where year in(select substring(monthyear,1,4) as year from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as min_year) 
+and month in(select substring(monthyear,6) as month from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency) as min_month)) as data_from_date,
+(select max(a.visit_date) from 
+(select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
+where year in(select substring(monthyear,1,4) as year from (select max(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as max_year) 
+and month in(select substring(monthyear,6) as month from (select max(concat(year,'-',month)) as monthyear from crc_visits_frequency) as max_month) 
+) as data_upto_date,
 coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
 coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,
 coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
@@ -4624,6 +4640,15 @@ select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,
 initcap(spd.cluster_name)as cluster_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+(select min(a.visit_date) from 
+(select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
+where year in(select substring(monthyear,1,4) as year from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as min_year) 
+and month in(select substring(monthyear,6) as month from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency) as min_month)) as data_from_date,
+(select max(a.visit_date) from 
+(select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
+where year in(select substring(monthyear,1,4) as year from (select max(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as max_year) 
+and month in(select substring(monthyear,6) as month from (select max(concat(year,'-',month)) as monthyear from crc_visits_frequency) as max_month) 
+) as data_upto_date,
 coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
 coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
 coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
@@ -4655,6 +4680,15 @@ create or replace view hc_crc_block as
 select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+(select min(a.visit_date) from 
+(select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
+where year in(select substring(monthyear,1,4) as year from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as min_year) 
+and month in(select substring(monthyear,6) as month from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency) as min_month)) as data_from_date,
+(select max(a.visit_date) from 
+(select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
+where year in(select substring(monthyear,1,4) as year from (select max(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as max_year) 
+and month in(select substring(monthyear,6) as month from (select max(concat(year,'-',month)) as monthyear from crc_visits_frequency) as max_month) 
+) as data_upto_date,
 coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
 coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
 coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
@@ -4688,6 +4722,15 @@ select
 spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
 coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
 (spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+(select min(a.visit_date) from 
+(select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
+where year in(select substring(monthyear,1,4) as year from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as min_year) 
+and month in(select substring(monthyear,6) as month from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency) as min_month)) as data_from_date,
+(select max(a.visit_date) from 
+(select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
+where year in(select substring(monthyear,1,4) as year from (select max(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as max_year) 
+and month in(select substring(monthyear,6) as month from (select max(concat(year,'-',month)) as monthyear from crc_visits_frequency) as max_month) 
+) as data_upto_date,
 coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
 coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
 coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
@@ -5406,12 +5449,6 @@ END IF;
 return 0;
 END;
 $$  LANGUAGE plpgsql;
-
-
-drop view if exists student_attendance_agg_last_1_day cascade;
-drop view if exists student_attendance_agg_last_30_days cascade;
-drop view if exists student_attendance_agg_last_7_days cascade;
-drop view if exists student_attendance_agg_overall cascade;
 
 
 select student_attendance_agg_refresh('last_1_day');
@@ -8289,11 +8326,11 @@ create or replace view hc_pat_state_overall as
 
 
 create or replace view hc_pat_state_last30 as
- select (select round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (0)::numeric)), 1) as school_performance
+ select (select round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (1)::numeric)), 1) as school_performance
         from periodic_exam_school_result  where exam_code in (select exam_code from pat_date_range where date_range='last30days')),
         (select json_object_agg(a_1.grade, a_1.percentage) as grade_wise_performance
                    from ( select ('grade '::text || periodic_exam_school_result.grade) as grade,
-                            round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (0)::numeric)), 1) as percentage
+                            round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (1)::numeric)), 1) as percentage
                            from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days')
                           group by periodic_exam_school_result.grade) a_1),
         (select sum(students_count) as students_count from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days')),

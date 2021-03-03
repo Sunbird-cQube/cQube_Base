@@ -80,6 +80,7 @@
                     <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
                     <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                     <name></name>
+                    <prioritizers>org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer</prioritizers>
                     <selectedRelationships>split</selectedRelationships>
                     <source>
                         <groupId>3d3d3e12-bede-3d2e-0000-000000000000</groupId>
@@ -1460,7 +1461,7 @@
                             </entry>
                         </properties>
                         <runDurationMillis>0</runDurationMillis>
-                        <schedulingPeriod>1day</schedulingPeriod>
+                        <schedulingPeriod>1000days</schedulingPeriod>
                         <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
                         <yieldDuration>1 sec</yieldDuration>
                     </config>
@@ -2332,10 +2333,6 @@ ${query_type:startsWith('health_card_index_meta_district'):ifElse('healthCard/di
 ${query_type:startsWith('health_card_index_meta_block'):ifElse('healthCard/block/metaData.json',
 ${query_type:startsWith('health_card_index_meta_cluster'):ifElse('healthCard/cluster/metaData.json',
 ${query_type:startsWith('health_card_index_meta_school'):ifElse('healthCard/school/metaData.json',
-${query_type:startsWith('health_card_index_district_all'):ifElse('healthCard/district/${partition_by_level}.json',
-${query_type:startsWith('health_card_index_block_all'):ifElse('healthCard/block/${partition_by_level}.json',
-${query_type:startsWith('health_card_index_cluster_all'):ifElse('healthCard/cluster/${partition_by_level}.json',
-${query_type:startsWith('health_card_index_school_all'):ifElse('healthCard/school/${partition_by_level}.json',
 ${query_type:startsWith('health_card_index_state_overall'):ifElse('healthCard/overall/state.json',
 ${query_type:startsWith('health_card_index_district_overall'):ifElse('healthCard/district/overall/${partition_by_level}.json',
 ${query_type:startsWith('health_card_index_block_overall'):ifElse('healthCard/block/overall/${partition_by_level}.json',
@@ -2346,7 +2343,7 @@ ${query_type:startsWith('health_card_index_district_last_30_days'):ifElse('healt
 ${query_type:startsWith('health_card_index_block_last_30_days'):ifElse('healthCard/block/last_30_days/${partition_by_level}.json',
 ${query_type:startsWith('health_card_index_cluster_last_30_days'):ifElse('healthCard/cluster/last_30_days/${partition_by_level}.json',
 ${query_type:startsWith('health_card_index_school_last_30_days'):ifElse('healthCard/school/last_30_days/${partition_by_level}.json','None')}
-)} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
+)} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
                             </entry>
                             <entry>
 <key>Bucket</key>
@@ -3746,5 +3743,5 @@ file:${filename},Error while executing "${query_type}" query.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/23/2021 12:52:11 IST</timestamp>
+    <timestamp>03/03/2021 22:55:37 IST</timestamp>
 </template>
