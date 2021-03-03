@@ -33,7 +33,7 @@ Note: For <b>Installation:</b> follow the below steps directly, for upgradation 
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.9
+git checkout release-1.11
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
@@ -128,15 +128,24 @@ cqube_emission
 ├── diksha
 │   └── diksha_api_progress_exhaust_batch_ids.zip
 │       └── diksha_api_progress_exhaust_batch_ids.csv
+├── sat
+│   └── semester_exam_mst.zip
+│       └── semester_exam_mst.csv
+├── sat
+│   └── semester_exam_qst_mst.zip
+│       └── semester_exam_qst_mst.csv
+├── sat
+│   └── semester_exam_grade_details.zip
+│       └── semester_exam_grade_details.csv
+├── sat
+│   └── semester_exam_subject_details.zip
+│       └── semester_exam_subject_details.csv
 ```
 
 Transactional Files:
 ```
 cqube_emission
 |
-├── semester
-│   └── semester.zip
-│       └── semester.csv
 ├── student_attendance
 │   └── student_attendance.zip
 │       └── student_attendance.csv
@@ -158,6 +167,9 @@ cqube_emission
 ├── pat
 │   └── periodic_exam_result_trans.zip
 │       └── periodic_exam_result_trans.csv
+├── sat
+│   └── semester_exam_result_trans.zip
+│       └── semester_exam_result_trans.csv
 ```
 - For udise data file structure, please refer the operational document.
 
@@ -181,7 +193,7 @@ python3 client.py
 - Navigate to the directory where cQube has been downloaded or cloned
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.9
+git checkout release-1.11
 ```
 - Copy the upgradation_config.yml.template to upgradation_config.yml 
 `cp upgradation_config.yml.template upgradation_config.yml`
