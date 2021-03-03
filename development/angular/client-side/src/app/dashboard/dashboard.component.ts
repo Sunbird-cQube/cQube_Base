@@ -138,8 +138,8 @@ export class DashboardComponent implements OnInit {
     this.patExcptTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their periodic assessment scores.`;
     this.tarExpTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their teacher attendance data.`;
     this.sarExcptTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their student attendance data.`;
-    this.satTooltip = "Semester Assesment Test tooltip";
-    this.satHeatChartTooltip = "Semester Assesment Test heatchart tooltip";
+    this.satTooltip = `This geo-location-based dashboard provides insights on student Periodic Assessment Test (SAT) performance across ${this.state}.`;
+    this.satHeatChartTooltip = "This dashboard provides insights on student performance at the question level.";
   }
 
   changeDataSourceStatus() {

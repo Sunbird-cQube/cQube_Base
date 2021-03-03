@@ -154,7 +154,6 @@ export class SatReportComponent implements OnInit {
         this.districtId = data.districtId;
         this.blockId = data.id;
         this.getDistricts(params.level);
-        this.getBlocks(data.districtId, data.id);
       } else if (params.level === 'cluster') {
         this.districtHierarchy = {
           distId: data.districtId
@@ -171,12 +170,10 @@ export class SatReportComponent implements OnInit {
           clusterId: data.id
         };
 
-        this.districtId = data.blockHierarchy;
+        this.districtId = data.districtId;
         this.blockId = data.blockId;
         this.clusterId = data.id;
         this.getDistricts(params.level);
-        this.getBlocks(data.districtId);
-        this.getClusters(data.districtId, data.blockId, data.id);
       }
     } else {
       this.getSemesters();
@@ -196,20 +193,27 @@ export class SatReportComponent implements OnInit {
   }
 
   getDistricts(level): void {
-    this.service.PATDistWiseData({ grade: this.grade, period: this.period, report: "sat", sem: this.semester }).subscribe(res => {
-      this.data = res['data'];
-      this.districtMarkers = this.data;
-      if (!this.districtMarkers[0]['Subjects']) {
-        this.distFilter = this.districtMarkers;
-      }
+    this.service.semMetaData({ period: this.period }).subscribe(res => {
+      this.semesters = res['data'];
+      this.semester = this.semesters[this.semesters.length - 1].id;
+      
+      this.service.PATDistWiseData({ grade: this.grade, period: this.period, report: "sat", sem: this.semester }).subscribe(res => {
+        this.data = res['data'];
+        this.districtMarkers = this.data;
+        if (!this.districtMarkers[0]['Subjects']) {
+          this.distFilter = this.districtMarkers;
+        }
 
-      if (level === 'district') {
-        this.ondistLinkClick(this.districtId);
-      }
+        if (level === 'district') {
+          this.ondistLinkClick(this.districtId);
+        } else {
+          this.getBlocks(level, this.districtId, this.blockId);
+        }
+      });  
     });
   }
 
-  getBlocks(distId, blockId?: any): void {
+  getBlocks(level, distId, blockId?: any): void {
     this.service.PATBlocksPerDistData(distId, { period: this.period, report: "sat", sem: this.semester }).subscribe(res => {
       this.data = res['data'];
       this.blockMarkers = this.data;
@@ -218,8 +222,10 @@ export class SatReportComponent implements OnInit {
         this.blockFilter = this.blockMarkers;
       }
 
-      if (blockId)
+      if (level === 'block')
         this.onblockLinkClick(blockId);
+      else
+        this.getClusters(this.districtId, this.blockId, this.clusterId);
     });
   }
 
@@ -1239,7 +1245,7 @@ export class SatReportComponent implements OnInit {
     const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
       "<b><u>Details</u></b>" +
       "<br>" + yourData1 +
-      "<br><br><b><u>Periodic Exam Score (%)</u></b>" +
+      "<br><br><b><u>Semester Exam Score (%)</u></b>" +
       "<br>" + yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);
   }
