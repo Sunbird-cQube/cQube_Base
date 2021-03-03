@@ -1086,8 +1086,10 @@ export class SatReportComponent implements OnInit {
           })
           this.markers = filterData;
           this.markers.sort((a, b) => (a.Grades[`${this.grade}`]['Grade Performance'] > b.Grades[`${this.grade}`]['Grade Performance']) ? 1 : ((b.Grades[`${this.grade}`]['Grade Performance'] > a.Grades[`${this.grade}`]['Grade Performance']) ? -1 : 0));
-          this.allSubjects = Object.keys(this.markers[0].Grades[`${this.grade}`]);
-          this.allSubjects.pop();
+          if (this.markers[0]) {
+            this.allSubjects = Object.keys(this.markers[0].Grades[`${this.grade}`]);
+            this.allSubjects.pop();
+          }
         } else if (this.grade && this.subject) {
           let filterGrade = this.markers.filter(obj => {
             return ((Object.keys(obj.Grades)).includes(this.grade));
