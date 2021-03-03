@@ -10251,7 +10251,7 @@ Mirror data validation of file:${filename}.Error while checking mirror data</val
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -12739,10 +12739,10 @@ ${query_type:startsWith('stud_att_exception_school_last_7_days'):ifElse('excepti
 ${query_type:startsWith('stud_att_exception_school_last_30_days'):ifElse('exception_list/student_attendance_completion/last_30_days/school.json',
 ${query_type:startsWith('stud_att_exception_school_overall'):ifElse('exception_list/student_attendance_completion/overall/school.json',
 ${query_type:startsWith('stud_att_raw_meta'):ifElse('attendance/raw/metaData.json',
-${query_type:startsWith('stud_att_raw_district'):ifElse('attendance/raw/district_${year}.csv',
-${query_type:startsWith('stud_att_raw_block'):ifElse('attendance/raw/block_${year}.csv',
-${query_type:startsWith('stud_att_raw_cluster'):ifElse('attendance/raw/cluster_${year}.csv',
-${query_type:startsWith('stud_att_raw_school'):ifElse('attendance/raw/school_${year}.csv','None')} )} )} )} )} )}
+${query_type:startsWith('stud_att_raw_district'):ifElse('attendance/raw/student_attendance_all_districts_${year}.csv',
+${query_type:startsWith('stud_att_raw_block'):ifElse('attendance/raw/student_attendance_all_blocks_${year}.csv',
+${query_type:startsWith('stud_att_raw_cluster'):ifElse('attendance/raw/student_attendance_all_clusters_${year}.csv',
+${query_type:startsWith('stud_att_raw_school'):ifElse('attendance/raw/student_attendance_all_schools_${year}.csv','None')} )} )} )} )} )}
 )} )} )} )} )} )} )} )} )}  )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
     <entry>
@@ -15316,7 +15316,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -28271,5 +28271,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/01/2021 17:23:24 IST</timestamp>
+    <timestamp>03/03/2021 22:56:04 IST</timestamp>
 </template>
