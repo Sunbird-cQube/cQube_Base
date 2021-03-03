@@ -24,6 +24,10 @@ drop view if exists student_attendance_agg_last_1_day cascade;
 drop view if exists student_attendance_agg_last_30_days cascade;
 drop view if exists student_attendance_agg_last_7_days cascade;
 drop view if exists student_attendance_agg_overall cascade;
+drop view if exists hc_crc_school cascade;
+drop view if exists hc_crc_cluster cascade;
+drop view if exists hc_crc_block cascade;
+drop view if exists hc_crc_district cascade;
 
 /* Create infra tables */
 
