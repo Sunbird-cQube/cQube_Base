@@ -183,7 +183,8 @@ export class SatReportComponent implements OnInit {
   getSemesters() {
     this.service.semMetaData({ period: this.period }).subscribe(res => {
       this.semesters = res['data'];
-      this.semester = this.semesters[this.semesters.length - 1].id;
+      if (this.semesters.length > 0)
+        this.semester = this.semesters[this.semesters.length - 1].id;
       this.districtWise();
     });
   }
@@ -244,7 +245,12 @@ export class SatReportComponent implements OnInit {
 
   onPeriodSelect() {
     // this.getSemesters();
-    this.levelWiseFilter();
+    this.service.semMetaData({ period: this.period }).subscribe(res => {
+      this.semesters = res['data'];
+      if (this.semesters.length > 0)
+        this.semester = this.semesters[this.semesters.length - 1].id;
+        this.levelWiseFilter();
+    });
   }
 
   onGradeSelect(data) {
