@@ -15,7 +15,6 @@
                CQUBE_HOME={{ base_dir }}/cqube
                CQUBE_BASE_DIR={{ base_dir }}
                CQUBE_DB_USER={{ db_user }}
-               CQUBE_READ_ONLY_DB_USER={{ read_only_db_user }}
                CQUBE_DB_NAME={{ db_name }}
                CQUBE_S3_INPUT={{ s3_input_bucket }}
                CQUBE_S3_OUTPUT={{ s3_output_bucket }}
@@ -24,13 +23,6 @@
                CQUBE_STATE_CODE={{ state_code }}
                CQUBE_STATIC_DATASOURCE={{ static_datasource }}
   tags: install
-
-- name: Updating the read_only_db_user to config file
-  lineinfile:
-    path: "{{ base_dir }}/cqube/.cqube_config"
-    insertafter: '^CQUBE_DB_USER'
-    line: CQUBE_READ_ONLY_DB_USER={{ read_only_db_user }}
-  tags: update
   
 - name: Updating the CQUBE_VERSION
   lineinfile: 
