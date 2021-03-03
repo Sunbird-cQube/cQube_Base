@@ -436,6 +436,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
   onClickHome() {
     this.yearMonth = true;
+    this.academicYear = undefined;
     this.period = 'overall';
     this.month_year = {
       month: null,
