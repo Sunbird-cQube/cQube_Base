@@ -231,7 +231,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.showAll = false;
     this.showLink = true;
     document.getElementById('home').style.display = 'block';
-    document.getElementById('download').style.display = 'block';
+    //document.getElementById('download').style.display = 'block';
     document.getElementById('spinner').style.display = 'block';
     this.exist = false;
     this.cdr.detectChanges();
@@ -686,7 +686,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   exist = false;
   onChange() {
     document.getElementById('home').style.display = 'none';
-    document.getElementById('download').style.display = 'none';
+    //document.getElementById('download').style.display = 'none';
 
     this.exist = true;
     this.cdr.detectChanges();
@@ -711,7 +711,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   levels = [{ key: 'district', name: 'District' }, { key: 'block', name: 'Block' }, { key: 'cluster', name: 'Cluster' }, { key: 'school', name: 'School' }];
   selectedLevel(callSubmit = false) {
     document.getElementById('home').style.display = 'none';
-    document.getElementById('download').style.display = 'none';
+    //document.getElementById('download').style.display = 'none';
     this.exist = true;
     this.cdr.detectChanges();
     document.getElementById('spinner').style.display = 'block';
