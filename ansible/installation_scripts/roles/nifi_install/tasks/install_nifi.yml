@@ -87,6 +87,8 @@
     - udise_queries.json
     - health_card_queries.json
     - teacher_attendance_queries.json
+    - data_replay_queries.json
+    - sat_queries.json
   tags: [ install, update ]
 
 - name: Touch a file
