@@ -121,7 +121,7 @@ export class DataReplayComponent implements OnInit {
       }
     })
     this.dataSources = this.dataSources.sort((a, b) => (a.sourceName > b.sourceName) ? 1 : ((b.sourceName > a.sourceName) ? -1 : 0));
-    this.dataSources.unshift({ template: 'Select Data Source', status: true, sourceName: 'Select Data Source' });
+    //this.dataSources.unshift({ template: 'Select Data Source', status: true, sourceName: 'Select Data Source' });
 
     this.createDataTable();
     // });       
@@ -291,7 +291,7 @@ export class DataReplayComponent implements OnInit {
   onSelectFromDate() {
     this.toDateErr = '';
     if (this.summaryFromDate) {
-      let date = `${("0" + (this.summaryFromDate.getDate())).slice(-2)}-${("0" + (this.summaryFromDate.getMonth() + 1)).slice(-2)}-${this.summaryFromDate.getFullYear()}`;
+      let date = `${this.summaryFromDate.getFullYear()}-${("0" + (this.summaryFromDate.getMonth() + 1)).slice(-2)}-${("0" + (this.summaryFromDate.getDate())).slice(-2)}`;
       this.formObj['diksha_summary_rollup'] = {
         from_date: date,
         to_date: ''
@@ -303,7 +303,7 @@ export class DataReplayComponent implements OnInit {
   onSelectToDate() {
     this.toDateErr = '';
     if (this.summaryToDate) {
-      let date = `${("0" + (this.summaryToDate.getDate())).slice(-2)}-${("0" + (this.summaryToDate.getMonth() + 1)).slice(-2)}-${this.summaryToDate.getFullYear()}`;
+      let date = `${this.summaryToDate.getFullYear()}-${("0" + (this.summaryToDate.getMonth() + 1)).slice(-2)}-${("0" + (this.summaryToDate.getDate())).slice(-2)}`;
       this.formObj['diksha_summary_rollup']['to_date'] = date;
     }
   }
