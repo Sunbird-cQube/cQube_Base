@@ -183,7 +183,8 @@ export class SatReportComponent implements OnInit {
   getSemesters() {
     this.service.semMetaData({ period: this.period }).subscribe(res => {
       this.semesters = res['data'];
-      this.semester = this.semesters[this.semesters.length - 1].id;
+      if (this.semesters.length > 0)
+        this.semester = this.semesters[this.semesters.length - 1].id;
       this.districtWise();
     });
   }
@@ -244,7 +245,12 @@ export class SatReportComponent implements OnInit {
 
   onPeriodSelect() {
     // this.getSemesters();
-    this.levelWiseFilter();
+    this.service.semMetaData({ period: this.period }).subscribe(res => {
+      this.semesters = res['data'];
+      if (this.semesters.length > 0)
+        this.semester = this.semesters[this.semesters.length - 1].id;
+        this.levelWiseFilter();
+    });
   }
 
   onGradeSelect(data) {
@@ -1086,8 +1092,10 @@ export class SatReportComponent implements OnInit {
           })
           this.markers = filterData;
           this.markers.sort((a, b) => (a.Grades[`${this.grade}`]['Grade Performance'] > b.Grades[`${this.grade}`]['Grade Performance']) ? 1 : ((b.Grades[`${this.grade}`]['Grade Performance'] > a.Grades[`${this.grade}`]['Grade Performance']) ? -1 : 0));
-          this.allSubjects = Object.keys(this.markers[0].Grades[`${this.grade}`]);
-          this.allSubjects.pop();
+          if (this.markers[0]) {
+            this.allSubjects = Object.keys(this.markers[0].Grades[`${this.grade}`]);
+            this.allSubjects.pop();
+          }
         } else if (this.grade && this.subject) {
           let filterGrade = this.markers.filter(obj => {
             return ((Object.keys(obj.Grades)).includes(this.grade));
