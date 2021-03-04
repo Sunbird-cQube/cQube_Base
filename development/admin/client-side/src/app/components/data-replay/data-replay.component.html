@@ -190,8 +190,8 @@
                         <p>Select Data Source: </p> <select required id="dataSources"
                             style="padding: 9px;width: 170px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: -10px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
                             (change)="onSelectDataSource($event.target.value)">
-                            <option *ngFor="let source of dataSources; let i = index;" [value]="source.template"
-                                [selected]="i==0">
+                            <option value="Select Data Source" disabled selected>Select Data Source</option>
+                            <option *ngFor="let source of dataSources; let i = index;" [value]="source.template">
                                 <span *ngIf="source.status">{{source.sourceName}}</span>
                             </option>
                         </select>
