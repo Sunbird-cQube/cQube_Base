@@ -100,23 +100,30 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     this.service.getDateRange({ report: 'sarException' }).subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
-      this.year = this.years[this.years.length - 1];
-      var allMonths = [];
-      allMonths = this.getMonthYear[`${this.year}`];
-      this.months = [];
-      allMonths.forEach(month => {
-        var obj = {
-          name: month.month_name,
-          id: month.month
+      if (this.years && this.years.length > 0) {
+        this.year = this.years[this.years.length - 1];
+        var allMonths = [];
+        allMonths = this.getMonthYear[`${this.year}`];
+        this.months = [];
+        allMonths.forEach(month => {
+          var obj = {
+            name: month.month_name,
+            id: month.month
+          }
+          this.months.push(obj);
+        });
+        this.month = this.months[this.months.length - 1].id;
+        if (this.month) {
+          this.month_year = {
+            month: null,
+            year: null
+          };
+          this.districtWise();
         }
-        this.months.push(obj);
-      });
-      this.month = this.months[this.months.length - 1].id;
-      if (this.month) {
-        this.month_year = {
-          month: null,
-          year: null
-        };
+      } else {
+        this.dateRange = ''; this.changeDetection.detectChanges();
+        document.getElementById('home').style.display = 'none';
+        this.getMonthYear = {};
         this.districtWise();
       }
     }, err => {
