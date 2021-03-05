@@ -26,12 +26,13 @@ class test_course_based_on_timeperiods():
         # timeperiod.select_by_visible_text(' Last 30 Days ')
         timeperiod.select_by_index(3)
         self.data.page_loading(self.driver)
-        if self.msg.no_data_available() in self.driver.page_sourse:
+        if self.msg.no_data_available() in self.driver.page_source:
             print("Last 30 days does not having data")
         else:
             self.driver.find_element_by_id('download').click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + "/collectionType_textbook_data.csv"
+            self.filename = self.p.get_download_dir() + "/"+'usage_by_textbook_all_'+self.data.get_current_date()+".csv"
+            print(self.filename)
             if not os.path.isfile(self.filename):
                 print("Diksha course type of  last 30 days data csv file not downloaded")
             else:
@@ -46,7 +47,7 @@ class test_course_based_on_timeperiods():
                     if int(pc) != int(contentplays):
                         print("Course type of last 30 days has difference between screen count value and csv file count ")
                         count = count + 1
-                self.data.page_loading(self.driver)
+                    self.data.page_loading(self.driver)
                 os.remove(self.filename)
         return count
 
@@ -66,7 +67,8 @@ class test_course_based_on_timeperiods():
         else:
             self.driver.find_element_by_id('download').click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + "/collectionType_textbook_data.csv"
+            self.filename = self.p.get_download_dir() + "/"+'usage_by_textbook_all_'+self.data.get_current_date()+".csv"
+            print(self.filename)
             if not os.path.isfile(self.filename):
                 print("Diksha course type of  last 30 days data csv file not downloaded")
             else:
@@ -81,7 +83,7 @@ class test_course_based_on_timeperiods():
                     if int(pc) != int(contentplays):
                         print("Course type of last 30 days has difference between screen count value and csv file count ")
                         count = count + 1
-                self.data.page_loading(self.driver)
+                    self.data.page_loading(self.driver)
                 os.remove(self.filename)
         return count
 
@@ -101,7 +103,8 @@ class test_course_based_on_timeperiods():
         else:
             self.driver.find_element_by_id('download').click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + "/collectionType_textbook_data.csv"
+            self.filename = self.p.get_download_dir() + "/"+'usage_by_textbook_all_'+self.data.get_current_date()+".csv"
+            print(self.filename)
             if not os.path.isfile(self.filename):
                 print("Diksha course type of  last 30 days data csv file not downloaded")
             else:
@@ -116,6 +119,6 @@ class test_course_based_on_timeperiods():
                     if int(pc) != int(contentplays):
                         print("Course type of last 30 days has difference between screen count value and csv file count ")
                         count = count + 1
-                self.data.page_loading(self.driver)
+                    self.data.page_loading(self.driver)
                 os.remove(self.filename)
         return count

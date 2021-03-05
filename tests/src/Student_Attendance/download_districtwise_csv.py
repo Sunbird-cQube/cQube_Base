@@ -4,6 +4,7 @@ import re
 import time
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -18,12 +19,15 @@ class DistrictwiseCsv():
     def click_download_icon_of_district(self):
         cal = GetData()
         count = 0
+        files = file_extention()
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
+        self.year ,self.month = cal.get_student_month_and_year_values()
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(3)
         p = pwd()
-        self.filename = p.get_download_dir() + "/District_wise_report_"+self.month+"_"+self.year+".csv"
+        self.filename = p.get_download_dir()+files.student_download()+self.month+'_'+self.year+'_'+cal.get_current_date()+".csv"
+        print(self.filename)
         if not os.path.isfile(self.filename):
             print("Districtwise csv is not downloaded")
             count = count + 1

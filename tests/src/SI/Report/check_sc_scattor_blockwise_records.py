@@ -31,6 +31,8 @@ class school_blockwise():
             for y in range(1, len(select_block.options)):
                 select_block.select_by_index(y)
                 self.cal.page_loading(self.driver)
+                value = self.driver.find_element_by_name('myBlock').get_attribute('value')
+                value = value[3:]
                 nodata = self.driver.find_element_by_id("errMsg").text
                 if nodata == "No data found":
                     print(select_block.options[y].text, "no data found!")
@@ -38,9 +40,11 @@ class school_blockwise():
                 else:
                     self.driver.find_element_by_id(Data.Download).click()
                     time.sleep(3)
-                    self.filename = p.get_download_dir() + "/" + self.fname.sc_blockwise()
+                    self.filename = p.get_download_dir() + "/" + self.fname.sc_blockwise()+(value+'_').strip()+self.cal.get_current_date()+'.csv'
+                    print(self.filename)
                     if not os.path.isfile(self.filename):
                         print(select_block.options[y].text,"csv file is not downloaded")
+                        count = count + 1
                     else:
                         with open(self.filename) as fin:
                             csv_dict = [row for row in csv.DictReader(self.filename)]

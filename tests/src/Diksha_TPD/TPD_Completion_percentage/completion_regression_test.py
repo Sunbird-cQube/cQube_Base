@@ -1,7 +1,4 @@
 
-
-
-
 import time
 import unittest
 
@@ -27,7 +24,6 @@ class cQube_completion_percentage_regression(unittest.TestCase):
         self.data.login_cqube(self.driver)
         self.data.page_loading(self.driver)
         self.data.navigate_to_tpd_completion_percentage()
-        self.driver.refresh()
         time.sleep(3)
 
     def test_completion_percentage_icon(self):

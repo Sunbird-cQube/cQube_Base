@@ -24,8 +24,9 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Infrastructure_Score_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
+        print(self.filename)
         file = os.path.isfile(self.filename)
         if True != file:
             print('csv file not downloaded')
@@ -47,7 +48,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Administration_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -69,7 +70,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Arts_Lab_Index_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -91,7 +92,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Community_Participation_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -113,7 +114,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Enrollment_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -127,6 +128,7 @@ class udiseindices_scores():
                 row_count = row
             print("Enrollment  is selected and csv file is downloaded")
             return row_count - 1
+
     def grant_expenditure(self):
         chooseinfra = Select(self.driver.find_element_by_id('choose_infra'))
         chooseinfra.select_by_index(6)
@@ -134,7 +136,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Grant_Expenditure_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -156,7 +158,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_ICT_Lab_Index_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -178,7 +180,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Medical_Index_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -200,7 +202,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_NSQF_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -221,7 +223,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Policy_Implementation_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -243,7 +245,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Safety_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -265,7 +267,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_School_Infrastructure_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -287,7 +289,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_School_Inspection_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -309,7 +311,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_School_Performance_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -331,7 +333,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Science_Lab_Index_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -353,7 +355,7 @@ class udiseindices_scores():
         self.driver.find_element_by_id('download').click()
         time.sleep(2)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.udise_district()
+        self.filename = p.get_download_dir() + "/"+'UDISE_report_Teacher_Profile_allDistricts_'+self.cal.get_current_date()+'.csv'
         time.sleep(2)
         file = os.path.isfile(self.filename)
         if True != file:
@@ -366,7 +368,9 @@ class udiseindices_scores():
                 row = len(data)
                 row_count = row
             print("Teachers profile is selected and csv file is downloaded")
-            return row_count - 1
+        chooseinfra.select_by_index(1)
+        time.sleep(2)
+        return row_count - 1
 
     def remove_csv(self):
         os.remove(self.filename)

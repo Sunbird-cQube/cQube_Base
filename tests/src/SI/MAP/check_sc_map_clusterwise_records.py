@@ -32,12 +32,14 @@ class test_school_map_schoollevel_records():
         for x in range(int(len(select_district.options))-1, int(len(select_district.options))):
             select_district.select_by_index(x)
             self.cal.page_loading(self.driver)
-            for y in range(1,len(select_block.options)):
+            for y in range(len(select_block.options)-1,len(select_block.options)):
                 select_block.select_by_index(y)
                 self.cal.page_loading(self.driver)
                 for z in range(1,len(select_cluster.options)):
                     select_cluster.select_by_index(z)
                     self.cal.page_loading(self.driver)
+                    value = self.driver.find_element_by_id('choose_cluster').get_attribute('value')
+                    cvalue = value[3:]+'_'
                     nodata = self.driver.find_element_by_id("errMsg").text
                     markers = self.driver.find_elements_by_class_name(Data.dots)
                     if len(markers)-1 == 0:
@@ -45,7 +47,8 @@ class test_school_map_schoollevel_records():
                     else:
                         self.driver.find_element_by_id(Data.Download).click()
                         time.sleep(3)
-                        self.filename = p.get_download_dir() + "/" + self.fname.scmap_clusterwise()
+                        self.filename = p.get_download_dir() + "/" + self.fname.scmap_clusterwise()+cvalue.strip()+self.cal.get_current_date()+'.csv'
+                        print(self.filename)
                         if not os.path.isfile(self.filename):
                             print(select_cluster.options[z].text ,"csv file is not downloaded!")
                         else:
@@ -62,5 +65,5 @@ class test_school_map_schoollevel_records():
                                 if int(sc) != int(countrecords)-1:
                                     print(select_block.options[y].text, "schools:", int(countrecords)-1, int(sc), "mismatch found")
                                     count = count + 1
-                            self.remove_csv1()
+                            os.remove(self.filename)
         return count

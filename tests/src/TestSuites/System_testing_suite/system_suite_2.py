@@ -9,10 +9,10 @@ from Diksha_TPD.TPD_Course_Progress import lpd_content_system_test
 from Diksha_TPD.TPD_Enrollment_completion import enrollment_system_test
 from Diksha_TPD.TPD_Teacher_Percentage import lpd_percentage_system_test
 from Health_Card_Index import health_card_system_test
-from Pat_Heatchart import patheatchart_system_test
+from Periodic_Test_Reports.Pat_Heatchart import patheatchart_system_test
 from Teacher_Attendance import teacher_attendance_system_testing
 from get_dir import pwd
-from pat_LO_Table import PAT_LO_Table_system_suite
+from Periodic_Test_Reports.pat_LO_Table import PAT_LO_Table_system_suite
 from reuse_func import GetData
 from HTMLTestRunner import HTMLTestRunner
 

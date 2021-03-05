@@ -38,7 +38,7 @@ class Home_functionalities():
             print('Homebtn is not working ')
             count = count + 1
         self.data.page_loading(self.driver)
-        self.data.navigate_to_tpd_enrollment_report()
+        self.data.navigate_to_tpd_completion_percentage()
         self.data.page_loading(self.driver)
         return  count
 

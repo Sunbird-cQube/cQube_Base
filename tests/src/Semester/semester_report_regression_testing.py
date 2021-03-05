@@ -5,7 +5,7 @@ from Semester.Click_on_hyper_link_in_semester_report import Hyperlink
 from Semester.check_semester_choose_district import District
 from Semester.check_semester_choose_district_block import DistrictsBlock
 from Semester.check_semester_choose_district_block_cluster import DistrictBlockCluster
-from Semester.check_total_no_students_and_total_no_schools_sr import TotalStudentsSchools
+from Semester.check_total_no_students_and_total_no_schools_sr import grade_subject_dropdowns
 from Semester.click_on_Home_icon import Home
 from Semester.click_on_blocks import Blocks
 
@@ -42,6 +42,8 @@ class cQube_Semester_Report(unittest.TestCase):
         else:
             raise self.failureException("Semester Report Not Found")
 
+
+
     def test_sem_options(self):
         b =Semester_options(self.driver)
         res1,res2 = b.test_semester_option()
@@ -49,6 +51,8 @@ class cQube_Semester_Report(unittest.TestCase):
         self.assertNotEqual(0,res2,msg="Markers are missing on semeter2 map ")
         print('Semester 2 is working ')
         self.data.page_loading(self.driver)
+
+
 
     def test_click_on_blocks(self):
         block = Blocks(self.driver)
@@ -140,22 +144,21 @@ class cQube_Semester_Report(unittest.TestCase):
         else:
             raise self.failureException('Home Icon is not working')
 
-    def test_total_no_of_students_and_total_no_of_schools_is_equals_at_districts_blocks_clusters_schools(self):
-        tc = TotalStudentsSchools(self.driver)
-        student_count, Bstudents, school_count, Bschools = tc.block_total_no_of_students()
-        self.assertEqual(int(student_count), int(Bstudents), msg="Block level no of students are not equal")
-        self.assertEqual(int(school_count), int(Bschools),
-                         msg="Block level no of schools are not equal to no of schools ")
-        student_count, Cstudents, school_count, Cschool = tc.cluster_total_no_of_students()
-        self.assertEqual(int(student_count), int(Cstudents), msg="Cluster level no of students are not equal")
-        self.assertEqual(int(school_count), int(Cschool),
-                         msg="Cluster level no of schools are not equal to no of schools ")
-        student_count, Sstudents, school_count, Sschool = tc.schools_total_no_of_students()
-        self.assertEqual(int(student_count), int(Sstudents), msg="Cluster level no of students are not equal")
-        self.assertEqual(int(school_count), int(Sschool),
-                         msg="Cluster level no of schools are not equal to no of schools ")
-        print("Total number of students equals on clicking of blocks,clusters,schools")
-        print("Total number of schools equals on clicking of blocks,clusters,schools")
+    def test_gradewise_csv_downloading(self):
+        tc = grade_subject_dropdowns(self.driver)
+        res = tc.check_grade_dropdown_options()
+        self.assertNotEqual(0,res,msg="Grade options are not present ")
+        print("Checked with grade options in sat map report")
+        self.data.page_loading(self.driver)
+
+        fun =  grade_subject_dropdowns(self.driver)
+        res1 = fun.click_each_grades()
+        self.assertEqual(0,res1,msg="gradewise csv file is not downloaded")
+
+    def test_subjectwise_csv_downloading(self):
+        tc = grade_subject_dropdowns(self.driver)
+        res = tc.select_subjects_dropdown()
+        self.assertEqual(0,res,msg="Subjectwise csv file is not downloaded")
 
     def test_choose_district_block_cluster(self):
         dist = District(self.driver)
@@ -172,8 +175,6 @@ class cQube_Semester_Report(unittest.TestCase):
         if result == 0:
             print("Cluster per block csv report download is working")
             print("on selection of each district and block")
-            print("The footer value of no of schools and no of students are")
-            print("equals to downloaded file")
         else:
             raise self.failureException("Cluster per block csv report download not is working")
         schools = DistrictBlockCluster(self.driver)

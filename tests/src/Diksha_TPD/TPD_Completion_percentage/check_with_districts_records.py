@@ -24,12 +24,14 @@ class Check_with_all_districts():
         coll_count = len(collections.options)-1
         for i in range(len(districts.options)-5,len(districts.options)):
             districts.select_by_index(i)
-            name = (districts.options[i].text)
-            dname =name.strip()
+            name =self.driver.find_element_by_id(Data.sar_district).get_attribute('value')
+            value = name[4:]+'_'
+
             self.data.page_loading(self.driver)
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + "/TPD_data_of_district_"+dname.replace(' ','_')+".csv"
+            self.filename = self.p.get_download_dir() + "/"+"completion_percentage_overall_"+value.strip()+self.data.get_current_date()+".csv"
+            print(self.filename)
             if os.path.isfile(self.filename) != True:
                 print(districts.options[i].text,'csv file is not downloaded')
                 count = count + 1

@@ -24,13 +24,13 @@ class cQube_Semester_Report(unittest.TestCase):
         self.data.navigate_to_semester_report()
         time.sleep(5)
 
-    def test_sem_options(self):
-        b =Semester_options(self.driver)
-        res1,res2 = b.test_semester_option()
-        self.assertEqual(0,res1,msg="Semester 1 is selected ")
-        print('Semester 2 is working ')
-        self.assertNotEqual(0,res2,msg="Markers are missing on semeter2 map ")
-        self.data.page_loading(self.driver)
+    # def test_sem_options(self):
+    #     b =Semester_options(self.driver)
+    #     res1,res2 = b.test_semester_option()
+    #     self.assertEqual(0,res1,msg="Semester 1 is selected ")
+    #     print('Semester 2 is working ')
+    #     self.assertNotEqual(0,res2,msg="Markers are missing on semeter2 map ")
+    #     self.data.page_loading(self.driver)
 
     def test_districtwise_csv_download(self):
         csv = DistrictwiseCsv(self.driver)

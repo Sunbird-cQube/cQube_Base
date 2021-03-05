@@ -23,19 +23,22 @@ class Enrollment_time_periods():
         course_type = Select(self.driver.find_element_by_id(Data.coursetype))
         course_type.select_by_visible_text(' Enrollment ')
         self.data.page_loading(self.driver)
+        ctype = (self.driver.find_element_by_id(Data.coursetype).text).strip()
         timeseries = Select(self.driver.find_element_by_name(Data.timeperiods))
         timeseries.select_by_visible_text(' Overall ')
         self.data.page_loading(self.driver)
+        times=(self.driver.find_element_by_name(Data.timeperiods).text).strip()
         if self.msg.no_data_available() in self.driver.page_source:
             print('No Data Available for overall')
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + '/all_enrollment_data.csv'
+            self.filename = self.p.get_download_dir() + '/'+'enrollment_completion_enrollment_all_district_overall_'+self.data.get_current_date()+'.csv'
+            print(self.filename)
             self.data.page_loading(self.driver)
             collnames = Select(self.driver.find_element_by_id(Data.coll_names))
             counter = len(collnames.options)-1
-            for i in range(len(collnames.options)-5,len(collnames.options)-1):
+            for i in range(len(collnames.options),len(collnames.options)-5):
                 collnames.select_by_index(i)
                 self.data.page_loading(self.driver)
             if os.path.isfile(self.filename) != True:
@@ -63,7 +66,9 @@ class Enrollment_time_periods():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + '/all_enrollment_data.csv'
+            times = (self.driver.find_element_by_name(Data.timeperiods).text).strip()
+            ctype = (self.driver.find_element_by_id(Data.coursetype).text).strip()
+            self.filename = self.p.get_download_dir() + '/'+'tpd_enrollment_all_district_last_day_'+self.data.get_current_date()+'.csv'
             self.data.page_loading(self.driver)
             collnames = Select(self.driver.find_element_by_id(Data.coll_names))
             counter = len(collnames.options)-1
@@ -95,7 +100,9 @@ class Enrollment_time_periods():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + '/all_enrollment_data.csv'
+            times = (self.driver.find_element_by_name(Data.timeperiods).text).strip()
+            ctype = (self.driver.find_element_by_id(Data.coursetype).text).strip()
+            self.filename = self.p.get_download_dir() + '/'+'tpd_enrollment_all_district_last_7_days_'+self.data.get_current_date()+'.csv'
             self.data.page_loading(self.driver)
             collnames = Select(self.driver.find_element_by_id(Data.coll_names))
             counter = len(collnames.options) - 1
@@ -127,11 +134,13 @@ class Enrollment_time_periods():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + '/all_enrollment_data.csv'
+            times = (self.driver.find_element_by_name(Data.timeperiods).text).strip()
+            ctype = (self.driver.find_element_by_id(Data.coursetype).text).strip()
+            self.filename = self.p.get_download_dir() + '/'+'tpd_enrollment_all_district_last_30_days_'+self.data.get_current_date()+'.csv'
             self.data.page_loading(self.driver)
             collnames = Select(self.driver.find_element_by_id(Data.coll_names))
             counter = len(collnames.options) - 1
-            for i in range(len(collnames.options) - 5, len(collnames.options) - 1):
+            for i in range(1, len(collnames.options) - 1):
                 collnames.select_by_index(i)
                 self.data.page_loading(self.driver)
             if os.path.isfile(self.filename) != True:

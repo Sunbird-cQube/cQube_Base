@@ -19,8 +19,9 @@ class udise_districts_csv():
         self.p.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(3)
-        self.filename = cal.get_download_dir() + '/' + self.fname.udise_district()
+        self.filename = cal.get_download_dir() + '/' + self.fname.udise_district()+self.p.get_current_date()+'.csv'
         self.p.page_loading(self.driver)
+        print(self.filename)
         file = os.path.isfile(self.filename)
         if True == file:
             print('Udise districtwise csv file is downloaded')

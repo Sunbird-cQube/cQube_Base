@@ -187,25 +187,25 @@ class cQube_Semester_Report(unittest.TestCase):
             raise self.failureException("Markers are not present on the map")
         self.data.page_loading(self.driver)
 
-    def test_no_of_schools_is_equals_at_districts_blocks_clusters_schools(self):
-        tc = TotalSchools(self.driver)
-        schools, Bschools = tc.block_no_of_schools()
-        self.assertEqual(int(schools), int(Bschools), msg="Block level no of schools are not equal to no of schools ")
-        schools, Cschools = tc.cluster_no_of_schools()
-        self.assertEqual(int(schools), int(Cschools), msg="Cluster level no of schools are not equal to no of schools ")
-        schools, Sschools = tc.schools_no_of_schools()
-        self.assertEqual(int(schools), int(Sschools), msg="Cluster level no of schools are not equal to no of schools ")
-        self.data.page_loading(self.driver)
-
-    def test_total_no_of_students_is_equals_at_districts_blocks_clusters_schools(self):
-        tc = TotalStudents(self.driver)
-        student_count, Bstudents = tc.block_total_no_of_students()
-        self.assertEqual(int(student_count), int(Bstudents), msg="Block level no of students are not equal")
-        student_count, Cstudents = tc.cluster_total_no_of_students()
-        self.assertEqual(int(student_count), int(Cstudents), msg="Cluster level no of students are not equal")
-        student_count, Sstudents = tc.schools_total_no_of_students()
-        self.assertEqual(int(student_count), int(Sstudents), msg="Cluster level no of students are not equal")
-        self.data.page_loading(self.driver)
+    # def test_no_of_schools_is_equals_at_districts_blocks_clusters_schools(self):
+    #     tc = TotalSchools(self.driver)
+    #     schools, Bschools = tc.block_no_of_schools()
+    #     self.assertEqual(int(schools), int(Bschools), msg="Block level no of schools are not equal to no of schools ")
+    #     schools, Cschools = tc.cluster_no_of_schools()
+    #     self.assertEqual(int(schools), int(Cschools), msg="Cluster level no of schools are not equal to no of schools ")
+    #     schools, Sschools = tc.schools_no_of_schools()
+    #     self.assertEqual(int(schools), int(Sschools), msg="Cluster level no of schools are not equal to no of schools ")
+    #     self.data.page_loading(self.driver)
+    #
+    # def test_total_no_of_students_is_equals_at_districts_blocks_clusters_schools(self):
+    #     tc = TotalStudents(self.driver)
+    #     student_count, Bstudents = tc.block_total_no_of_students()
+    #     self.assertEqual(int(student_count), int(Bstudents), msg="Block level no of students are not equal")
+    #     student_count, Cstudents = tc.cluster_total_no_of_students()
+    #     self.assertEqual(int(student_count), int(Cstudents), msg="Cluster level no of students are not equal")
+    #     student_count, Sstudents = tc.schools_total_no_of_students()
+    #     self.assertEqual(int(student_count), int(Sstudents), msg="Cluster level no of students are not equal")
+    #     self.data.page_loading(self.driver)
 
     def test_home_button(self):
         self.driver.find_element_by_id('homeBtn').click()

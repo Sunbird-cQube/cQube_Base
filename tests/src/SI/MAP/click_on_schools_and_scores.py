@@ -16,6 +16,7 @@ class schools_btn_scores():
         self.p.page_loading(self.driver)
         self.driver.find_element_by_id('school').click()
         self.p.page_loading(self.driver)
+        time.sleep(20)
         scores = Select(self.driver.find_element_by_id("choose_infra"))
         for i in range(len(scores.options)):
             time.sleep(1)

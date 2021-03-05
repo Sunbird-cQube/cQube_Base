@@ -24,8 +24,9 @@ class download_blockwise_csv():
         self.cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(5)
-        self.filename = p.get_download_dir() + "/" + self.fname.composite_block()
+        self.filename = p.get_download_dir() + "/" + self.fname.composite_block()+self.cal.get_current_date()+'.csv'
         time.sleep(3)
+        print(self.filename)
         return os.path.isfile(self.filename)
     def remove_file(self):
         os.remove(self.filename)

@@ -25,7 +25,7 @@ class Blockwise_csv_download():
         dots = len(markers)-1
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(4)
-        self.filename = cal.get_download_dir() + '/' + self.fname.udise_block()
+        self.filename = cal.get_download_dir() + '/' + self.fname.udise_block()+self.p.get_current_date()+'.csv'
         self.p.page_loading(self.driver)
         file = os.path.isfile(self.filename)
         os.remove(self.filename)

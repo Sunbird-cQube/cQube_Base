@@ -6,6 +6,7 @@ import time
 from selenium.webdriver.support.select import Select
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -22,10 +23,12 @@ class DistrictBlockCluster():
         cal = GetData()
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
+        self.year,self.month = cal.get_student_month_and_year_values()
         select_district = Select(self.driver.find_element_by_name('myDistrict'))
         select_block = Select(self.driver.find_element_by_name('myBlock'))
         select_cluster = Select(self.driver.find_element_by_name('myCluster'))
         count = 0
+        file = file_extention()
         for x in range(len(select_district.options)-1, len(select_district.options)):
             select_district.select_by_index(x)
             cal.page_loading(self.driver)
@@ -35,6 +38,8 @@ class DistrictBlockCluster():
                 for z in range(len(select_cluster.options)-1, len(select_cluster.options)):
                     select_cluster.select_by_index(z)
                     cal.page_loading(self.driver)
+                    value = self.driver.find_element_by_name('myCluster').get_attribute('value')
+                    value = value[4:]+'_'
                     markers = self.driver.find_elements_by_class_name(Data.dots)
                     if len(markers) - 1 == 0:
                         print(
@@ -44,7 +49,8 @@ class DistrictBlockCluster():
                     self.driver.find_element_by_id('download').click()
                     time.sleep(2)
                     p = pwd()
-                    self.filename =  p.get_download_dir() + "/Schools_per_cluster_report_" + self.month + "_" + self.year + ".csv"
+                    self.filename =  p.get_download_dir() + '/'+file.teacher_clusterwise_download()+value.strip()+ self.month + "_" + self.year +"_"+ cal.get_current_date()+".csv"
+                    print(self.filename)
                     if not os.path.isfile(self.filename):
                         print(
                             "District" + select_district.first_selected_option.text + "Block" + select_block.first_selected_option.text + "Cluster" + select_cluster.first_selected_option.text + "csv is not downloaded")

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 class Data():
-    login = "kc-login"
+    login = "login"
     email = "username"
     passwd = "password"
     new_pass = "newPasswd"
@@ -51,7 +51,9 @@ class Data():
     udise_drop ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[8]/mat-list-item/div/mat-icon"
     udise_report ="udiseReport"
 
-
+    # patchart
+    question_id="question_id_allDistricts_"
+    indicator_id="indicator_allDistricts_"
 
     # hyper     ="//*[@id='dist_level']/span"
     hyper = "//p/span"
@@ -65,7 +67,7 @@ class Data():
     y = "y_axis"
     s_dist = "//select[@name='myDistrict']/option[2]"
     # sc_Reportmap
-    School_infra = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[1]/mat-list-item/div/mat-icon"
+    School_infra = "//*[@id='div3']/mat-nav-list/div/mat-nav-list[1]/mat-list-item/div/mat-icon"
     Reportmap = "mapReport"
     Report = "tblReport"
     scm_block = "block"
@@ -77,8 +79,8 @@ class Data():
     sc_infrascores = "//select[@id='choose_infra']/option"
     sc_no_of_schools = "schools"
 
-    diksha ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[3]/mat-list-item/div/mat-icon"
-    tpds ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[2]/mat-list-item/div/mat-icon"
+    diksha ="//*[@id='div3']/mat-nav-list/div/mat-nav-list[3]/mat-list-item/div/mat-icon"
+    tpds ="//*[@id='div3']/mat-nav-list/div/mat-nav-list[2]/mat-list-item/div/mat-icon"
     diksha_graph ="chrtReport"
     diksha_table = "dtblReport"
     tpd_progress ="tpd-cp"
@@ -86,9 +88,9 @@ class Data():
     col_course ="clmnReport"
     col_text ="ut"
     content_textbook ="utc"
-    exception_click ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[5]/mat-list-item/div/mat-icon"
+    exception_click ="//*[@id='div3']/mat-nav-list/div/mat-nav-list[5]/mat-list-item/div/mat-icon"
     sem_exception = "SemException"
-    ener_textbook="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[3]/mat-list-item/div/mat-icon"
+    ener_textbook="//*[@id='div3']/mat-nav-list/div/mat-nav-list[3]/mat-list-item/div/mat-icon"
 
 
     sem_exe ="SemExp"
@@ -275,9 +277,12 @@ class Data():
 
     #Dashboards
     telmetry_report ="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[7]/mat-list-item/div/mat-icon"
-    attendance = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[6]/mat-list-item/div/mat-icon"
-    semester_sel = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[4]/mat-list-item/div/mat-icon"
-    crc_report = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav/div/mat-nav-list/div/mat-nav-list[2]/mat-list-item/div/mat-icon"
+    attendance = "//*[@id='div3']/mat-nav-list/div/mat-nav-list[6]/mat-list-item/div/mat-icon"
+    semester_sel = "//*[@id='div3']/mat-nav-list/div/mat-nav-list[4]/mat-list-item/div/mat-icon"
+    crc_report = "//*[@id='crcReport']/div"
+
+
+
     crc_sel2 ="//*[@id='select']/select/option[2]"
     crc_sel3 ="//*[@id='select']/select/option[3]"
     crc_sel4 ="//*[@id='select']/select/option[4]"
@@ -351,12 +356,12 @@ class Data():
     search="myInput"
     itags="//div[@id='div3']/div/span"
     access_report="//p/a"
-    access_infra ="infraLink"
-    access_student="attdLink"
-    access_semester="semLLink"
-    access_pat="patLink"
-    access_crc="crcLink"
-    access_udise="udiseLink"
+    access_infra ="//p[@id='infraLink']/a"
+    access_student="//p[@id='attdLink']/a"
+    access_semester="//p[@id='semLink']/a"
+    access_pat="//p[@id='patLink']/a"
+    access_crc="//p[@id='crcLink']/a"
+    access_udise="//p[@id='udiseLink']/a"
 
     home_Std = "attdLink"
     home_sem = "semLLink"
@@ -373,15 +378,14 @@ class Data():
     report_udisecard="udiseHealthcard"
 
     #districtwise health card
-    District_name = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-health-card/div[1]/div[3]/div/div[1]/div/div/div[1]/span/span[2]"
-
+    District_name = ""
     # Blockwise
-    Block_name = "/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-health-card/div[1]/div[3]/div/div[1]/div/div/div[2]/span/span[2]"
+    Block_name = ""
 
     #clusterwise
-    Cluster_name="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-health-card/div[1]/div[3]/div/div[1]/div/div/div[3]/span/span[2]"
+    Cluster_name=""
     #Schoolwise
-    School_name="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-health-card/div[1]/div[3]/div/div[1]/div/div/div[4]/span/span[2]"
+    School_name="/html/body/app-root/app-home/mat-sidenav-container/mat-sidenav-content/div/app-health-card/div[1]/div[1]/div[1]/div/div/div/div/div[2]/div/table/tbody/tr[14]/td[3]/strong"
 
     state_student="//*[@id='stdAttendance']/div[2]/div/table/tbody/tr/td"
     state_semester="//*[@id='semPer']/div[2]/div/table/tbody/tr/td"

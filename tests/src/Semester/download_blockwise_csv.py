@@ -20,12 +20,13 @@ class BlockwiseCsv():
         self.fname = file_extention()
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.sr_block_btn).click()
+        self.driver.find_element_by_id(Data.block_btn).click()
         cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(5)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.sr_block()
+        self.filename = p.get_download_dir() + "/" + self.fname.sr_block()+cal.get_current_date()+'.csv'
+        print(self.filename)
         if os.path.isfile(self.filename) != True:
             return "File Not Downloaded"
         if os.path.isfile(self.filename) == True:
