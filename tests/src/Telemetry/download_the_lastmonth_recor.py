@@ -23,7 +23,7 @@ class lastmonth_download():
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(4)
-        self.filename = self.p.get_download_dir() + '/' + self.fname.telemetry_lastmonth()
+        self.filename = self.p.get_download_dir() + '/' + self.fname.telemetry_lastmonth()+self.data.get_current_date()+'.csv'
         file = os.path.isfile(self.filename)
         self.data.page_loading(self.driver)
         os.remove(self.filename)

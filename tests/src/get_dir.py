@@ -32,24 +32,29 @@ class pwd():
         report_path = os.path.join(cwd, 'Reports/SanityReports/sanity_testing_report.html')
         return report_path
 
-    def get_regression_report_path(self):
+    def get_regression_map_reports(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/Regression_Report/Regression_Test1.html')
+        report_path = os.path.join(cwd, 'Reports/Regression_Report/Regression_cQbue.html')
         return report_path
 
-    def get_regression_report_path_2(self):
+    def get_regression_chart_table_reports(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/Regression_Report/Regression_Test2.html')
+        report_path = os.path.join(cwd, 'Reports/Regression_Report/Regression_chart_table_reports.html')
         return report_path
 
-    def get_smoke_report_path(self):
+    def get_diksha_tpds_regression_report(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/SmokeReport/System_Test_1.html')
+        report_path = os.path.join(cwd, 'Reports/Regression_Report/Regression_Diksha_Report.html')
         return report_path
 
-    def get_smoke_report_path_2(self):
+    def get_smoke_map_report(self):
         cwd = os.path.dirname(__file__)
-        report_path = os.path.join(cwd, 'Reports/SmokeReport/System_Test_2.html')
+        report_path = os.path.join(cwd, 'Reports/SmokeReport/Smoke_Test_map_reports.html')
+        return report_path
+
+    def get_smoke_chart_tables_report(self):
+        cwd = os.path.dirname(__file__)
+        report_path = os.path.join(cwd, 'Reports/SmokeReport/Smoke_chart.html')
         return report_path
 
     def get_functional_report_path(self):
@@ -96,6 +101,7 @@ class pwd():
         cwd = os.path.dirname(__file__)
         download_path = os.path.join(cwd, 'Downloads')
         return download_path
+
 
     def get_download_dir_SAR_Download1(self):
         cwd = os.path.dirname(__file__)

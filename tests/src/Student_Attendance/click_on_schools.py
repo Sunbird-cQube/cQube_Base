@@ -8,7 +8,7 @@ class Schools():
     def __init__(self, driver):
         self.driver = driver
 
-    def check_markers_on_clusters_map(self):
+    def check_markers_on_schools_map(self):
         self.driver.find_element_by_id(Data.SAR_Schools_btn).click()
         cal = GetData()
         time.sleep(2)

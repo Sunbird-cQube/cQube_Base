@@ -19,12 +19,12 @@ class ClusterwiseCsv():
         self.fname = file_extention()
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.sr_cluster_btn).click()
+        self.driver.find_element_by_id(Data.cluster_btn).click()
         cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(10)
         p = pwd()
-        self.filename = p.get_download_dir() + "/" + self.fname.sr_cluster()
+        self.filename = p.get_download_dir() + "/" + self.fname.sr_cluster()+cal.get_current_date()+'.csv'
         if os.path.isfile(self.filename) != True:
             return "File Not Downloaded"
         if os.path.isfile(self.filename) == True:

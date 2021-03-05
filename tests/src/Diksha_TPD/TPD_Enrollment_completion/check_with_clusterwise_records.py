@@ -27,8 +27,10 @@ class Check_Cluster_wise():
         course_type = Select(self.driver.find_element_by_id(Data.coursetype))
         for i in range(1, len(course_type.options)):
             course_type.select_by_index(i)
+            cname = course_type.options[i].text
+            course = cname.strip()
             self.data.page_loading(self.driver)
-            for j in range(len(Districts.options)-32,len(Districts.options)):
+            for j in range(len(Districts.options)-1,len(Districts.options)):
                 Districts.select_by_index(j)
                 self.data.page_loading(self.driver)
                 for k in range(len(Blocks.options)-1,len(Blocks.options)):
@@ -41,7 +43,12 @@ class Check_Cluster_wise():
                         self.data.page_loading(self.driver)
                         self.driver.find_element_by_id(Data.Download).click()
                         time.sleep(3)
-                        self.filename = self.p.get_download_dir() + "/TPD_data_of_cluster_"+cname.replace(' ','_')+".csv"
+                        dname = self.driver.find_element_by_id(Data.sar_cluster).get_attribute('value')
+                        value = dname[3:] + '_'
+                        # times = (self.driver.find_element_by_id('time_range').text).strip()
+
+                        self.filename = self.p.get_download_dir() + "/" + "enrollment_completion_" +course.lower()+'_overall_'+ value.strip() + self.data.get_current_date() + ".csv"
+                        print(self.filename)
                         if os.path.isfile(self.filename) != True:
                             print(course_type.options[i].text,Districts.options[j].text,Blocks.options[k].text,Cluster.options[m].text,'csv file not downloaded')
                             count = count + 1

@@ -66,9 +66,8 @@ class levels_dropdown():
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.submt).click()
         self.data.page_loading(self.driver)
-        actual_name = self.driver.find_element_by_xpath(Data.District_name).text
         expected_name= dnames.health_card_d1_name()
-        if actual_name == expected_name:
+        if  expected_name in self.driver.page_source:
             print(expected_name,"is displayed in health cards ")
         else:
             print('Passed input records are not displayed in health cards ')
@@ -90,9 +89,8 @@ class levels_dropdown():
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.submt).click()
         self.data.page_loading(self.driver)
-        actual_name = self.driver.find_element_by_xpath(Data.Block_name).text
         expected_name = bnames.health_card_b1_name()
-        if actual_name == expected_name:
+        if expected_name in self.driver.page_source:
             print(expected_name, "is displayed in health cards ")
         else:
             print('Passed input records are not displayed in health cards ')
@@ -115,13 +113,12 @@ class levels_dropdown():
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.submt).click()
         self.data.page_loading(self.driver)
-        actual_name = self.driver.find_element_by_xpath(Data.Cluster_name).text
         expected_name = cnames.health_card_c1_name()
         self.data.page_loading(self.driver)
-        if actual_name == expected_name:
+        if expected_name in self.driver.page_source:
             print(expected_name, "is displayed in health cards ")
         else:
-            print(actual_name,expected_name,'Passed input records are not displayed in health cards ')
+            print(expected_name,'Passed input records are not displayed in health cards ')
             count = count + 1
         self.driver.refresh()
         self.data.page_loading(self.driver)
@@ -139,13 +136,12 @@ class levels_dropdown():
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.submt).click()
         time.sleep(3)
-        actual_name = self.driver.find_element_by_xpath(Data.School_name).text
         expected_name = snames.health_card_S2_name()
         self.data.page_loading(self.driver)
-        if actual_name == expected_name:
+        if expected_name in self.driver.page_source:
             print(expected_name, "is displayed in health cards ")
         else:
-            print(actual_name,expected_name,'Passed input records are not displayed in health cards ')
+            print(expected_name,'Passed input records are not displayed in health cards ')
             count = count + 1
         self.driver.refresh()
         self.data.page_loading(self.driver)

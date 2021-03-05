@@ -26,7 +26,7 @@ class school_wise_donwload():
             self.data.page_loading(self.driver)
             self.driver.find_element_by_id(Data.Download_scator).click()
             time.sleep(15)
-            self.filename = p.get_download_dir() + "/" + self.fname.sc_school()
+            self.filename = p.get_download_dir() + "/" + self.fname.sc_school()+self.data.get_current_date()+'.csv'
             time.sleep(10)
             return os.path.isfile(self.filename)
 

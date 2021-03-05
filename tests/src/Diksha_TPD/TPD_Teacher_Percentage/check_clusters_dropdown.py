@@ -24,7 +24,7 @@ class School_wise_records():
         clust = Select(self.driver.find_element_by_id(Data.cluster_dropdown))
         dists = Select(self.driver.find_element_by_id(Data.district_dropdown))
         Blocks = Select(self.driver.find_element_by_id(Data.blocks_dropdown))
-        for i in range( len(dists.options)-1, len(dists.options)):
+        for i in range(len(dists.options)-2, len(dists.options)-30):
             dists.select_by_index(i)
             self.load.page_loading(self.driver)
             for j in range(len(Blocks.options)-1, len(Blocks.options)):
@@ -33,9 +33,13 @@ class School_wise_records():
                 for k in range(1, len(clust.options)):
                     clust.select_by_index(k)
                     self.load.page_loading(self.driver)
+                    value = self.driver.find_element_by_id(Data.blocks_dropdown).get_attribute('value')
+                    value = value[3:]+'_'
+                    print(value)
                     self.driver.find_element_by_id(Data.Download).click()
                     time.sleep(3)
-                    self.filename = self.p.get_download_dir() + '/' + self.fname.lpd_school()
+                    self.filename = self.p.get_download_dir() + '/' + self.fname.tpd_teacher_school()+value.strip()+self.load.get_current_date()+'.csv'
+                    print(self.filename)
                     file = os.path.isfile(self.filename)
                     if file != True:
                         print(dists.options[i].text,Blocks.options[j].text,clust.options[k].text, 'School wise records csv file is not downloaded')

@@ -16,6 +16,8 @@ class TotalStudentsSchools():
         cal = GetData()
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
+        self.driver.find_element_by_xpath(Data.hyper_link).click()
+        cal.page_loading(self.driver)
         total_students = self.driver.find_element_by_id(Data.students).text
         students = re.sub("\D", "", total_students)
         self.student_count = students
@@ -30,11 +32,14 @@ class TotalStudentsSchools():
 
         Bschools = self.driver.find_element_by_id(Data.schoolcount).text
         Bschools = re.sub("\D", "", Bschools)
-
+        print('Blocklevel', self.student_count, Bstudent, self.school_count, Bschools)
         return self.student_count, Bstudent, self.school_count, Bschools
 
 
     def cluster_total_no_of_students(self):
+        cal = GetData()
+        self.driver.find_element_by_xpath(Data.hyper_link).click()
+        cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.SAR_Clusters_btn).click()
         cal = GetData()
         cal.page_loading(self.driver)
@@ -43,19 +48,26 @@ class TotalStudentsSchools():
         Cstudent = re.sub("\D", "", Cstudents)
         Cschools = self.driver.find_element_by_id(Data.schoolcount).text
         Cschool = re.sub("\D", "", Cschools)
+        print("Cluster level",self.student_count, Cstudent,self.school_count,Cschool)
         return self.student_count, Cstudent,self.school_count,Cschool
 
 
     def schools_total_no_of_students(self):
+        cal = GetData()
+        self.driver.find_element_by_xpath(Data.hyper_link).click()
+        cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.SAR_Schools_btn).click()
         cal = GetData()
         cal.page_loading(self.driver)
-        time.sleep(4)
-        Sstudents = self.driver.find_element_by_id(Data.students).text
-        Sstudent = re.sub("\D", "", Sstudents)
+        time.sleep(10)
+        if 'No data found' in self.driver.page_source:
+            print('School level has no data')
+        else:
+            Sstudents = self.driver.find_element_by_id(Data.students).text
+            Sstudent = re.sub("\D", "", Sstudents)
 
-        Sschools = self.driver.find_element_by_id(Data.schoolcount).text
-        Sschool = re.sub("\D", "", Sschools)
-
+            Sschools = self.driver.find_element_by_id(Data.schoolcount).text
+            Sschool = re.sub("\D", "", Sschools)
+            print('School level',self.student_count, Sstudent, self.school_count, Sschool)
         return self.student_count, Sstudent, self.school_count, Sschool
 

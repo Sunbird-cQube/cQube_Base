@@ -28,7 +28,7 @@ from Student_Attendance.download_schoolwise_csv import SchoolwiseCsv
 from reuse_func import GetData
 
 
-class cQube_Student_Attendance(unittest.TestCase):
+class cQube_Student_Attendance_regression(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         self.data = GetData()
@@ -63,7 +63,7 @@ class cQube_Student_Attendance(unittest.TestCase):
         print("Markers are present on the map")
 
         school = Schools(self.driver)
-        result = school.check_markers_on_clusters_map()
+        result = school.check_markers_on_schools_map()
         self.assertNotEqual(0, int(len(result) - 1), msg="Dots are not present on map")
         print("Schools button is working")
         print("Markers are present on the map")
@@ -164,12 +164,13 @@ class cQube_Student_Attendance(unittest.TestCase):
         print("Total number of students equals on clicking of blocks,clusters,schools")
         print("Total number of schools equals on clicking of blocks,clusters,schools")
 
-    def test_date_range(self):
-        daterange = DateRange(self.driver)
-        result = daterange.check_date_range()
-        self.driver.find_element_by_id('homeBtn').click()
-        time.sleep(2)
-        self.data.navigate_to_student_report()
+    # def test_date_range(self):
+    #     daterange = DateRange(self.driver)
+    #     result = daterange.check_date_range()
+    #     self.driver.find_element_by_id('homeBtn').click()
+    #     time.sleep(2)
+    #     self.data.navigate_to_student_report()
+    #     self.data.page_loading(self.driver)
         # if result != 0:
         #  raise self.failureException('Data Range in correct')
 
@@ -180,6 +181,7 @@ class cQube_Student_Attendance(unittest.TestCase):
         print("Logout Functionality is working")
         self.data.login_cqube(self.driver)
         self.data.navigate_to_student_report()
+        self.data.page_loading(self.driver)
 
     @classmethod
     def tearDownClass(cls):

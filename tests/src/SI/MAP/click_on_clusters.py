@@ -24,7 +24,8 @@ class cluster_button():
         count = len(dots)-1
         self.driver.find_element_by_id('download').click()
         time.sleep(8)
-        self.filename = cal.get_download_dir() + '/' + self.fname.scmap_cluster()
+        self.filename = cal.get_download_dir() + '/' + self.fname.scmap_cluster()+self.p.get_current_date()+'.csv'
+        print(self.filename)
         self.p.page_loading(self.driver)
         file = os.path.isfile(self.filename)
         self.p.page_loading(self.driver)
