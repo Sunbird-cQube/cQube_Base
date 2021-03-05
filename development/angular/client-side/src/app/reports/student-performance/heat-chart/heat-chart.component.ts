@@ -146,7 +146,7 @@ export class HeatChartComponent implements OnInit {
   onChangePage() {
     let yLabel = this.yLabel.slice((this.currentPage - 1) * this.pageSize, ((this.currentPage - 1) * this.pageSize + this.pageSize));
     let data = this.items.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage);
-    let tooltipData = this.toolTipData ? this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage) : null;
+    let tooltipData = this.toolTipData ? this.toolTipData.slice(this.pageSize * this.xLabel.length * (this.currentPage - 1), this.pageSize * this.xLabel.length * this.currentPage) : [];
 
     data = data.map(record => {
       record.y %= this.pageSize;
