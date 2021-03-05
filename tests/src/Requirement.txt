@@ -1,0 +1,7 @@
+HTMLTestRunner-Python3
+pandas
+selenium
+configparser
+pathlib
+psycopg2-binary
+requests
