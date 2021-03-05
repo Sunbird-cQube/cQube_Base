@@ -64,7 +64,7 @@ class cQube_Student_Attendance(unittest.TestCase):
 
     def test_click_on_schools(self):
         school = Schools(self.driver)
-        result = school.check_markers_on_clusters_map()
+        result = school.check_markers_on_schools_map()
         self.assertNotEqual(0, int(len(result) - 1), msg="Dots are not present on map")
 
 

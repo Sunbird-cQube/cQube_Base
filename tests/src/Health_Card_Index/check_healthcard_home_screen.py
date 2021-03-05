@@ -46,7 +46,7 @@ class health_card_homepage():
         self.data = GetData()
         count = 0
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.access_student).click()
+        self.driver.find_element_by_xpath(Data.access_student).click()
         time.sleep(5)
         if 'student-attendance' in self.driver.current_url:
             print("Student Attendance report is displayed ")
@@ -68,7 +68,7 @@ class health_card_homepage():
         self.data = GetData()
         count = 0
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.access_semester).click()
+        self.driver.find_element_by_xpath(Data.access_semester).click()
         time.sleep(5)
         if 'semester-report' in self.driver.current_url:
             print("Semester report is displayed ")
@@ -90,7 +90,7 @@ class health_card_homepage():
         self.data = GetData()
         count = 0
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.access_pat).click()
+        self.driver.find_element_by_xpath(Data.access_pat).click()
         time.sleep(5)
         if 'pat-report' in self.driver.current_url:
             print("pat-report is displayed ")
@@ -112,7 +112,7 @@ class health_card_homepage():
         self.data = GetData()
         count = 0
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.access_infra).click()
+        self.driver.find_element_by_xpath(Data.access_infra).click()
         time.sleep(5)
         if 'school-infra-map' in self.driver.current_url:
             print("school-infra-map is displayed ")
@@ -134,7 +134,7 @@ class health_card_homepage():
         self.data = GetData()
         count = 0
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.access_udise).click()
+        self.driver.find_element_by_xpath(Data.access_udise).click()
         time.sleep(5)
         if 'udise-report' in self.driver.current_url:
             print("udise-report is displayed ")
@@ -156,7 +156,7 @@ class health_card_homepage():
         self.data = GetData()
         count = 0
         self.data.page_loading(self.driver)
-        self.driver.find_element_by_id(Data.access_crc).click()
+        self.driver.find_element_by_xpath(Data.access_crc).click()
         time.sleep(5)
         if 'crc-report' in self.driver.current_url:
             print("crc-report is displayed ")

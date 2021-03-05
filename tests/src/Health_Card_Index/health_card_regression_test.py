@@ -3,7 +3,7 @@ import unittest
 
 from Health_Card_Index.check_levels_dropdown import levels_dropdown
 from Health_Card_Index.check_with_healthcard_button import Health_card_btn
-from Health_Card_Index.demo import Access_to_Reports
+from Health_Card_Index.access_to_reports import Access_to_Reports
 from reuse_func import GetData
 
 

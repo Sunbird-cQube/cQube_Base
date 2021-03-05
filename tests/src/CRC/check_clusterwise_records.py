@@ -39,6 +39,8 @@ class crc_schoolevel_records():
                 for z in range(1, len(select_cluster.options)):
                     select_cluster.select_by_index(z)
                     self.cal.page_loading(self.driver)
+                    cluval = self.driver.find_element_by_name('myCluster').get_attribute('value')
+                    value = cluval[3:]+'_'
                     nodata = self.driver.find_element_by_id("errMsg").text
                     if nodata == "No data found":
                         print(select_district.options[x].text,select_block.options[y].text,select_cluster.options[z].text,"no data found!")
@@ -46,7 +48,7 @@ class crc_schoolevel_records():
                     else:
                         self.driver.find_element_by_id(Data.Download).click()
                         time.sleep(3)
-                        self.filename = p.get_download_dir() + '/' + self.fname.crc_clusterwise()
+                        self.filename = p.get_download_dir() + '/' + self.fname.crc_clusterwise()+value.strip()+self.cal.get_current_date()+'.csv'
                         if not os.path.isfile(self.filename):
                             print(select_cluster.options[z].text ," csv file not downloaded")
                         else:

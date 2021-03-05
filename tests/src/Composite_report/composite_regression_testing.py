@@ -64,21 +64,6 @@ class composite_regression_report(unittest.TestCase):
         b.remove_file()
         self.data.page_loading(self.driver)
 
-    def test_school_wise_download(self):
-        b = school_wise_download(self.driver)
-        res = b.test_schoolwise()
-        self.assertTrue(res, msg="Schoolwise csv file is not downloaded ")
-        print("Checked school wise csv downloading functionality is working ")
-        b.remove_file()
-        self.data.page_loading(self.driver)
-
-    def test_composite_schoolwise_records(self):
-        b = composite_schoolevel_records(self.driver)
-        res = b.check_csv_download()
-        self.assertTrue(res, msg="Some of school csv file is not downloaded ")
-        print("Checked with School wise csv file downloading ")
-        self.data.page_loading(self.driver)
-
     def test_hyperlink(self):
         b = click_on_hyperlinks(self.driver)
         res = b.test_hyperlink()
@@ -117,6 +102,7 @@ class composite_regression_report(unittest.TestCase):
         self.data.page_loading(self.driver)
 
     def test_blocks_clusters_schools(self):
+        self.driver.implicitly_wait(100)
         b = Blocks_cluster_schools_Buttons(self.driver)
         res = b.click_on_blocks_button()
         self.assertEqual(0, res, msg="Blocks graph is displayed ")
@@ -129,6 +115,20 @@ class composite_regression_report(unittest.TestCase):
         print("Cluster wise graph is displayed ")
         self.data.page_loading(self.driver)
 
+
+    def test_composite_schoolwise_records(self):
+        b = composite_schoolevel_records(self.driver)
+        res = b.check_csv_download()
+        self.assertTrue(res, msg="Some of school csv file is not downloaded ")
+        print("Checked with School wise csv file downloading ")
+        self.data.page_loading(self.driver)
+
+    def test_composite_districtwise_records(self):
+        b = composite_schoolevel_records(self.driver)
+        res = b.check_districtwise_csv_download()
+        self.assertTrue(res, msg="Some of districtwise csv file is not downloaded ")
+        print("Checked with districtwise wise csv file downloading ")
+        self.data.page_loading(self.driver)
 
     @classmethod
     def tearDownClass(cls):

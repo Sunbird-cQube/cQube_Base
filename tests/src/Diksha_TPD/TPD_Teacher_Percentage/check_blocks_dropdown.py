@@ -29,9 +29,12 @@ class Cluster_wise_records():
             for j in range( len(Blocks.options), len(Blocks.options)):
                 Blocks.select_by_index(j)
                 self.load.page_loading(self.driver)
+                value = self.driver.find_element_by_id(Data.blocks_dropdown).get_attribute('value')
+                value = value[5:]+'_'
                 self.driver.find_element_by_id(Data.Download).click()
                 time.sleep(3)
-                self.filename = self.p.get_download_dir() + '/' + self.fname.lpd_cluster()
+                self.filename = self.p.get_download_dir() + '/' + self.fname.tpd_teacher_cluster()+value.strip()+self.load.get_current_date()+'.csv'
+                print(self.filename)
                 file = os.path.isfile(self.filename)
                 if file != True:
                     print(dists.options[i].text,Blocks.options[j].text,'Cluster wise records csv file is not downloaded ')

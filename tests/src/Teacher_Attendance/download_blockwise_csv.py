@@ -3,6 +3,7 @@ import time
 
 
 from Data.parameters import Data
+from filenames import file_extention
 from get_dir import pwd
 from reuse_func import GetData
 
@@ -16,6 +17,7 @@ class BlockwiseCsv():
 
     def click_download_icon_of_blocks(self):
         cal = GetData()
+        files = file_extention()
         cal.click_on_state(self.driver)
         cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.SAR_Blocks_btn).click()
@@ -24,7 +26,8 @@ class BlockwiseCsv():
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(5)
         p = pwd()
-        self.filename = p.get_download_dir() + "/Block_wise_report_" + self.month + "_" + self.year + ".csv"
+        self.filename = p.get_download_dir() +'/'+files.teacher_block_download()+cal.get_current_date()+".csv"
+        print(self.filename)
         return os.path.isfile(self.filename)
 
     def remove_csv(self):

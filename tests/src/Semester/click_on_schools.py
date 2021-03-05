@@ -9,7 +9,7 @@ class Schools():
         self.driver = driver
 
     def check_markers_on_clusters_map(self):
-        self.driver.find_element_by_id(Data.sr_schools_btn).click()
+        self.driver.find_element_by_id(Data.schoolbtn).click()
         cal = GetData()
         cal.page_loading(self.driver)
         time.sleep(15)

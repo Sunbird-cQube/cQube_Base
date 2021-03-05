@@ -25,7 +25,7 @@ class donwload_blockwise_csv():
         self.p.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download_scator).click()
         time.sleep(10)
-        self.filename = p.get_download_dir() + "/"+ self.fname.sc_block()
+        self.filename = p.get_download_dir() + "/"+ self.fname.sc_block()+self.p.get_current_date()+'.csv'
         self.p.page_loading(self.driver)
         return os.path.isfile(self.filename)
 

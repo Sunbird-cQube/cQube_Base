@@ -26,6 +26,7 @@ class cQube_SI_Map_Report(unittest.TestCase):
     def setUpClass(self):
         self.data = GetData()
         self.driver = self.data.get_driver()
+        self.driver.implicitly_wait(100)
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
         time.sleep(2)
@@ -177,6 +178,7 @@ class cQube_SI_Map_Report(unittest.TestCase):
         print("cluster button is worked and infra scores is working ")
 
         b = schools_btn_scores(self.driver)
+        self.driver.implicitly_wait(30)
         res = b.test_click_schools()
         self.data.page_loading(self.driver)
         print("school button is worked and infra scores is working ")

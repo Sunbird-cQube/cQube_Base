@@ -23,18 +23,22 @@ class Check_Districtwise():
         self.data.page_loading(self.driver)
         Districts = Select(self.driver.find_element_by_id(Data.sar_district))
         course_type = Select(self.driver.find_element_by_id(Data.coursetype))
+        time = (self.driver.find_element_by_id('time_range').text).strip()
         for i in range(1, len(course_type.options)):
             course_type.select_by_index(i)
             self.data.page_loading(self.driver)
+            cname = course_type.options[i].text
+            course = cname.strip()
             for j in range(len(Districts.options)-5,len(Districts.options)):
                 Districts.select_by_index(j)
-                name =Districts.options[j].text
-                dname = name.strip()
                 self.data.page_loading(self.driver)
-                time.sleep(2)
                 self.driver.find_element_by_id(Data.Download).click()
-                time.sleep(3)
-                self.filename = self.p.get_download_dir()+"/TPD_data_of_district_"+dname.replace(' ','_')+".csv"
+                self.data.page_loading(self.driver)
+                dname = self.driver.find_element_by_id(Data.sar_district).get_attribute('value')
+                value = dname[4:] + '_'
+
+                self.filename = self.p.get_download_dir()+"/"+"enrollment_completion_"+course.lower()+'_overall'+'_'+value.strip()+self.data.get_current_date()+".csv"
+                print(self.filename)
                 if os.path.isfile(self.filename) != True:
                     print(course_type.options[i].text, Districts.options[j].text, 'csv file not downloaded')
                     count = count + 1

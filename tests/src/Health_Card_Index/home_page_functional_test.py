@@ -37,6 +37,7 @@ class Health_card_functionalTest(unittest.TestCase):
         func = health_card_homepage(self.driver)
         res = func.check_click_to_access_student_report()
         self.assertEqual(0,res,msg='Student attendance report is not displayed')
+        time.sleep(5)
         self.data.page_loading(self.driver)
 
     def test_semester_report(self):
