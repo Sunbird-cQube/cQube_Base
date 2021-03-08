@@ -249,7 +249,7 @@ export class SatReportComponent implements OnInit {
       this.semesters = res['data'];
       if (this.semesters.length > 0)
         this.semester = this.semesters[this.semesters.length - 1].id;
-        this.levelWiseFilter();
+      this.levelWiseFilter();
     });
   }
 
