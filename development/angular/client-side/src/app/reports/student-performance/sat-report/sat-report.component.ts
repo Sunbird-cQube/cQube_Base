@@ -249,7 +249,7 @@ export class SatReportComponent implements OnInit {
       this.semesters = res['data'];
       if (this.semesters.length > 0)
         this.semester = this.semesters[this.semesters.length - 1].id;
-        this.levelWiseFilter();
+      this.levelWiseFilter();
     });
   }
 
@@ -492,14 +492,14 @@ export class SatReportComponent implements OnInit {
 
 
             //schoolCount
-            this.schoolCount = res['footer'].total_schools;
-            if (this.schoolCount != null) {
-              this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            }
-            this.studentCount = res['footer'].students_count;
-            if (this.studentCount != null) {
-              this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            }
+            // this.schoolCount = res['footer'].total_schools;
+            // if (this.schoolCount != null) {
+            //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            // }
+            // this.studentCount = res['footer'].students_count;
+            // if (this.studentCount != null) {
+            //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            // }
 
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
@@ -615,14 +615,14 @@ export class SatReportComponent implements OnInit {
             }
 
             //schoolCount
-            this.schoolCount = res['footer'].total_schools;
-            if (this.schoolCount != null) {
-              this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            }
-            this.studentCount = res['footer'].students_count;
-            if (this.studentCount != null) {
-              this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            }
+            // this.schoolCount = res['footer'].total_schools;
+            // if (this.schoolCount != null) {
+            //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            // }
+            // this.studentCount = res['footer'].students_count;
+            // if (this.studentCount != null) {
+            //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            // }
 
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
@@ -744,14 +744,14 @@ export class SatReportComponent implements OnInit {
             globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
 
             //schoolCount
-            this.schoolCount = res['footer'].total_schools;
-            if (this.schoolCount != null) {
-              this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            }
-            this.studentCount = res['footer'].students_count;
-            if (this.studentCount != null) {
-              this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            }
+            // this.schoolCount = res['footer'].total_schools;
+            // if (this.schoolCount != null) {
+            //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            // }
+            // this.studentCount = res['footer'].students_count;
+            // if (this.studentCount != null) {
+            //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            // }
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
@@ -1156,14 +1156,14 @@ export class SatReportComponent implements OnInit {
       this.changeDetection.markForCheck();
     }
     //schoolCount
-    this.schoolCount = data['footer'].total_schools;
-    if (this.schoolCount != null) {
-      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
-    this.studentCount = data['footer'].students_count;
-    if (this.studentCount != null) {
-      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
+    // this.schoolCount = data['footer'].total_schools;
+    // if (this.schoolCount != null) {
+    //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    // }
+    // this.studentCount = data['footer'].students_count;
+    // if (this.studentCount != null) {
+    //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    // }
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {
