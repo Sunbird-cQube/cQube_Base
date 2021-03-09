@@ -100,13 +100,28 @@ export class UdiseReportComponent implements OnInit {
 
   colorGenData: any = [];
 
+  width = window.innerWidth;
+  onResize(event) {
+    this.width = window.innerWidth;
+    this.commonService.zoomLevel = this.width > 2560 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2560 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.levelWiseFilter();
+  }
+  setZoomLevel(lat, lng, globalMap, zoomLevel) {
+    globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
+  }
+  getMarkerRadius(rad1, rad2, rad3) {
+    let radius = this.width > 2560 ? rad1 : this.width < 2560 && this.width > 1920 ? rad2 : rad3;
+    return radius;
+  }
+
+
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
-    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
     this.commonService.initMap('udisemap', [[this.lat, this.lng]]);
-    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
+    // globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
@@ -159,7 +174,7 @@ export class UdiseReportComponent implements OnInit {
         this.getClusters(data.districtId, data.blockId, data.id);
       }
     } else {
-      this.districtWise();
+      this.onResize(event);
     }
   }
 
@@ -237,7 +252,7 @@ export class UdiseReportComponent implements OnInit {
         this.districtMarkers = this.myDistData['data'];
         // options to set for markers in the map
         let options = {
-          radius: 6,
+          radius: this.getMarkerRadius(10, 8, 5),
           fillOpacity: 1,
           strokeWeight: 0.05,
           mapZoom: this.commonService.zoomLevel,
@@ -245,7 +260,7 @@ export class UdiseReportComponent implements OnInit {
           centerLng: this.lng,
           level: 'district'
         }
-        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+        this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         this.genericFun(this.myDistData, options, this.fileName);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.details.District_Name > b.details.District_Name) ? 1 : ((b.details.District_Name > a.details.District_Name) ? -1 : 0));
@@ -265,7 +280,7 @@ export class UdiseReportComponent implements OnInit {
 
           // options to set for markers in the map
           let options = {
-            radius: 6,
+            radius: this.getMarkerRadius(10, 8, 5),
             fillOpacity: 1,
             strokeWeight: 0.01,
             mapZoom: this.commonService.zoomLevel,
@@ -275,7 +290,7 @@ export class UdiseReportComponent implements OnInit {
           }
 
           this.data.sort((a, b) => (`${a[this.indiceData]}` > `${b[this.indiceData]}`) ? 1 : ((`${b[this.indiceData]}` > `${a[this.indiceData]}`) ? -1 : 0));
-          globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+          this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           this.genericFun(this.myDistData, options, this.fileName);
 
           // sort the districtname alphabetically
@@ -350,7 +365,7 @@ export class UdiseReportComponent implements OnInit {
                 this.setColor = this.commonService.relativeColorGredient(this.blockMarkers[i], this.indiceData, colors);
               }
               var markerIcon = L.circleMarker([this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude], {
-                radius: 4,
+                radius: this.getMarkerRadius(6.5, 5, 4),
                 color: "gray",
                 fillColor: this.setColor,
                 fillOpacity: 1,
@@ -365,8 +380,7 @@ export class UdiseReportComponent implements OnInit {
               this.getDownloadableData(this.blockMarkers[i], options.level);
             }
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
-
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
 
             //schoolCount
             this.schoolCount = res['footer'];
@@ -440,7 +454,7 @@ export class UdiseReportComponent implements OnInit {
                 this.setColor = this.commonService.relativeColorGredient(this.clusterMarkers[i], this.indiceData, colors);
               }
               var markerIcon = L.circleMarker([this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude], {
-                radius: 2,
+                radius: this.getMarkerRadius(2.5, 2.2, 2),
                 color: "gray",
                 fillColor: this.setColor,
                 fillOpacity: 1,
@@ -459,7 +473,7 @@ export class UdiseReportComponent implements OnInit {
             this.schoolCount = res['footer'];
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
 
             this.loaderAndErr();
             this.changeDetection.markForCheck();
@@ -530,7 +544,7 @@ export class UdiseReportComponent implements OnInit {
               }
               var markerIcon = L.circleMarker([this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude], {
                 // renderer: myRenderer,
-                radius: 1,
+                radius: this.getMarkerRadius(1.5, 1.2, 1),
                 color: "gray",
                 fillColor: this.setColor,
                 fillOpacity: 1,
@@ -546,7 +560,7 @@ export class UdiseReportComponent implements OnInit {
             }
             globalMap.doubleClickZoom.enable();
             globalMap.scrollWheelZoom.enable();
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
 
             //schoolCount
             this.schoolCount = res['footer'];
@@ -610,7 +624,7 @@ export class UdiseReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 4.5,
+        radius: this.getMarkerRadius(10, 8, 4.5),
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 1,
@@ -618,7 +632,7 @@ export class UdiseReportComponent implements OnInit {
         centerLng: this.data[0].details.longitude,
         level: 'block'
       }
-      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+      this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
       this.genericFun(res, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.details.Block_Name > b.details.Block_Name) ? 1 : ((b.details.Block_Name > a.details.Block_Name) ? -1 : 0));
@@ -683,7 +697,7 @@ export class UdiseReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 4.5,
+        radius: this.getMarkerRadius(10, 8, 4.5),
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 3,
@@ -691,7 +705,7 @@ export class UdiseReportComponent implements OnInit {
         centerLng: this.data[0].details.longitude,
         level: 'cluster'
       }
-      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+      this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
       this.genericFun(res, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.details.Cluster_Name > b.details.Cluster_Name) ? 1 : ((b.details.Cluster_Name > a.details.Cluster_Name) ? -1 : 0));
@@ -769,7 +783,7 @@ export class UdiseReportComponent implements OnInit {
 
         // options to set for markers in the map
         let options = {
-          radius: 4.5,
+          radius: this.getMarkerRadius(10, 8, 4.5),
           fillOpacity: 1,
           strokeWeight: 0.01,
           mapZoom: this.commonService.zoomLevel + 5,
@@ -777,7 +791,7 @@ export class UdiseReportComponent implements OnInit {
           centerLng: this.data[0].details.longitude,
           level: 'school'
         }
-        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+        this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         this.genericFun(res, options, this.fileName);
       }, err => {
         this.data = [];
@@ -981,7 +995,7 @@ export class UdiseReportComponent implements OnInit {
   }
 
   public indiceData = 'Infrastructure_Score';
-  public level = '';
+  public level = 'district';
   onIndiceSelect(data) {
     this.indiceData = data;
     this.levelWiseFilter()
@@ -1241,5 +1255,6 @@ export class UdiseReportComponent implements OnInit {
     sessionStorage.setItem('health-card-info', JSON.stringify(data));
     this._router.navigate(['/healthCard']);
   }
-
+  public legendColors: any = ["#ff0000", "#f50a00", "#e81700", "#db2400", "#ce3100", "#c13e00", "#b44b00", "#a75800", "#9b6400", "#8e7100", "#817e00", "#748b00", "#679800", "#5aa500", "#4db200", "#40bf00", "#34cb00", "#27d800", "#1ae500", "#00ff00"];
+  public values = ['0-5', '6-10', '11-15', '16-20', '21-25', '26-30', '31-35', '36-40', '41-45', '46-50', '51-55', '56-60', '61-65', '66-70', '71-75', '76-80', '81-85', '86-90', '91-95', '96-100']
 }
