@@ -117,13 +117,14 @@ export class SatReportComponent implements OnInit {
     this.width = window.innerWidth;
     this.heigth = window.innerHeight;
     this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
-    this.changeDetection.detectChanges();
     this.levelWiseFilter();
+    this.changeDetection.detectChanges();
+
   }
   setZoomLevel(lat, lng, globalMap, zoomLevel) {
-    this.changeDetection.detectChanges();
     globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
     globalMap.options.minZoom = this.commonService.zoomLevel;
+    this.changeDetection.detectChanges();
   }
   getMarkerRadius(rad1, rad2, rad3, rad4) {
     let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
@@ -194,7 +195,6 @@ export class SatReportComponent implements OnInit {
         this.getDistricts(params.level);
       }
     } else {
-      this.onResize(event);
       this.getSemesters();
     }
   }
@@ -204,7 +204,7 @@ export class SatReportComponent implements OnInit {
       this.semesters = res['data'];
       if (this.semesters.length > 0)
         this.semester = this.semesters[this.semesters.length - 1].id;
-      this.districtWise();
+      this.onResize(event);
     });
   }
 
@@ -308,6 +308,7 @@ export class SatReportComponent implements OnInit {
     if (this.level == 'school') {
       this.onClusterSelect(this.clusterId);
     }
+    this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
   }
 
   linkClick() {
@@ -316,7 +317,8 @@ export class SatReportComponent implements OnInit {
     this.grade = undefined;
     this.subject = undefined;
     this.subjectHidden = true;
-    this.districtWise();
+    this.level = 'district';
+    this.onResize(event);
   }
 
   // to load all the districts for state data on the map
@@ -369,7 +371,7 @@ export class SatReportComponent implements OnInit {
 
           // options to set for markers in the map
           let options = {
-            radius: this.getMarkerRadius(12, 10, 8, 5),
+            radius: this.getMarkerRadius(14, 10, 8, 5),
             fillOpacity: 1,
             strokeWeight: 0.01,
             mapZoom: this.commonService.zoomLevel,
@@ -500,7 +502,7 @@ export class SatReportComponent implements OnInit {
               } else if (this.grade && this.subject) {
                 color = this.commonService.color(this.blockMarkers[i].Subjects, this.subject);
               }
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].Details.latitude, this.blockMarkers[i].Details.longitude, this.selected == 'absolute' ? color : this.colors[i], this.getMarkerRadius(10, 8, 6, 3.5), 0.01, 1, options.level);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].Details.latitude, this.blockMarkers[i].Details.longitude, this.selected == 'absolute' ? color : this.colors[i], this.getMarkerRadius(12, 8, 6, 3.5), 0.01, 1, options.level);
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.blockMarkers[i], options.level);
             }
@@ -519,9 +521,7 @@ export class SatReportComponent implements OnInit {
             // if (this.studentCount != null) {
             //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
             // }
-
             this.commonService.loaderAndErr(this.data);
-            this.changeDetection.markForCheck();
           }
         }, err => {
           this.data = [];
@@ -646,9 +646,8 @@ export class SatReportComponent implements OnInit {
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
             this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
-
             this.commonService.loaderAndErr(this.data);
-            this.changeDetection.markForCheck();
+
           }
         }, err => {
           this.data = [];
@@ -772,7 +771,6 @@ export class SatReportComponent implements OnInit {
             //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
             // }
             this.commonService.loaderAndErr(this.data);
-            this.changeDetection.markForCheck();
           }
         }, err => {
           this.data = [];
@@ -857,7 +855,7 @@ export class SatReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: this.getMarkerRadius(12, 10, 8, 4),
+        radius: this.getMarkerRadius(14, 10, 8, 4),
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 1,
@@ -958,7 +956,7 @@ export class SatReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: this.getMarkerRadius(12, 10, 7, 3.5),
+        radius: this.getMarkerRadius(14, 10, 7, 3.5),
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 3,
@@ -1066,7 +1064,7 @@ export class SatReportComponent implements OnInit {
 
         // options to set for markers in the map
         let options = {
-          radius: this.getMarkerRadius(12, 10, 8, 3.5),
+          radius: this.getMarkerRadius(14, 10, 8, 3.5),
           fillOpacity: 1,
           strokeWeight: 0.01,
           mapZoom: this.commonService.zoomLevel + 5,
@@ -1172,7 +1170,6 @@ export class SatReportComponent implements OnInit {
         this.getDownloadableData(this.markers[i], options.level);
       }
       this.commonService.loaderAndErr(this.data);
-      this.changeDetection.markForCheck();
     }
     //schoolCount
     // this.schoolCount = data['footer'].total_schools;
