@@ -37,7 +37,7 @@ export class ProgressCircleComponent implements OnInit {
       this.titleFontSize = 50;
     } else {
       this.radius = 250;
-      this.titleFontSize = 90;
+      this.titleFontSize = 100;
     }
     //console.log(this.radius);
   }
