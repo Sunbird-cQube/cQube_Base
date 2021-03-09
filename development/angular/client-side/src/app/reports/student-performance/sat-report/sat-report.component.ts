@@ -112,17 +112,21 @@ export class SatReportComponent implements OnInit {
   }
 
   width = window.innerWidth;
+  heigth = window.innerHeight;
   onResize(event) {
     this.width = window.innerWidth;
-    this.commonService.zoomLevel = this.width > 2560 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2560 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.heigth = window.innerHeight;
+    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
     this.levelWiseFilter();
   }
   setZoomLevel(lat, lng, globalMap, zoomLevel) {
+    this.changeDetection.detectChanges();
     globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
     globalMap.options.minZoom = this.commonService.zoomLevel;
   }
-  getMarkerRadius(rad1, rad2, rad3) {
-    let radius = this.width > 2560 ? rad1 : this.width < 2560 && this.width > 1920 ? rad2 : rad3;
+  getMarkerRadius(rad1, rad2, rad3, rad4) {
+    let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
     return radius;
   }
 
@@ -365,7 +369,7 @@ export class SatReportComponent implements OnInit {
 
           // options to set for markers in the map
           let options = {
-            radius: this.getMarkerRadius(10, 8, 5),
+            radius: this.getMarkerRadius(12, 10, 8, 5),
             fillOpacity: 1,
             strokeWeight: 0.01,
             mapZoom: this.commonService.zoomLevel,
@@ -496,7 +500,7 @@ export class SatReportComponent implements OnInit {
               } else if (this.grade && this.subject) {
                 color = this.commonService.color(this.blockMarkers[i].Subjects, this.subject);
               }
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].Details.latitude, this.blockMarkers[i].Details.longitude, this.selected == 'absolute' ? color : this.colors[i], 3.5, 0.01, 1, options.level);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].Details.latitude, this.blockMarkers[i].Details.longitude, this.selected == 'absolute' ? color : this.colors[i], this.getMarkerRadius(10, 8, 6, 3.5), 0.01, 1, options.level);
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.blockMarkers[i], options.level);
             }
@@ -624,7 +628,7 @@ export class SatReportComponent implements OnInit {
               } else if (this.grade && this.subject) {
                 color = this.commonService.color(this.clusterMarkers[i].Subjects, this.subject);
               }
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].Details.latitude, this.clusterMarkers[i].Details.longitude, this.selected == 'absolute' ? color : this.colors[i], 1, 0.01, 0.5, options.level);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].Details.latitude, this.clusterMarkers[i].Details.longitude, this.selected == 'absolute' ? color : this.colors[i], this.getMarkerRadius(2.5, 2, 1.5, 1), 0.01, 0.5, options.level);
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.clusterMarkers[i], options.level);
             }
@@ -748,7 +752,7 @@ export class SatReportComponent implements OnInit {
               } else if (this.grade && this.subject) {
                 color = this.commonService.color(this.schoolMarkers[i].Subjects, this.subject);
               }
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].Details.latitude, this.schoolMarkers[i].Details.longitude, this.selected == 'absolute' ? color : this.colors[i], 0, 0, 0.3, 'school');
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].Details.latitude, this.schoolMarkers[i].Details.longitude, this.selected == 'absolute' ? color : this.colors[i], this.getMarkerRadius(1.5, 1.2, 1, 0), 0, 0.3, 'school');
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.schoolMarkers[i], options.level);
             }
@@ -853,7 +857,7 @@ export class SatReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: this.getMarkerRadius(10, 8, 4),
+        radius: this.getMarkerRadius(12, 10, 8, 4),
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 1,
@@ -954,7 +958,7 @@ export class SatReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3,
+        radius: this.getMarkerRadius(12, 10, 7, 3.5),
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 3,
@@ -1062,7 +1066,7 @@ export class SatReportComponent implements OnInit {
 
         // options to set for markers in the map
         let options = {
-          radius: 3.5,
+          radius: this.getMarkerRadius(12, 10, 8, 3.5),
           fillOpacity: 1,
           strokeWeight: 0.01,
           mapZoom: this.commonService.zoomLevel + 5,
