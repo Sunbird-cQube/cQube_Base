@@ -10,8 +10,9 @@
                         (click)="fetchTelemetry($event,'imr')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="imrTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="imrTooltip"></app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #ab29b4;">
@@ -44,8 +45,10 @@
                         (click)="fetchTelemetry($event,'cr')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="crTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="crTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #ab29b4;">
@@ -78,8 +81,10 @@
                         (click)="fetchTelemetry($event,'udise')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="udiseTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="udiseTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #ab29b4;">
@@ -117,8 +122,9 @@
                         (click)="fetchTelemetry($event,'composite')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="compositeTooltip"
-                                    style="position: absolute; right:10px; top:0px"></app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="compositeTooltip"></app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: rgb(194, 134, 84);">
@@ -158,8 +164,10 @@
                         (click)="fetchTelemetry($event,'dcc')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="dccTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="dccTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #5700f3;">
@@ -192,8 +200,10 @@
                         (click)="fetchTelemetry($event,'dtr')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="dtrTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="dtrTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #5700f3;">
@@ -230,8 +240,10 @@
                         (click)="fetchTelemetry($event,'tpd-enroll')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="tpdcpTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="tpdcpTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #5700f3;">
@@ -264,8 +276,10 @@
                         (click)="fetchTelemetry($event,'tpd-comp')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="tpdtpTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="tpdtpTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #5700f3;">
@@ -305,8 +319,10 @@
                         (click)="fetchTelemetry($event,'tpd-cp')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="tpdcpTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="tpdcpTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #5700f3;">
@@ -339,8 +355,10 @@
                         (click)="fetchTelemetry($event,'tdp-tp')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="tpdtpTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="tpdtpTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #5700f3;">
@@ -378,8 +396,10 @@
                         (click)="fetchTelemetry($event,'crcr')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="crcrTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="crcrTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #f23740;">
@@ -417,9 +437,10 @@
                         (click)="fetchTelemetry($event,'healthCard')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="healthCardTooltip"
-                                    style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="healthCardTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #32ac2e;">
@@ -461,8 +482,10 @@
                         (click)="fetchTelemetry($event,'dsc')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="dscTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="dscTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #ecbc9c;">
@@ -495,8 +518,10 @@
                         (click)="fetchTelemetry($event,'ut')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="utTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="utTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #ecbc9c;">
@@ -529,8 +554,10 @@
                         (click)="fetchTelemetry($event,'utc')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="utcTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="utcTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #ecbc9c;">
@@ -571,8 +598,10 @@
                         (click)="fetchTelemetry($event,'ut')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="utTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="utTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #ecbc9c;">
@@ -606,8 +635,10 @@
                         (click)="fetchTelemetry($event,'utc')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="utcTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="utcTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #ecbc9c;">
@@ -650,9 +681,10 @@
                             (click)="fetchTelemetry($event,'sat')">
                             <div class="card-body ">
                                 <div class="row">
-                                    <app-info [tooltipText]="satTooltip"
-                                        style="position: absolute; right:10px; top:0px">
-                                    </app-info>
+                                    <div id="tooltip">
+                                        <app-info [tooltipText]="satTooltip">
+                                        </app-info>
+                                    </div>
                                     <div class="col-3 col-md-2">
                                         <div class="icon-big text-center icon-warning">
                                             <div class="iconDiv" style="background-color: #008b77;">
@@ -686,8 +718,9 @@
                             (click)="fetchTelemetry($event,'satHeatChart')">
                             <div class="card-body ">
                                 <div class="row">
-                                    <app-info [tooltipText]="satHeatChartTooltip"
-                                        style="position: absolute; right:10px; top:0px"></app-info>
+                                    <div id="tooltip">
+                                        <app-info [tooltipText]="satHeatChartTooltip"></app-info>
+                                    </div>
                                     <div class="col-3 col-md-2">
                                         <div class="icon-big text-center icon-warning">
                                             <div class="iconDiv" style="background-color: #008b77;">
@@ -726,9 +759,10 @@
                                 (click)="fetchTelemetry($event,'sr')">
                                 <div class="card-body ">
                                     <div class="row">
-                                        <app-info [tooltipText]="srTooltip"
-                                            style="position: absolute; right:10px; top:0px">
-                                        </app-info>
+                                        <div id="tooltip">
+                                            <app-info [tooltipText]="srTooltip">
+                                            </app-info>
+                                        </div>
                                         <div class="col-3 col-md-2">
                                             <div class="icon-big text-center icon-warning">
                                                 <div class="iconDiv" style="background-color: #008b77;">
@@ -763,9 +797,10 @@
                                 (click)="fetchTelemetry($event,'pat')">
                                 <div class="card-body ">
                                     <div class="row">
-                                        <app-info [tooltipText]="patTooltip"
-                                            style="position: absolute; right:10px; top:0px">
-                                        </app-info>
+                                        <div id="tooltip">
+                                            <app-info [tooltipText]="patTooltip">
+                                            </app-info>
+                                        </div>
                                         <div class="col-3 col-md-2">
                                             <div class="icon-big text-center icon-warning">
                                                 <div class="iconDiv" style="background-color: #008b77;">
@@ -800,8 +835,9 @@
                                 (click)="fetchTelemetry($event,'heatChart')">
                                 <div class="card-body ">
                                     <div class="row">
-                                        <app-info [tooltipText]="heatChartTooltip"
-                                            style="position: absolute; right:10px; top:0px"></app-info>
+                                        <div id="tooltip">
+                                            <app-info [tooltipText]="heatChartTooltip"></app-info>
+                                        </div>
                                         <div class="col-3 col-md-2">
                                             <div class="icon-big text-center icon-warning">
                                                 <div class="iconDiv" style="background-color: #008b77;">
@@ -835,8 +871,9 @@
                                 (click)="fetchTelemetry($event,'lotable')">
                                 <div class="card-body ">
                                     <div class="row">
-                                        <app-info [tooltipText]="lotableTooltip"
-                                            style="position: absolute; right:10px; top:0px"></app-info>
+                                        <div id="tooltip">
+                                            <app-info [tooltipText]="lotableTooltip"></app-info>
+                                        </div>
                                         <div class="col-3 col-md-2">
                                             <div class="icon-big text-center icon-warning">
                                                 <div class="iconDiv" style="background-color: #008b77;">
@@ -876,9 +913,10 @@
                                 (click)="fetchTelemetry($event,'pat')">
                                 <div class="card-body ">
                                     <div class="row">
-                                        <app-info [tooltipText]="patTooltip"
-                                            style="position: absolute; right:10px; top:0px">
-                                        </app-info>
+                                        <div id="tooltip">
+                                            <app-info [tooltipText]="patTooltip">
+                                            </app-info>
+                                        </div>
                                         <div class="col-3 col-md-2">
                                             <div class="icon-big text-center icon-warning">
                                                 <div class="iconDiv" style="background-color: #008b77;">
@@ -913,8 +951,9 @@
                                 (click)="fetchTelemetry($event,'heatChart')">
                                 <div class="card-body ">
                                     <div class="row">
-                                        <app-info [tooltipText]="heatChartTooltip"
-                                            style="position: absolute; right:10px; top:0px"></app-info>
+                                        <div id="tooltip">
+                                            <app-info [tooltipText]="heatChartTooltip"></app-info>
+                                        </div>
                                         <div class="col-3 col-md-2">
                                             <div class="icon-big text-center icon-warning">
                                                 <div class="iconDiv" style="background-color: #008b77;">
@@ -948,8 +987,9 @@
                                 (click)="fetchTelemetry($event,'lotable')">
                                 <div class="card-body ">
                                     <div class="row">
-                                        <app-info [tooltipText]="lotableTooltip"
-                                            style="position: absolute; right:10px; top:0px"></app-info>
+                                        <div id="tooltip">
+                                            <app-info [tooltipText]="lotableTooltip"></app-info>
+                                        </div>
                                         <div class="col-3 col-md-2">
                                             <div class="icon-big text-center icon-warning">
                                                 <div class="iconDiv" style="background-color: #008b77;">
@@ -991,8 +1031,10 @@
                         (click)="fetchTelemetry($event,'SemExp')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="semExpTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="semExpTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #0093d0;">
@@ -1026,9 +1068,10 @@
                         (click)="fetchTelemetry($event,'patExcpt')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="patExcptTooltip"
-                                    style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="patExcptTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #0093d0;">
@@ -1063,8 +1106,10 @@
                         (click)="fetchTelemetry($event,'isdata')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="isdataTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="isdataTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #0093d0;">
@@ -1098,13 +1143,14 @@
                 <div class="col-lg-6 col-md-6  col-sm-6">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);;"
                         id="sarExcpt"
-                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/student-attendance-exception']"
+                        [routerLink]="!nifi_attendance ? ['/coming-soon'] :['/exception/student-attendance-exception']"
                         (click)="fetchTelemetry($event,'sarExcpt')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="sarExcptTooltip"
-                                    style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="sarExcptTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #0093d0;">
@@ -1134,12 +1180,14 @@
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #26B1ED 0%, #54E7FF 100%);"
                         id="tarExp"
-                        [routerLink]="!nifi_semester ? ['/coming-soon'] :['/exception/teacher-attendance-exception']"
+                        [routerLink]="!nifi_attendance ? ['/coming-soon'] :['/exception/teacher-attendance-exception']"
                         (click)="fetchTelemetry($event,'tarExp')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="tarExpTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="tarExpTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #0093d0;">
@@ -1179,8 +1227,10 @@
                         (click)="fetchTelemetry($event,'sar')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="sarTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="sarTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #eb7637;">
@@ -1213,8 +1263,10 @@
                         (click)="fetchTelemetry($event,'tar')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="tarTooltip" style="position: absolute; right:10px; top:0px">
-                                </app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="tarTooltip">
+                                    </app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #eb7637;">
@@ -1252,8 +1304,9 @@
                         (click)="fetchTelemetry($event,'telemData')">
                         <div class="card-body ">
                             <div class="row">
-                                <app-info [tooltipText]="telemDataTooltip"
-                                    style="position: absolute; right:10px; top:0px"></app-info>
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="telemDataTooltip"></app-info>
+                                </div>
                                 <div class="col-3 col-md-2">
                                     <div class="icon-big text-center icon-warning">
                                         <div class="iconDiv" style="background-color: #6341af;">

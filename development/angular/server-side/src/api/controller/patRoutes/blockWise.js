@@ -38,7 +38,8 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         blockData = await s3File.readS3File(fileName);
         var mydata = blockData.data;
         logger.info('--- blocks PAT api response sent---');
-        res.status(200).send({ data: mydata, footer: blockData.AllBlocksFooter });
+        // , footer: blockData.AllBlocksFooter
+        res.status(200).send({ data: mydata });
 
     } catch (e) {
         logger.error(`Error :: ${e}`);
@@ -71,7 +72,8 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         })
         let mydata = filterData;
         logger.info('--- block per dist PAT api response sent---');
-        res.status(200).send({ data: mydata, footer: blockData.footer[`${distId}`] });
+        // , footer: blockData.footer[`${distId}`]
+        res.status(200).send({ data: mydata });
 
     } catch (e) {
         logger.error(e);
