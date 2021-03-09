@@ -72,7 +72,7 @@ export class SatReportComponent implements OnInit {
   public myBlockData: any = [];
   public myClusterData: any = [];
   public mySchoolData: any = [];
-  public level;
+  public level = 'district';
 
   allGrades = [];
   allSubjects = [];
@@ -111,14 +111,27 @@ export class SatReportComponent implements OnInit {
     this.levelWiseFilter();
   }
 
+  width = window.innerWidth;
+  onResize(event) {
+    this.width = window.innerWidth;
+    this.commonService.zoomLevel = this.width > 2560 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2560 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.levelWiseFilter();
+  }
+  setZoomLevel(lat, lng, globalMap, zoomLevel) {
+    globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
+  }
+  getMarkerRadius(rad1, rad2, rad3) {
+    let radius = this.width > 2560 ? rad1 : this.width < 2560 && this.width > 1920 ? rad2 : rad3;
+    return radius;
+  }
+
   ngOnInit() {
     this.period = 'all';
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
-    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
     this.commonService.initMap('satMap', [[this.lat, this.lng]]);
-    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
@@ -176,6 +189,7 @@ export class SatReportComponent implements OnInit {
         this.getDistricts(params.level);
       }
     } else {
+      this.onResize(event);
       this.getSemesters();
     }
   }
@@ -197,7 +211,7 @@ export class SatReportComponent implements OnInit {
     this.service.semMetaData({ period: this.period }).subscribe(res => {
       this.semesters = res['data'];
       this.semester = this.semesters[this.semesters.length - 1].id;
-      
+
       this.service.PATDistWiseData({ grade: this.grade, period: this.period, report: "sat", sem: this.semester }).subscribe(res => {
         this.data = res['data'];
         this.districtMarkers = this.data;
@@ -210,7 +224,7 @@ export class SatReportComponent implements OnInit {
         } else {
           this.getBlocks(level, this.districtId, this.blockId);
         }
-      });  
+      });
     });
   }
 
@@ -350,7 +364,7 @@ export class SatReportComponent implements OnInit {
 
           // options to set for markers in the map
           let options = {
-            radius: 5,
+            radius: this.getMarkerRadius(10, 8, 5),
             fillOpacity: 1,
             strokeWeight: 0.01,
             mapZoom: this.commonService.zoomLevel,
@@ -361,7 +375,7 @@ export class SatReportComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-          globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+          this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           this.genericFun(this.myDistData, options, this.fileName);
 
           // sort the districtname alphabetically
@@ -488,7 +502,7 @@ export class SatReportComponent implements OnInit {
 
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
 
 
             //schoolCount
@@ -626,7 +640,7 @@ export class SatReportComponent implements OnInit {
 
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
 
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
@@ -741,7 +755,7 @@ export class SatReportComponent implements OnInit {
             globalMap.doubleClickZoom.enable();
             globalMap.scrollWheelZoom.enable();
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
 
             //schoolCount
             // this.schoolCount = res['footer'].total_schools;
@@ -838,7 +852,7 @@ export class SatReportComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3.5,
+        radius: this.getMarkerRadius(10, 8, 4),
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 1,
@@ -852,7 +866,7 @@ export class SatReportComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+      this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
       this.genericFun(res, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.Details.block_name > b.Details.block_name) ? 1 : ((b.Details.block_name > a.Details.block_name) ? -1 : 0));
@@ -949,7 +963,7 @@ export class SatReportComponent implements OnInit {
       }
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+      this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
       this.genericFun(res, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.Details.cluster_name > b.Details.cluster_name) ? 1 : ((b.Details.cluster_name > a.Details.cluster_name) ? -1 : 0));
@@ -1061,7 +1075,7 @@ export class SatReportComponent implements OnInit {
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+        this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         this.genericFun(res, options, this.fileName);
       }, err => {
         this.data = [];
@@ -1423,4 +1437,8 @@ export class SatReportComponent implements OnInit {
     sessionStorage.setItem('health-card-info', JSON.stringify(data));
     this._router.navigate(['/healthCard']);
   }
+
+
+  public legendColors: any = ["#ff0000", "#f50a00", "#e81700", "#db2400", "#ce3100", "#c13e00", "#b44b00", "#a75800", "#9b6400", "#8e7100", "#817e00", "#748b00", "#679800", "#5aa500", "#4db200", "#40bf00", "#34cb00", "#27d800", "#1ae500", "#00ff00"];
+  public values = ['0-5', '6-10', '11-15', '16-20', '21-25', '26-30', '31-35', '36-40', '41-45', '46-50', '51-55', '56-60', '61-65', '66-70', '71-75', '76-80', '81-85', '86-90', '91-95', '96-100']
 }
