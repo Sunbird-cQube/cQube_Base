@@ -25,6 +25,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { BubblesComponent } from './reports/healthCard/bubbles/bubbles.component';
 import { ProgressCircleComponent } from './reports/healthCard/progress-circle/progress-circle.component';
+import { MapLegendsComponent } from './common/map-legends/map-legends.component';
 
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
@@ -41,7 +42,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     DikshaChartComponent,
     HealthCardComponent,
     BubblesComponent,
-    ProgressCircleComponent
+    ProgressCircleComponent,
+    MapLegendsComponent
   ],
   imports: [
     BrowserModule,
