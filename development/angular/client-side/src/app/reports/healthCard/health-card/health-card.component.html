@@ -163,15 +163,14 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="autocomplete" style="width:100%;">
-                            <span id="warning" class="form-label"> Please enter at
+                            <label id="warning" class="form-label"> Please enter at
                                 least 2
-                                characters/digits</span>
-                            <p style="line-height: 1em; float: left;">&nbsp;</p>
+                                characters/digits</label>
+                            <label class="form-label" for="" *ngIf="len >= 2">&nbsp;</label>
+                            <!-- <p style="line-height: 1em; float: left;">&nbsp;</p> -->
                             <input #searchInput id="myInput" class="input-control full-width"
                                 type="search" class="clearable" autocomplete="off" name="districtName"
                                 [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
-                            <br *ngIf="len < 2">
-                            <br *ngIf="len >= 2" />
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-3 col-sm-12">
@@ -241,7 +240,7 @@
                                 <div class="mar-lef-35" style="margin-left: 15px;">
                                     <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Attendance
                                     </strong>
-                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                    <div class="progress-circle-container" style="font-weight: bold; ">
                                         <app-progress-circle
                                             [value]="healthCardData['student_attendance']['attendance']"
                                             [color]="stdAttendanceColor"></app-progress-circle>
@@ -398,7 +397,7 @@
                                 <div class="mar-lef-35" style="margin-left: 15px;">
                                     <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;"> Performance
                                     </strong>
-                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                    <div class="progress-circle-container" style="font-weight: bold; ">
                                         <app-progress-circle [value]="healthCardData['student_semester']['performance']"
                                             [color]="semColor"></app-progress-circle>
                                     </div>
@@ -536,7 +535,7 @@
                                 <div class="mar-lef-35" style="margin-left: 15px;">
                                     <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Performance
                                     </strong>
-                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                    <div class="progress-circle-container" style="font-weight: bold; ">
                                         <app-progress-circle
                                             [value]=" level == 'state' ? healthCardData['pat_performance']['school_performance'] : healthCardData['pat_performance'][level+'_performance']"
                                             [color]="patColor"></app-progress-circle>
@@ -691,7 +690,7 @@
                                     <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Infrastructure
                                         Score
                                     </strong>
-                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                    <div class="progress-circle-container" style="font-weight: bold; ">
                                         <app-progress-circle
                                             [value]="healthCardData['school_infrastructure']['infra_score']"
                                             [color]="infraColor"></app-progress-circle>
@@ -827,7 +826,7 @@
                                     <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Infrastructure
                                         Score
                                     </strong>
-                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                    <div class="progress-circle-container" style="font-weight: bold; ">
                                         <app-progress-circle [value]="healthCardData['udise']['infrastructure_score']"
                                             [color]="udiseColor"></app-progress-circle>
                                     </div>
@@ -955,11 +954,11 @@
                             </div>
                         </div>
                         <div class="row" *ngIf="healthCardData['crc_visit']">
-                            <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="level != 'state'">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="mar-lef-35" style="margin-left: 15px;">
                                     <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">No Visit Score
                                     </strong>
-                                    <div style="height: 80px; width: 80px ;font-weight: bold; ">
+                                    <div class="progress-circle-container" style="font-weight: bold; ">
                                         <app-progress-circle [value]="healthCardData['crc_visit']['schools_0']"
                                             [color]="crcColor"></app-progress-circle>
                                     </div>
@@ -968,16 +967,15 @@
                         </div>
                         <div class="row" *ngIf="healthCardData['crc_visit']">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                <strong class="metric-name" *ngIf="level != 'state'"
-                                    style="margin-left: 15px; font-size: 15px;line-height: 2em;">Schools
+                                <strong class="metric-name mar-lef-35" style="margin-left: 15px; font-size: 15px;line-height: 2em;">Schools
                                     Visit
                                     Category</strong>
-                                <strong class="metric-name mar-lef-35" *ngIf="level == 'state'"
+                                <!-- <strong class="metric-name mar-lef-35" *ngIf="level == 'state'"
                                     style="margin-left: 15px; font-size: 15px;line-height: 2em;">CRC
-                                    Details</strong>
+                                    Details</strong> -->
                                 <table class="mar-lef-35 metric-values-table" style="margin-left: 15px;">
                                     <thead>
-                                        <tr class="header-row" *ngIf="level != 'state' && level !='school'"
+                                        <tr class="header-row" *ngIf="level !='school'"
                                             style="font-weight: bold; color: gray;font-size: 14px;">
                                             <td>Schools Visited</td>
                                             <td></td>
@@ -990,7 +988,6 @@
                                             <td *ngIf="level !='school'"> <span>{{crcVisitKeys[i]}}</span></td>
                                             <td *ngIf="level !='school'">:</td>
                                             <td *ngIf="level !='school'"> <span>{{healthCardData['crc_visit'][crc]}}
-                                                    <span *ngIf="level != 'state'">%</span>
                                                 </span></td>
                                         </tr>
                                     </thead>

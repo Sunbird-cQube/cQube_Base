@@ -695,7 +695,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.val = document.getElementById('myInput')['value'];
     this.len = this.val.length;
     this.showAll = false;
-    document.getElementById('warning').style.display = 'block';
+    document.getElementById('warning').style.display = 'inline-block';
     if (this.value.match(/^\d/)) {
       if (this.value.toString().length > 1) {
         document.getElementById('warning').style.display = 'none';
@@ -721,7 +721,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.allData = [];
     this.ids = [];
     this.names = [];
-    document.getElementById('warning').style.display = 'block';
+    document.getElementById('warning').style.display = 'inline-block';
     this.showAll = false;
     document.getElementById('myInput')['disabled'] = false;
     if (!callSubmit)
