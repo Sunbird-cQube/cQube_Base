@@ -92,7 +92,7 @@ export class AppServiceComponent {
                 token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
                 id: 'mapbox.streets',
                 subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                minZoom: this.mapCenterLatlng.zoomLevel,
+                // minZoom: this.mapCenterLatlng.zoomLevel,
                 maxZoom: this.mapCenterLatlng.zoomLevel + 10,
             }
         ).addTo(globalMap);
@@ -100,8 +100,8 @@ export class AppServiceComponent {
 
     restrictZoom(globalMap) {
         globalMap.touchZoom.disable();
-        globalMap.doubleClickZoom.disable();
-        globalMap.scrollWheelZoom.disable();
+        // globalMap.doubleClickZoom.disable();
+        // globalMap.scrollWheelZoom.disable();
         globalMap.boxZoom.disable();
         globalMap.keyboard.disable();
     }

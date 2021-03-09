@@ -109,6 +109,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   }
   setZoomLevel(lat, lng, globalMap, zoomLevel) {
     globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
+    globalMap.options.minZoom = this.commonService.zoomLevel;
   }
   getMarkerRadius(rad1, rad2, rad3, rad4) {
     let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
