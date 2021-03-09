@@ -39,6 +39,13 @@ table {
   }
 }
 
+@media screen and (min-width: 3820px) {
+  .leaflet-popup-content{
+    min-width: 580px !important;
+    font-size: 26px;
+  }
+}
+
 
 /* Absolute Center Spinner */
 .loading {
@@ -69,21 +76,6 @@ table {
   background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
 }
 
-@media screen and (min-width: 2560px){
-  .loading:before {
-    content: '';
-    display: block;
-    position: fixed;
-    margin-top: 65px;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-      background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
-  
-    background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
-  }
-}
 
 @media screen and (min-width: 1920px){
   .loading:before {
@@ -100,6 +92,23 @@ table {
     background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
   }
 }
+
+@media screen and (min-width: 2560px){
+  .loading:before {
+    content: '';
+    display: block;
+    position: fixed;
+    margin-top: 65px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+      background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+  
+    background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+  }
+}
+
 
 /* :not(:required) hides these rules from IE9 and below */
 .loading:not(:required) {
