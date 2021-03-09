@@ -43,7 +43,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     HealthCardComponent,
     BubblesComponent,
     ProgressCircleComponent,
-    MapLegendsComponent
+    MapLegendsComponent,
   ],
   imports: [
     BrowserModule,
