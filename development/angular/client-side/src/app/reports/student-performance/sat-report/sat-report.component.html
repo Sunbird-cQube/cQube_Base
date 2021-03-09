@@ -1,5 +1,5 @@
 <div class="container-fluid" style="padding-top:15px !important;">
-    <div class="row">
+    <div class="row" (window:resize)="onResize($event)">
         <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist">
@@ -66,7 +66,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12" style="margin-bottom: 10px;">
+        <div class="col-sm-12" style="padding-bottom: 10px !important">
             <select id="period" [(ngModel)]="period" (change)="onPeriodSelect()">
                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
                 <option *ngFor="let period of timeRange,  let i =index" style="width: 100px;" [(ngValue)]="period.key">
@@ -121,7 +121,7 @@
                     {{cluster.Details.cluster_name}}
                 </option>
             </select>
-            <a class="float-right" href="javascript: void(0)" id="patHealthcard" (click)="goToHealthCard()"
+            <a class="float-right" href="javascript: void(0)" id="satHealthcard" (click)="goToHealthCard()"
                 style="font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Access Health
                 Card</a>
         </div>
@@ -129,7 +129,7 @@
     <div class="row">
         <div class="col-sm-10">
             <div #mapContainer id="satMap" class="active" style="width: 100%;"
-                [ngStyle]="{height: heigth > 1760 ? '85vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '76vh':'70vh'}">
+                [ngStyle]="{height: heigth > 1760 ? '84.5vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '75vh':'69vh'}">
             </div>
         </div>
         <div class="col-sm-2">
@@ -144,8 +144,7 @@
             </div>
         </div>
     </div>
-    <div class="row"
-        style="width:100%; background-color: rgb(152, 160, 163);font-size: 13px;font-weight: bold; color: white; margin: 0px 0px 0px 0px; padding: 2px 0px 2px 0px;position: fixed; bottom: 0; left: 0;z-index: 999;">
+    <div class="row" id="footer">
         <div class="col-sm-3">
             <div id="outer">
                 <div id="absolute" (click)="getColor('absolute')"
