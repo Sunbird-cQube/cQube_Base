@@ -1,178 +1,185 @@
 * {
-    box-sizing: border-box;
-  }
-  
-  body {
-    font: 16px Arial;  
-  }
-  
-  /*the container must be positioned relative:*/
-  .autocomplete {
-    position: relative;
-    display: inline-block;
-  }
-  
-  input {
-    border: 1px solid transparent;
-    border-radius: 5px;
-    background-color: #f1f1f1;
-    padding: 4px;
-    font-size: 16px;
-  }
-  
-  input[type=search] {
-    background-color: #f1f1f1;
-    width: 100%;
-  }
-  
-  input[type=submit] {
-    background-color: DodgerBlue;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  .autocomplete-items {
-    position: absolute;
-    border: 1px solid #d4d4d4;
-    border-bottom: none;
-    border-top: none;
-    z-index: 99;
-    /*position the autocomplete items to be the same width as the container:*/
-    top: 100%;
-    left: 0;
-    right: 0;
-  }
-  
-  .autocomplete-items div {
-    padding: 10px;
-    cursor: pointer;
-    background-color: #fff; 
-    border-bottom: 1px solid #d4d4d4; 
-  }
-  
-  /*when hovering an item:*/
-  .autocomplete-items div:hover {
-    background-color: #e9e9e9; 
-  }
-  
-  /*when navigating through the items using the arrow keys:*/
-  .autocomplete-active {
-    background-color: DodgerBlue !important; 
-    color: #ffffff; 
-  }
-
-  .link{
-   position: absolute;  bottom: 0px; left: 40px;color: white; height: 20px auto; font-weight: bold;
-   text-decoration: underline;
-   transition: transform .5s;
-  }
-
-  .link:hover {
-    -ms-transform: scale(1.02);
-    -webkit-transform: scale(1.02);
-    transform: scale(1.02); 
-  }
-
-  p a{
-    text-decoration: underline;
-  }
-
-  .col-sm-8{
-    margin-left: -4px;
-  }
-
-  
-  .healthcard-tooltip {
-    position: absolute;
-    left: 10px;
-    top: -3px;
-  }
-
-  .healthcard-tooltip.show .healthcard-tooltip-btn {
-    background: transparent;
-  }
-
-  .healthcard-tooltip-btn {
-    padding: 0;
-    border: none;
-  }
-
-  .healthcard-tooltip-btn:hover, .healthcard-tooltip-btn:active {
-    background-color: transparent !important;
-  }
-
-  .healthcard-tooltip-btn:focus {
-    box-shadow: none !important;
-  }
-
-  .healthcard-tooltip-btn::after {
-    display: none;
-  }
-
-  .healthcard-tooltip-dropdown {
-    /* width: 300px !important; */
-    padding-left: 10px;
-    font-size: 13px;
-    margin-left: -10px;
-  }
-  
-  /* This bridges the gap so you can mouse into the tooltip without it disappearing */
-   .healthcard-tooltip-dropdown:before {
-    top: 20px;
-    content: " ";
-    display: block;
-    height: 20px;
-    left: 0;
-    position: absolute;
-    /* width: 100%; */
-  }  
-  
-  /* CSS Triangles - see Trevor's post */
-   .healthcard-tooltip-dropdown:after {
-    border-left: solid transparent 10px;
-    border-right: solid transparent 10px;
-    border-bottom: solid white 10px;
-    top: -10px;
-    content: " ";
-    height: 0;
-    left: 9.5%;
-    margin-left: -23px;
-    position: absolute;
-    width: 0;
-  }
-  /* IE can just show/hide with no transition */
-  .lte8 .wrapper .tooltip {
-    display: none;
-  }
-  
-  .lte8 .wrapper:hover .tooltip {
-    display: block;
-  }
-
-  .headings{
-    font-weight: bold;
-    float: left; 
-    margin-left: 15px;
-  }
-
-  .col-lg-1 button{
-    width: 100% auto;
-  } 
-  .col-md-2 button {
-    width: 100% auto;
-  }
-  .col-sm-12 button{
-    width: 100%;
-  }
-
-  input:focus, textarea:focus, select:focus{
-    outline: none;
+  box-sizing: border-box;
 }
 
-.card{
-  box-shadow: 12px 10px 6px 0 rgba(232, 236, 252, 0.05),5px 4px 8px 0 rgba(140, 168, 243, 0.2);
+body {
+  font: 16px Arial;
+}
+
+/*the container must be positioned relative:*/
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+input {
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  padding: 4px;
+  font-size: 16px;
+}
+
+input[type="search"] {
+  background-color: #f1f1f1;
+  width: 100%;
+}
+
+input[type="submit"] {
+  background-color: DodgerBlue;
+  color: #fff;
+  cursor: pointer;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #e9e9e9;
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}
+
+.link {
+  position: absolute;
+  bottom: 0px;
+  left: 40px;
+  color: white;
+  height: 20px auto;
+  font-weight: bold;
+  text-decoration: underline;
+  transition: transform 0.5s;
+}
+
+.link:hover {
+  -ms-transform: scale(1.02);
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
+}
+
+p a {
+  text-decoration: underline;
+}
+
+.col-sm-8 {
+  margin-left: -4px;
+}
+
+.healthcard-tooltip {
+  position: absolute;
+  left: 10px;
+  top: -3px;
+}
+
+.healthcard-tooltip.show .healthcard-tooltip-btn {
+  background: transparent;
+}
+
+.healthcard-tooltip-btn {
+  padding: 0;
+  border: none;
+}
+
+.healthcard-tooltip-btn:hover,
+.healthcard-tooltip-btn:active {
+  background-color: transparent !important;
+}
+
+.healthcard-tooltip-btn:focus {
+  box-shadow: none !important;
+}
+
+.healthcard-tooltip-btn::after {
+  display: none;
+}
+
+.healthcard-tooltip-dropdown {
+  /* width: 300px !important; */
+  padding-left: 10px;
+  font-size: 13px;
+  margin-left: -10px;
+}
+
+/* This bridges the gap so you can mouse into the tooltip without it disappearing */
+.healthcard-tooltip-dropdown:before {
+  top: 20px;
+  content: " ";
+  display: block;
+  height: 20px;
+  left: 0;
+  position: absolute;
+  /* width: 100%; */
+}
+
+/* CSS Triangles - see Trevor's post */
+.healthcard-tooltip-dropdown:after {
+  border-left: solid transparent 10px;
+  border-right: solid transparent 10px;
+  border-bottom: solid white 10px;
+  top: -10px;
+  content: " ";
+  height: 0;
+  left: 9.5%;
+  margin-left: -23px;
+  position: absolute;
+  width: 0;
+}
+/* IE can just show/hide with no transition */
+.lte8 .wrapper .tooltip {
+  display: none;
+}
+
+.lte8 .wrapper:hover .tooltip {
+  display: block;
+}
+
+.headings {
+  font-weight: bold;
+  float: left;
+  margin-left: 15px;
+}
+
+.col-lg-1 button {
+  width: 100% auto;
+}
+.col-md-2 button {
+  width: 100% auto;
+}
+.col-sm-12 button {
+  width: 100%;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+.card {
+  box-shadow: 12px 10px 6px 0 rgba(232, 236, 252, 0.05), 5px 4px 8px 0 rgba(140, 168, 243, 0.2);
   border-radius: 10px;
-  min-height: 300px; 
+  min-height: 300px;
   padding: 10px;
   background-color: #fff;
 }
@@ -181,26 +188,26 @@
   box-shadow: 0 6px 20px 0 rgba(66, 209, 238, 0.2),0 4px 8px 0 rgba(241, 248, 250, 0.2);
 } */
 
-.notFound{
+.notFound {
   margin-top: 90px;
-  color: red; 
-  font-weight: bold; 
-  font-size: 15px; 
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
   text-align: center;
 }
 
 .container-fluid {
-  font-family: "Inv Maison Neue","Maison Neue",-apple-system,BlinkMacSystemFont,"Open Sans",open-sans,sans-serif;
+  font-family: "Inv Maison Neue", "Maison Neue", -apple-system, BlinkMacSystemFont, "Open Sans", open-sans, sans-serif;
 }
 
-.details{
-  font-size: 13px; 
+.details {
+  font-size: 13px;
   line-height: 1.85em;
 }
 
 .regional-detail-card {
   min-height: 100px;
-  max-height:fit-content;
+  max-height: fit-content;
   background-color: #3100cc;
   margin-top: 10px;
   border-radius: 20px;
@@ -211,32 +218,50 @@
   padding: 10px 0px 10px 40px;
 }
 
-.select-control, .input-control, #myInput {
-  padding: 6.3px !important; margin: 5px 15px 0px 0px !important;  color: black !important; border-radius: 4px !important; font-size: 12px !important; font-weight: bold !important; background-color: #f5f6fb !important;
+.select-control,
+.input-control,
+#myInput {
+  padding: 6.3px !important;
+  margin: 5px 15px 0px 0px !important;
+  color: black !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
+  background-color: #f5f6fb !important;
 }
 
 #myInput {
   padding: 5px !important;
 }
 
-.select-control.full-width, .input-control.full-width, #myInput.full-width {
+.select-control.full-width,
+.input-control.full-width,
+#myInput.full-width {
   width: 100% !important;
 }
 
 .select-control option {
-  font-size: 0.7rem !important;
+  font-size: 0.9rem !important;
 }
 
-.input-control, #myInput {
+.input-control,
+#myInput {
   border: 1px solid gray !important;
 }
 
 .form-label {
-  font-size: 13px; font-weight: bold;line-height: 1em;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1em;
 }
 
 .submit-btn {
-  float: right;padding: 5.7px 0px 5.7px 0px !important; font-size: 12px !important; width: 100%; text-align: center; font-weight: bold;
+  float: right;
+  padding: 5.7px 0px 5.7px 0px !important;
+  font-size: 12px !important;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
 }
 
 .progress-circle-container {
@@ -247,20 +272,22 @@
 @media only screen and (min-width: 2560px) {
   .regional-detail-card {
     min-height: 100px;
-    max-height:fit-content;
+    max-height: fit-content;
     background-color: #3100cc;
     margin-top: 10px;
     border-radius: 10px;
     color: white;
   }
-  
+
   .regional-detail-card .regional-details-container {
     padding: 30px 0px 30px 100px;
     font-size: 2rem;
     line-height: 2.5rem;
   }
 
-  .select-control, .input-control, #myInput {
+  .select-control,
+  .input-control,
+  #myInput {
     padding: 10px !important;
     margin: 10px 15px 10px 0px !important;
     font-size: 1rem !important;
@@ -304,11 +331,13 @@
     font-size: 1.5rem !important;
   }
 
-  .metric-values-table, .metric-list-values {
+  .metric-values-table,
+  .metric-list-values {
     font-size: 1.2rem !important;
   }
 
-  .metric-values-table .metric-name, .metric-name {
+  .metric-values-table .metric-name,
+  .metric-name {
     font-size: 1.4rem !important;
   }
 
@@ -338,28 +367,34 @@
   }
 
   .progress-circle-container {
-    width: 160px;
-    height: 160px;
+    width: 150px;
+    height: 150px;
+  }
+
+  .select-control option {
+    font-size: 1.5rem !important;
   }
 }
 
 @media only screen and (min-width: 3840px) {
   .regional-detail-card {
     min-height: 100px;
-    max-height:fit-content;
+    max-height: fit-content;
     background-color: #3100cc;
     margin-top: 10px;
     border-radius: 10px;
     color: white;
   }
-  
+
   .regional-detail-card .regional-details-container {
     padding: 40px 0px 40px 100px;
     font-size: 3rem;
     line-height: 3.5rem;
   }
 
-  .select-control, .input-control, #myInput {
+  .select-control,
+  .input-control,
+  #myInput {
     padding: 15px !important;
     margin: 10px 15px 10px 0px !important;
     font-size: 1.7rem !important;
@@ -381,18 +416,18 @@
   }
 
   .card {
-    padding: 50px 30px;
+    padding: 50px 30px 100px;
     height: 100%;
     min-height: 40.5vh !important;
   }
 
   .headings {
     margin-left: 50px;
-    font-size: 3rem !important;
+    font-size: 2.8rem !important;
   }
 
   .fa-info-circle {
-    font-size: 3.5rem;
+    font-size: 3.3rem;
   }
 
   .mar-lef-35 {
@@ -400,31 +435,33 @@
   }
 
   .fon-siz-15rem {
-    font-size: 2.5rem !important;
-  }
-
-  .metric-values-table, .metric-list-values {
-    font-size: 2.2rem !important;
-  }
-
-  .metric-values-table .metric-name, .metric-name {
-    font-size: 2.4rem !important;
-  }
-
-  .metric-values-table tr.header-row {
     font-size: 2.3rem !important;
   }
 
+  .metric-values-table,
+  .metric-list-values {
+    font-size: 2rem !important;
+  }
+
+  .metric-values-table .metric-name,
+  .metric-name {
+    font-size: 2.2rem !important;
+  }
+
+  .metric-values-table tr.header-row {
+    font-size: 2.1rem !important;
+  }
+
   .access-report-link {
-    font-size: 2.5rem !important;
+    font-size: 2.3rem !important;
   }
 
   .tooltip-table .tooltip-table-header-txt {
-    font-size: 2.5rem !important;
+    font-size: 2.3rem !important;
   }
 
   .tooltip-table .tooltip-values-row {
-    font-size: 2.2rem !important;
+    font-size: 2rem !important;
   }
 
   .healthcard-tooltip-dropdown .dropdown-content {
@@ -436,12 +473,20 @@
     font-size: 2rem;
   }
 
-  .metric-values-table tr td:first-child {
+  .metric-values-table:not(.no-fixed-width) tr td:first-child {
     width: 60%;
   }
 
   .progress-circle-container {
-    width: 250px;
-    height: 250px;
+    width: 180px;
+    height: 180px;
+  }
+
+  .metric-list-values {
+    margin-left: 2rem !important;
+  }
+
+  .select-control option {
+    font-size: 2rem !important;
   }
 }

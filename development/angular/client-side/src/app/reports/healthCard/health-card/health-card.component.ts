@@ -206,10 +206,15 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
 
       this.crcVisit = Object.keys(this.healthCardData['crc_visit']);
       this.crcVisitKeys = [];
-      this.crcVisit.filter(key => {
+
+      this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
+      this.crcVisitKeys = ['Schools Visited 0 Times', 'Schools Visited 1-2 Times', 'Schools Visited 3-5 Times', 'Schools Visited 6-10 Times', 'Schools Visited more Than 10 Times'];
+
+      /*this.crcVisit.filter(key => {
         var myKey = this.stringConverter(key);
         this.crcVisitKeys.push(myKey);
       });
+      console.log(this.crcVisitKeys);*/
 
       this.UDISE = ['infrastructure_score'];
       this.UDISEKeys = ['Infrastructure Score'];
@@ -635,11 +640,10 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     }
     if (healthCardData['crc_visit'] && healthCardData['crc_visit'] != null) {
       this.tooltipCrc = Object.keys(healthCardData['crc_visit']);
-      if (this.level != 'state') {
-        this.tooltipCrc = this.tooltipCrc.filter((key) => {
-          return !this.crcVisit.includes(key);
-        });
-      }
+      this.tooltipCrc = this.tooltipCrc.filter((key) => {
+        return !this.crcVisit.includes(key);
+      });
+
       this.tooltipCrc.filter(key => {
         var myKey = this.stringConverter(key);
         this.tooltipCrcKeys.push(myKey);
