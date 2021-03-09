@@ -104,10 +104,12 @@ export class InfraMapVisualisationComponent implements OnInit {
   onResize(event) {
     this.width = window.innerWidth;
     this.heigth = window.innerHeight;
-    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width > 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
     this.levelWiseFilter();
   }
   setZoomLevel(lat, lng, globalMap, zoomLevel) {
+    this.changeDetection.detectChanges();
     globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
     globalMap.options.minZoom = this.commonService.zoomLevel;
   }
