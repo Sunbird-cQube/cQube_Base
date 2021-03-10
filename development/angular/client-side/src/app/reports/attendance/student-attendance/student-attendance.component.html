@@ -87,14 +87,14 @@
             <select [hidden]="yearMonth" id="year" [(ngModel)]="year" name="year" (change)="getYear()">
                 <option [value]="year" disabled selected="selected">Choose Year
                 </option>
-                <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]" style="font-size: 11px; ">
+                <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]">
                     {{years[i]}}
                 </option>
             </select>
             <select [hidden]="yearMonth" id="month" [(ngModel)]="month" name="month" (change)="getMonth($event)">
                 <option [value]="month" disabled selected="selected">Choose Month
                 </option>
-                <option *ngFor="let month of months" [(ngValue)]="month.id" style="font-size: 11px; ">
+                <option *ngFor="let month of months" [(ngValue)]="month.id">
                     {{month.name}}
                 </option>
             </select>

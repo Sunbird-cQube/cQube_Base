@@ -80,8 +80,8 @@ export class StudengtAttendanceComponent implements OnInit {
 
   getColor(data) {
     this.selected = data;
-    this.levelWiseFilter();
-  }
+    this.onResize(event);
+    }
 
   timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
   period = 'overall';
@@ -193,7 +193,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.timePeriod = {
       period: null
     }
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   onPeriodSelect() {
@@ -210,7 +210,7 @@ export class StudengtAttendanceComponent implements OnInit {
       month: null,
       year: null
     };
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   getDistricts(): void {
@@ -405,8 +405,8 @@ export class StudengtAttendanceComponent implements OnInit {
       month: this.month,
       year: this.year
     };
-    this.levelWiseFilter();
-  }
+    this.onResize(event);
+    }
 
   levelWiseFilter() {
     if (this.skul) {
