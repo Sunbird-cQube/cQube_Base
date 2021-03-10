@@ -308,7 +308,6 @@ export class SatReportComponent implements OnInit {
     if (this.level == 'school') {
       this.onClusterSelect(this.clusterId);
     }
-    this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
   }
 
   linkClick() {

@@ -433,7 +433,6 @@ export class StudengtAttendanceComponent implements OnInit {
         this.myClusterData(this.myCluster);
       }
     }
-    this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
   }
 
   getYear() {
