@@ -90,7 +90,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
   getColor(data) {
     this.selected = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   width = window.innerWidth;
@@ -192,7 +192,7 @@ export class TeacherAttendanceComponent implements OnInit {
     this.timePeriod = {
       period: null
     }
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   onPeriodSelect() {
@@ -209,7 +209,7 @@ export class TeacherAttendanceComponent implements OnInit {
       month: null,
       year: null
     };
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   getDistricts(): void {
@@ -404,7 +404,7 @@ export class TeacherAttendanceComponent implements OnInit {
       month: this.month,
       year: this.year
     };
-    this.levelWiseFilter();
+    this.onResize(event);
 
   }
 
