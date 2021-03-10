@@ -864,6 +864,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.level == 'school') {
       this.onClusterSelect(this.clusterId);
     }
+    this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {
