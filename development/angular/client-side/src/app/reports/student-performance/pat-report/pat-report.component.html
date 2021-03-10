@@ -122,20 +122,21 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-11">
+        <div style="float: left; width: 90%;">
             <div #mapContainer id="patMap" class="active" style="width: 100%;"
                 [ngStyle]="{height: heigth > 1760 ? '85vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '75vh':'69vh'}">
             </div>
         </div>
-        <div class="col-sm-1">
-            <h5 id="legend">Legend</h5>
+        <div style="float: left; width: 9%; margin-left: 1%;">
+            <h5 id="legend" style="margin-left: 20%;">Legend</h5>
+            <div *ngFor="let value of values; let i = index">
+                <span class="legends" style="float: left;" [ngStyle]="{color: i> 5 ?'black': 'white'}"
+                    [style.background-color]="legendColors[i]">
+                    {{values[i]}} </span>
+            </div>
             <p id="legendNote"><span style="font-weight: bold;">Note: </span>These colors are applicable for the
                 absolute
                 selection only</p>
-            <div *ngFor="let value of values; let i = index">
-                <span class="legends" style="float: left;" [style.background-color]="legendColors[i]">
-                    {{values[i]}} </span>
-            </div>
         </div>
     </div>
     <div class="row" id="footer">

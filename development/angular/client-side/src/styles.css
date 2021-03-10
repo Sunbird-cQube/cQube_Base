@@ -230,7 +230,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 #outer{
   border-radius: 15px; 
-  background-color: #f5f6fb; 
+  /* background-color: #f5f6fb;  */
   height: 22px; 
   width: 150px; 
   border: 1px solid gray;
@@ -313,11 +313,11 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 .legends{
-  color: #f5f6fb !important;
+  /* color: #f5f6fb !important; */
   width: 85%;
   height: 5vh;
   font-size: 11px;
-  margin:0.4vh;
+  margin:0.4vh 0.4vh 0.4vh 0vh;
   padding-top: 0.7vh;
   text-align: center;
   border-radius: 10px;
@@ -330,8 +330,56 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 #legendNote{ 
-  font-size: 10px;
+  font-size: 12px;
   margin-bottom: -3px;
+}
+
+@media screen and (min-width: 1500px){
+  .legends{
+    /* color: #f5f6fb !important; */
+    width: 85%;
+    height: 5vh;
+    font-size: 12px;
+    margin:0.53vh 0.53vh 0.53vh 0vh;
+    padding-top: 0.9vh ;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+  
+  #legend{
+    font-size: 13px;
+    font-weight: bold;
+  }
+  
+  #legendNote{ 
+    font-size: 14px;
+    margin-bottom: 0px;
+  }
+}
+
+@media screen and (min-width: 1700px){
+  .legends{
+    /* color: #f5f6fb !important; */
+    width: 85%;
+    height: 5vh;
+    font-size: 14px;
+    margin:0.62vh 0.62vh 0.62vh 0vh;
+    padding-top: 0.9vh;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+  
+  #legend{
+    font-size: 15px;
+    font-weight: bold;
+  }
+  
+  #legendNote{ 
+    font-size: 16px;
+    margin-bottom: 0px;
+  }
 }
 
 
@@ -353,7 +401,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   
   #outer{
       border-radius: 15px; 
-      background-color: #f5f6fb; 
+      /* background-color: #f5f6fb;  */
       height: 34px; 
       width: 190px; 
       border: 1px solid gray;
@@ -429,7 +477,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
       width: 85%;
       height: 5vh;
       font-size: 20px;
-      margin:0.7vh;
+      margin:0.7vh 0.7vh 0.7vh 0vh;
       padding-top: 0.8vh;
       text-align: center;
       border-radius: 10px;
@@ -442,8 +490,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   }
 
   #legendNote{
- 
-    font-size: 15px;
+    font-size: 16px;
   }
 
   #errMsg{
@@ -472,7 +519,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   
   #outer{
       border-radius: 18px; 
-      background-color: #f5f6fb; 
+      /* background-color: #f5f6fb;  */
       height: 42px !important; 
       width: 230px !important;
       border: 1px solid gray;
@@ -549,7 +596,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   width: 85%;
   height: 5vh;
   font-size: 24px !important;
-  margin:0.8vh !important;
+  margin:0.8vh 0.8vh 0.8vh 0vh !important;
   padding-top: 1vh !important;
   text-align: center;
   border-radius: 15px !important;
@@ -561,7 +608,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   font-weight: bold;
 }
 #legendNote{ 
-  font-size: 20px;
+  font-size: 22px;
 }
 #errMsg{
   text-align: center;
@@ -590,7 +637,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   
   #outer{
       border-radius: 18px; 
-      background-color: #f5f6fb; 
+      /* background-color: #f5f6fb;  */
       height: 46px !important; 
       width: 250px !important;
       border: 1px solid gray;
@@ -668,7 +715,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   width: 85% !important;
   height: 5vh;
   font-size: 32px !important;
-  margin:1.2vh !important;
+  margin:1.2vh 1.2vh 1.2vh 0vh !important;
   padding-top: 1.3vh !important;
   text-align: center;
   border-radius: 20px !important;
@@ -681,7 +728,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 #legendNote{ 
-  font-size: 25px;
+  font-size: 32px;
 }
 
 #errMsg{
