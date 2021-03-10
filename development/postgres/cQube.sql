@@ -5957,11 +5957,3 @@ months text,
 created_on timestamp default current_timestamp,
 updated_on timestamp,
 primary key(ff_uuid));
-
-
-alter table diksha_content_staging add column if not exists dimensions_mode text, add column if not exists dimensions_type text;
-alter table diksha_dup add column if not exists dimensions_mode text, add column if not exists dimensions_type text;
-alter table diksha_content_temp add column if not exists dimensions_mode text, add column if not exists dimensions_type text;
-alter table diksha_content_trans add column if not exists dimensions_mode text, add column if not exists dimensions_type text;
-
-
