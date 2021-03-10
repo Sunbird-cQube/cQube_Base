@@ -122,19 +122,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-11">
             <div #mapContainer id="patMap" class="active" style="width: 100%;"
                 [ngStyle]="{height: heigth > 1760 ? '85vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '75vh':'69vh'}">
             </div>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-1">
             <h5 id="legend">Legend</h5>
-            <p id="note"><span style="font-weight: bold;">Note: </span>These colors are applicable for the absolute
+            <p id="legendNote"><span style="font-weight: bold;">Note: </span>These colors are applicable for the
+                absolute
                 selection only</p>
             <div *ngFor="let value of values; let i = index">
-                <span *ngIf="i%2==0" class="legends" style="float: left;" [style.background-color]="legendColors[i]">
-                    {{values[i]}} </span>
-                <span *ngIf="i%2!=0" class="legends" style="float: left;" [style.background-color]="legendColors[i]">
+                <span class="legends" style="float: left;" [style.background-color]="legendColors[i]">
                     {{values[i]}} </span>
             </div>
         </div>

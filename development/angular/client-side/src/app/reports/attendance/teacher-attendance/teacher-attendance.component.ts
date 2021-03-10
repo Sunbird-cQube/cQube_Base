@@ -116,7 +116,7 @@ export class TeacherAttendanceComponent implements OnInit {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
-    this.changeDetection.detectChanges(); 
+    this.changeDetection.detectChanges();
     this.commonService.initMap('mapContainer', [[this.lat, this.lng]]);
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
@@ -1334,6 +1334,6 @@ export class TeacherAttendanceComponent implements OnInit {
     })
   }
 
-  public legendColors: any = ["#ff0000", "#f50a00", "#e81700", "#db2400", "#ce3100", "#c13e00", "#b44b00", "#a75800", "#9b6400", "#8e7100", "#817e00", "#748b00", "#679800", "#5aa500", "#4db200", "#40bf00", "#34cb00", "#27d800", "#1ae500", "#00ff00"];
-  public values = ['0-5', '6-10', '11-15', '16-20', '21-25', '26-30', '31-35', '36-40', '41-45', '46-50', '51-55', '56-60', '61-65', '66-70', '71-75', '76-80', '81-85', '86-90', '91-95', '96-100']
+  public legendColors: any = ["#ff0000", "#e51a00", "#cb3400", "#b14e00", "#976800", "#7d8200", "#639c00", "#49b600", "#2fd000", "#00ff00"];
+  public values = ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100']
 }

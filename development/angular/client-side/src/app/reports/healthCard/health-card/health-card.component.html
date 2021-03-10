@@ -251,11 +251,11 @@
                                 <div>
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="font-size: 15px;line-height: 2em; margin-left: 20px;">{{level.charAt(0).toUpperCase()
-                                        + level.substr(1)}} Level Rank</strong>
+                                        + level.substr(1)}} Rank</strong>
                                     <table class="metric-values-table mar-lef-35 no-fixed-width" style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let attendance of schoolInfraRank; let i=index">
-                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}} level</td>
                                                 <td *ngIf="level != 'state'">:</td>
                                                 <td *ngIf="level != 'state'">
                                                     {{healthCardData['student_attendance'][attendance]}}
@@ -407,11 +407,11 @@
                                 <div>
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
-                                        + level.substr(1)}} Level Rank</strong>
+                                        + level.substr(1)}} Rank</strong>
                                     <table class="metric-values-table mar-lef-35 no-fixed-width" style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let sem of schoolInfraRank; let i=index">
-                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}} level</td>
                                                 <td *ngIf="level != 'state'">:</td>
                                                 <td *ngIf="level != 'state'">{{healthCardData['student_semester'][sem]}}
                                                 </td>
@@ -546,11 +546,11 @@
                                 <div>
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
-                                        + level.substr(1)}} Level Rank</strong>
+                                        + level.substr(1)}} Rank</strong>
                                     <table class="metric-values-table mar-lef-35 no-fixed-width" style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let pat of schoolInfraRank; let i=index">
-                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}} level</td>
                                                 <td *ngIf="level != 'state'">:</td>
                                                 <td *ngIf="level != 'state'">{{healthCardData['pat_performance'][pat]}}
                                                 </td>
@@ -701,12 +701,12 @@
                                 <div>
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
-                                        + level.substr(1)}} Level Rank</strong>
+                                        + level.substr(1)}} Rank</strong>
                                     <table class="mar-lef-35 metric-values-table no-fixed-width" style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let infra of schoolInfraRank; let i=index">
                                                 <td *ngIf="level != 'state'">
-                                                    <span>{{schoolInfraRankKye[i]}}</span>
+                                                    <span>{{schoolInfraRankKye[i]}} level</span>
                                                 </td>
                                                 <td *ngIf="level != 'state'">:</td>
                                                 <td *ngIf="level != 'state'">
@@ -836,11 +836,11 @@
                                 <div>
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
-                                        + level.substr(1)}} Level Rank</strong>
+                                        + level.substr(1)}} Rank</strong>
                                     <table class="mar-lef-35 metric-values-table no-fixed-width" style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let key of schoolInfraRank; let i=index">
-                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}}</td>
+                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}} level</td>
                                                 <td *ngIf="level != 'state'">:</td>
                                                 <td *ngIf="level != 'state'">{{healthCardData['udise'][key]}}
                                                 </td>
