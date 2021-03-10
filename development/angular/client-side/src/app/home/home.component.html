@@ -1,19 +1,16 @@
-<mat-toolbar color="primary" style="height: 35px; background-color: rgb(245, 245, 245); width: 100%;">
-  <button class="menu" mat-icon-button (click)="sidenav.toggle()" id="menu" style="margin-left: -9px;">
+<mat-toolbar class="header" color="primary">
+  <button class="menu" mat-icon-button (click)="sidenav.toggle()" id="menu">
     <mat-icon style="color: #24223e;">menu</mat-icon>
   </button>
-  <img src="../../assets/dashboard.png" alt="" height="30px" width="90px">
+  <img src="../../assets/dashboard.png" id="logoImg" alt="">
   <span style="flex: 1 1 auto;"></span>
-  <span id="backBtn" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;"
-    [routerLink]="['/home']">
+  <span id="backBtn" class="headerBtn" [routerLink]="['/home']">
     <strong *ngIf="userType">Back</strong>
   </span>
-  <span id="homeBtn" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;"
-    [routerLink]="['/dashboard']" (click)="clearSessionStorage()">
+  <span id="homeBtn" class="headerBtn" [routerLink]="['/dashboard']" (click)="clearSessionStorage()">
     <strong>Home</strong>
   </span>
-  <span id="logout" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()"><em
-      class="fa fa-sign-out fa-rotate-180" style="font-size: 16px;"></em><strong>
+  <span id="logout" class="headerBtn" (click)="logout()"><em class="fa fa-sign-out fa-rotate-180"></em><strong>
       Logout</strong>
   </span>
 </mat-toolbar>
@@ -282,13 +279,13 @@
     </div>
     <hr>
     <div>
-      <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.11 </span>
-      <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 03/03/2021</span>
+      <span id="version">Version : 1.11 </span>
+      <span id="releaseDate">Date: 03/03/2021</span>
     </div>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div style="height: 93vh;">
+    <div style="min-height: 95vh; overflow-x: hidden;">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>

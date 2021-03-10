@@ -1,0 +1,18 @@
+.fa-info-circle{
+    font-size:15px;
+    color: blue;
+}
+
+@media screen and (min-width: 1920px) {
+    .fa-info-circle{
+        font-size:25px;
+        color: blue;
+    }
+}
+
+@media screen and (min-width: 2560px) {
+    .fa-info-circle{
+        font-size:30px;
+        color: blue;
+    }
+}

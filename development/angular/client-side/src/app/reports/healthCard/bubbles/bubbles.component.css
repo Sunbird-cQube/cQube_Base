@@ -1,0 +1,45 @@
+#bubbles {
+    float: right; height: 14px ;width:120px; margin-top: 5px;
+}
+
+#bubbles .bubble {
+    height: 12px; width: 12px; border-radius: 6px; float: right; margin-left: 3px;
+}
+
+#bubbles .score {
+    float: right; margin-right: 8px;margin-top: -3px; font-size: 12px;
+}
+
+@media only screen and (min-width: 2560px) {
+    #bubbles {
+        width: 250px;
+    }
+
+    #bubbles .bubble {
+        height: 30px !important;
+        width: 30px !important;
+        border-radius: 100% !important;
+    }
+
+    #bubbles .score {
+        font-size: 2rem !important;
+        margin-right: 12px;
+    }
+}
+
+@media only screen and (min-width: 3840px) {
+    #bubbles {
+        width: 250px;
+    }
+
+    #bubbles .bubble {
+        height: 30px !important;
+        width: 30px !important;
+        border-radius: 100% !important;
+    }
+
+    #bubbles .score {
+        font-size: 2rem !important;
+        margin-right: 12px;
+    }
+}

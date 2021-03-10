@@ -1,9 +1,8 @@
-<div id="bubbles" style="float: right; height: 14px ;width:120px; margin-top: 5px;">
+<div id="bubbles">
     <div *ngFor="let x of [0,1,2,3,4].slice().reverse(),let i=index">
-        <div id="bubble{{i}}" [ngStyle]="{'background-color': cardData && Value/x+2 > 4  ? color : '#cccfcd' }"
-            style="height: 12px; width: 12px; border-radius: 6px; float: right; margin-left: 3px;">
+        <div class="bubble" id="bubble{{i}}" [ngStyle]="{'background-color': cardData && Value/x+2 > 4  ? color : '#cccfcd' }">
         </div>
-        <p id="score" *ngIf="i==4" style="float: right; margin-right: 8px;margin-top: -3px; font-size: 12px;">
+        <p class="score" id="score" *ngIf="i==4">
             {{(Value/10).toFixed(2)}}
         </p>
     </div>

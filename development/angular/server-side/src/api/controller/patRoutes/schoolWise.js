@@ -36,7 +36,8 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         schoolData = await s3File.readS3File(fileName);
         var mydata = schoolData.data;
         logger.info('---PAT school wise api response sent---');
-        res.status(200).send({ data: mydata, footer: schoolData.AllSchoolsFooter });
+        // , footer: schoolData.AllSchoolsFooter
+        res.status(200).send({ data: mydata });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -68,7 +69,8 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         })
         let mydata = filterData;
         logger.info('---PAT schoolPerCluster api response sent---');
-        res.status(200).send({ data: mydata, footer: schoolData.footer[`${clusterId}`] });
+        // , footer: schoolData.footer[`${clusterId}`]
+        res.status(200).send({ data: mydata });
 
 
     } catch (e) {

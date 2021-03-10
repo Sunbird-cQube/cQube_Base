@@ -39,7 +39,8 @@ router.post('/distWise', auth.authController, async (req, res) => {
         var mydata = districtData.data;
 
         logger.info('--- PAT dist wise api response sent ---');
-        res.status(200).send({ data: mydata, footer: districtData.AllDistrictsFooter });
+        // , footer: districtData.AllDistrictsFooter
+        res.status(200).send({ data: mydata });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
