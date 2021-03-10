@@ -96,7 +96,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   getColor(data) {
     this.selected = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   width = window.innerWidth;
@@ -838,7 +838,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   oninfraSelect(data) {
     this.infraData = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   levelWiseFilter() {

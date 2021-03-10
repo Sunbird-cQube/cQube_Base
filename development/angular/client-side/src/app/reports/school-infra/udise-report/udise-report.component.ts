@@ -95,7 +95,7 @@ export class UdiseReportComponent implements OnInit {
 
   getColor(data) {
     this.selected = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   colorGenData: any = [];
@@ -1001,7 +1001,7 @@ export class UdiseReportComponent implements OnInit {
   public level = 'district';
   onIndiceSelect(data) {
     this.indiceData = data;
-    this.levelWiseFilter()
+    this.onResize(event);
   }
 
   levelWiseFilter() {
