@@ -12,7 +12,6 @@ import { AppServiceComponent, globalMap } from '../../../app.service';
   styleUrls: ['./infra-map-visualisation.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
-
 })
 export class InfraMapVisualisationComponent implements OnInit {
   public title: string = '';
