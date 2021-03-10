@@ -1,9 +1,7 @@
 <h5 id="legend">Legend</h5>
-<p id="note"><span style="font-weight: bold;">Note: </span>These colors are applicable for the absolute selection only
-</p>
+<p id="note"><span style="font-weight: bold;">Note: </span>These colors are applicable for the absolute
+    selection only</p>
 <div *ngFor="let value of values; let i = index">
-    <span *ngIf="i%2==0" class="legends" style="float: left;" [style.background-color]="legendColors[i]">
-        {{values[i]}} </span>
-    <span *ngIf="i%2!=0" class="legends" style="float: left;" [style.background-color]="legendColors[i]">
+    <span class="legends" style="float: left;" [style.background-color]="legendColors[i]">
         {{values[i]}} </span>
 </div>

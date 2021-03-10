@@ -313,7 +313,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 .legends{
-  width: 42%;
+  color: #f5f6fb !important;
+  width: 85%;
   height: 5vh;
   font-size: 11px;
   margin:0.4vh;
@@ -326,6 +327,12 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 #legend{
   font-size: 12px;
   font-weight: bold;
+}
+
+#legendNote{
+  text-align: justify; 
+  font-size: 10px;
+  margin-bottom: -3px;
 }
 
 
@@ -420,7 +427,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   }
   
   .legends{
-      width: 42%;
+      width: 85%;
       height: 5vh;
       font-size: 20px;
       margin:0.7vh;
@@ -431,8 +438,13 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   }
   
   #legend{
-      font-size: 22px;
+      font-size: 20px;
       font-weight: bold;
+  }
+
+  #legendNote{
+    text-align: justify; 
+    font-size: 15px;
   }
 
   #errMsg{
@@ -535,10 +547,10 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 .legends{
-  width: 42%;
+  width: 85%;
   height: 5vh;
   font-size: 24px !important;
-  margin:0.9vh !important;
+  margin:0.8vh !important;
   padding-top: 1vh !important;
   text-align: center;
   border-radius: 15px !important;
@@ -548,6 +560,10 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 #legend{
   font-size: 26px;
   font-weight: bold;
+}
+#legendNote{
+  text-align: justify; 
+  font-size: 20px;
 }
 #errMsg{
   text-align: center;
@@ -651,11 +667,11 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 .legends{
-  width: 40% !important;
+  width: 85% !important;
   height: 5vh;
-  font-size: 30px !important;
-  margin:1.3vh !important;
-  padding-top: 1.2vh !important;
+  font-size: 32px !important;
+  margin:1.2vh !important;
+  padding-top: 1.3vh !important;
   text-align: center;
   border-radius: 20px !important;
   font-weight: bold;
@@ -664,6 +680,11 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 #legend{
   font-size: 32px;
   font-weight: bold;
+}
+
+#legendNote{
+  text-align: justify; 
+  font-size: 25px;
 }
 
 #errMsg{
