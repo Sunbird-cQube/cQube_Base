@@ -108,7 +108,7 @@ export class SatReportComponent implements OnInit {
 
   getColor(data) {
     this.selected = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   width = window.innerWidth;
@@ -209,7 +209,7 @@ export class SatReportComponent implements OnInit {
   }
 
   semSelect() {
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   getDistricts(level): void {
@@ -268,7 +268,7 @@ export class SatReportComponent implements OnInit {
       this.semesters = res['data'];
       if (this.semesters.length > 0)
         this.semester = this.semesters[this.semesters.length - 1].id;
-      this.levelWiseFilter();
+      this.onResize(event);
     });
   }
 
@@ -277,12 +277,12 @@ export class SatReportComponent implements OnInit {
     this.grade = data;
     this.subjectHidden = false;
     this.subject = '';
-    this.levelWiseFilter();
+    this.onResize(event);
   }
   onSubjectSelect(data) {
     this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject}_all${this.level}_${this.commonService.dateAndTime}`;
     this.subject = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   levelWiseFilter() {
@@ -308,7 +308,6 @@ export class SatReportComponent implements OnInit {
     if (this.level == 'school') {
       this.onClusterSelect(this.clusterId);
     }
-    this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
   }
 
   linkClick() {

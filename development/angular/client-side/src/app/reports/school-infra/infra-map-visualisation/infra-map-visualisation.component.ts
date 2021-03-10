@@ -12,7 +12,6 @@ import { AppServiceComponent, globalMap } from '../../../app.service';
   styleUrls: ['./infra-map-visualisation.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
-
 })
 export class InfraMapVisualisationComponent implements OnInit {
   public title: string = '';
@@ -96,7 +95,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   getColor(data) {
     this.selected = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   width = window.innerWidth;
@@ -104,14 +103,14 @@ export class InfraMapVisualisationComponent implements OnInit {
   onResize(event) {
     this.width = window.innerWidth;
     this.heigth = window.innerHeight;
-    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    // this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
     this.changeDetection.detectChanges();
     this.levelWiseFilter();
   }
   setZoomLevel(lat, lng, globalMap, zoomLevel) {
-    this.changeDetection.detectChanges();
     globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
     globalMap.options.minZoom = this.commonService.zoomLevel;
+    this.changeDetection.detectChanges();
   }
   getMarkerRadius(rad1, rad2, rad3, rad4) {
     let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
@@ -242,6 +241,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         }
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+        this.changeDetection.detectChanges();
         this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         this.genericFun(this.myDistData, options, this.fileName);
         // sort the districtname alphabetically
@@ -272,6 +272,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+          this.changeDetection.detectChanges();
           this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           this.data.sort((a, b) => (`${a[this.infraData]}` > `${b[this.infraData]}`) ? 1 : ((`${b[this.infraData]}` > `${a[this.infraData]}`) ? -1 : 0));
           this.genericFun(this.myDistData, options, this.fileName);
@@ -356,6 +357,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+            this.changeDetection.detectChanges();
             this.setZoomLevel(options.centerLat, options.centerLng, globalMap, this.commonService.zoomLevel);
 
             //schoolCount
@@ -442,6 +444,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+            this.changeDetection.detectChanges();
             this.setZoomLevel(options.centerLat, options.centerLng, globalMap, this.commonService.zoomLevel);
 
             this.commonService.loaderAndErr(this.data);
@@ -521,6 +524,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             globalMap.doubleClickZoom.enable();
             globalMap.scrollWheelZoom.enable();
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
+            this.changeDetection.detectChanges();
             this.setZoomLevel(options.centerLat, options.centerLng, globalMap, this.commonService.zoomLevel);
 
             //schoolCount
@@ -596,6 +600,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       }
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
+      this.changeDetection.detectChanges();
       this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
       this.genericFun(res, options, this.fileName);
       // sort the blockname alphabetically
@@ -673,6 +678,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
+      this.changeDetection.detectChanges();
       this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
       this.genericFun(res, options, this.fileName);
       // sort the clusterName alphabetically
@@ -762,6 +768,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
+        this.changeDetection.detectChanges();
         this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         this.level = options.level;
         this.genericFun(res, options, this.fileName);
@@ -838,7 +845,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   oninfraSelect(data) {
     this.infraData = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   levelWiseFilter() {
@@ -864,7 +871,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.level == 'school') {
       this.onClusterSelect(this.clusterId);
     }
-    this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
+    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {

@@ -105,7 +105,7 @@ export class PATReportComponent implements OnInit {
 
   getColor(data) {
     this.selected = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   width = window.innerWidth;
@@ -248,7 +248,7 @@ export class PATReportComponent implements OnInit {
   }
 
   onPeriodSelect() {
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   onGradeSelect(data) {
@@ -256,12 +256,12 @@ export class PATReportComponent implements OnInit {
     this.grade = data;
     this.subjectHidden = false;
     this.subject = '';
-    this.levelWiseFilter();
+    this.onResize(event);
   }
   onSubjectSelect(data) {
     this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject}_all${this.level}_${this.commonService.dateAndTime}`;
     this.subject = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   levelWiseFilter() {
@@ -287,7 +287,6 @@ export class PATReportComponent implements OnInit {
     if (this.level == 'school') {
       this.onClusterSelect(this.clusterId);
     }
-    this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
   }
 
   linkClick() {
