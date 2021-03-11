@@ -38,7 +38,8 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         clusterData = await s3File.readS3File(fileName);
         var mydata = clusterData.data;
         logger.info('---PAT cluster wise api response sent---');
-        res.status(200).send({ data: mydata, footer: clusterData.AllClustersFooter });
+        // , footer: clusterData.AllClustersFooter
+        res.status(200).send({ data: mydata });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -73,7 +74,8 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         })
         let mydata = filterData;
         logger.info('---PAT clusterperBlock api response sent---');
-        res.status(200).send({ data: mydata, footer: clusterData.footer[`${blockId}`] });
+        // , footer: clusterData.footer[`${blockId}`] 
+        res.status(200).send({ data: mydata });
 
 
     } catch (e) {

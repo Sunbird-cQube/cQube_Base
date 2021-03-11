@@ -12,7 +12,6 @@ import { AppServiceComponent, globalMap } from '../../../app.service';
   styleUrls: ['./infra-map-visualisation.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
-
 })
 export class InfraMapVisualisationComponent implements OnInit {
   public title: string = '';
@@ -26,7 +25,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   public dateRange: any = '';
 
   // to hide and show the hierarchy details
-  public skul: boolean = false;
+  public skul: boolean = true;
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
@@ -90,23 +89,40 @@ export class InfraMapVisualisationComponent implements OnInit {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
     private readonly _router: Router
-  ) {
-  }
+  ) { }
 
   selected = "absolute";
 
   getColor(data) {
     this.selected = data;
+    this.onResize(event);
+  }
+
+  width = window.innerWidth;
+  heigth = window.innerHeight;
+  onResize(event) {
+    this.width = window.innerWidth;
+    this.heigth = window.innerHeight;
+    // this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
     this.levelWiseFilter();
+  }
+  setZoomLevel(lat, lng, globalMap, zoomLevel) {
+    globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
+    globalMap.options.minZoom = this.commonService.zoomLevel;
+    this.changeDetection.detectChanges();
+  }
+  getMarkerRadius(rad1, rad2, rad3, rad4) {
+    let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
+    return radius;
   }
 
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
-    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
     this.commonService.initMap('infraMap', [[this.lat, this.lng]]);
-    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
 
@@ -159,7 +175,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.getClusters(data.districtId, data.blockId, data.id);
       }
     } else {
-      this.districtWise();
+      this.onResize(event);
     }
   }
 
@@ -215,7 +231,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.districtMarkers = this.myDistData['data'];
         // options to set for markers in the map
         let options = {
-          radius: 5,
+          radius: this.getMarkerRadius(14, 10, 8, 5),
           fillOpacity: 1,
           strokeWeight: 0.01,
           mapZoom: this.commonService.zoomLevel,
@@ -225,7 +241,8 @@ export class InfraMapVisualisationComponent implements OnInit {
         }
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+        this.changeDetection.detectChanges();
+        this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         this.genericFun(this.myDistData, options, this.fileName);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) => (a.details.district_name > b.details.district_name) ? 1 : ((b.details.district_name > a.details.district_name) ? -1 : 0));
@@ -244,7 +261,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
           // options to set for markers in the map
           let options = {
-            radius: 5,
+            radius: this.getMarkerRadius(14, 10, 8, 5),
             fillOpacity: 1,
             strokeWeight: 0.01,
             mapZoom: this.commonService.zoomLevel,
@@ -255,7 +272,8 @@ export class InfraMapVisualisationComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-          globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+          this.changeDetection.detectChanges();
+          this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           this.data.sort((a, b) => (`${a[this.infraData]}` > `${b[this.infraData]}`) ? 1 : ((`${b[this.infraData]}` > `${a[this.infraData]}`) ? -1 : 0));
           this.genericFun(this.myDistData, options, this.fileName);
 
@@ -332,15 +350,15 @@ export class InfraMapVisualisationComponent implements OnInit {
               } else {
                 color = this.commonService.relativeColorGredient(this.blockMarkers[i], this.infraData, colors);
               }
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, color, 3.5, 0.01, 1, options.level);
+              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].details.latitude, this.blockMarkers[i].details.longitude, color, this.getMarkerRadius(8, 6.5, 5, 3.5), 0.01, 1, options.level);
 
               this.generateToolTip(this.blockMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.blockMarkers[i], options.level);
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
-
+            this.changeDetection.detectChanges();
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, this.commonService.zoomLevel);
 
             //schoolCount
             this.schoolCount = res['footer'];
@@ -415,7 +433,7 @@ export class InfraMapVisualisationComponent implements OnInit {
               } else {
                 color = this.commonService.relativeColorGredient(this.clusterMarkers[i], this.infraData, colors);
               }
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, color, 1, 0.01, .5, options.level);
+              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].details.latitude, this.clusterMarkers[i].details.longitude, color, this.getMarkerRadius(2.5, 1.5, 1.2, 1), 0.01, .5, options.level);
 
               this.generateToolTip(this.clusterMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.clusterMarkers[i], options.level);
@@ -426,7 +444,8 @@ export class InfraMapVisualisationComponent implements OnInit {
             this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.changeDetection.detectChanges();
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, this.commonService.zoomLevel);
 
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
@@ -497,7 +516,7 @@ export class InfraMapVisualisationComponent implements OnInit {
               } else {
                 color = this.commonService.relativeColorGredient(this.schoolMarkers[i], this.infraData, colors);
               }
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, color, 0, 0, 0.3, options.level);
+              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].details.latitude, this.schoolMarkers[i].details.longitude, color, this.getMarkerRadius(1.5, 1.2, 1, 0), 0, 0.3, options.level);
 
               this.generateToolTip(this.schoolMarkers[i], options.level, markerIcon, "latitude", "longitude");
               this.getDownloadableData(this.schoolMarkers[i], options.level);
@@ -505,7 +524,8 @@ export class InfraMapVisualisationComponent implements OnInit {
             globalMap.doubleClickZoom.enable();
             globalMap.scrollWheelZoom.enable();
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.changeDetection.detectChanges();
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, this.commonService.zoomLevel);
 
             //schoolCount
             this.schoolCount = res['footer'];
@@ -570,7 +590,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3.5,
+        radius: this.getMarkerRadius(14, 10, 8, 4),
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 1,
@@ -580,7 +600,8 @@ export class InfraMapVisualisationComponent implements OnInit {
       }
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+      this.changeDetection.detectChanges();
+      this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
       this.genericFun(res, options, this.fileName);
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.details.block_name > b.details.block_name) ? 1 : ((b.details.block_name > a.details.block_name) ? -1 : 0));
@@ -646,7 +667,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3.5,
+        radius: this.getMarkerRadius(14, 10, 8, 4),
         fillOpacity: 1,
         strokeWeight: 0.01,
         mapZoom: this.commonService.zoomLevel + 3,
@@ -657,7 +678,8 @@ export class InfraMapVisualisationComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+      this.changeDetection.detectChanges();
+      this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
       this.genericFun(res, options, this.fileName);
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.details.cluster_name > b.details.cluster_name) ? 1 : ((b.details.cluster_name > a.details.cluster_name) ? -1 : 0));
@@ -735,7 +757,7 @@ export class InfraMapVisualisationComponent implements OnInit {
 
         // options to set for markers in the map
         let options = {
-          radius: 3.5,
+          radius: this.getMarkerRadius(14, 10, 8, 4),
           fillOpacity: 1,
           strokeWeight: 0.01,
           mapZoom: this.commonService.zoomLevel + 5,
@@ -746,7 +768,8 @@ export class InfraMapVisualisationComponent implements OnInit {
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+        this.changeDetection.detectChanges();
+        this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         this.level = options.level;
         this.genericFun(res, options, this.fileName);
       }, err => {
@@ -818,11 +841,11 @@ export class InfraMapVisualisationComponent implements OnInit {
   }
 
   public infraData = 'infrastructure_score';
-  public level = '';
+  public level = 'district';
 
   oninfraSelect(data) {
     this.infraData = data;
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   levelWiseFilter() {
@@ -848,6 +871,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.level == 'school') {
       this.onClusterSelect(this.clusterId);
     }
+    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {
@@ -1072,4 +1096,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     sessionStorage.setItem('health-card-info', JSON.stringify(data));
     this._router.navigate(['/healthCard']);
   }
+
+  public legendColors: any = ["#ff0000", "#e51a00", "#cb3400", "#b14e00", "#976800", "#7d8200", "#639c00", "#49b600", "#2fd000", "#00ff00"];
+  public values = ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100']
 }

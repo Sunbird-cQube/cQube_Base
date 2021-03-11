@@ -187,3 +187,134 @@ a{
   transform: scale(1.12); 
   color: rgb(66, 148, 241);
 }
+
+#logoImg{
+  height:30px; 
+  width:90px;
+}
+
+.header{
+  height: 35px; 
+  background-color: rgb(245, 245, 245); 
+  width: 100%;
+}
+
+#backBtn,#homeBtn{
+  padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;
+}
+
+#logout{
+  padding: 1.5px; cursor: pointer; font-size: 13px;
+}
+
+.fa-sign-out{
+  font-size: 16px;
+}
+
+.menu{
+  margin-left: -9px;
+}
+
+.mat-icon-button{
+  width: 40px;
+  height: 40px;
+}
+
+#version{
+  position: absolute; left: 5%; bottom: 2%; font-size: 12px;
+}
+
+#releaseDate{
+  position: absolute; right: 3%; bottom: 2%; font-size: 12px;
+}
+
+@media screen and (min-width: 1920px){
+  .header{
+    height: 50px; 
+    background-color: rgb(245, 245, 245); 
+    width: 100%;
+  }
+
+  #logoImg{
+    height:40px; 
+    width:130px;
+    padding-left: 7px !important;
+  }
+  
+  #backBtn,#homeBtn{
+    padding: 1.8px; cursor: pointer; font-size: 20px; margin-right: 2%;
+  }
+  
+  #logout{
+    padding: 1.8px; cursor: pointer; font-size: 20px;
+  }
+
+  .fa-sign-out{
+    font-size: 22px;
+  }
+  .menu{
+    margin-left: -6px;
+  }
+
+  .material-icons{
+    font-size: 34px;
+  }
+
+  .mat-icon-button{
+    width: 50px;
+    height: 50px;
+  }
+
+  #version{
+    position: absolute; left: 5%; bottom: 4%; font-size: 15px;
+  }
+  
+  #releaseDate{
+    position: absolute; right: 3%; bottom: 4%; font-size: 15px;
+  }
+}
+
+@media screen and (min-width: 2560px){
+  .header{
+    height: 60px; 
+    background-color: rgb(245, 245, 245); 
+    width: 100%;
+  }
+
+  #logoImg{
+    height:50px; 
+    width:160px;
+    padding-left: 10px !important;
+  }
+  
+  #backBtn,#homeBtn{
+    padding: 1.8px; cursor: pointer; font-size: 23px; margin-right: 2%;
+  }
+  
+  #logout{
+    padding: 1.8px; cursor: pointer; font-size: 23px;
+  }
+
+  .fa-sign-out{
+    font-size: 25px;
+  }
+  .menu{
+    margin-left: -3px;
+  }
+  .material-icons{
+    font-size: 38px;
+  }
+
+  .mat-icon-button{
+    width: 60px;
+    height: 60px;
+  }
+
+  #version{
+    position: absolute; left: 5%; bottom: 5%; font-size: 18px;
+  }
+  
+  #releaseDate{
+    position: absolute; right: 3%; bottom: 5%; font-size: 18px;
+  }
+}

@@ -53,7 +53,7 @@ export class TeacherAttendanceComponent implements OnInit {
   public markerData;
   public layerMarkers: any = new L.layerGroup();
   public markersList = new L.FeatureGroup();
-  public levelWise: any;
+  public levelWise: any = 'District';
 
   // google maps zoom level
   public zoom: number = 7;
@@ -90,14 +90,33 @@ export class TeacherAttendanceComponent implements OnInit {
 
   getColor(data) {
     this.selected = data;
+    this.onResize(event);
+  }
+
+  width = window.innerWidth;
+  heigth = window.innerHeight;
+  onResize(event) {
+    this.width = window.innerWidth;
+    this.heigth = window.innerHeight;
+    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
     this.levelWiseFilter();
+  }
+  setZoomLevel(lat, lng, globalMap, zoomLevel) {
+    globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
+    globalMap.options.minZoom = this.commonService.zoomLevel;
+    this.changeDetection.detectChanges();
+  }
+  getMarkerRadius(rad1, rad2, rad3, rad4) {
+    let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
+    return radius;
   }
 
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
-    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
     this.commonService.initMap('mapContainer', [[this.lat, this.lng]]);
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
@@ -147,7 +166,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
           this.getDistricts();
         } else {
-          this.districtWise();
+          this.onResize(event);
         }
       }
     }, err => {
@@ -173,7 +192,7 @@ export class TeacherAttendanceComponent implements OnInit {
     this.timePeriod = {
       period: null
     }
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   onPeriodSelect() {
@@ -190,7 +209,7 @@ export class TeacherAttendanceComponent implements OnInit {
       month: null,
       year: null
     };
-    this.levelWiseFilter();
+    this.onResize(event);
   }
 
   getDistricts(): void {
@@ -385,7 +404,7 @@ export class TeacherAttendanceComponent implements OnInit {
       month: this.month,
       year: this.year
     };
-    this.levelWiseFilter();
+    this.onResize(event);
 
   }
 
@@ -438,6 +457,7 @@ export class TeacherAttendanceComponent implements OnInit {
     this.yearMonth = true;
     this.academicYear = undefined;
     this.period = 'overall';
+    this.levelWise = "District";
     this.month_year = {
       month: null,
       year: null
@@ -451,7 +471,6 @@ export class TeacherAttendanceComponent implements OnInit {
 
   async districtWise() {
     this.commonAtStateLevel();
-    this.levelWise = "District";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
@@ -478,7 +497,7 @@ export class TeacherAttendanceComponent implements OnInit {
             var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(this.markers[i]['district_id']);
             distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 5, 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 5), 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
         }
@@ -488,7 +507,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-        globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
+        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -538,7 +557,7 @@ export class TeacherAttendanceComponent implements OnInit {
             var color = this.commonService.color(this.markers[i], 'attendance');
             this.blocksIds.push(this.markers[i]['block_id']);
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 3.5, 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(12, 8, 6, 3.5), 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -546,7 +565,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
+          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
@@ -606,7 +625,7 @@ export class TeacherAttendanceComponent implements OnInit {
               clustNames.push({ id: this.markers[i]['cluster_id'], name: 'NO NAME FOUND', blockId: this.markers[i]['block_id'] });
             }
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 1, 0.01, 0.5, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(2.5, 2, 1.5, 1), 0.01, 0.5, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
@@ -617,7 +636,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
+          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
@@ -668,14 +687,14 @@ export class TeacherAttendanceComponent implements OnInit {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(sorted[i]['district_id']);
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 0, 0, 0.3, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(1.5, 1.2, 1, 0), 0, 0.3, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
           globalMap.doubleClickZoom.enable();
           globalMap.scrollWheelZoom.enable();
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
+          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
           this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
@@ -719,7 +738,6 @@ export class TeacherAttendanceComponent implements OnInit {
     this.clustName = '';
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng; globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
     this.markerData = {};
     this.myDistrict = null;
   }
@@ -901,7 +919,7 @@ export class TeacherAttendanceComponent implements OnInit {
           var color = this.commonService.color(this.markers[i], 'attendance');
           this.blocksIds.push(this.markers[i]['block_id']);
           blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 3.5, 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -909,7 +927,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 1)
+        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 1)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -1023,7 +1041,7 @@ export class TeacherAttendanceComponent implements OnInit {
           } else {
             clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
           }
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 3.5, 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
 
@@ -1032,7 +1050,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 3)
+        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 3)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -1166,13 +1184,13 @@ export class TeacherAttendanceComponent implements OnInit {
         let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         for (var i = 0; i < sorted.length; i++) {
           var color = this.commonService.color(this.markers[i], 'attendance');
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 3.5, 0.1, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.1, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 5)
+        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 5)
         this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -1315,5 +1333,6 @@ export class TeacherAttendanceComponent implements OnInit {
     })
   }
 
-
+  public legendColors: any = ["#ff0000", "#e51a00", "#cb3400", "#b14e00", "#976800", "#7d8200", "#639c00", "#49b600", "#2fd000", "#00ff00"];
+  public values = ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100']
 }

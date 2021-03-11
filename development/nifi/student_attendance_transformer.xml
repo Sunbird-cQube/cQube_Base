@@ -8954,6 +8954,7 @@ district_longitude=excluded.district_longitude,created_on=excluded.created_on,up
         <value>select student_attendance_agg_refresh('last_1_day');
 select student_attendance_agg_refresh('last_7_days');
 select student_attendance_agg_refresh('last_30_days');
+delete from student_attendance_exception_agg where year =${hd:substringBefore('|')} and month=${hd:substringAfter('|')};
 delete from student_attendance_temp where ff_uuid='${zip_identifier}';</value>
     </entry>
     <entry>
@@ -28271,5 +28272,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/03/2021 22:56:04 IST</timestamp>
+    <timestamp>03/11/2021 18:13:06 IST</timestamp>
 </template>

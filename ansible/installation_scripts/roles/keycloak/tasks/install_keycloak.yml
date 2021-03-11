@@ -69,7 +69,7 @@
   template:
     src: standalone.xml.j2
     dest: "{{ base_dir }}/cqube/keycloak/standalone/configuration/standalone.xml"
-  tags: install
+  tags: [ install, update ]
 
 - name: keycloak systemd service enable and start
   service:
