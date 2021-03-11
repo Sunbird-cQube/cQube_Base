@@ -5987,6 +5987,7 @@ reason_desc text,
 total_score double precision,
 score double precision,
 is_offline boolean,
+ff_uuid text,
 created_on  TIMESTAMP without time zone, 
 updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_hierarchy_details(school_id)
@@ -6006,6 +6007,7 @@ longitude  double precision,
 in_school_location  boolean,
 year int,
 month int,
+ff_uuid text,
 created_on  TIMESTAMP without time zone, 
 updated_on  TIMESTAMP without time zone
 -- ,foreign key (school_id) references school_hierarchy_details(school_id),
