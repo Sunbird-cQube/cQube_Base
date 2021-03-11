@@ -5965,3 +5965,53 @@ alter table diksha_content_temp add column if not exists dimensions_mode text, a
 alter table diksha_content_trans add column if not exists dimensions_mode text, add column if not exists dimensions_type text;
 
 
+/* crc_inspection_temp */
+
+create table if not exists crc_inspection_temp
+(
+crc_inspection_id bigint primary key not null,
+crc_id bigint,
+crc_name varchar(100),
+school_id  bigint,
+lowest_class smallint,
+highest_class smallint,
+visit_start_time TIME without time zone,
+visit_end_time TIME without time zone,
+total_class_rooms smallint,
+actual_class_rooms smallint,
+total_suggestion_last_month smallint,
+resolved_from_that smallint,
+is_inspection smallint,
+reason_type varchar(100),
+reason_desc text,
+total_score double precision,
+score double precision,
+is_offline boolean,
+ff_uuid text,
+created_on  TIMESTAMP without time zone, 
+updated_on  TIMESTAMP without time zone
+-- ,foreign key (school_id) references school_hierarchy_details(school_id)
+);
+
+
+/* crc_location_temp */
+
+create table if not exists crc_location_temp
+(
+crc_location_id bigint primary key not null,
+crc_id bigint,
+inspection_id  bigint,
+school_id  bigint ,
+latitude  double precision,
+longitude  double precision,
+in_school_location  boolean,
+year int,
+month int,
+ff_uuid text,
+created_on  TIMESTAMP without time zone, 
+updated_on  TIMESTAMP without time zone
+-- ,foreign key (school_id) references school_hierarchy_details(school_id),
+-- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
+);
+
+

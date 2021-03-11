@@ -7058,6 +7058,7 @@
 </entry>
 <entry>
     <key>schema-name</key>
+    <value>${schema.name}</value>
 </entry>
 <entry>
     <key>schema-version</key>
@@ -7067,9 +7068,11 @@
 </entry>
 <entry>
     <key>schema-text</key>
+    <value>${avro.schema}</value>
 </entry>
 <entry>
     <key>csv-reader-csv-parser</key>
+    <value>commons-csv</value>
 </entry>
 <entry>
     <key>Date Format</key>
@@ -7082,6 +7085,7 @@
 </entry>
 <entry>
     <key>CSV Format</key>
+    <value>custom</value>
 </entry>
 <entry>
     <key>Value Separator</key>
@@ -7093,12 +7097,15 @@
 </entry>
 <entry>
     <key>ignore-csv-header</key>
+    <value>false</value>
 </entry>
 <entry>
     <key>Quote Character</key>
+    <value>"</value>
 </entry>
 <entry>
     <key>Escape Character</key>
+    <value>\</value>
 </entry>
 <entry>
     <key>Comment Marker</key>
@@ -7108,9 +7115,11 @@
 </entry>
 <entry>
     <key>Trim Fields</key>
+    <value>true</value>
 </entry>
 <entry>
     <key>csvutils-character-set</key>
+    <value>UTF-8</value>
 </entry>
                             </properties>
                             <state>ENABLED</state>
@@ -9746,7 +9755,7 @@ file: ${filename} null values are not found.</value>
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>100 MB</value>
+        <value>200 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -9776,7 +9785,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -17225,7 +17234,7 @@ file: ${filename} null values are not found.</value>
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>100 MB</value>
+        <value>200 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -17255,7 +17264,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -18443,7 +18452,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>100 MB</value>
+        <value>200 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -18473,7 +18482,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -21681,7 +21690,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_periodic_exa
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -22375,7 +22384,7 @@ same id data validation of file:${filename}, same id records found </value>
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>100 MB</value>
+        <value>200 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -22405,7 +22414,7 @@ same id data validation of file:${filename}, same id records found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -23435,7 +23444,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
     </entry>
     <entry>
         <key>Maximum Buffer Size</key>
-        <value>100 MB</value>
+        <value>200 MB</value>
     </entry>
     <entry>
         <key>Replacement Strategy</key>
@@ -23465,7 +23474,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -33590,5 +33599,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>02/25/2021 10:51:46 IST</timestamp>
+    <timestamp>03/11/2021 18:13:14 IST</timestamp>
 </template>
