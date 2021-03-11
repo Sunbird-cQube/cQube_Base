@@ -997,19 +997,13 @@ select data.*,now(),now() from
 ((select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,
 content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,
-case when replace(upper(derived_loc_district),'' '','''') in (''CHHOTAUDEPUR'',''CHHOTAUDAIPUR'') then ''CHHOTAUDEPUR'' 
-       when replace(upper(derived_loc_district),'' '','''') in (''DOHAD'',''DAHOD'') then ''DOHAD''																									
-       when replace(upper(derived_loc_district),'' '','''') in (''PANCHMAHALS'',''PANCHMAHAL'') then ''PANCHMAHALS'' 
-       when replace(upper(derived_loc_district),'' '','''') in (''MAHESANA'',''MEHSANA'') then ''MAHESANA''
-       when replace(upper(derived_loc_district),'' '','''') in (''THEDANGS'',''DANG'',''DANGS'') then ''THEDANGS'' 
-       when derived_loc_district is NULL then ''OTHERS''
-	   WHEN upper(derived_loc_district) not in (select distinct upper(shd.district_name) from school_hierarchy_details shd) THEN ''OTHERS''
-       else replace(upper(derived_loc_district),'' '','''') end as district_name,
+case WHEN lower(derived_loc_district) not in (select distinct lower(shd.district_name) from school_hierarchy_details shd) THEN ''others''
+       else derived_loc_district end as derived_loc_district,
 user_signin_type,user_login_type,
 collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
 total_time_spent,dimensions_mode,dimensions_type from diksha_content_temp )
- except (select content_view_date,dimensions_pdata_id,
+ except all (select content_view_date,dimensions_pdata_id,
 	dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,
 	content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
@@ -1020,7 +1014,6 @@ Execute transaction_insert;
 return 0;
 END;
 $$LANGUAGE plpgsql;
-
 
 
 CREATE OR REPLACE FUNCTION insert_diksha_agg()
