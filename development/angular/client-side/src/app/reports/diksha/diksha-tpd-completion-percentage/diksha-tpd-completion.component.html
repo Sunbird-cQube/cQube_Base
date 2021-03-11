@@ -2,12 +2,12 @@
     <div class="row">
         <div class="col-lg-9 col-md-9 col-sm-12">
             <div *ngIf='skul'>
-                <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist">
                     Diksha TPD Report for Completion Percentage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
-                <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="block">
                     Diksha TPD Report for Completion Percentage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistSelect(districtHierarchy.distId)"
@@ -15,7 +15,7 @@
                         {{districtHierarchy.districtName}}</span> </p>
             </div>
             <div *ngIf="blok">
-                <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="cluster">
                     Diksha TPD Report for Completion Percentage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistSelect(blockHierarchy.distId)"
@@ -27,7 +27,7 @@
             </div>
 
             <div *ngIf="clust">
-                <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="school">
                     Diksha TPD Report for Completion Percentage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistSelect(clusterHierarchy.distId)"
@@ -44,18 +44,14 @@
         <div class="col-lg-3 col-md-3 col-sm-12">
             <div class="row">
                 <div class="col-sm-0" style="display: none;">
-                    <p id="errMsg"
-                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
+                    <p id="errMsg">
                     </p>
                 </div>
                 <div class="col-sm-12">
                     <em class="fa fa-cloud-download" title="Download Report" id="download"
-                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                         (click)="downloadRoport()"></em>
 
-                    <em class="fa fa-home" id="home" title="Home"
-                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
-                        alt="Home" (click)="homeClick()"></em>
+                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="homeClick()"></em>
                     <span id="rawDownload" *ngIf="reportData.length > 0"
                         style="color: #284d8a;cursor: pointer; float: right; margin: 8px 20px 0px 0px; text-decoration: underline; font-size: 13px;"
                         (click)="downloadRawFile()"><strong>Download Raw
@@ -67,48 +63,41 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <p style="text-align: justify; font-size: 11px;">
+            <p id="note">
                 <strong> About the dashboard:</strong> The dashboard provides information on the % of teachers who have
                 completed Teacher Professional Development courses at the district level.
             </p>
         </div>
     </div>
-    <div class="row" style="margin-top: 5px;">
+    <div class="row">
         <div class="col-sm-12">
-            <select id="coll_name"
-                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="collectionName" name="collectionName" (change)="getDataBasedOnCollections()">
+            <select id="coll_name" [(ngModel)]="collectionName" name="collectionName"
+                (change)="getDataBasedOnCollections()">
                 <option [value]="collectionName" disabled selected="selected">Choose course name
                 </option>
-                <option *ngFor="let collectionName of collectionNames; let i = index" [(ngValue)]="collectionNames[i]"
-                    style=" font-size: 11px;">
+                <option *ngFor="let collectionName of collectionNames; let i = index" [(ngValue)]="collectionNames[i]">
                     {{collectionNames[i]}}
                 </option>
             </select>
 
-            <select id="choose_dist"
-                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="districtId" (change)="onDistSelect(districtId)">
+            <select id="choose_dist" [(ngModel)]="districtId" (change)="onDistSelect(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
-                <option *ngFor="let dist of districts" [(ngValue)]="dist.district_id" style=" font-size: 11px;">
+                <option *ngFor="let dist of districts" [(ngValue)]="dist.district_id">
                     {{dist.district_name}}
                 </option>
             </select>
 
-            <select [hidden]="blockHidden" id="choose_block"
-                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="blockId" (change)="onBlockSelect(blockId)">
+            <select [hidden]="blockHidden" id="choose_block" [(ngModel)]="blockId" (change)="onBlockSelect(blockId)">
                 <option [value]="blockId" disabled selected="selected">Choose a Block</option>
-                <option *ngFor="let block of blocks" [(ngValue)]="block.block_id" style="font-size: 11px;">
+                <option *ngFor="let block of blocks" [(ngValue)]="block.block_id">
                     {{block.block_name}}
                 </option>
             </select>
 
-            <select [hidden]="clusterHidden" id="choose_cluster"
-                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="clusterId" (change)="onClusterSelect(clusterId)">
+            <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="clusterId"
+                (change)="onClusterSelect(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
-                <option *ngFor="let cluster of clusters" [(ngValue)]="cluster.cluster_id" style="font-size: 11px; "
+                <option *ngFor="let cluster of clusters" [(ngValue)]="cluster.cluster_id"
                     [ngStyle]="{'color': cluster.clusters !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                     {{cluster.cluster_name}}
                 </option>
@@ -117,7 +106,7 @@
         </div>
     </div>
 
-    <div class="row" style="margin-top: 10px;" id="chart">
+    <div class="row" id="chart">
         <div class="col-lg-1"> </div>
         <div class="col-lg-10" id="r1">
             <app-bar-chart *ngIf="chartData.length > 0" [category]="category" [data]="chartData"

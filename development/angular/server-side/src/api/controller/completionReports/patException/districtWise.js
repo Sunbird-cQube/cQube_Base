@@ -51,7 +51,6 @@ router.post('/grades', async (req, res, next) => {
         } else {
             fileName = `pat/${period}/pat_metadata.json`;
         }
-        console.log(fileName)
 
         var data = await s3File.readS3File(fileName);
         logger.info('---grades metadata api response sent---');
