@@ -74,90 +74,82 @@
             </p>
         </div>
     </div>
-    <div class="col-sm-12">
-        <div class="row">
-            <div class="col-sm-6">
+    <div class="row">
+        <!-- [ngStyle]="{height: height > 1760 ? '78vh': height > 1180 && height < 1760 ? '80vh': height > 667 && height < 1180 ? '76vh':'69vh'}"> -->
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-4">
+                    <span class="chooseLevel">X-Axis: &nbsp;</span> <select id="x-axis" [(ngModel)]="xAxis" name="xAxis"
+                        (change)="selectAxis()">
+                        <option [value]="xAxis" disabled selected="selected">choose
+                            x-axis
+                        </option>
+                        <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis.key">
+                            {{xaxis.value}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <span class="chooseLevel">Y-Axis: &nbsp;</span> <select id="y-axis" [(ngModel)]="yAxis" name="yAxis"
+                        (change)="selectAxis()">
+                        <option [value]="yAxis" disabled selected="selected">choose
+                            y-axis
+                        </option>
+                        <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key">
+                            {{yaxis.value}}
+                        </option>
+                    </select>
+                </div>
             </div>
-            <div class="col-sm-6">
+            <br>
+            <p id="note">
+                <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
+                dropdown above. You can
+                alter the metrics to update the scatter plot.
+            </p>
+            <br>
+            <div class="row">
+                <canvas id="myChart" width="100%"></canvas>
             </div>
         </div>
-        <div class="row">
-            <!-- [ngStyle]="{height: height > 1760 ? '78vh': height > 1180 && height < 1760 ? '80vh': height > 667 && height < 1180 ? '76vh':'69vh'}"> -->
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <span class="chooseLevel">X-Axis: &nbsp;</span> <select id="x-axis" [(ngModel)]="xAxis"
-                            name="xAxis" (change)="selectAxis()">
-                            <option [value]="xAxis" disabled selected="selected">choose
-                                x-axis
-                            </option>
-                            <option *ngFor="let xaxis of xAxisFilter" [(ngValue)]="xaxis.key">
-                                {{xaxis.value}}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-sm-4">
-                        <span class="chooseLevel">Y-Axis: &nbsp;</span> <select id="y-axis" [(ngModel)]="yAxis"
-                            name="yAxis" (change)="selectAxis()">
-                            <option [value]="yAxis" disabled selected="selected">choose
-                                y-axis
-                            </option>
-                            <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key">
-                                {{yaxis.value}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <p id="note">
-                    <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
-                    dropdown above. You can
-                    alter the metrics to update the scatter plot.
-                </p>
-                <div class="row">
-                    <canvas id="myChart" width="100%"></canvas>
-                </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <select id="choose_dist" [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
+                    <option [value]="myDistrict" disabled selected="selected">Choose a District
+                    </option>
+                    <option *ngFor="let dist of SchoolInfrastructureDistrictsNames" [(ngValue)]="dist.district.id">
+                        {{dist.district.value}}
+                    </option>
+                </select>
+
+                <select [hidden]="blockHidden" id="choose_block" [(ngModel)]="myBlock" name="myBlock"
+                    (change)="myBlockData(myBlock)">
+                    <option [value]="myBlock" disabled selected="selected">Choose a Block
+                    </option>
+                    <option *ngFor="let block of SchoolInfrastructureBlocksNames" [(ngValue)]="block.block.id">
+                        {{block.block.value}}
+                    </option>
+                </select>
+
+                <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="myCluster" name="myCluster"
+                    (change)="myClusterData(myCluster)">
+                    <option [value]="myCluster" disabled selected="selected">Choose a Cluster
+                    </option>
+                    <option *ngFor="let cluster of SchoolInfrastructureClusterNames" [(ngValue)]="cluster.cluster.id"
+                        [ngStyle]="{'color': cluster.cluster.value !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
+                        {{cluster.cluster.value}}
+                    </option>
+                </select>
             </div>
-            <div class="col-sm-6">
-                <div class="row">
-                    <select id="choose_dist" [(ngModel)]="myDistrict" name="myDistrict"
-                        (change)="myDistData(myDistrict)">
-                        <option [value]="myDistrict" disabled selected="selected">Choose a District
-                        </option>
-                        <option *ngFor="let dist of SchoolInfrastructureDistrictsNames" [(ngValue)]="dist.district.id">
-                            {{dist.district.value}}
-                        </option>
-                    </select>
-
-                    <select [hidden]="blockHidden" id="choose_block" [(ngModel)]="myBlock" name="myBlock"
-                        (change)="myBlockData(myBlock)">
-                        <option [value]="myBlock" disabled selected="selected">Choose a Block
-                        </option>
-                        <option *ngFor="let block of SchoolInfrastructureBlocksNames" [(ngValue)]="block.block.id">
-                            {{block.block.value}}
-                        </option>
-                    </select>
-
-                    <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="myCluster" name="myCluster"
-                        (change)="myClusterData(myCluster)">
-                        <option [value]="myCluster" disabled selected="selected">Choose a Cluster
-                        </option>
-                        <option *ngFor="let cluster of SchoolInfrastructureClusterNames"
-                            [(ngValue)]="cluster.cluster.id"
-                            [ngStyle]="{'color': cluster.cluster.value !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
-                            {{cluster.cluster.value}}
-                        </option>
-                    </select>
-                </div>
-                <p id="note">
-                    <strong> NOTE:</strong> The table provides information about the various metrics. You can sort the
-                    entire table based on any metrics available in this table.
-                </p>
-                <div class="myDiv">
-                    <table #dataTable id="table" class="display responsive cell-border">
-                    </table>
-                </div>
+            <br>
+            <p id="note">
+                <strong> NOTE:</strong> The table provides information about the various metrics. You can sort the
+                entire table based on any metrics available in this table.
+            </p>
+            <div class="myDiv">
+                <table #dataTable id="table" class="display responsive cell-border">
+                </table>
             </div>
-
         </div>
     </div>
 </div>
