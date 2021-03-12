@@ -369,7 +369,6 @@ export class SatReportComponent implements OnInit {
           }
           // to show only in dropdowns
           this.allDistricts = this.districtMarkers = this.data;
-          this.allDistricts.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
 
           if (!this.districtMarkers[0]['Subjects']) {
             this.distFilter = this.districtMarkers;
@@ -390,6 +389,7 @@ export class SatReportComponent implements OnInit {
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
           this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           this.genericFun(this.myDistData, options, this.fileName);
+          this.allDistricts.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
 
         }, err => {
           this.data = [];
