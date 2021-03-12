@@ -42,7 +42,7 @@ export class SchoolInfrastructureComponent implements OnInit {
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
-  public skul: boolean = false;
+  public skul: boolean = true;
 
   public title: string = '';
   public titleName: string = '';
@@ -65,8 +65,14 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
-    this.districtWise();
+    this.onResize();
     document.getElementById('spinner').style.display = 'block';
+  }
+
+  height = window.innerHeight;
+  onResize() {
+    this.height = window.innerHeight;
+    this.levelWiseFilter();
   }
 
   public tableHead: any;
@@ -113,7 +119,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
       // for table 
       var dataSet = this.result;
-      this.createTable(dataSet);
+      this.createTable(dataSet, this.height);
       //========================
       this.SchoolInfrastructureDistrictsNames.sort((a, b) => (a.district.value > b.district.value) ? 1 : ((b.district.value > a.district.value) ? -1 : 0));
       this.commonService.loaderAndErr(this.result);
@@ -169,7 +175,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       this.SchoolInfrastructureBlocksNames.sort((a, b) => (a.block.value > b.block.value) ? 1 : ((b.block.value > a.block.value) ? -1 : 0));
       // for table data
       var dataSet = this.result;
-      this.createTable(dataSet);
+      this.createTable(dataSet, this.height);
       //========================
 
       this.commonService.loaderAndErr(this.result);
@@ -228,7 +234,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
       // for table data
       var dataSet = this.result;
-      this.createTable(dataSet);
+      this.createTable(dataSet, this.height);
       //========================
 
       this.commonService.loaderAndErr(this.result);
@@ -284,7 +290,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
       // for table data
       var dataSet = this.result;
-      this.createTable(dataSet);
+      this.createTable(dataSet, this.height);
       //========================
 
       this.commonService.loaderAndErr(this.result);
@@ -453,6 +459,9 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   selectAxis() {
+    this.levelWiseFilter();
+  }
+  levelWiseFilter() {
     if (this.skul) {
       this.districtWise();
     }
@@ -467,7 +476,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     }
   }
 
-  createTable(dataSet) {
+  createTable(dataSet, height) {
     if ($.fn.DataTable.isDataTable('#table')) {
       $('#table').DataTable().destroy();
       $('#table').empty();
@@ -542,7 +551,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       $("#table").append(body);
       $('#table').DataTable({
         destroy: true, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: "40vh", scrollX: true,
+        bPaginate: false, scrollY: height > 1760 ? '67vh' : height > 1180 && height < 1760 ? '58vh' : height > 667 && height < 1180 ? '54vh' : '42vh', scrollX: true,
         scrollCollapse: true, paging: false, searching: false,
         fixedColumns: {
           leftColumns: 1
@@ -552,6 +561,8 @@ export class SchoolInfrastructureComponent implements OnInit {
   }
 
   createChart(labels, chartData, name, obj) {
+    var ctx = $('#myChart');
+    ctx.attr('height', this.height > 1760 ? '71vh' : this.height > 1180 && this.height < 1760 ? '66vh' : this.height > 667 && this.height < 1180 ? '60vh' : '52vh');
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
       data: {
@@ -559,7 +570,10 @@ export class SchoolInfrastructureComponent implements OnInit {
         datasets: [{
           data: chartData,
           pointBackgroundColor: "#4890b5",
-          pointRadius: 6
+          pointBorderColor: '#7cd6cc',
+          pointBorderWidth: 0.5,
+          pointRadius: this.height > 1760 ? 16 : this.height > 1180 && this.height < 1760 ? 10 : this.height > 667 && this.height < 1180 ? 8 : 5,
+          pointHoverRadius: this.height > 1760 ? 18 : this.height > 1180 && this.height < 1760 ? 12 : this.height > 667 && this.height < 1180 ? 9 : 6,
         }]
       },
       options: {
@@ -568,6 +582,12 @@ export class SchoolInfrastructureComponent implements OnInit {
         },
         responsive: true,
         tooltips: {
+          titleFontSize: 16,
+          cornerRadius: 10,
+          xPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
+          yPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
+          bodyFontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
+          displayColors: false,
           custom: function (tooltip) {
             if (!tooltip) return;
             // disable displaying the color box;
@@ -600,13 +620,14 @@ export class SchoolInfrastructureComponent implements OnInit {
             ticks: {
               fontColor: 'black',
               min: 0,
-              max: 100
+              max: 100,
+              fontSize: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 23 : this.height > 667 && this.height < 1180 ? 13 : 10,
             },
             scaleLabel: {
               fontColor: "black",
               display: true,
               labelString: obj.xAxis,
-              fontSize: 12,
+              fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
             }
           }],
           yAxes: [{
@@ -616,13 +637,14 @@ export class SchoolInfrastructureComponent implements OnInit {
             ticks: {
               fontColor: 'black',
               min: 0,
-              max: 100
+              max: 100,
+              fontSize: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 23 : this.height > 667 && this.height < 1180 ? 13 : 10,
             },
             scaleLabel: {
               fontColor: "black",
               display: true,
               labelString: obj.yAxis,
-              fontSize: 12,
+              fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
             }
           }]
         }

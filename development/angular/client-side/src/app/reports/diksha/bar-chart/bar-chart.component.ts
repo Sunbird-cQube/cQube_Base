@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, Input, OnInit } from "@angular/core";
 import * as Highcharts from 'highcharts/highstock'
-import { post } from "jquery";
 
 @Component({
   selector: 'app-bar-chart',
@@ -17,11 +16,20 @@ export class BarChartComponent implements OnInit {
   @Input() public reportName: String;
   @Input() public level: String;
   @Input() public type: String;
+  @Input() height: any = window.innerHeight;
 
-  constructor() { }
+  constructor(public changeDetection: ChangeDetectorRef) {
+  }
+
+  onResize() {
+    this.height = window.innerHeight;
+    this.createBarChart();
+  }
+
 
   ngOnInit() {
-    this.createBarChart();
+    this.changeDetection.detectChanges();
+    this.onResize();
   }
 
   createBarChart() {
@@ -47,7 +55,7 @@ export class BarChartComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: "10px"
+            fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px"
           }
         },
         type: "category",
@@ -57,13 +65,14 @@ export class BarChartComponent implements OnInit {
           text: this.yAxisLabel,
           style: {
             color: 'black',
-            fontSize: "10px",
+            fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px",
             fontWeight: "bold"
           }
         },
         min: 0,
         max: 25,
         scrollbar: {
+          minWidth: 6,
           enabled: scrollBarX,
         },
         tickLength: 0
@@ -72,7 +81,7 @@ export class BarChartComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: "10px"
+            fontSize: this.height > 1760 ? "26px" : this.height > 1180 && this.height < 1760 ? "16px" : this.height > 667 && this.height < 1180 ? "12px" : "10px"
           },
           formatter: function () {
             return this.value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -86,7 +95,7 @@ export class BarChartComponent implements OnInit {
           text: this.xAxisLabel,
           style: {
             color: 'black',
-            fontSize: "10px",
+            fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px",
             fontWeight: "bold"
           }
         }
@@ -114,7 +123,7 @@ export class BarChartComponent implements OnInit {
             enabled: true,
             style: {
               fontWeight: 1,
-              fontSize: "10px"
+              fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px"
             },
             formatter: function () {
               return this.y.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -125,6 +134,11 @@ export class BarChartComponent implements OnInit {
         }
       ],
       tooltip: {
+        style: {
+          fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px",
+          opacity: 1,
+          backgroundColor: "white"
+        },
         formatter: function () {
           return '<b>' + getPointCategoryName(this.point, name, level, type) + '</b>';
         }

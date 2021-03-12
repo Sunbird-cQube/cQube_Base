@@ -9,3 +9,164 @@
     transform: scale(1.12); 
     color: rgb(66, 148, 241);
   }
+
+
+
+#header{
+  height: 35px; 
+}
+
+img{
+  height:30px; 
+  width:90px;
+}
+
+#logout{
+  padding: 1.5px; 
+  cursor: pointer; 
+  font-size: 13px;
+}
+
+.fa-sign-out{
+  font-size: 10px;
+}
+
+#cQb_dhsbrd_outer, #admin_console_outer{
+  padding: 10px;
+  width: 250px; 
+  margin: 0px auto;
+}
+
+#cQb_dhsbrd{
+  width: 100%; border: 1px solid gray; color: #284d8a; font-size: 15px;
+}
+
+#admin_console{
+  width: 100%;   border: 1px solid gray;color: #284d8a; font-size: 15px;
+}
+
+.outer{
+  margin-top: 150px;
+}
+
+@media screen and (min-width: 1920px){
+  #header{
+    height: 50px; 
+  }
+  
+  img{
+    height:45px; 
+    width:120px;
+  }
+  
+  #logout{
+    padding: 1.5px; 
+    cursor: pointer; 
+    font-size: 16px;
+  }
+
+  .fa-sign-out{
+    font-size: 14px;
+  }
+  
+  #cQb_dhsbrd_outer, #admin_console_outer{
+    padding: 14px;
+    width: 350px; 
+    margin: 0px auto;
+  }
+
+  #cQb_dhsbrd{
+    width: 100%; border: 1px solid gray; color: #284d8a; font-size: 18px;
+  }
+  
+  #admin_console{
+    width: 100%;   border: 1px solid gray;color: #284d8a; font-size: 18px;
+  }
+
+  .outer{
+    margin-top: 220px;
+  }
+}
+
+@media screen and (min-width: 2520px){
+  #header{
+    height: 60px; 
+  }
+  
+  img{
+    height:55px; 
+    width:140px;
+  }
+  
+  #logout{
+    padding: 2px; 
+    cursor: pointer; 
+    font-size: 22px;
+  }
+
+  .fa-sign-out{
+    font-size: 20px;
+  }
+  
+  #cQb_dhsbrd_outer, #admin_console_outer{
+    padding: 17px;
+    width: 450px; 
+    margin: 0px auto;
+  }
+
+  #cQb_dhsbrd{
+    width: 100%; border: 1px solid gray; color: #284d8a; font-size: 26px;
+  }
+  
+  #admin_console{
+    width: 100%;   border: 1px solid gray;color: #284d8a; font-size: 26px;
+  }
+
+  .outer{
+    margin-top: 300px;
+  }
+}
+
+@media screen and (min-width: 3820px){
+  #header{
+    height: 65px !important; 
+  }
+  
+  img{
+    height:60px !important; 
+    width:160px !important;
+  }
+  
+  #logout{
+    padding: 2.2px !important; 
+    cursor: pointer; 
+    font-size: 28px !important;
+  }
+
+  .fa-sign-out{
+    font-size: 36px !important;
+  }
+  
+  #cQb_dhsbrd_outer, #admin_console_outer{
+    padding: 20px !important;
+    width: 550px !important; 
+    margin: 0px auto;
+  }
+  #cQb_dhsbrd{
+    width: 100%; 
+    border: 1px solid gray; 
+    color: #284d8a;
+    font-size: 38px !important;
+  }
+  
+  #admin_console{
+    width: 100%;   
+    border: 1px solid gray;
+    color: #284d8a;
+    font-size: 38px !important;
+  }
+
+  .outer{
+    margin-top: 550px !important;
+  }
+}

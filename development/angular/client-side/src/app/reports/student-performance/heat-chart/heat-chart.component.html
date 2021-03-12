@@ -2,12 +2,12 @@
     <div class="row">
         <div class="col-sm-8">
             <div *ngIf='skul'>
-                <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist">
                     Periodic Assessment Test LO Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
-                <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="block">
                     Periodic Assessment Test LO Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="selectedDistrict(districtHierarchy.distId)"
@@ -15,7 +15,7 @@
                         {{districtHierarchy.districtName}}</span> </p>
             </div>
             <div *ngIf="blok">
-                <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="cluster">
                     Periodic Assessment Test LO Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="selectedDistrict(blockHierarchy.distId)"
@@ -27,7 +27,7 @@
             </div>
 
             <div *ngIf="clust">
-                <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="school">
                     Periodic Assessment Test LO Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="selectedDistrict(clusterHierarchy.distId)"
@@ -59,26 +59,21 @@
     </div>
     <div class="row">
         <div class="col-md-12" style="margin-bottom: 10px;">
-            <select [hidden]="" id="year"
-                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="year" (change)="selectedYear()">
+            <select id="year" class="select-control" [(ngModel)]="year" (change)="selectedYear()">
                 <option value="" disabled selected="selected">Choose Academic Year</option>
                 <option *ngFor="let year of years let i =index" [(ngValue)]="years[i]">
                     {{years[i]}}
                 </option>
             </select>
-            <select [hidden]="" id="month" required
-                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="month" (change)="selectedMonth()">
+            <select id="month" required class="select-control" [(ngModel)]="month"
+                (change)="selectedMonth()">
                 <option [value]="month" disabled selected="selected">Choose a Month</option>
                 <option *ngFor="let month of months let i =index" [(ngValue)]="months[i]">
                     {{months[i]}}
                 </option>
             </select>
 
-            <select [hidden]="" id="grade"
-                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="grade" (change)="selectedGrade()">
+            <select id="grade" class="select-control" [(ngModel)]="grade" (change)="selectedGrade()">
                 <option [value]="grade" disabled selected="selected">Choose a Grade</option>
                 <option *ngFor="let grade of grades, let i =index" [(ngValue)]="grade.grade">
                     <span *ngIf="grade.grade == 'all'; else other_content">
@@ -88,9 +83,8 @@
                 </option>
             </select>
 
-            <select *ngIf="gradeSelected" [hidden]="" id="subject"
-                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="subject" (change)="selectedSubject()">
+            <select *ngIf="gradeSelected" id="subject" class="select-control" [(ngModel)]="subject"
+                (change)="selectedSubject()">
                 <option [value]="subject" disabled selected="selected">Choose a Subject</option>
                 <option *ngFor="let subject of subjects, let i =index" [(ngValue)]="subject.subject">
                     <span *ngIf="subject.subject == 'all'; else other_content">
@@ -100,9 +94,8 @@
                 </option>
             </select>
 
-            <select *ngIf="gradeSelected" [hidden]="" id="examDate"
-                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="examDate" (change)="selectedExamDate()">
+            <select *ngIf="gradeSelected" id="examDate" class="select-control" [(ngModel)]="examDate"
+                (change)="selectedExamDate()">
                 <option [value]="examDate" disabled selected="selected">Choose an Examdate</option>
                 <option *ngFor="let examDate of examDates, let i =index" [(ngValue)]="examDate.exam_date">
                     <span *ngIf="examDate.exam_date == 'all'; else other_content">
@@ -112,18 +105,15 @@
                 </option>
             </select>
 
-            <select *ngIf="gradeSelected" id="viewBy"
-                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="viewBy" (change)="selectedViewBy()">
+            <select *ngIf="gradeSelected" id="viewBy" class="select-control" [(ngModel)]="viewBy"
+                (change)="selectedViewBy()">
                 <option [value]="viewBy" disabled selected="selected">Choose View by</option>
                 <option *ngFor="let viewBy of allViews, let i =index" [(ngValue)]="viewBy.key">
                     {{viewBy.value}}
                 </option>
             </select>
 
-            <select id="district"
-                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="district" (change)="selectedDistrict(district)">
+            <select id="district" class="select-control" [(ngModel)]="district" (change)="selectedDistrict(district)">
                 <option [value]="district" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let district of districtNames, let i =index" [(ngValue)]="district.district_id">
                     {{district.district_name}}
@@ -131,17 +121,15 @@
             </select>
 
 
-            <select [hidden]="blockHidden" id="block"
-                style="margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="block" (change)="selectedBlock(block)">
+            <select [hidden]="blockHidden" id="block" class="select-control" [(ngModel)]="block"
+                (change)="selectedBlock(block)">
                 <option [value]="block" disabled selected="selected">Choose a Block</option>
                 <option *ngFor="let block of blockNames, let i =index" [(ngValue)]="block.block_id">
                     {{block.block_name}}
                 </option>
             </select>
-            <select [hidden]="clusterHidden" id="cluster"
-                style="margin-right: 0px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="cluster" (change)="selectedCluster(cluster)">
+            <select [hidden]="clusterHidden" id="cluster" class="select-control mr-0" [(ngModel)]="cluster"
+                (change)="selectedCluster(cluster)">
                 <option [value]="cluster" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of clusterNames, let i =index" [(ngValue)]="cluster.cluster_id">
                     {{cluster.cluster_name}}

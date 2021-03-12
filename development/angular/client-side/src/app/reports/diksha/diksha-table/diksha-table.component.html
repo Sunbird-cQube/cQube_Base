@@ -2,12 +2,12 @@
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-12">
             <div *ngIf='all'>
-                <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist_level">
                     {{header}} Content Usage: <span (click)="default()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
-                <p id="block_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="block_level">
                     {{header}} Content Usage: <span (click)="default()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="districtWise(districtId)" style="cursor: pointer;text-decoration: underline;">
@@ -38,7 +38,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <p style="text-align: justify; font-size: 11px;">
+            <p class="report-subtitle">
                 <strong> About the dashboard:</strong> The dashboard provides information on the total content plays at
                 the content level for Teacher Professional Development courses at the district level.
             </p>
@@ -47,8 +47,7 @@
 
     <div class="row" style="margin-top: 5px;">
         <div class="col-sm-12">
-            <select id="time_range"
-                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+            <select id="time_range" class="select-control"
                 [(ngModel)]="timePeriod" name="timePeriod" (change)="timeRange(timePeriod)">
                 <option [value]="timePeriod" disabled selected="selected">Choose Time Range
                 </option>
@@ -56,15 +55,14 @@
                     {{time.name}}
                 </option>
             </select>
-            <select id="choose_dist"
-                style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+            <select id="choose_dist" class="select-control"
                 [(ngModel)]="districtId" (change)="districtWise(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtsDetails" [(ngValue)]="dist.district_id" style=" font-size: 11px;">
                     {{dist.district_name}}
                 </option>
             </select>
-          <div style="float: right; margin-top: -5px;">
+          <div class="search-container">
             Search:  <input type="search" id="search-inp"/>
           </div>
         </div>
@@ -72,7 +70,7 @@
     <hr>
 
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 dataTableCustom">
             <table #DataTable id="table" class="display nowrap" width="100%"
                 style="font-size: 12px; text-align: center; ">
             </table>

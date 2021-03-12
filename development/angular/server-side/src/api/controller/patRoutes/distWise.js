@@ -37,7 +37,6 @@ router.post('/distWise', auth.authController, async (req, res) => {
 
         districtData = await s3File.readS3File(fileName);
         var mydata = districtData.data;
-
         logger.info('--- PAT dist wise api response sent ---');
         // , footer: districtData.AllDistrictsFooter
         res.status(200).send({ data: mydata });

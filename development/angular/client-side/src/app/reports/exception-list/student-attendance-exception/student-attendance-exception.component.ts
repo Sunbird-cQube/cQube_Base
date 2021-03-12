@@ -46,7 +46,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
-  public skul: boolean = false;
+  public skul: boolean = true;
   public hierName: any;
   public distName: any;
   public blockName: any;
@@ -54,7 +54,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
   public markerData;
   public layerMarkers: any = new L.layerGroup();
   public markersList = new L.FeatureGroup();
-  public levelWise: any;
+  public levelWise: any = 'District';
 
   // google maps zoom level
   public zoom: number = 7;
@@ -80,14 +80,32 @@ export class StudentAttendanceExceptionComponent implements OnInit {
   period = 'overall';
   timePeriod = {};
 
-  constructor(public http: HttpClient, public service: ExceptionReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
+  constructor(public http: HttpClient, public service: ExceptionReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) { }
 
+  width = window.innerWidth;
+  heigth = window.innerHeight;
+  onResize() {
+    this.width = window.innerWidth;
+    this.heigth = window.innerHeight;
+    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
+    this.levelWiseFilter();
   }
+  setZoomLevel(lat, lng, globalMap, zoomLevel) {
+    globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
+    globalMap.options.minZoom = this.commonService.zoomLevel;
+    this.changeDetection.detectChanges();
+  }
+  getMarkerRadius(rad1, rad2, rad3, rad4) {
+    let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
+    return radius;
+  }
+
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
-    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
     this.commonService.initMap('sarExpMap', [[this.lat, this.lng]]);
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     document.getElementById('homeBtn').style.display = 'block';
@@ -118,16 +136,18 @@ export class StudentAttendanceExceptionComponent implements OnInit {
             month: null,
             year: null
           };
-          this.districtWise();
+          this.onResize();
         }
       } else {
-        this.dateRange = ''; this.changeDetection.detectChanges();
+        this.dateRange = '';
+        this.changeDetection.detectChanges();
         document.getElementById('home').style.display = 'none';
         this.getMonthYear = {};
-        this.districtWise();
+        this.onResize();
       }
     }, err => {
-      this.dateRange = ''; this.changeDetection.detectChanges();
+      this.dateRange = '';
+      this.changeDetection.detectChanges();
       document.getElementById('home').style.display = 'none';
       this.getMonthYear = {};
       this.commonService.loaderAndErr(this.markers);
@@ -145,7 +165,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       period: null,
       report: 'sarException'
     }
-    this.levelWiseFilter();
+    this.onResize();
   }
 
   onPeriodSelect() {
@@ -163,7 +183,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       month: null,
       year: null
     };
-    this.levelWiseFilter();
+    this.onResize();
   }
 
   public fileName: any;
@@ -252,7 +272,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       month: this.month,
       year: this.year
     };
-    this.levelWiseFilter();
+    this.onResize();
   }
 
   levelWiseFilter() {
@@ -303,6 +323,8 @@ export class StudentAttendanceExceptionComponent implements OnInit {
   onClickHome() {
     this.yearMonth = true;
     this.period = 'overall';
+    this.levelWise = "District";
+    this.skul = true;
     this.month_year = {
       month: null,
       year: null
@@ -311,13 +333,12 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       period: this.period,
       report: 'sarException'
     }
-    this.districtWise();
+    this.onResize();
     document.getElementById('home').style.display = 'none';
   }
 
   async districtWise() {
     this.commonAtStateLevel();
-    this.levelWise = "District";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
@@ -343,7 +364,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
           for (var i = 0; i < this.markers.length; i++) {
             this.districtsIds.push(this.markers[i]['district_id']);
             distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 5, 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), this.getMarkerRadius(14, 10, 8, 5), 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
         }
@@ -353,7 +374,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-        globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
+        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.schoolsWithMissingData = (this.schoolsWithMissingData).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -400,7 +421,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
           for (let i = 0; i < this.markers.length; i++) {
             this.blocksIds.push(this.markers[i]['block_id']);
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), this.getMarkerRadius(12, 8, 6, 3.5), 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -408,7 +429,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
+          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.schoolsWithMissingData = (this.schoolsWithMissingData).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
@@ -462,7 +483,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
               clustNames.push({ id: this.markers[i]['cluster_id'], name: 'NO NAME FOUND', blockId: this.markers[i]['block_id'] });
             }
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 1, 0.01, 0.5, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), this.getMarkerRadius(3, 2, 1.5, 1), 0.01, 0.5, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
@@ -473,7 +494,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
+          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.schoolsWithMissingData = (this.schoolsWithMissingData).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
@@ -520,14 +541,14 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         if (this.markers.length !== 0) {
           for (let i = 0; i < this.markers.length; i++) {
             this.districtsIds.push(sorted[i]['district_id']);
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, 'red', 0, 0, 0.3, this.levelWise);
+            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, 'red', this.getMarkerRadius(1.5, 1.2, 1, 0), 0, 0.3, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
           globalMap.doubleClickZoom.enable();
           globalMap.scrollWheelZoom.enable();
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel);
+          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
           this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.schoolsWithMissingData = (this.schoolsWithMissingData).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
@@ -567,8 +588,8 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     this.titleName = '';
     this.clustName = '';
     this.lat = this.commonService.mapCenterLatlng.lat;
-    this.lng = this.commonService.mapCenterLatlng.lng; globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.lng = this.commonService.mapCenterLatlng.lng;
+    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
     this.markerData = {};
     this.myDistrict = null;
   }
@@ -746,7 +767,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         let colors = this.commonService.getRelativeColors(sorted, { value: 'percentage_schools_with_missing_data', report: 'exception' }); for (var i = 0; i < this.markers.length; i++) {
           this.blocksIds.push(this.markers[i]['block_id']);
           blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -754,7 +775,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 1)
+        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 1)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.schoolsWithMissingData = (this.schoolsWithMissingData).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -863,7 +884,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
           } else {
             clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
           }
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
 
@@ -872,7 +893,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 3)
+        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 3)
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.schoolsWithMissingData = (this.schoolsWithMissingData).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -1002,13 +1023,13 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
         let colors = this.commonService.getRelativeColors(sorted, { value: 'percentage_schools_with_missing_data', report: 'exception' }); this.markers = sorted;
         for (var i = 0; i < sorted.length; i++) {
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), 3.5, 0.1, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.commonService.relativeColorGredient(sorted[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.1, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        globalMap.setView(new L.LatLng(this.lat, this.lng), this.commonService.zoomLevel + 5)
+        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 5)
         this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.schoolsWithMissingData = (this.schoolsWithMissingData).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);

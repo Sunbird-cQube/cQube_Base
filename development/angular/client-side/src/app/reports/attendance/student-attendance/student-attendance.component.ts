@@ -1317,6 +1317,7 @@ export class StudengtAttendanceComponent implements OnInit {
       window.open(`${res['downloadUrl']}`, "_blank");
     }, err => {
       alert("No Raw Data File Available in Bucket");
+      document.getElementById('spinner').style.display = 'none';
     })
   }
 

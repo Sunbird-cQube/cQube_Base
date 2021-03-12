@@ -39,3 +39,61 @@
 .drop-show label span{
     display:inline-block;
 }
+
+@media only screen and (min-width: 2560px) {
+    .btn-primary {
+        padding: 12px !important;
+        font-size: 1.5rem !important;
+    }
+    
+    .btn-secondary {
+        padding: 12px !important;
+        width: 500px;
+    }
+
+    .btn-secondary span {
+        font-size: 1.5rem !important;
+    }
+
+    .drop-show #div1 {
+        height: 300px !important;
+    }
+
+    .drop-show label {
+        font-size: 1.5rem;
+    }
+
+    .drop-show label input[type="checkbox"] {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+}
+
+@media only screen and (min-width: 3840px) {
+    .btn-primary {
+        padding: 10px !important;
+        font-size: 1.8rem !important;
+    }
+
+    .btn-secondary {
+        padding: 10px !important;
+        width: 500px;
+    }
+
+    .btn-secondary span {
+        font-size: 1.8rem !important;
+    }
+
+    .drop-show #div1 {
+        height: 300px !important;
+    }
+
+    .drop-show label {
+        font-size: 1.9rem;
+    }
+
+    .drop-show label input[type="checkbox"] {
+        width: 2.4rem;
+        height: 2.4rem;
+    }
+}

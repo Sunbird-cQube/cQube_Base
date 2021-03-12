@@ -59,6 +59,12 @@ export class CompositReportComponent implements OnInit {
 
   selected = '';
 
+  height = window.innerHeight;
+  onResize() {
+    this.height = window.innerHeight;
+    this.levelWiseFilter();
+  }
+
 
   constructor(public http: HttpClient, public service: CompositReportService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent,) {
     localStorage.removeItem('resData');
@@ -68,6 +74,7 @@ export class CompositReportComponent implements OnInit {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
+    this.onResize();
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -543,6 +550,10 @@ export class CompositReportComponent implements OnInit {
   }
 
   selectAxis() {
+    this.levelWiseFilter();
+  }
+
+  levelWiseFilter() {
     if (this.skul) {
       if (this.downloadLevel == "dist") {
         this.districtWise();
@@ -568,8 +579,11 @@ export class CompositReportComponent implements OnInit {
   }
 
   createChart(labels, chartData, name, obj) {
+    var ctx = $('#myChart');
+    ctx.attr('height', this.height > 1760 ? '70vh' : this.height > 1180 && this.height < 1760 ? '66vh' : this.height > 667 && this.height < 1180 ? '55vh' : '50vh');
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
+
       data: {
         labels: labels,
         datasets: [{
@@ -577,16 +591,24 @@ export class CompositReportComponent implements OnInit {
           pointBackgroundColor: "#0850b8",
           pointBorderColor: '#7cd6cc',
           pointBorderWidth: 0.5,
-          pointRadius: 5
+          pointRadius: this.height > 1760 ? 16 : this.height > 1180 && this.height < 1760 ? 10 : this.height > 667 && this.height < 1180 ? 8 : 5,
+          pointHoverRadius: this.height > 1760 ? 18 : this.height > 1180 && this.height < 1760 ? 12 : this.height > 667 && this.height < 1180 ? 9 : 6,
         }]
       },
       options: {
         legend: {
           display: false
         },
+
         responsive: true,
         tooltips: {
-          custom: function (tooltip) {
+          titleFontSize: 16,
+          cornerRadius: 10,
+          xPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
+          yPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
+          bodyFontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
+          displayColors: false,
+                   custom: function (tooltip) {
             if (!tooltip) return;
             // disable displaying the color box;
             tooltip.displayColors = false;
@@ -610,14 +632,13 @@ export class CompositReportComponent implements OnInit {
             ticks: {
               fontColor: 'black',
               min: 0,
-              // max: 100
+              fontSize: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 23 : this.height > 667 && this.height < 1180 ? 13 : 10,
             },
             scaleLabel: {
               fontColor: "black",
               display: true,
               labelString: obj.xAxis,
-              fontSize: 12,
-              // fontColor: "dark gray"
+              fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
             }
           }],
           yAxes: [{
@@ -627,19 +648,19 @@ export class CompositReportComponent implements OnInit {
             ticks: {
               fontColor: 'black',
               min: 0,
-              // max: 100
+              fontSize: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 23 : this.height > 667 && this.height < 1180 ? 13 : 10,
             },
             scaleLabel: {
               fontColor: "black",
               display: true,
               labelString: obj.yAxis,
-              fontSize: 12,
-              // fontColor: "dark gray",
+              fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
             }
           }]
         }
       }
     });
+
   }
 
   funToDownload(data) {

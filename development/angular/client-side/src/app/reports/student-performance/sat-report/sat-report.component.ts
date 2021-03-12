@@ -54,6 +54,10 @@ export class SatReportComponent implements OnInit {
   public clusterMarkers: any = [];
   public schoolMarkers: any = [];
 
+  public allDistricts: any = [];
+  public allBlocks: any = [];
+  public allClusters: any = [];
+
   // to show and hide the dropdowns based on the selection of buttons
   public stateLevel: any = 0; // 0 for buttons and 1 for dropdowns
 
@@ -219,7 +223,8 @@ export class SatReportComponent implements OnInit {
 
       this.service.PATDistWiseData({ grade: this.grade, period: this.period, report: "sat", sem: this.semester }).subscribe(res => {
         this.data = res['data'];
-        this.districtMarkers = this.data;
+        this.allDistricts = this.districtMarkers = this.data;
+        this.allDistricts.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
         if (!this.districtMarkers[0]['Subjects']) {
           this.distFilter = this.districtMarkers;
         }
@@ -363,7 +368,8 @@ export class SatReportComponent implements OnInit {
             document.getElementById('home').style.display = 'block';
           }
           // to show only in dropdowns
-          this.districtMarkers = this.data;
+          this.allDistricts = this.districtMarkers = this.data;
+
           if (!this.districtMarkers[0]['Subjects']) {
             this.distFilter = this.districtMarkers;
           }
@@ -383,9 +389,7 @@ export class SatReportComponent implements OnInit {
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
           this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           this.genericFun(this.myDistData, options, this.fileName);
-
-          // sort the districtname alphabetically
-          this.districtMarkers.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
+          this.allDistricts.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
 
         }, err => {
           this.data = [];
@@ -830,7 +834,7 @@ export class SatReportComponent implements OnInit {
       //   var index = this.allSubjects.indexOf('Grade Performance') + 1;
       //   this.allSubjects.splice(index, 1);
       // }
-      this.blockMarkers = this.data;
+      this.allBlocks = this.blockMarkers = this.data;
       if (!this.blockMarkers[0]['Subjects']) {
         this.blockFilter = this.blockMarkers;
       }
@@ -920,7 +924,7 @@ export class SatReportComponent implements OnInit {
       //   this.allSubjects = Object.keys(this.data[0].Subjects)
       //   this.allSubjects.pop()
       // }
-      this.clusterMarkers = this.data;
+      this.allClusters = this.clusterMarkers = this.data;
       if (!this.clusterMarkers[0]['Subjects']) {
         this.clusterFilter = this.clusterMarkers;
       }
