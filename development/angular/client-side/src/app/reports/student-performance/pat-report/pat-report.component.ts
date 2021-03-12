@@ -204,8 +204,7 @@ export class PATReportComponent implements OnInit {
   getDistricts(level): void {
     this.service.PATDistWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
       this.data = res['data'];
-      this.allDistricts = this.districtMarkers = this.data;
-      this.allDistricts.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
+      this.districtMarkers = this.allDistricts = this.data;
       if (!this.districtMarkers[0]['Subjects']) {
         this.distFilter = this.districtMarkers;
       }
@@ -213,6 +212,7 @@ export class PATReportComponent implements OnInit {
       if (level === 'district') {
         this.ondistLinkClick(this.districtId);
       }
+      this.allDistricts.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
     }, err => {
       this.data = [];
       this.commonService.loaderAndErr(this.data);
@@ -348,13 +348,10 @@ export class PATReportComponent implements OnInit {
             document.getElementById('home').style.display = 'block';
           }
           // to show only in dropdowns
-          this.allDistricts = this.districtMarkers = this.data;
-          this.allDistricts.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
-
+          this.districtMarkers = this.allDistricts = this.data;
           if (!this.districtMarkers[0]['Subjects']) {
             this.distFilter = this.districtMarkers;
           }
-
           // options to set for markers in the map
           let options = {
             radius: this.getMarkerRadius(14, 10, 8, 5),
@@ -371,6 +368,7 @@ export class PATReportComponent implements OnInit {
           this.changeDetection.detectChanges();
           this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           this.genericFun(this.myDistData, options, this.fileName);
+          this.allDistricts.sort((a, b) => (a.Details['district_name'] > b.Details['district_name']) ? 1 : ((b.Details['district_name'] > a.Details['district_name']) ? -1 : 0));
         }, err => {
           this.data = [];
           this.commonService.loaderAndErr(this.data);

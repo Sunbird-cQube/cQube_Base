@@ -42,17 +42,17 @@
 
 @media only screen and (min-width: 2560px) {
     .btn-primary {
-        padding: 10px !important;
-        font-size: 1.8rem !important;
+        padding: 12px !important;
+        font-size: 1.5rem !important;
     }
     
     .btn-secondary {
-        padding: 10px !important;
+        padding: 12px !important;
         width: 500px;
     }
 
     .btn-secondary span {
-        font-size: 1.8rem !important;
+        font-size: 1.5rem !important;
     }
 
     .drop-show #div1 {
