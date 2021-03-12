@@ -291,7 +291,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 .note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
   text-align: justify; 
-  font-size: 11px;
+  font-size: 12px;
 }
 
 #blockbtn, #clusterbtn, #schoolbtn{
@@ -330,8 +330,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 #legendNote{ 
   font-size: 12px;
-  bottom: 0;
-  position: absolute;
+  margin-top: 15px;
 }
 
 .chooseLevel{
@@ -360,8 +359,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   
   #legendNote{ 
     font-size: 14px;
-    bottom: 0;
-    position: absolute;
+    margin-top: 18px;
   }
 }
 
@@ -384,8 +382,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   
   #legendNote{ 
     font-size: 16px;
-    bottom: 0;
-    position: absolute;
+    margin-top: 20px;
   }
 }
 
@@ -459,21 +456,21 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   }
   .note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
       text-align: justify; 
-      font-size: 15px;
+      font-size: 18px;
    }
    #choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis{
       margin-right: 15px;
       padding: 7.2px; 
       color: white; 
       border-radius: 4px; 
-      font-size: 16px; 
+      font-size: 18px; 
       font-weight: bold; 
       background-color: rgb(152, 160, 163)
   }
 
   #blockbtn, #clusterbtn, #schoolbtn{
       margin-right: 15px; 
-      font-size: 16px; 
+      font-size: 18px; 
       width: 120px;
       padding: 5.2px; 
       background-color: rgb(152, 160, 163);
@@ -497,6 +494,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
   #legendNote{
     font-size: 16px;
+    margin-top: 22px;
   }
 
   #errMsg{
@@ -553,7 +551,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
   #dist, #block,#cluster,#school{
       color: #284d8a;
-      font-size: 30px !important; 
+      font-size: 32px; 
       line-height: 1.2em; 
       margin-top: 5px;
   }
@@ -577,27 +575,27 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 #patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload, #crcHealthcard{
   font-weight: bold; 
   text-decoration: underline; 
-  font-size: 20px !important; 
+  font-size: 22px !important; 
   color: #3100cc
 }
 
 .note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
   text-align: justify; 
-  font-size: 19px !important;
+  font-size: 22px !important;
 }
 #choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis{
   margin-right: 15px;
   padding: 8px !important; 
   color: white; 
   border-radius: 4px; 
-  font-size: 18px !important; 
+  font-size: 22px !important; 
   font-weight: bold; 
   background-color: rgb(152, 160, 163)
 }
 
 #blockbtn, #clusterbtn, #schoolbtn{
   margin-right: 15px; 
-  font-size: 18px !important; 
+  font-size: 22px !important; 
   width: 130px !important;
   padding: 5.7px !important; 
   background-color: rgb(152, 160, 163);
@@ -620,8 +618,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 #legendNote{ 
   font-size: 22px;
-  bottom: 0;
-  position: absolute;
+  margin-top: 26px;
 }
 #errMsg{
   text-align: center;
@@ -677,7 +674,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
   #dist, #block,#cluster,#school{
       color: #284d8a;
-      font-size: 34px !important; 
+      font-size: 38px !important; 
       line-height: 1.2em; 
       margin-top: 5px;
   }
@@ -701,27 +698,27 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 #patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload, #crcHealthcard{
   font-weight: bold; 
   text-decoration: underline; 
-  font-size: 26px !important;
+  font-size: 30px !important;
   color: #3100cc
 }
 
 .note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
   text-align: justify; 
-  font-size: 26px !important;
+  font-size: 30px !important;
 }
 #choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear, #year, #month, #downloader, #x-axis, #y-axis{
   margin-right: 20px;
   padding: 9px !important; 
   color: white; 
   border-radius: 6px; 
-  font-size: 24px !important; 
+  font-size: 28px !important; 
   font-weight: bold; 
   background-color: rgb(152, 160, 163)
 }
 
 #blockbtn, #clusterbtn, #schoolbtn{
   margin-right: 15px; 
-  font-size: 24px !important; 
+  font-size: 28px !important; 
   width: 160px !important;
   padding: 6px !important;
   background-color: rgb(152, 160, 163);
@@ -746,8 +743,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 #legendNote{ 
   font-size: 32px;
-  bottom: 0;
-  position: absolute;
+  margin-top: 30px;
 }
 
 #errMsg{
@@ -758,44 +754,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 .chooseLevel{
 	line-height: 1.2em; 
-	font-size: 26px;
+	font-size: 28px;
 	font-weight: bold;
 }
 
-}
-
-@media only screen and (min-width: 2560px) {
-  .dataTables_wrapper .dataTables_scrollHead table th {
-    font-size: 1.7rem !important;
-  }
-
-  .dataTables_wrapper .dataTables_scrollBody {
-    max-height: 70vh !important;
-  }
-
-  .dataTables_wrapper .dataTables_scrollBody table {
-    font-size: 1.4rem !important;
-  }
-
-  .dataTables_wrapper .dataTables_scrollBody table tbody td {
-    padding: 14px 10px !important;
-  }
-}
-
-@media only screen and (min-width: 3840px) {
-  .dataTables_wrapper .dataTables_scrollHead table th {
-    font-size: 2rem !important;
-  }
-  
-  .dataTables_wrapper .dataTables_scrollBody {
-    max-height: 70vh !important;
-  }
-
-  .dataTables_wrapper .dataTables_scrollBody table {
-    font-size: 1.7rem !important;
-  }
-  
-  .dataTables_wrapper .dataTables_scrollBody table tbody td {
-    padding: 18px 12px !important;
-  }
 }
