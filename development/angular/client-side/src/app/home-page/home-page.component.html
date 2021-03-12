@@ -1,32 +1,29 @@
 <div class="container-fluid" style="background-color:  rgb(245, 245, 245); height: 100%;">
     <div class="row">
-        <mat-toolbar color="primary" style="height: 35px; background-color: rgb(245, 245, 245);">
-            <img src="../../assets/dashboard.png" alt="" height="30px" width="90px">
+        <mat-toolbar id="header" color="primary" style="background-color: rgb(245, 245, 245);">
+            <img src="../../assets/dashboard.png" alt="">
             <span style="flex: 1 1 auto;"></span>
-            <span id="logout" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px;"
-                (click)="logout()">
+            <span id="logout" class="headerBtn" (click)="logout()">
                 <em class="fa fa-sign-out fa-rotate-180" style="font-size: 20px;"></em><strong>
                     Logout</strong>
             </span>
         </mat-toolbar>
     </div>
-    <div class="row" style="margin-top: 150px;">
+    <div class="row" class="outer">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="row">
-                <div class="col-sm-12">
-                    <div style="padding: 10px;width: 250px; margin: 0px auto;">
-                        <button id="cQb_dhsbrd" class="btn btn-deafult"
-                            style="width: 100%; border: 1px solid gray; color: #284d8a;"
-                            [routerLink]="['/dashboard']">cQube
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div id="cQb_dhsbrd_outer">
+                        <button id="cQb_dhsbrd" class="btn btn-deafult" [routerLink]="['/dashboard']">cQube
                             Dashboard</button>
                     </div>
                 </div>
             </div>
             <div class="row" style="margin-top: 5px;">
-                <div class="col-sm-12">
-                    <div style="padding: 10px;width: 250px; margin: 0px auto;">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div id="admin_console_outer">
                         <a type="button" id="admin_console" href="{{adminUrl}}/#/admin-dashboard"
-                            class="btn btn-deafult" style="width: 100%;   border: 1px solid gray;color: #284d8a;">
+                            class="btn btn-deafult">
                             Admin Console
                         </a>
                     </div>
