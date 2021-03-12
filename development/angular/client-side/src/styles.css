@@ -470,7 +470,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
   #blockbtn, #clusterbtn, #schoolbtn{
       margin-right: 15px; 
-      font-size: 16px; 
+      font-size: 18px; 
       width: 120px;
       padding: 5.2px; 
       background-color: rgb(152, 160, 163);
@@ -595,7 +595,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 #blockbtn, #clusterbtn, #schoolbtn{
   margin-right: 15px; 
-  font-size: 18px !important; 
+  font-size: 22px !important; 
   width: 130px !important;
   padding: 5.7px !important; 
   background-color: rgb(152, 160, 163);
@@ -718,7 +718,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 #blockbtn, #clusterbtn, #schoolbtn{
   margin-right: 15px; 
-  font-size: 24px !important; 
+  font-size: 28px !important; 
   width: 160px !important;
   padding: 6px !important;
   background-color: rgb(152, 160, 163);
