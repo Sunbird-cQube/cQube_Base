@@ -317,7 +317,7 @@ export class CrcReportComponent implements OnInit {
           "bLengthChange": false,
           "bInfo": false,
           "bPaginate": false,
-          scrollY: this.height > 1760 ? '65vh' : this.height > 1180 && this.height < 1760 ? '54vh' : this.height > 667 && this.height < 1180 ? '44vh' : '35vh',
+          scrollY: this.height > 1760 ? '64vh' : this.height > 1180 && this.height < 1760 ? '54vh' : this.height > 667 && this.height < 1180 ? '44vh' : '35vh',
           scrollX: true,
           scrollCollapse: true,
           paging: false,
@@ -510,7 +510,7 @@ export class CrcReportComponent implements OnInit {
           "bLengthChange": false,
           "bInfo": false,
           "bPaginate": false,
-          scrollY: this.height > 1760 ? '65vh' : this.height > 1180 && this.height < 1760 ? '54vh' : this.height > 667 && this.height < 1180 ? '44vh' : '35vh',
+          scrollY: this.height > 1760 ? '64vh' : this.height > 1180 && this.height < 1760 ? '54vh' : this.height > 667 && this.height < 1180 ? '44vh' : '35vh',
           scrollX: true,
           scrollCollapse: true,
           paging: false,
@@ -624,7 +624,7 @@ export class CrcReportComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
-        scrollY: this.height > 1760 ? '65vh' : this.height > 1180 && this.height < 1760 ? '54vh' : this.height > 667 && this.height < 1180 ? '44vh' : '35vh',
+        scrollY: this.height > 1760 ? '64vh' : this.height > 1180 && this.height < 1760 ? '54vh' : this.height > 667 && this.height < 1180 ? '44vh' : '35vh',
         scrollX: true,
         scrollCollapse: true,
         paging: false,
@@ -741,7 +741,7 @@ export class CrcReportComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
-        scrollY: this.height > 1760 ? '65vh' : this.height > 1180 && this.height < 1760 ? '54vh' : this.height > 667 && this.height < 1180 ? '44vh' : '35vh',
+        scrollY: this.height > 1760 ? '64vh' : this.height > 1180 && this.height < 1760 ? '54vh' : this.height > 667 && this.height < 1180 ? '44vh' : '35vh',
         scrollX: true,
         scrollCollapse: true,
         paging: false,
@@ -789,7 +789,7 @@ export class CrcReportComponent implements OnInit {
 
   createChart(labels, chartData, name, obj) {
     var ctx = $('#myChart');
-    ctx.attr('height', this.height > 1760 ? '70vh' : this.height > 1180 && this.height < 1760 ? '60vh' : this.height > 667 && this.height < 1180 ? '52vh' : '46vh');
+    ctx.attr('height', this.height > 1760 ? '68vh' : this.height > 1180 && this.height < 1760 ? '60vh' : this.height > 667 && this.height < 1180 ? '52vh' : '46vh');
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
       data: {
