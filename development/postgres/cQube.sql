@@ -5931,7 +5931,7 @@ insert into del_data_source_details values('udise','all','udise_tch_profile',31)
 insert into del_data_source_details values('udise','all','udise_nsqf_plcmnt_c10',32) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 insert into del_data_source_details values('udise','all','udise_sch_enr_newadm',33) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing; 
 
-/* SAT adding semester */
+/* SAT adding semester  */
 alter table semester_exam_mst_dup add column if not exists semester int;
 
 alter table semester_exam_mst add column if not exists semester int;

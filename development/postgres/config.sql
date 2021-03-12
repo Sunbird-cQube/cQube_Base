@@ -9155,7 +9155,7 @@ group by c.district_id,b.assessment_year,semester )as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id and d.semester=b.semester;
 
 
-/*semester exam block*/
+/*semester exam block */
 
 create or replace view semester_exam_block_last30 as
 select d.*,b.total_schools,b.students_count from
