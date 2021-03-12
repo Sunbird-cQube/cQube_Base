@@ -289,7 +289,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   color: #3100cc
 }
 
-#note, #students, #schools, #dateRange, #totalCount{
+#note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
   text-align: justify; 
   font-size: 11px;
 }
@@ -457,7 +457,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
       font-size: 18px; 
       color: #3100cc
   }
-  #note, #students, #schools, #dateRange, #totalCount{
+  #note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
       text-align: justify; 
       font-size: 15px;
    }
@@ -581,7 +581,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   color: #3100cc
 }
 
-#note, #students, #schools, #dateRange, #totalCount{
+#note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
   text-align: justify; 
   font-size: 19px !important;
 }
@@ -705,7 +705,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   color: #3100cc
 }
 
-#note, #students, #schools, #dateRange, #totalCount{
+#note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
   text-align: justify; 
   font-size: 26px !important;
 }

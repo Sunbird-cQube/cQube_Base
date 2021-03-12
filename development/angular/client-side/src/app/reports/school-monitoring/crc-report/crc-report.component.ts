@@ -151,7 +151,8 @@ export class CrcReportComponent implements OnInit {
         this.getClusters(data.districtId, data.blockId, data.id);
       }
     } else {
-      this.districtWise();
+      this.onResize();
+      // this.districtWise();
     }
   }
 
@@ -230,15 +231,16 @@ export class CrcReportComponent implements OnInit {
     } else {
       document.getElementById('home').style.display = 'none';
     }
-    if (this.skul) {
-      this.districtWise();
-    } else if (this.dist) {
-      this.myDistData(this.distName);
-    } else if (this.blok) {
-      this.myBlockData(this.blockName);
-    } else if (this.clust) {
-      this.myClusterData(this.clustName);
-    }
+    // if (this.skul) {
+    //   this.districtWise();
+    // } else if (this.dist) {
+    //   this.myDistData(this.distName);
+    // } else if (this.blok) {
+    //   this.myBlockData(this.blockName);
+    // } else if (this.clust) {
+    //   this.myClusterData(this.clustName);
+    // }
+    this.onResize();
   }
   onClockHome() {
     this.period = 'overall';
@@ -247,11 +249,12 @@ export class CrcReportComponent implements OnInit {
   }
 
   districtWise() {
-    if (this.result.length! > 0) {
+    if ($.fn.DataTable.isDataTable('#table')) {
       $('#table').DataTable().destroy();
       $('#table').empty();
     }
     this.scatterChart.destroy();
+    this.changeDetection.detectChanges();
     this.reportData = [];
     this.tableHead = "District Name";
     this.fileName = `${this.reportName}_${this.period}_allDistricts_${this.commonService.dateAndTime}`;
@@ -306,7 +309,6 @@ export class CrcReportComponent implements OnInit {
           xAxis: x_axis.value,
           yAxis: y_axis.value
         }
-
         this.createChart(labels, this.chartData, this.tableHead, obj);
         this.tableData = this.result;
         this.dtOptions = {
@@ -315,7 +317,7 @@ export class CrcReportComponent implements OnInit {
           "bLengthChange": false,
           "bInfo": false,
           "bPaginate": false,
-          scrollY: "35vh",
+          scrollY: this.height > 1760 ? '70vh' : this.height > 1180 && this.height < 1760 ? '56vh' : this.height > 667 && this.height < 1180 ? '48vh' : '35vh',
           scrollX: true,
           scrollCollapse: true,
           paging: false,
@@ -341,12 +343,13 @@ export class CrcReportComponent implements OnInit {
         this.dataTable.DataTable(this.dtOptions);
 
         this.commonService.loaderAndErr(this.chartData);
-        this.changeDetection.markForCheck();
+        this.changeDetection.detectChanges();
       }
     }, err => {
       this.chartData = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
+      this.changeDetection.detectChanges();
       this.commonService.loaderAndErr(this.chartData);
     });
   }
@@ -472,8 +475,10 @@ export class CrcReportComponent implements OnInit {
     }
     this.myData = this.service.crcBlockWiseData(data, { timePeriod: this.period }).subscribe((result: any) => {
       if (!fromParam) {
-        $('#table').DataTable().destroy();
-        $('#table').empty();
+        if ($.fn.DataTable.isDataTable('#table')) {
+          $('#table').DataTable().destroy();
+          $('#table').empty();
+        }
       }
       this.crcBlocksNames = result;
       let a = this.crcBlocksNames.schoolsVisitedCount
@@ -497,6 +502,7 @@ export class CrcReportComponent implements OnInit {
         }
 
         this.createChart(labels, this.chartData, this.tableHead, obj);
+        this.changeDetection.detectChanges();
         this.tableData = this.crcBlocksNames;
         this.dtOptions = {
           data: this.tableData,
@@ -504,7 +510,7 @@ export class CrcReportComponent implements OnInit {
           "bLengthChange": false,
           "bInfo": false,
           "bPaginate": false,
-          scrollY: "35vh",
+          scrollY: this.height > 1760 ? '70vh' : this.height > 1180 && this.height < 1760 ? '56vh' : this.height > 667 && this.height < 1180 ? '48vh' : '35vh',
           scrollX: true,
           scrollCollapse: true,
           paging: false,
@@ -538,6 +544,7 @@ export class CrcReportComponent implements OnInit {
       this.chartData = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
+      this.changeDetection.detectChanges();
       this.commonService.loaderAndErr(this.chartData);
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -580,8 +587,11 @@ export class CrcReportComponent implements OnInit {
     }
     this.myData = this.service.crcClusterWiseData(localStorage.getItem('distId'), data, { timePeriod: this.period }).subscribe((result: any) => {
       if (!fromParam) {
-        $('#table').DataTable().destroy();
-        $('#table').empty();
+        if ($.fn.DataTable.isDataTable('#table')) {
+          $('#table').DataTable().destroy();
+          $('#table').empty();
+        }
+        this.changeDetection.detectChanges();
       }
 
       this.crcClusterNames = result;
@@ -606,6 +616,7 @@ export class CrcReportComponent implements OnInit {
       }
 
       this.createChart(labels, this.chartData, this.tableHead, obj);
+      this.changeDetection.detectChanges();
       this.tableData = this.crcClusterNames;
       this.dtOptions = {
         data: this.tableData,
@@ -613,7 +624,7 @@ export class CrcReportComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
-        scrollY: "35vh",
+        scrollY: this.height > 1760 ? '70vh' : this.height > 1180 && this.height < 1760 ? '56vh' : this.height > 667 && this.height < 1180 ? '48vh' : '35vh',
         scrollX: true,
         scrollCollapse: true,
         paging: false,
@@ -646,6 +657,7 @@ export class CrcReportComponent implements OnInit {
       this.chartData = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
+      this.changeDetection.detectChanges();
       this.commonService.loaderAndErr(this.chartData);
     });
     this.blocksNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -690,8 +702,11 @@ export class CrcReportComponent implements OnInit {
     }
     this.myData = this.service.crcSchoolWiseData(distId, blockId, data, { timePeriod: this.period }).subscribe(async (result: any) => {
       if (!fromParam) {
-        $('#table').DataTable().destroy();
-        $('#table').empty();
+        if ($.fn.DataTable.isDataTable('#table')) {
+          $('#table').DataTable().destroy();
+          $('#table').empty();
+        }
+        this.changeDetection.detectChanges();
       }
 
       this.crcSchoolNames = result;
@@ -718,7 +733,7 @@ export class CrcReportComponent implements OnInit {
       }
 
       this.createChart(labels, this.chartData, this.tableHead, obj);
-
+      this.changeDetection.detectChanges();
       this.tableData = this.crcSchoolNames;
       this.dtOptions = {
         data: this.tableData,
@@ -726,7 +741,7 @@ export class CrcReportComponent implements OnInit {
         "bLengthChange": false,
         "bInfo": false,
         "bPaginate": false,
-        scrollY: "35vh",
+        scrollY: this.height > 1760 ? '70vh' : this.height > 1180 && this.height < 1760 ? '56vh' : this.height > 667 && this.height < 1180 ? '48vh' : '35vh',
         scrollX: true,
         scrollCollapse: true,
         paging: false,
@@ -759,6 +774,7 @@ export class CrcReportComponent implements OnInit {
       this.chartData = [];
       this.createChart(["clg"], [], '', {});
       $('#table').empty();
+      this.changeDetection.detectChanges();
       this.commonService.loaderAndErr(this.chartData);
     });
     document.getElementById('home').style.display = 'block';
@@ -773,7 +789,7 @@ export class CrcReportComponent implements OnInit {
 
   createChart(labels, chartData, name, obj) {
     var ctx = $('#myChart');
-    ctx.attr('height', this.height > 1760 ? '70vh' : this.height > 1180 && this.height < 1760 ? '66vh' : this.height > 667 && this.height < 1180 ? '55vh' : '50vh');
+    ctx.attr('height', this.height > 1760 ? '220vh' : this.height > 1180 && this.height < 1760 ? '195vh' : this.height > 667 && this.height < 1180 ? '180vh' : '155vh');
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
       data: {
@@ -793,6 +809,12 @@ export class CrcReportComponent implements OnInit {
         },
         responsive: true,
         tooltips: {
+          titleFontSize: 16,
+          cornerRadius: 10,
+          xPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
+          yPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
+          bodyFontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
+          displayColors: false,
           custom: function (tooltip) {
             if (!tooltip) return;
             // disable displaying the color box;
@@ -816,14 +838,14 @@ export class CrcReportComponent implements OnInit {
             },
             ticks: {
               fontColor: 'black',
-              min: 0
+              min: 0,
+              fontSize: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 23 : this.height > 667 && this.height < 1180 ? 13 : 10,
             },
             scaleLabel: {
               fontColor: "black",
               display: true,
               labelString: obj.xAxis,
-              fontSize: 12,
-              // fontColor: "dark gray"
+              fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
             }
           }],
           yAxes: [{
@@ -832,14 +854,14 @@ export class CrcReportComponent implements OnInit {
             },
             ticks: {
               fontColor: 'black',
-              min: 0
+              min: 0,
+              fontSize: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 23 : this.height > 667 && this.height < 1180 ? 13 : 10,
             },
             scaleLabel: {
               fontColor: "black",
               display: true,
               labelString: obj.yAxis,
-              fontSize: 12,
-              // fontColor: "dark gray",
+              fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
             }
           }]
         }
@@ -870,7 +892,7 @@ export class CrcReportComponent implements OnInit {
     this.levelWiseFilter();
   }
 
-  levelWiseFilter(){
+  levelWiseFilter() {
     if (this.skul) {
       this.districtWise();
     }

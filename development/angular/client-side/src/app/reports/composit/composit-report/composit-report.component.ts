@@ -608,12 +608,7 @@ export class CompositReportComponent implements OnInit {
           yPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
           bodyFontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
           displayColors: false,
-          // style: {
-          // fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
-          // opacity: 1,
-          // backgroundColor: "white",
-          // },
-          custom: function (tooltip) {
+                   custom: function (tooltip) {
             if (!tooltip) return;
             // disable displaying the color box;
             tooltip.displayColors = false;
@@ -644,7 +639,6 @@ export class CompositReportComponent implements OnInit {
               display: true,
               labelString: obj.xAxis,
               fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
-              // fontColor: "dark gray"
             }
           }],
           yAxes: [{
@@ -661,7 +655,6 @@ export class CompositReportComponent implements OnInit {
               display: true,
               labelString: obj.yAxis,
               fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
-              // fontColor: "dark gray",
             }
           }]
         }
