@@ -53,6 +53,10 @@
       padding: 15px !important;
       font-size: 1.5rem !important;
     }
+
+    .select-control option {
+      font-size: 1.5rem !important;
+    }
   
     .search-container {
       font-size: 2rem;
@@ -78,6 +82,10 @@
   
     #time_range.select-control, #choose_dist.select-control {
       padding: 15px !important;
+      font-size: 1.8rem !important;
+    }
+
+    .select-control option {
       font-size: 1.8rem !important;
     }
   

@@ -3,12 +3,15 @@ var const_data = require('../../../lib/config');
 const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
+const filter = require('./filter');
 
 router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- pat exception school wise api ---');
         var timePeriod = req.body.timePeriod;
         var grade = req.body.grade;
+        var subject = req.body.subject;
+        var start = 10;
         let fileName;
         if (grade && grade != 'all') {
             fileName = `exception_list/pat_exception/grade/${timePeriod}/school/${grade}.json`
@@ -19,9 +22,8 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         var Subjects = [];
         var sortedData;
         if (schoolData) {
-            sortedData = schoolData['data'].sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1);
             if (grade && grade != 'all') {
-                sortedData.map(item => {
+                schoolData['data'].map(item => {
                     if (item.subjects) {
                         Object.keys(item.subjects[0]).map(key => {
                             Subjects.push(key);
@@ -30,6 +32,8 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 });
                 Subjects = [...new Set(Subjects)];
             }
+            var filteredData = filter.data(schoolData['data'], grade, subject, start);
+            sortedData = filteredData.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1);
         }
         logger.info('--- pat exception school wise api response sent---');
         res.status(200).send({ data: sortedData, footer: schoolData.allSchoolsFooter.total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
@@ -44,6 +48,8 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         logger.info('--- pat exception schoolPerCluster api ---');
         var timePeriod = req.body.timePeriod;
         var grade = req.body.grade;
+        var subject = req.body.subject;
+        var start = 10;
         let fileName;
         if (grade && grade != 'all') {
             fileName = `exception_list/pat_exception/grade/${timePeriod}/school/${grade}.json`
@@ -63,9 +69,8 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         var Subjects = [];
         var sortedData;
         if (filterData) {
-            sortedData = filterData.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1);
             if (grade && grade != 'all') {
-                sortedData.map(item => {
+                filterData.map(item => {
                     if (item.subjects) {
                         Object.keys(item.subjects[0]).map(key => {
                             Subjects.push(key);
@@ -74,6 +79,8 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 });
                 Subjects = [...new Set(Subjects)];
             }
+            var filteredData = filter.data(filterData, grade, subject, start);
+            sortedData = filteredData.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1);
         }
         logger.info('--- pat exception schoolPerCluster api response sent---');
         res.status(200).send({ data: sortedData, footer: schoolData.footer[`${clusterId}`].total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
