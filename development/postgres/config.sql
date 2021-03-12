@@ -28,6 +28,7 @@ drop view if exists hc_crc_school cascade;
 drop view if exists hc_crc_cluster cascade;
 drop view if exists hc_crc_block cascade;
 drop view if exists hc_crc_district cascade;
+drop view if exists insert_diksha_trans_view;
 
 /* Create infra tables */
 
@@ -992,24 +993,29 @@ transaction_insert text;
 BEGIN
 transaction_insert='insert into diksha_content_trans(content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,created_on,updated_on) 
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,dimensions_mode,dimensions_type,created_on,updated_on) 
 select data.*,now(),now() from
 ((select content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,
 content_medium,content_gradelevel,content_subject,
-content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
+content_created_for,object_id,object_rollup_l1,derived_loc_state,
+case WHEN lower(derived_loc_district) not in (select distinct lower(shd.district_name) from school_hierarchy_details shd) THEN ''others''
+       else derived_loc_district end as derived_loc_district,
+user_signin_type,user_login_type,
 collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
-total_time_spent from diksha_content_temp) except (select content_view_date,dimensions_pdata_id,
+total_time_spent,dimensions_mode,dimensions_type from diksha_content_temp )
+ except (select content_view_date,dimensions_pdata_id,
 	dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,
 	content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
 collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
-total_time_spent from diksha_content_trans))as data';
+total_time_spent,dimensions_mode,dimensions_type from diksha_content_trans))as data';
 Execute transaction_insert; 
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION insert_diksha_agg()
 RETURNS text AS
@@ -1026,24 +1032,20 @@ select b.district_id,b.district_latitude,b.district_longitude,Initcap(b.district
 	   a.content_created_for,a.object_id,a.object_rollup_l1,a.derived_loc_state,a.derived_loc_district,a.user_signin_type,a.user_login_type,
 	   case when a.collection_name is null then ''Other'' else a.collection_name end as collection_name,
 	   a.collection_board,
-	   a.collection_type,a.collection_medium,a.collection_gradelevel,a.collection_subject,a.collection_created_for,a.total_count,a.total_time_spent
-        from (select case when replace(upper(derived_loc_district),'' '','''') in (''CHHOTAUDEPUR'',''CHHOTAUDAIPUR'') then ''CHHOTAUDEPUR'' 
-       when replace(upper(derived_loc_district),'' '','''') in (''DOHAD'',''DAHOD'') then ''DOHAD''																									
-       when replace(upper(derived_loc_district),'' '','''') in (''PANCHMAHALS'',''PANCHMAHAL'') then ''PANCHMAHALS'' 
-       when replace(upper(derived_loc_district),'' '','''') in (''MAHESANA'',''MEHSANA'') then ''MAHESANA''
-       when replace(upper(derived_loc_district),'' '','''') in (''THEDANGS'',''DANG'',''DANGS'') then ''THEDANGS'' 
-       else replace(upper(derived_loc_district),'' '','''') end as district_name,
+	   a.collection_type,a.collection_medium,a.collection_gradelevel,a.collection_subject,a.collection_created_for,a.total_count,a.total_time_spent,a.dimensions_mode,a.dimensions_type
+        from (select derived_loc_district as district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,
 case when content_gradelevel like ''[%'' then ''Multi Grade'' else initcap(ltrim(rtrim(content_gradelevel))) end as content_gradelevel,
 case when content_subject like ''[%'' then ''Multi Subject'' when initcap(ltrim(rtrim(content_subject)))=''Maths'' then ''Mathematics''
 else initcap(ltrim(rtrim(content_subject))) end as content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
-collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent
-from diksha_content_trans ) as a left join         
-        (select distinct a.district_id,a.district_name,b.district_latitude,b.district_longitude from 
-(select district_id,replace(upper(district_name),'' '','''') as district_name from school_hierarchy_details
+collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,dimensions_mode,dimensions_type
+from diksha_content_trans where dimensions_type=''content'' and dimensions_mode=''play'' ) as a 
+inner join
+        (select distinct a.district_id,a.district_name,b.district_latitude,b.district_longitude from
+(select district_id,district_name from school_hierarchy_details
 group by district_id,district_name
-) as a left join school_geo_master as b on a.district_id=b.district_id) as b on a.district_name=b.district_name
+) as a left join school_geo_master as b on a.district_id=b.district_id) as b on lower(a.district_name)=lower(b.district_name)
 where a.district_name is not null and b.district_id is not null';
 Execute diksha_view;
 agg_insert='insert into diksha_total_content(district_id,district_latitude,district_longitude,district_name,
@@ -1056,7 +1058,7 @@ content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
 total_time_spent
-from insert_diksha_trans_view where content_subject is not null and content_subject <> '''') 
+from insert_diksha_trans_view) 
 except (select district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
@@ -1066,6 +1068,7 @@ Execute agg_insert;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
 
 /*truncate infra init tables*/
 
@@ -8486,9 +8489,63 @@ union
  sum(case when infra_score >75 then 1 else 0 end)as value_above_75
  from hc_infra_school)as infra)
  union
-(select ''crc_visit''as data,row_to_json(crc)::text from 
-(select sum(total_schools)as total_schools,sum(total_crc_visits)as total_crc_visits,sum(visited_school_count)as visited_school_count,
-sum(not_visited_school_count)as not_visited_school_count from hc_crc_school)as crc)';
+SELECT ''crc_visit''::text AS data_source, row_to_json(crc.*)::text FROM (
+select total_schools,total_crc_visits,visited_school_count,not_visited_school_count,
+(SELECT round(NULLIF((((count(DISTINCT school_hierarchy_details.school_id))::double precision / NULLIF((count(DISTINCT school_hierarchy_details.cluster_id))::double precision, (0)::double precision)))::numeric, (1)::numeric)) AS no_of_schools_per_crc FROM school_hierarchy_details) as no_of_schools_per_crc,
+( SELECT min(a.visit_date) AS min FROM ( SELECT crc_inspection_trans.visit_date,
+(date_part(''month''::text, crc_inspection_trans.visit_date))::text AS month,
+(date_part(''year''::text, crc_inspection_trans.visit_date))::text AS year
+FROM crc_inspection_trans) a WHERE ((a.year IN ( SELECT "substring"(min_year.monthyear, 1, 4) AS year
+FROM ( SELECT min(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
+FROM crc_visits_frequency) min_year)) AND (a.month IN ( SELECT "substring"(min_month.monthyear, 6) AS month
+FROM ( SELECT min(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
+FROM crc_visits_frequency) min_month)))) AS data_from_date,
+( SELECT max(a.visit_date) AS max
+FROM ( SELECT crc_inspection_trans.visit_date,
+(date_part(''month''::text, crc_inspection_trans.visit_date))::text AS month,
+(date_part(''year''::text, crc_inspection_trans.visit_date))::text AS year
+FROM crc_inspection_trans) a
+          WHERE ((a.year IN ( SELECT "substring"(max_year.monthyear, 1, 4) AS year
+                   FROM ( SELECT max(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
+                           FROM crc_visits_frequency) max_year)) AND (a.month IN ( SELECT "substring"(max_month.monthyear, 6) AS month
+                   FROM ( SELECT max(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
+                           FROM crc_visits_frequency) max_month)))) AS data_upto_date,
+COALESCE(round(((schools_0 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_0,
+    COALESCE(round(((schools_1_2 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_1_2,
+    COALESCE(round(((schools_3_5 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_3_5,
+    COALESCE(round(((schools_6_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_6_10,
+    COALESCE(round(((schools_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_10
+from (
+SELECT  sum(hc_crc_school.total_schools) AS total_schools,
+sum(hc_crc_school.total_crc_visits) AS total_crc_visits,
+            sum(hc_crc_school.visited_school_count) AS visited_school_count,
+            sum(hc_crc_school.not_visited_school_count) AS not_visited_school_count,
+                    sum(
+                        CASE
+                            WHEN (hc_crc_school.schools_0 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_0,
+                    sum(
+                        CASE
+                            WHEN (hc_crc_school.schools_1_2 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_1_2,
+                    sum(
+                        CASE
+                            WHEN (hc_crc_school.schools_3_5 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_3_5,
+                    sum(
+                        CASE
+                            WHEN (hc_crc_school.schools_6_10 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_6_10,
+                    sum(
+                        CASE
+                            WHEN (hc_crc_school.schools_10 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_10
+                   FROM hc_crc_school) as spd) crc';
 Execute create_state_view; 
 return 0;
 END;
@@ -8621,9 +8678,51 @@ union
  sum(case when infra_score >75 then 1 else 0 end)as value_above_75
  from hc_infra_school)as infra)
  union
-(select ''crc_visit''as data,row_to_json(crc)::text from 
-(select sum(total_schools)as total_schools,sum(total_crc_visits)as total_crc_visits,sum(visited_school_count)as visited_school_count,
-sum(not_visited_school_count)as not_visited_school_count from crc_school_report_last_30_days)as crc)';
+SELECT ''crc_visit''::text AS data_source,
+    row_to_json(crc.*)::text AS "values"
+   FROM (
+select
+total_schools,total_crc_visits,visited_school_count,not_visited_school_count,(SELECT round(NULLIF((((count(DISTINCT school_hierarchy_details.school_id))::double precision / NULLIF((count(DISTINCT school_hierarchy_details.cluster_id))::double precision, (0)::double precision)))::numeric, (1)::numeric)) AS no_of_schools_per_crc FROM school_hierarchy_details) as no_of_schools_per_crc,
+( SELECT to_char(min(days_in_period.day)::timestamp with time zone, ''DD-MM-YYYY''::text) AS data_from_date
+           FROM ( SELECT generate_series(now()::date - ''30 days''::interval, (now()::date - ''30 days''::interval)::date::timestamp without time zone, ''30 days''::interval)::date AS day) days_in_period) AS data_from_date,
+( SELECT to_char(max(days_in_period.day)::timestamp with time zone, ''DD-MM-YYYY''::text) AS data_upto_date
+           FROM ( SELECT generate_series(now()::date - ''30 days''::interval, (now()::date - ''1 day''::interval)::date::timestamp without time zone, ''1 day''::interval)::date AS day) days_in_period) AS data_upto_date,
+COALESCE(round(((schools_0 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_0,
+    COALESCE(round(((schools_1_2 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_1_2,
+    COALESCE(round(((schools_3_5 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_3_5,
+    COALESCE(round(((schools_6_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_6_10,
+    COALESCE(round(((schools_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_10
+from (
+SELECT  sum(crc_school_report_last_30_days.total_schools) AS total_schools,
+sum(crc_school_report_last_30_days.total_crc_visits) AS total_crc_visits,
+            sum(crc_school_report_last_30_days.visited_school_count) AS visited_school_count,
+            sum(crc_school_report_last_30_days.not_visited_school_count) AS not_visited_school_count,
+                    sum(
+                        CASE
+                            WHEN (crc_school_report_last_30_days.schools_0 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_0,
+                    sum(
+                        CASE
+                            WHEN (crc_school_report_last_30_days.schools_1_2 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_1_2,
+                    sum(
+                        CASE
+                            WHEN (crc_school_report_last_30_days.schools_3_5 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_3_5,
+                    sum(
+                        CASE
+                            WHEN (crc_school_report_last_30_days.schools_6_10 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_6_10,
+                    sum(
+                        CASE
+                            WHEN (crc_school_report_last_30_days.schools_10 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_10
+                   FROM crc_school_report_last_30_days) as spd) crc;';
 Execute create_state_view; 
 return 0;
 END;
