@@ -63,7 +63,7 @@ export class PATExceptionComponent implements OnInit {
   public blockId: any = '';
   public clusterId: any = '';
 
-  public levelWise = '';
+  public levelWise = 'district';
 
   public myData;
   state: string;
@@ -89,30 +89,47 @@ export class PATExceptionComponent implements OnInit {
   ) {
   }
 
+  width = window.innerWidth;
+  heigth = window.innerHeight;
+  onResize() {
+    this.width = window.innerWidth;
+    this.heigth = window.innerHeight;
+    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
+    this.levelWiseFilter();
+  }
+  setZoomLevel(lat, lng, globalMap, zoomLevel) {
+    globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
+    globalMap.options.minZoom = this.commonService.zoomLevel;
+    this.changeDetection.detectChanges();
+  }
+  getMarkerRadius(rad1, rad2, rad3, rad4) {
+    let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
+    return radius;
+  }
+
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
-    this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
+    this.changeDetection.detectChanges();
     this.commonService.initMap('patExceMap', [[this.lat, this.lng]]);
-    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-    globalMap.options.minZoom = this.commonService.zoomLevel;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     document.getElementById('spinner').style.display = 'none';
     this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
-    this.districtWise();
+    this.onResize();
   }
 
   onPeriodSelect() {
-    this.levelWiseFilter();
+    this.onResize();
   }
 
   onGradeSelect(data) {
     this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject ? this.subject : ''}_all_${this.commonService.dateAndTime}`;
     this.grade = data;
     this.subject = '';
-    this.levelWiseFilter();
+    this.onResize();
   }
 
   levelWiseFilter() {
@@ -140,14 +157,16 @@ export class PATExceptionComponent implements OnInit {
         this.onClusterSelect(this.clusterId);
       }
     }
+    this.changeDetection.detectChanges();
   }
 
   homeClick() {
     this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
     this.grade = 'all';
     this.period = 'overall';
+    this.levelWise = "district";
     this.subject = '';
-    this.districtWise();
+    this.onResize();
   }
 
   // to load all the districts for state data on the map
@@ -158,7 +177,6 @@ export class PATExceptionComponent implements OnInit {
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
       this.commonService.errMsg();
-      this.levelWise = "district";
       this.reportData = [];
       this.schoolCount = '';
 
@@ -192,7 +210,7 @@ export class PATExceptionComponent implements OnInit {
           }
           // options to set for markers in the map
           let options = {
-            radius: 5,
+            radius: this.getMarkerRadius(14, 10, 8, 5),
             fillOpacity: 1,
             strokeWeight: 0.01,
             weight: 1,
@@ -204,7 +222,7 @@ export class PATExceptionComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-          globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+          this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allBlocks_${this.commonService.dateAndTime}`;
           this.genericFun(this.data, options, this.fileName);
 
@@ -265,7 +283,7 @@ export class PATExceptionComponent implements OnInit {
         this.myData = this.service.patExceptionBlock({ grade: this.grade, timePeriod: this.period }).subscribe(res => {
           this.data = res
           let options = {
-            radius: 4,
+            radius: this.getMarkerRadius(12, 8, 6, 4),
             fillOpacity: 1,
             strokeWeight: 0.01,
             weight: 1,
@@ -287,7 +305,7 @@ export class PATExceptionComponent implements OnInit {
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
             this.genericFun(this.data, options, this.fileName);
 
             this.commonService.loaderAndErr(this.data);
@@ -347,7 +365,7 @@ export class PATExceptionComponent implements OnInit {
         this.myData = this.service.patExceptionCluster({ grade: this.grade, timePeriod: this.period }).subscribe(res => {
           this.data = res
           let options = {
-            radius: 1,
+            radius: this.getMarkerRadius(2.5, 1.8, 1.5, 1),
             fillOpacity: 1,
             strokeWeight: 0.01,
             weight: 1,
@@ -418,7 +436,7 @@ export class PATExceptionComponent implements OnInit {
 
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
             this.genericFun(this.data, options, this.fileName);
             // this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
@@ -476,10 +494,14 @@ export class PATExceptionComponent implements OnInit {
         this.myData = this.service.patExceptionSchool({ grade: this.grade, timePeriod: this.period }).subscribe(res => {
           this.data = res
           let options = {
+            radius: this.getMarkerRadius(1.5, 1.2, 1, 0),
+            fillOpacity: 1,
+            strokeWeight: 0.01,
+            weight: 1,
             mapZoom: this.commonService.zoomLevel,
             centerLat: this.lat,
             centerLng: this.lng,
-            level: 'school'
+            level: 'cluster'
           }
           this.schoolMarkers = [];
           if (this.data['data'].length > 0) {
@@ -542,7 +564,7 @@ export class PATExceptionComponent implements OnInit {
             globalMap.doubleClickZoom.enable();
             globalMap.scrollWheelZoom.enable();
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
             this.genericFun(this.data, options, this.fileName);
             // this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
@@ -605,7 +627,7 @@ export class PATExceptionComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3.5,
+        radius: this.getMarkerRadius(14, 10, 8, 4),
         fillOpacity: 1,
         strokeWeight: 0.01,
         weight: 1,
@@ -617,7 +639,7 @@ export class PATExceptionComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+      this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
       this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_${options.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
       this.genericFun(this.data, options, this.fileName);
       // sort the blockname alphabetically
@@ -679,7 +701,7 @@ export class PATExceptionComponent implements OnInit {
 
       // options to set for markers in the map
       let options = {
-        radius: 3.5,
+        radius: this.getMarkerRadius(14, 10, 8, 4),
         fillOpacity: 1,
         strokeWeight: 0.01,
         weight: 1,
@@ -691,7 +713,7 @@ export class PATExceptionComponent implements OnInit {
 
       this.commonService.restrictZoom(globalMap);
       globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+      this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
       this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_${options.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
       this.genericFun(this.data, options, this.fileName);
       // sort the clusterName alphabetically
@@ -768,7 +790,7 @@ export class PATExceptionComponent implements OnInit {
 
         // options to set for markers in the map
         let options = {
-          radius: 3.5,
+          radius: this.getMarkerRadius(14, 10, 8, 4),
           fillOpacity: 1,
           strokeWeight: 0.01,
           weight: 1,
@@ -780,7 +802,7 @@ export class PATExceptionComponent implements OnInit {
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+        this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_${options.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
         this.genericFun(this.data, options, this.fileName);
       }, err => {
