@@ -33,7 +33,7 @@
 }
  */
 
- #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control), #school {
+ #dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
     color: #284d8a;font-size: 18px !important; line-height: 1.2em; margin-top: 5px;
  }
 
@@ -43,7 +43,7 @@
  }
 
  @media only screen and (min-width: 2560px) {
-    #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control), #school {
+    #dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
         font-size: 2.5rem !important;
     }
 
@@ -68,7 +68,7 @@
  }
 
  @media only screen and (min-width: 3840px) {
-    #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control), #school {
+    #dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
         font-size: 3.3rem !important;
     }
 
