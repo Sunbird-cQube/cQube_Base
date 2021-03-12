@@ -1004,7 +1004,7 @@ user_signin_type,user_login_type,
 collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
 total_time_spent,dimensions_mode,dimensions_type from diksha_content_temp )
- except all (select content_view_date,dimensions_pdata_id,
+ except (select content_view_date,dimensions_pdata_id,
 	dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,
 	content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,
@@ -1059,7 +1059,7 @@ content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_dis
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
 total_time_spent
 from insert_diksha_trans_view) 
-except all (select district_id,district_latitude,district_longitude,district_name,
+except (select district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent 
