@@ -282,14 +282,14 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   display: none;
 }
 
-#patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload{
+#patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload, #crcHealthcard{
   font-weight: bold; 
   text-decoration: underline; 
   font-size: 13px; 
   color: #3100cc
 }
 
-#note, #students, #schools, #dateRange, #totalCount{
+#note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
   text-align: justify; 
   font-size: 11px;
 }
@@ -302,7 +302,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   background-color: rgb(152, 160, 163);
 }
 
-#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month{
+#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis{
   margin-right: 15px;
   padding: 5px; 
   color: white; 
@@ -333,6 +333,13 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   bottom: 0;
   position: absolute;
 }
+
+.chooseLevel{
+	line-height: 1.2em; 
+	font-size: 13px;
+	font-weight: bold;
+}
+
 
 @media screen and (min-width: 1500px){
   .legends{
@@ -444,17 +451,17 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
       color: #3100cc; 
       display: none;
   }
-  #patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload{
+  #patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload, #crcHealthcard{
       font-weight: bold; 
       text-decoration: underline; 
       font-size: 18px; 
       color: #3100cc
   }
-  #note, #students, #schools, #dateRange, #totalCount{
+  #note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
       text-align: justify; 
       font-size: 15px;
    }
-   #choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month{
+   #choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis{
       margin-right: 15px;
       padding: 7.2px; 
       color: white; 
@@ -497,6 +504,12 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
     line-height: 1.2em; 
     font-size: 18px; 
     margin-top: 3%;
+  }
+
+  .chooseLevel{
+    line-height: 1.2em; 
+    font-size: 18px;
+    font-weight: bold;
   }
 }
 
@@ -561,18 +574,18 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   color: #3100cc; 
   display: none;
 }
-#patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload{
+#patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload, #crcHealthcard{
   font-weight: bold; 
   text-decoration: underline; 
   font-size: 20px !important; 
   color: #3100cc
 }
 
-#note, #students, #schools, #dateRange, #totalCount{
+#note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
   text-align: justify; 
   font-size: 19px !important;
 }
-#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month{
+#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis{
   margin-right: 15px;
   padding: 8px !important; 
   color: white; 
@@ -615,6 +628,11 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   line-height: 1.2em; 
   font-size: 22px; 
   margin-top: 3%;
+}
+.chooseLevel{
+	line-height: 1.2em; 
+	font-size: 22px;
+	font-weight: bold;
 }
 
 }
@@ -680,18 +698,18 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   color: #3100cc; 
   display: none;
 }
-#patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload{
+#patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload, #crcHealthcard{
   font-weight: bold; 
   text-decoration: underline; 
   font-size: 26px !important;
   color: #3100cc
 }
 
-#note, #students, #schools, #dateRange, #totalCount{
+#note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
   text-align: justify; 
   font-size: 26px !important;
 }
-#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear, #year, #month{
+#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear, #year, #month, #downloader, #x-axis, #y-axis{
   margin-right: 20px;
   padding: 9px !important; 
   color: white; 
@@ -737,6 +755,11 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   line-height: 1.2em; 
   font-size: 26px; 
   margin-top: 3%;
+}
+.chooseLevel{
+	line-height: 1.2em; 
+	font-size: 26px;
+	font-weight: bold;
 }
 
 }
