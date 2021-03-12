@@ -47,22 +47,6 @@
     .search-container {
       font-size: 2rem;
     }
-
-    ::ng-deep .dataTables_wrapper .dataTables_scrollHead table th {
-      font-size: 1.4rem !important;
-    }
-  
-    ::ng-deep .dataTables_wrapper .dataTables_scrollBody {
-      max-height: 70vh !important;
-    }
-  
-    ::ng-deep .dataTables_wrapper .dataTables_scrollBody table {
-      font-size: 1.4rem !important;
-    }
-  
-    ::ng-deep .dataTables_wrapper .dataTables_scrollBody table tbody td {
-      padding: 14px 10px !important;
-    }
   }
   
   @media only screen and (min-width: 3840px) {
@@ -90,21 +74,5 @@
   
     .search-container {
       font-size: 2rem;
-    }
-
-    ::ng-deep .dataTables_wrapper .dataTables_scrollHead table th {
-      font-size: 1.7rem !important;
-    }
-    
-    ::ng-deep .dataTables_wrapper .dataTables_scrollBody {
-      max-height: 70vh !important;
-    }
-  
-    ::ng-deep .dataTables_wrapper .dataTables_scrollBody table {
-      font-size: 1.7rem !important;
-    }
-    
-    ::ng-deep .dataTables_wrapper .dataTables_scrollBody table tbody td {
-      padding: 18px 12px !important;
     }
   }
