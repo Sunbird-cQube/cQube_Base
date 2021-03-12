@@ -1,29 +1,26 @@
 <div class="container-fluid" style="padding-top:15px !important;">
-    <div class="row">
+    <div class="row" (window:resize)="onResize()">
         <div class="col-sm-8">
             <div>
-                <p id="dist" *ngIf='skul' style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist" *ngIf='skul'>
                     Telemetry Data for: District Level
             </div>
             <div>
-                <p id="block" *ngIf='dist'
-                    style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="block" *ngIf='dist'>
                     Telemetry Data for: Block Level
             </div>
             <div>
-                <p id="cluster" *ngIf='blok'
-                    style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="cluster" *ngIf='blok'>
                     Telemetry Data for: Cluster Level
             </div>
 
             <div>
-                <p id="school" *ngIf='clust'
-                    style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="school" *ngIf='clust'>
                     Telemetry Data for: School Level
             </div>
             <!-- <div *ngIf='dist'>
                 <p id="block"
-                    style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                >
                     Semester exception report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
@@ -32,7 +29,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster"
-                    style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                >
                     Semester exception report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
@@ -45,7 +42,7 @@
 
             <div *ngIf="clust">
                 <p id="school"
-                    style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                >
                     Semester exception report for: <span (click)="districtWise()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
@@ -60,46 +57,38 @@
         <div class="col-sm-4">
             <div class="row">
                 <div class="col-sm-7">
-                    <p id="errMsg"
-                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
+                    <p id="errMsg">
                     </p>
                 </div>
                 <div class="col-sm-5">
                     <em class="fa fa-cloud-download" title="Download Report" id="download"
-                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                         (click)="downloadReport()"></em>
-                    <em class="fa fa-home" id="home" title="Home"
-                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
-                        alt="Home" (click)="districtWise()"></em>
+                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
         </div>
     </div>
     <div class="row" style="margin-bottom: 10px;">
         <div class="col-sm-12">
-            <span style="font-size: 12px;">Select Time Period </span>
-            <select id="time_period"
-                style="margin-right: 25px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                [(ngModel)]="timePeriod" name="timePeriod" (change)="getTimePeriod(timePeriod)">
+            <select id="period" [(ngModel)]="timePeriod" name="timePeriod" (change)="getTimePeriod(timePeriod)">
                 <option [value]="timePeriod" disabled selected="selected">Choose Time Period</option>
                 <option *ngFor="let time of timeDetails, let i = index" [(ngValue)]="time.id">
                     {{time.time}}
                 </option>
             </select>
-            <button class="btn btn-secondary" id="block"
-                style="margin-right: 10px; font-size: 11px; width: 70px; padding: 4px; background-color: rgb(152, 160, 163);"
-                (click)="blockWise()">&nbsp;<strong>Blocks</strong> </button>
-            <button class="btn btn-secondary" id="cluster"
-                style="margin-right: 10px; font-size: 11px; width: 70px;padding: 4px; background-color: rgb(152, 160, 163);"
-                (click)="clusterWise()">&nbsp;<strong>Clusters</strong> </button>
-            <button class="btn btn-secondary" id="school"
-                style="margin-right: 10px; font-size: 11px; width: 70px; padding: 4px; background-color: rgb(152, 160, 163);"
-                (click)="schoolWise()">&nbsp;<strong>Schools</strong> </button>
+            <button class="btn btn-secondary" id="blockbtn" (click)="blockWise()">&nbsp;<strong>Blocks</strong>
+            </button>
+            <button class="btn btn-secondary" id="clusterbtn" (click)="clusterWise()">&nbsp;<strong>Clusters</strong>
+            </button>
+            <button class="btn btn-secondary" id="schoolbtn" (click)="schoolWise()">&nbsp;<strong>Schools</strong>
+            </button>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div #mapContainer id="map" class="active" style="width: 100%; height: 77vh"></div>
+            <div #mapContainer id="map" class="active" style="width: 100%;"
+                [ngStyle]="{height: heigth > 1760 ? '89vh': heigth > 1180 && heigth < 1760 ? '84vh': heigth > 667 && heigth < 1180 ? '82vh':'78vh'}">
+            </div>
         </div>
     </div>
 </div>
