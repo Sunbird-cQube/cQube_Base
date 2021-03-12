@@ -9,7 +9,10 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         logger.info('--- pat exception cluster wise api ---');
         var timePeriod = req.body.timePeriod;
         var grade = req.body.grade;
+        var subject = req.body.subject;
+        var start = 8;
         let fileName;
+
         if (grade && grade != 'all') {
             fileName = `exception_list/pat_exception/grade/${timePeriod}/cluster/${grade}.json`
         } else {
@@ -30,7 +33,41 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 });
                 Subjects = [...new Set(Subjects)];
             }
+            var updatedMarkers = [];
+            var markersWithSubject = [];
+            for (let j = 0; j < sortedData.length; j++) {
+                var keys = Object.keys(sortedData[j]);
+                if (grade && grade != 'all') {
+                    var obj1 = {}
+                    if (subject != '') {
+                        if (sortedData[j].subjects && sortedData[j].subjects[0][`${subject}`] && Object.keys(sortedData[j].subjects[0]).includes(subject)) {
+                            for (let i = 0; i <= start; i++) {
+                                obj1[`${keys[i]}`] = sortedData[j][`${keys[i]}`];
+                            }
+                            obj1['subject'] = subject;
+                            var keys2 = Object.keys(sortedData[j].subjects[0][`${subject}`]);
+                            for (let i = 0; i < keys2.length; i++) {
+                                obj1[`${keys2[i]}`] = sortedData[j].subjects[0][`${subject}`][`${keys2[i]}`];
+                            }
+                            markersWithSubject.push(obj1);
+                        } else if (!sortedData[j].subjects) {
+                            markersWithSubject.push(sortedData[j]);
+                        }
+                    }
+                }
+                var obj = {};
+                Object.keys(sortedData[j]).forEach(key => {
+                    if (key !== 'subjects') {
+                        obj[key] = sortedData[j][key];
+                    }
+                });
+                updatedMarkers.push(obj);
+            }
         }
+        if (subject) {
+            console.log(markersWithSubject);
+        } else
+            console.log(updatedMarkers);
         logger.info('--- pat exception cluster wise api response sent---');
         res.status(200).send({ data: sortedData, footer: clusterData.allClustersFooter.total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
     } catch (e) {

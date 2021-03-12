@@ -27,6 +27,7 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
                 });
                 Subjects = [...new Set(Subjects)];
             }
+            
             logger.info('--- pat exception district api response sent ---');
             res.status(200).send({ data: sortedData, footer: districtData.allDistrictsFooter.total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
         } else {
