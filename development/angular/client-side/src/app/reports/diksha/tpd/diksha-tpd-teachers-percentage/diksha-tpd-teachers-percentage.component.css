@@ -1,0 +1,70 @@
+#dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
+    color: #284d8a;font-size: 18px !important; line-height: 1.2em; margin-top: 5px;
+ }
+
+ #timePeriod, #district, #block.select-control, #cluster.select-control {
+    padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);
+    margin-top: 0 !important;
+ }
+
+ .report-subtitle {
+    text-align: justify; font-size: 11px;
+ }
+
+ @media only screen and (min-width: 2560px) {
+    #dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
+        font-size: 2.5rem !important;
+    }
+
+    #timePeriod, #district, #block.select-control, #cluster.select-control {
+        padding: 15px !important;
+        font-size: 1.5rem !important;
+        margin-top: 0 !important;
+    }
+
+    #download {
+        margin: 5px 0px 0px 24px !important;
+    }
+
+    #download, #home {
+        font-size: 3rem !important;
+    }
+
+    ::ng-deep .page-item .page-link, ::ng-deep .page-item .page-link.active {
+        padding: 8px 16px !important;
+        font-size: 2rem !important;
+    }
+
+    .report-subtitle {
+      font-size: 1rem !important;
+    }
+ }
+
+ @media only screen and (min-width: 3840px) {
+    #dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
+        font-size: 3.3rem !important;
+    }
+
+    #download {
+        margin: 5px 0px 0px 24px !important;
+    }
+
+    #download, #home {
+        font-size: 3.5rem !important;
+    }
+
+    #timePeriod, #district, #block.select-control, #cluster.select-control {
+        padding: 15px !important;
+        font-size: 1.8rem !important;
+        margin-top: 0 !important;
+    }
+
+    ::ng-deep .page-item .page-link, ::ng-deep .page-item .page-link.active {
+        padding: 8px 16px !important;
+        font-size: 2.5rem !important;
+    }
+
+    .report-subtitle {
+      font-size: 1.5rem !important;
+    }
+ }
