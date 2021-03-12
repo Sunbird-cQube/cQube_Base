@@ -28,6 +28,7 @@ drop view if exists hc_crc_school cascade;
 drop view if exists hc_crc_cluster cascade;
 drop view if exists hc_crc_block cascade;
 drop view if exists hc_crc_district cascade;
+drop view if exists insert_diksha_trans_view;
 
 /* Create infra tables */
 
@@ -1040,11 +1041,12 @@ else initcap(ltrim(rtrim(content_subject))) end as content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent,dimensions_mode,dimensions_type
 from diksha_content_trans where dimensions_type=''content'' and dimensions_mode=''play'' ) as a 
-inner join  
-        (select distinct a.district_id,a.district_name,b.district_latitude,b.district_longitude from 
-(select district_id,replace(upper(district_name),'' '','''') as district_name from school_hierarchy_details
+inner join
+        (select distinct a.district_id,a.district_name,b.district_latitude,b.district_longitude from
+(select district_id,district_name from school_hierarchy_details
 group by district_id,district_name
-) as a left join school_geo_master as b on a.district_id=b.district_id) as b on a.district_name=b.district_name';
+) as a left join school_geo_master as b on a.district_id=b.district_id) as b on lower(a.district_name)=lower(b.district_name)
+where a.district_name is not null and b.district_id is not null';
 Execute diksha_view;
 agg_insert='insert into diksha_total_content(district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
@@ -1057,7 +1059,7 @@ content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_dis
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,
 total_time_spent
 from insert_diksha_trans_view) 
-except (select district_id,district_latitude,district_longitude,district_name,
+except all (select district_id,district_latitude,district_longitude,district_name,
 content_view_date,dimensions_pdata_id,dimensions_pdata_pid,content_name,content_board,content_mimetype,content_medium,content_gradelevel,content_subject,
 content_created_for,object_id,object_rollup_l1,derived_loc_state,derived_loc_district,user_signin_type,user_login_type,collection_name,collection_board,
 collection_type,collection_medium,collection_gradelevel,collection_subject,collection_created_for,total_count,total_time_spent 

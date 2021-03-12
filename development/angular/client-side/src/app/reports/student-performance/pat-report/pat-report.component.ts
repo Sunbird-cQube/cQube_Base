@@ -54,6 +54,10 @@ export class PATReportComponent implements OnInit {
   public clusterMarkers: any = [];
   public schoolMarkers: any = [];
 
+  public allDistricts: any = [];
+  public allBlocks: any = [];
+  public allClusters: any = [];
+
   // to show and hide the dropdowns based on the selection of buttons
   public stateLevel: any = 0; // 0 for buttons and 1 for dropdowns
 
@@ -200,7 +204,8 @@ export class PATReportComponent implements OnInit {
   getDistricts(level): void {
     this.service.PATDistWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
       this.data = res['data'];
-      this.districtMarkers = this.data;
+      this.allDistricts = this.districtMarkers = this.data;
+      this.allDistricts.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
       if (!this.districtMarkers[0]['Subjects']) {
         this.distFilter = this.districtMarkers;
       }
@@ -343,7 +348,9 @@ export class PATReportComponent implements OnInit {
             document.getElementById('home').style.display = 'block';
           }
           // to show only in dropdowns
-          this.districtMarkers = this.data;
+          this.allDistricts = this.districtMarkers = this.data;
+          this.allDistricts.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
+
           if (!this.districtMarkers[0]['Subjects']) {
             this.distFilter = this.districtMarkers;
           }
@@ -364,10 +371,6 @@ export class PATReportComponent implements OnInit {
           this.changeDetection.detectChanges();
           this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           this.genericFun(this.myDistData, options, this.fileName);
-
-          // sort the districtname alphabetically
-          this.districtMarkers.sort((a, b) => (a.Details.district_name > b.Details.district_name) ? 1 : ((b.Details.district_name > a.Details.district_name) ? -1 : 0));
-
         }, err => {
           this.data = [];
           this.commonService.loaderAndErr(this.data);
@@ -818,7 +821,7 @@ export class PATReportComponent implements OnInit {
       //   var index = this.allSubjects.indexOf('Grade Performance') + 1;
       //   this.allSubjects.splice(index, 1);
       // }
-      this.blockMarkers = this.data;
+      this.allBlocks = this.blockMarkers = this.data;
       if (!this.blockMarkers[0]['Subjects']) {
         this.blockFilter = this.blockMarkers;
       }
@@ -910,7 +913,7 @@ export class PATReportComponent implements OnInit {
       //   this.allSubjects = Object.keys(this.data[0].Subjects)
       //   this.allSubjects.pop()
       // }
-      this.clusterMarkers = this.data;
+      this.allClusters = this.clusterMarkers = this.data;
       if (!this.clusterMarkers[0]['Subjects']) {
         this.clusterFilter = this.clusterMarkers;
       }

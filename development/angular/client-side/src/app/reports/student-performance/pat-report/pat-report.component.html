@@ -96,14 +96,14 @@
 
             <select id="choose_dist" [(ngModel)]="districtId" (change)="ondistLinkClick(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
-                <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.Details.district_id">
+                <option *ngFor="let dist of allDistricts" [(ngValue)]="dist.Details.district_id">
                     {{dist.Details.district_name}}
                 </option>
             </select>
 
             <select [hidden]="blockHidden" id="choose_block" [(ngModel)]="blockId" (change)="onblockLinkClick(blockId)">
                 <option [value]="blockId" disabled selected="selected">Choose a Block</option>
-                <option *ngFor="let block of blockMarkers" [(ngValue)]="block.Details.block_id">
+                <option *ngFor="let block of allBlocks" [(ngValue)]="block.Details.block_id">
                     {{block.Details.block_name}}
                 </option>
             </select>
@@ -111,7 +111,7 @@
             <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="clusterId"
                 (change)="onclusterLinkClick(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
-                <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.Details.cluster_id"
+                <option *ngFor="let cluster of allClusters" [(ngValue)]="cluster.Details.cluster_id"
                     [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                     {{cluster.Details.cluster_name}}
                 </option>
@@ -125,7 +125,7 @@
         <div class="col-sm-12">
             <div style="float: left; width: 90%;">
                 <div #mapContainer id="patMap" class="active" style="width: 100%;"
-                    [ngStyle]="{height: heigth > 1760 ? '85vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '75vh':'69vh'}">
+                    [ngStyle]="{height: heigth > 1760 ? '84.2vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '74vh':'68vh'}">
                 </div>
             </div>
             <div style="float: left; width: 9%; margin-left: 1%;">

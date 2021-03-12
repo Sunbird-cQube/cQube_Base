@@ -92,6 +92,7 @@ export class SemesterExceptionComponent implements OnInit {
     this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
     this.commonService.initMap('semExMap', [[this.lat, this.lng]]);
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
+    globalMap.options.minZoom = this.commonService.zoomLevel;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.service.semExceptionMetaData().subscribe(res => {
