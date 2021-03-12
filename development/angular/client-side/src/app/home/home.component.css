@@ -318,3 +318,58 @@ a{
     position: absolute; right: 3%; bottom: 5%; font-size: 18px;
   }
 }
+
+@media screen and (min-width: 3820px){
+  .header{
+    height: 70px !important; 
+    background-color: rgb(245, 245, 245); 
+    width: 100% !important;
+  }
+
+  #logoImg{
+    height:62px !important; 
+    width:180px !important;
+    padding-left: 15px !important;
+  }
+  
+  #backBtn,#homeBtn{
+    padding: 2px; 
+    cursor: pointer; 
+    font-size: 28px; 
+    margin-right: 3%;
+  }
+  
+  #logout{
+    padding: 2px; 
+    cursor: pointer; 
+    font-size: 28px;
+  }
+
+  .fa-sign-out{
+    font-size: 30px;
+  }
+  .menu{
+    margin-left: -3px;
+  }
+  .material-icons{
+    font-size: 44px;
+  }
+
+  .mat-icon-button{
+    width: 65px;
+    height: 65px;
+  }
+
+  #version{
+    position: absolute; 
+    left: 5%; 
+    bottom: 5%; 
+    font-size: 24px !important;
+  }
+  
+  #releaseDate{
+    position: absolute; 
+    right: 3%; bottom: 5%; 
+    font-size: 24px !important;
+  }
+}
