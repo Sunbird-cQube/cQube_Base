@@ -53,7 +53,7 @@ export class CrcReportComponent implements OnInit {
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
-  public skul: boolean = false;
+  public skul: boolean = true;
 
   public hierName: any;
   public distName: any;
@@ -115,6 +115,12 @@ export class CrcReportComponent implements OnInit {
   state: string;
   constructor(public http: HttpClient, public service: CrcReportService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
     localStorage.removeItem('resData');
+  }
+
+  height = window.innerHeight;
+  onResize() {
+    this.height = window.innerHeight;
+    this.levelWiseFilter();
   }
 
   ngOnInit() {
@@ -766,6 +772,8 @@ export class CrcReportComponent implements OnInit {
   }
 
   createChart(labels, chartData, name, obj) {
+    var ctx = $('#myChart');
+    ctx.attr('height', this.height > 1760 ? '70vh' : this.height > 1180 && this.height < 1760 ? '66vh' : this.height > 667 && this.height < 1180 ? '55vh' : '50vh');
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
       data: {
@@ -773,7 +781,10 @@ export class CrcReportComponent implements OnInit {
         datasets: [{
           data: chartData,
           pointBackgroundColor: "#4890b5",
-          pointRadius: 6
+          pointBorderColor: '#7cd6cc',
+          pointBorderWidth: 0.5,
+          pointRadius: this.height > 1760 ? 16 : this.height > 1180 && this.height < 1760 ? 10 : this.height > 667 && this.height < 1180 ? 8 : 5,
+          pointHoverRadius: this.height > 1760 ? 18 : this.height > 1180 && this.height < 1760 ? 12 : this.height > 667 && this.height < 1180 ? 9 : 6,
         }]
       },
       options: {
@@ -856,6 +867,10 @@ export class CrcReportComponent implements OnInit {
   }
 
   selectAxis() {
+    this.levelWiseFilter();
+  }
+
+  levelWiseFilter(){
     if (this.skul) {
       this.districtWise();
     }
@@ -869,6 +884,7 @@ export class CrcReportComponent implements OnInit {
       this.myClusterData(localStorage.getItem('clusterId'));
     }
   }
+
   redirectTo() {
     this.router.navigate(['home/dashboard']);
   }
