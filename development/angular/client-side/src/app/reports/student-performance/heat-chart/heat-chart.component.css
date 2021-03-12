@@ -32,3 +32,67 @@
     background: #f1f7ff;
 }
  */
+
+ #dist, #block, #cluster, #school {
+    color: #284d8a;font-size: 18px !important; line-height: 1.2em; margin-top: 5px;
+ }
+
+ #year, #month, #grade, #subject, #examDate, #viewBy, #district, #block.select-control, #cluster.select-control {
+    margin-right: 10px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);
+ }
+
+ @media only screen and (min-width: 2560px) {
+    #dist, #block, #cluster, #school {
+        font-size: 2.5rem !important;
+    }
+
+    #year, #month, #grade, #subject, #examDate, #viewBy, #district, #block.select-control, #cluster.select-control {
+        padding: 15px !important;
+        font-size: 1.5rem !important;
+    }
+
+    #download {
+        margin: 5px 0px 0px 24px !important;
+    }
+
+    #download, #home {
+        font-size: 3rem !important;
+    }
+
+    ::ng-deep .page-item .page-link, ::ng-deep .page-item .page-link.active {
+        padding: 8px 16px !important;
+        font-size: 2rem !important;
+    }
+
+    #container {
+        height: 80vh !important;
+    }
+ }
+
+ @media only screen and (min-width: 3840px) {
+    #dist, #block, #cluster, #school {
+        font-size: 3.3rem !important;
+    }
+
+    #download {
+        margin: 5px 0px 0px 24px !important;
+    }
+
+    #download, #home {
+        font-size: 3.5rem !important;
+    }
+
+    #year, #month, #grade, #subject, #examDate, #viewBy, #district, #block.select-control, #cluster.select-control {
+        padding: 15px !important;
+        font-size: 1.8rem !important;
+    }
+
+    ::ng-deep .page-item .page-link, ::ng-deep .page-item .page-link.active {
+        padding: 8px 16px !important;
+        font-size: 2.5rem !important;
+    }
+
+    #container {
+        height: 80vh !important;
+    }
+ }
