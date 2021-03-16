@@ -1,5 +1,5 @@
 <div class="container-fluid" style="padding-top:15px !important;">
-    <div class="row" (window:resize)="onResize($event)">
+    <div class="row" (window:resize)="commonService.onResize(levelWise);onResize()">
         <div class="col-lg-7 col-md-12 col-sm-12">
             <div *ngIf='skul'>
                 <p id="dist">
@@ -145,7 +145,7 @@
         <div class="col-sm-12">
             <div style="float: left; width: 90%;">
                 <div #mapContainer id="mapContainer" class="active" style="width: 100%;"
-                    [ngStyle]="{height: heigth > 1760 ? '84vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '72vh':'68vh'}">
+                    [ngStyle]="{height: height > 1760 ? '84vh': height > 1180 && height < 1760 ? '80vh': height > 667 && height < 1180 ? '72vh':'68vh'}">
                 </div>
             </div>
             <div style="float: left; width: 9%; margin-left: 1%;">
