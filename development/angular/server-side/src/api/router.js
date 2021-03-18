@@ -260,4 +260,9 @@ router.use('/sarException', sarExceptionBlockWise);
 router.use('/sarException', sarExceptionClusterWise);
 router.use('/sarException', sarExceptionSchoolWise);
 
+//Attendance Line-chart
+const onDistSelect = require('./controller/attendanceRoutes/sttendance-line-chart/onSelectDistrict');
+
+router.use('/line-chart', onDistSelect);
+
 module.exports = router;

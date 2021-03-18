@@ -1,26 +1,26 @@
 <div>
     <div (mouseleave)="showDropDown = false">
-        <button class="btn btn-secondary" (click)="showDropDown=!showDropDown">
+        <button class="btn btn-secondary" (click)="showDropDown=!showDropDown" [ngStyle]="{width: width1}">
             <span *ngIf="checkedList.length<=0" style="font-size: 11px;font-weight: bold; margin: 0px;">Select
-                Courses</span>
+                {{text}}</span>
             <span *ngIf="checkedList.length>0" style="font-size: 11px;font-weight: bold;">{{checkedList.length}}
-                Courses Selected</span>
-            <em class="fa fa-angle-down" style="margin-top:4px;padding: 0px 3px 0px 0px;"></em>
+                {{checkedList.length == 1 ? text : text+'s'}} Selected</span>
+            <em class="fa fa-angle-down" style="margin-top:3.5px;padding: 0px 3px 0px 0px; font-size: 15px; font-weight: bold;"></em>
         </button>
         <button *ngIf="checkedList.length > 0" class="btn btn-primary"
             style="padding: 4px;font-size: 11px; font-weight:bold; background-color: #284d8a;"
             (click)="getSelected()">SUBMIT</button>
-        <div class="drop-show" *ngIf="showDropDown">
-            <div *ngIf="list.length > 0" id="div1" style="height: 200px;position:relative; border-radius: 10px;">
+        <div class="drop-show" *ngIf="showDropDown" [ngStyle]="{width: width1}">
+            <div *ngIf="list.length > 0" id="div1" style="min-height: 30px;position:relative; border-radius: 10px;">
                 <div id="div2" style="max-height:100%;overflow:auto;">
-                    <div id="div3" style="height:1000px auto;">
+                    <div id="div3" style="min-height:1000px auto;">
                         <!-- <input type="checkbox" [(ngModel)]="status" (change)="selectAll(status)">
                         <span style="margin-left: 5px;">Select All</span>
                         <hr> -->
                         <label *ngFor="let a of list">
                             <input type="checkbox" [(ngModel)]="a.status"
-                                (change)="getSelectedValue(a.course_id,a.status)">
-                            <span style="margin-left: 5px;">{{a.course_name}}</span>
+                                (change)="getSelectedValue(a.id,a.status)">
+                            <span style="margin-left: 5px;">{{a.name}}</span>
                         </label>
                     </div>
                 </div>
