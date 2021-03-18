@@ -135,10 +135,11 @@
                     {{cluster.name}}
                 </option>
             </select>
-
+            
             <a class="float-right" href="javascript: void(0)" id="stdHealthCard" (click)="goToHealthCard()"
                 style="font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Access Health
                 Card</a>
+            <span class="note" [routerLink]="['/attendance/student-attendance-chart']" style="margin-right: 25px; cursor: pointer; float: right; font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Click on Trends</span>
         </div>
     </div>
     <div class="row">
