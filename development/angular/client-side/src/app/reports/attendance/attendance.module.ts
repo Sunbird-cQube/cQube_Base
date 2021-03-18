@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthGuard } from 'src/app/auth.guard';
 import { ComingSoonComponent } from 'src/app/common/coming-soon/coming-soon.component';
+import { StudentAttendanceChartComponent } from './student-attendance-chart/student-attendance-chart.component';
 
 const sttendanceRoutes: Routes = [
   {
@@ -15,6 +16,9 @@ const sttendanceRoutes: Routes = [
       },
       {
         path: 'teacher-attendance', component: TeacherAttendanceComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'student-attendance-chart', component: StudentAttendanceChartComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
@@ -24,7 +28,7 @@ const sttendanceRoutes: Routes = [
   declarations: [
     StudengtAttendanceComponent,
     TeacherAttendanceComponent,
-    ComingSoonComponent
+    ComingSoonComponent,
   ],
   imports: [
     CommonModule,
