@@ -5505,8 +5505,9 @@ initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as dist
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
- inner join (select school_id from periodic_exam_school_result where exam_code in(select exam_code from pat_date_range where date_range=''last7days'')
- except select school_id from periodic_exam_school_last7 ) as c on a.school_id = c.school_id';
+left join periodic_exam_school_last7 c on a.school_id=c.school_id
+where exists ( select pat_date_range.exam_code from pat_date_range where pat_date_range.date_range=''last7days''::text) and c.school_id is null
+and a.school_id<>9999';
 
 
 pat_no_schools_last30= 'create or replace view pat_exception_data_last30 as 
@@ -5515,8 +5516,9 @@ initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as dist
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
- inner join (select school_id from periodic_exam_school_result where exam_code in(select exam_code from pat_date_range where date_range=''last30days'')
- except select school_id from periodic_exam_school_last30 ) as c on a.school_id = c.school_id';
+left join periodic_exam_school_last30 c on a.school_id=c.school_id
+where exists ( select pat_date_range.exam_code from pat_date_range where pat_date_range.date_range=''last30days''::text) and c.school_id is null
+and a.school_id<>9999';
 
 Execute pat_no_schools_all;
 Execute pat_no_schools_last7;
