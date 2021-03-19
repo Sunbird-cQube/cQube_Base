@@ -78,4 +78,10 @@ export class AttendanceReportService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/line-chart/distWise`, {});
   }
+
+  //management category metadata
+  management_category_metaData(){
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/management-category-meta`, {});
+  }
 }

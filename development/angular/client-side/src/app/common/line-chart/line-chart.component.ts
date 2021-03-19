@@ -13,6 +13,8 @@ export class LineChartComponent implements OnInit, OnChanges {
   @Input() lineData:any = [];
   @Input() xAxisLabels:any = [];
   @Input() level = '';
+  @Input() xAxisTitle;
+  @Input() yAxisTitle;
   constructor(private changeDetection: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -23,15 +25,14 @@ export class LineChartComponent implements OnInit, OnChanges {
   height = window.innerHeight;
  onResize() {
     this.height = window.innerHeight;
-    // this.getCurrentData();
+    this.getCurrentData();
     this.changeDetection.detectChanges();
     this.createChart();
   }
 
 
   ngOnChanges(){
-    this.getCurrentData();
-    this.createChart();
+    this.onResize();
   }
 
   public currentData:any = [];
@@ -65,6 +66,8 @@ export class LineChartComponent implements OnInit, OnChanges {
   createChart() {
     var academicYear = this.selectedYear;
     var level = this.level;
+    var xAxisTitle = this.xAxisTitle;
+    var yAxisTitle = this.yAxisTitle;
     this.chartOptions = {
       chart: {
         type: "line",
@@ -83,8 +86,9 @@ export class LineChartComponent implements OnInit, OnChanges {
         type: "category",
         gridLineColor: 'transparent',
         categories: this.xAxisLabels,
+        min:0,
         title: {
-          text: 'x-axis',
+          text: xAxisTitle,
           style: {
             color: 'black',
             fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px",
@@ -112,7 +116,7 @@ export class LineChartComponent implements OnInit, OnChanges {
         opposite: false,
         gridLineColor: 'transparent',
         title: {
-          text: 'y-axis',
+          text: yAxisTitle,
           style: {
             color: 'black',
             fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px",

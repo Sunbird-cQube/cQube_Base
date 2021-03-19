@@ -302,9 +302,9 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   background-color: rgb(152, 160, 163);
 }
 
-#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis{
+#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis, #type,#management, #category{
   margin-right: 15px;
-  padding: 5px; 
+  padding: 5.2px; 
   color: white; 
   border-radius: 4px; 
   font-size: 11px; 
@@ -458,7 +458,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
       text-align: justify; 
       font-size: 18px;
    }
-   #choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis{
+   #choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis, #type,#management, #category{
       margin-right: 15px;
       padding: 7.2px; 
       color: white; 
@@ -469,10 +469,11 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   }
 
   #blockbtn, #clusterbtn, #schoolbtn{
+      margin-top: -4px;
       margin-right: 15px; 
       font-size: 18px; 
       width: 120px;
-      padding: 5.2px; 
+      padding: 4.6px; 
       background-color: rgb(152, 160, 163);
   }
   
@@ -583,7 +584,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   text-align: justify; 
   font-size: 22px !important;
 }
-#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis{
+#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis, #type,#management, #category{
   margin-right: 15px;
   padding: 8px !important; 
   color: white; 
@@ -594,10 +595,11 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 }
 
 #blockbtn, #clusterbtn, #schoolbtn{
+  margin-top: -7px;
   margin-right: 15px; 
   font-size: 22px !important; 
   width: 130px !important;
-  padding: 5.7px !important; 
+  padding: 4.5px !important; 
   background-color: rgb(152, 160, 163);
 }
 
@@ -706,23 +708,23 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   text-align: justify; 
   font-size: 30px !important;
 }
-#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear, #year, #month, #downloader, #x-axis, #y-axis{
+#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear, #year, #month, #downloader, #x-axis, #y-axis, #type,#management, #category{
   margin-right: 20px;
-  padding: 9px !important; 
+  padding: 12px !important; 
   color: white; 
   border-radius: 6px; 
-  font-size: 28px !important; 
+  font-size: 32px !important; 
   font-weight: bold; 
   background-color: rgb(152, 160, 163)
 }
 
 #blockbtn, #clusterbtn, #schoolbtn{
   margin-right: 15px; 
-  font-size: 28px !important; 
-  width: 160px !important;
+  font-size: 32px !important; 
+  width: 180px !important;
   padding: 6px !important;
   background-color: rgb(152, 160, 163);
-  margin-top: -7px !important;
+  margin-top: -12.5px !important;
 }
 
 .legends{
