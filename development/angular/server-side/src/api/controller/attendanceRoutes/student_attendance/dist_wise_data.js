@@ -9,13 +9,33 @@ router.post('/distWise', auth.authController, async function (req, res) {
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
+        var type = req.body.type;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
-        if (timePeriod != null) {
-            fileName = `attendance/${timePeriod}/district.json`;
+        if (type) {
+            if (type == 'Management') {
+                if (timePeriod != null) {
+                    fileName = `attendance/${timePeriod}/school_management/${management}/district.json`;
+                } else {
+                    fileName = `attendance/school_management/${management}/district_${year}_${month}.json`;
+                }
+            } else {
+                if (timePeriod != null) {
+                    fileName = `attendance/${timePeriod}/school_category/${category}/district.json`;
+                } else {
+                    fileName = `attendance/school_category/${category}/district_${year}_${month}.json`;
+                }
+            }
         } else {
-            fileName = `attendance/district_attendance_opt_json_${year}_${month}.json`;
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/district.json`;
+            } else {
+                fileName = `attendance/district_attendance_opt_json_${year}_${month}.json`;
+            }
         }
         var jsonData = await s3File.readS3File(fileName);
+        
         var districtAttendanceData = jsonData.data
         var dateRange = `${districtAttendanceData[0]['data_from_date']} to ${districtAttendanceData[0]['data_upto_date']}`;
         var distData = [];

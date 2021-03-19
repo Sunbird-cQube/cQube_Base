@@ -212,6 +212,31 @@ export class TeacherAttendanceComponent implements OnInit {
     this.onResize(event);
   }
 
+  //Management and category
+  type;
+  types = ['Management', 'Category'];
+  hideManagement = true;
+  hideCategory = true;
+  onSelectType(){
+    if(this.type == 'Management'){
+      this.hideManagement = false;
+      this.hideCategory = true;
+    }else{
+      this.hideManagement = true;
+      this.hideCategory = false;
+    }
+  }
+  managements = [];
+  management;
+  categories = [];
+  category;
+  onSelectManagement(){
+
+  }
+  onSelectCategory(){
+
+  }
+
   getDistricts(): void {
     this.service.dist_wise_data(this.month_year).subscribe(res => {
       var sorted = res['distData'].sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
@@ -456,6 +481,11 @@ export class TeacherAttendanceComponent implements OnInit {
   onClickHome() {
     this.yearMonth = true;
     this.academicYear = undefined;
+    this.hideManagement = true;
+    this.hideCategory = true;
+    this.type = undefined;
+    this.management = undefined;
+    this.category = undefined;
     this.period = 'overall';
     this.levelWise = "District";
     this.month_year = {
