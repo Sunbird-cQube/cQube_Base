@@ -954,7 +954,7 @@
                             </div>
                         </div>
                         <div class="row" *ngIf="healthCardData['crc_visit']">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div class="mar-lef-35" style="margin-left: 15px;">
                                     <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Total Visit Score
                                     </strong>
@@ -962,6 +962,23 @@
                                         <app-progress-circle [value]="healthCardData['crc_visit']['visit_score']"
                                             [color]="crcColor"></app-progress-circle>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-7">
+                                <div>
+                                    <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
+                                        style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
+                                        + level.substr(1)}} Rank</strong>
+                                    <table class="mar-lef-35 metric-values-table no-fixed-width" style="margin-left: 20px;">
+                                        <thead>
+                                            <tr *ngFor="let key of schoolInfraRank; let i=index">
+                                                <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}} level</td>
+                                                <td *ngIf="level != 'state'">:</td>
+                                                <td *ngIf="level != 'state'">{{healthCardData['crc_visit'][key]}}
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>
