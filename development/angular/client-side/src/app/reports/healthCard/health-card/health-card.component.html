@@ -956,10 +956,10 @@
                         <div class="row" *ngIf="healthCardData['crc_visit']">
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="mar-lef-35" style="margin-left: 15px;">
-                                    <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">No Visit Score
+                                    <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Total Visit Score
                                     </strong>
                                     <div class="progress-circle-container" style="font-weight: bold; ">
-                                        <app-progress-circle [value]="healthCardData['crc_visit']['schools_0']"
+                                        <app-progress-circle [value]="healthCardData['crc_visit']['visit_score']"
                                             [color]="crcColor"></app-progress-circle>
                                     </div>
                                 </div>

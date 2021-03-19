@@ -649,7 +649,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         this.tooltipCrcKeys.push(myKey);
       });
 
-      this.crcColor = this.service.colorGredient1(healthCardData['crc_visit']['schools_0']);
+      this.crcColor = this.service.colorGredient(healthCardData['crc_visit']['visit_score']);
       this.crcRankMatrixValue = healthCardData['crc_visit']['state_level_score'] * 10;
       this.crcRankMatrixColor = this.service.colorRankMatrics(this.crcRankMatrixValue);
     }
