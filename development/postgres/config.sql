@@ -11152,3 +11152,454 @@ END IF;
 return 0;
 END;
 $$  LANGUAGE plpgsql;
+
+/* Pat year and month */
+
+/* school */
+
+CREATE OR REPLACE VIEW periodic_exam_school_year_month AS
+ SELECT d.academic_year,
+    d.school_id,
+    d.school_name,
+    d.cluster_id,
+    d.cluster_name,
+    d.block_id,
+    d.block_name,
+    d.district_id,
+    d.district_name,
+    d.school_latitude,
+    d.school_longitude,
+    d.school_performance,
+    trim(d.month) as month,
+    d.grade_wise_performance,
+    d.subject_wise_performance,
+    b.total_schools,
+    b.students_count
+   FROM ( SELECT c.academic_year,
+            c.school_id,
+            c.school_name,
+            c.cluster_id,
+            c.cluster_name,
+            c.block_id,
+            c.block_name,
+            c.district_id,
+            c.district_name,
+            c.school_latitude,
+            c.school_longitude,
+            c.school_performance,
+            c.month,
+            c.grade_wise_performance,
+            d_1.subject_wise_performance
+           FROM ( SELECT a.academic_year,
+                    a.school_id,
+                    a.school_name,
+                    a.cluster_id,
+                    a.cluster_name,
+                    a.block_id,
+                    a.block_name,
+                    a.district_id,
+                    a.district_name,
+					a.school_latitude,
+                    a.school_longitude,
+                    a.school_performance,
+                    a.month,
+                    b_1.grade_wise_performance
+                   FROM ( SELECT periodic_exam_school_result.academic_year,
+                            periodic_exam_school_result.school_id,
+                            initcap(periodic_exam_school_result.school_name::text) AS school_name,
+                            periodic_exam_school_result.cluster_id,
+                            initcap(periodic_exam_school_result.cluster_name::text) AS cluster_name,
+                            periodic_exam_school_result.block_id,
+                            initcap(periodic_exam_school_result.block_name::text) AS block_name,
+                            periodic_exam_school_result.district_id,
+                            initcap(periodic_exam_school_result.district_name::text) AS district_name,
+                            periodic_exam_school_result.school_latitude,
+                            periodic_exam_school_result.school_longitude,
+                            round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS school_performance,
+                            to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                           FROM periodic_exam_school_result
+                          GROUP BY periodic_exam_school_result.academic_year, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.school_id, periodic_exam_school_result.school_name, periodic_exam_school_result.cluster_id, periodic_exam_school_result.cluster_name, periodic_exam_school_result.block_id, periodic_exam_school_result.block_name, periodic_exam_school_result.district_id, periodic_exam_school_result.district_name, periodic_exam_school_result.school_latitude, periodic_exam_school_result.school_longitude) a
+                     LEFT JOIN ( SELECT a_1.academic_year,
+                            json_object_agg(a_1.grade, a_1.percentage) AS grade_wise_performance,
+                            a_1.month,
+                            a_1.school_id
+                           FROM ( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    periodic_exam_school_result.school_id,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.school_id) a_1
+                          GROUP BY a_1.school_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::text = b_1.academic_year::text AND a.school_id = b_1.school_id AND a.month = b_1.month) c
+             LEFT JOIN ( SELECT d_2.academic_year,
+                    d_2.school_id,
+                    jsonb_agg(d_2.subject_wise_performance) AS subject_wise_performance,
+                    d_2.month
+                   FROM ( SELECT a.academic_year,
+                            a.school_id,
+                            a.month,
+                            json_build_object(a.grade, json_object_agg(a.subject_name, a.percentage ORDER BY a.subject_name))::jsonb AS subject_wise_performance
+                           FROM (( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    periodic_exam_school_result.subject AS subject_name,
+                                    periodic_exam_school_result.school_id,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.school_id
+                                  ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
+                                UNION
+                                ( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    'Grade Performance'::text AS subject_name,
+                                    periodic_exam_school_result.school_id,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.school_id
+                                  ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text)) a
+                          GROUP BY a.academic_year, a.school_id, a.grade, a.month) d_2
+                  GROUP BY d_2.academic_year, d_2.school_id, d_2.month) d_1 ON c.academic_year::text = d_1.academic_year::text AND c.school_id = d_1.school_id AND c.month = d_1.month) d
+     LEFT JOIN ( SELECT a.school_id,
+            b_1.assessment_year AS academic_year,
+            b_1.month,
+            count(DISTINCT a.student_uid) AS students_count,
+            count(DISTINCT a.school_id) AS total_schools
+           FROM ( SELECT periodic_exam_result_trans.exam_id,
+                    periodic_exam_result_trans.school_id,
+                    periodic_exam_result_trans.student_uid
+                   FROM periodic_exam_result_trans
+                  WHERE (periodic_exam_result_trans.school_id IN ( SELECT periodic_exam_school_result.school_id
+                           FROM periodic_exam_school_result))
+                  GROUP BY periodic_exam_result_trans.exam_id, periodic_exam_result_trans.school_id, periodic_exam_result_trans.student_uid) a
+             LEFT JOIN ( SELECT periodic_exam_mst.exam_id,
+                    periodic_exam_mst.assessment_year,
+                    to_char(to_date(date_part('month'::text, periodic_exam_mst.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                   FROM periodic_exam_mst) b_1 ON a.exam_id = b_1.exam_id
+             LEFT JOIN school_hierarchy_details c ON a.school_id = c.school_id
+          GROUP BY a.school_id, b_1.assessment_year, b_1.month) b ON d.academic_year::text = b.academic_year::text AND d.school_id = b.school_id AND d.month = b.month;
+
+/* cluster */
+
+CREATE OR REPLACE VIEW periodic_exam_cluster_year_month AS
+ SELECT d.academic_year,
+    d.cluster_id,
+    d.cluster_name,
+    d.block_id,
+    d.block_name,
+    d.district_id,
+    d.district_name,
+    d.cluster_latitude,
+    d.cluster_longitude,
+    d.cluster_performance,
+    trim(d.month) as month,
+    d.grade_wise_performance,
+    d.subject_wise_performance,
+    b.total_schools,
+    b.students_count
+   FROM ( SELECT c.academic_year,
+            c.cluster_id,
+            c.cluster_name,
+            c.block_id,
+            c.block_name,
+            c.district_id,
+            c.district_name,
+            c.cluster_latitude,
+            c.cluster_longitude,
+            c.cluster_performance,
+            c.month,
+            c.grade_wise_performance,
+            d_1.subject_wise_performance
+           FROM ( SELECT a.academic_year,
+                    a.cluster_id,
+                    a.cluster_name,
+                    a.block_id,
+                    a.block_name,
+                    a.district_id,
+                    a.district_name,
+                    a.cluster_latitude,
+                    a.cluster_longitude,
+                    a.cluster_performance,
+                    a.month,
+                    b_1.grade_wise_performance
+                   FROM ( SELECT periodic_exam_school_result.academic_year,
+                            periodic_exam_school_result.cluster_id,
+                            initcap(periodic_exam_school_result.cluster_name::text) AS cluster_name,
+                            periodic_exam_school_result.block_id,
+                            initcap(periodic_exam_school_result.block_name::text) AS block_name,
+                            periodic_exam_school_result.district_id,
+                            initcap(periodic_exam_school_result.district_name::text) AS district_name,
+                            periodic_exam_school_result.cluster_latitude,
+                            periodic_exam_school_result.cluster_longitude,
+                            round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS cluster_performance,
+                            to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                           FROM periodic_exam_school_result
+                          GROUP BY periodic_exam_school_result.academic_year, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.cluster_id, periodic_exam_school_result.cluster_name, periodic_exam_school_result.block_id, periodic_exam_school_result.block_name, periodic_exam_school_result.district_id, periodic_exam_school_result.district_name, periodic_exam_school_result.cluster_latitude, periodic_exam_school_result.cluster_longitude) a
+                     LEFT JOIN ( SELECT a_1.academic_year,
+                            json_object_agg(a_1.grade, a_1.percentage) AS grade_wise_performance,
+                            a_1.month,
+                            a_1.cluster_id
+                           FROM ( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    periodic_exam_school_result.cluster_id,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.cluster_id) a_1
+                          GROUP BY a_1.cluster_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::text = b_1.academic_year::text AND a.cluster_id = b_1.cluster_id AND a.month = b_1.month) c
+             LEFT JOIN ( SELECT d_2.academic_year,
+                    d_2.cluster_id,
+                    jsonb_agg(d_2.subject_wise_performance) AS subject_wise_performance,
+                    d_2.month
+                   FROM ( SELECT a.academic_year,
+                            a.cluster_id,
+                           a.month,
+                            json_build_object(a.grade, json_object_agg(a.subject_name, a.percentage ORDER BY a.subject_name))::jsonb AS subject_wise_performance
+                           FROM (( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    periodic_exam_school_result.subject AS subject_name,
+                                    periodic_exam_school_result.cluster_id,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.cluster_id
+                                  ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
+                                UNION
+                                ( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    'Grade Performance'::text AS subject_name,
+                                    periodic_exam_school_result.cluster_id,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.cluster_id
+                                  ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text)) a
+                          GROUP BY a.academic_year, a.cluster_id, a.grade, a.month) d_2
+                  GROUP BY d_2.academic_year, d_2.cluster_id, d_2.month) d_1 ON c.academic_year::text = d_1.academic_year::text AND c.cluster_id = d_1.cluster_id AND c.month = d_1.month) d
+     LEFT JOIN ( SELECT c.cluster_id,
+            b_1.assessment_year AS academic_year,
+            b_1.month,
+            count(DISTINCT a.student_uid) AS students_count,
+            count(DISTINCT a.school_id) AS total_schools
+           FROM ( SELECT periodic_exam_result_trans.exam_id,
+                    periodic_exam_result_trans.school_id,
+                    periodic_exam_result_trans.student_uid
+                   FROM periodic_exam_result_trans
+                  WHERE (periodic_exam_result_trans.school_id IN ( SELECT periodic_exam_school_result.school_id
+                           FROM periodic_exam_school_result))
+                  GROUP BY periodic_exam_result_trans.exam_id, periodic_exam_result_trans.school_id, periodic_exam_result_trans.student_uid) a
+             LEFT JOIN ( SELECT periodic_exam_mst.exam_id,
+                    periodic_exam_mst.assessment_year,
+                    to_char(to_date(date_part('month'::text, periodic_exam_mst.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                   FROM periodic_exam_mst) b_1 ON a.exam_id = b_1.exam_id
+             LEFT JOIN school_hierarchy_details c ON a.school_id = c.school_id
+          GROUP BY c.cluster_id, b_1.assessment_year, b_1.month) b ON d.academic_year::text = b.academic_year::text AND d.cluster_id = b.cluster_id AND d.month = b.month;
+
+/* Block */
+
+CREATE OR REPLACE VIEW periodic_exam_block_year_month AS
+ SELECT d.academic_year,
+    d.block_id,
+    d.block_name,
+    d.district_id,
+    d.district_name,
+    d.block_latitude,
+    d.block_longitude,
+    d.block_performance,
+    trim(d.month) as month,
+    d.grade_wise_performance,
+    d.subject_wise_performance,
+    b.total_schools,
+    b.students_count
+   FROM ( SELECT c.academic_year,
+            c.block_id,
+            c.block_name,
+            c.district_id,
+            c.district_name,
+            c.block_latitude,
+            c.block_longitude,
+            c.block_performance,
+            c.month,
+            c.grade_wise_performance,
+            d_1.subject_wise_performance
+           FROM ( SELECT a.academic_year,
+                    a.block_id,
+                    a.block_name,
+                    a.district_id,
+                    a.district_name,
+                    a.block_latitude,
+                    a.block_longitude,
+                    a.block_performance,
+                    a.month,
+                    b_1.grade_wise_performance
+                   FROM ( SELECT periodic_exam_school_result.academic_year,
+                            periodic_exam_school_result.block_id,
+                            initcap(periodic_exam_school_result.block_name::text) AS block_name,
+                            periodic_exam_school_result.district_id,
+                            initcap(periodic_exam_school_result.district_name::text) AS district_name,
+                            periodic_exam_school_result.block_latitude,
+                            periodic_exam_school_result.block_longitude,
+                            round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS block_performance,
+                            to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                           FROM periodic_exam_school_result
+                          GROUP BY periodic_exam_school_result.academic_year, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.block_id, periodic_exam_school_result.block_name, periodic_exam_school_result.district_id, periodic_exam_school_result.district_name, periodic_exam_school_result.block_latitude, periodic_exam_school_result.block_longitude) a
+                     LEFT JOIN ( SELECT a_1.academic_year,
+                            json_object_agg(a_1.grade, a_1.percentage) AS grade_wise_performance,
+                            a_1.month,
+                            a_1.block_id
+                           FROM ( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    periodic_exam_school_result.block_id,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.block_id) a_1
+                          GROUP BY a_1.block_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::text = b_1.academic_year::text AND a.block_id = b_1.block_id AND a.month = b_1.month) c
+             LEFT JOIN ( SELECT d_2.academic_year,
+                    d_2.block_id,
+                    jsonb_agg(d_2.subject_wise_performance) AS subject_wise_performance,
+                    d_2.month
+                   FROM ( SELECT a.academic_year,
+                            a.block_id,
+                            a.month,
+                            json_build_object(a.grade, json_object_agg(a.subject_name, a.percentage ORDER BY a.subject_name))::jsonb AS subject_wise_performance
+                           FROM (( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    periodic_exam_school_result.subject AS subject_name,
+                                    periodic_exam_school_result.block_id,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
+                                  FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.block_id
+                                  ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
+                                UNION
+                                ( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    'Grade Performance'::text AS subject_name,
+                                    periodic_exam_school_result.block_id,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.block_id
+                                  ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text)) a
+                          GROUP BY a.academic_year, a.block_id, a.grade, a.month) d_2
+                  GROUP BY d_2.academic_year, d_2.block_id, d_2.month) d_1 ON c.academic_year::text = d_1.academic_year::text AND c.block_id = d_1.block_id AND c.month = d_1.month) d
+     LEFT JOIN ( SELECT c.block_id,
+            b_1.assessment_year AS academic_year,
+            b_1.month,
+            count(DISTINCT a.student_uid) AS students_count,
+            count(DISTINCT a.school_id) AS total_schools
+           FROM ( SELECT periodic_exam_result_trans.exam_id,
+                    periodic_exam_result_trans.school_id,
+                    periodic_exam_result_trans.student_uid
+                   FROM periodic_exam_result_trans
+                  WHERE (periodic_exam_result_trans.school_id IN ( SELECT periodic_exam_school_result.school_id
+                          FROM periodic_exam_school_result))
+                  GROUP BY periodic_exam_result_trans.exam_id, periodic_exam_result_trans.school_id, periodic_exam_result_trans.student_uid) a
+             LEFT JOIN ( SELECT periodic_exam_mst.exam_id,
+                    periodic_exam_mst.assessment_year,
+                    to_char(to_date(date_part('month'::text, periodic_exam_mst.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                   FROM periodic_exam_mst) b_1 ON a.exam_id = b_1.exam_id
+             LEFT JOIN school_hierarchy_details c ON a.school_id = c.school_id
+          GROUP BY c.block_id, b_1.assessment_year, b_1.month) b ON d.academic_year::text = b.academic_year::text AND d.block_id = b.block_id AND d.month = b.month;
+
+/* District */
+
+CREATE OR REPLACE VIEW periodic_exam_district_year_month AS
+ SELECT d.academic_year,
+    d.district_id,
+    d.district_name,
+    d.district_latitude,
+    d.district_longitude,
+    d.district_performance,
+    trim(d.month) as month,
+    d.grade_wise_performance,
+    d.subject_wise_performance,
+    b.total_schools,
+    b.students_count
+   FROM ( SELECT c.academic_year,
+            c.district_id,
+            c.district_name,
+            c.district_latitude,
+            c.district_longitude,
+            c.district_performance,
+            c.month,
+            c.grade_wise_performance,
+            d_1.subject_wise_performance
+           FROM ( SELECT a.academic_year,
+                    a.district_id,
+                    a.district_name,
+                    a.district_latitude,
+                    a.district_longitude,
+                    a.district_performance,
+                    a.month,
+                    b_1.grade_wise_performance
+                   FROM ( SELECT periodic_exam_school_result.academic_year,
+                            periodic_exam_school_result.district_id,
+                            initcap(periodic_exam_school_result.district_name::text) AS district_name,
+                            periodic_exam_school_result.district_latitude,
+                            periodic_exam_school_result.district_longitude,
+                            round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS district_performance,
+                            to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                           FROM periodic_exam_school_result
+                          GROUP BY periodic_exam_school_result.academic_year, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.district_id, periodic_exam_school_result.district_name, periodic_exam_school_result.district_latitude, periodic_exam_school_result.district_longitude) a
+                    LEFT JOIN ( SELECT a_1.academic_year,
+                            json_object_agg(a_1.grade, a_1.percentage) AS grade_wise_performance,
+                            a_1.month,
+                            a_1.district_id
+                           FROM ( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    periodic_exam_school_result.district_id,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.district_id) a_1
+                          GROUP BY a_1.district_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::text = b_1.academic_year::text AND a.district_id = b_1.district_id AND a.month = b_1.month) c
+             LEFT JOIN ( SELECT d_2.academic_year,
+                    d_2.district_id,
+                    jsonb_agg(d_2.subject_wise_performance) AS subject_wise_performance,
+                    d_2.month
+                   FROM ( SELECT b_1.academic_year,
+                            b_1.district_id,
+                            b_1.month,
+                            json_build_object(b_1.grade, json_object_agg(b_1.subject_name, b_1.percentage ORDER BY b_1.subject_name))::jsonb AS subject_wise_performance
+                           FROM (( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    periodic_exam_school_result.subject AS subject_name,
+                                    periodic_exam_school_result.district_id,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.district_id
+                                  ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
+                                UNION
+                                ( SELECT periodic_exam_school_result.academic_year,
+                                    'Grade '::text || periodic_exam_school_result.grade AS grade,
+                                    'Grade Performance'::text AS subject_name,
+                                    periodic_exam_school_result.district_id,
+                                    to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month,
+                                    round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
+                                   FROM periodic_exam_school_result
+                                  GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.district_id
+                                  ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text)) b_1
+                          GROUP BY b_1.academic_year, b_1.district_id, b_1.grade, b_1.month) d_2
+                  GROUP BY d_2.academic_year, d_2.district_id, d_2.month) d_1 ON c.academic_year::text = d_1.academic_year::text AND c.district_id = d_1.district_id AND c.month = d_1.month) d
+     LEFT JOIN ( SELECT c.district_id,
+            b_1.assessment_year AS academic_year,
+            b_1.month,
+            count(DISTINCT a.student_uid) AS students_count,
+            count(DISTINCT a.school_id) AS total_schools
+           FROM ( SELECT periodic_exam_result_trans.exam_id,
+                    periodic_exam_result_trans.school_id,
+                    periodic_exam_result_trans.student_uid
+                   FROM periodic_exam_result_trans
+                  WHERE (periodic_exam_result_trans.school_id IN ( SELECT periodic_exam_school_result.school_id
+                           FROM periodic_exam_school_result))
+                  GROUP BY periodic_exam_result_trans.exam_id, periodic_exam_result_trans.school_id, periodic_exam_result_trans.student_uid) a
+             LEFT JOIN ( SELECT periodic_exam_mst.exam_id,
+                    periodic_exam_mst.assessment_year,
+                    to_char(to_date(date_part('month'::text, periodic_exam_mst.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text) AS month
+                   FROM periodic_exam_mst) b_1 ON a.exam_id = b_1.exam_id
+             LEFT JOIN school_hierarchy_details c ON a.school_id = c.school_id
+          GROUP BY c.district_id, b_1.assessment_year, b_1.month) b ON d.academic_year::text = b.academic_year::text AND d.district_id = b.district_id AND d.month = b.month;
+
