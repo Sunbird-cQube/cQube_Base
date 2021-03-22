@@ -32,7 +32,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.selectedYear = this.years[this.years.length-1];
     this.changeDetection.detectChanges();
     this.xAxisLabels = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
-    this.onSelectYear();
+    // this.onSelectYear();
     this.onResize();
     this.onHomeClick();
 
@@ -41,29 +41,53 @@ export class StudentAttendanceChartComponent implements OnInit {
   onResize() {
     this.height = window.innerHeight;
   }
-
+  districtData = [];
   onSelectYear(){
     this.commonService.errMsg();
-    this.currentData = [];
+    this.getStateData();
+    this.getDistrictData();
+  }
+
+  onHomeClick(){
+    this.commonService.errMsg();
+    this.selectedYear = this.years[this.years.length-1];
+    this.onSelectYear();
+    this.getStateData();
+    this.selectedDistricts = [];
+    var districtList = this.districtList.map(district => {
+      district.status = false;
+      return district;
+    });
+    this.districtList = districtList;
+    if (this.multiSelect)
+      this.multiSelect.checkedList = [];
+    document.getElementById('home').style.display = 'none';
+  }
+  getStateData(){
+    this.level = 'state';
     this.service.getStateData({year: this.selectedYear}).subscribe(res=>{
       this.data = res['data'];
       var data = [];
+      this.currentData = [];
       this.data.map(item=>{
         item.attendance.map(i=>{
           data.push(i.attendance);
         })
-        // data.unshift(0);
         this.currentData.push({data: data, name: this.state});
+        this.commonService.loaderAndErr(this.currentData);
       })
     },err=>{
       this.data = [];
       this.currentData = [];
       this.commonService.loaderAndErr(this.data);
     })
+  }
+  getDistrictData(){
     this.districtList = [];
+    this.districtData = [];
     this.service.getDistrictData({year:this.selectedYear}).subscribe((res:any)=>{
-      this.data = res['data'];
-      this.data.map(item=>{
+      this.districtData = res['data'];
+      this.districtData.map(item=>{
         this.districtList.push({id:item.districtId, name: item.districtName});
       });
       var districtList = this.districtList.map(district => {
@@ -74,26 +98,10 @@ export class StudentAttendanceChartComponent implements OnInit {
       if (this.multiSelect)
         this.multiSelect.checkedList = [];
       this.districtList = this.districtList.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-      document.getElementById('spinner').style.display = 'none';
     },err=>{
-      this.data = [];
-      this.currentData = [];
-      this.commonService.loaderAndErr(this.data);
+      this.districtData = [];
+      this.commonService.loaderAndErr(this.districtData);
     })
-  }
-
-  onHomeClick(){
-    this.level = 'state';
-    this.selectedYear = this.years[this.years.length-1];
-    this.selectedDistricts = [];
-    var districtList = this.districtList.map(district => {
-      district.status = false;
-      return district;
-    });
-    this.districtList = districtList;
-    if (this.multiSelect)
-      this.multiSelect.checkedList = [];
-    document.getElementById('home').style.display = 'none';
   }
 
   shareCheckedList(list){
@@ -108,20 +116,25 @@ export class StudentAttendanceChartComponent implements OnInit {
   }
 
   getCurrentData(){
-    this.level = 'district';
+    document.getElementById('spinner').style.display = 'block';   
     this.currentData = [];
+    this.level = 'district';
+    if(this.districtData.length > 0){
     this.selectedDistricts.map(item=>{
-      this.data.map(element=>{
+      this.districtData.map(element=>{
         if(item == element.districtId){
           var data = [];
           element.attendance.map(i=>{
             data.push(i.attendance);
           })
-          // data.unshift(0);
           this.currentData.push({data: data, name: element.districtName});
        }
       })
     });
-    
+  }
+    setTimeout(() => {
+      document.getElementById('spinner').style.display = 'none';
+    }, 400);
+    document.getElementById('errMsg').style.display = 'none';   
   }
 }
