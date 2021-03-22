@@ -10,6 +10,8 @@ router.post('/distWise', auth.authController, async (req, res) => {
         var grade = req.body.data.grade;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
+        var academic_year = req.body.data.year;
+        var month = req.body.data.month;
         let fileName;
 
         var districtData = {}
@@ -22,9 +24,17 @@ router.post('/distWise', auth.authController, async (req, res) => {
         } else {
             if (report == 'pat') {
                 if (grade) {
-                    fileName = `${report}/${period}/district/${grade}.json`;
+                    if (period != null) {
+                        fileName = `${report}/${period}/district/${grade}.json`;
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/district/${grade}.json`;
+                    }
                 } else {
-                    fileName = `${report}/${period}/${report}_district.json`;
+                    if (period != null) {
+                        fileName = `${report}/${period}/${report}_district.json`;
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/district/district.json`;
+                    }
                 }
             } else {
                 if (grade) {
@@ -34,7 +44,6 @@ router.post('/distWise', auth.authController, async (req, res) => {
                 }
             }
         }
-
         districtData = await s3File.readS3File(fileName);
         var mydata = districtData.data;
         logger.info('--- PAT dist wise api response sent ---');

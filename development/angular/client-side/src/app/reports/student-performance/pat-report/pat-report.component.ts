@@ -88,12 +88,21 @@ export class PATReportComponent implements OnInit {
   clusterFilter = [];
   reportName = 'periodic_assessment_test';
 
-  timeRange = [{ key: 'all', value: "Overall" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: 'last_30_days', value: "Last 30 Days" }];
+  public getMonthYear: any;
+  public years: any = [];
+  public year;
+  public months: any = [];
+  public month;
+  yearMonth = true;
+
+  timeRange = [{ key: 'all', value: "Overall" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'select_month', value: "Year and Month" }];
   period = 'all';
   state: string;
   // initial center position for the map
   public lat: any;
   public lng: any;
+  month_year: { month: any; year: any; };
+  timePeriod: { period: any; };
 
   constructor(
     public http: HttpClient,
@@ -142,7 +151,29 @@ export class PATReportComponent implements OnInit {
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
 
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
+    this.skul = true;
+    this.period = 'all';
+    this.service.getMonthYear().subscribe(res => {
+      this.getMonthYear = res;
+      this.getMonthYear.map(item=>{
+        this.years.push(item['academic_year']);
+      });
+      this.year = this.years[this.years.length - 1];
 
+      this.months = [];
+      this.getMonthYear.map(item=>{
+        if(item['academic_year'] == this.year){
+          this.months = item['month'];
+        }
+      })
+      this.month = this.months[this.months.length - 1];
+      if (this.month) {
+        this.month_year = {
+          month: null,
+          year: null
+        };
+      }
+    
     if (params) {
       if (params.timePeriod == 'overall') {
         params.timePeriod = 'all';
@@ -199,10 +230,11 @@ export class PATReportComponent implements OnInit {
     } else {
       this.onResize(event);
     }
+  })
   }
 
   getDistricts(level): void {
-    this.service.PATDistWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
+    this.service.PATDistWiseData({...{ grade: this.grade, period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
       this.data = res['data'];
       this.districtMarkers = this.allDistricts = this.data;
       if (!this.districtMarkers[0]['Subjects']) {
@@ -220,7 +252,7 @@ export class PATReportComponent implements OnInit {
   }
 
   getBlocks(distId, blockId?: any): void {
-    this.service.PATBlocksPerDistData(distId, { period: this.period, report: "pat" }).subscribe(res => {
+    this.service.PATBlocksPerDistData(distId, {...{ period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
       this.data = res['data'];
       this.blockMarkers = this.data;
 
@@ -237,7 +269,7 @@ export class PATReportComponent implements OnInit {
   }
 
   getClusters(distId, blockId, clusterId): void {
-    this.service.PATClustersPerBlockData(distId, blockId, { period: this.period, report: "pat" }).subscribe(res => {
+    this.service.PATClustersPerBlockData(distId, blockId, {...{ period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
       this.data = res['data'];
       this.clusterMarkers = this.data;
 
@@ -252,7 +284,50 @@ export class PATReportComponent implements OnInit {
     });
   }
 
+
+  showYearMonth() {
+    document.getElementById('home').style.display = 'block';
+    this.yearMonth = false;
+    this.month_year = {
+      month: this.month.trim(),
+      year: this.year
+    };
+    this.period = null;
+    this.levelWiseFilter();
+  }
+
+  getMonth(event) {
+    this.month_year = {
+      month: this.month.trim(),
+      year: this.year
+    };
+    this.levelWiseFilter();
+  }
+
+  getYear() {
+    this.months = [];
+    this.month = undefined;
+    this.getMonthYear.map(item=>{
+      if(item['academic_year'] == this.year){
+        this.months = item['month'];
+      }
+    })
+  }
+
   onPeriodSelect() {
+    if (this.period != 'overall') {
+      document.getElementById('home').style.display = 'block';
+    } else {
+      document.getElementById('home').style.display = 'none';
+    }
+    this.yearMonth = true;
+    // this.timePeriod = {
+    //   period: this.period
+    // }
+    this.month_year = {
+      month: null,
+      year: null
+    };
     this.onResize(event);
   }
 
@@ -296,11 +371,17 @@ export class PATReportComponent implements OnInit {
 
   linkClick() {
     document.getElementById('home').style.display = 'none';
+    this.yearMonth = true;
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
     this.grade = undefined;
     this.subject = undefined;
     this.subjectHidden = true;
+    this.period = 'all';
     this.level = 'district';
+    this.month_year = {
+      month: null,
+      year: null
+    };
     this.onResize(event);
     this.changeDetection.detectChanges();
   }
@@ -329,7 +410,7 @@ export class PATReportComponent implements OnInit {
       // to show and hide the dropdowns
       this.blockHidden = true;
       this.clusterHidden = true;
-      this.service.gradeMetaData({ period: this.period, report: "pat" }).subscribe(res => {
+      this.service.gradeMetaData({...{ period: this.period, report: "pat" },...this.month_year}).subscribe(res => {
         if (res['data']['district']) {
           this.allGrades = res['data']['district'];
         }
@@ -338,7 +419,7 @@ export class PATReportComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.PATDistWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
+        this.myData = this.service.PATDistWiseData({...{...{ grade: this.grade, period: this.period, report: "pat" }, ...this.month_year}, ...this.month_year}).subscribe(res => {
           this.myDistData = res;
           this.data = res['data'];
           if (this.grade) {
@@ -426,7 +507,7 @@ export class PATReportComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      this.service.gradeMetaData({ period: this.period, report: "pat" }).subscribe(res => {
+      this.service.gradeMetaData({...{ period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
         if (res['data']['block']) {
           this.allGrades = res['data']['block'];
         }
@@ -436,7 +517,7 @@ export class PATReportComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.PATBlockWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
+        this.myData = this.service.PATBlockWiseData({...{ grade: this.grade, period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
           this.myBlockData = res['data'];
           this.data = res['data'];
           if (this.grade) {
@@ -561,7 +642,7 @@ export class PATReportComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      this.service.gradeMetaData({ period: this.period, report: "pat" }).subscribe(res => {
+      this.service.gradeMetaData({...{ period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
         if (res['data']['cluster']) {
           this.allGrades = res['data']['cluster'];
         }
@@ -571,7 +652,7 @@ export class PATReportComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.PATClusterWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
+        this.myData = this.service.PATClusterWiseData({...{ grade: this.grade, period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
           this.data = res['data']
           if (this.grade) {
             this.allSubjects = Object.keys(this.data[0].Subjects);
@@ -689,7 +770,7 @@ export class PATReportComponent implements OnInit {
       this.blockHidden = true;
       this.clusterHidden = true;
 
-      this.service.gradeMetaData({ period: this.period, report: "pat" }).subscribe(res => {
+      this.service.gradeMetaData({...{ period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
         if (res['data']['school']) {
           this.allGrades = res['data']['school'];
         }
@@ -699,7 +780,7 @@ export class PATReportComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.PATSchoolWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe(res => {
+        this.myData = this.service.PATSchoolWiseData({...{ grade: this.grade, period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
           this.data = res['data']
           if (this.grade) {
             this.allSubjects = Object.keys(this.data[0].Subjects);
@@ -812,7 +893,7 @@ export class PATReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.PATBlocksPerDistData(districtId, { period: this.period, report: "pat" }).subscribe(res => {
+    this.myData = this.service.PATBlocksPerDistData(districtId, {...{ period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
       this.data = res['data']
       // if (this.grade) {
       //   this.allSubjects = Object.keys(this.data[0].Subjects);
@@ -905,7 +986,7 @@ export class PATReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.PATClustersPerBlockData(this.districtHierarchy.distId, blockId, { period: this.period, report: "pat" }).subscribe(res => {
+    this.myData = this.service.PATClustersPerBlockData(this.districtHierarchy.distId, blockId, {...{ period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
       this.data = res['data']
       // if (this.grade) {
       //   this.allSubjects = Object.keys(this.data[0].Subjects)
@@ -1000,8 +1081,8 @@ export class PATReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.PATBlockWiseData({ grade: this.grade, period: this.period, report: "pat" }).subscribe((result: any) => {
-      this.myData = this.service.PATSchoolssPerClusterData(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { period: this.period, report: "pat" }).subscribe(res => {
+    this.myData = this.service.PATBlockWiseData({...{ grade: this.grade, period: this.period, report: "pat" }, ...this.month_year}).subscribe((result: any) => {
+      this.myData = this.service.PATSchoolssPerClusterData(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, {...{ period: this.period, report: "pat" }, ...this.month_year}).subscribe(res => {
         this.data = res['data'];
         // if (this.grade) {
         //   this.allSubjects = Object.keys(this.data[0].Subjects)
