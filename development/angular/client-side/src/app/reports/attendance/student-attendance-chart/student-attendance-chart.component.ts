@@ -13,8 +13,8 @@ export class StudentAttendanceChartComponent implements OnInit {
   state;
   level = 'state';
   districtList:any = [];
-  academicYears = ['2019-20','2020-21'];
-  selectedAcademicYear = '';
+  years = ['2018','2021'];
+  selectedYear = '';
   selectedDistricts = [];
   data:any = [];
   currentData = [];
@@ -26,29 +26,65 @@ export class StudentAttendanceChartComponent implements OnInit {
   
   ngOnInit(): void {
     document.getElementById('home').style.display = 'none';
-    document.getElementById('homeBtn').style.display = 'none';
+    document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.state = this.commonService.state;
-    this.selectedAcademicYear = this.academicYears[this.academicYears.length-1];
-    this.service.getDistrictData().subscribe((res:any)=>{
-      this.data = res['data'];
-      this.data.map(item=>{
-        this.districtList.push({id:item.districtId, name: item.districtName});
-      })
-    });
+    this.selectedYear = this.years[this.years.length-1];
     this.changeDetection.detectChanges();
+    this.xAxisLabels = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
+    this.onSelectYear();
     this.onResize();
     this.onHomeClick();
+
   }
 
   onResize() {
     this.height = window.innerHeight;
   }
 
+  onSelectYear(){
+    this.commonService.errMsg();
+    this.currentData = [];
+    this.service.getStateData({year: this.selectedYear}).subscribe(res=>{
+      this.data = res['data'];
+      var data = [];
+      this.data.map(item=>{
+        item.attendance.map(i=>{
+          data.push(i.attendance);
+        })
+        // data.unshift(0);
+        this.currentData.push({data: data, name: this.state});
+      })
+    },err=>{
+      this.data = [];
+      this.currentData = [];
+      this.commonService.loaderAndErr(this.data);
+    })
+    this.districtList = [];
+    this.service.getDistrictData({year:this.selectedYear}).subscribe((res:any)=>{
+      this.data = res['data'];
+      this.data.map(item=>{
+        this.districtList.push({id:item.districtId, name: item.districtName});
+      });
+      var districtList = this.districtList.map(district => {
+        district.status = false;
+        return district;
+      });
+      this.districtList = districtList;
+      if (this.multiSelect)
+        this.multiSelect.checkedList = [];
+      this.districtList = this.districtList.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+      document.getElementById('spinner').style.display = 'none';
+    },err=>{
+      this.data = [];
+      this.currentData = [];
+      this.commonService.loaderAndErr(this.data);
+    })
+  }
+
   onHomeClick(){
     this.level = 'state';
-    this.currentData = [{data: [23,45,10], name: "Gujarat"}];
-    this.xAxisLabels = ['January', 'March', 'October'];
+    this.selectedYear = this.years[this.years.length-1];
     this.selectedDistricts = [];
     var districtList = this.districtList.map(district => {
       district.status = false;
@@ -73,21 +109,19 @@ export class StudentAttendanceChartComponent implements OnInit {
 
   getCurrentData(){
     this.level = 'district';
-    this.xAxisLabels = [];
-    var xLabels = [];
     this.currentData = [];
     this.selectedDistricts.map(item=>{
       this.data.map(element=>{
-        var data = [];
         if(item == element.districtId){
+          var data = [];
           element.attendance.map(i=>{
-            xLabels.push(i.month);
             data.push(i.attendance);
           })
+          // data.unshift(0);
           this.currentData.push({data: data, name: element.districtName});
        }
       })
     });
-    this.xAxisLabels = [...new Set(xLabels)];
+    
   }
 }

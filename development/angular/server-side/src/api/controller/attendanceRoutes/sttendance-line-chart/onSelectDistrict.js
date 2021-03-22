@@ -4,108 +4,166 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
+router.post('/stateWise', auth.authController, async (req, res) => {
+    try {
+        logger.info('---Trends state wise api ---');
+        var year = req.body.year;
+        let fileName = `attendance/trend_line_chart/state.json`;
+        var stateData = await s3File.readS3File(fileName);
+        var mydata = [];
+
+        if (stateData[year]) {
+            stateData[year].map(data => {
+                var attendanceTest = [
+                    {
+                        monthId: 6,
+                        month: 'June',
+                        attendance: ''
+                    }, {
+                        monthId: 7,
+                        month: 'July',
+                        attendance: ''
+                    }, {
+                        monthId: 8,
+                        month: 'August',
+                        attendance: ''
+                    }, {
+                        monthId: 9,
+                        month: 'September',
+                        attendance: ''
+                    }, {
+                        monthId: 10,
+                        month: 'October',
+                        attendance: ''
+                    }, {
+                        monthId: 11,
+                        month: 'November',
+                        attendance: ''
+                    }, {
+                        monthId: 12,
+                        month: 'December',
+                        attendance: ''
+                    }, {
+                        monthId: 1,
+                        month: 'January',
+                        attendance: ''
+                    }, {
+                        monthId: 2,
+                        month: 'February',
+                        attendance: ''
+                    }, {
+                        monthId: 3,
+                        month: 'March',
+                        attendance: ''
+                    }, {
+                        monthId: 4,
+                        month: 'April',
+                        attendance: ''
+                    }, {
+                        monthId: 5,
+                        month: 'May',
+                        attendance: ''
+                    },
+                ]
+                attendanceTest.map(item => {
+                    if (item.monthId == data.month) {
+                        item.attendance = data.attendance_percentage;
+                    }
+                })
+                let obj2 = {
+                    attendance: attendanceTest
+                }
+                mydata.push(obj2);
+            });
+
+            logger.info('--- Trends state wise api response sent ---');
+            res.status(200).send({ data: mydata });
+        } else {
+            res.status(403).send({ errMsg: "Something went wrong" });
+        }
+    } catch (e) {
+        logger.error(`Error :: ${e}`)
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+    }
+});
+
 router.post('/distWise', auth.authController, async (req, res) => {
     try {
-        logger.info('---Infra dist wise api ---');
-        var mydata = [
-            {
-                districtId: 2402,
-                districtName: "Amreli",
-                attendance: [
-                    {
-                        month: "August",
-                        attendance: 29.8
-                    },
-                    {
-                        month: "September",
-                        attendance: 45
-                    }
-                ]
-            },
-            {
-                districtId: 2405,
-                districtName: "Botad",
-                attendance: [
-                    {
-                        month: "August",
-                        attendance: 40.8
-                    },
-                    {
-                        month: "September",
-                        attendance: 75
-                    },
-                    {
-                        month: "October",
-                        attendance: 60
-                    },
-                    {
-                        month: "November",
-                        attendance: 30
-                    }
-                ]
+        logger.info('---Trends dist wise api ---');
+        var year = req.body.year;
+        let fileName = `attendance/trend_line_chart/district_${year}.json`;
+        var districtData = await s3File.readS3File(fileName);
+        var keys = Object.keys(districtData);
+        var mydata = [];
 
-            },
-            {
-                districtId: 2407,
-                districtName: "Ahemdabad",
-                attendance: [
-                    {
-                        month: "January",
-                        attendance: 50.8
-                    },
-                    {
-                        month: "February",
-                        attendance: 65
-                    },
-                    {
-                        month: "October",
-                        attendance: 60
+        keys.map(key => {
+            var attendanceTest = [
+                {
+                    monthId: 6,
+                    month: 'June',
+                    attendance: ''
+                }, {
+                    monthId: 7,
+                    month: 'July',
+                    attendance: ''
+                }, {
+                    monthId: 8,
+                    month: 'August',
+                    attendance: ''
+                }, {
+                    monthId: 9,
+                    month: 'September',
+                    attendance: ''
+                }, {
+                    monthId: 10,
+                    month: 'October',
+                    attendance: ''
+                }, {
+                    monthId: 11,
+                    month: 'November',
+                    attendance: ''
+                }, {
+                    monthId: 12,
+                    month: 'December',
+                    attendance: ''
+                }, {
+                    monthId: 1,
+                    month: 'January',
+                    attendance: ''
+                }, {
+                    monthId: 2,
+                    month: 'February',
+                    attendance: ''
+                }, {
+                    monthId: 3,
+                    month: 'March',
+                    attendance: ''
+                }, {
+                    monthId: 4,
+                    month: 'April',
+                    attendance: ''
+                }, {
+                    monthId: 5,
+                    month: 'May',
+                    attendance: ''
+                },
+            ]
+            districtData[key].attendance.map(a => {
+                attendanceTest.map(item => {
+                    if (item.monthId == a.month) {
+                        item.attendance = a.attendance_percentage;
                     }
-                ]
-            },
-            {
-                districtId: 2401,
-                districtName: "Jamnagar",
-                attendance: [
-                    {
-                        month: "January",
-                        attendance: 55
-                    },
-                    {
-                        month: "February",
-                        attendance: 87
-                    },
-                    {
-                        month: "March",
-                        attendance: 60.9
-                    }
-                ]
-            },
-            {
-                districtId: 2410,
-                districtName: "Morbi",
-                attendance: [
-                    {
-                        month: "June",
-                        attendance: 55.6
-                    },
-                    {
-                        month: "July",
-                        attendance: 76
-                    },
-                    {
-                        month: "August",
-                        attendance: 70
-                    },
-                    {
-                        month: "December",
-                        attendance: 67
-                    }
-                ]
+                })
+            });
+            let obj2 = {
+                districtId: key,
+                districtName: districtData[key].district_name[0],
+                attendance: attendanceTest
             }
-        ];
+            mydata.push(obj2);
+        });
 
-        logger.info('--- Infra dist wise api response sent ---');
+        logger.info('--- Trends dist wise api response sent ---');
         res.status(200).send({ data: mydata });
     } catch (e) {
         logger.error(`Error :: ${e}`)

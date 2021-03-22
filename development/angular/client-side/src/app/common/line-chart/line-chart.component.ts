@@ -87,6 +87,7 @@ export class LineChartComponent implements OnInit, OnChanges {
         gridLineColor: 'transparent',
         categories: this.xAxisLabels,
         min:0,
+        startOnTick: true,
         title: {
           text: xAxisTitle,
           style: {
@@ -113,6 +114,7 @@ export class LineChartComponent implements OnInit, OnChanges {
         },
         min: 0,
         max: 100,
+        startOnTick: false,
         opposite: false,
         gridLineColor: 'transparent',
         title: {
@@ -149,7 +151,11 @@ export class LineChartComponent implements OnInit, OnChanges {
           backgroundColor: "white"
         },
         formatter: function () {
-          return '<b>' + getPointCategoryName(this.point,level, academicYear) + '</b>';
+          if (this.point.category != 0) {
+            return '<b>' + getPointCategoryName(this.point,level, academicYear) + '</b>';
+          }else{
+            return false;
+        }
         }
       }
     }
