@@ -125,7 +125,6 @@ export class StudengtAttendanceComponent implements OnInit {
         this.months.push(obj);
       });
       this.month = this.months[this.months.length - 1].id;
-      // this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
       if (this.month) {
         this.month_year = {
           month: null,

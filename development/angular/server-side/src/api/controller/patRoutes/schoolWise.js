@@ -10,6 +10,8 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         var grade = req.body.data.grade;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
+        var academic_year = req.body.data.year;
+        var month = req.body.data.month;
         var fileName;
         var schoolData = {}
         if (period == '') {
@@ -21,9 +23,17 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         } else {
             if (report == 'pat') {
                 if (grade) {
-                    fileName = `${report}/${period}/school/${grade}.json`;
+                    if (period != null) {
+                        fileName = `${report}/${period}/school/${grade}.json`;
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/school/${grade}.json`;
+                    }
                 } else {
-                    fileName = `${report}/${period}/${report}_school.json`;
+                    if (period != null) {
+                        fileName = `${report}/${period}/${report}_school.json`;
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/school/school.json`;
+                    }
                 }
             } else {
                 if (grade) {
@@ -50,12 +60,18 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         var period = req.body.data.period;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
+        var academic_year = req.body.data.year;
+        var month = req.body.data.month;
         var fileName;
         if (period == '') {
             fileName = `${report}/all/${report}_school.json`;
         } else {
             if (report == 'pat') {
-                fileName = `${report}/${period}/${report}_school.json`;
+                if (period != null) {
+                    fileName = `${report}/${period}/${report}_school.json`;
+                } else {
+                    fileName = `${report}/${academic_year}/${month}/school/school.json`;
+                }
             } else {
                 fileName = `${report}/${period}/${semester}/${report}_school.json`;
             }

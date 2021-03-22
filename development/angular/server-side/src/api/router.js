@@ -77,6 +77,7 @@ const PAT_dist_wise = require('./controller/patRoutes/distWise');
 const PAT_block_wise = require('./controller/patRoutes/blockWise');
 const PAT_cluster_wise = require('./controller/patRoutes/clusterWise');
 const PAT_school_wise = require('./controller/patRoutes/schoolWise');
+const getMonthYear = require('./controller/patRoutes/getMonthYear');
 
 // Composit report
 const composit_dist_wise = require('./controller/composit-report/distWise');
@@ -204,6 +205,7 @@ router.use('/pat', PAT_dist_wise);
 router.use('/pat', PAT_block_wise);
 router.use('/pat', PAT_cluster_wise);
 router.use('/pat', PAT_school_wise);
+router.use('/pat', getMonthYear);
 
 //composit report
 router.use('/composit', composit_dist_wise);

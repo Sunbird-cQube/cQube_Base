@@ -10,6 +10,8 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         var grade = req.body.data.grade;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
+        var academic_year = req.body.data.year;
+        var month = req.body.data.month;
         var fileName;
         var blockData = {}
 
@@ -22,9 +24,17 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         } else {
             if (report == 'pat') {
                 if (grade) {
-                    fileName = `${report}/${period}/block/${grade}.json`;
+                    if (period != null) {
+                        fileName = `${report}/${period}/block/${grade}.json`;
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/block/${grade}.json`;
+                    }
                 } else {
-                    fileName = `${report}/${period}/${report}_block.json`;
+                    if (period != null) {
+                        fileName = `${report}/${period}/${report}_block.json`;
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/block/block.json`;
+                    }
                 }
             } else {
                 if (grade) {
@@ -53,12 +63,18 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         var period = req.body.data.period;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
+        var academic_year = req.body.data.year;
+        var month = req.body.data.month;
         var fileName;
         if (period == "") {
             fileName = `${report}/all/${report}_block.json`;
         } else {
             if (report == 'pat') {
-                fileName = `${report}/${period}/${report}_block.json`;
+                if (period != null) {
+                    fileName = `${report}/${period}/${report}_block.json`;
+                } else {
+                    fileName = `${report}/${academic_year}/${month}/block/block.json`;
+                }
             } else {
                 fileName = `${report}/${period}/${semester}/${report}_block.json`;
             }
