@@ -73,7 +73,7 @@ export class StudentAttendanceChartComponent implements OnInit {
         item.attendance.map(i=>{
           data.push(i.attendance);
         })
-        this.currentData.push({data: data, name: this.state});
+        this.currentData.push({data: data, name: this.state, color: '#00FF00'});
         this.commonService.loaderAndErr(this.currentData);
       })
     },err=>{
@@ -127,7 +127,7 @@ export class StudentAttendanceChartComponent implements OnInit {
           element.attendance.map(i=>{
             data.push(i.attendance);
           })
-          this.currentData.push({data: data, name: element.districtName});
+          this.currentData.push({data: data, name: element.districtName, color: '#FF0000'});
        }
       })
     });

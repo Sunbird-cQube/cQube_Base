@@ -61,13 +61,18 @@ router.post('/grades', async (req, res, next) => {
         var fileName;
         var period = req.body.data.period;
         var report = req.body.data.report;
+        var academic_year = req.body.data.year;
+        var month = req.body.data.month;
 
-        if (period == '' || period == undefined) {
-            fileName = `${report}/all/${report}_metadata.json`;
+        if (period == '' || period == undefined || period == null) {
+            if (academic_year && month) {
+                fileName = `${report}/${academic_year}/${month}/metaData.json`;
+            } else {
+                fileName = `${report}/all/${report}_metadata.json`;
+            }
         } else {
             fileName = `${report}/${period}/${report}_metadata.json`;
         }
-
         var data = await s3File.readS3File(fileName);
         logger.info('---grades metadata api response sent---');
         res.status(200).send({ data: data });

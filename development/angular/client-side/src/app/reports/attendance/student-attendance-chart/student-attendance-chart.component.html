@@ -40,12 +40,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top: 1%;">
+        <div class="col-lg-10 col-md-10 col-sm-12" style="margin-top: 1%;">
             <app-line-chart *ngIf="currentData.length > 0" [selectedYear]="selectedYear" [data]="data"
                 [xAxisLabels]="xAxisLabels" [lineData]="currentData" [level]="level" [xAxisTitle]="'Months'"
                 [yAxisTitle]="'Attendance'">
             </app-line-chart>
         </div>
+        <div class="col-lg-2 col-md-2 col-sm-12"></div>
     </div>
 </div>
 <div id="spinner">

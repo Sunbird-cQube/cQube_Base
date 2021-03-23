@@ -125,4 +125,9 @@ export class HomeComponent implements OnInit {
   clearSessionStorage(): void {
     sessionStorage.clear();
   }
+
+  onBackClick(){
+    localStorage.removeItem('management');
+    localStorage.removeItem('category');
+  }
 }
