@@ -335,7 +335,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
 
 .chooseLevel{
 	line-height: 1.2em; 
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: bold;
 }
 
@@ -506,8 +506,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   }
 
   .chooseLevel{
-    line-height: 1.2em; 
-    font-size: 18px;
+    line-height: 1.3em; 
+    font-size: 20px;
     font-weight: bold;
   }
 }
@@ -629,8 +629,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   margin-top: 3%;
 }
 .chooseLevel{
-	line-height: 1.2em; 
-	font-size: 22px;
+	line-height: 1.4em; 
+	font-size: 24px;
 	font-weight: bold;
 }
 
@@ -755,8 +755,8 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   margin-top: 3%;
 }
 .chooseLevel{
-	line-height: 1.2em; 
-	font-size: 28px;
+	line-height: 1.6em; 
+	font-size: 32px;
 	font-weight: bold;
 }
 

@@ -98,26 +98,6 @@
                     {{month.name}}
                 </option>
             </select>
-            <select id="type" [(ngModel)]="type" (change)="onSelectType()">
-                <option [value]="type" disabled selected="selected">Choose type</option>
-                <option *ngFor="let type of types,  let i =index" style="width: 100px;" [(ngValue)]="types[i]">
-                    {{types[i]}}
-                </option>
-            </select>
-            <select [hidden]="hideManagement" id="management" [(ngModel)]="management" (change)="onSelectManagement()">
-                <option [value]="management" disabled selected="selected">Choose a Management Name</option>
-                <option *ngFor="let management of managements,  let i =index" style="width: 100px;"
-                    [(ngValue)]="management.id">
-                    {{management.value}}
-                </option>
-            </select>
-            <select [hidden]="hideCategory" id="category" [(ngModel)]="category" (change)="onSelectCategory()">
-                <option [value]="category" disabled selected="selected">Choose a Category Name</option>
-                <option *ngFor="let category of categories,  let i =index" style="width: 100px;"
-                    [(ngValue)]="category.id">
-                    {{category.value}}
-                </option>
-            </select>
             <button class="btn btn-secondary" id="blockbtn" name="block"
                 (click)="blockWise($event)">&nbsp;<strong>Blocks</strong>
             </button>

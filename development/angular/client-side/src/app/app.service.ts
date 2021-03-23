@@ -55,7 +55,8 @@ export class AppServiceComponent {
 
     logoutOnTokenExpire() {
         if (this.keyCloakService.kc.isTokenExpired()) {
-            // alert("Session expired, Please login again!");
+            localStorage.removeItem('management');
+            localStorage.removeItem('category');
             let options = {
                 redirectUri: environment.appUrl
             }
@@ -624,4 +625,11 @@ export class AppServiceComponent {
             generateGradient
         };
     }
+
+
+    //management category metadata
+  management_category_metaData(){
+    this.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/management-category-meta`, {});
+  }
 }

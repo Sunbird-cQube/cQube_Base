@@ -1,4 +1,27 @@
 <div class="container-fluid" style="background-color: rgb(245, 245, 245);padding-top: 30px; padding-bottom: 10px">
+    <div class="row">
+        <div class="col-lg-3 col-md-2 col-sm-0"></div>
+        <div class="col-lg-3 col-md-8 col-sm-6">
+            <span class="chooseLevel">Select Management</span> <br><select id="management" [(ngModel)]="management"
+                (change)="onSelectManagement()">
+                <option [value]="management" disabled selected="selected">Choose a Management Name</option>
+                <option *ngFor="let management of managements,  let i =index" style="width: 100px;"
+                    [(ngValue)]="management.id">
+                    {{management.value}}
+                </option>
+            </select>
+        </div>
+        <div class="col-lg-3 col-md-8 col-sm-6">
+            <span class="chooseLevel">Select Category</span> <br><select id="category" [(ngModel)]="category"
+                (change)="onSelectCategory()">
+                <option [value]="category" disabled selected="selected">Choose a Category Name</option>
+                <option *ngFor="let category of categories,  let i =index" style="width: 100px;"
+                    [(ngValue)]="category.id">
+                    {{category.value}}
+                </option>
+            </select>
+        </div>
+    </div>
     <div class="row" style="padding: 20px;">
         <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 25px 0px 25px">
             <div class="headings">School Infrastructure</div>
@@ -1336,6 +1359,6 @@
         </div>
     </div>
 </div>
-<div id="spinner" style="display: none;">
+<div id="spinner">
     <div class="loading">Loading&#8230;</div>
 </div>

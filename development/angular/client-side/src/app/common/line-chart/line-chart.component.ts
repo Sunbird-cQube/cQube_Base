@@ -55,10 +55,12 @@ export class LineChartComponent implements OnInit, OnChanges {
         },
         lineWidth: this.height > 1760 ? 6 : this.height > 1180 && this.height < 1760 ? 5 : this.height > 667 && this.height < 1180 ? 3 : 2.2,
         data: [],
-        name: ''
+        name: '',
+        color: ''
       }
       obj.data = item.data;
       obj.name = item.name;
+      obj.color = item.color;
       this.currentData.push(obj);
     })
   }
