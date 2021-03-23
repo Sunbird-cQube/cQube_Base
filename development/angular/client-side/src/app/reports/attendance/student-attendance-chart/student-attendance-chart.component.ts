@@ -156,7 +156,6 @@ export class StudentAttendanceChartComponent implements OnInit {
   }
 
   getCurrentData(){
-    console.log(this.currentColors);
     document.getElementById('spinner').style.display = 'block';   
     this.currentData = [];
     this.level = 'district';
