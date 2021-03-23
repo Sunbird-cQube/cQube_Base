@@ -1,0 +1,56 @@
+#distName {
+  float: left;
+  margin-left: 15px;
+  font-size: 11px;
+}
+
+#circle {
+  float: left;
+  height: 15px;
+  width: 15px;
+  border-radius: 7.5px;
+}
+
+@media screen and (min-width: 1920px) {
+  #distName {
+    float: left;
+    margin-left: 15px;
+    font-size: 15px;
+  }
+
+  #circle {
+    float: left;
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+  }
+}
+
+@media screen and (min-width: 2540px) {
+  #distName {
+    float: left;
+    margin-left: 15px;
+    font-size: 22px !important;
+  }
+
+  #circle {
+    float: left;
+    height: 30px !important;
+    width: 30px !important;
+    border-radius: 15px !important;
+  }
+}
+@media screen and (min-width: 3820px) {
+  #distName {
+    float: left;
+    margin-left: 15px;
+    font-size: 32px !important;
+  }
+
+  #circle {
+    float: left;
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: 20px !important;
+  }
+}

@@ -41,40 +41,40 @@
 }
 
 @media only screen and (min-width: 1920px) {
-    .btn-primary {
-      padding: 4px !important;
-      font-size: 1.2rem !important;
-    }
-  
-    .fa-angle-down {
-      margin-top: 2px !important;
-      font-size: 28px !important;
-    }
-  
-    .btn-secondary {
-      padding: 4px !important;
-      width: 500px;
-    }
-  
-    .btn-secondary span {
-      font-size: 1.2rem !important;
-    }
-  
-    .drop-show #div1 {
-      height: 300px !important;
-    }
-  
-    .drop-show label {
-      font-size: 1.2rem;
-    }
-  
-    .drop-show label input[type="checkbox"] {
-      width: 1.2rem;
-      height: 1.2rem;
-    }
+  .btn-primary {
+    padding: 4px;
+    font-size: 1.2rem !important;
   }
 
-@media only screen and (min-width: 2560px) {
+  .fa-angle-down {
+    margin-top: 2px !important;
+    font-size: 28px !important;
+  }
+
+  .btn-secondary {
+    padding: 4px !important;
+    width: 500px;
+  }
+
+  .btn-secondary span {
+    font-size: 1.2rem !important;
+  }
+
+  .drop-show #div1 {
+    height: 300px !important;
+  }
+
+  .drop-show label {
+    font-size: 1.2rem;
+  }
+
+  .drop-show label input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+}
+
+@media only screen and (min-width: 2540px) {
   .btn-primary {
     padding: 4px !important;
     font-size: 1.25rem !important;
@@ -108,10 +108,10 @@
   }
 }
 
-@media only screen and (min-width: 3840px) {
+@media screen and (min-width: 3820px) {
   .btn-primary {
     padding: 6px !important;
-    font-size: 1.6rem !important;
+    font-size: 1.8rem !important;
   }
 
   .fa-angle-down {
@@ -120,12 +120,12 @@
   }
 
   .btn-secondary {
-    padding: 6px !important;
-    width: 500px;
+    padding: 8px !important;
+    width: 500px !important;
   }
 
   .btn-secondary span {
-    font-size: 1.6rem !important;
+    font-size: 1.8rem !important;
   }
 
   .drop-show #div1 {
@@ -133,11 +133,11 @@
   }
 
   .drop-show label {
-    font-size: 1.9rem;
+    font-size: 1.9rem !important;
   }
 
   .drop-show label input[type="checkbox"] {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.4rem !important;
+    height: 2.4rem !important;
   }
 }
