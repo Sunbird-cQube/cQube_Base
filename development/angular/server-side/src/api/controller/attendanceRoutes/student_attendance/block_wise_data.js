@@ -9,11 +9,30 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
+        var type = req.body.type;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
-        if (timePeriod != null) {
-            fileName = `attendance/${timePeriod}/block.json`;
+        if (type) {
+            if (type == 'Management') {
+                if (timePeriod != null) {
+                    fileName = `attendance/${timePeriod}/school_management/${management}/block.json`;
+                } else {
+                    fileName = `attendance/school_management/${management}/block_${year}_${month}.json`;
+                }
+            } else {
+                if (timePeriod != null) {
+                    fileName = `attendance/${timePeriod}/school_category/${category}/block.json`;
+                } else {
+                    fileName = `attendance/school_category/${category}/block_${year}_${month}.json`;
+                }
+            }
         } else {
-            fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`;
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/block.json`;
+            } else {
+                fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`;
+            }
         }
         var jsonData = await s3File.readS3File(fileName);
 
@@ -50,12 +69,32 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
+        var type = req.body.type;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
-        if (timePeriod != null) {
-            fileName = `attendance/${timePeriod}/block.json`;
+        if (type) {
+            if (type == 'Management') {
+                if (timePeriod != null) {
+                    fileName = `attendance/${timePeriod}/school_management/${management}/block.json`;
+                } else {
+                    fileName = `attendance/school_management/${management}/block_${year}_${month}.json`;
+                }
+            } else {
+                if (timePeriod != null) {
+                    fileName = `attendance/${timePeriod}/school_category/${category}/block.json`;
+                } else {
+                    fileName = `attendance/school_category/${category}/block_${year}_${month}.json`;
+                }
+            }
         } else {
-            fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`;
-        } var jsonData = await s3File.readS3File(fileName);
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/block.json`;
+            } else {
+                fileName = `attendance/block_attendance_opt_json_${year}_${month}.json`;
+            }
+        }
+        var jsonData = await s3File.readS3File(fileName);
         var blockData = [];
         var filterData = jsonData.data.filter(data => {
             return (data.district_id == distId)
@@ -77,7 +116,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
             blockData.push(obj);
         }
         logger.info('--- Attendance blockPerDist api response sent ---');
-        res.status(200).send({ blockData: blockData, studentCount: jsonData.footer[distId].students, schoolCount: jsonData.footer[distId].schools,dateRange: dateRange });
+        res.status(200).send({ blockData: blockData, studentCount: jsonData.footer[distId].students, schoolCount: jsonData.footer[distId].schools, dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

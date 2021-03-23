@@ -4,7 +4,7 @@
   </button>
   <img src="../../assets/dashboard.png" id="logoImg" alt="">
   <span style="flex: 1 1 auto;"></span>
-  <span id="backBtn" class="headerBtn" [routerLink]="['/home']">
+  <span id="backBtn" class="headerBtn" [routerLink]="['/home']" (click)="onBackClick()">
     <strong *ngIf="userType">Back</strong>
   </span>
   <span id="homeBtn" class="headerBtn" [routerLink]="['/dashboard']" (click)="clearSessionStorage()">

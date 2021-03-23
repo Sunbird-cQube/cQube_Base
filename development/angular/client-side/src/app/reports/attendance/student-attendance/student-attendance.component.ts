@@ -80,7 +80,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   getColor(data) {
     this.selected = data;
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
   timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
@@ -91,25 +91,15 @@ export class StudengtAttendanceComponent implements OnInit {
   rawFileName;
 
   constructor(public http: HttpClient, public service: AttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) { }
+  levelForZoom = "District";
 
-  width = window.innerWidth;
-  heigth = window.innerHeight;
-  onResize(event) {
-    this.width = window.innerWidth;
-    this.heigth = window.innerHeight;
-    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
-    this.changeDetection.detectChanges();
-    this.levelWiseFilter();
+  height = window.innerHeight;
+  onResize() {
+    this.height = window.innerHeight;
   }
-  setZoomLevel(lat, lng, globalMap, zoomLevel) {
-    globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
-    globalMap.options.minZoom = this.commonService.zoomLevel;
-    this.changeDetection.detectChanges();
-  }
-  getMarkerRadius(rad1, rad2, rad3, rad4) {
-    let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
-    return radius;
-  }
+
+  management;
+  category;
 
   ngOnInit() {
     this.state = this.commonService.state;
@@ -123,6 +113,8 @@ export class StudengtAttendanceComponent implements OnInit {
     this.timePeriod = {
       period: 'overall'
     }
+    this.management = localStorage.getItem('management');
+    this.category = localStorage.getItem('category');
     this.service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
       this.years = Object.keys(this.getMonthYear);
@@ -138,7 +130,6 @@ export class StudengtAttendanceComponent implements OnInit {
         this.months.push(obj);
       });
       this.month = this.months[this.months.length - 1].id;
-      // this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
       if (this.month) {
         this.month_year = {
           month: null,
@@ -166,7 +157,7 @@ export class StudengtAttendanceComponent implements OnInit {
           }
           this.getDistricts();
         } else {
-          this.onResize(event);
+         this.levelWiseFilter();
         }
 
       }
@@ -180,7 +171,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
     this.service.getRawMeta({ report: 'sar' }).subscribe(res => {
       this.academicYears = res;
-    })
+    });
   }
 
   showYearMonth() {
@@ -193,7 +184,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.timePeriod = {
       period: null
     }
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
   onPeriodSelect() {
@@ -210,9 +201,10 @@ export class StudengtAttendanceComponent implements OnInit {
       month: null,
       year: null
     };
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
+ 
   getDistricts(): void {
     this.service.dist_wise_data(this.timePeriod).subscribe(res => {
       var sorted = res['distData'].sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
@@ -247,7 +239,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   getBlocks(): void {
     this.month_year['id'] = this.myDistrict;
-    this.service.blockPerDist({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+    this.service.blockPerDist({ ...this.month_year, ...this.timePeriod,...{ management: this.management, category: this.category} }).subscribe(res => {
       let blockData = res['blockData'];
       var uniqueData = blockData.reduce(function (previous, current) {
         var object = previous.filter(object => object['block_id'] === current['block_id']);
@@ -285,7 +277,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   getClusters(): void {
     this.month_year['id'] = this.myBlock;
-    this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+    this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod,...{ management: this.management, category: this.category} }).subscribe(res => {
       let clusterData = res['clusterDetails'];
       var uniqueData = clusterData.reduce(function (previous, current) {
         var object = previous.filter(object => object['cluster_id'] === current['cluster_id']);
@@ -405,7 +397,7 @@ export class StudengtAttendanceComponent implements OnInit {
       month: this.month,
       year: this.year
     };
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
   levelWiseFilter() {
@@ -419,7 +411,7 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.levelWise === "Cluster") {
         this.clusterWise(event);
       }
-      if (this.levelWise === "school") {
+      if (this.levelWise === "School") {
         this.schoolWise(event);
       }
     } else {
@@ -447,7 +439,6 @@ export class StudengtAttendanceComponent implements OnInit {
       }
       this.months.push(obj);
     });
-    // this.element.disabled = false;
   }
 
   public myData;
@@ -472,6 +463,8 @@ export class StudengtAttendanceComponent implements OnInit {
   async districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
+    this.commonService.latitude = this.lat  = this.commonService.mapCenterLatlng.lat;
+    this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;;
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
@@ -482,7 +475,7 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod,...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.districtData = this.mylatlngData = res['distData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
@@ -498,7 +491,8 @@ export class StudengtAttendanceComponent implements OnInit {
             var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(this.markers[i]['district_id']);
             distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 5), 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers1(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 0.01, 1, this.levelWise);
+            // markerIcon.setRadius(this.commonService.getMarkerRadius(18, 14, 10, 6));
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
         }
@@ -508,7 +502,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
+        this.commonService.onResize(this.levelWise);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -540,7 +534,7 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod,...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['blockData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
@@ -556,7 +550,7 @@ export class StudengtAttendanceComponent implements OnInit {
             var color = this.commonService.color(this.markers[i], 'attendance');
             this.blocksIds.push(this.markers[i]['block_id']);
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(12, 8, 6, 3.5), 0.01, 1, this.levelWise);
+            var markerIcon = this.commonService.initMarkers1(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 0.01, 1, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
           blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -564,7 +558,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
+          this.commonService.onResize(this.levelWise);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
@@ -598,7 +592,7 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod,...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['clusterData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
@@ -622,7 +616,7 @@ export class StudengtAttendanceComponent implements OnInit {
               clustNames.push({ id: this.markers[i]['cluster_id'], name: 'NO NAME FOUND', blockId: this.markers[i]['block_id'] });
             }
             blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(2.5, 2, 1.5, 1), 0.01, 0.5, this.levelWise);
+            var markerIcon = this.commonService.initMarkers1(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors),  0.01, 0.5, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
@@ -633,7 +627,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
+          this.commonService.onResize(this.levelWise);
           this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
@@ -656,7 +650,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   schoolWise(event) {
     this.commonAtStateLevel();
-    this.levelWise = "school";
+    this.levelWise = "School";
     if (this.months.length > 0) {
       var month = this.months.find(a => a.id === this.month);
       if (this.month_year.month) {
@@ -668,7 +662,7 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod,...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
@@ -682,14 +676,14 @@ export class StudengtAttendanceComponent implements OnInit {
           for (let i = 0; i < this.markers.length; i++) {
             var color = this.commonService.color(this.markers[i], 'attendance');
             this.districtsIds.push(sorted[i]['district_id']);
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(1.5, 1.2, 1, 0), 0, 0.3, this.levelWise);
+            var markerIcon = this.commonService.initMarkers1(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 0, 0.3, this.levelWise);
             this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
           }
 
           globalMap.doubleClickZoom.enable();
           globalMap.scrollWheelZoom.enable();
           globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
+          this.commonService.onResize(this.levelWise);
           this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           this.commonService.loaderAndErr(this.markers);
@@ -813,7 +807,7 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   onClickSchool(event) {
-    this.levelWise = 'school';
+    // this.levelWise = 'School';
     if (event.latlng) {
       var obj = {
         id: event.target.myJsonData.school_id,
@@ -849,7 +843,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   blockData = [];
   myDistData(data) {
-    this.levelWise = "Block";
+    this.levelWise = "blockPerDistrict";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -887,7 +881,7 @@ export class StudengtAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.blockPerDist({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.blockPerDist({ ...this.month_year, ...this.timePeriod,...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.blockData = this.mylatlngData = res['blockData'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -896,8 +890,8 @@ export class StudengtAttendanceComponent implements OnInit {
           return previous;
         }, []);
         this.mylatlngData = uniqueData;
-        this.lat = Number(this.mylatlngData[0]['lat']);
-        this.lng = Number(this.mylatlngData[0]['lng']);
+       this.commonService.latitude =  this.lat = Number(this.mylatlngData[0]['lat']);
+       this.commonService.longitude =  this.lng = Number(this.mylatlngData[0]['lng']);
 
         var blokName = [];
 
@@ -912,7 +906,7 @@ export class StudengtAttendanceComponent implements OnInit {
           var color = this.commonService.color(this.markers[i], 'attendance');
           this.blocksIds.push(this.markers[i]['block_id']);
           blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers1(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -920,7 +914,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 1);
+        this.commonService.onResize(this.levelWise);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -956,7 +950,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   clusterData = [];
   myBlockData(data) {
-    this.levelWise = "Cluster";
+    this.levelWise = "clusterPerBlock";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -1003,7 +997,7 @@ export class StudengtAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.month_year['id'] = data;
-      this.myData = this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod,...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.clusterData = this.mylatlngData = res['clusterDetails'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -1012,8 +1006,8 @@ export class StudengtAttendanceComponent implements OnInit {
           return previous;
         }, []);
         this.mylatlngData = uniqueData;
-        this.lat = Number(this.mylatlngData[0]['lat']);
-        this.lng = Number(this.mylatlngData[0]['lng']);
+        this.commonService.latitude = this.lat = Number(this.mylatlngData[0]['lat']);
+        this.commonService.longitude = this.lng = Number(this.mylatlngData[0]['lng']);
         var clustNames = [];
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
@@ -1032,7 +1026,7 @@ export class StudengtAttendanceComponent implements OnInit {
           } else {
             clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
           }
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.01, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers1(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 0.01, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
 
@@ -1041,7 +1035,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
         this.commonService.restrictZoom(globalMap);
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 3)
+        this.commonService.onResize(this.levelWise);
         this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -1076,7 +1070,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.myClusterData(data);
   }
   myClusterData(data) {
-    this.levelWise = "school";
+    this.levelWise = "schoolPerCluster";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -1151,7 +1145,7 @@ export class StudengtAttendanceComponent implements OnInit {
       }
 
       this.month_year['id'] = data;
-      this.myData = this.service.schoolsPerCluster({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.schoolsPerCluster({ ...this.month_year, ...this.timePeriod,...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolsDetails'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -1160,8 +1154,8 @@ export class StudengtAttendanceComponent implements OnInit {
           return previous;
         }, []);
         this.mylatlngData = uniqueData;
-        this.lat = Number(this.mylatlngData[0]['lat']);
-        this.lng = Number(this.mylatlngData[0]['lng']);
+        this.commonService.latitude = this.lat = Number(this.mylatlngData[0]['lat']);
+        this.commonService.longitude = this.lng = Number(this.mylatlngData[0]['lng']);
 
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
 
@@ -1173,13 +1167,13 @@ export class StudengtAttendanceComponent implements OnInit {
         let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
         for (var i = 0; i < sorted.length; i++) {
           var color = this.commonService.color(this.markers[i], 'attendance');
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.1, 1, this.levelWise);
+          var markerIcon = this.commonService.initMarkers1(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), 0.1, 1, this.levelWise);
           this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
         }
         globalMap.doubleClickZoom.enable();
         globalMap.scrollWheelZoom.enable();
         globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 5);
+        this.commonService.onResize(this.levelWise);
         this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         this.commonService.loaderAndErr(this.markers);
@@ -1197,7 +1191,7 @@ export class StudengtAttendanceComponent implements OnInit {
     document.getElementById('home').style.display = 'block';
   }
 
-  popups(markerIcon, markers, onClick_Marker, layerMarkers, levelWise) {
+  popups(markerIcon, markers, onClick_Marker, layerMarkers) {
     markerIcon.on('mouseover', function (e) {
       this.openPopup();
     });
@@ -1206,17 +1200,17 @@ export class StudengtAttendanceComponent implements OnInit {
     });
 
     layerMarkers.addLayer(markerIcon);
-    if (levelWise != "school") {
-      markerIcon.on('click', onClick_Marker, this);
-    } else {
+    if (this.levelWise === "schoolPerCluster" || this.levelWise === "School") {
       markerIcon.on('click', this.onClickSchool, this);
+    } else {
+      markerIcon.on('click', onClick_Marker, this);
     }
     markerIcon.myJsonData = markers;
   }
 
   //Generate dynamic tool-tip
   generateToolTip(markerIcon, markers, onClick_Marker, layerMarkers, levelWise) {
-    this.popups(markerIcon, markers, onClick_Marker, layerMarkers, levelWise);
+    this.popups(markerIcon, markers, onClick_Marker, layerMarkers);
     var details = {};
     var orgObject = {};
     Object.keys(markers).forEach(key => {
@@ -1287,13 +1281,13 @@ export class StudengtAttendanceComponent implements OnInit {
   goToHealthCard(): void {
     let data: any = {};
 
-    if (this.levelWise === 'Block') {
+    if (this.levelWise === 'blockPerDistrict') {
       data.level = 'district';
       data.value = this.myDistrict;
-    } else if (this.levelWise === 'Cluster') {
+    } else if (this.levelWise === 'clusterPerBlock') {
       data.level = 'block';
       data.value = this.myBlock;
-    } else if (this.levelWise === 'school') {
+    } else if (this.levelWise === 'schoolPerCluster') {
       data.level = 'cluster';
       data.value = this.myCluster;
     } else {

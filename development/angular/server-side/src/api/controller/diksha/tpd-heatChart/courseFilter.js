@@ -12,11 +12,11 @@ router.post('/', auth.authController, async (req, res) => {
         var data = await s3File.readS3File(fileName);
         var courses = [];
         data.map(item => {
-            courses.push({ course_id: item['collection_id'], course_name: item['collection_name'] });
+            courses.push({ id: item['collection_id'], name: item['collection_name'] });
         });
 
         courses = courses.reduce((unique, o) => {
-            if (!unique.some(obj => obj.course_id === o.course_id)) {
+            if (!unique.some(obj => obj.id === o.id)) {
                 unique.push(o);
             }
             return unique;

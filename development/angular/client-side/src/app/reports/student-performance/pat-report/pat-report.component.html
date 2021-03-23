@@ -67,10 +67,25 @@
     </div>
     <div class="row">
         <div class="col-sm-12" style="padding-bottom: 10px !important">
-            <select id="period" [(ngModel)]="period" (change)="onPeriodSelect()">
+            <select id="period" [(ngModel)]="period"
+                (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
                 <option *ngFor="let period of timeRange,  let i =index" style="width: 100px;" [(ngValue)]="period.key">
                     {{period.value}}
+                </option>
+            </select>
+            <select [hidden]="yearMonth" id="year" [(ngModel)]="year" name="year" (change)="getYear()">
+                <option [value]="year" disabled selected="selected">Choose Academic Year
+                </option>
+                <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]">
+                    {{years[i]}}
+                </option>
+            </select>
+            <select [hidden]="yearMonth" id="month" [(ngModel)]="month" name="month" (change)="getMonth($event)">
+                <option [value]="month" disabled selected="selected">Choose Month
+                </option>
+                <option *ngFor="let month of months, let i = index" [(ngValue)]="months[i]">
+                    {{months[i]}}
                 </option>
             </select>
             <button class="btn btn-secondary" id="blockbtn" (click)="blockClick()">&nbsp;<strong>Blocks</strong>

@@ -221,7 +221,7 @@ c_query:='create table if not exists student_attendance_meta_temp as '||l_query;
 EXECUTE c_query;
 
 
-m_query:='update student_attendance_meta_temp set to_run=False where (extract(dow from processed_date)=0 and month='||month||' and year='||year||') or  processed_date>current_date';
+m_query:='update student_attendance_meta_temp set to_run=False where (extract(dow from processed_date)=0 and month='||month||' and year='||year||')';
 EXECUTE m_query;
 EXECUTE _cols into col_name;
 d_meta:='drop table if exists student_attendance_meta_stg';
@@ -4991,7 +4991,7 @@ c_query:='create table if not exists teacher_attendance_meta_temp as '||l_query;
 EXECUTE c_query;
 
 
-m_query:='update teacher_attendance_meta_temp set to_run=False where (extract(dow from processed_date)=0 and month='||month||' and year='||year||') or  processed_date>current_date';
+m_query:='update teacher_attendance_meta_temp set to_run=False where (extract(dow from processed_date)=0 and month='||month||' and year='||year||')';
 EXECUTE m_query;
 EXECUTE _cols into col_name;
 d_meta:='drop table if exists teacher_attendance_meta_stg';
@@ -5471,7 +5471,6 @@ us_query := 'UPDATE teacher_attendance_meta sam
 return 0;
 END;
 $$  LANGUAGE plpgsql;
-
 
 create table IF NOT EXISTS diksha_tpd_staging(
   ff_uuid text,
@@ -6015,3 +6014,5 @@ updated_on  TIMESTAMP without time zone
 );
 
 
+alter table school_hierarchy_details add column if not exists school_management_type varchar(100);
+alter table school_hierarchy_details add column if not exists school_category varchar(100);

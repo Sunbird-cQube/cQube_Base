@@ -19,17 +19,27 @@ export class AppServiceComponent {
     telemetryData: any;
     showBack = true;
     showHome = true;
-    zoomLevel = 7;
     mapCenterLatlng = config.default[`${environment.stateName}`];
+    zoomLevel = this.mapCenterLatlng.zoomLevel;
 
     public state = this.mapCenterLatlng.name;
     date = new Date();
     dateAndTime: string;
+    latitude;
+    longitude;
 
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
         this.token = keyCloakService.kc.token;
         localStorage.setItem('token', this.token);
         this.dateAndTime = `${("0" + (this.date.getDate())).slice(-2)}-${("0" + (this.date.getMonth() + 1)).slice(-2)}-${this.date.getFullYear()}`;
+    }
+  
+    width = window.innerWidth;
+    onResize(level) {
+        this.width = window.innerWidth;
+        this.zoomLevel = this.width > 3820 ? this.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.mapCenterLatlng.zoomLevel + 1 : this.mapCenterLatlng.zoomLevel;
+        this.setZoomLevel(level)
+        this.setMarkerRadius(level);
     }
 
 
@@ -45,7 +55,8 @@ export class AppServiceComponent {
 
     logoutOnTokenExpire() {
         if (this.keyCloakService.kc.isTokenExpired()) {
-            // alert("Session expired, Please login again!");
+            localStorage.removeItem('management');
+            localStorage.removeItem('category');
             let options = {
                 redirectUri: environment.appUrl
             }
@@ -108,6 +119,7 @@ export class AppServiceComponent {
 
 
     //Initialise markers.....
+    markersIcons = [];
     public initMarkers(lat, lng, color, radius, strokeWeight, weight, levelWise) {
         var markerIcon;
         if (radius >= 1) {
@@ -129,7 +141,64 @@ export class AppServiceComponent {
                 weight: weight
             });
         }
+        this.markersIcons.push(markerIcon);
         return markerIcon;
+    }
+    public initMarkers1(lat, lng, color, strokeWeight, weight, levelWise) {
+        var markerIcon;
+            markerIcon = L.circleMarker([lat, lng], {
+                color: "gray",
+                fillColor: color,
+                fillOpacity: 1,
+                strokeWeight: strokeWeight,
+                weight: weight
+            });
+        this.markersIcons.push(markerIcon);
+        return markerIcon;
+    }
+
+    setMarkerRadius(level){
+        this.markersIcons.map(markerIcon=>{
+            var radius;
+            if (level === "District") {
+                markerIcon.setRadius(this.getMarkerRadius(18, 14, 10, 6));
+            }
+            if (level === "Block") {
+                markerIcon.setRadius(this.getMarkerRadius(12, 10, 8, 5));
+            }
+            if (level === "Cluster") {
+                markerIcon.setRadius(this.getMarkerRadius(5, 4, 3, 2));
+            }
+            if (level === "School") {
+                markerIcon.setRadius(this.getMarkerRadius(3, 2.5, 2, 1));
+            }
+            if (level === "blockPerDistrict" || level === "clusterPerBlock" || level === "schoolPerCluster") {
+                markerIcon.setRadius(this.getMarkerRadius(18, 14, 10, 5));
+            }
+        })        
+    }
+
+    getMarkerRadius(rad1, rad2, rad3, rad4) {
+        let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
+        return radius;
+    }
+
+    setZoomLevel(level) {
+        var zoomLevel;
+        if (level === "District" || level === "Block" || level === "Cluster" || level === "School") {
+            zoomLevel = this.zoomLevel
+         }
+         if (level === "blockPerDistrict") {
+             zoomLevel =  this.zoomLevel + 1;
+         }
+         if (level === "clusterPerBlock") {
+            zoomLevel =  this.zoomLevel + 3;
+         }
+         if (level === "schoolPerCluster") {
+            zoomLevel =  this.zoomLevel + 5;
+         }
+        globalMap.options.minZoom = zoomLevel;
+        globalMap.setView(new L.LatLng(this.latitude, this.longitude), zoomLevel);
     }
 
 
@@ -556,4 +625,11 @@ export class AppServiceComponent {
             generateGradient
         };
     }
+
+
+    //management category metadata
+  management_category_metaData(){
+    this.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/management-category-meta`, {});
+  }
 }
