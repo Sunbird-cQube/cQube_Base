@@ -4721,9 +4721,10 @@ b.total_clusters,
                ORDER BY b.visit_score DESC)
            || ' out of ' :: text )
          ||  b.total_clusters) AS cluster_level_rank_within_the_state,
+case when visit_score>0 then 
 coalesce(1-round(( Rank()
              over (
-               ORDER BY b.visit_score DESC) / (b.total_clusters*1.0)),2)) AS state_level_score
+               ORDER BY b.visit_score DESC) / (b.total_clusters*1.0)),2)) else 0 end AS state_level_score
 		 from 
 (select res.district_id,res.district_name,res.block_id,res.block_name,res.cluster_id,res.cluster_name,res.total_schools,res.total_crc_visits,res.visited_school_count,res.not_visited_school_count,res.schools_0,res.schools_1_2,res.schools_3_5,res.schools_6_10,res.schools_10 ,res.no_of_schools_per_crc,res.visit_percent_per_school,b.clusters_in_block,b.clusters_in_district,
 b.total_clusters,
@@ -4798,10 +4799,11 @@ b.total_blocks,
                ORDER BY b.visit_score DESC)
            || ' out of ' :: text )
          ||  b.total_blocks) AS block_level_rank_within_the_state,
+case when visit_score>0 then 
 coalesce(1-round(( Rank()
              over (
-               ORDER BY b.visit_score DESC) / (b.total_blocks*1.0)),2)) AS state_level_score
-		 from 
+               ORDER BY b.visit_score DESC) / (b.total_blocks*1.0)),2)) else 0 end AS state_level_score
+from 
 (select res.district_id,res.district_name,res.block_id,res.block_name,res.total_schools,res.total_crc_visits,res.visited_school_count,res.not_visited_school_count,res.schools_0,res.schools_1_2,
 res.schools_3_5,res.schools_6_10,res.schools_10 ,res.no_of_schools_per_crc,res.visit_percent_per_school,b.blocks_in_district,
 b.total_blocks,
@@ -4865,11 +4867,12 @@ b.total_schools,b.total_crc_visits,b.visited_school_count,b.not_visited_school_c
            || ' out of ' :: text )
          || (select count(distinct(district_id)) 
 from crc_visits_frequency) ) AS district_level_rank_within_the_state,
+case when visit_score>0 then 
 coalesce(1-round(( Rank()
              over (
                ORDER BY b.visit_score DESC) / ((select count(distinct(district_id)) 
-from crc_visits_frequency)*1.0)),2)) AS state_level_score
-		 from 
+from crc_visits_frequency)*1.0)),2)) else 0 end AS state_level_score
+ from 
 (select res.district_id,res.district_name,res.total_schools,res.total_crc_visits,res.visited_school_count,res.not_visited_school_count,res.schools_0,res.schools_1_2,
 res.schools_3_5,res.schools_6_10,res.schools_10 ,res.no_of_schools_per_crc,res.visit_percent_per_school,
 cast(COALESCE(100 - cast(schools_0 as float),0) as float)  as visit_score 
@@ -8003,9 +8006,10 @@ join
                ORDER BY a.visit_score DESC)
            || ' out of ' :: text )
          ||  a.total_clusters_state) AS cluster_level_rank_within_the_state,
+case when visit_score >0 then 
 coalesce(1-round(( Rank()
              over (
-               ORDER BY a.visit_score DESC) / (a.total_clusters_state*1.0)),2)) AS state_level_score		 
+               ORDER BY a.visit_score DESC) / (a.total_clusters_state*1.0)),2)) else 0 end AS state_level_score		 
  from (select  crc.visit_score,a.cluster_id,a.clusters_in_block,a.block_id,a.district_id,a.clusters_in_district,a.total_clusters_state 
  from
  (select  cluster_id,
@@ -8392,9 +8396,11 @@ join
                ORDER BY a.visit_score DESC)
            || ' out of ' :: text )
          ||  a.total_blocks_state) AS block_level_rank_within_the_state,
+case when (a.visit_score >0) then 
 coalesce(1-round(( Rank()
              over (
-               ORDER BY a.visit_score DESC) / (a.total_blocks_state*1.0)),2)) AS state_level_score		 
+               ORDER BY a.visit_score DESC) / (a.total_blocks_state*1.0)),2)) 
+else 0 end as state_level_score		 
  from (select  crc.visit_score,a.block_id,a.district_id,a.blocks_in_district,a.total_blocks_state 
  from
  (select  block_id,
@@ -8542,10 +8548,12 @@ join
            || ' out of ' :: text )
          ||  ((select count(distinct(district_id)) 
 from crc_visits_frequency))) AS district_level_rank_within_the_state ,
+case when visit_score>0 then 
 coalesce(1-round(( Rank()
              over (
                ORDER BY a.visit_score DESC) / ((select count(distinct(district_id)) 
-from crc_visits_frequency)*1.0)),2)) AS state_level_score                  
+from crc_visits_frequency)*1.0)),2)) else 0 end  AS state_level_score                  
+                
  from (select  crc.visit_score,crc.district_id 
  from
  (select  district_id,
@@ -11602,4 +11610,113 @@ CREATE OR REPLACE VIEW periodic_exam_district_year_month AS
                    FROM periodic_exam_mst) b_1 ON a.exam_id = b_1.exam_id
              LEFT JOIN school_hierarchy_details c ON a.school_id = c.school_id
           GROUP BY c.district_id, b_1.assessment_year, b_1.month) b ON d.academic_year::text = b.academic_year::text AND d.district_id = b.district_id AND d.month = b.month;
+
+
+/* pat month and year */
+/* grade filter */
+/* district - grade */
+Create or replace view periodic_grade_district_year_month as 
+select a.*,b.grade,b.subjects
+from
+(select academic_year,month,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance,total_schools,students_count from periodic_exam_district_year_month)as a
+left join
+(select academic_year,district_id,grade,month,
+json_object_agg(subject_name,percentage order by subject_name) as subjects
+from
+((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
+district_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month
+from periodic_exam_school_result group by academic_year,grade,subject,month,
+district_id order by grade desc,subject_name)
+union
+(select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
+district_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month
+from periodic_exam_school_result group by academic_year,grade,month,
+district_id order by 3,grade))as a
+group by district_id,grade,academic_year,month
+order by 1,grade)as b on a.academic_year=b.academic_year and a.district_id=b.district_id and a.month=b.month;
+
+
+/*--- block - grade*/
+Create or replace view periodic_grade_block_year_month as 
+select a.*,b.grade,b.subjects
+from
+(select academic_year,month,block_id,initcap(block_name)as block_name,
+	district_id,initcap(district_name)as district_name,block_latitude,block_longitude,block_performance,total_schools,students_count from periodic_exam_block_year_month)as a
+left join
+(select academic_year,block_id,grade,month,
+json_object_agg(subject_name,percentage order by subject_name) as subjects
+from
+((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
+block_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month
+from periodic_exam_school_result group by academic_year,grade,subject,month,
+block_id order by grade desc,subject_name)
+union
+(select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
+block_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month
+from periodic_exam_school_result group by academic_year,grade,month,
+block_id order by 3,grade))as a
+group by block_id,grade,academic_year,month
+order by 1,grade)as b on a.academic_year=b.academic_year and a.block_id=b.block_id and a.month=b.month;
+
+/*--- cluster - grade*/
+
+Create or replace view periodic_grade_cluster_year_month as 
+select a.*,b.grade,b.subjects
+from
+(select academic_year,month,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
+	district_id,initcap(district_name)as district_name,cluster_latitude,cluster_longitude,cluster_performance,total_schools,students_count from periodic_exam_cluster_year_month)as a
+left join
+(select academic_year,cluster_id,grade,month,
+json_object_agg(subject_name,percentage order by subject_name) as subjects
+from
+((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
+cluster_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month
+from periodic_exam_school_result group by academic_year,grade,subject,month,
+cluster_id order by grade desc,subject_name)
+union
+(select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
+cluster_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month
+from periodic_exam_school_result group by academic_year,grade,month,
+cluster_id order by 3,grade))as a
+group by cluster_id,grade,academic_year,month
+order by 1,grade)as b on a.academic_year=b.academic_year and a.cluster_id=b.cluster_id and a.month=b.month;
+
+/*--- school - grade*/
+
+Create or replace view periodic_grade_school_year_month as 
+select a.*,b.grade,b.subjects
+from
+(select academic_year,month,school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
+	district_id,initcap(district_name)as district_name,school_latitude,school_longitude,school_performance,total_schools,students_count from periodic_exam_school_year_month)as a
+left join
+(select academic_year,school_id,grade,month,
+json_object_agg(subject_name,percentage order by subject_name) as subjects
+from
+((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
+school_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month
+from periodic_exam_school_result group by academic_year,grade,subject,month,
+school_id order by grade desc,subject_name)
+union
+(select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
+school_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month
+from periodic_exam_school_result group by academic_year,grade,month,
+school_id order by 3,grade))as a
+group by school_id,grade,academic_year,month
+order by 1,grade)as b on a.academic_year=b.academic_year and a.school_id=b.school_id and a.month=b.month;
 
