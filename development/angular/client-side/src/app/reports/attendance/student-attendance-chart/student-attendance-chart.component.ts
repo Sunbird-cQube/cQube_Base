@@ -44,6 +44,8 @@ export class StudentAttendanceChartComponent implements OnInit {
   districtData = [];
   onSelectYear(){
     this.commonService.errMsg();
+    this.currentColors = [];
+    this.districtWithColors = [];
     this.getStateData();
     this.getDistrictData();
   }
@@ -54,6 +56,8 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.onSelectYear();
     this.getStateData();
     this.selectedDistricts = [];
+    this.currentColors = [];
+    this.districtWithColors = [];
     var districtList = this.districtList.map(district => {
       district.status = false;
       return district;
@@ -104,11 +108,47 @@ export class StudentAttendanceChartComponent implements OnInit {
     })
   }
 
+  public colors = ['#339933', '#00ffcc', '#0099ff', '#6666ff', '#99ff99', '#003399', '#666699', '#ffcc00', '#660033', '#ff3300'];
+  public currentColors = [];
+  public districtWithColors = [];
+
   shareCheckedList(list){
+    this.currentColors = [];
+    this.districtWithColors = [];
+    var names = [];
     this.selectedDistricts = list;
+    this.districtList.map((item)=>{
+      this.selectedDistricts.map(i=>{
+        if(i == item.id){
+          names.push({id: i, name: item.name});
+        }
+      })
+    });
     if(this.selectedDistricts.length > 0){
+      var myColors = [];
+      var latestColors = [];
+      for(let i=0; i<this.selectedDistricts.length; i++){
+          if(i <= 9){
+            latestColors.push(this.colors[i]);
+            this.districtWithColors.push({id: [names[i].id],name: [names[i].name], color: this.colors[i]});
+            myColors = [];
+          }else{
+            for(let j=0; j< this.selectedDistricts.length - this.districtWithColors.length; j++){
+              this.districtWithColors[j].name.push(names[10 + j].name);
+              this.districtWithColors[j].id.push(names[10 + j].id);
+              myColors.push(this.colors[j]);
+              myColors = myColors.filter(onlyUnique);
+              this.districtWithColors[j].name = this.districtWithColors[j].name.filter(onlyUnique);
+              this.districtWithColors[j].id = this.districtWithColors[j].id.filter(onlyUnique);
+            }
+          }
+        }
+        this.currentColors = latestColors.concat(myColors);
       this.getCurrentData();
       document.getElementById('home').style.display = 'block';
+      function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+      }
     }else{
       this.onHomeClick();
       document.getElementById('home').style.display = 'none';
@@ -120,15 +160,17 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.currentData = [];
     this.level = 'district';
     if(this.districtData.length > 0){
-    this.selectedDistricts.map(item=>{
+    this.districtWithColors.map((item, i)=>{
       this.districtData.map(element=>{
-        if(item == element.districtId){
-          var data = [];
-          element.attendance.map(i=>{
-            data.push(i.attendance);
-          })
-          this.currentData.push({data: data, name: element.districtName, color: '#FF0000'});
-       }
+        item.id.map(id=>{
+          if(id == element.districtId){
+            var data = [];
+            element.attendance.map(i=>{
+              data.push(i.attendance);
+            })
+            this.currentData.push({data: data, name: element.districtName, color: this.currentColors[i]});
+         }
+        })
       })
     });
   }

@@ -34,19 +34,31 @@
                     (shareCheckedList)="shareCheckedList($event)">
                 </app-multi-select>
             </div>
+            <span class="note" style="float: left; margin-left: 3%;"><strong>Recommended: </strong>Please select maximum
+                10 districts for proper chart visibility</span>
             <span class="note" [routerLink]="['/attendance/student-attendance']"
                 style="cursor: pointer; float: right; font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Access
                 Student Attendance Report</span>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-12" style="margin-top: 1%;">
+    <hr>
+    <div class="row" style="margin-top: 1%;">
+        <div
+            [ngClass]="districtWithColors.length > 0 ? 'col-lg-10 col-md-10 col-sm-12' : 'col-lg-12 col-md-12 col-sm-12'">
             <app-line-chart *ngIf="currentData.length > 0" [selectedYear]="selectedYear" [data]="data"
                 [xAxisLabels]="xAxisLabels" [lineData]="currentData" [level]="level" [xAxisTitle]="'Months'"
                 [yAxisTitle]="'Attendance'">
             </app-line-chart>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-12"></div>
+        <div class="col-lg-2 col-md-2 col-sm-12" *ngIf="districtWithColors.length > 0">
+            <div *ngFor="let data of districtWithColors">
+                <div [ngStyle]="{backgroundColor: data.color}" id="circle"></div>
+                <div id="distName">{{data.name}}</div>
+                <br>
+                <br *ngIf="height > 1180">
+                <br *ngIf="height > 1750">
+            </div>
+        </div>
     </div>
 </div>
 <div id="spinner">
