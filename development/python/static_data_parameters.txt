@@ -424,11 +424,11 @@ or school_management_type IS NULL""",
     "operation": "shift",
     "spec": {
       "*": {
-        "@type": "@(1,category)"
+        "@management": "management[]"
       }
     }
   }
 ]
 """,
-"school_management_category_meta": """select distinct case when school_category is null then 'others' else school_category end as type,'category' as category from school_hierarchy_details union select distinct case when school_management_type is null then 'others' else school_management_type end as type,'management' as management from school_hierarchy_details;"""
+"school_management_category_meta": """select distinct school_management_type as management from school_hierarchy_details where school_management_type is not null;"""
 }
