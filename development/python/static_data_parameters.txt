@@ -419,4 +419,16 @@ or longitude like '0' or longitude like '0.0'""",
 "static_school_management_check_if_null":"""select * from flowfile
 where school_management_type_id IS NULL
 or school_management_type IS NULL""",
+"static_jolt_school_management_category_meta":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "@type": "@(1,category)"
+      }
+    }
+  }
+]
+""",
+"school_management_category_meta": """select distinct case when school_category is null then 'others' else school_category end as type,'category' as category from school_hierarchy_details union select distinct case when school_management_type is null then 'others' else school_management_type end as type,'management' as management from school_hierarchy_details;"""
 }
