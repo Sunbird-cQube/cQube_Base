@@ -14,7 +14,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         if(timePeriod && timePeriod != 'select_month'){
             fileName = `crc/${timePeriod}/block.json`;
         }else{
-            fileName = `crc/2019/${month}/block.json`;
+            fileName = `crc/${year}/${month}/block.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
 
@@ -40,7 +40,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         if(timePeriod && timePeriod != 'select_month'){
             fileName = `crc/${timePeriod}/block.json`;
         }else{
-            fileName = `crc/2019/${month}/block.json`;
+            fileName = `crc/${year}/${month}/block.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
 

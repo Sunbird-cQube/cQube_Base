@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
 @Component({
-  selector: 'app-multi-select',
-  templateUrl: './multi-select.component.html',
-  styleUrls: ['./multi-select.component.css']
+  selector: "app-multi-select",
+  templateUrl: "./multi-select.component.html",
+  styleUrls: ["./multi-select.component.css"],
 })
 export class MultiSelectComponent implements OnInit {
   @Input() list: any[];
-  @Input() text:any;
+  @Input() text: any;
   @Input() width1;
   @Input() width2;
 
@@ -20,7 +20,6 @@ export class MultiSelectComponent implements OnInit {
   constructor() {
     this.checkedList = [];
   }
-  
 
   showDropDown;
 
@@ -40,15 +39,33 @@ export class MultiSelectComponent implements OnInit {
   // }
 
   getSelectedValue(id, status) {
-    if (status) {
-      this.checkedList.push(id);
-    } else {
-      var index = this.checkedList.indexOf(id);
-      this.checkedList.splice(index, 1);
-    }
+    var index;
+    if (this.text == "District") {
+      if (this.checkedList.length <= 9) {
+        if (status) {
+          this.checkedList.push(id);
+        } else {
+          index = this.checkedList.indexOf(id);
+          this.checkedList.splice(index, 1);
+        }
 
-    if (this.checkedList.length == 0) {
-      this.shareCheckedlist();
+        if (this.checkedList.length == 0) {
+          this.shareCheckedlist();
+        }
+      } else {
+        alert("You can not select more that 10 options");
+      }
+    } else {
+      if (status) {
+        this.checkedList.push(id);
+      } else {
+        index = this.checkedList.indexOf(id);
+        this.checkedList.splice(index, 1);
+      }
+
+      if (this.checkedList.length == 0) {
+        this.shareCheckedlist();
+      }
     }
   }
 
@@ -59,6 +76,5 @@ export class MultiSelectComponent implements OnInit {
     this.shareCheckedList.emit(this.checkedList);
   }
 
-  ngOnInit() { }
-
+  ngOnInit() {}
 }

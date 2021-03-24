@@ -13,12 +13,12 @@ export class StudentAttendanceChartComponent implements OnInit {
   state;
   level = 'state';
   districtList:any = [];
-  years = ['2018','2021'];
+  years = [];
   selectedYear = '';
   selectedDistricts = [];
   data:any = [];
   currentData = [];
-  xAxisLabels = [];
+  xAxisLabels = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
   height = window.innerHeight;
   constructor(public commonService: AppServiceComponent,public service:AttendanceReportService,  private changeDetection: ChangeDetectorRef) { }
 
@@ -29,12 +29,13 @@ export class StudentAttendanceChartComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.state = this.commonService.state;
-    this.selectedYear = this.years[this.years.length-1];
+    this.service.getYears().subscribe(res=>{
+      this.years = Object.keys(res);
+      this.selectedYear = this.years[this.years.length-1];
+      this.onResize();
+      this.onHomeClick();
+    })
     this.changeDetection.detectChanges();
-    this.xAxisLabels = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
-    this.onResize();
-    this.onHomeClick();
-
   }
 
   onResize() {
@@ -131,23 +132,25 @@ export class StudentAttendanceChartComponent implements OnInit {
             latestColors.push(this.colors[i]);
             this.districtWithColors.push({id: [names[i].id],name: [names[i].name], color: this.colors[i]});
             myColors = [];
-          }else{
-            for(let j=0; j< this.selectedDistricts.length - this.districtWithColors.length; j++){
-              this.districtWithColors[j].name.push(names[10 + j].name);
-              this.districtWithColors[j].id.push(names[10 + j].id);
-              myColors.push(this.colors[j]);
-              myColors = myColors.filter(onlyUnique);
-              this.districtWithColors[j].name = this.districtWithColors[j].name.filter(onlyUnique);
-              this.districtWithColors[j].id = this.districtWithColors[j].id.filter(onlyUnique);
-            }
           }
+          // else{
+            // alert("You can not select more that 10 options.");
+            // for(let j=0; j< this.selectedDistricts.length - this.districtWithColors.length; j++){
+            //   this.districtWithColors[j].name.push(names[10 + j].name);
+            //   this.districtWithColors[j].id.push(names[10 + j].id);
+            //   myColors.push(this.colors[j]);
+            //   myColors = myColors.filter(onlyUnique);
+            //   this.districtWithColors[j].name = this.districtWithColors[j].name.filter(onlyUnique);
+            //   this.districtWithColors[j].id = this.districtWithColors[j].id.filter(onlyUnique);
+            // }
+          // }
         }
         this.currentColors = latestColors.concat(myColors);
       this.getCurrentData();
       document.getElementById('home').style.display = 'block';
-      function onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-      }
+      // function onlyUnique(value, index, self) {
+      //   return self.indexOf(value) === index;
+      // }
     }else{
       this.onHomeClick();
       document.getElementById('home').style.display = 'none';

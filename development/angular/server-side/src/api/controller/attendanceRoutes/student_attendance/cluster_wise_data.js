@@ -3,29 +3,32 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/clusterWise', auth.authController, async (req, res) => {
+router.post('/clusterWise', auth.authController, async(req, res) => {
     try {
         logger.info('---Attendance cluster wise api ---');
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
-        var type = req.body.type;
         var management = req.body.management;
         var category = req.body.category;
         let fileName;
-        if (type) {
-            if (type == 'Management') {
-                if (timePeriod != null) {
-                    fileName = `attendance/${timePeriod}/school_management/${management}/cluster.json`;
-                } else {
-                    fileName = `attendance/school_management/${management}/cluster_${year}_${month}.json`;
-                }
+        if (management != 'overall' && category != 'overall') {
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/school_management_category/${management}/${category}/cluster.json`;
             } else {
-                if (timePeriod != null) {
-                    fileName = `attendance/${timePeriod}/school_category/${category}/cluster.json`;
-                } else {
-                    fileName = `attendance/school_category/${category}/cluster_${year}_${month}.json`;
-                }
+                fileName = `attendance/school_management_category/${management}/${category}/cluster_${year}_${month}.json`;
+            }
+        } else if (management == 'overall' && category != 'overall') {
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/school_management_category/overall_management/${category}/cluster.json`;
+            } else {
+                fileName = `attendance/school_management_category/${year}/${month}/overall_management${category}/cluster.json`;
+            }
+        } else if (management != 'overall' && category == 'overall') {
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/school_management_category/overall_category/${management}/cluster.json`;
+            } else {
+                fileName = `attendance/school_management_category/${year}/${month}/overall_category/${management}/cluster.json`;
             }
         } else {
             if (timePeriod != null) {
@@ -62,30 +65,33 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
     }
 });
 
-router.post('/clusterPerBlock', auth.authController, async (req, res) => {
+router.post('/clusterPerBlock', auth.authController, async(req, res) => {
     try {
         logger.info('---Attendance clusterPerBlock api ---');
         var blockId = req.body.id;
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
-        var type = req.body.type;
         var management = req.body.management;
         var category = req.body.category;
         let fileName;
-        if (type) {
-            if (type == 'Management') {
-                if (timePeriod != null) {
-                    fileName = `attendance/${timePeriod}/school_management/${management}/cluster.json`;
-                } else {
-                    fileName = `attendance/school_management/${management}/cluster_${year}_${month}.json`;
-                }
+        if (management != 'overall' && category != 'overall') {
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/school_management_category/${management}/${category}/cluster.json`;
             } else {
-                if (timePeriod != null) {
-                    fileName = `attendance/${timePeriod}/school_category/${category}/cluster.json`;
-                } else {
-                    fileName = `attendance/school_category/${category}/cluster_${year}_${month}.json`;
-                }
+                fileName = `attendance/school_management_category/${management}/${category}/cluster_${year}_${month}.json`;
+            }
+        } else if (management == 'overall' && category != 'overall') {
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/school_management_category/overall_management/${category}/cluster.json`;
+            } else {
+                fileName = `attendance/school_management_category/${year}/${month}/overall_management${category}/cluster.json`;
+            }
+        } else if (management != 'overall' && category == 'overall') {
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/school_management_category/overall_category/${management}/cluster.json`;
+            } else {
+                fileName = `attendance/school_management_category/${year}/${month}/overall_category/${management}/cluster.json`;
             }
         } else {
             if (timePeriod != null) {
