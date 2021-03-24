@@ -24,13 +24,13 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         } else {
             if (report == 'pat') {
                 if (grade) {
-                    if (period != null) {
+                    if (period != 'select_month') {
                         fileName = `${report}/${period}/block/${grade}.json`;
                     } else {
                         fileName = `${report}/${academic_year}/${month}/block/${grade}.json`;
                     }
                 } else {
-                    if (period != null) {
+                    if (period != 'select_month') {
                         fileName = `${report}/${period}/${report}_block.json`;
                     } else {
                         fileName = `${report}/${academic_year}/${month}/block/block.json`;
@@ -70,7 +70,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
             fileName = `${report}/all/${report}_block.json`;
         } else {
             if (report == 'pat') {
-                if (period != null) {
+                if (period != 'select_month') {
                     fileName = `${report}/${period}/${report}_block.json`;
                 } else {
                     fileName = `${report}/${academic_year}/${month}/block/block.json`;

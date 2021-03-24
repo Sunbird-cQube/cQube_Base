@@ -13,7 +13,7 @@ router.post('/distWise', auth.authController, async function (req, res) {
         var management = req.body.management;
         var category = req.body.category;
         let fileName;
-        if (management && management != 'overall' && category != 'overall' && category) {
+        if (management && category) {
             if (timePeriod != null) {
                 fileName = `attendance/${timePeriod}/school_management_category/${management}/${category}/district.json`;
             } else {
@@ -26,6 +26,7 @@ router.post('/distWise', auth.authController, async function (req, res) {
                 fileName = `attendance/district_attendance_opt_json_${year}_${month}.json`;
             }
         }
+        // console.log(fileName)
         var jsonData = await s3File.readS3File(fileName);
 
         var districtAttendanceData = jsonData.data

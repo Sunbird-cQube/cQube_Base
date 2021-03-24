@@ -108,7 +108,16 @@ export class CrcReportComponent implements OnInit {
     { key: "totalVisits", value: "Total visits" }
   ]
 
-  timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }];
+  public getMonthYear: any;
+  public years: any = [];
+  public year;
+  public months: any = [];
+  public month;
+  yearMonth = true;
+  month_year: { month: any; year: any; };
+  monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
   period = 'overall';
 
   myData;
@@ -129,7 +138,26 @@ export class CrcReportComponent implements OnInit {
     document.getElementById('backBtn').style.display = 'none';
     this.createChart(["clg"], [], '', {});
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
+    this.service.getMonthYear().subscribe(res => {
+      this.getMonthYear = res;
+      this.getMonthYear.map(item=>{
+        this.years.push(item['academic_year']);
+      });
+      this.year = this.years[this.years.length - 1];
 
+      this.months = [];
+      this.getMonthYear.map(item=>{
+        if(item['academic_year'] == this.year){
+          this.months = item['month'];
+        }
+      })
+      this.month = this.months[this.months.length - 1];
+      if (this.month) {
+        this.month_year = {
+          month: null,
+          year: null
+        };
+      }
     if (params)
       this.period = params.timePeriod;
     if (params && params.level) {
@@ -154,11 +182,12 @@ export class CrcReportComponent implements OnInit {
       this.onResize();
       // this.districtWise();
     }
+  })
   }
 
   getDistricts(level): void {
     this.scatterChart.destroy();
-    this.service.crcDistWiseData({ timePeriod: this.period }).subscribe(res => {
+    this.service.crcDistWiseData({...{ timePeriod: this.period }, ...this.month_year}).subscribe(res => {
       localStorage.setItem('resData', JSON.stringify(res));
       this.result = res;
       let a = this.result.schoolsVisitedCount
@@ -182,7 +211,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   getBlocks(level, distId, blockId?: any): void {
-    this.service.crcBlockWiseData(distId, { timePeriod: this.period }).subscribe((result: any) => {
+    this.service.crcBlockWiseData(distId, {...{ timePeriod: this.period }, ...this.month_year}).subscribe((result: any) => {
       this.crcBlocksNames = result;
       this.reportData = this.crcBlocksNames = this.crcBlocksNames.visits;
       for (var i = 0; i < this.crcBlocksNames.length; i++) {
@@ -201,7 +230,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   getClusters(distId, blockId, clusterId): void {
-    this.service.crcClusterWiseData(distId, blockId, { timePeriod: this.period }).subscribe((result: any) => {
+    this.service.crcClusterWiseData(distId, blockId, {...{ timePeriod: this.period }, ...this.month_year}).subscribe((result: any) => {
       this.crcClusterNames = result.visits;
       this.reportData = this.crcClusterNames;
 
@@ -223,6 +252,41 @@ export class CrcReportComponent implements OnInit {
   public chartData: any = [];
   public modes: any;
   reportName = 'crc_report';
+
+
+  showYearMonth() {
+    document.getElementById('home').style.display = 'block';
+    this.yearMonth = false;
+    this.month_year = {
+      month: this.monthNames.indexOf(this.month.trim())+1,
+      year: this.year
+    };
+    // this.period = null;
+    this.levelWiseFilter();
+  }
+
+  getMonth(event) {
+    this.month_year = {
+      month: this.monthNames.indexOf(this.month.trim())+1,
+      year: this.year
+    };
+    this.levelWiseFilter();
+  }
+
+  getYear() {
+    this.months = [];
+    this.month = undefined;
+    this.getMonthYear.map(item=>{
+      if(item['academic_year'] == this.year){
+        this.months = item['month'];
+      }
+    })
+    this.yearMonth = true;
+    this.month_year = {
+      month: null,
+      year: null
+    };
+  }
 
 
   onPeriodSelect() {
@@ -283,7 +347,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcDistWiseData({ timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.crcDistWiseData({...{ timePeriod: this.period }, ...this.month_year}).subscribe(res => {
       localStorage.setItem('resData', JSON.stringify(res));
       this.result = res;
       let a = this.result.schoolsVisitedCount
@@ -377,7 +441,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcAllBlockWiseData({ timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.crcAllBlockWiseData({...{ timePeriod: this.period }, ...this.month_year}).subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -401,7 +465,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcAllClusterWiseData({ timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.crcAllClusterWiseData({...{ timePeriod: this.period }, ...this.month_year}).subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -425,7 +489,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcAllSchoolWiseData({ timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.crcAllSchoolWiseData({...{ timePeriod: this.period }, ...this.month_year}).subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -473,7 +537,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcBlockWiseData(data, { timePeriod: this.period }).subscribe((result: any) => {
+    this.myData = this.service.crcBlockWiseData(data, {...{ timePeriod: this.period }, ...this.month_year}).subscribe((result: any) => {
       if (!fromParam) {
         if ($.fn.DataTable.isDataTable('#table')) {
           $('#table').DataTable().destroy();
@@ -585,7 +649,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcClusterWiseData(localStorage.getItem('distId'), data, { timePeriod: this.period }).subscribe((result: any) => {
+    this.myData = this.service.crcClusterWiseData(localStorage.getItem('distId'), data, {...{ timePeriod: this.period }, ...this.month_year}).subscribe((result: any) => {
       if (!fromParam) {
         if ($.fn.DataTable.isDataTable('#table')) {
           $('#table').DataTable().destroy();
@@ -700,7 +764,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcSchoolWiseData(distId, blockId, data, { timePeriod: this.period }).subscribe(async (result: any) => {
+    this.myData = this.service.crcSchoolWiseData(distId, blockId, data, {...{ timePeriod: this.period }, ...this.month_year}).subscribe(async (result: any) => {
       if (!fromParam) {
         if ($.fn.DataTable.isDataTable('#table')) {
           $('#table').DataTable().destroy();

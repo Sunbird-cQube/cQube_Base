@@ -292,7 +292,7 @@ export class PATReportComponent implements OnInit {
       month: this.month.trim(),
       year: this.year
     };
-    this.period = null;
+    // this.period = null;
     this.levelWiseFilter();
   }
 
@@ -321,9 +321,6 @@ export class PATReportComponent implements OnInit {
       document.getElementById('home').style.display = 'none';
     }
     this.yearMonth = true;
-    // this.timePeriod = {
-    //   period: this.period
-    // }
     this.month_year = {
       month: null,
       year: null

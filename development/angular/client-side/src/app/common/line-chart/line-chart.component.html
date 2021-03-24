@@ -3,7 +3,25 @@
         <div class="col-sm-12">
             <div (window:resize)="onResize()">
                 <div id="container" style="width: 100%; margin: 0 auto"
-                    [ngStyle]="{height: height > 1760 ? '85vh': height > 1180 && height < 1760 ? '80vh': height > 667 && height < 1180 ? '75vh':'72vh'}">
+                    [ngStyle]="{height: height > 1760 ? '82vh': height > 1180 && height < 1760 ? '78vh': height > 667 && height < 1180 ? '74vh':'70vh'}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="outer">
+                <div id="absolute" (click)="getSelected('absolute')"
+                    [ngStyle]="{'background-color' : selected == 'absolute' ? '#3100cc' : '#f5f6fb'}">
+                    <p [ngStyle]="{'color' : selected == 'absolute' ? 'white' : 'black'}"
+                        style="text-align: center; padding: 2%;">
+                        Absolute</p>
+                </div>
+                <div id="relative" (click)="getSelected('relative')"
+                    [ngStyle]="{'background-color' : selected == 'relative' ? '#3100cc' : '#f5f6fb'}">
+                    <p [ngStyle]="{'color' : selected == 'relative' ? 'white' : 'black'}"
+                        style="text-align: center; padding: 2%;">
+                        Relative</p>
                 </div>
             </div>
         </div>

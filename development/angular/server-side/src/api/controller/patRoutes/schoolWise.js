@@ -23,13 +23,13 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         } else {
             if (report == 'pat') {
                 if (grade) {
-                    if (period != null) {
+                    if (period != 'select_month') {
                         fileName = `${report}/${period}/school/${grade}.json`;
                     } else {
                         fileName = `${report}/${academic_year}/${month}/school/${grade}.json`;
                     }
                 } else {
-                    if (period != null) {
+                    if (period != 'select_month') {
                         fileName = `${report}/${period}/${report}_school.json`;
                     } else {
                         fileName = `${report}/${academic_year}/${month}/school/school.json`;
@@ -67,7 +67,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
             fileName = `${report}/all/${report}_school.json`;
         } else {
             if (report == 'pat') {
-                if (period != null) {
+                if (period != 'select_month') {
                     fileName = `${report}/${period}/${report}_school.json`;
                 } else {
                     fileName = `${report}/${academic_year}/${month}/school/school.json`;

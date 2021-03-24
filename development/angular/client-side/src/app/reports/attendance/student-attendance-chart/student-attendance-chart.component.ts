@@ -32,7 +32,6 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.selectedYear = this.years[this.years.length-1];
     this.changeDetection.detectChanges();
     this.xAxisLabels = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
-    // this.onSelectYear();
     this.onResize();
     this.onHomeClick();
 

@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-sm-7">
                     <div *ngIf="skul; else ng_else" style="float: right; " id="select">
-                        <em class="fa fa-cloud-download" title="Download Report" id="download"
+                        <em class="fa fa-cloud-download" style="margin-top: 0px;" title="Download Report" id="download"
                             (click)="downloadReportofState(downloadType)"></em>
                         <select class="dwnld" id="downloader" [(ngModel)]="downloadType" name="downloadType">
                             <option [value]="downloadType" disabled selected="selected"> Download Report</option>
@@ -53,10 +53,11 @@
                     </div>
 
                     <ng-template #ng_else>
-                        <em class="fa fa-cloud-download" title="Download Report" id="download"
+                        <em class="fa fa-cloud-download" style="margin-top: 0px;" title="Download Report" id="download"
                             (click)="downloadReport()"></em>
                     </ng-template>
-                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="onClockHome()"></em>
+                    <em class="fa fa-home" id="home" style="margin-top: -1px; margin-right: 10px" title="Home"
+                        alt="Home" (click)="onClockHome()"></em>
                 </div>
             </div>
         </div>
@@ -129,14 +130,29 @@
         </div>
         <div class="col-sm-6">
             <div class="row">
-                <select id="period" [(ngModel)]="period" (change)="onPeriodSelect()">
-                    <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
+                <select id="period" [(ngModel)]="period"
+                    (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
+                    <option [value]="period" disabled selected="selected">Choose TimeRange</option>
                     <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
                         {{period.value}}
                     </option>
                 </select>
+                <select [hidden]="yearMonth" id="year" [(ngModel)]="year" name="year" (change)="getYear()">
+                    <option [value]="year" disabled selected="selected">Choose Year
+                    </option>
+                    <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]">
+                        {{years[i]}}
+                    </option>
+                </select>
+                <select [hidden]="yearMonth" id="month" [(ngModel)]="month" name="month" (change)="getMonth($event)">
+                    <option [value]="month" disabled selected="selected">Choose Month
+                    </option>
+                    <option *ngFor="let month of months, let i = index" [(ngValue)]="months[i]">
+                        {{months[i]}}
+                    </option>
+                </select>
                 <select id="choose_dist" [(ngModel)]="myDistrict" name="myDistrict" (change)="myDistData(myDistrict)">
-                    <option [value]="myDistrict" disabled selected="selected">Choose a District
+                    <option [value]="myDistrict" disabled selected="selected">Choose District
                     </option>
                     <option *ngFor="let dist of crcDistrictsNames" [(ngValue)]="dist.districtId">
                         {{dist.districtName}}
@@ -145,14 +161,14 @@
 
                 <select [hidden]="blockHidden" id="choose_block" [(ngModel)]="myBlock" name="myBlock"
                     (change)="myBlockData(myBlock)">
-                    <option [value]="myBlock" disabled selected="selected">Choose a Block
+                    <option [value]="myBlock" disabled selected="selected">Choose Block
                     </option>
                     <option *ngFor="let block of crcBlocksNames" [(ngValue)]="block.blockId">
                         {{block.blockName}}
                     </option>
                 </select>
 
-                <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="myCluster" name="myCluster"
+                <!-- <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="myCluster" name="myCluster"
                     (change)="myClusterData(myCluster)">
                     <option [value]="myCluster" disabled selected="selected">Choose a Cluster
                     </option>
@@ -160,7 +176,7 @@
                         [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                         {{cluster.clusterName}}
                     </option>
-                </select>
+                </select> -->
             </div>
             <br>
             <p class="note">
