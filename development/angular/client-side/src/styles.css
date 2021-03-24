@@ -6,46 +6,52 @@
 
 /* You can add global styles to this file, and also import other style files */
 
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Arial !important; font-size: 20px;}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Arial !important;
+  font-size: 20px;
+}
 
 table {
-    width: 100%;
-  }
-  
-  th.mat-sort-header-sorted {
-    color: black;
-  }
-.leaflet-bottom, leaflet-right{
+  width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+.leaflet-bottom,
+leaflet-right {
   display: none;
 }
 
-.leaflet-popup-content{
+.leaflet-popup-content {
   width: 250px auto;
 }
 
 @media screen and (min-width: 1920px) {
-  .leaflet-popup-content{
+  .leaflet-popup-content {
     min-width: 350px !important;
     font-size: 16px;
   }
 }
 
 @media screen and (min-width: 2560px) {
-  .leaflet-popup-content{
+  .leaflet-popup-content {
     min-width: 420px !important;
     font-size: 18px;
   }
 }
 
 @media screen and (min-width: 3820px) {
-  .leaflet-popup-content{
+  .leaflet-popup-content {
     min-width: 580px !important;
     font-size: 26px;
   }
 }
-
 
 /* Absolute Center Spinner */
 .loading {
@@ -63,7 +69,7 @@ table {
 
 /* Transparent Overlay */
 .loading:before {
-  content: '';
+  content: "";
   display: block;
   position: fixed;
   margin-top: 35px;
@@ -71,15 +77,17 @@ table {
   left: 0;
   width: 100%;
   height: 100%;
-    background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+  background: radial-gradient(rgba(20, 20, 20, 0.8), rgba(0, 0, 0, 0.8));
 
-  background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+  background: -webkit-radial-gradient(
+    rgba(20, 20, 20, 0.8),
+    rgba(0, 0, 0, 0.8)
+  );
 }
 
-
-@media screen and (min-width: 1920px){
+@media screen and (min-width: 1920px) {
   .loading:before {
-    content: '';
+    content: "";
     display: block;
     position: fixed;
     margin-top: 55px;
@@ -87,15 +95,18 @@ table {
     left: 0;
     width: 100%;
     height: 100%;
-      background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
-  
-    background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+    background: radial-gradient(rgba(20, 20, 20, 0.8), rgba(0, 0, 0, 0.8));
+
+    background: -webkit-radial-gradient(
+      rgba(20, 20, 20, 0.8),
+      rgba(0, 0, 0, 0.8)
+    );
   }
 }
 
-@media screen and (min-width: 2560px){
+@media screen and (min-width: 2560px) {
   .loading:before {
-    content: '';
+    content: "";
     display: block;
     position: fixed;
     margin-top: 65px;
@@ -103,12 +114,14 @@ table {
     left: 0;
     width: 100%;
     height: 100%;
-      background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
-  
-    background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+    background: radial-gradient(rgba(20, 20, 20, 0.8), rgba(0, 0, 0, 0.8));
+
+    background: -webkit-radial-gradient(
+      rgba(20, 20, 20, 0.8),
+      rgba(0, 0, 0, 0.8)
+    );
   }
 }
-
 
 /* :not(:required) hides these rules from IE9 and below */
 .loading:not(:required) {
@@ -121,7 +134,7 @@ table {
 }
 
 .loading:not(:required):after {
-  content: '';
+  content: "";
   display: block;
   font-size: 10px;
   width: 1em;
@@ -133,8 +146,22 @@ table {
   -o-animation: spinner 150ms infinite linear;
   animation: spinner 150ms infinite linear;
   border-radius: 0.5em;
-  -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.75) 1.5em 0 0 0,
+    rgba(255, 255, 255, 0.75) 1.1em 1.1em 0 0,
+    rgba(255, 255, 255, 0.75) 0 1.5em 0 0,
+    rgba(255, 255, 255, 0.75) -1.1em 1.1em 0 0,
+    rgba(255, 255, 255, 0.75) -1.5em 0 0 0,
+    rgba(255, 255, 255, 0.75) -1.1em -1.1em 0 0,
+    rgba(255, 255, 255, 0.75) 0 -1.5em 0 0,
+    rgba(255, 255, 255, 0.75) 1.1em -1.1em 0 0;
+  box-shadow: rgba(255, 255, 255, 0.75) 1.5em 0 0 0,
+    rgba(255, 255, 255, 0.75) 1.1em 1.1em 0 0,
+    rgba(255, 255, 255, 0.75) 0 1.5em 0 0,
+    rgba(255, 255, 255, 0.75) -1.1em 1.1em 0 0,
+    rgba(255, 255, 255, 0.75) -1.5em 0 0 0,
+    rgba(255, 255, 255, 0.75) -1.1em -1.1em 0 0,
+    rgba(255, 255, 255, 0.75) 0 -1.5em 0 0,
+    rgba(255, 255, 255, 0.75) 1.1em -1.1em 0 0;
 }
 
 /* Animation */
@@ -204,562 +231,710 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   }
 }
 
-#scrolly{
+#scrolly {
   overflow: auto;
   overflow-y: hidden;
   margin: 0 auto;
-  white-space: nowrap
+  white-space: nowrap;
 }
-
 
 /*//////////////////////////////////////////////////////////////////*/
 
-#footer{
-  width:100%; 
+#footer {
+  width: 100%;
   background-color: rgb(152, 160, 163);
   font-size: 13px;
-  font-weight: bold; 
-  color: white; 
-  margin: 0px 0px 0px 0px; 
+  font-weight: bold;
+  color: white;
+  margin: 0px 0px 0px 0px;
   padding: 2px 0px 2px 0px;
-  position: fixed; 
-  bottom: 0; 
+  position: fixed;
+  bottom: 0;
   left: 0;
   z-index: 999;
 }
 
-#outer{
-  border-radius: 15px; 
-  background-color: #f5f6fb; 
-  height: 22px; 
-  width: 150px; 
+#outer {
+  border-radius: 15px;
+  background-color: #f5f6fb;
+  height: 23px;
+  width: 150px;
   border: 1px solid gray;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: bold;
 }
-#absolute{
-  border-radius: 15px; 
-  height: 20px;
-   width: 50%;  
-   float: left; 
-   cursor: pointer;
+#absolute {
+  border-radius: 15px;
+  height: 20.5px;
+  width: 50%;
+  float: left;
+  cursor: pointer;
 }
-#relative{
-  border-radius: 15px; 
-  height: 20px; 
+#relative {
+  border-radius: 15px;
+  height: 20.5px;
   width: 50%;
   float: left;
   cursor: pointer;
 }
 
-#dist, #block,#cluster,#school{
+#dist,
+#block,
+#cluster,
+#school {
   color: #284d8a;
-  font-size: 18px; 
-  line-height: 1.2em; 
+  font-size: 18px;
+  line-height: 1.2em;
   margin-top: 5px;
 }
 
-#errMsg{
+#errMsg {
   text-align: center;
-  line-height: 1.2em; 
-  font-size: 12px; 
+  line-height: 1.2em;
+  font-size: 12px;
   margin-top: 3%;
 }
 
-#download{
+#download {
   cursor: pointer;
-  font-size: 27px; 
+  font-size: 27px;
   float: right;
   margin: 5px 0px 0px 8px;
   color: #3100cc;
 }
 
-#home{
+#home {
   cursor: pointer;
-  font-size: 30px; 
+  font-size: 30px;
   float: right;
-  margin: 2px 0px 0px 0px; 
-  color: #3100cc; 
+  margin: 2px 0px 0px 0px;
+  color: #3100cc;
   display: none;
 }
 
-#patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload, #crcHealthcard{
-  font-weight: bold; 
-  text-decoration: underline; 
-  font-size: 13px; 
-  color: #3100cc
+#patHealthcard,
+#infraHealthcard,
+#satHealthcard,
+#udiseHealthcard,
+#stdHealthCard,
+#downloadRaw,
+#rawDownload,
+#crcHealthcard {
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 13px;
+  color: #3100cc;
 }
 
-.note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
-  text-align: justify; 
+.note,
+#students,
+#schools,
+#dateRange,
+#totalCount,
+#visits,
+#visited,
+#notVisited {
+  text-align: justify;
   font-size: 12px;
 }
 
-#blockbtn, #clusterbtn, #schoolbtn{
+#blockbtn,
+#clusterbtn,
+#schoolbtn {
   margin-right: 15px;
-  font-size: 11px; 
+  font-size: 11px;
   width: 75px;
-  padding: 4px; 
+  padding: 4px;
   background-color: rgb(152, 160, 163);
 }
 
-#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis, #type,#management, #category{
+#choose_dist,
+#choose_block,
+#period,
+#grades,
+#subjects,
+#choose_semester,
+#choose_cluster,
+#time_range,
+#coll_name,
+#choose_enroll,
+#choose_infra,
+#academicYear,
+#year,
+#month,
+#downloader,
+#x-axis,
+#y-axis,
+#type,
+#management,
+#category {
   margin-right: 15px;
-  padding: 5.2px; 
-  color: white; 
-  border-radius: 4px; 
-  font-size: 11px; 
-  font-weight: bold; 
-  background-color: rgb(152, 160, 163)
+  padding: 5.2px;
+  color: white;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  background-color: rgb(152, 160, 163);
 }
 
-.legends{
+.legends {
   width: 85%;
   height: 4.5vh;
   font-size: 11px;
-  margin:0.4vh 0.4vh 0.4vh 0vh;
+  margin: 0.4vh 0.4vh 0.4vh 0vh;
   padding-top: 0.7vh;
   text-align: center;
   border-radius: 10px;
   font-weight: bold;
 }
 
-#legend{
+#legend {
   font-size: 12px;
   font-weight: bold;
 }
 
-#legendNote{ 
+#legendNote {
   font-size: 12px;
   margin-top: 15px;
 }
 
-.chooseLevel{
-	line-height: 1.2em; 
-	font-size: 14px;
-	font-weight: bold;
+.chooseLevel {
+  line-height: 1.2em;
+  font-size: 14px;
+  font-weight: bold;
 }
 
-
-@media screen and (min-width: 1500px){
-  .legends{
+@media screen and (min-width: 1500px) {
+  .legends {
     width: 85%;
     height: 4.5vh;
     font-size: 12px;
-    margin:0.53vh 0.53vh 0.53vh 0vh;
-    padding-top: 0.85vh ;
-    text-align: center;
-    border-radius: 10px;
-    font-weight: bold;
-  }
-  
-  #legend{
-    font-size: 13px;
-    font-weight: bold;
-  }
-  
-  #legendNote{ 
-    font-size: 14px;
-    margin-top: 18px;
-  }
-}
-
-@media screen and (min-width: 1700px){
-  .legends{
-    width: 85%;
-    height: 4.5vh;
-    font-size: 14px;
-    margin:0.62vh 0.62vh 0.62vh 0vh;
+    margin: 0.53vh 0.53vh 0.53vh 0vh;
     padding-top: 0.85vh;
     text-align: center;
     border-radius: 10px;
     font-weight: bold;
   }
-  
-  #legend{
+
+  #legend {
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  #legendNote {
+    font-size: 14px;
+    margin-top: 18px;
+  }
+}
+
+@media screen and (min-width: 1700px) {
+  .legends {
+    width: 85%;
+    height: 4.5vh;
+    font-size: 14px;
+    margin: 0.62vh 0.62vh 0.62vh 0vh;
+    padding-top: 0.85vh;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+
+  #legend {
     font-size: 15px;
     font-weight: bold;
   }
-  
-  #legendNote{ 
+
+  #legendNote {
     font-size: 16px;
     margin-top: 20px;
   }
 }
 
-
 @media screen and (min-width: 1920px) {
-  #footer{
-      width:100%; 
-      background-color: rgb(152, 160, 163);
-      font-size: 16px;
-      font-weight: bold; 
-      color: white; 
-      margin: 0px 0px 0px 0px;
-      padding: 2px 0px 2px 0px;
-      position: fixed; 
-      bottom: 0; 
-      left: 0;
-      z-index: 999;
-  }
-  
-  #outer{
-      border-radius: 15px; 
-      background-color: #f5f6fb; 
-      height: 34px; 
-      width: 190px; 
-      border: 1px solid gray;
-      font-size: 16px;
-  }
-  #absolute{
-      border-radius: 15px; 
-      height: 32px;
-      width: 50%;  
-      float: left; 
-      cursor: pointer;
-  }
-  #relative{
-      border-radius: 15px; 
-      height: 32px; 
-      width: 50%;
-      float: left;
-      cursor: pointer;
+  #footer {
+    width: 100%;
+    background-color: rgb(152, 160, 163);
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin: 0px 0px 0px 0px;
+    padding: 2px 0px 2px 0px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
   }
 
-  #dist, #block,#cluster,#school{
-      color: #284d8a;
-      font-size: 22px; 
-      line-height: 1.2em; 
-      margin-top: 5px;
+  #outer {
+    border-radius: 15px;
+    background-color: #f5f6fb;
+    height: 34px;
+    width: 190px;
+    border: 1px solid gray;
+    font-size: 18px;
+  }
+  #absolute {
+    border-radius: 15px;
+    height: 31px;
+    width: 50%;
+    float: left;
+    cursor: pointer;
+  }
+  #relative {
+    border-radius: 15px;
+    height: 31px;
+    width: 50%;
+    float: left;
+    cursor: pointer;
   }
 
-  #download{
-      cursor: pointer;
-      font-size: 38px;
-      float: right;
-      margin: 3px 0px 0px 8px;
-      color: #3100cc;
-  }
-  
-  #home{
-      cursor: pointer;
-      font-size: 40px; 
-      float: right;
-      margin: 2px 0px 0px 0px; 
-      color: #3100cc; 
-      display: none;
-  }
-  #patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload, #crcHealthcard{
-      font-weight: bold; 
-      text-decoration: underline; 
-      font-size: 18px; 
-      color: #3100cc
-  }
-  .note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
-      text-align: justify; 
-      font-size: 18px;
-   }
-   #choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis, #type,#management, #category{
-      margin-right: 15px;
-      padding: 7.2px; 
-      color: white; 
-      border-radius: 4px; 
-      font-size: 18px; 
-      font-weight: bold; 
-      background-color: rgb(152, 160, 163)
+  #dist,
+  #block,
+  #cluster,
+  #school {
+    color: #284d8a;
+    font-size: 22px;
+    line-height: 1.2em;
+    margin-top: 5px;
   }
 
-  #blockbtn, #clusterbtn, #schoolbtn{
-      margin-top: -4px;
-      margin-right: 15px; 
-      font-size: 18px; 
-      width: 120px;
-      padding: 4.6px; 
-      background-color: rgb(152, 160, 163);
-  }
-  
-  .legends{
-      width: 85%;
-      height: 4.5vh;
-      font-size: 20px;
-      margin:0.7vh 0.7vh 0.7vh 0vh;
-      padding-top: 0.85vh;
-      text-align: center;
-      border-radius: 10px;
-      font-weight: bold;
-  }
-  
-  #legend{
-      font-size: 20px;
-      font-weight: bold;
+  #download {
+    cursor: pointer;
+    font-size: 38px;
+    float: right;
+    margin: 3px 0px 0px 8px;
+    color: #3100cc;
   }
 
-  #legendNote{
+  #home {
+    cursor: pointer;
+    font-size: 40px;
+    float: right;
+    margin: 2px 0px 0px 0px;
+    color: #3100cc;
+    display: none;
+  }
+  #patHealthcard,
+  #infraHealthcard,
+  #satHealthcard,
+  #udiseHealthcard,
+  #stdHealthCard,
+  #downloadRaw,
+  #rawDownload,
+  #crcHealthcard {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 18px;
+    color: #3100cc;
+  }
+  .note,
+  #students,
+  #schools,
+  #dateRange,
+  #totalCount,
+  #visits,
+  #visited,
+  #notVisited {
+    text-align: justify;
+    font-size: 18px;
+  }
+  #choose_dist,
+  #choose_block,
+  #period,
+  #grades,
+  #subjects,
+  #choose_semester,
+  #choose_cluster,
+  #time_range,
+  #coll_name,
+  #choose_enroll,
+  #choose_infra,
+  #academicYear,
+  #year,
+  #month,
+  #downloader,
+  #x-axis,
+  #y-axis,
+  #type,
+  #management,
+  #category {
+    margin-right: 15px;
+    padding: 7.2px;
+    color: white;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: rgb(152, 160, 163);
+  }
+
+  #blockbtn,
+  #clusterbtn,
+  #schoolbtn {
+    margin-top: -4px;
+    margin-right: 15px;
+    font-size: 18px;
+    width: 120px;
+    padding: 4.6px;
+    background-color: rgb(152, 160, 163);
+  }
+
+  .legends {
+    width: 85%;
+    height: 4.5vh;
+    font-size: 20px;
+    margin: 0.7vh 0.7vh 0.7vh 0vh;
+    padding-top: 0.85vh;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+
+  #legend {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  #legendNote {
     font-size: 16px;
     margin-top: 22px;
   }
 
-  #errMsg{
+  #errMsg {
     text-align: center;
-    line-height: 1.2em; 
-    font-size: 18px; 
+    line-height: 1.2em;
+    font-size: 18px;
     margin-top: 3%;
   }
 
-  .chooseLevel{
-    line-height: 1.3em; 
+  .chooseLevel {
+    line-height: 1.3em;
     font-size: 20px;
     font-weight: bold;
   }
 }
 
 @media screen and (min-width: 2560px) {
-  #footer{
-      width:100%; 
-      background-color: rgb(152, 160, 163);
-      font-size: 20px !important;
-      font-weight: bold; 
-      color: white; 
-      margin: 0px 0px 0px 0px; 
-      padding: 2px 0px 2px 0px;
-      position: fixed; 
-      bottom: 0; 
-      left: 0;
-      z-index: 999;
-  }
-  
-  #outer{
-      border-radius: 18px; 
-      background-color: #f5f6fb; 
-      height: 42px !important; 
-      width: 230px !important;
-      border: 1px solid gray;
-      font-size: 20px !important;
-  }
-  #absolute{
-      border-radius: 18px; 
-      height: 38px !important;
-       width: 50%;  
-       float: left; 
-       cursor: pointer;
-  }
-  #relative{
-      border-radius: 18px; 
-      height: 38px !important;
-      width: 50%;
-      float: left;
-      cursor: pointer;
+  #footer {
+    width: 100%;
+    background-color: rgb(152, 160, 163);
+    font-size: 20px !important;
+    font-weight: bold;
+    color: white;
+    margin: 0px 0px 0px 0px;
+    padding: 2px 0px 2px 0px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
   }
 
-  #dist, #block,#cluster,#school{
-      color: #284d8a;
-      font-size: 32px; 
-      line-height: 1.2em; 
-      margin-top: 5px;
+  #outer {
+    border-radius: 18px;
+    background-color: #f5f6fb;
+    height: 42px !important;
+    width: 230px !important;
+    border: 1px solid gray;
+    font-size: 20px !important;
+  }
+  #absolute {
+    border-radius: 18px;
+    height: 38px !important;
+    width: 50%;
+    float: left;
+    cursor: pointer;
+  }
+  #relative {
+    border-radius: 18px;
+    height: 38px !important;
+    width: 50%;
+    float: left;
+    cursor: pointer;
   }
 
-  #download{
-  cursor: pointer;
-  font-size: 40px !important; 
-  float: right;
-  margin: 3px 0px 0px 8px;
-  color: #3100cc;
-}
+  #dist,
+  #block,
+  #cluster,
+  #school {
+    color: #284d8a;
+    font-size: 32px;
+    line-height: 1.2em;
+    margin-top: 5px;
+  }
 
-#home{
-  cursor: pointer;
-  font-size: 42px !important; 
-  float: right;
-  margin: 2px 0px 0px 0px; 
-  color: #3100cc; 
-  display: none;
-}
-#patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload, #crcHealthcard{
-  font-weight: bold; 
-  text-decoration: underline; 
-  font-size: 22px !important; 
-  color: #3100cc
-}
+  #download {
+    cursor: pointer;
+    font-size: 40px !important;
+    float: right;
+    margin: 3px 0px 0px 8px;
+    color: #3100cc;
+  }
 
-.note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
-  text-align: justify; 
-  font-size: 22px !important;
-}
-#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear,#year, #month, #downloader, #x-axis, #y-axis, #type,#management, #category{
-  margin-right: 15px;
-  padding: 8px !important; 
-  color: white; 
-  border-radius: 4px; 
-  font-size: 22px !important; 
-  font-weight: bold; 
-  background-color: rgb(152, 160, 163)
-}
+  #home {
+    cursor: pointer;
+    font-size: 42px !important;
+    float: right;
+    margin: 2px 0px 0px 0px;
+    color: #3100cc;
+    display: none;
+  }
+  #patHealthcard,
+  #infraHealthcard,
+  #satHealthcard,
+  #udiseHealthcard,
+  #stdHealthCard,
+  #downloadRaw,
+  #rawDownload,
+  #crcHealthcard {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 22px !important;
+    color: #3100cc;
+  }
 
-#blockbtn, #clusterbtn, #schoolbtn{
-  margin-top: -7px;
-  margin-right: 15px; 
-  font-size: 22px !important; 
-  width: 130px !important;
-  padding: 4.5px !important; 
-  background-color: rgb(152, 160, 163);
-}
+  .note,
+  #students,
+  #schools,
+  #dateRange,
+  #totalCount,
+  #visits,
+  #visited,
+  #notVisited {
+    text-align: justify;
+    font-size: 22px !important;
+  }
+  #choose_dist,
+  #choose_block,
+  #period,
+  #grades,
+  #subjects,
+  #choose_semester,
+  #choose_cluster,
+  #time_range,
+  #coll_name,
+  #choose_enroll,
+  #choose_infra,
+  #academicYear,
+  #year,
+  #month,
+  #downloader,
+  #x-axis,
+  #y-axis,
+  #type,
+  #management,
+  #category {
+    margin-right: 15px;
+    padding: 8px !important;
+    color: white;
+    border-radius: 4px;
+    font-size: 22px !important;
+    font-weight: bold;
+    background-color: rgb(152, 160, 163);
+  }
 
-.legends{
-  width: 85%;
-  height: 4.5vh;
-  font-size: 24px !important;
-  margin:0.8vh 0.8vh 0.8vh 0vh !important;
-  padding-top: 0.92vh !important;
-  text-align: center;
-  border-radius: 15px !important;
-  font-weight: bold;
-}
+  #blockbtn,
+  #clusterbtn,
+  #schoolbtn {
+    margin-top: -7px;
+    margin-right: 15px;
+    font-size: 22px !important;
+    width: 130px !important;
+    padding: 4.5px !important;
+    background-color: rgb(152, 160, 163);
+  }
 
-#legend{
-  font-size: 26px;
-  font-weight: bold;
-}
-#legendNote{ 
-  font-size: 22px;
-  margin-top: 26px;
-}
-#errMsg{
-  text-align: center;
-  line-height: 1.2em; 
-  font-size: 22px; 
-  margin-top: 3%;
-}
-.chooseLevel{
-	line-height: 1.4em; 
-	font-size: 24px;
-	font-weight: bold;
-}
+  .legends {
+    width: 85%;
+    height: 4.5vh;
+    font-size: 24px !important;
+    margin: 0.8vh 0.8vh 0.8vh 0vh !important;
+    padding-top: 0.92vh !important;
+    text-align: center;
+    border-radius: 15px !important;
+    font-weight: bold;
+  }
 
+  #legend {
+    font-size: 26px;
+    font-weight: bold;
+  }
+  #legendNote {
+    font-size: 22px;
+    margin-top: 26px;
+  }
+  #errMsg {
+    text-align: center;
+    line-height: 1.2em;
+    font-size: 22px;
+    margin-top: 3%;
+  }
+  .chooseLevel {
+    line-height: 1.4em;
+    font-size: 24px;
+    font-weight: bold;
+  }
 }
 
 @media screen and (min-width: 3820px) {
-  #footer{
-      width:100%; 
-      background-color: rgb(152, 160, 163);
-      font-size: 24px !important;
-      font-weight: bold; 
-      color: white; 
-      margin: 0px 0px 0px 0px; 
-      padding: 2px 0px 2px 0px;
-      position: fixed; 
-      bottom: 0; 
-      left: 0;
-      z-index: 999;
-  }
-  
-  #outer{
-      border-radius: 18px; 
-      background-color: #f5f6fb; 
-      height: 46px !important; 
-      width: 250px !important;
-      border: 1px solid gray;
-      font-size: 24px !important;
-  }
-  #absolute{
-      border-radius: 18px; 
-      height: 40px !important;
-       width: 50%;  
-       float: left; 
-       cursor: pointer;
-  }
-  #relative{
-      border-radius: 18px; 
-      height: 40px !important;
-      width: 50%;
-      float: left;
-      cursor: pointer;
+  #footer {
+    width: 100%;
+    background-color: rgb(152, 160, 163);
+    font-size: 24px !important;
+    font-weight: bold;
+    color: white;
+    margin: 0px 0px 0px 0px;
+    padding: 2px 0px 2px 0px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
   }
 
-  #dist, #block,#cluster,#school{
-      color: #284d8a;
-      font-size: 38px !important; 
-      line-height: 1.2em; 
-      margin-top: 5px;
+  #outer {
+    border-radius: 20px !important;
+    background-color: #f5f6fb;
+    height: 52px !important;
+    width: 290px !important;
+    border: 1px solid gray;
+    font-size: 30px !important;
+  }
+  #absolute {
+    border-radius: 20px !important;
+    height: 45px !important;
+    width: 50%;
+    float: left;
+    cursor: pointer;
+  }
+  #relative {
+    border-radius: 20px !important;
+    height: 45px !important;
+    width: 50%;
+    float: left;
+    cursor: pointer;
   }
 
-  #download{
-  cursor: pointer;
-  font-size: 44px !important; 
-  float: right;
-  margin: 3px 0px 0px 8px;
-  color: #3100cc;
-}
+  #dist,
+  #block,
+  #cluster,
+  #school {
+    color: #284d8a;
+    font-size: 38px !important;
+    line-height: 1.2em;
+    margin-top: 5px;
+  }
 
-#home{
-  cursor: pointer;
-  font-size: 45px !important; 
-  float: right;
-  margin: 2px 0px 0px 0px; 
-  color: #3100cc; 
-  display: none;
-}
-#patHealthcard, #infraHealthcard, #satHealthcard, #udiseHealthcard, #stdHealthCard, #downloadRaw, #rawDownload, #crcHealthcard{
-  font-weight: bold; 
-  text-decoration: underline; 
-  font-size: 30px !important;
-  color: #3100cc
-}
+  #download {
+    cursor: pointer;
+    font-size: 44px !important;
+    float: right;
+    margin: 3px 0px 0px 8px;
+    color: #3100cc;
+  }
 
-.note, #students, #schools, #dateRange, #totalCount, #visits, #visited, #notVisited{
-  text-align: justify; 
-  font-size: 30px !important;
-}
-#choose_dist, #choose_block,#period,#grades,#subjects,#choose_semester, #choose_cluster,#time_range,#coll_name,#choose_enroll, #choose_infra, #academicYear, #year, #month, #downloader, #x-axis, #y-axis, #type,#management, #category{
-  margin-right: 20px;
-  padding: 12px !important; 
-  color: white; 
-  border-radius: 6px; 
-  font-size: 32px !important; 
-  font-weight: bold; 
-  background-color: rgb(152, 160, 163)
-}
+  #home {
+    cursor: pointer;
+    font-size: 45px !important;
+    float: right;
+    margin: 2px 0px 0px 0px;
+    color: #3100cc;
+    display: none;
+  }
+  #patHealthcard,
+  #infraHealthcard,
+  #satHealthcard,
+  #udiseHealthcard,
+  #stdHealthCard,
+  #downloadRaw,
+  #rawDownload,
+  #crcHealthcard {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 30px !important;
+    color: #3100cc;
+  }
 
-#blockbtn, #clusterbtn, #schoolbtn{
-  margin-right: 15px; 
-  font-size: 32px !important; 
-  width: 180px !important;
-  padding: 6px !important;
-  background-color: rgb(152, 160, 163);
-  margin-top: -12.5px !important;
-}
+  .note,
+  #students,
+  #schools,
+  #dateRange,
+  #totalCount,
+  #visits,
+  #visited,
+  #notVisited {
+    text-align: justify;
+    font-size: 30px !important;
+  }
+  #choose_dist,
+  #choose_block,
+  #period,
+  #grades,
+  #subjects,
+  #choose_semester,
+  #choose_cluster,
+  #time_range,
+  #coll_name,
+  #choose_enroll,
+  #choose_infra,
+  #academicYear,
+  #year,
+  #month,
+  #downloader,
+  #x-axis,
+  #y-axis,
+  #type,
+  #management,
+  #category {
+    margin-right: 20px;
+    padding: 12px !important;
+    color: white;
+    border-radius: 6px;
+    font-size: 32px !important;
+    font-weight: bold;
+    background-color: rgb(152, 160, 163);
+  }
 
-.legends{
-  width: 85% !important;
-  height: 4.5vh;
-  font-size: 32px !important;
-  margin:1.2vh 1.2vh 1.2vh 0vh !important;
-  padding-top: 1.1vh !important;
-  text-align: center;
-  border-radius: 20px !important;
-  font-weight: bold;
-}
+  #blockbtn,
+  #clusterbtn,
+  #schoolbtn {
+    margin-right: 15px;
+    font-size: 32px !important;
+    width: 180px !important;
+    padding: 6px !important;
+    background-color: rgb(152, 160, 163);
+    margin-top: -12.5px !important;
+  }
 
-#legend{
-  font-size: 32px;
-  font-weight: bold;
-}
+  .legends {
+    width: 85% !important;
+    height: 4.5vh;
+    font-size: 32px !important;
+    margin: 1.2vh 1.2vh 1.2vh 0vh !important;
+    padding-top: 1.1vh !important;
+    text-align: center;
+    border-radius: 20px !important;
+    font-weight: bold;
+  }
 
-#legendNote{ 
-  font-size: 32px;
-  margin-top: 30px;
-}
+  #legend {
+    font-size: 32px;
+    font-weight: bold;
+  }
 
-#errMsg{
-  text-align: center;
-  line-height: 1.2em; 
-  font-size: 26px; 
-  margin-top: 3%;
-}
-.chooseLevel{
-	line-height: 1.6em; 
-	font-size: 32px;
-	font-weight: bold;
-}
+  #legendNote {
+    font-size: 32px;
+    margin-top: 30px;
+  }
 
+  #errMsg {
+    text-align: center;
+    line-height: 1.2em;
+    font-size: 26px;
+    margin-top: 3%;
+  }
+  .chooseLevel {
+    line-height: 1.6em;
+    font-size: 32px;
+    font-weight: bold;
+  }
 }
 
 @media only screen and (min-width: 2560px) {
@@ -784,7 +959,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   .dataTableCustom .dataTables_wrapper .dataTables_scrollHead table th {
     font-size: 1.7rem !important;
   }
-  
+
   .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
     max-height: 70vh !important;
   }
@@ -792,7 +967,7 @@ box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1
   .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table {
     font-size: 1.7rem !important;
   }
-  
+
   .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table tbody td {
     padding: 18px 12px !important;
   }

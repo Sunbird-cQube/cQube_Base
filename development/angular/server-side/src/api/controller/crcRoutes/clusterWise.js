@@ -8,7 +8,14 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
   try {
     logger.info('--- crc all cluster wise api ---');
     var timePeriod = req.body.timePeriod;
-    let fileName = `crc/${timePeriod}/cluster.json`;
+    var year = req.body.year;
+        var month = req.body.month
+        let fileName ;
+        if(timePeriod && timePeriod != 'select_month'){
+            fileName = `crc/${timePeriod}/cluster.json`;
+        }else{
+            fileName = `crc/2019/${month}/cluster.json`;
+        }
     var jsonData = await s3File.readS3File(fileName);
 
     var clusterData = jsonData.data;
@@ -27,7 +34,14 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
   try {
     logger.info('--- crc cluster per block api ---');
     var timePeriod = req.body.timePeriod;
-    let fileName = `crc/${timePeriod}/cluster.json`;
+    var year = req.body.year;
+        var month = req.body.month
+        let fileName ;
+        if(timePeriod && timePeriod != 'select_month'){
+            fileName = `crc/${timePeriod}/cluster.json`;
+        }else{
+            fileName = `crc/2019/${month}/cluster.json`;
+        }
     var jsonData = await s3File.readS3File(fileName);
 
     var clusterData = jsonData

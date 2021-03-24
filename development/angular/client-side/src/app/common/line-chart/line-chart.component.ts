@@ -36,8 +36,10 @@ export class LineChartComponent implements OnInit, OnChanges {
   }
 
   public currentData:any = [];
+  public dataArray = [];
   getCurrentData(){
     this.currentData = [];
+    this.dataArray = [];
     this.lineData.map(item=>{
       var obj = {
         marker: {
@@ -62,7 +64,17 @@ export class LineChartComponent implements OnInit, OnChanges {
       obj.name = item.name;
       obj.color = item.color;
       this.currentData.push(obj);
-    })
+      obj.data.map(i=>{
+        if(typeof(i) == 'number')
+          this.dataArray.push(i);
+      })
+    });
+  }
+
+  selected = "absolute";
+  getSelected(data) {
+    this.selected = data;
+    this.createChart();
   }
 
   createChart() {
@@ -114,8 +126,8 @@ export class LineChartComponent implements OnInit, OnChanges {
             return this.value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           }
         },
-        min: 0,
-        max: 100,
+        min: this.selected == 'absolute'?  Math.min(...this.dataArray) - 2 : 0,
+        max: this.selected == 'absolute'?  Math.max(...this.dataArray) : 100,
         startOnTick: false,
         opposite: false,
         gridLineColor: 'transparent',
