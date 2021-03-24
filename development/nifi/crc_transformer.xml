@@ -2206,7 +2206,7 @@
                             <bundle>
 <artifact>nifi-distributed-cache-services-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -2264,7 +2264,7 @@
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -2340,6 +2340,12 @@
         <name>assume-role-proxy-port</name>
     </value>
 </entry>
+<entry>
+    <key>assume-role-sts-endpoint</key>
+    <value>
+        <name>assume-role-sts-endpoint</name>
+    </value>
+</entry>
                             </descriptors>
                             <name>cQube_s3_crc_raw</name>
                             <persistsState>false</persistsState>
@@ -2383,6 +2389,9 @@
 <entry>
     <key>assume-role-proxy-port</key>
 </entry>
+<entry>
+    <key>assume-role-sts-endpoint</key>
+</entry>
                             </properties>
                             <state>ENABLED</state>
                             <type>org.apache.nifi.processors.aws.credentials.provider.service.AWSCredentialsProviderControllerService</type>
@@ -2393,7 +2402,7 @@
                             <bundle>
 <artifact>nifi-dbcp-service-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -2420,6 +2429,18 @@
     <value>
         <identifiesControllerService>org.apache.nifi.kerberos.KerberosCredentialsService</identifiesControllerService>
         <name>kerberos-credentials-service</name>
+    </value>
+</entry>
+<entry>
+    <key>kerberos-principal</key>
+    <value>
+        <name>kerberos-principal</name>
+    </value>
+</entry>
+<entry>
+    <key>kerberos-password</key>
+    <value>
+        <name>kerberos-password</name>
     </value>
 </entry>
 <entry>
@@ -2506,6 +2527,12 @@
 </entry>
 <entry>
     <key>kerberos-credentials-service</key>
+</entry>
+<entry>
+    <key>kerberos-principal</key>
+</entry>
+<entry>
+    <key>kerberos-password</key>
 </entry>
 <entry>
     <key>Database User</key>
@@ -2820,7 +2847,7 @@
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -2948,7 +2975,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -3017,7 +3044,7 @@ file:${filename} with total records are added to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -3086,7 +3113,7 @@ file:${filename} with total records are added to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -3219,7 +3246,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -3288,7 +3315,7 @@ file:${filename} is added to log summary table</value>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -3553,7 +3580,7 @@ file:${filename} is added to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -3629,7 +3656,7 @@ file:${filename} is added to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -3758,7 +3785,7 @@ where ff_uuid= '${files_uuid}';
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -3870,7 +3897,7 @@ where ff_uuid= '${files_uuid}';
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -3893,6 +3920,18 @@ where ff_uuid= '${files_uuid}';
         <key>Content Type</key>
         <value>
             <name>Content Type</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Content Disposition</key>
+        <value>
+            <name>Content Disposition</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Cache Control</key>
+        <value>
+            <name>Cache Control</name>
         </value>
     </entry>
     <entry>
@@ -4055,6 +4094,18 @@ where ff_uuid= '${files_uuid}';
         </value>
     </entry>
     <entry>
+        <key>use-chunked-encoding</key>
+        <value>
+            <name>use-chunked-encoding</name>
+        </value>
+    </entry>
+    <entry>
+        <key>use-path-style-access</key>
+        <value>
+            <name>use-path-style-access</name>
+        </value>
+    </entry>
+    <entry>
         <key>proxy-configuration-service</key>
         <value>
             <identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
@@ -4100,6 +4151,12 @@ where ff_uuid= '${files_uuid}';
     </entry>
     <entry>
         <key>Content Type</key>
+    </entry>
+    <entry>
+        <key>Content Disposition</key>
+    </entry>
+    <entry>
+        <key>Cache Control</key>
     </entry>
     <entry>
         <key>Access Key</key>
@@ -4198,6 +4255,14 @@ where ff_uuid= '${files_uuid}';
         <key>encryption-service</key>
     </entry>
     <entry>
+        <key>use-chunked-encoding</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>use-path-style-access</key>
+        <value>false</value>
+    </entry>
+    <entry>
         <key>proxy-configuration-service</key>
     </entry>
     <entry>
@@ -4242,7 +4307,7 @@ where ff_uuid= '${files_uuid}';
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -4338,7 +4403,7 @@ where ff_uuid= '${files_uuid}';
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -4406,7 +4471,7 @@ where ff_uuid= '${files_uuid}';
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -4468,7 +4533,7 @@ where ff_uuid= '${files_uuid}';
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -4584,7 +4649,7 @@ where ff_uuid= '${files_uuid}';
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -4642,7 +4707,7 @@ where ff_uuid= '${files_uuid}';
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -4822,7 +4887,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -4890,7 +4955,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -4949,7 +5014,7 @@ VALUES
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5045,7 +5110,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5103,7 +5168,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5216,7 +5281,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5330,7 +5395,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5399,7 +5464,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5502,7 +5567,7 @@ VALUES
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5588,7 +5653,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5656,7 +5721,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5761,7 +5826,7 @@ VALUES
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5847,7 +5912,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5905,7 +5970,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -5981,7 +6046,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -6121,7 +6186,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -6270,7 +6335,7 @@ VALUES
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -6494,7 +6559,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -6552,7 +6617,7 @@ VALUES
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -6639,7 +6704,7 @@ VALUES
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -6725,7 +6790,7 @@ VALUES
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -6812,7 +6877,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -6961,7 +7026,7 @@ VALUES
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -7047,7 +7112,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -7116,7 +7181,7 @@ VALUES
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -7202,7 +7267,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -7260,7 +7325,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -7327,7 +7392,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -7403,7 +7468,7 @@ VALUES
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -7432,6 +7497,19 @@ VALUES
         <key>Secret Key</key>
         <value>
             <name>Secret Key</name>
+        </value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>min-age</key>
+        <value>
+            <name>min-age</name>
         </value>
     </entry>
     <entry>
@@ -7540,12 +7618,6 @@ VALUES
         </value>
     </entry>
     <entry>
-        <key>min-age</key>
-        <value>
-            <name>min-age</name>
-        </value>
-    </entry>
-    <entry>
         <key>requester-pays</key>
         <value>
             <name>requester-pays</name>
@@ -7569,6 +7641,13 @@ VALUES
     </entry>
     <entry>
         <key>Secret Key</key>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+    </entry>
+    <entry>
+        <key>min-age</key>
+        <value>0 sec</value>
     </entry>
     <entry>
         <key>write-s3-object-tags</key>
@@ -7629,10 +7708,6 @@ VALUES
         <value>2</value>
     </entry>
     <entry>
-        <key>min-age</key>
-        <value>0 sec</value>
-    </entry>
-    <entry>
         <key>requester-pays</key>
         <value>false</value>
     </entry>
@@ -7663,7 +7738,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -7803,7 +7878,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -7871,7 +7946,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8095,7 +8170,7 @@ WHERE ff_uuid = '${files_uuid}';</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8164,7 +8239,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8240,7 +8315,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8308,7 +8383,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8394,7 +8469,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8456,7 +8531,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8514,7 +8589,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8583,7 +8658,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8669,7 +8744,7 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8806,7 +8881,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8875,7 +8950,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -8980,7 +9055,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -9029,6 +9104,8 @@ VALUES
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
                     </contents>
+                    <flowfileConcurrency>UNBOUNDED</flowfileConcurrency>
+                    <flowfileOutboundPolicy>STREAM_WHEN_AVAILABLE</flowfileOutboundPolicy>
                     <name>cQube_raw_data_fetch_crc</name>
                     <variables/>
                 </processGroups>
@@ -9275,39 +9352,6 @@ VALUES
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>0b0acd16-9bce-3e94-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>1205.0</x>
-<y>-1273.0</y>
-                            </bends>
-                            <bends>
-<x>1205.0</x>
-<y>-1223.0</y>
-                            </bends>
-                            <destination>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>02486aa9-dd9e-3b82-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>wait</selectedRelationships>
-                            <source>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>02486aa9-dd9e-3b82-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>0c416fe2-86fc-3e89-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -9328,6 +9372,31 @@ VALUES
                             <source>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
 <id>650740a4-a906-39f9-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>0ccf407e-5f40-337c-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>74619ef6-43ce-31a7-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>6b940c93-05f4-3c48-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -10144,6 +10213,35 @@ VALUES
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>3f47b599-70bc-3ea4-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>992.0</x>
+<y>-680.0</y>
+                            </bends>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>64c15efd-6cc1-36f2-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>crc_meta_year_month</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>3ff95882-a4c1-37bb-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>3f59d3b8-4b0f-348b-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -10611,6 +10709,31 @@ VALUES
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>555d014b-9f10-3716-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>84163cda-56bd-3bb6-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>2a983528-d0fd-31f7-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>55a58a57-e5fd-337e-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -10755,6 +10878,7 @@ VALUES
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name></name>
+                            <prioritizers>org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer</prioritizers>
                             <selectedRelationships>split</selectedRelationships>
                             <source>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
@@ -11242,6 +11366,31 @@ VALUES
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>80920b76-b75b-365c-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>2a983528-d0fd-31f7-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>crc_year_month</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>3ff95882-a4c1-37bb-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>809de339-4978-3386-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -11262,6 +11411,35 @@ VALUES
                             <source>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
 <id>cf7810e0-24d5-35a9-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>83e2a8c9-9b24-3559-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>1776.0</x>
+<y>-80.0</y>
+                            </bends>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>8cfe9a89-5754-36f5-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>74619ef6-43ce-31a7-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -11316,31 +11494,6 @@ VALUES
                             <source>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
 <id>9b1b2864-3183-3537-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>88726d79-c11b-3d53-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>2869dad2-ada1-3f02-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>02486aa9-dd9e-3b82-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -11502,6 +11655,31 @@ VALUES
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>9c864477-d3b7-3fb1-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>3ff95882-a4c1-37bb-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>a0323bde-cf7c-3242-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>9c920478-431a-3b92-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -11530,6 +11708,56 @@ VALUES
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
 <id>21652f0d-133a-344e-0000-000000000000</id>
 <type>FUNNEL</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>9dacbf14-e8f2-3c82-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>6b940c93-05f4-3c48-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>64c15efd-6cc1-36f2-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>a278c957-1d47-3a80-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>237d0c39-2738-3861-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>8cfe9a89-5754-36f5-0000-000000000000</id>
+<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -11584,6 +11812,31 @@ VALUES
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>a48e7672-8a67-31fc-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>84163cda-56bd-3bb6-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>unmatched</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>3ff95882-a4c1-37bb-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>a6ec3c72-8803-397e-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -11632,31 +11885,6 @@ VALUES
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
 <id>21652f0d-133a-344e-0000-000000000000</id>
 <type>FUNNEL</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>ac2c3a3c-98ec-3747-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>02486aa9-dd9e-3b82-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>c7b2a075-bfcc-341d-0000-000000000000</id>
-<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -11813,39 +12041,6 @@ VALUES
                             <source>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
 <id>a0323bde-cf7c-3242-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>b6c19132-c445-308d-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>1531.698974609375</x>
-<y>-1244.677978515625</y>
-                            </bends>
-                            <bends>
-<x>3357.35791015625</x>
-<y>-1214.4442138671875</y>
-                            </bends>
-                            <destination>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>237d0c39-2738-3861-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>0</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>02486aa9-dd9e-3b82-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -12379,6 +12574,7 @@ VALUES
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name></name>
+                            <prioritizers>org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer</prioritizers>
                             <selectedRelationships>split</selectedRelationships>
                             <source>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
@@ -12595,7 +12791,7 @@ VALUES
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-1416.0</x>
+<x>-1432.0</x>
 <y>368.0</y>
                             </bends>
                             <destination>
@@ -12614,31 +12810,6 @@ VALUES
                             <source>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
 <id>bc97e624-052e-3778-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>f3d9500b-6b32-378a-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>e8c78f0e-ca99-3434-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>8cfe9a89-5754-36f5-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -12664,31 +12835,6 @@ VALUES
                             <source>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
 <id>e1cf53df-8552-37ec-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>f5848664-e608-316a-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>84163cda-56bd-3bb6-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>a0323bde-cf7c-3242-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -12725,6 +12871,31 @@ VALUES
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>3</zIndex>
+                        </connections>
+                        <connections>
+                            <id>fb596542-34df-36d4-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>2869dad2-ada1-3f02-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
+<id>8cfe9a89-5754-36f5-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
                         </connections>
                         <connections>
                             <id>fd5cd894-2985-37cc-0000-000000000000</id>
@@ -12793,6 +12964,7 @@ VALUES
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name></name>
+                            <prioritizers>org.apache.nifi.prioritizer.FirstInFirstOutPrioritizer</prioritizers>
                             <selectedRelationships>matched</selectedRelationships>
                             <source>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
@@ -12807,7 +12979,7 @@ VALUES
                             <bundle>
 <artifact>nifi-record-serialization-services-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -12822,6 +12994,12 @@ VALUES
     <value>
         <identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
         <name>schema-cache</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-protocol-version</key>
+    <value>
+        <name>schema-protocol-version</name>
     </value>
 </entry>
 <entry>
@@ -12963,6 +13141,10 @@ VALUES
     <key>schema-cache</key>
 </entry>
 <entry>
+    <key>schema-protocol-version</key>
+    <value>1</value>
+</entry>
+<entry>
     <key>schema-access-strategy</key>
     <value>inherit-record-schema</value>
 </entry>
@@ -13048,7 +13230,7 @@ VALUES
                             <bundle>
 <artifact>nifi-record-serialization-services-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -13161,7 +13343,7 @@ VALUES
                             <bundle>
 <artifact>nifi-record-serialization-services-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -13176,6 +13358,12 @@ VALUES
     <value>
         <identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
         <name>schema-cache</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-protocol-version</key>
+    <value>
+        <name>schema-protocol-version</name>
     </value>
 </entry>
 <entry>
@@ -13275,6 +13463,10 @@ VALUES
     <key>schema-cache</key>
 </entry>
 <entry>
+    <key>schema-protocol-version</key>
+    <value>1</value>
+</entry>
+<entry>
     <key>schema-access-strategy</key>
     <value>inherit-record-schema</value>
 </entry>
@@ -13325,7 +13517,7 @@ VALUES
 </entry>
 <entry>
     <key>compression-level</key>
-    <value>1</value>
+    <value>0</value>
 </entry>
                             </properties>
                             <state>ENABLED</state>
@@ -13337,7 +13529,7 @@ VALUES
                             <bundle>
 <artifact>nifi-record-serialization-services-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -13412,6 +13604,12 @@ VALUES
     <key>Value Separator</key>
     <value>
         <name>Value Separator</name>
+    </value>
+</entry>
+<entry>
+    <key>Record Separator</key>
+    <value>
+        <name>Record Separator</name>
     </value>
 </entry>
 <entry>
@@ -13509,6 +13707,10 @@ VALUES
     <value>|</value>
 </entry>
 <entry>
+    <key>Record Separator</key>
+    <value>\n</value>
+</entry>
+<entry>
     <key>Skip Header Line</key>
     <value>true</value>
 </entry>
@@ -13548,7 +13750,7 @@ VALUES
                             <bundle>
 <artifact>nifi-distributed-cache-services-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -13606,7 +13808,7 @@ VALUES
                             <bundle>
 <artifact>nifi-record-serialization-services-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -13681,6 +13883,12 @@ VALUES
     <key>Value Separator</key>
     <value>
         <name>Value Separator</name>
+    </value>
+</entry>
+<entry>
+    <key>Record Separator</key>
+    <value>
+        <name>Record Separator</name>
     </value>
 </entry>
 <entry>
@@ -13780,6 +13988,10 @@ VALUES
     <value>|</value>
 </entry>
 <entry>
+    <key>Record Separator</key>
+    <value>\n</value>
+</entry>
+<entry>
     <key>Skip Header Line</key>
     <value>true</value>
 </entry>
@@ -13819,7 +14031,7 @@ VALUES
                             <bundle>
 <artifact>nifi-record-serialization-services-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -13834,6 +14046,12 @@ VALUES
     <value>
         <identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
         <name>schema-cache</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-protocol-version</key>
+    <value>
+        <name>schema-protocol-version</name>
     </value>
 </entry>
 <entry>
@@ -13975,6 +14193,10 @@ VALUES
     <key>schema-cache</key>
 </entry>
 <entry>
+    <key>schema-protocol-version</key>
+    <value>1</value>
+</entry>
+<entry>
     <key>schema-access-strategy</key>
     <value>inherit-record-schema</value>
 </entry>
@@ -14060,7 +14282,7 @@ VALUES
                             <bundle>
 <artifact>nifi-record-serialization-services-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -14075,6 +14297,12 @@ VALUES
     <value>
         <identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
         <name>schema-cache</name>
+    </value>
+</entry>
+<entry>
+    <key>schema-protocol-version</key>
+    <value>
+        <name>schema-protocol-version</name>
     </value>
 </entry>
 <entry>
@@ -14216,6 +14444,10 @@ VALUES
     <key>schema-cache</key>
 </entry>
 <entry>
+    <key>schema-protocol-version</key>
+    <value>1</value>
+</entry>
+<entry>
     <key>schema-access-strategy</key>
     <value>inherit-record-schema</value>
 </entry>
@@ -14301,7 +14533,7 @@ VALUES
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -14377,6 +14609,12 @@ VALUES
         <name>assume-role-proxy-port</name>
     </value>
 </entry>
+<entry>
+    <key>assume-role-sts-endpoint</key>
+    <value>
+        <name>assume-role-sts-endpoint</name>
+    </value>
+</entry>
                             </descriptors>
                             <name>cQube_s3_crc</name>
                             <persistsState>false</persistsState>
@@ -14420,6 +14658,9 @@ VALUES
 <entry>
     <key>assume-role-proxy-port</key>
 </entry>
+<entry>
+    <key>assume-role-sts-endpoint</key>
+</entry>
                             </properties>
                             <state>ENABLED</state>
                             <type>org.apache.nifi.processors.aws.credentials.provider.service.AWSCredentialsProviderControllerService</type>
@@ -14430,7 +14671,7 @@ VALUES
                             <bundle>
 <artifact>nifi-dbcp-service-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <comments></comments>
                             <descriptors>
@@ -14457,6 +14698,18 @@ VALUES
     <value>
         <identifiesControllerService>org.apache.nifi.kerberos.KerberosCredentialsService</identifiesControllerService>
         <name>kerberos-credentials-service</name>
+    </value>
+</entry>
+<entry>
+    <key>kerberos-principal</key>
+    <value>
+        <name>kerberos-principal</name>
+    </value>
+</entry>
+<entry>
+    <key>kerberos-password</key>
+    <value>
+        <name>kerberos-password</name>
     </value>
 </entry>
 <entry>
@@ -14543,6 +14796,12 @@ VALUES
 </entry>
 <entry>
     <key>kerberos-credentials-service</key>
+</entry>
+<entry>
+    <key>kerberos-principal</key>
+</entry>
+<entry>
+    <key>kerberos-password</key>
 </entry>
 <entry>
     <key>Database User</key>
@@ -14878,7 +15137,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -14944,7 +15203,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -15058,155 +15317,6 @@ VALUES
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
                         <processors>
-                            <id>02486aa9-dd9e-3b82-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <position>
-<x>736.0</x>
-<y>-1312.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>release-signal-id</key>
-        <value>
-            <name>release-signal-id</name>
-        </value>
-    </entry>
-    <entry>
-        <key>target-signal-count</key>
-        <value>
-            <name>target-signal-count</name>
-        </value>
-    </entry>
-    <entry>
-        <key>signal-counter-name</key>
-        <value>
-            <name>signal-counter-name</name>
-        </value>
-    </entry>
-    <entry>
-        <key>wait-buffer-count</key>
-        <value>
-            <name>wait-buffer-count</name>
-        </value>
-    </entry>
-    <entry>
-        <key>releasable-flowfile-count</key>
-        <value>
-            <name>releasable-flowfile-count</name>
-        </value>
-    </entry>
-    <entry>
-        <key>expiration-duration</key>
-        <value>
-            <name>expiration-duration</name>
-        </value>
-    </entry>
-    <entry>
-        <key>distributed-cache-service</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.distributed.cache.client.AtomicDistributedMapCacheClient</identifiesControllerService>
-            <name>distributed-cache-service</name>
-        </value>
-    </entry>
-    <entry>
-        <key>attribute-copy-mode</key>
-        <value>
-            <name>attribute-copy-mode</name>
-        </value>
-    </entry>
-    <entry>
-        <key>wait-mode</key>
-        <value>
-            <name>wait-mode</name>
-        </value>
-    </entry>
-    <entry>
-        <key>wait-penalty-duration</key>
-        <value>
-            <name>wait-penalty-duration</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>release-signal-id</key>
-        <value>final_report_wait_${zip_identifier}</value>
-    </entry>
-    <entry>
-        <key>target-signal-count</key>
-        <value>16</value>
-    </entry>
-    <entry>
-        <key>signal-counter-name</key>
-    </entry>
-    <entry>
-        <key>wait-buffer-count</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>releasable-flowfile-count</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>expiration-duration</key>
-        <value>60 min</value>
-    </entry>
-    <entry>
-        <key>distributed-cache-service</key>
-        <value>930d5aab-7db8-3444-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>attribute-copy-mode</key>
-        <value>keeporiginal</value>
-    </entry>
-    <entry>
-        <key>wait-mode</key>
-        <value>wait</value>
-    </entry>
-    <entry>
-        <key>wait-penalty-duration</key>
-    </entry>
-</properties>
-<runDurationMillis>2000</runDurationMillis>
-<schedulingPeriod>10 sec</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>crc_agg_wait</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>expired</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>failure</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>wait</name>
-                            </relationships>
-                            <state>RUNNING</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.Wait</type>
-                        </processors>
-                        <processors>
                             <id>032c6c1d-bf6c-32f3-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
@@ -15216,7 +15326,7 @@ VALUES
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -15285,7 +15395,7 @@ file: ${filename} columns did not match.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -15361,7 +15471,7 @@ file: ${filename} columns did not match.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -15439,7 +15549,7 @@ file: ${filename} columns did not match.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -15519,7 +15629,7 @@ file: ${filename} columns did not match.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -15533,7 +15643,7 @@ file: ${filename} columns did not match.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -15601,7 +15711,7 @@ file: ${filename} columns did not match.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -15703,7 +15813,7 @@ file: ${filename} columns did not match.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -15787,7 +15897,7 @@ file: ${filename} columns did not match.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -15925,7 +16035,7 @@ file: ${filename} columns did not match.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -15939,7 +16049,7 @@ file: ${filename} columns did not match.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -16039,7 +16149,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspec_dup_check},'None'
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -16231,7 +16341,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspec_dup_check},'None'
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -16337,13 +16447,13 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspec_dup_check},'None'
                             <id>237d0c39-2738-3861-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>3160.0</x>
-<y>-608.0</y>
+<x>3352.0</x>
+<y>-624.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -16458,7 +16568,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -16466,13 +16576,13 @@ where ff_uuid= '${zip_identifier}'
                             <id>2869dad2-ada1-3f02-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>736.0</x>
-<y>-1568.0</y>
+<x>3336.0</x>
+<y>-816.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -16512,7 +16622,7 @@ where ff_uuid= '${zip_identifier}'
     </entry>
     <entry>
         <key>log-message</key>
-        <value>File:${filename} processed successfully. </value>
+        <value>File:${filename} successfully stored output of query="${query_type}" into s3 output bucket.</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -16526,9 +16636,97 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
+                        <processors>
+                            <id>2a983528-d0fd-31f7-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <position>
+<x>1264.0</x>
+<y>-536.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>record-reader</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+            <name>record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>academic_year</key>
+        <value>
+            <name>academic_year</name>
+        </value>
+    </entry>
+    <entry>
+        <key>month</key>
+        <value>
+            <name>month</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>record-reader</key>
+        <value>0d0aa52a-0559-3000-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>14c3e78f-0583-3998-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>academic_year</key>
+        <value>/academic_year</value>
+    </entry>
+    <entry>
+        <key>month</key>
+        <value>/month</value>
+    </entry>
+</properties>
+<runDurationMillis>1000</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>crc_partiton_year_month</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>original</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
                         <processors>
                             <id>2b3d2ecc-2537-3aa6-0000-000000000000</id>
@@ -16540,7 +16738,7 @@ where ff_uuid= '${zip_identifier}'
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -16654,7 +16852,7 @@ where ff_uuid= '${zip_identifier}'
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -16756,7 +16954,7 @@ where ff_uuid= '${zip_identifier}'
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -16872,7 +17070,7 @@ where ff_uuid= '${zip_identifier}'
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -16948,7 +17146,7 @@ where ff_uuid= '${zip_identifier}'
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17011,7 +17209,7 @@ where ff_uuid= '${zip_identifier}'
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17107,13 +17305,13 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_insp_count_null},'None')
                             <id>352412e0-2f00-3053-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>3160.0</x>
-<y>-384.0</y>
+<x>3352.0</x>
+<y>-400.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17182,7 +17380,7 @@ file:${filename} process_end_time updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17240,7 +17438,7 @@ file:${filename} process_end_time updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17298,7 +17496,7 @@ file:${filename} process_end_time updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17447,7 +17645,7 @@ file:${filename} process_end_time updated to log summary table</value>
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17519,9 +17717,89 @@ file:${filename} process_end_time updated to log summary table</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
+                        </processors>
+                        <processors>
+                            <id>3ff95882-a4c1-37bb-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <position>
+<x>1264.0</x>
+<y>-752.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>
+            <name>Routing Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>crc_meta_year_month</key>
+        <value>
+            <name>crc_meta_year_month</name>
+        </value>
+    </entry>
+    <entry>
+        <key>crc_year_month</key>
+        <value>
+            <name>crc_year_month</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>Route to Property name</value>
+    </entry>
+    <entry>
+        <key>crc_meta_year_month</key>
+        <value>${query_type:startsWith('crc_meta_year_month')}</value>
+    </entry>
+    <entry>
+        <key>crc_year_month</key>
+        <value>${query_type:startsWith('crc_school_year_month'):
+or(${query_type:startsWith('crc_cluster_year_month'):
+or(${query_type:startsWith('crc_block_year_month'):
+or(${query_type:startsWith('crc_district_year_month')})
+})})}</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>route_year_month_files</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>crc_meta_year_month</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>crc_year_month</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
                         <processors>
                             <id>42181d8e-8550-37ef-0000-000000000000</id>
@@ -17533,7 +17811,7 @@ file:${filename} process_end_time updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17595,7 +17873,7 @@ file:${filename} process_end_time updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17707,7 +17985,7 @@ file:${filename} process_end_time updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17765,7 +18043,7 @@ file:${filename} process_end_time updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17831,7 +18109,7 @@ file:${filename} process_end_time updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -17900,7 +18178,7 @@ file:${filename} aggregation started.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -18028,7 +18306,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -18123,7 +18401,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -18222,7 +18500,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inpsec_master_column_cha
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -18327,7 +18605,7 @@ Optional(StrNotNullOrEmpty()),Optional(Parsedouble()),Optional(Parsedouble()),Op
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>ERROR</bulletinLevel>
@@ -18339,6 +18617,12 @@ Optional(StrNotNullOrEmpty()),Optional(Parsedouble()),Optional(Parsedouble()),Op
         <value>
             <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
             <name>put-db-record-record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>db-type</key>
+        <value>
+            <name>db-type</name>
         </value>
     </entry>
     <entry>
@@ -18454,6 +18738,10 @@ Optional(StrNotNullOrEmpty()),Optional(Parsedouble()),Optional(Parsedouble()),Op
         <value>591e604c-146f-3573-0000-000000000000</value>
     </entry>
     <entry>
+        <key>db-type</key>
+        <value>PostgreSQL</value>
+    </entry>
+    <entry>
         <key>put-db-record-statement-type</key>
         <value>INSERT</value>
     </entry>
@@ -18552,7 +18840,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_table_na
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -18575,6 +18863,18 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_table_na
         <key>Content Type</key>
         <value>
             <name>Content Type</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Content Disposition</key>
+        <value>
+            <name>Content Disposition</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Cache Control</key>
+        <value>
+            <name>Cache Control</name>
         </value>
     </entry>
     <entry>
@@ -18737,6 +19037,18 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_table_na
         </value>
     </entry>
     <entry>
+        <key>use-chunked-encoding</key>
+        <value>
+            <name>use-chunked-encoding</name>
+        </value>
+    </entry>
+    <entry>
+        <key>use-path-style-access</key>
+        <value>
+            <name>use-path-style-access</name>
+        </value>
+    </entry>
+    <entry>
         <key>proxy-configuration-service</key>
         <value>
             <identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
@@ -18782,6 +19094,12 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_table_na
     </entry>
     <entry>
         <key>Content Type</key>
+    </entry>
+    <entry>
+        <key>Content Disposition</key>
+    </entry>
+    <entry>
+        <key>Cache Control</key>
     </entry>
     <entry>
         <key>Access Key</key>
@@ -18880,6 +19198,14 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_table_na
         <key>encryption-service</key>
     </entry>
     <entry>
+        <key>use-chunked-encoding</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>use-path-style-access</key>
+        <value>false</value>
+    </entry>
+    <entry>
         <key>proxy-configuration-service</key>
     </entry>
     <entry>
@@ -18924,7 +19250,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_table_na
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -18993,7 +19319,7 @@ file: ${filename} with ${count.valid.lines} null values found. </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -19105,7 +19431,7 @@ file: ${filename} with ${count.valid.lines} null values found. </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -19167,7 +19493,7 @@ file: ${filename} with ${count.valid.lines} null values found. </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -19229,7 +19555,7 @@ file: ${filename} with ${count.valid.lines} null values found. </value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -19243,7 +19569,7 @@ file: ${filename} with ${count.valid.lines} null values found. </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -19371,7 +19697,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspec_null_log_summary}
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -19563,7 +19889,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspec_null_log_summary}
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -19621,7 +19947,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspec_null_log_summary}
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -19715,7 +20041,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspec_null_log_summary}
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -19775,6 +20101,118 @@ file: ${filename} Error while extracting columns from file.</value>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
+                            <id>64c15efd-6cc1-36f2-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <position>
+<x>808.0</x>
+<y>-536.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Regular Expression</key>
+        <value>
+            <name>Regular Expression</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Replacement Value</key>
+        <value>
+            <name>Replacement Value</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Character Set</key>
+        <value>
+            <name>Character Set</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Maximum Buffer Size</key>
+        <value>
+            <name>Maximum Buffer Size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Replacement Strategy</key>
+        <value>
+            <name>Replacement Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Evaluation Mode</key>
+        <value>
+            <name>Evaluation Mode</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Line-by-Line Evaluation Mode</key>
+        <value>
+            <name>Line-by-Line Evaluation Mode</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Regular Expression</key>
+        <value>[\\]</value>
+    </entry>
+    <entry>
+        <key>Replacement Value</key>
+        <value></value>
+    </entry>
+    <entry>
+        <key>Character Set</key>
+        <value>UTF-8</value>
+    </entry>
+    <entry>
+        <key>Maximum Buffer Size</key>
+        <value>1 MB</value>
+    </entry>
+    <entry>
+        <key>Replacement Strategy</key>
+        <value>Regex Replace</value>
+    </entry>
+    <entry>
+        <key>Evaluation Mode</key>
+        <value>Line-by-Line</value>
+    </entry>
+    <entry>
+        <key>Line-by-Line Evaluation Mode</key>
+        <value>All</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>crc_replace_\</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.ReplaceText</type>
+                        </processors>
+                        <processors>
                             <id>650740a4-a906-39f9-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
@@ -19784,7 +20222,7 @@ file: ${filename} Error while extracting columns from file.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -19860,7 +20298,7 @@ file: ${filename} Error while extracting columns from file.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -20043,6 +20481,118 @@ file: ${filename} Error while extracting columns from file.</value>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
                         </processors>
                         <processors>
+                            <id>6b940c93-05f4-3c48-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <position>
+<x>808.0</x>
+<y>-336.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Regular Expression</key>
+        <value>
+            <name>Regular Expression</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Replacement Value</key>
+        <value>
+            <name>Replacement Value</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Character Set</key>
+        <value>
+            <name>Character Set</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Maximum Buffer Size</key>
+        <value>
+            <name>Maximum Buffer Size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Replacement Strategy</key>
+        <value>
+            <name>Replacement Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Evaluation Mode</key>
+        <value>
+            <name>Evaluation Mode</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Line-by-Line Evaluation Mode</key>
+        <value>
+            <name>Line-by-Line Evaluation Mode</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Regular Expression</key>
+        <value>"["</value>
+    </entry>
+    <entry>
+        <key>Replacement Value</key>
+        <value>["</value>
+    </entry>
+    <entry>
+        <key>Character Set</key>
+        <value>UTF-8</value>
+    </entry>
+    <entry>
+        <key>Maximum Buffer Size</key>
+        <value>1 MB</value>
+    </entry>
+    <entry>
+        <key>Replacement Strategy</key>
+        <value>Literal Replace</value>
+    </entry>
+    <entry>
+        <key>Evaluation Mode</key>
+        <value>Line-by-Line</value>
+    </entry>
+    <entry>
+        <key>Line-by-Line Evaluation Mode</key>
+        <value>All</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>crc_replace_"["</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.ReplaceText</type>
+                        </processors>
+                        <processors>
                             <id>6d9cd790-ebad-3962-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
@@ -20052,7 +20602,7 @@ file: ${filename} Error while extracting columns from file.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -20064,6 +20614,12 @@ file: ${filename} Error while extracting columns from file.</value>
         <value>
             <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
             <name>put-db-record-record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>db-type</key>
+        <value>
+            <name>db-type</name>
         </value>
     </entry>
     <entry>
@@ -20179,6 +20735,10 @@ file: ${filename} Error while extracting columns from file.</value>
         <value>591e604c-146f-3573-0000-000000000000</value>
     </entry>
     <entry>
+        <key>db-type</key>
+        <value>Generic</value>
+    </entry>
+    <entry>
         <key>put-db-record-statement-type</key>
         <value>INSERT</value>
     </entry>
@@ -20276,7 +20836,7 @@ file: ${filename} Error while extracting columns from file.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -20388,7 +20948,7 @@ file: ${filename} Error while extracting columns from file.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -20457,7 +21017,7 @@ file: ${filename} data type validation started. </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -20506,6 +21066,118 @@ file: ${filename} data type validation started. </value>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
                         <processors>
+                            <id>74619ef6-43ce-31a7-0000-000000000000</id>
+                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
+                            <position>
+<x>808.0</x>
+<y>-136.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Regular Expression</key>
+        <value>
+            <name>Regular Expression</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Replacement Value</key>
+        <value>
+            <name>Replacement Value</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Character Set</key>
+        <value>
+            <name>Character Set</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Maximum Buffer Size</key>
+        <value>
+            <name>Maximum Buffer Size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Replacement Strategy</key>
+        <value>
+            <name>Replacement Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Evaluation Mode</key>
+        <value>
+            <name>Evaluation Mode</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Line-by-Line Evaluation Mode</key>
+        <value>
+            <name>Line-by-Line Evaluation Mode</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Regular Expression</key>
+        <value>"]"</value>
+    </entry>
+    <entry>
+        <key>Replacement Value</key>
+        <value>"]</value>
+    </entry>
+    <entry>
+        <key>Character Set</key>
+        <value>UTF-8</value>
+    </entry>
+    <entry>
+        <key>Maximum Buffer Size</key>
+        <value>1 MB</value>
+    </entry>
+    <entry>
+        <key>Replacement Strategy</key>
+        <value>Literal Replace</value>
+    </entry>
+    <entry>
+        <key>Evaluation Mode</key>
+        <value>Line-by-Line</value>
+    </entry>
+    <entry>
+        <key>Line-by-Line Evaluation Mode</key>
+        <value>All</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>crc_replace_"]"</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.ReplaceText</type>
+                        </processors>
+                        <processors>
                             <id>7464749a-dbae-39ce-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
@@ -20515,7 +21187,7 @@ file: ${filename} data type validation started. </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -20584,7 +21256,7 @@ Mirror data validation of file:${filename} started</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -20705,13 +21377,13 @@ ${filename:startsWith('inspection_master'):ifElse("delete from crc_inspection_te
                             <id>7c5ced5f-303d-343b-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>1288.0</x>
+<x>1264.0</x>
 <y>-928.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -20766,7 +21438,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -20780,7 +21452,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -20849,7 +21521,7 @@ file:${filename} error while extracting the count from flowfile.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -20912,13 +21584,13 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
                             <id>84163cda-56bd-3bb6-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
-<x>1904.0</x>
-<y>-624.0</y>
+<x>1896.0</x>
+<y>-616.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -21022,7 +21694,7 @@ ${query_type:startsWith('crc_school'):ifElse(#{crc_transform_school_wise_jolt},'
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -21091,7 +21763,7 @@ file:${filename} error while fetching the count from crc inspection trans table.
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -21153,7 +21825,7 @@ file:${filename} error while fetching the count from crc inspection trans table.
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -21251,7 +21923,7 @@ file:${filename} error while fetching the count from crc inspection trans table.
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -21360,7 +22032,7 @@ file:${filename} error while fetching the count from crc inspection trans table.
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -21429,7 +22101,7 @@ Mirror data validation of file:${filename}.Error while checking mirror data</val
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -21452,6 +22124,18 @@ Mirror data validation of file:${filename}.Error while checking mirror data</val
         <key>Content Type</key>
         <value>
             <name>Content Type</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Content Disposition</key>
+        <value>
+            <name>Content Disposition</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Cache Control</key>
+        <value>
+            <name>Cache Control</name>
         </value>
     </entry>
     <entry>
@@ -21614,6 +22298,18 @@ Mirror data validation of file:${filename}.Error while checking mirror data</val
         </value>
     </entry>
     <entry>
+        <key>use-chunked-encoding</key>
+        <value>
+            <name>use-chunked-encoding</name>
+        </value>
+    </entry>
+    <entry>
+        <key>use-path-style-access</key>
+        <value>
+            <name>use-path-style-access</name>
+        </value>
+    </entry>
+    <entry>
         <key>proxy-configuration-service</key>
         <value>
             <identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
@@ -21651,10 +22347,15 @@ Mirror data validation of file:${filename}.Error while checking mirror data</val
 <properties>
     <entry>
         <key>Object Key</key>
-        <value>${query_type:startsWith('crc_district_agg'):ifElse('crc/overall/district.json',
+        <value>${query_type:startsWith('crc_meta_year_month'):ifElse('crc/crc_meta_year_month.json',
+${query_type:startsWith('crc_district_agg'):ifElse('crc/overall/district.json',
 ${query_type:startsWith('crc_block_agg'):ifElse('crc/overall/block.json',
 ${query_type:startsWith('crc_cluster_agg'):ifElse('crc/overall/cluster.json',
 ${query_type:startsWith('crc_school_agg'):ifElse('crc/overall/school.json',
+${query_type:startsWith('crc_district_year_month'):ifElse('crc/${academic_year}/${month}/district.json',
+${query_type:startsWith('crc_block_year_month'):ifElse('crc/${academic_year}/${month}/block.json',
+${query_type:startsWith('crc_cluster_year_month'):ifElse('crc/${academic_year}/${month}/cluster.json',
+${query_type:startsWith('crc_school_year_month'):ifElse('crc/${academic_year}/${month}/school.json',
 ${query_type:startsWith('crc_district_last_day'):ifElse('crc/last_day/district.json',
 ${query_type:startsWith('crc_block_last_day'):ifElse('crc/last_day/block.json',
 ${query_type:startsWith('crc_cluster_last_day'):ifElse('crc/last_day/cluster.json',
@@ -21667,7 +22368,7 @@ ${query_type:startsWith('crc_district_last_30_days'):ifElse('crc/last_30_days/di
 ${query_type:startsWith('crc_block_last_30_days'):ifElse('crc/last_30_days/block.json',
 ${query_type:startsWith('crc_cluster_last_30_days'):ifElse('crc/last_30_days/cluster.json',
 ${query_type:startsWith('crc_school_last_30_days'):ifElse('crc/last_30_days/school.json','None')} 
-)} )} )} )} )} )} )})} )} )} )} )} )} )} )}</value>
+)} )} )} )} )} )} )})} )} )} )} )} )} )} )} )} )} )} )} )}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -21675,6 +22376,12 @@ ${query_type:startsWith('crc_school_last_30_days'):ifElse('crc/last_30_days/scho
     </entry>
     <entry>
         <key>Content Type</key>
+    </entry>
+    <entry>
+        <key>Content Disposition</key>
+    </entry>
+    <entry>
+        <key>Cache Control</key>
     </entry>
     <entry>
         <key>Access Key</key>
@@ -21773,6 +22480,14 @@ ${query_type:startsWith('crc_school_last_30_days'):ifElse('crc/last_30_days/scho
         <key>encryption-service</key>
     </entry>
     <entry>
+        <key>use-chunked-encoding</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>use-path-style-access</key>
+        <value>false</value>
+    </entry>
+    <entry>
         <key>proxy-configuration-service</key>
     </entry>
     <entry>
@@ -21817,7 +22532,7 @@ ${query_type:startsWith('crc_school_last_30_days'):ifElse('crc/last_30_days/scho
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -21930,7 +22645,7 @@ ${filename:startsWith('inspection_master'):ifElse("delete from crc_inspection_te
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -21944,7 +22659,7 @@ ${filename:startsWith('inspection_master'):ifElse("delete from crc_inspection_te
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -22012,7 +22727,7 @@ ${filename:startsWith('inspection_master'):ifElse("delete from crc_inspection_te
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -22127,7 +22842,7 @@ ${filename:startsWith('inspection_master'):ifElse("delete from crc_inspection_te
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -22185,7 +22900,7 @@ ${filename:startsWith('inspection_master'):ifElse("delete from crc_inspection_te
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -22254,7 +22969,7 @@ blank line validation of file:${filename} started.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -22370,7 +23085,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_insp_not_null},'None')}
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -22382,6 +23097,12 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_insp_not_null},'None')}
         <value>
             <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
             <name>put-db-record-record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>db-type</key>
+        <value>
+            <name>db-type</name>
         </value>
     </entry>
     <entry>
@@ -22497,6 +23218,10 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_insp_not_null},'None')}
         <value>591e604c-146f-3573-0000-000000000000</value>
     </entry>
     <entry>
+        <key>db-type</key>
+        <value>Generic</value>
+    </entry>
+    <entry>
         <key>put-db-record-statement-type</key>
         <value>INSERT</value>
     </entry>
@@ -22594,7 +23319,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_insp_not_null},'None')}
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -22745,7 +23470,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_insp_not_null},'None')}
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -22814,7 +23539,7 @@ file:${filename} processed records updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -22883,7 +23608,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -22952,7 +23677,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -23104,7 +23829,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -23232,7 +23957,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -23308,7 +24033,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -23377,7 +24102,7 @@ file:${filename} no records found in crc inspection trans table.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -23506,7 +24231,7 @@ where ff_uuid= '${zip_identifier}'
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -23575,7 +24300,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -23633,7 +24358,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -23760,7 +24485,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_trans_qr
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -23886,7 +24611,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_trans_qr
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -23984,7 +24709,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_trans_qr
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -24141,7 +24866,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_trans_qr
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQL</type>
                         </processors>
@@ -24155,7 +24880,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_trans_qr
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -24286,7 +25011,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_trans_qr
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -24355,7 +25080,7 @@ file: ${filename} null value not found. </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -24413,7 +25138,7 @@ file: ${filename} null value not found. </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -24605,7 +25330,7 @@ file: ${filename} null value not found. </value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -24675,7 +25400,7 @@ file:${filename} error during aggregation.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -24769,7 +25494,7 @@ file:${filename} error during aggregation.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -24853,7 +25578,7 @@ file:${filename} error during aggregation.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -24911,7 +25636,7 @@ file:${filename} error during aggregation.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -25015,7 +25740,7 @@ file:${filename} error during aggregation.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -25129,7 +25854,7 @@ file:${filename} error during aggregation.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -25141,6 +25866,12 @@ file:${filename} error during aggregation.</value>
         <value>
             <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
             <name>put-db-record-record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>db-type</key>
+        <value>
+            <name>db-type</name>
         </value>
     </entry>
     <entry>
@@ -25256,6 +25987,10 @@ file:${filename} error during aggregation.</value>
         <value>591e604c-146f-3573-0000-000000000000</value>
     </entry>
     <entry>
+        <key>db-type</key>
+        <value>Generic</value>
+    </entry>
+    <entry>
         <key>put-db-record-statement-type</key>
         <value>INSERT</value>
     </entry>
@@ -25355,7 +26090,7 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspec_null_table},'None
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -25483,7 +26218,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -25506,6 +26241,18 @@ where ff_uuid= '${files_uuid}'</value>
         <key>Content Type</key>
         <value>
             <name>Content Type</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Content Disposition</key>
+        <value>
+            <name>Content Disposition</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Cache Control</key>
+        <value>
+            <name>Cache Control</name>
         </value>
     </entry>
     <entry>
@@ -25668,6 +26415,18 @@ where ff_uuid= '${files_uuid}'</value>
         </value>
     </entry>
     <entry>
+        <key>use-chunked-encoding</key>
+        <value>
+            <name>use-chunked-encoding</name>
+        </value>
+    </entry>
+    <entry>
+        <key>use-path-style-access</key>
+        <value>
+            <name>use-path-style-access</name>
+        </value>
+    </entry>
+    <entry>
         <key>proxy-configuration-service</key>
         <value>
             <identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
@@ -25713,6 +26472,12 @@ where ff_uuid= '${files_uuid}'</value>
     </entry>
     <entry>
         <key>Content Type</key>
+    </entry>
+    <entry>
+        <key>Content Disposition</key>
+    </entry>
+    <entry>
+        <key>Cache Control</key>
     </entry>
     <entry>
         <key>Access Key</key>
@@ -25811,6 +26576,14 @@ where ff_uuid= '${files_uuid}'</value>
         <key>encryption-service</key>
     </entry>
     <entry>
+        <key>use-chunked-encoding</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>use-path-style-access</key>
+        <value>false</value>
+    </entry>
+    <entry>
         <key>proxy-configuration-service</key>
     </entry>
     <entry>
@@ -25855,7 +26628,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -25953,7 +26726,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -26022,7 +26795,7 @@ file:${filename} processed records updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -26106,7 +26879,7 @@ file:${filename} processed records updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -26195,108 +26968,6 @@ file:${filename} processed records updated to log summary table</value>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
                         <processors>
-                            <id>e8c78f0e-ca99-3434-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <position>
-<x>2680.0</x>
-<y>-392.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.11.4</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>release-signal-id</key>
-        <value>
-            <name>release-signal-id</name>
-        </value>
-    </entry>
-    <entry>
-        <key>signal-counter-name</key>
-        <value>
-            <name>signal-counter-name</name>
-        </value>
-    </entry>
-    <entry>
-        <key>signal-counter-delta</key>
-        <value>
-            <name>signal-counter-delta</name>
-        </value>
-    </entry>
-    <entry>
-        <key>signal-buffer-count</key>
-        <value>
-            <name>signal-buffer-count</name>
-        </value>
-    </entry>
-    <entry>
-        <key>distributed-cache-service</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.distributed.cache.client.AtomicDistributedMapCacheClient</identifiesControllerService>
-            <name>distributed-cache-service</name>
-        </value>
-    </entry>
-    <entry>
-        <key>attribute-cache-regex</key>
-        <value>
-            <name>attribute-cache-regex</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>release-signal-id</key>
-        <value>final_report_wait_${zip_identifier}</value>
-    </entry>
-    <entry>
-        <key>signal-counter-name</key>
-        <value>default</value>
-    </entry>
-    <entry>
-        <key>signal-counter-delta</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>signal-buffer-count</key>
-        <value>1</value>
-    </entry>
-    <entry>
-        <key>distributed-cache-service</key>
-        <value>930d5aab-7db8-3444-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>attribute-cache-regex</key>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>Notify</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>failure</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>RUNNING</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.Notify</type>
-                        </processors>
-                        <processors>
                             <id>e9125633-d88e-3068-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
@@ -26306,7 +26977,7 @@ file:${filename} processed records updated to log summary table</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -26375,7 +27046,7 @@ file: ${filename} columns validation started.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -26513,7 +27184,7 @@ file: ${filename} columns validation started.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -26527,7 +27198,7 @@ file: ${filename} columns validation started.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -26585,7 +27256,7 @@ file: ${filename} columns validation started.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -26698,7 +27369,7 @@ ${filename:startsWith('inspection_master'):ifElse("delete from crc_inspection_te
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>STOPPED</state>
+                            <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -26712,7 +27383,7 @@ ${filename:startsWith('inspection_master'):ifElse("delete from crc_inspection_te
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -26781,7 +27452,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -26973,7 +27644,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -27071,7 +27742,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -27199,7 +27870,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -27279,7 +27950,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -27293,7 +27964,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -27391,7 +28062,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -27517,7 +28188,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -27641,7 +28312,7 @@ where ff_uuid= '${files_uuid}'</value>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
 <group>org.apache.nifi</group>
-<version>1.11.4</version>
+<version>1.12.1</version>
                             </bundle>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
@@ -27701,13 +28372,17 @@ file:${filename} process_end_time updated to log summary table</value>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                     </contents>
+                    <flowfileConcurrency>UNBOUNDED</flowfileConcurrency>
+                    <flowfileOutboundPolicy>STREAM_WHEN_AVAILABLE</flowfileOutboundPolicy>
                     <name>CRC_Processor</name>
                     <variables/>
                 </processGroups>
             </contents>
+            <flowfileConcurrency>UNBOUNDED</flowfileConcurrency>
+            <flowfileOutboundPolicy>STREAM_WHEN_AVAILABLE</flowfileOutboundPolicy>
             <name>crc_transformer</name>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/11/2021 13:10:07 IST</timestamp>
+    <timestamp>03/24/2021 16:40:06 IST</timestamp>
 </template>
