@@ -14,7 +14,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         if(timePeriod && timePeriod != 'select_month'){
             fileName = `crc/${timePeriod}/school.json`;
         }else{
-            fileName = `crc/2019/${month}/school.json`;
+            fileName = `crc/${year}/${month}/school.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
 
@@ -38,7 +38,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         if(timePeriod && timePeriod != 'select_month'){
             fileName = `crc/${timePeriod}/school.json`;
         }else{
-            fileName = `crc/2019/${month}/school.json`;
+            fileName = `crc/${year}/${month}/school.json`;
         }
         var jsonData = await s3File.readS3File(fileName);
 

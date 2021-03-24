@@ -71,7 +71,7 @@ export class LineChartComponent implements OnInit, OnChanges {
     });
   }
 
-  selected = "absolute";
+  selected = "relative";
   getSelected(data) {
     this.selected = data;
     this.createChart();
@@ -126,8 +126,8 @@ export class LineChartComponent implements OnInit, OnChanges {
             return this.value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
           }
         },
-        min: this.selected == 'absolute'?  Math.min(...this.dataArray) - 2 : 0,
-        max: this.selected == 'absolute'?  Math.max(...this.dataArray) : 100,
+        min: this.selected == 'absolute'?  0 : Math.min(...this.dataArray) - 2,
+        max: this.selected == 'absolute'?  100 : Math.max(...this.dataArray),
         startOnTick: false,
         opposite: false,
         gridLineColor: 'transparent',

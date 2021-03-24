@@ -281,11 +281,6 @@ export class CrcReportComponent implements OnInit {
         this.months = item['month'];
       }
     })
-    this.yearMonth = true;
-    this.month_year = {
-      month: null,
-      year: null
-    };
   }
 
 
@@ -295,15 +290,11 @@ export class CrcReportComponent implements OnInit {
     } else {
       document.getElementById('home').style.display = 'none';
     }
-    // if (this.skul) {
-    //   this.districtWise();
-    // } else if (this.dist) {
-    //   this.myDistData(this.distName);
-    // } else if (this.blok) {
-    //   this.myBlockData(this.blockName);
-    // } else if (this.clust) {
-    //   this.myClusterData(this.clustName);
-    // }
+    this.yearMonth = true;
+    this.month_year = {
+      month: null,
+      year: null
+    };
     this.onResize();
   }
   onClockHome() {
@@ -875,8 +866,8 @@ export class CrcReportComponent implements OnInit {
         tooltips: {
           titleFontSize: 16,
           cornerRadius: 10,
-          xPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
-          yPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
+          xPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 7,
+          yPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 7,
           bodyFontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
           displayColors: false,
           custom: function (tooltip) {
