@@ -11720,3 +11720,153 @@ school_id order by 3,grade))as a
 group by school_id,grade,academic_year,month
 order by 1,grade)as b on a.academic_year=b.academic_year and a.school_id=b.school_id and a.month=b.month;
 
+
+
+/* CRC month and year queries */
+
+/* school */
+	create or replace view crc_school_report_year_month as
+	select spd.district_id,initcap(spd.district_name)as district_name,spd.block_id,initcap(spd.block_name) as block_name,spd.cluster_id,initcap(spd.cluster_name)as cluster_name,spd.school_id,
+	initcap(spd.school_name) as school_name,spd.total_schools,
+	coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+	(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+	coalesce(round((spd.total_schools-coalesce(visited_school_count,0))*100/spd.total_schools,1),0) as schools_0,
+	coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,
+	coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
+	coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+	coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+	coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school,spd.month,
+spd.academic_year 
+	from (select s.month,s.academic_year,s.district_id,s.district_name,s.block_id,s.block_name,s.cluster_id,s.cluster_name,s.school_id,s.school_name,s.total_schools,s.no_of_schools_per_crc,t.schl_id,
+	t.total_visits,t.schools_1_2,t.schools_3_5,t.schools_6_10,t.schools_10 from
+	((select distinct month,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year from crc_visits_frequency) as a  
+cross join
+(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,
+   count(distinct school_id) as total_schools,
+ round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc
+		from school_hierarchy_details  where cluster_name is not null and block_name is not null
+		and school_name is not null and district_name is not null
+		group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name) b )  s
+left join
+	(select school_id as schl_id, sum(school_count) as total_visits,sum(schools_1_2) as schools_1_2,
+	sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,academic_year,month
+	from
+	(select school_id,sum(visit_count)as visit_count,count(distinct(school_id))*sum(visit_count) as school_count,
+	case when sum(visit_count) between 1 and 2 then count(distinct(school_id)) end as schools_1_2,
+	case when sum(visit_count) between 3 and 5 then count(distinct(school_id)) end as schools_3_5,
+	case when sum(visit_count) between 6 and 10 then count(distinct(school_id)) end as schools_6_10,
+	case when sum(visit_count) >10 then count(distinct(school_id)) end as schools_10,
+case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year,month
+	from crc_visits_frequency
+	where visit_count>0 and cluster_name is not null and school_id!=9999 
+	group by school_id,academic_year,month) d group by school_id,academic_year,month) t on s.school_id=t.schl_id and s.academic_year=t.academic_year and s.month=t.month) spd
+	left join
+	(select school_id,count(distinct(school_id))as visited_school_count,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year,month from crc_visits_frequency
+	  where visit_count>0  and cluster_name is not null and school_id!=9999  group by school_id,academic_year,month)as scl_v
+	on spd.school_id=scl_v.school_id and spd.academic_year=scl_v.academic_year and spd.month=scl_v.month where spd.school_id!=9999 and spd.academic_year is not null and spd.month is not null;
+
+/* cluster */
+create or replace view crc_cluster_report_year_month as
+select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.cluster_id,
+initcap(spd.cluster_name)as cluster_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,
+coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school,
+COALESCE(1-round(spd.schools_0 ::numeric / spd.total_schools::numeric, 1), 0::numeric) AS state_level_score,spd.month,spd.academic_year
+from (select s.month,s.academic_year,s.district_id,s.district_name,s.block_id,s.block_name,s.cluster_id,s.cluster_name,s.total_schools,s.no_of_schools_per_crc,
+	t.total_visits,t.schools_0,t.schools_1_2,t.schools_3_5,t.schools_6_10,t.schools_10 from
+((select distinct month,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year from crc_visits_frequency) as a  
+cross join
+(select district_id,district_name,block_id,block_name,cluster_id,cluster_name,count(distinct school_id) as total_schools,
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc
+     from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+      group by district_id,district_name,block_id,block_name,cluster_id,cluster_name) b ) s left join 
+(select cluster_id as clt_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,academic_year,month
+from
+(select cluster_id,academic_year,month,sum(total_crc_visits)as school_count, 
+sum(case when schools_0>0 then 1 else 0 end) as schools_0,
+  sum(case when schools_1_2>0 then 1 else 0 end) as schools_1_2,
+ sum(case when schools_3_5>0 then 1 else 0 end) as schools_3_5,
+ sum(case when schools_6_10>0 then 1 else 0 end) as schools_6_10,
+ sum(case when schools_10>0 then 1 else 0 end) as schools_10
+ from crc_school_report_year_month where  cluster_name is not null 
+group by cluster_id,academic_year,month) d group by cluster_id,academic_year,month) t on s.cluster_id=t.clt_id and s.month=t.month and s.academic_year=t.academic_year) spd
+left join 
+(select cluster_id,count(distinct(school_id))as visited_school_count,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year,month from crc_visits_frequency
+    where visit_count>0 and cluster_name is not null  group by cluster_id,academic_year,month)as scl_v
+on spd.cluster_id=scl_v.cluster_id and spd.month=scl_v.month and spd.academic_year=scl_v.academic_year where spd.cluster_id!=9999 and spd.academic_year is not null and spd.month is not null;
+
+/* block */
+create or replace view crc_block_report_year_month as
+select spd.district_id,initcap(spd.district_name) as district_name,spd.block_id,initcap(spd.block_name)as block_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school,
+COALESCE(1-round(spd.schools_0 ::numeric / spd.total_schools::numeric, 1), 0::numeric) AS state_level_score,spd.academic_year,spd.month
+from (select s.month,s.academic_year,s.district_id,s.district_name,s.block_id,s.block_name,s.total_schools,s.no_of_schools_per_crc,
+	t.total_visits,t.schools_0,t.schools_1_2,t.schools_3_5,t.schools_6_10,t.schools_10 from
+	((select distinct month,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year from crc_visits_frequency) as a  
+cross join
+(select district_id,district_name,block_id,block_name,count(distinct school_id) as total_schools,
+    round(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1) as no_of_schools_per_crc 
+    from school_hierarchy_details  where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+     group by district_id,district_name,block_id,block_name) b ) s left join 
+(select block_id as blk_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,academic_year,month
+from
+(select block_id,sum(total_crc_visits)as school_count, 
+sum(case when schools_0>0 then 1 else 0 end) as schools_0,
+  sum(case when schools_1_2>0 then 1 else 0 end) as schools_1_2,
+ sum(case when schools_3_5>0 then 1 else 0 end) as schools_3_5,
+ sum(case when schools_6_10>0 then 1 else 0 end) as schools_6_10,
+ sum(case when schools_10>0 then 1 else 0 end) as schools_10,academic_year,month
+ from crc_school_report_year_month where  cluster_name is not null
+group by block_id,academic_year,month) d group by block_id,academic_year,month) t on s.block_id=t.blk_id and s.academic_year=t.academic_year and s.month=t.month) spd
+left join 
+(select block_id,count(distinct(school_id))as visited_school_count,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year,month from crc_visits_frequency
+    where visit_count>0  and cluster_name is not null  group by block_id,academic_year,month)as scl_v
+on spd.block_id=scl_v.block_id and spd.academic_year=scl_v.academic_year and spd.month=scl_v.month where spd.block_id!=9999;
+
+/* district */
+create or replace view crc_district_report_year_month as
+select spd.district_id,initcap(spd.district_name)as district_name,spd.total_schools,
+coalesce(spd.total_visits,0) total_crc_visits,coalesce(visited_school_count,0) as visited_school_count,
+(spd.total_schools-coalesce(visited_school_count,0)) as not_visited_school_count,
+coalesce(round(spd.schools_0*100/spd.total_schools,1),0) as schools_0,
+coalesce(round(spd.schools_1_2*100/spd.total_schools,1),0) as schools_1_2,coalesce(round(spd.schools_3_5*100/spd.total_schools,1),0) as schools_3_5,coalesce(round(spd.schools_6_10*100/spd.total_schools,1),0) as schools_6_10,
+coalesce(round(spd.schools_10*100/spd.total_schools,1),0) as schools_10,spd.no_of_schools_per_crc,
+coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as float) as numeric),1),0) as visit_percent_per_school,
+COALESCE(1-round(spd.schools_0 ::numeric / spd.total_schools::numeric, 1), 0::numeric) AS state_level_score,spd.month,
+spd.academic_year
+ from (select s.month,s.academic_year,s.district_id,s.district_name,s.total_schools,s.no_of_schools_per_crc,
+	t.total_visits,t.schools_0,t.schools_1_2,t.schools_3_5,t.schools_6_10,t.schools_10 from
+	((select distinct month,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year from crc_visits_frequency) as a  
+cross join
+(select count(distinct school_id) as total_schools,district_id,district_name,
+    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1)) as no_of_schools_per_crc 
+    from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
+    group by district_id,district_name) b ) s left join 
+(select district_id as dist_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
+sum(schools_3_5) as schools_3_5,sum(schools_6_10) as schools_6_10,sum(schools_10) as schools_10,academic_year,month from
+ (select district_id,sum(total_crc_visits)as school_count, 
+sum(case when schools_0>0 then 1 else 0 end) as schools_0,
+  sum(case when schools_1_2>0 then 1 else 0 end) as schools_1_2,
+ sum(case when schools_3_5>0 then 1 else 0 end) as schools_3_5,
+ sum(case when schools_6_10>0 then 1 else 0 end) as schools_6_10,
+ sum(case when schools_10>0 then 1 else 0 end) as schools_10,academic_year,month
+ from crc_school_report_year_month where  cluster_name is not null
+group by district_id,academic_year,month)as d group by district_id,academic_year,month)as t  on s.district_id=t.dist_id and s.academic_year=t.academic_year and s.month=t.month) as spd
+left join 
+(select district_id,count(distinct(school_id))as visited_school_count,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year,month from crc_visits_frequency 
+    where visit_count>0 and  cluster_name is not null group by district_id,academic_year,month)as scl_v
+on spd.district_id=scl_v.district_id and spd.month=scl_v.month and spd.academic_year=scl_v.academic_year  where spd.district_id!=9999
+
+
