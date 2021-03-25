@@ -470,31 +470,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>1043c8e7-13d8-36c7-0000-000000000000</id>
-                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
-<id>8c954d90-2d37-341f-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
-<id>ff2b6275-3b67-3f6a-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>121cb837-2040-3436-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -1322,6 +1297,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>3f93bbf7-e7ac-399c-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>10d55e7a-97c5-3e5f-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>31027d57-c150-3c3a-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>40c81b99-a446-3b69-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -1398,10 +1398,36 @@
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name>stud_files</name>
                             <selectedRelationships>stud_att_management_category_year_month</selectedRelationships>
+                            <selectedRelationships>stud_att_year_month</selectedRelationships>
                             <selectedRelationships>unmatched</selectedRelationships>
                             <source>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
 <id>bf6502fc-49b1-3491-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>445ed2ab-8d4e-3db0-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>8c954d90-2d37-341f-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>31027d57-c150-3c3a-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -1441,8 +1467,16 @@
 <y>-512.0</y>
                             </bends>
                             <bends>
-<x>6712.0</x>
-<y>-672.0</y>
+<x>5584.0</x>
+<y>-576.0</y>
+                            </bends>
+                            <bends>
+<x>6664.0</x>
+<y>-728.0</y>
+                            </bends>
+                            <bends>
+<x>7560.0</x>
+<y>-624.0</y>
                             </bends>
                             <destination>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
@@ -1450,7 +1484,7 @@
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
+                            <labelIndex>3</labelIndex>
                             <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                             <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -3681,8 +3715,8 @@
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>11344.0</x>
-<y>-768.0</y>
+<x>12684.0</x>
+<y>-693.0</y>
                             </bends>
                             <destination>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
@@ -4275,6 +4309,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>d0735483-a463-3b8f-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>8c954d90-2d37-341f-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>stud_att_trend_line_state_district</selectedRelationships>
+                            <source>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>a810caa4-c474-38df-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>d28590c3-7fd6-31cc-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
@@ -4507,10 +4566,35 @@
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name></name>
-                            <selectedRelationships>stud_att_by_year_month</selectedRelationships>
+                            <selectedRelationships>stud_att_trend_line</selectedRelationships>
                             <source>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
 <id>bf6502fc-49b1-3491-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>de476c65-d70e-33b7-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>31027d57-c150-3c3a-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>unmatched</selectedRelationships>
+                            <source>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>a810caa4-c474-38df-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -4664,6 +4748,31 @@
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
 <id>4fd81a7f-be6a-3a93-0000-000000000000</id>
 <type>FUNNEL</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>e7fb0c84-a355-3e11-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>a810caa4-c474-38df-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
+<id>ff2b6275-3b67-3f6a-0000-000000000000</id>
+<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -6869,8 +6978,8 @@
                             <id>786c9003-1aff-320d-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>10760.0</x>
-<y>128.0</y>
+<x>12104.0</x>
+<y>200.0</y>
                             </position>
                         </funnels>
                         <funnels>
@@ -7026,8 +7135,8 @@
                             <id>4c4f12d1-dc14-3f1f-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>6432.0</x>
-<y>-848.0</y>
+<x>7496.0</x>
+<y>-824.0</y>
                             </position>
                             <height>136.0</height>
                             <label>Management/Category - All management vs Category and All Category vs Management
@@ -7049,8 +7158,8 @@
                             <id>530f207d-39d9-341e-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>8240.0</x>
-<y>-1568.0</y>
+<x>9584.0</x>
+<y>-1496.0</y>
                             </position>
                             <height>144.0</height>
                             <label>Management/Category  files -  year/month 
@@ -7072,8 +7181,8 @@ all category vs management</label>
                             <id>6e1bdc71-9ecc-36f6-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>5944.0</x>
-<y>-624.0</y>
+<x>6400.0</x>
+<y>-616.0</y>
                             </position>
                             <height>56.0</height>
                             <label>Trend line chart</label>
@@ -7198,8 +7307,8 @@ all category vs management</label>
                             <id>a1f201f2-25a0-306b-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>8095.006058347576</x>
-<y>-727.2897883206058</y>
+<x>9432.0</x>
+<y>-656.0</y>
                             </position>
                             <height>152.0</height>
                             <label>Management/Category  files -  time range [ last day,last 7 days,last 30 days and overall ]
@@ -8608,8 +8717,8 @@ file: ${filename} columns did not match.</value>
                             <id>10d55e7a-97c5-3e5f-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>5936.0</x>
-<y>-160.0</y>
+<x>6392.0</x>
+<y>-152.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
@@ -8860,9 +8969,12 @@ file: ${filename} columns did not match.</value>
 <properties>
     <entry>
         <key>Object Key</key>
-        <value>${query_type:startsWith('stud_att_district_wise'):ifElse('attendance/trend_line_chart/district_${year}.json',
-${query_type:startsWith('stud_att_line_chart_state'):ifElse('attendance/trend_line_chart/state_${year}.json','None'
-)})}</value>
+        <value>${query_type:startsWith('stud_att_line_chart_state'):ifElse('attendance/trend_line_chart/state_${year}.json',
+${query_type:startsWith('stud_att_district_wise'):ifElse('attendance/trend_line_chart/district/district_${year}.json',
+${query_type:startsWith('stud_att_block_wise'):ifElse('attendance/trend_line_chart/block/${level}_${year}.json',
+${query_type:startsWith('stud_att_cluster_wise'):ifElse('attendance/trend_line_chart/cluster/${level}_${year}.json',
+${query_type:startsWith('stud_att_school_wise'):ifElse('attendance/trend_line_chart/school/${level}_${year}.json','None'
+)})} )} )} )}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -9383,8 +9495,8 @@ file: ${filename} null values are not found.</value>
                             <id>1568eac2-8bf1-3932-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>10064.0</x>
-<y>-1392.0</y>
+<x>11408.0</x>
+<y>-1320.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
@@ -9912,8 +10024,8 @@ ${query_type:startsWith('stud_att_management_category_school_by_month_year'):ifE
                             <id>1acb040b-c36d-33fb-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>7232.0</x>
-<y>-336.0</y>
+<x>8576.0</x>
+<y>-264.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -10307,8 +10419,8 @@ where ff_uuid= '${zip_identifier}'
                             <id>1f97a0e3-6fbf-34d2-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>10064.0</x>
-<y>-984.0</y>
+<x>11408.0</x>
+<y>-912.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
@@ -11924,6 +12036,87 @@ delete from student_attendance_temp where ff_uuid='${zip_identifier}';</value>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
                         <processors>
+                            <id>31027d57-c150-3c3a-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <position>
+<x>7072.0</x>
+<y>-312.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>record-reader</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+            <name>record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>level</key>
+        <value>
+            <name>level</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>record-reader</key>
+        <value>4e89d7c5-c7cc-3718-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>a669c04a-a093-3102-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>level</key>
+        <value>${query_type:startsWith('stud_att_block'):ifElse('/district_id',
+${query_type:startsWith('stud_att_cluster'):ifElse('/block_id',
+${query_type:startsWith('stud_att_school'):ifElse('/cluster_id',''
+)} )} )}</value>
+    </entry>
+</properties>
+<runDurationMillis>1000</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>stud_att_partition_level</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>original</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.PartitionRecord</type>
+                        </processors>
+                        <processors>
                             <id>3192d2bf-3f68-38a4-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
@@ -12136,8 +12329,8 @@ delete from student_attendance_temp where ff_uuid='${zip_identifier}';</value>
                             <id>3406f157-971e-343b-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>9424.0</x>
-<y>-1384.0</y>
+<x>10768.0</x>
+<y>-1312.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -12241,8 +12434,8 @@ ${query_type:startsWith('stud_att_management_category_school'):ifElse(#{stud_att
                             <id>343a5253-4288-3302-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>7232.0</x>
-<y>-88.0</y>
+<x>8576.0</x>
+<y>-16.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -12599,8 +12792,8 @@ where ff_uuid= '${files_uuid}'</value>
                             <id>3cf79658-86d5-30b4-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>7896.0</x>
-<y>-240.0</y>
+<x>9240.0</x>
+<y>-168.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -13126,8 +13319,8 @@ Mirror data validation of file:${filename}.Error while checking mirror data</val
                             <id>424b08a2-ef0f-3203-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>7832.0</x>
-<y>-1256.0</y>
+<x>9176.0</x>
+<y>-1184.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -14143,8 +14336,8 @@ same id data validation of file:${filename}, same id records found </value>
                             <id>56b1c5c4-e07e-3732-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>6536.0</x>
-<y>-368.0</y>
+<x>7880.0</x>
+<y>-296.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -14221,8 +14414,8 @@ or(${query_type:startsWith('stud_att_management_category_district_last'):or(${qu
                             <id>5a70c750-1a97-3b0f-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>8488.0</x>
-<y>-416.0</y>
+<x>9832.0</x>
+<y>-344.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -14299,8 +14492,8 @@ or(${query_type:startsWith('stud_att_management_category_district_last'):or(${qu
                             <id>5c5640c7-0d1f-3166-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>8488.0</x>
-<y>-16.0</y>
+<x>9832.0</x>
+<y>56.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -14377,8 +14570,8 @@ or(${query_type:startsWith('stud_att_management_category_district_last'):or(${qu
                             <id>5d175663-fc23-3027-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>8928.0</x>
-<y>-1384.0</y>
+<x>10272.0</x>
+<y>-1312.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -14571,8 +14764,8 @@ or(${query_type:startsWith('stud_att_management_category_district_last'):or(${qu
                             <id>6144a76b-2c05-346a-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>9080.0</x>
-<y>-432.0</y>
+<x>10424.0</x>
+<y>-360.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -14738,8 +14931,8 @@ ${query_type:startsWith('stud_att_management_category_school'):ifElse(#{stud_att
                             <id>66aef97c-7397-3cac-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>9752.0</x>
-<y>-432.0</y>
+<x>11096.0</x>
+<y>-360.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
@@ -15164,8 +15357,8 @@ ${query_type:startsWith('stud_att_management_category_school_overall'):ifElse('a
                             <id>685376d1-e379-37d9-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>9080.0</x>
-<y>-8.0</y>
+<x>10424.0</x>
+<y>64.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -16157,8 +16350,8 @@ Mirror data validation of file:${filename}, Mirror data found </value>
                             <id>741a3b6f-654d-34ae-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>9752.0</x>
-<y>-32.0</y>
+<x>11096.0</x>
+<y>40.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-aws-nar</artifact>
@@ -17436,8 +17629,8 @@ where ff_uuid= '${files_uuid}'</value>
                             <id>88688ec3-51af-367f-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>8416.0</x>
-<y>-1160.0</y>
+<x>9760.0</x>
+<y>-1088.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -17869,8 +18062,8 @@ where ff_uuid= '${files_uuid}'</value>
                             <id>8c954d90-2d37-341f-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>5936.0</x>
-<y>-368.0</y>
+<x>6392.0</x>
+<y>-360.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -17935,9 +18128,12 @@ where ff_uuid= '${files_uuid}'</value>
     </entry>
     <entry>
         <key>jolt-spec</key>
-        <value>${query_type:startsWith('stud_att_district_wise'):ifElse(#{stud_att_jolt_line_chart_district},
-${query_type:startsWith('stud_att_line_chart_state'):ifElse(#{stud_att_jolt_line_chart_state},'None'
-)} )}</value>
+        <value>${query_type:startsWith('stud_att_line_chart_state'):ifElse(#{stud_att_jolt_line_chart_state},
+${query_type:startsWith('stud_att_district_wise'):ifElse(#{stud_att_jolt_line_chart_district},
+${query_type:startsWith('stud_att_block_wise'):ifElse(#{stud_att_jolt_line_chart_block},
+${query_type:startsWith('stud_att_cluster_wise'):ifElse(#{stud_att_jolt_line_chart_cluster},
+${query_type:startsWith('stud_att_school_wise'):ifElse(#{stud_att_jolt_line_chart_school},'None')} 
+)} )} )} )}</value>
     </entry>
     <entry>
         <key>Transform Cache Size</key>
@@ -18040,8 +18236,8 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines:mi
                             <id>938c8336-c043-375c-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>8928.0</x>
-<y>-984.0</y>
+<x>10272.0</x>
+<y>-912.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -19069,6 +19265,68 @@ ${query_type:startsWith('stud_att_school_overall')
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
                         <processors>
+                            <id>a810caa4-c474-38df-0000-000000000000</id>
+                            <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
+                            <position>
+<x>7072.0</x>
+<y>-536.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>
+            <name>Routing Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>stud_att_trend_line_state_district</key>
+        <value>
+            <name>stud_att_trend_line_state_district</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>Route to Property name</value>
+    </entry>
+    <entry>
+        <key>stud_att_trend_line_state_district</key>
+        <value>${query_type:startsWith('stud_att_line_chart_state'):or(${query_type:startsWith('stud_att_district_wise')})}</value>
+    </entry>
+</properties>
+<runDurationMillis>25</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>stud_att_route_trend_line</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>stud_att_trend_line_state_district</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
+                        </processors>
+                        <processors>
                             <id>a84a5a30-9587-39bc-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
@@ -19346,8 +19604,8 @@ ${query_type:startsWith('stud_att_management_category_meta'):ifElse(#{stud_att_j
                             <id>ac7b9f4d-de21-347b-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>9424.0</x>
-<y>-984.0</y>
+<x>10768.0</x>
+<y>-912.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -20830,12 +21088,6 @@ file: ${filename} duplicate count updated to log summary db.</value>
         </value>
     </entry>
     <entry>
-        <key>stud_att_by_year_month</key>
-        <value>
-            <name>stud_att_by_year_month</name>
-        </value>
-    </entry>
-    <entry>
         <key>stud_att_category_management_meta</key>
         <value>
             <name>stud_att_category_management_meta</name>
@@ -20851,6 +21103,18 @@ file: ${filename} duplicate count updated to log summary db.</value>
         <key>stud_att_management_category_year_month</key>
         <value>
             <name>stud_att_management_category_year_month</name>
+        </value>
+    </entry>
+    <entry>
+        <key>stud_att_trend_line</key>
+        <value>
+            <name>stud_att_trend_line</name>
+        </value>
+    </entry>
+    <entry>
+        <key>stud_att_year_month</key>
+        <value>
+            <name>stud_att_year_month</name>
         </value>
     </entry>
     <entry>
@@ -20875,10 +21139,6 @@ file: ${filename} duplicate count updated to log summary db.</value>
         <value>Route to Property name</value>
     </entry>
     <entry>
-        <key>stud_att_by_year_month</key>
-        <value>${query_type:startsWith('stud_att_district_wise'):or(${query_type:startsWith('stud_att_line_chart_state')})}</value>
-    </entry>
-    <entry>
         <key>stud_att_category_management_meta</key>
         <value>${query_type:startsWith('stud_att_management_category_meta')}</value>
     </entry>
@@ -20891,6 +21151,18 @@ or(${query_type:startsWith('stud_att_management_category_district_last'):or(${qu
     <entry>
         <key>stud_att_management_category_year_month</key>
         <value>${query_type:startsWith('stud_att_management_category_district_by_month_year'):or(${query_type:startsWith('stud_att_management_category_block_by_month_year'):or(${query_type:startsWith('stud_att_management_category_cluster_by_month_year'):or(${query_type:startsWith('stud_att_management_category_school_by_month_year')})})})}</value>
+    </entry>
+    <entry>
+        <key>stud_att_trend_line</key>
+        <value>${query_type:startsWith('stud_att_line_chart_state'):or(${query_type:startsWith('stud_att_district_wise')}):
+or(${query_type:startsWith('stud_att_block_wise')}):
+or(${query_type:startsWith('stud_att_cluster_wise')}):
+or(${query_type:startsWith('stud_att_school_wise')})}</value>
+    </entry>
+    <entry>
+        <key>stud_att_year_month</key>
+        <value>${query_type:startsWith('stud_att_district_wise'):or(${query_type:startsWith('stud_att_block_wise')}):
+or(${query_type:startsWith('stud_att_cluster_wise')}):or(${query_type:startsWith('stud_att_school_wise')})}</value>
     </entry>
     <entry>
         <key>stud_meta</key>
@@ -20918,10 +21190,6 @@ ${query_type:startsWith('stud_att_school_overall')
                             <name>RouteOnAttribute</name>
                             <relationships>
 <autoTerminate>false</autoTerminate>
-<name>stud_att_by_year_month</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
 <name>stud_att_category_management_meta</name>
                             </relationships>
                             <relationships>
@@ -20931,6 +21199,14 @@ ${query_type:startsWith('stud_att_school_overall')
                             <relationships>
 <autoTerminate>false</autoTerminate>
 <name>stud_att_management_category_year_month</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>stud_att_trend_line</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>stud_att_year_month</name>
                             </relationships>
                             <relationships>
 <autoTerminate>false</autoTerminate>
@@ -22398,8 +22674,8 @@ file: ${filename} Error while extracting columns from file.</value>
                             <id>d961f3bf-ab52-3ad2-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>7832.0</x>
-<y>-1000.0</y>
+<x>9176.0</x>
+<y>-928.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -22476,8 +22752,8 @@ file: ${filename} Error while extracting columns from file.</value>
                             <id>d9a9a253-117f-3746-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>7232.0</x>
-<y>-600.0</y>
+<x>8576.0</x>
+<y>-528.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -24242,8 +24518,8 @@ Mirror data validation of file:${filename} started</value>
                             <id>ff2b6275-3b67-3f6a-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>5936.0</x>
-<y>-560.0</y>
+<x>6392.0</x>
+<y>-552.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -33393,5 +33669,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/24/2021 16:49:41 IST</timestamp>
+    <timestamp>03/25/2021 13:56:49 IST</timestamp>
 </template>
