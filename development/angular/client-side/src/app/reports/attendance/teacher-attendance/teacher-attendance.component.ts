@@ -112,6 +112,9 @@ export class TeacherAttendanceComponent implements OnInit {
     return radius;
   }
 
+  management;
+  category;
+
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
@@ -125,6 +128,9 @@ export class TeacherAttendanceComponent implements OnInit {
     this.timePeriod = {
       period: 'overall'
     }
+
+    this.management = localStorage.getItem('management');
+    this.category = localStorage.getItem('category');
 
     this.service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
@@ -212,30 +218,6 @@ export class TeacherAttendanceComponent implements OnInit {
     this.onResize(event);
   }
 
-  //Management and category
-  type;
-  types = ['Management', 'Category'];
-  hideManagement = true;
-  hideCategory = true;
-  onSelectType(){
-    if(this.type == 'Management'){
-      this.hideManagement = false;
-      this.hideCategory = true;
-    }else{
-      this.hideManagement = true;
-      this.hideCategory = false;
-    }
-  }
-  managements = [];
-  management;
-  categories = [];
-  category;
-  onSelectManagement(){
-
-  }
-  onSelectCategory(){
-
-  }
 
   getDistricts(): void {
     this.service.dist_wise_data(this.month_year).subscribe(res => {
@@ -481,11 +463,6 @@ export class TeacherAttendanceComponent implements OnInit {
   onClickHome() {
     this.yearMonth = true;
     this.academicYear = undefined;
-    this.hideManagement = true;
-    this.hideCategory = true;
-    this.type = undefined;
-    this.management = undefined;
-    this.category = undefined;
     this.period = 'overall';
     this.levelWise = "District";
     this.month_year = {
@@ -511,7 +488,7 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.districtData = this.mylatlngData = res['distData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
@@ -571,7 +548,7 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['blockData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
@@ -631,7 +608,7 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['clusterData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
@@ -703,7 +680,7 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
@@ -924,7 +901,7 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.blockPerDist({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.blockPerDist({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.blockData = this.mylatlngData = res['blockData'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -1042,7 +1019,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.month_year['id'] = data;
-      this.myData = this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.clusterData = this.mylatlngData = res['clusterDetails'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -1192,7 +1169,7 @@ export class TeacherAttendanceComponent implements OnInit {
       }
 
       this.month_year['id'] = data;
-      this.myData = this.service.schoolsPerCluster({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.schoolsPerCluster({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolsDetails'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
