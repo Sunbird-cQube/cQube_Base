@@ -35,6 +35,7 @@ drop view if exists health_card_index_district_last30 cascade;
 drop view if exists health_card_index_state;
 drop view if exists health_card_index_state_last30;
 drop view if exists insert_diksha_trans_view;
+drop view if exists crc_trans_to_aggregate_with_date cascade;
 
 /* Create infra tables */
 
@@ -6070,12 +6071,12 @@ select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b
       a.month,
     a.year,a.visit_date,
   now() as created_on,
-  now() as updated_on
+  now() as updated_on,b.school_management_type,b.school_category
   from (select crc_inspection_id as inspection_id, clt.school_id,month,year,bool_or(in_school_location) as in_school_location,visit_date
  from crc_inspection_trans cit inner join crc_location_trans clt on clt.inspection_id=cit.crc_inspection_id 
  group by crc_inspection_id, clt.school_id,month,year) as a left join school_hierarchy_details as b on a.school_id=b.school_id
   where a.school_id<>0 and a.inspection_id<>0 and b.school_id<>9999 and b.cluster_name is not null and b.district_name is not null and b.block_name is not null and b.school_name is not null and visit_date is NOT NULL
-  group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id, b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year,a.visit_date
+  group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id, b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year,a.visit_date,b.school_management_type,b.school_category
   order by school_id desc ;
 
 
@@ -12000,7 +12001,7 @@ sum(case when schools_0>0 then 1 else 0 end) as schools_0,
  from crc_school_mgmt_all where  cluster_name is not null  and school_management_type is not null 
 group by block_id,school_management_type) d group by block_id,school_management_type) t on s.block_id=t.blk_id and s.school_management_type=t.school_management_type) spd
 left join 
-(select block_id,count(distinct(school_id))as visited_school_count,school_management_type from crc_trans_to_aggregate_with_date
+(select block_id,count(distinct(school_id))as visited_school_count,school_management_type from crc_visits_frequency
     where visit_count>0  and cluster_name is not null 
 	and school_management_type is not null group by block_id,school_management_type)as scl_v
 on spd.block_id=scl_v.block_id and spd.school_management_type=scl_v.school_management_type where spd.block_id!=9999 and spd.school_management_type is not null;
@@ -12042,7 +12043,7 @@ sum(case when schools_0>0 then 1 else 0 end) as schools_0,
  from crc_school_mgmt_all where  cluster_name is not null and school_management_type is not null 
 group by district_id,school_management_type)as d group by district_id,school_management_type)as t  on s.district_id=t.dist_id and s.school_management_type=t.school_management_type )as spd
 left join 
-(select district_id,count(distinct(school_id))as visited_school_count,school_management_type from crc_trans_to_aggregate_with_date 
+(select district_id,count(distinct(school_id))as visited_school_count,school_management_type from crc_visits_frequency 
     where visit_count>0 and  cluster_name is not null 
  and school_management_type is not null group by district_id,school_management_type)as scl_v
 on spd.district_id=scl_v.district_id and spd.school_management_type=scl_v.school_management_type where spd.district_id!=9999 and spd.school_management_type is not null;
