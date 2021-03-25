@@ -6018,3 +6018,13 @@ alter table school_hierarchy_details add column if not exists school_management_
 alter table school_hierarchy_details add column if not exists school_category varchar(100);
 
 alter table crc_inspection_temp add column IF NOT EXISTS visit_date date;
+
+alter table crc_visits_frequency add column if not exists school_management_type varchar(100);
+alter table crc_visits_frequency add column if not exists school_category varchar(100);
+
+alter table periodic_exam_school_qst_result add column if not exists school_management_type varchar(100);
+alter table periodic_exam_school_qst_result add column if not exists school_category varchar(100);
+
+alter table periodic_exam_school_result add column if not exists school_management_type varchar(100);
+alter table periodic_exam_school_result add column if not exists school_category varchar(100);
+
