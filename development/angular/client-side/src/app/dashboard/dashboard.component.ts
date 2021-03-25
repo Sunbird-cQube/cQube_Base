@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
 import { AppServiceComponent } from "../app.service";
 import { KeycloakSecurityService } from "../keycloak-security.service";
 import { environment } from "../../environments/environment";
@@ -152,8 +151,8 @@ export class DashboardComponent implements OnInit {
       document.getElementById("spinner").style.display = "none";
     });
     if(!localStorage.getItem('management') && !localStorage.getItem('category')){
-      this.management  = 'overall';
-      this.category  = 'overall';
+      this.management  = this.service.management;
+      this.category  = this.service.category;
       localStorage.setItem("management", this.management);
       localStorage.setItem("category", this.category);
     }else{

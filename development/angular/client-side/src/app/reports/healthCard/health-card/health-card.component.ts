@@ -500,6 +500,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
 
   showData(healthCardData) {
     if (this.level != 'state') {
+      healthCardData['total_schools'] = healthCardData['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      healthCardData['total_students'] = healthCardData['total_students'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.updatedKeys = [];
       this.keys = Object.keys(healthCardData);
       let index = this.keys.indexOf('district_id');
@@ -527,6 +529,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.updatedKeys = [];
+      healthCardData['basic_details']['total_schools'] = healthCardData['basic_details']['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      healthCardData['basic_details']['total_students'] = healthCardData['basic_details']['total_students'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       this.keys = Object.keys(healthCardData['basic_details']);
       this.keys = this.keys.filter(key => {
         let myKey = this.stringConverter(key);
