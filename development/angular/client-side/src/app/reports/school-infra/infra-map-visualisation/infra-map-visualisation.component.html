@@ -3,38 +3,24 @@
         <div class="col-lg-9 col-md-9 col-sm-12">
             <div *ngIf='skul'>
                 <p id="dist">
-                    Report on Infrastructure access by location for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
+                    Report on Infrastructure access by location for: <span (click)="districtWise()" style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block">
-                    Report on Infrastructure access by location for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
-                        (click)="onDistrictSelect(districtHierarchy.distId)"
-                        style="cursor: pointer;text-decoration: underline;">
+                    Report on Infrastructure access by location for: <span (click)="districtWise()" style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span (click)="onDistrictSelect(districtHierarchy.distId)" style="cursor: pointer;text-decoration: underline;">
                         {{districtHierarchy.districtName}}</span> </p>
             </div>
             <div *ngIf="blok">
                 <p id="cluster">
-                    Report on Infrastructure access by location for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
-                        (click)="onDistrictSelect(blockHierarchy.distId)"
-                        style="cursor: pointer;text-decoration: underline;">
-                        {{blockHierarchy.districtName}}</span><span>/ </span><span
-                        (click)="onBlockSelect(blockHierarchy.blockId)"
-                        style="cursor: pointer;text-decoration: underline;">
+                    Report on Infrastructure access by location for: <span (click)="districtWise()" style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span (click)="onDistrictSelect(blockHierarchy.distId)" style="cursor: pointer;text-decoration: underline;">
+                        {{blockHierarchy.districtName}}</span><span>/ </span><span (click)="onBlockSelect(blockHierarchy.blockId)" style="cursor: pointer;text-decoration: underline;">
                         {{blockHierarchy.blockName}}</span></p>
             </div>
 
             <div *ngIf="clust">
                 <p id="school">
-                    Report on Infrastructure access by location for: <span (click)="districtWise()"
-                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
-                        (click)="onDistrictSelect(clusterHierarchy.distId)"
-                        style="cursor: pointer;text-decoration: underline;">
-                        {{clusterHierarchy.districtName}}</span><span>/ </span><span
-                        (click)="onBlockSelect(clusterHierarchy.blockId)"
-                        style="cursor: pointer;text-decoration: underline;">
+                    Report on Infrastructure access by location for: <span (click)="districtWise()" style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span (click)="onDistrictSelect(clusterHierarchy.distId)" style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.districtName}}</span><span>/ </span><span (click)="onBlockSelect(clusterHierarchy.blockId)" style="cursor: pointer;text-decoration: underline;">
                         {{clusterHierarchy.blockName}}</span><span>/ </span><span>
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
@@ -46,8 +32,7 @@
                     </p>
                 </div>
                 <div class="col-sm-5">
-                    <em class="fa fa-cloud-download" title="Download Report" id="download"
-                        (click)="downloadReport()"></em>
+                    <em class="fa fa-cloud-download" title="Download Report" id="download" (click)="downloadReport()"></em>
                     <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="districtWise()"></em>
                 </div>
             </div>
@@ -56,8 +41,7 @@
     <div class="row">
         <div class="col-sm-12">
             <p class="note">
-                <strong> About the dashboard:</strong> The School Infrastructure dashboard visualises the data on school
-                infrastructure metrics for {{state}}.
+                <strong> About the dashboard:</strong> The School Infrastructure dashboard visualises the data on school infrastructure metrics for {{state}}.
             </p>
         </div>
     </div>
@@ -91,8 +75,7 @@
                 </option>
             </select>
 
-            <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="clusterId"
-                (change)="onClusterSelect(clusterId)">
+            <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="clusterId" (change)="onClusterSelect(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of clusterMarkers" [(ngValue)]="cluster.details.cluster_id"
                     [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
@@ -107,20 +90,16 @@
     <div class="row">
         <div class="col-sm-12">
             <div style="float: left; width: 90%;">
-                <div #mapContainer id="infraMap" class="active" style="width: 100%;"
-                    [ngStyle]="{height: heigth > 1760 ? '85vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '76vh':'69vh'}">
+                <div #mapContainer id="infraMap" class="active" style="width: 100%;" [ngStyle]="{height: heigth > 1760 ? '85vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '76vh':'69vh'}">
                 </div>
             </div>
             <div style="float: left; width: 9%; margin-left: 1%;">
                 <h5 id="legend" style="margin-left: 20%;">Legend</h5>
                 <div *ngFor="let value of values; let i = index">
-                    <span class="legends" style="float: left;" [ngStyle]="{color: i> 5 ?'black': 'white'}"
-                        [style.background-color]="legendColors[i]">
+                    <span class="legends" style="float: left;" [ngStyle]="{color: i> 2 ?'black': 'white'}" [style.background-color]="legendColors[i]">
                         {{values[i]}} </span>
                 </div>
-                <p id="legendNote"><span style="font-weight: bold;">Note: </span>These colors are applicable for the
-                    absolute
-                    selection only</p>
+                <p id="legendNote"><span style="font-weight: bold;">Note: </span>These colors are applicable for the absolute selection only</p>
             </div>
         </div>
 
@@ -134,7 +113,7 @@
             <p id="legendNote"><span style="font-weight: bold;">Note: </span>These colors are applicable for the absolute
                 selection only</p>
             <div *ngFor="let value of values; let i = index">
-                <span class="legends" style="float: left;" [ngStyle]="{color: i> 5 ?'black': 'white'}" [style.background-color]="legendColors[i]">
+                <span class="legends" style="float: left;" [ngStyle]="{color: i> 2 ?'black': 'white'}" [style.background-color]="legendColors[i]">
                     {{values[i]}} </span>
             </div>
         </div> -->
@@ -142,16 +121,12 @@
     <div class="row" id="footer">
         <div class="col-sm-3">
             <div id="outer">
-                <div id="absolute" (click)="getColor('absolute')"
-                    [ngStyle]="{'background-color' : selected == 'absolute' ? '#3100cc' : '#f5f6fb'}">
-                    <p [ngStyle]="{'color' : selected == 'absolute' ? 'white' : 'black'}"
-                        style="text-align: center; padding: 2%;">
+                <div id="absolute" (click)="getColor('absolute')" [ngStyle]="{'background-color' : selected == 'absolute' ? '#3100cc' : '#f5f6fb'}">
+                    <p [ngStyle]="{'color' : selected == 'absolute' ? 'white' : 'black'}" style="text-align: center; padding: 2%;">
                         Absolute</p>
                 </div>
-                <div id="relative" (click)="getColor('relative')"
-                    [ngStyle]="{'background-color' : selected == 'relative' ? '#3100cc' : '#f5f6fb'}">
-                    <p [ngStyle]="{'color' : selected == 'relative' ? 'white' : 'black'}"
-                        style="text-align: center; padding: 2%;">
+                <div id="relative" (click)="getColor('relative')" [ngStyle]="{'background-color' : selected == 'relative' ? '#3100cc' : '#f5f6fb'}">
+                    <p [ngStyle]="{'color' : selected == 'relative' ? 'white' : 'black'}" style="text-align: center; padding: 2%;">
                         Relative</p>
                 </div>
             </div>

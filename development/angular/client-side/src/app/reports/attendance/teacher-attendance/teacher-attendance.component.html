@@ -128,7 +128,7 @@
             <div style="float: left; width: 9%; margin-left: 1%;">
                 <h5 id="legend" style="margin-left: 20%;">Legend</h5>
                 <div *ngFor="let value of values; let i = index">
-                    <span class="legends" style="float: left;" [ngStyle]="{color: i> 5 ?'black': 'white'}" [style.background-color]="legendColors[i]">
+                    <span class="legends" style="float: left;" [ngStyle]="{color: i> 2 ?'black': 'white'}" [style.background-color]="legendColors[i]">
                         {{values[i]}} </span>
                 </div>
                 <p id="legendNote"><span style="font-weight: bold;">Note: </span>These colors are applicable for the absolute selection only</p>
