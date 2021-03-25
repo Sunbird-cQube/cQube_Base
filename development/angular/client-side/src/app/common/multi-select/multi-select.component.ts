@@ -20,23 +20,7 @@ export class MultiSelectComponent implements OnInit {
   constructor() {
     this.checkedList = [];
   }
-
   showDropDown;
-
-  // selectAll(status) {
-  //   if (status) {
-  //     this.checkedList = this.list;
-  //     this.checkedList.map(item => {
-  //       item['status'] = status;
-  //     });
-  //   }
-  //   else {
-  //     this.checkedList.map(item => {
-  //       item['status'] = false;
-  //     });
-  //     this.checkedList = [];
-  //   }
-  // }
 
   getSelectedValue(id, status) {
     var index;
@@ -67,6 +51,10 @@ export class MultiSelectComponent implements OnInit {
         this.shareCheckedlist();
       }
     }
+  }
+
+  resetSelected() {
+    this.checkedList = [];
   }
 
   getSelected() {
