@@ -132,10 +132,10 @@ check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
 if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
-  min_shared_mem=$(echo $mem_total*11.5/100 | bc)
+  min_shared_mem=$(echo $mem_total*13/100 | bc)
   min_work_mem=$(echo $mem_total*2/100 | bc)
-  min_java_arg_2=$(echo $mem_total*52/100 | bc)
-  min_java_arg_3=$(echo $mem_total*71.5/100 | bc)
+  min_java_arg_2=$(echo $mem_total*13/100 | bc)
+  min_java_arg_3=$(echo $mem_total*65/100 | bc)
   echo """---
 shared_buffers: ${min_shared_mem}MB
 work_mem: ${min_work_mem}MB
@@ -299,7 +299,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("diksha_columns" "state_code" "static_datasource" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "read_only_db_user" \
+declare -a arr=("diksha_columns" "state_code" "static_datasource" "management" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "read_only_db_user" \
                 " read_only_db_password" "s3_access_key" "s3_secret_key" "s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
 		"aws_default_region" "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
 		"keycloak_config_otp" "session_timeout") 
@@ -348,6 +348,11 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_static_datasource $key $value
+       fi
+       ;;
+   management)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        fi
        ;;
    system_user_name)

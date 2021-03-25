@@ -321,7 +321,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("diksha_columns" "state_code" "static_datasource" "system_user_name" "base_dir" "db_user" "db_name" "db_password" \
+declare -a arr=("diksha_columns" "state_code" "static_datasource" "management" "system_user_name" "base_dir" "db_user" "db_name" "db_password" \
                 "s3_access_key" "s3_secret_key" "s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
 		"aws_default_region" "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
 		"keycloak_config_otp" "session_timeout")
@@ -351,7 +351,7 @@ db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=1.10.1
+version_upgradable_from=1.11
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
@@ -384,6 +384,11 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_static_datasource $key $value
+       fi
+       ;;
+   management)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        fi
        ;;
    system_user_name)
