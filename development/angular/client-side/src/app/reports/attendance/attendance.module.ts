@@ -26,7 +26,6 @@ const sttendanceRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    StudengtAttendanceComponent,
     TeacherAttendanceComponent,
     ComingSoonComponent,
   ],
