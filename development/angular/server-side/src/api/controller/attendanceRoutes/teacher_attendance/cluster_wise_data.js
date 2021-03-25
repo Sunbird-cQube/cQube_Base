@@ -3,17 +3,39 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/clusterWise', auth.authController, async (req, res) => {
+router.post('/clusterWise', auth.authController, async(req, res) => {
     try {
         logger.info('---Attendance cluster wise api ---');
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
-        if (timePeriod != null) {
-            fileName = `teacher_attendance/${timePeriod}/cluster.json`;
+        if (management != 'overall' && category != 'overall') {
+            if (timePeriod != null) {
+                fileName = `teacher_attendance/${timePeriod}/school_management_category/${management}/${category}/cluster.json`;
+            } else {
+                fileName = `teacher_attendance/school_management_category/${management}/${category}/cluster_${year}_${month}.json`;
+            }
+        } else if (management == 'overall' && category != 'overall') {
+            if (timePeriod != null) {
+                fileName = `teacher_attendance/${timePeriod}/school_management_category/overall_management/${category}/cluster.json`;
+            } else {
+                fileName = `teacher_attendance/school_management_category/${year}/${month}/overall_management${category}/cluster.json`;
+            }
+        } else if (management != 'overall' && category == 'overall') {
+            if (timePeriod != null) {
+                fileName = `teacher_attendance/${timePeriod}/school_management_category/overall_category/${management}/cluster.json`;
+            } else {
+                fileName = `teacher_attendance/school_management_category/${year}/${month}/overall_category/${management}/cluster.json`;
+            }
         } else {
-            fileName = `teacher_attendance/cluster_${year}_${month}.json`;
+            if (timePeriod != null) {
+                fileName = `teacher_attendance/${timePeriod}/cluster.json`;
+            } else {
+                fileName = `teacher_attendance/cluster_${year}_${month}.json`;
+            }
         }
         var jsonData = await s3File.readS3File(fileName);
         var clustersAttendanceData = jsonData.data;
@@ -43,19 +65,41 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
     }
 });
 
-router.post('/clusterPerBlock', auth.authController, async (req, res) => {
+router.post('/clusterPerBlock', auth.authController, async(req, res) => {
     try {
         logger.info('---Attendance clusterPerBlock api ---');
         var blockId = req.body.id;
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
-        if (timePeriod != null) {
-            fileName = `teacher_attendance/${timePeriod}/cluster.json`;
+        if (management != 'overall' && category != 'overall') {
+            if (timePeriod != null) {
+                fileName = `teacher_attendance/${timePeriod}/school_management_category/${management}/${category}/cluster.json`;
+            } else {
+                fileName = `teacher_attendance/school_management_category/${management}/${category}/cluster_${year}_${month}.json`;
+            }
+        } else if (management == 'overall' && category != 'overall') {
+            if (timePeriod != null) {
+                fileName = `teacher_attendance/${timePeriod}/school_management_category/overall_management/${category}/cluster.json`;
+            } else {
+                fileName = `teacher_attendance/school_management_category/${year}/${month}/overall_management${category}/cluster.json`;
+            }
+        } else if (management != 'overall' && category == 'overall') {
+            if (timePeriod != null) {
+                fileName = `teacher_attendance/${timePeriod}/school_management_category/overall_category/${management}/cluster.json`;
+            } else {
+                fileName = `teacher_attendance/school_management_category/${year}/${month}/overall_category/${management}/cluster.json`;
+            }
         } else {
-            fileName = `teacher_attendance/cluster_${year}_${month}.json`;
-        };
+            if (timePeriod != null) {
+                fileName = `teacher_attendance/${timePeriod}/cluster.json`;
+            } else {
+                fileName = `teacher_attendance/cluster_${year}_${month}.json`;
+            }
+        }
         var jsonData = await s3File.readS3File(fileName);
         var clusterData = [];
         var filterData = jsonData.data.filter(data => {

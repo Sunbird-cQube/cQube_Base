@@ -269,4 +269,7 @@ router.use('/line-chart', onDistSelect);
 const management_category_meta = require('./controller/attendanceRoutes/management_category_meta');
 router.use('/management-category-meta', management_category_meta);
 
+const getDefault = require('./lib/management_category_config');
+router.use('/getDefault', getDefault);
+
 module.exports = router;
