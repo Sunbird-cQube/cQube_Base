@@ -5556,7 +5556,7 @@ and extract(year from days_in_period.day)=min_year;
 
 _query_res:='create or replace view student_attendance_agg_'||period||' as select sch_res.school_id,cast(sch_res.total_present as bigint),cast(sch_res.total_students as bigint),cast(stn_cnt.students_count as bigint),
 b.school_name,b.school_latitude,b.school_longitude,b.cluster_id,b.cluster_name,b.cluster_latitude,b.cluster_longitude,
-b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude
+b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude,b.school_management_type,b.school_category
 from (
 select school_id,sum(total_present) as total_present,sum(total_students) as total_students from 
 (select school_id,'||max_total_present||' as total_present,'||max_total_students||' as total_students'||' from ('||two_month_query||' '||max_filter_query||' '||_group_query||') as max_temp
@@ -5564,7 +5564,7 @@ union all
 select school_id,'||min_total_present||' as total_present,'||min_total_students||' as total_students'||' from ('||two_month_query||' '||min_filter_query||' '||_group_query||') as min_temp) as total_att 
 group by school_id) sch_res inner join
 (select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
-a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
+a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude,a.school_management_type,a.school_category
 from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
 where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
 )as b on b.school_id=sch_res.school_id
@@ -5585,12 +5585,12 @@ and extract(year from days_in_period.day)=year;
 
 _query_res:='create or replace view student_attendance_agg_'||period||' as select sch_res.school_id,cast(sch_res.total_present as bigint),cast(sch_res.total_students as bigint),cast(sch_res.students_count as bigint),
 b.school_name,b.school_latitude,b.school_longitude,b.cluster_id,b.cluster_name,b.cluster_latitude,b.cluster_longitude,
-b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude
+b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude,b.school_management_type,b.school_category
    from (
 select school_id,'||total_present||' as total_present,'||total_students||' as total_students'||',students_count from ('||one_month_query||' '||filter_query||' '||_group_query||') as att ) as sch_res
    inner join
 (select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
-a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
+a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude,a.school_management_type,a.school_category
 from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
 where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
 )as b on b.school_id=sch_res.school_id';
@@ -5603,7 +5603,6 @@ return 0;
 END;
 $$  LANGUAGE plpgsql;
 
-
 select student_attendance_agg_refresh('last_1_day');
 select student_attendance_agg_refresh('last_7_days');
 select student_attendance_agg_refresh('last_30_days');
@@ -5611,12 +5610,12 @@ select student_attendance_agg_refresh('last_30_days');
 
 create or replace view student_attendance_agg_overall as select sch_res.school_id,sch_res.total_present,sch_res.total_students,stn_cnt.students_count,
 b.school_name,b.school_latitude,b.school_longitude,b.cluster_id,b.cluster_name,b.cluster_latitude,b.cluster_longitude,
-b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude
+b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude,b.school_management_type,b.school_category
 from 
 (select school_id ,sum(total_present) as total_present,sum(total_working_days) as total_students from school_student_total_attendance  group by school_id) as sch_res
    inner join
 (select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
-a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
+a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude,a.school_management_type,a.school_category
 from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
 where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
 )as b on b.school_id=sch_res.school_id
@@ -5986,7 +5985,7 @@ and extract(year from days_in_period.day)=min_year;
 
 _query_res:='create or replace view teacher_attendance_agg_'||period||' as select sch_res.school_id,sch_res.total_present,cast(sch_res.total_teachers as bigint),cast(stn_cnt.teachers_count as bigint),
 b.school_name,b.school_latitude,b.school_longitude,b.cluster_id,b.cluster_name,b.cluster_latitude,b.cluster_longitude,
-b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude
+b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude,b.school_management_type,b.school_category
 from (
 select school_id,sum(total_present) as total_present,sum(total_teachers) as total_teachers from 
 (select school_id,'||max_total_present||' as total_present,'||max_total_teachers||' as total_teachers'||' from ('||two_month_query||' '||max_filter_query||' '||_group_query||') as max_temp
@@ -5994,7 +5993,7 @@ union all
 select school_id,'||min_total_present||' as total_present,'||min_total_teachers||' as total_teachers'||' from ('||two_month_query||' '||min_filter_query||' '||_group_query||') as min_temp) as total_att 
 group by school_id) sch_res inner join
 (select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
-a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
+a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude,a.school_management_type,a.school_category
 from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
 where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
 )as b on b.school_id=sch_res.school_id
@@ -6015,12 +6014,12 @@ and extract(year from days_in_period.day)=year;
 
 _query_res:='create or replace view teacher_attendance_agg_'||period||' as select sch_res.school_id,sch_res.total_present,cast(sch_res.total_teachers as bigint),cast(sch_res.teachers_count as bigint),
 b.school_name,b.school_latitude,b.school_longitude,b.cluster_id,b.cluster_name,b.cluster_latitude,b.cluster_longitude,
-b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude
+b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude,b.school_management_type,b.school_category
    from (
 select school_id,'||total_present||' as total_present,'||total_teachers||' as total_teachers'||',teachers_count from ('||one_month_query||' '||filter_query||' '||_group_query||') as att ) as sch_res
    inner join
 (select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
-a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
+a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude,a.school_management_type,a.school_category
 from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
 where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
 )as b on b.school_id=sch_res.school_id';
@@ -6047,12 +6046,12 @@ select teacher_attendance_agg_refresh('last_30_days');
 
 create or replace view teacher_attendance_agg_overall as select tch_res.school_id,cast(tch_res.total_present as numeric),tch_res.total_teachers,tch_cnt.teachers_count,
 b.school_name,b.school_latitude,b.school_longitude,b.cluster_id,b.cluster_name,b.cluster_latitude,b.cluster_longitude,
-b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude
+b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude,b.school_management_type,b.school_category
 from 
 (select school_id ,sum(total_present) as total_present,sum(total_working_days) as total_teachers from school_teacher_total_attendance  group by school_id) as tch_res
    inner join
 (select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
-a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
+a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude,a.school_management_type,a.school_category
 from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
 where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
 )as b on b.school_id=tch_res.school_id

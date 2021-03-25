@@ -1495,6 +1495,10 @@ primary key(school_id,month,year)
 
 create index if not exists school_student_total_attendance_id on school_student_total_attendance(month,school_id,block_id,cluster_id);
 
+
+alter table school_student_total_attendance add column if not exists school_management_type varchar(100);
+alter table school_student_total_attendance add column if not exists school_category varchar(100);
+
 /*school_teacher_total_attendance*/
 
 create table if not exists school_teacher_total_attendance
@@ -1527,6 +1531,10 @@ created_on  TIMESTAMP without time zone ,
 updated_on  TIMESTAMP without time zone,
 primary key(school_id,month,year)
 );
+
+
+alter table school_teacher_total_attendance add column if not exists school_management_type varchar(100);
+alter table school_teacher_total_attendance add column if not exists school_category varchar(100);
 
 create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
 
