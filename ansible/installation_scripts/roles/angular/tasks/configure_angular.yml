@@ -23,6 +23,9 @@
   template:
     src: default_management_category.csv.j2
     dest: "{{ base_dir }}/cqube/dashboard/default_management_category/default_management_category.csv"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    mode: '0644'
   tags: [ install, update ]
 
 - name: Making sure {{ base_dir }}/cqube/dashboard/client_side directory is present
