@@ -13287,7 +13287,7 @@ select d.*,b.total_schools,b.students_count from
 school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
 district_id,initcap(district_name)as district_name,school_latitude,school_longitude,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as school_performance,
-TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month') AS month,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 school_management_type
 from periodic_exam_school_result where school_management_type is not null  group by academic_year,month,school_management_type,
 school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,school_latitude,school_longitude) as a
@@ -13345,7 +13345,7 @@ select d.*,b.total_schools,b.students_count from
 cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,district_id,
 initcap(district_name)as district_name,cluster_latitude,cluster_longitude,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as cluster_performance,
-TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month') AS month,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 school_management_type
 from periodic_exam_school_result where school_management_type is not null group by academic_year,month,school_management_type,
 cluster_id,cluster_name,block_id,block_name,district_id,district_name,cluster_latitude,cluster_longitude) as a
@@ -13402,7 +13402,7 @@ select d.*,b.total_schools,b.students_count from
 (select academic_year,
 block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,block_latitude,block_longitude,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as block_performance,
-TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month') AS month,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 school_management_type
 from periodic_exam_school_result where school_management_type is not null group by academic_year,month,school_management_type,
 block_id,block_name,district_id,district_name,block_latitude,block_longitude) as a
@@ -13459,7 +13459,7 @@ select d.*,b.total_schools,b.students_count from
 (select academic_year,
 district_id,initcap(district_name)as district_name,district_latitude,district_longitude,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as district_performance,
-TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month') AS month,
+trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 school_management_type
 from periodic_exam_school_result where school_management_type is not null group by academic_year,month,school_management_type,
 district_id,district_name,district_latitude,district_longitude) as a
