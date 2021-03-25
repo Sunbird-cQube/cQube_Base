@@ -1455,5 +1455,15 @@ and exam_id IS NOT NULL
 and question_title IS NOT NULL
 and question IS NOT NULL
 and question_marks IS NOT NULL""",
-"pat_periodic_exam_subject_details_table_name":"""subject_details"""
+"pat_periodic_exam_subject_details_table_name":"""subject_details""",
+"pat_meta_jolt_grade_year_month":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "@grade": "@level[].grade"
+      }
+    }
+  }
+]"""
 }

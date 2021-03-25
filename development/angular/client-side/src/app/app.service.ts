@@ -19,17 +19,31 @@ export class AppServiceComponent {
     telemetryData: any;
     showBack = true;
     showHome = true;
-    zoomLevel = 7;
     mapCenterLatlng = config.default[`${environment.stateName}`];
+    zoomLevel = this.mapCenterLatlng.zoomLevel;
 
     public state = this.mapCenterLatlng.name;
     date = new Date();
     dateAndTime: string;
+    latitude;
+    longitude;
+
+    management;
+    category;
 
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
+        this.getDefault();
         this.token = keyCloakService.kc.token;
         localStorage.setItem('token', this.token);
         this.dateAndTime = `${("0" + (this.date.getDate())).slice(-2)}-${("0" + (this.date.getMonth() + 1)).slice(-2)}-${this.date.getFullYear()}`;
+    }
+  
+    width = window.innerWidth;
+    onResize(level) {
+        this.width = window.innerWidth;
+        this.zoomLevel = this.width > 3820 ? this.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.mapCenterLatlng.zoomLevel + 1 : this.mapCenterLatlng.zoomLevel;
+        this.setZoomLevel(level)
+        this.setMarkerRadius(level);
     }
 
 
@@ -45,7 +59,8 @@ export class AppServiceComponent {
 
     logoutOnTokenExpire() {
         if (this.keyCloakService.kc.isTokenExpired()) {
-            // alert("Session expired, Please login again!");
+            localStorage.removeItem('management');
+            localStorage.removeItem('category');
             let options = {
                 redirectUri: environment.appUrl
             }
@@ -108,6 +123,7 @@ export class AppServiceComponent {
 
 
     //Initialise markers.....
+    markersIcons = [];
     public initMarkers(lat, lng, color, radius, strokeWeight, weight, levelWise) {
         var markerIcon;
         if (radius >= 1) {
@@ -129,7 +145,64 @@ export class AppServiceComponent {
                 weight: weight
             });
         }
+        this.markersIcons.push(markerIcon);
         return markerIcon;
+    }
+    public initMarkers1(lat, lng, color, strokeWeight, weight, levelWise) {
+        var markerIcon;
+            markerIcon = L.circleMarker([lat, lng], {
+                color: "gray",
+                fillColor: color,
+                fillOpacity: 1,
+                strokeWeight: strokeWeight,
+                weight: weight
+            });
+        this.markersIcons.push(markerIcon);
+        return markerIcon;
+    }
+
+    setMarkerRadius(level){
+        this.markersIcons.map(markerIcon=>{
+            var radius;
+            if (level === "District") {
+                markerIcon.setRadius(this.getMarkerRadius(18, 14, 10, 6));
+            }
+            if (level === "Block") {
+                markerIcon.setRadius(this.getMarkerRadius(12, 10, 8, 5));
+            }
+            if (level === "Cluster") {
+                markerIcon.setRadius(this.getMarkerRadius(5, 4, 3, 2));
+            }
+            if (level === "School") {
+                markerIcon.setRadius(this.getMarkerRadius(3, 2.5, 2, 1));
+            }
+            if (level === "blockPerDistrict" || level === "clusterPerBlock" || level === "schoolPerCluster") {
+                markerIcon.setRadius(this.getMarkerRadius(18, 14, 10, 5));
+            }
+        })        
+    }
+
+    getMarkerRadius(rad1, rad2, rad3, rad4) {
+        let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
+        return radius;
+    }
+
+    setZoomLevel(level) {
+        var zoomLevel;
+        if (level === "District" || level === "Block" || level === "Cluster" || level === "School") {
+            zoomLevel = this.zoomLevel
+         }
+         if (level === "blockPerDistrict") {
+             zoomLevel =  this.zoomLevel + 1;
+         }
+         if (level === "clusterPerBlock") {
+            zoomLevel =  this.zoomLevel + 3;
+         }
+         if (level === "schoolPerCluster") {
+            zoomLevel =  this.zoomLevel + 5;
+         }
+        globalMap.options.minZoom = zoomLevel;
+        globalMap.setView(new L.LatLng(this.latitude, this.longitude), zoomLevel);
     }
 
 
@@ -292,7 +365,7 @@ export class AppServiceComponent {
             if (dataSet[filter] <= parseInt(keys[i])) {
                 setColor = this.colors[keys[i]];
                 break;
-            } else if (dataSet[filter] > parseInt(keys[i]) && dataSet[filter] <= parseInt(keys[i + 1])) {
+            } else if (dataSet[filter] >= parseInt(keys[i]) && dataSet[filter] <= parseInt(keys[i + 1])) {
                 setColor = this.colors[keys[i + 1]];
                 break;
             }
@@ -441,56 +514,56 @@ export class AppServiceComponent {
     }
 
     public colors = {
-        2: 'red',
-        4: '#ff0000',
-        6: '#fc0500',
-        8: '#fa0a00',
-        10: '#f71000',
-        12: '#f51500',
-        14: '#f21a00',
-        16: '#ef1f00',
-        18: '#ed2400',
-        20: '#ea2a00',
-        22: '#e72f00',
-        24: '#e53400',
-        26: '#e23900',
-        28: '#e03e00',
-        30: '#dd4400',
-        32: '#da4900',
-        34: '#d84e00',
-        36: '#d55300',
-        38: '#d35800',
-        40: '#d05e00',
-        42: '#cd6300',
-        44: '#cb6800',
-        46: '#c86d00',
-        48: '#c67200',
-        50: '#c37800',
-        52: '#c07d00',
-        54: '#be8200',
-        56: '#bb8700',
-        58: '#b88d00',
-        60: '#b69200',
-        62: '#b39700',
-        64: '#b19c00',
-        66: '#aea100',
-        68: '#aba700',
-        70: '#a9ac00',
-        72: '#a6b100',
-        74: '#a4b600',
-        76: '#a1bb00',
-        78: '#9ec100',
-        80: '#9cc600',
-        82: '#99cb00',
-        84: '#97d000',
-        86: '#94d500',
-        88: '#91db00',
-        90: '#8fe000',
-        92: '#8ce500',
-        94: '#89ea00',
-        96: '#87ef00',
-        98: '#84f500',
-        100: '#00FF00',
+        10: '#a50026',
+        20: '#d73027',
+        30: '#f46d43',
+        40: '#fdae61',
+        50: '#fee08b',
+        60: '#d9ef8b',
+        70: '#a6d96a',
+        80: '#66bd63',
+        90: '#1a9850',
+        100: '#006837',
+        // 22: '#e72f00',
+        // 24: '#e53400',
+        // 26: '#e23900',
+        // 28: '#e03e00',
+        // 30: '#dd4400',
+        // 32: '#da4900',
+        // 34: '#d84e00',
+        // 36: '#d55300',
+        // 38: '#d35800',
+        // 40: '#d05e00',
+        // 42: '#cd6300',
+        // 44: '#cb6800',
+        // 46: '#c86d00',
+        // 48: '#c67200',
+        // 50: '#c37800',
+        // 52: '#c07d00',
+        // 54: '#be8200',
+        // 56: '#bb8700',
+        // 58: '#b88d00',
+        // 60: '#b69200',
+        // 62: '#b39700',
+        // 64: '#b19c00',
+        // 66: '#aea100',
+        // 68: '#aba700',
+        // 70: '#a9ac00',
+        // 72: '#a6b100',
+        // 74: '#a4b600',
+        // 76: '#a1bb00',
+        // 78: '#9ec100',
+        // 80: '#9cc600',
+        // 82: '#99cb00',
+        // 84: '#97d000',
+        // 86: '#94d500',
+        // 88: '#91db00',
+        // 90: '#8fe000',
+        // 92: '#8ce500',
+        // 94: '#89ea00',
+        // 96: '#87ef00',
+        // 98: '#84f500',
+        // 100: '#00FF00',
     }
     //color gredient generation....
     public exceptionColor() {
@@ -556,4 +629,20 @@ export class AppServiceComponent {
             generateGradient
         };
     }
+
+
+//management category metadata
+  management_category_metaData(){
+    this.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/management-category-meta`, {});
+  }
+
+//getDefaultOptions
+  getDefault(){
+    this.logoutOnTokenExpire();
+    this.http.get(`${this.baseUrl}/getDefault`).subscribe(res=>{
+        this.management = res[0]['name'];
+        this.category = res[1]['name'];
+    })
+  }
 }

@@ -8,7 +8,14 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all block wise api ---');
         var timePeriod = req.body.timePeriod;
-        let fileName = `crc/${timePeriod}/block.json`;
+        var year = req.body.year;
+        var month = req.body.month
+        let fileName ;
+        if(timePeriod && timePeriod != 'select_month'){
+            fileName = `crc/${timePeriod}/block.json`;
+        }else{
+            fileName = `crc/${year}/${month}/block.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
 
         var blockData = jsonData.data;
@@ -27,7 +34,14 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
 
         let distId = req.params.distId;
         var timePeriod = req.body.timePeriod;
-        let fileName = `crc/${timePeriod}/block.json`;
+        var year = req.body.year;
+        var month = req.body.month
+        let fileName ;
+        if(timePeriod && timePeriod != 'select_month'){
+            fileName = `crc/${timePeriod}/block.json`;
+        }else{
+            fileName = `crc/${year}/${month}/block.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
 
         var blockData = jsonData

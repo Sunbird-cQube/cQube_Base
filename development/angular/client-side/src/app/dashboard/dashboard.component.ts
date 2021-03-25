@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
-import { AppServiceComponent } from '../app.service';
-import { KeycloakSecurityService } from '../keycloak-security.service';
-import { environment } from '../../environments/environment';
+import { Component, OnInit } from "@angular/core";
+import { AppServiceComponent } from "../app.service";
+import { KeycloakSecurityService } from "../keycloak-security.service";
+import { environment } from "../../environments/environment";
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.css"],
 })
 export class DashboardComponent implements OnInit {
   state;
@@ -35,7 +34,7 @@ export class DashboardComponent implements OnInit {
   tpdtpTooltip;
   tpdcpTooltip;
   healthCardTooltip;
-  patExcptTooltip
+  patExcptTooltip;
   sarExcptTooltip;
   tarExpTooltip;
   satTooltip;
@@ -74,8 +73,7 @@ export class DashboardComponent implements OnInit {
   sarExcptViews;
   tarExpViews;
   satViews;
-  satHeatChartViews
-
+  satHeatChartViews;
 
   //for coming soon page
   nifi_crc;
@@ -89,20 +87,23 @@ export class DashboardComponent implements OnInit {
   nifi_composite;
 
   // diksha columns
-  diksha_column = 'diksha_columns' in environment ? environment['diksha_columns'] : true
+  diksha_column =
+    "diksha_columns" in environment ? environment["diksha_columns"] : true;
 
-
-  constructor(private service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) {
+  constructor(
+    private service: AppServiceComponent,
+    public keyCloakService: KeycloakSecurityService
+  ) {
     service.logoutOnTokenExpire();
     this.changeDataSourceStatus();
   }
 
   ngOnInit() {
     sessionStorage.clear();
-    document.getElementById('spinner').style.display = 'none';
-    document.getElementById('homeBtn').style.display = 'none';
-    document.getElementById('backBtn').style.display = 'block';
-    if (localStorage.getItem('roleName') == "admin") {
+    document.getElementById("spinner").style.display = "block";
+    document.getElementById("homeBtn").style.display = "none";
+    document.getElementById("backBtn").style.display = "block";
+    if (localStorage.getItem("roleName") == "admin") {
       this.hiddenPass = false;
     } else {
       this.hiddenPass = true;
@@ -139,37 +140,67 @@ export class DashboardComponent implements OnInit {
     this.tarExpTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their teacher attendance data.`;
     this.sarExcptTooltip = `This geo-location-based dashboard provides insights on those schools that did not upload their student attendance data.`;
     this.satTooltip = `This geo-location-based dashboard provides insights on student Periodic Assessment Test (SAT) performance across ${this.state}.`;
-    this.satHeatChartTooltip = "This dashboard provides insights on student performance at the question level.";
+    this.satHeatChartTooltip =
+      "This dashboard provides insights on student performance at the question level.";
+
+    this.service.management_category_metaData().subscribe((res) => {
+      this.managements = res["mydata"].management;
+      this.managements.unshift({ id: "overall", value: "Overall" });
+      this.categories = res["mydata"].category;
+      this.categories.unshift({ id: "overall", value: "Overall" });
+      document.getElementById("spinner").style.display = "none";
+    });
+    if(!localStorage.getItem('management') && !localStorage.getItem('category')){
+      this.management  = this.service.management;
+      this.category  = this.service.category;
+      localStorage.setItem("management", this.management);
+      localStorage.setItem("category", this.category);
+    }else{
+      this.management = localStorage.getItem('management');
+      this.category = localStorage.getItem('category');
+    }
+  }
+
+  //Management and category
+  managements = [];
+  public management;
+  categories = [];
+  public category;
+  onSelectManagement() {
+    localStorage.setItem("management", this.management);
+  }
+  onSelectCategory() {
+    localStorage.setItem("category", this.category);
   }
 
   changeDataSourceStatus() {
     this.service.getDataSource().subscribe((res: any) => {
-      res.forEach(element => {
-        if (element.template == 'nifi_crc') {
+      res.forEach((element) => {
+        if (element.template == "nifi_crc") {
           this.nifi_crc = element.status;
         }
-        if (element.template == 'nifi_attendance') {
+        if (element.template == "nifi_attendance") {
           this.nifi_attendance = element.status;
         }
-        if (element.template == 'nifi_semester') {
+        if (element.template == "nifi_semester") {
           this.nifi_semester = element.status;
         }
-        if (element.template == 'nifi_infra') {
+        if (element.template == "nifi_infra") {
           this.nifi_infra = element.status;
         }
-        if (element.template == 'nifi_diksha') {
+        if (element.template == "nifi_diksha") {
           this.nifi_diksha = element.status;
         }
-        if (element.template == 'nifi_telemetry') {
+        if (element.template == "nifi_telemetry") {
           this.nifi_telemetry = element.status;
         }
-        if (element.template == 'nifi_udise') {
+        if (element.template == "nifi_udise") {
           this.nifi_udise = element.status;
         }
-        if (element.template == 'nifi_pat') {
+        if (element.template == "nifi_pat") {
           this.nifi_pat = element.status;
         }
-        if (element.template === 'nifi_composite') {
+        if (element.template === "nifi_composite") {
           this.nifi_composite = element.status;
         }
       });
@@ -188,30 +219,30 @@ export class DashboardComponent implements OnInit {
 
   fetchTelemetry(event, report) {
     this.service.getTelemetryData(report, event.type);
-    document.getElementById('homeBtn').style.display = 'block';
-    document.getElementById('backBtn').style.display = 'none';
+    document.getElementById("homeBtn").style.display = "block";
+    document.getElementById("backBtn").style.display = "none";
     this.service.homeControl();
   }
 
   getViews24hrs() {
-    this.service.getTelemetry('last_day').subscribe(res => {
-      this.telemetryData = res['telemetryData'];
+    this.service.getTelemetry("last_day").subscribe((res) => {
+      this.telemetryData = res["telemetryData"];
       this.assignViews(this.telemetryData);
-    })
+    });
   }
 
   getViews7days() {
-    this.service.getTelemetry('last_7_days').subscribe(res => {
-      this.telemetryData = res['telemetryData'];
+    this.service.getTelemetry("last_7_days").subscribe((res) => {
+      this.telemetryData = res["telemetryData"];
       this.assignViews(this.telemetryData);
-    })
+    });
   }
 
   getViews30days() {
-    this.service.getTelemetry('last_30_days').subscribe(res => {
-      this.telemetryData = res['telemetryData'];
+    this.service.getTelemetry("last_30_days").subscribe((res) => {
+      this.telemetryData = res["telemetryData"];
       this.assignViews(this.telemetryData);
-    })
+    });
   }
 
   assignViews(views) {
@@ -247,101 +278,100 @@ export class DashboardComponent implements OnInit {
     var myStr = this.removeUnderscore(views[0].time_range);
     this.timePeriod = " (" + myStr + ")";
 
-    views.forEach(element => {
+    views.forEach((element) => {
       let timeStr = this.removeUnderscore(element.time_range);
-      if (element.reportid == 'imr') {
+      if (element.reportid == "imr") {
         this.imrViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'cr') {
+      if (element.reportid == "cr") {
         this.crViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'udise') {
+      if (element.reportid == "udise") {
         this.udiseViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'composite') {
+      if (element.reportid == "composite") {
         this.compositeViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'dsc') {
+      if (element.reportid == "dsc") {
         this.dscViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'dcc') {
+      if (element.reportid == "dcc") {
         this.dccViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'ut') {
+      if (element.reportid == "ut") {
         this.utViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'dtr') {
+      if (element.reportid == "dtr") {
         this.dtrViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'utc') {
+      if (element.reportid == "utc") {
         this.utcViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'crcr') {
+      if (element.reportid == "crcr") {
         this.crcrViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'sr') {
+      if (element.reportid == "sr") {
         this.srViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'pat') {
+      if (element.reportid == "pat") {
         this.patViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'SemExp') {
+      if (element.reportid == "SemExp") {
         this.semExpViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'isdata') {
+      if (element.reportid == "isdata") {
         this.isdataViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'sar') {
+      if (element.reportid == "sar") {
         this.sarViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'tar') {
+      if (element.reportid == "tar") {
         this.tarViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'telemData') {
+      if (element.reportid == "telemData") {
         this.telemDataViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'heatChart') {
+      if (element.reportid == "heatChart") {
         this.heatChartViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'lotable') {
+      if (element.reportid == "lotable") {
         this.lotableViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'tpd-cp') {
+      if (element.reportid == "tpd-cp") {
         this.tpdcpViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'tpd-tp') {
+      if (element.reportid == "tpd-tp") {
         this.tpdtpViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'tpd-enroll') {
+      if (element.reportid == "tpd-enroll") {
         this.tpdenrollViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'tpd-comp') {
+      if (element.reportid == "tpd-comp") {
         this.tpdcompViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'healthCard') {
+      if (element.reportid == "healthCard") {
         this.healthCardViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'patExcpt') {
+      if (element.reportid == "patExcpt") {
         this.patExcptViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'sarExcpt') {
+      if (element.reportid == "sarExcpt") {
         this.sarExcptViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'tarExp') {
+      if (element.reportid == "tarExp") {
         this.tarExpViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'sat') {
+      if (element.reportid == "sat") {
         this.satViews = element.number_of_views + " (" + timeStr + ")";
       }
-      if (element.reportid == 'satHeatChart') {
+      if (element.reportid == "satHeatChart") {
         this.satHeatChartViews = element.number_of_views + " (" + timeStr + ")";
       }
-
     });
   }
 
   removeUnderscore(data) {
-    var mydata = data.replace(/_/g, ' ');
+    var mydata = data.replace(/_/g, " ");
     var myStr = mydata.charAt(0).toUpperCase() + mydata.substr(1).toLowerCase();
     return myStr;
   }

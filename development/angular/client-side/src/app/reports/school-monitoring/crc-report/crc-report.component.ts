@@ -83,11 +83,11 @@ export class CrcReportComponent implements OnInit {
   public reportData: any = [];
 
   public xAxisFilter = [
-    { key: 'visit_0', value: "Visit-0 times (%)" },
-    { key: 'visit_1_2', value: "Visit-1 to 2 times (%)" },
-    { key: 'visit_3_5', value: "Visit-3 to 5 times (%)" },
-    { key: 'visit_6_10', value: "Visit-6 to 10 times (%)" },
-    { key: 'visit_10_more', value: "Visits more than 10 times (%)" },
+    { key: 'visit_0', value: "% Schools (No Visit)" },
+    { key: 'visit_1_2', value: "% Schools (1 to 2 Visits)" },
+    { key: 'visit_3_5', value: "% Schools (3 to 5 Visits)" },
+    { key: 'visit_6_10', value: "% Schools (6 to 10 Visits)" },
+    { key: 'visit_10_more', value: "% Schools (More than 10 Visits)" },
     { key: "no_of_schools_per_crc", value: "Number of schools per CRC" },
     { key: "visits_per_school", value: "Visits per schools" },
     { key: "visitedSchoolCount", value: "Visited schools count" },
@@ -96,11 +96,11 @@ export class CrcReportComponent implements OnInit {
   ]
 
   public yAxisFilter = [
-    { key: 'visit_0', value: "Visit-0 times (%)" },
-    { key: 'visit_1_2', value: "Visit-1 to 2 times (%)" },
-    { key: 'visit_3_5', value: "Visit-3 to 5 times (%)" },
-    { key: 'visit_6_10', value: "Visit-6 to 10 times (%)" },
-    { key: 'visit_10_more', value: "Visits more than 10 times (%)" },
+    { key: 'visit_0', value: "% Schools (No Visit)" },
+    { key: 'visit_1_2', value: "% Schools (1 to 2 Visits)" },
+    { key: 'visit_3_5', value: "% Schools (3 to 5 Visits)" },
+    { key: 'visit_6_10', value: "% Schools (6 to 10 Visits)" },
+    { key: 'visit_10_more', value: "% Schools (More than 10 Visits)" },
     { key: "no_of_schools_per_crc", value: "Number of schools per CRC" },
     { key: "visits_per_school", value: "Visits per schools" },
     { key: "visitedSchoolCount", value: "Visited schools count" },
@@ -108,7 +108,16 @@ export class CrcReportComponent implements OnInit {
     { key: "totalVisits", value: "Total visits" }
   ]
 
-  timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }];
+  public getMonthYear: any;
+  public years: any = [];
+  public year;
+  public months: any = [];
+  public month;
+  yearMonth = true;
+  month_year: { month: any; year: any; };
+  monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
   period = 'overall';
 
   myData;
@@ -129,7 +138,26 @@ export class CrcReportComponent implements OnInit {
     document.getElementById('backBtn').style.display = 'none';
     this.createChart(["clg"], [], '', {});
     let params = JSON.parse(sessionStorage.getItem('report-level-info'));
+    this.service.getMonthYear().subscribe(res => {
+      this.getMonthYear = res;
+      this.getMonthYear.map(item=>{
+        this.years.push(item['academic_year']);
+      });
+      this.year = this.years[this.years.length - 1];
 
+      this.months = [];
+      this.getMonthYear.map(item=>{
+        if(item['academic_year'] == this.year){
+          this.months = item['month'];
+        }
+      })
+      this.month = this.months[this.months.length - 1];
+      if (this.month) {
+        this.month_year = {
+          month: null,
+          year: null
+        };
+      }
     if (params)
       this.period = params.timePeriod;
     if (params && params.level) {
@@ -154,11 +182,12 @@ export class CrcReportComponent implements OnInit {
       this.onResize();
       // this.districtWise();
     }
+  })
   }
 
   getDistricts(level): void {
     this.scatterChart.destroy();
-    this.service.crcDistWiseData({ timePeriod: this.period }).subscribe(res => {
+    this.service.crcDistWiseData({...{ timePeriod: this.period }, ...this.month_year}).subscribe(res => {
       localStorage.setItem('resData', JSON.stringify(res));
       this.result = res;
       let a = this.result.schoolsVisitedCount
@@ -182,7 +211,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   getBlocks(level, distId, blockId?: any): void {
-    this.service.crcBlockWiseData(distId, { timePeriod: this.period }).subscribe((result: any) => {
+    this.service.crcBlockWiseData(distId, {...{ timePeriod: this.period }, ...this.month_year}).subscribe((result: any) => {
       this.crcBlocksNames = result;
       this.reportData = this.crcBlocksNames = this.crcBlocksNames.visits;
       for (var i = 0; i < this.crcBlocksNames.length; i++) {
@@ -201,7 +230,7 @@ export class CrcReportComponent implements OnInit {
   }
 
   getClusters(distId, blockId, clusterId): void {
-    this.service.crcClusterWiseData(distId, blockId, { timePeriod: this.period }).subscribe((result: any) => {
+    this.service.crcClusterWiseData(distId, blockId, {...{ timePeriod: this.period }, ...this.month_year}).subscribe((result: any) => {
       this.crcClusterNames = result.visits;
       this.reportData = this.crcClusterNames;
 
@@ -225,21 +254,47 @@ export class CrcReportComponent implements OnInit {
   reportName = 'crc_report';
 
 
+  showYearMonth() {
+    document.getElementById('home').style.display = 'block';
+    this.yearMonth = false;
+    this.month_year = {
+      month: this.monthNames.indexOf(this.month.trim())+1,
+      year: this.year
+    };
+    // this.period = null;
+    this.levelWiseFilter();
+  }
+
+  getMonth(event) {
+    this.month_year = {
+      month: this.monthNames.indexOf(this.month.trim())+1,
+      year: this.year
+    };
+    this.levelWiseFilter();
+  }
+
+  getYear() {
+    this.months = [];
+    this.month = undefined;
+    this.getMonthYear.map(item=>{
+      if(item['academic_year'] == this.year){
+        this.months = item['month'];
+      }
+    })
+  }
+
+
   onPeriodSelect() {
     if (this.period != 'overall') {
       document.getElementById('home').style.display = 'block';
     } else {
       document.getElementById('home').style.display = 'none';
     }
-    // if (this.skul) {
-    //   this.districtWise();
-    // } else if (this.dist) {
-    //   this.myDistData(this.distName);
-    // } else if (this.blok) {
-    //   this.myBlockData(this.blockName);
-    // } else if (this.clust) {
-    //   this.myClusterData(this.clustName);
-    // }
+    this.yearMonth = true;
+    this.month_year = {
+      month: null,
+      year: null
+    };
     this.onResize();
   }
   onClockHome() {
@@ -283,7 +338,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcDistWiseData({ timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.crcDistWiseData({...{ timePeriod: this.period }, ...this.month_year}).subscribe(res => {
       localStorage.setItem('resData', JSON.stringify(res));
       this.result = res;
       let a = this.result.schoolsVisitedCount
@@ -327,11 +382,11 @@ export class CrcReportComponent implements OnInit {
           },
           columns: [
             { title: 'District Name', data: 'districtName' },
-            { title: 'Visit-0 times (%)', data: 'visit_0' },
-            { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
-            { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
-            { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
-            { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+            { title: '% Schools (No Visit)', data: 'visit_0' },
+            { title: '% Schools (1 to 2 Visits)', data: 'visit_1_2' },
+            { title: '% Schools (3 to 5 Visits)', data: 'visit_3_5' },
+            { title: '% Schools (6 to 10 Visits)', data: 'visit_6_10' },
+            { title: '% Schools (More than 10 Visits)', data: 'visit_10_more' },
             { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
             { title: "Visits per schools", data: "visits_per_school" },
             { title: "Visited schools count", data: "visitedSchoolCount" },
@@ -377,7 +432,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcAllBlockWiseData({ timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.crcAllBlockWiseData({...{ timePeriod: this.period }, ...this.month_year}).subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -401,7 +456,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcAllClusterWiseData({ timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.crcAllClusterWiseData({...{ timePeriod: this.period }, ...this.month_year}).subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -425,7 +480,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcAllSchoolWiseData({ timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.crcAllSchoolWiseData({...{ timePeriod: this.period }, ...this.month_year}).subscribe(res => {
       this.reportData = res['visits'];
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -473,7 +528,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcBlockWiseData(data, { timePeriod: this.period }).subscribe((result: any) => {
+    this.myData = this.service.crcBlockWiseData(data, {...{ timePeriod: this.period }, ...this.month_year}).subscribe((result: any) => {
       if (!fromParam) {
         if ($.fn.DataTable.isDataTable('#table')) {
           $('#table').DataTable().destroy();
@@ -521,11 +576,11 @@ export class CrcReportComponent implements OnInit {
           columns: [
             { title: 'District Name', data: 'districtName' },
             { title: 'Block Name', data: 'blockName' },
-            { title: 'Visit-0 times (%)', data: 'visit_0' },
-            { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
-            { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
-            { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
-            { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+            { title: '% Schools (No Visit)', data: 'visit_0' },
+            { title: '% Schools (1 to 2 Visits)', data: 'visit_1_2' },
+            { title: '% Schools (3 to 5 Visits)', data: 'visit_3_5' },
+            { title: '% Schools (6 to 10 Visits)', data: 'visit_6_10' },
+            { title: '% Schools (More than 10 Visits)', data: 'visit_10_more' },
             { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
             { title: "Visits per schools", data: "visits_per_school" },
             { title: "Visited schools count", data: "visitedSchoolCount" },
@@ -585,7 +640,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcClusterWiseData(localStorage.getItem('distId'), data, { timePeriod: this.period }).subscribe((result: any) => {
+    this.myData = this.service.crcClusterWiseData(localStorage.getItem('distId'), data, {...{ timePeriod: this.period }, ...this.month_year}).subscribe((result: any) => {
       if (!fromParam) {
         if ($.fn.DataTable.isDataTable('#table')) {
           $('#table').DataTable().destroy();
@@ -636,11 +691,11 @@ export class CrcReportComponent implements OnInit {
           { title: 'District Name', data: 'districtName' },
           { title: 'Block Name', data: 'blockName' },
           { title: 'Cluster Name', data: 'clusterName' },
-          { title: 'Visit-0 times (%)', data: 'visit_0' },
-          { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
-          { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
-          { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
-          { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+          { title: '% Schools (No Visit)', data: 'visit_0' },
+          { title: '% Schools (1 to 2 Visits)', data: 'visit_1_2' },
+          { title: '% Schools (3 to 5 Visits)', data: 'visit_3_5' },
+          { title: '% Schools (6 to 10 Visits)', data: 'visit_6_10' },
+          { title: '% Schools (More than 10 Visits)', data: 'visit_10_more' },
           { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
           { title: "Visits per schools", data: "visits_per_school" },
           { title: "Visited schools count", data: "visitedSchoolCount" },
@@ -700,7 +755,7 @@ export class CrcReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.crcSchoolWiseData(distId, blockId, data, { timePeriod: this.period }).subscribe(async (result: any) => {
+    this.myData = this.service.crcSchoolWiseData(distId, blockId, data, {...{ timePeriod: this.period }, ...this.month_year}).subscribe(async (result: any) => {
       if (!fromParam) {
         if ($.fn.DataTable.isDataTable('#table')) {
           $('#table').DataTable().destroy();
@@ -754,11 +809,11 @@ export class CrcReportComponent implements OnInit {
           { title: 'Block Name', data: 'blockName' },
           { title: 'Cluster Name', data: 'clusterName' },
           { title: 'School Name', data: 'schoolName' },
-          { title: 'Visit-0 times (%)', data: 'visit_0' },
-          { title: 'Visit-1 to 2 times (%)', data: 'visit_1_2' },
-          { title: 'Visit-3 to 5 times (%)', data: 'visit_3_5' },
-          { title: 'Visit-6 to 10 times (%)', data: 'visit_6_10' },
-          { title: 'Visits more than 10 times (%)', data: 'visit_10_more' },
+          { title: '% Schools (No Visit)', data: 'visit_0' },
+          { title: '% Schools (1 to 2 Visits)', data: 'visit_1_2' },
+          { title: '% Schools (3 to 5 Visits)', data: 'visit_3_5' },
+          { title: '% Schools (6 to 10 Visits)', data: 'visit_6_10' },
+          { title: '% Schools (More than 10 Visits)', data: 'visit_10_more' },
           { title: 'Number of schools per CRC', data: 'no_of_schools_per_crc' },
           { title: "Visits per schools", data: "visits_per_school" },
           { title: "Total schools", data: "totalSchools" },
@@ -811,8 +866,8 @@ export class CrcReportComponent implements OnInit {
         tooltips: {
           titleFontSize: 16,
           cornerRadius: 10,
-          xPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
-          yPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 2,
+          xPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 7,
+          yPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 7,
           bodyFontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
           displayColors: false,
           custom: function (tooltip) {

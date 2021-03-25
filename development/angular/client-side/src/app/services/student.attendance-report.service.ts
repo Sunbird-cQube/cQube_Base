@@ -72,4 +72,20 @@ export class AttendanceReportService {
     this.service.logoutOnTokenExpire();
     return this.http.post(`${this.baseUrl}/telemetry/sar`, { telemetryData: this.telemetryData, date: date });
   }
+
+
+  //attendance line-chart
+  getStateData(data){
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/line-chart/stateWise`, data);
+  }
+  
+  getDistrictData(data){
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/line-chart/distWise`, data);
+  }
+  getYears(){
+    this.service.logoutOnTokenExpire();
+    return this.http.get(`${this.baseUrl}/line-chart/getDateRange`);
+  }
 }

@@ -26,6 +26,12 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { BubblesComponent } from './reports/healthCard/bubbles/bubbles.component';
 import { ProgressCircleComponent } from './reports/healthCard/progress-circle/progress-circle.component';
 import { MapLegendsComponent } from './common/map-legends/map-legends.component';
+import { MultiSelectComponent } from './common/multi-select/multi-select.component';
+import { DikshaTPDContentProgressComponent } from './reports/diksha/tpd/diksha-tpd-course-progress/diksha-tpd-content-progress.component';
+import { DikshaTPDTeachersPercentageComponent } from './reports/diksha/tpd/diksha-tpd-teachers-percentage/diksha-tpd-teachers-percentage.component';
+import { StudentAttendanceChartComponent } from './reports/attendance/student-attendance-chart/student-attendance-chart.component';
+import { LineChartComponent } from './common/line-chart/line-chart.component';
+import { StudengtAttendanceComponent } from './reports/attendance/student-attendance/student-attendance.component';
 
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
@@ -44,6 +50,12 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     BubblesComponent,
     ProgressCircleComponent,
     MapLegendsComponent,
+    StudengtAttendanceComponent,
+    MultiSelectComponent,
+    DikshaTPDContentProgressComponent,
+    DikshaTPDTeachersPercentageComponent,
+    StudentAttendanceChartComponent,
+    LineChartComponent
   ],
   imports: [
     BrowserModule,

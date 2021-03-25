@@ -112,6 +112,9 @@ export class TeacherAttendanceComponent implements OnInit {
     return radius;
   }
 
+  management;
+  category;
+
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
@@ -125,6 +128,9 @@ export class TeacherAttendanceComponent implements OnInit {
     this.timePeriod = {
       period: 'overall'
     }
+
+    this.management = localStorage.getItem('management');
+    this.category = localStorage.getItem('category');
 
     this.service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
@@ -211,6 +217,7 @@ export class TeacherAttendanceComponent implements OnInit {
     };
     this.onResize(event);
   }
+
 
   getDistricts(): void {
     this.service.dist_wise_data(this.month_year).subscribe(res => {
@@ -481,7 +488,7 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.districtData = this.mylatlngData = res['distData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
@@ -541,7 +548,7 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['blockData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
@@ -601,7 +608,7 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['clusterData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
@@ -673,7 +680,7 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolData'];
         this.dateRange = res['dateRange'];
         var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
@@ -894,7 +901,7 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.blockPerDist({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.blockPerDist({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.blockData = this.mylatlngData = res['blockData'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -1012,7 +1019,7 @@ export class TeacherAttendanceComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.month_year['id'] = data;
-      this.myData = this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.clusterData = this.mylatlngData = res['clusterDetails'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -1162,7 +1169,7 @@ export class TeacherAttendanceComponent implements OnInit {
       }
 
       this.month_year['id'] = data;
-      this.myData = this.service.schoolsPerCluster({ ...this.month_year, ...this.timePeriod }).subscribe(res => {
+      this.myData = this.service.schoolsPerCluster({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
         this.reportData = this.mylatlngData = res['schoolsDetails'];
         this.dateRange = res['dateRange'];
         var uniqueData = this.mylatlngData.reduce(function (previous, current) {
@@ -1334,6 +1341,6 @@ export class TeacherAttendanceComponent implements OnInit {
     })
   }
 
-  public legendColors: any = ["#ff0000", "#e51a00", "#cb3400", "#b14e00", "#976800", "#7d8200", "#639c00", "#49b600", "#2fd000", "#00ff00"];
+  public legendColors: any = ["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"];
   public values = ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100']
 }

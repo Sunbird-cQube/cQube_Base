@@ -37,7 +37,7 @@ exports.restartNifiProcess = async function () {
 const rescheduleJob = (myJob, schedulerTime, schedularData) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await schedule.scheduleJob(myJob.groupName, schedulerTime, async function () {
+            await schedule.scheduleJob(myJob.groupName + '_start', schedulerTime, async function () {
                 var processorsList = await axios.get(`${process.env.NIFI_URL}/process-groups/root/process-groups`);
                 processorsList.data.processGroups.map(process => {
                     if (myJob.groupName == process.component.name) {
@@ -74,9 +74,9 @@ const stoppingJob = (myJob, schedularData) => {
             } else if (myJob.date && myJob.date != "*" && myJob.month && myJob.month != "*") {
                 stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} ${myJob.month} *`;
             } else {
-                stopTime = `${myJob.mins + 1} ${myJob.timeToStop} * * *`;
+                stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
             }
-            await schedule.scheduleJob(myJob.groupName, stopTime, async function () {
+            await schedule.scheduleJob(myJob.groupName + '_stop' , stopTime, async function () {
 
                 var processorsList = await axios.get(`${process.env.NIFI_URL}/process-groups/root/process-groups`);
                 processorsList.data.processGroups.map(process => {

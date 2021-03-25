@@ -6,7 +6,7 @@ import { AppServiceComponent } from '../../../../app.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from 'src/app/services/diksha-report.service';
-import { MultiSelectComponent } from '../multi-select/multi-select.component';
+import { MultiSelectComponent } from '../../../../common/multi-select/multi-select.component';
 
 @Component({
   selector: 'app-diksha-tpd-content-progress',
