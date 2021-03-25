@@ -19,22 +19,23 @@
   apt: name=curl
   tags: install
 
+#1.12
 - name: Download NiFi
   get_url:
     url: https://archive.apache.org/dist/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.tar.gz
     dest: ~/nifi
     mode: "0644"
-  tags: install
+  tags: [ install, update ]
 
 - name: Check if nifi is present in destination
   stat: path={{ base_dir }}/cqube/nifi/nifi
   register: status
-  tags: install
+  tags: [ install, update ]
 
 - name: stop nifi if its running
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
   when: status.stat.exists == true
-  tags: install
+  tags: [ install, update ]
 
 - name: remove nifi directory if present
   become: yes
@@ -42,28 +43,29 @@
   ignore_errors: yes
   args:
     warn: false
-  tags: install
+  tags: [ install, update ]
 
 - name: Extract NiFi in the same folder
   unarchive:
     src: ~/nifi/nifi-{{ nifi_version }}-bin.tar.gz
     dest: "{{ base_dir }}/cqube/nifi"
-  tags: install
+  tags: [ install, update ]
 
 - name: Rename the extracted folder
   shell: mv {{ base_dir }}/cqube/nifi/nifi-* {{ base_dir }}/cqube/nifi/nifi
-  tags: install
+  tags: [ install, update ]
 
 - name: Creates directory
   file: path={{ base_dir }}/cqube/nifi/nifi/jars state=directory
-  tags: install
+  tags: [ install, update ]
 
 - name: Download Jar file
   get_url:
     url: https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.10/postgresql-42.2.10.jar
     dest: "{{ base_dir }}/cqube/nifi/nifi/jars"
     mode: "0644"
-  tags: install
+  tags: [ install, update ]
+#1.12 end
 
 - name: Creating nifi_queries directory
   file:
@@ -80,8 +82,9 @@
     - crc_queries.json
     - student_attendance_queries.json
     - student_assessment_queries.json
-    - diksha_queries_all.json
-    - diksha_queries_less.json
+    - diksha_summary_rollup_queries_all.json
+    - diksha_summary_rollup_queries_less.json
+    - diksha_tpd_queries.json
     - composite_queries.json
     - pat_queries.json
     - udise_queries.json
@@ -107,21 +110,21 @@
                db_pwd= "{{ db_password }}"
                nifi_port= "{{ nifi_port }}" 
   tags: install
-
+#1.12
 - name: configure the webserver in nifi.properties file
   replace:
     dest: "{{ base_dir }}/cqube/nifi/nifi/conf/nifi.properties"
     regexp: 'nifi.web.http.host='
     replace: 'nifi.web.http.host=0.0.0.0'
-  tags: install
+  tags: [ install, update ]
 
 - name: configure the webserver in nifi.properties file
   replace:
     dest: "{{ base_dir }}/cqube/nifi/nifi/conf/nifi.properties"
     regexp: 'nifi.web.http.port=8080'
     replace: 'nifi.web.http.port={{ nifi_port }}'
-  tags: install
-
+  tags: [ install, update ]
+#constant
 - name: Increase nifi memory
   lineinfile:
     path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
@@ -129,51 +132,45 @@
     line: "java.arg.2={{ java_arg_2 }}"
   tags: [ install, update ]
 
-- name: Enabling the garbage collector value
-  lineinfile:
-    path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
-    regexp: '^#java.arg.13='
-    line: 'java.arg.13=-XX:+UseG1GC'
-  tags: [ install, update ]
-
 - name: Add time zone to nifi
   blockinfile:
         path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
         block: |
                java.arg.8=-Duser.timezone=Asia/Kolkata
-  tags: install
-
+  tags: [ install, update ]
+#constant
 - name: Increase nifi memory
   lineinfile:
     path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
     regexp: '^java.arg.3='
     line: "java.arg.3={{ java_arg_3 }}"
   tags: [ install, update ]
+#1.12 end
 
 - name: Delete existing templates in nifi
   become: yes
   file:
     path: "{{ base_dir }}/cqube/nifi/nifi/conf/flow.xml.gz"
     state: absent
-  tags: update
-
+#  tags: update
+#1.12
 - name: start NiFi
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
-  tags: install
+  tags: [ install, update ]
 
 - pause:
     minutes: 3
     prompt: "nifi is starting, kindly do not press any key"
-  tags: install
-
+  tags: [ install, update ]
+#1.12 end
 - name: Restart NiFi
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh restart"
-  tags: update
+#  tags: update
 
 - pause:
     minutes: 3
     prompt: "nifi is restarting, kindly do not press any key"
-  tags: update
+#  tags: update
 
 - name: checking for nifi port, waiting until it starts... 
   wait_for:
@@ -202,7 +199,7 @@
     method: POST
     body_format: json
     status_code: 201
-    body: {"revision":{"clientId":"","version":0},"disconnectedNodeAcknowledged":false,"component":{"type":"org.apache.nifi.reporting.prometheus.PrometheusReportingTask","bundle":{"group":"org.apache.nifi","artifact":"nifi-prometheus-nar","version":"1.11.4"}}}
+    body: {"revision":{"clientId":"","version":0},"disconnectedNodeAcknowledged":false,"component":{"type":"org.apache.nifi.reporting.prometheus.PrometheusReportingTask","bundle":{"group":"org.apache.nifi","artifact":"nifi-prometheus-nar","version":"1.12.1"}}}
   register: output
   tags: [ install, update ]
 

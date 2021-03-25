@@ -3,41 +3,25 @@
         <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist">
-                    Semester Assessment Test Report for: <span (click)="linkClick()"
-                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
+                    Semester Assessment Test Report for: <span (click)="linkClick()" style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block">
-                    Semester Assessment Test Report for: <span (click)="linkClick()"
-                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
-                        (click)="ondistLinkClick(districtHierarchy.distId)"
-                        style="cursor: pointer;text-decoration: underline;">
+                    Semester Assessment Test Report for: <span (click)="linkClick()" style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span (click)="ondistLinkClick(districtHierarchy.distId)" style="cursor: pointer;text-decoration: underline;">
                         {{districtHierarchy.districtName}}</span> </p>
             </div>
             <div *ngIf="blok">
                 <p id="cluster">
-                    Semester Assessment Test Report for: <span (click)="linkClick()"
-                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
-                        (click)="ondistLinkClick(blockHierarchy.distId)"
-                        style="cursor: pointer;text-decoration: underline;">
-                        {{blockHierarchy.districtName}}</span><span>/ </span><span
-                        (click)="onblockLinkClick(blockHierarchy.blockId)"
-                        style="cursor: pointer;text-decoration: underline;">
+                    Semester Assessment Test Report for: <span (click)="linkClick()" style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span (click)="ondistLinkClick(blockHierarchy.distId)" style="cursor: pointer;text-decoration: underline;">
+                        {{blockHierarchy.districtName}}</span><span>/ </span><span (click)="onblockLinkClick(blockHierarchy.blockId)" style="cursor: pointer;text-decoration: underline;">
                         {{blockHierarchy.blockName}}</span></p>
             </div>
 
             <div *ngIf="clust">
                 <p id="school">
-                    Semester Assessment Test Report for: <span (click)="linkClick()"
-                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
-                        (click)="ondistLinkClick(clusterHierarchy.distId)"
-                        style="cursor: pointer;text-decoration: underline;">
-                        {{clusterHierarchy.districtName}}</span><span>/ </span><span
-                        (click)="onblockLinkClick(clusterHierarchy.blockId)"
-                        style="cursor: pointer;text-decoration: underline;">
-                        {{clusterHierarchy.blockName}}</span><span>/ </span><span
-                        (click)="onclusterLinkClick(clusterHierarchy.clusterId)"
-                        style="cursor: pointer;text-decoration: underline;">
+                    Semester Assessment Test Report for: <span (click)="linkClick()" style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span (click)="ondistLinkClick(clusterHierarchy.distId)" style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.districtName}}</span><span>/ </span><span (click)="onblockLinkClick(clusterHierarchy.blockId)" style="cursor: pointer;text-decoration: underline;">
+                        {{clusterHierarchy.blockName}}</span><span>/ </span><span (click)="onclusterLinkClick(clusterHierarchy.clusterId)" style="cursor: pointer;text-decoration: underline;">
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
@@ -48,8 +32,7 @@
                     </p>
                 </div>
                 <div class="col-sm-5">
-                    <em class="fa fa-cloud-download" title="Download Report" id="download"
-                        (click)="downloadReport()"></em>
+                    <em class="fa fa-cloud-download" title="Download Report" id="download" (click)="downloadReport()"></em>
                     <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="linkClick()"></em>
                 </div>
             </div>
@@ -58,10 +41,8 @@
     <div class="row">
         <div class="col-sm-12">
             <p class="note">
-                <strong> About the dashboard:</strong> This dashboard provides information about student's performance
-                in the Semester Assessment Test across all subjects and grades. The data has been collated at various
-                administrative levels (i.e. District, Block, Cluster and School) and this dashboard allows you to view
-                and download the data at these various administrative levels.
+                <strong> About the dashboard:</strong> This dashboard provides information about student's performance in the Semester Assessment Test across all subjects and grades. The data has been collated at various administrative levels (i.e. District,
+                Block, Cluster and School) and this dashboard allows you to view and download the data at these various administrative levels.
             </p>
         </div>
     </div>
@@ -113,52 +94,42 @@
                 </option>
             </select>
 
-            <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="clusterId"
-                (change)="onclusterLinkClick(clusterId)">
+            <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="clusterId" (change)="onclusterLinkClick(clusterId)">
                 <option [value]="clusterId" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of allClusters" [(ngValue)]="cluster.Details.cluster_id"
                     [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                     {{cluster.Details.cluster_name}}
                 </option>
             </select>
-            <a class="float-right" href="javascript: void(0)" id="satHealthcard" (click)="goToHealthCard()"
-                style="font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Access Health
+            <a class="float-right" href="javascript: void(0)" id="satHealthcard" (click)="goToHealthCard()" style="font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Access Health
                 Card</a>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
             <div style="float: left; width: 90%;">
-                <div #mapContainer id="satMap" class="active" style="width: 100%;"
-                    [ngStyle]="{height: heigth > 1760 ? '84.2vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '74vh':'68vh'}">
+                <div #mapContainer id="satMap" class="active" style="width: 100%;" [ngStyle]="{height: heigth > 1760 ? '84.2vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '74vh':'68vh'}">
                 </div>
             </div>
             <div style="float: left; width: 9%; margin-left: 1%;">
                 <h5 id="legend" style="margin-left: 20%;">Legend</h5>
                 <div *ngFor="let value of values; let i = index">
-                    <span class="legends" style="float: left;" [ngStyle]="{color: i> 5 ?'black': 'white'}"
-                        [style.background-color]="legendColors[i]">
+                    <span class="legends" style="float: left;" [ngStyle]="{color: i> 2 ?'black': 'white'}" [style.background-color]="legendColors[i]">
                         {{values[i]}} </span>
                 </div>
-                <p id="legendNote"><span style="font-weight: bold;">Note: </span>These colors are applicable for the
-                    absolute
-                    selection only</p>
+                <p id="legendNote"><span style="font-weight: bold;">Note: </span>These colors are applicable for the absolute selection only</p>
             </div>
         </div>
     </div>
     <div class="row" id="footer">
         <div class="col-sm-3">
             <div id="outer">
-                <div id="absolute" (click)="getColor('absolute')"
-                    [ngStyle]="{'background-color' : selected == 'absolute' ? '#3100cc' : '#f5f6fb'}">
-                    <p [ngStyle]="{'color' : selected == 'absolute' ? 'white' : 'black'}"
-                        style="text-align: center; padding: 2%;">
+                <div id="absolute" (click)="getColor('absolute')" [ngStyle]="{'background-color' : selected == 'absolute' ? '#3100cc' : '#f5f6fb'}">
+                    <p [ngStyle]="{'color' : selected == 'absolute' ? 'white' : 'black'}" style="text-align: center; padding: 2%;">
                         Absolute</p>
                 </div>
-                <div id="relative" (click)="getColor('relative')"
-                    [ngStyle]="{'background-color' : selected == 'relative' ? '#3100cc' : '#f5f6fb'}">
-                    <p [ngStyle]="{'color' : selected == 'relative' ? 'white' : 'black'}"
-                        style="text-align: center; padding: 2%;">
+                <div id="relative" (click)="getColor('relative')" [ngStyle]="{'background-color' : selected == 'relative' ? '#3100cc' : '#f5f6fb'}">
+                    <p [ngStyle]="{'color' : selected == 'relative' ? 'white' : 'black'}" style="text-align: center; padding: 2%;">
                         Relative</p>
                 </div>
             </div>
