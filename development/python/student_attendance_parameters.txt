@@ -1743,6 +1743,7 @@ day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day
     "spec": {
       "*": {
         "x_axis": "[&1].school_id",
+         "school_name": "[&1].school_name",
         "x_value": "[&1].attendance.attendance_percentage",
         "month": "[&1].attendance.month",
         "year": "[&1].attendance.year",
@@ -1757,6 +1758,5 @@ day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day
         "@attendance": "@(1,school_id).attendance[]"
       }
     }
-}]
-"""
+}]"""
 }
