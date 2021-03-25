@@ -24,13 +24,13 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         } else {
             if (report == 'pat') {
                 if (grade) {
-                    if (period != null) {
+                    if (period != 'select_month') {
                         fileName = `${report}/${period}/cluster/${grade}.json`;
                     } else {
                         fileName = `${report}/${academic_year}/${month}/cluster/${grade}.json`;
                     }
                 } else {
-                    if (period != null) {
+                    if (period != 'select_month') {
                         fileName = `${report}/${period}/${report}_cluster.json`;
                     } else {
                         fileName = `${report}/${academic_year}/${month}/cluster/cluster.json`;
@@ -70,7 +70,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
             fileName = `${report}/all/${report}_cluster.json`;
         } else {
             if (report == 'pat') {
-                if (period != null) {
+                if (period != 'select_month') {
                     fileName = `${report}/${period}/${report}_cluster.json`;
                 } else {
                     fileName = `${report}/${academic_year}/${month}/cluster/cluster.json`;

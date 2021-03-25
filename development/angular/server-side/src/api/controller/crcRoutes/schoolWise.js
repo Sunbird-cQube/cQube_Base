@@ -8,7 +8,14 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         logger.info('--- crc all school wise api ---');
 
         var timePeriod = req.body.timePeriod;
-        let fileName = `crc/${timePeriod}/school.json`;
+        var year = req.body.year;
+        var month = req.body.month
+        let fileName ;
+        if(timePeriod && timePeriod != 'select_month'){
+            fileName = `crc/${timePeriod}/school.json`;
+        }else{
+            fileName = `crc/${year}/${month}/school.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
 
         var schoolData = jsonData.data;
@@ -25,7 +32,14 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
     try {
         logger.info('--- crc school per cluster api ---');
         var timePeriod = req.body.timePeriod;
-        let fileName = `crc/${timePeriod}/school.json`;
+        var year = req.body.year;
+        var month = req.body.month
+        let fileName ;
+        if(timePeriod && timePeriod != 'select_month'){
+            fileName = `crc/${timePeriod}/school.json`;
+        }else{
+            fileName = `crc/${year}/${month}/school.json`;
+        }
         var jsonData = await s3File.readS3File(fileName);
 
         var schoolData = jsonData

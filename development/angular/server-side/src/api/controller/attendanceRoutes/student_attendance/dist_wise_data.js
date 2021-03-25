@@ -3,21 +3,32 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/distWise', auth.authController, async function (req, res) {
+router.post('/distWise', auth.authController, async function(req, res) {
     try {
         logger.info('---Attendance dist wise api ---');
-        console.log(req.body)
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
         var management = req.body.management;
         var category = req.body.category;
         let fileName;
-        if (management && management != 'overall' && category != 'overall' && category) {
+        if (management != 'overall' && category != 'overall') {
             if (timePeriod != null) {
                 fileName = `attendance/${timePeriod}/school_management_category/${management}/${category}/district.json`;
             } else {
                 fileName = `attendance/school_management_category/${management}/${category}/district_${year}_${month}.json`;
+            }
+        } else if (management == 'overall' && category != 'overall') {
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/school_management_category/overall_management/${category}/district.json`;
+            } else {
+                fileName = `attendance/school_management_category/${year}/${month}/overall_management${category}/district.json`;
+            }
+        } else if (management != 'overall' && category == 'overall') {
+            if (timePeriod != null) {
+                fileName = `attendance/${timePeriod}/school_management_category/overall_category/${management}/district.json`;
+            } else {
+                fileName = `attendance/school_management_category/${year}/${month}/overall_category/${management}/district.json`;
             }
         } else {
             if (timePeriod != null) {
@@ -27,7 +38,6 @@ router.post('/distWise', auth.authController, async function (req, res) {
             }
         }
         var jsonData = await s3File.readS3File(fileName);
-
         var districtAttendanceData = jsonData.data
         var dateRange = `${districtAttendanceData[0]['data_from_date']} to ${districtAttendanceData[0]['data_upto_date']}`;
         var distData = [];

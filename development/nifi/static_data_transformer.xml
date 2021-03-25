@@ -9522,6 +9522,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>37509d9b-2775-3f80-0000-000000000000</id>
+                            <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
+<id>22b12dfe-d029-3486-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
+<id>704656b9-80e1-3041-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>3afc7dfe-85ef-38f7-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -14275,8 +14300,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <id>6d7ce987-063b-3977-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <position>
-<x>-13352.0</x>
-<y>2224.0</y>
+<x>-13360.0</x>
+<y>2216.0</y>
                             </position>
                             <height>48.0</height>
                             <label>                           data type validation </label>
@@ -15357,7 +15382,7 @@ ${static_datasource:toLower():equals('udise'):and(${filename:startsWith('school_
         <value>${filename:startsWith('district_m'):ifElse('log_summary/static/log_summary_district.json',
 ${filename:startsWith('block_m'):ifElse('log_summary/static/log_summary_block.json',
 ${filename:startsWith('cluster_m'):ifElse('log_summary/static/log_summary_cluster.json',
-${filename:startsWith('school_m'):ifElse('log_summary/static/log_summary_school.json','None')}
+${filename:startsWith('school_m'):ifElse('log_summary/static/log_summary_school.json','meta/school_management_category_meta.json')}
 )} )} )}</value>
     </entry>
     <entry>
@@ -16880,7 +16905,11 @@ ${filename:startsWith('school_management_master'):ifElse(#{static_school_managem
     </entry>
     <entry>
         <key>jolt-spec</key>
-        <value>#{static_jolt_log_summary}</value>
+        <value>${filename:startsWith('district_m'):
+or(${filename:startsWith('block_m')}):
+or(${filename:startsWith('cluster_m')}):
+or(${filename:startsWith('school_m')}):
+ifElse(#{static_jolt_log_summary},#{static_jolt_school_management_category_meta})}</value>
     </entry>
     <entry>
         <key>Transform Cache Size</key>
@@ -20966,6 +20995,158 @@ file: ${filename} columns did not match.</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
+                        </processors>
+                        <processors>
+                            <id>704656b9-80e1-3041-0000-000000000000</id>
+                            <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
+                            <position>
+<x>1032.0</x>
+<y>1640.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Database Connection Pooling Service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.dbcp.DBCPService</identifiesControllerService>
+            <name>Database Connection Pooling Service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>sql-pre-query</key>
+        <value>
+            <name>sql-pre-query</name>
+        </value>
+    </entry>
+    <entry>
+        <key>SQL select query</key>
+        <value>
+            <name>SQL select query</name>
+        </value>
+    </entry>
+    <entry>
+        <key>sql-post-query</key>
+        <value>
+            <name>sql-post-query</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Max Wait Time</key>
+        <value>
+            <name>Max Wait Time</name>
+        </value>
+    </entry>
+    <entry>
+        <key>esqlrecord-record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>esqlrecord-record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>esqlrecord-normalize</key>
+        <value>
+            <name>esqlrecord-normalize</name>
+        </value>
+    </entry>
+    <entry>
+        <key>dbf-user-logical-types</key>
+        <value>
+            <name>dbf-user-logical-types</name>
+        </value>
+    </entry>
+    <entry>
+        <key>esql-max-rows</key>
+        <value>
+            <name>esql-max-rows</name>
+        </value>
+    </entry>
+    <entry>
+        <key>esql-output-batch-size</key>
+        <value>
+            <name>esql-output-batch-size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>esql-fetch-size</key>
+        <value>
+            <name>esql-fetch-size</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Database Connection Pooling Service</key>
+        <value>5ae61b47-73b7-342d-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>sql-pre-query</key>
+    </entry>
+    <entry>
+        <key>SQL select query</key>
+        <value>#{school_management_category_meta}</value>
+    </entry>
+    <entry>
+        <key>sql-post-query</key>
+    </entry>
+    <entry>
+        <key>Max Wait Time</key>
+        <value>0 seconds</value>
+    </entry>
+    <entry>
+        <key>esqlrecord-record-writer</key>
+        <value>82efc934-b833-360d-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>esqlrecord-normalize</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>dbf-user-logical-types</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>esql-max-rows</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>esql-output-batch-size</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>esql-fetch-size</key>
+        <value>0</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>1day</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>statict_management_category_meta</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
                         <processors>
                             <id>716ba263-5948-38f7-0000-000000000000</id>
@@ -27103,5 +27284,5 @@ ${filename:startsWith('school_management_master'):ifElse(#{static_school_managem
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/19/2021 14:54:26 IST</timestamp>
+    <timestamp>03/24/2021 20:54:36 IST</timestamp>
 </template>

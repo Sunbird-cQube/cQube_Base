@@ -24,13 +24,13 @@ router.post('/distWise', auth.authController, async (req, res) => {
         } else {
             if (report == 'pat') {
                 if (grade) {
-                    if (period != null) {
+                    if (period != 'select_month') {
                         fileName = `${report}/${period}/district/${grade}.json`;
                     } else {
                         fileName = `${report}/${academic_year}/${month}/district/${grade}.json`;
                     }
                 } else {
-                    if (period != null) {
+                    if (period != 'select_month') {
                         fileName = `${report}/${period}/${report}_district.json`;
                     } else {
                         fileName = `${report}/${academic_year}/${month}/district/district.json`;
