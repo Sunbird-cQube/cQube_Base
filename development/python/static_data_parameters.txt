@@ -1,5 +1,7 @@
 {"static_same_record_filter_school_state":"""select schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,StateId,districtid,blockid,clusterid,latitude,longitude from(select schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,StateId,districtid,blockid,clusterid,latitude,longitude,row_number() over (partition by  schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,StateId,districtid,blockid,clusterid,latitude,longitude) as rn from flowfile)sq where rn=1""",
-"static_select_cols_school_udise":"""select udise_sch_code as schoolid,school_name as school,state_cd as stateid,district_cd as districtid,block_cd_1 as blockid,cluster_cd as clusterid,latitude,longitude from flowfile""",
+"static_select_cols_school_udise":"""select udise_sch_code as schoolid,school_name as school,
+sch_mgmt_id as school_management_type_id,sch_category_id as school_category_id,
+state_cd as stateid,district_cd as districtid,block_cd_1 as blockid,cluster_cd as clusterid,latitude,longitude from flowfile""",
 "static_same_id_filter_school_category_state":"""SELECT school_category_id,school_category from 
 (SELECT school_category_id,school_category,count(*)
 over (partition by school_category_id) as rn from FLOWFILE) sq Where rn =1""",
@@ -40,6 +42,7 @@ where dist_null_col.ff_uuid = log_summary.ff_uuid""",
 percentile_disc(0.5) within group (order by block_longitude) as district_longitude 
 from school_geo_master where school_latitude>0 or school_longitude>0 group by district_id) as a
 	where a.district_id=b.district_id;""",
+"school_management_category_meta":"""select distinct school_management_type as management from school_hierarchy_details where school_management_type is not null;""",
 "static_same_record_check_district_state":"""SELECT DistrictId,District,count(*)-1  num_of_times
 FROM flowfile
 GROUP BY DistrictId,District
@@ -58,10 +61,10 @@ from (select school_id,smm.school_management_type,scm.school_category
 from school_master sm left join school_management_master smm on sm.school_management_type_id=smm.school_management_type_id
 
 left join school_category_master scm on sm.school_category_id=scm.school_category_id) scm where shd.school_id=scm.school_id;""",
-"static_same_record_check_school_udise":"""SELECT SchoolId,School,stateid,districtid,blockid,clusterid,latitude,longitude,
+"static_same_record_check_school_udise":"""SELECT SchoolId,School,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude,
 count(*)-1  num_of_times
 FROM flowfile
-GROUP BY SchoolId,School,stateid,districtid,blockid,clusterid,latitude,longitude
+GROUP BY SchoolId,School,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude
 HAVING  COUNT(*) > 1""",
 "school_invalid_tb":"""school_invalid_data""",
 "static_district_exception":"""select school_id,school_name,block_id,district_id,cluster_id from school_hierarchy_details where  district_name is null""",
@@ -70,7 +73,8 @@ SUM(CASE when ClusterId IS NULL THEN 1 ELSE 0 END) AS count_null_clusterId,
 SUM(CASE when BlockId IS NULL THEN 1 ELSE 0 END) AS count_null_blockid,
 SUM(CASE when Cluster IS NULL THEN 1 ELSE 0 END) AS count_null_cluster
 from flowfile)""",
-"static_same_record_filter_school_udise":"""select schoolid,school,stateid,districtid,blockid,clusterid,latitude,longitude from(select schoolid,school,stateid,districtid,blockid,clusterid,latitude,longitude,row_number() over (partition by  schoolid,school,stateid,districtid,blockid,clusterid,latitude,longitude) as rn from flowfile)sq where rn=1""",
+"static_same_record_filter_school_udise":"""select schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude from
+(select schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude,row_number() over (partition by  schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude) as rn from flowfile)sq where rn=1""",
 "static_data_type_block_udise":"""Optional(StrNotNullOrEmpty()),Optional(ParseLong()),optional(ParseLong()),Optional(ParseLong())""",
 "static_select_cols_block_udise_final":"""SELECT BlockId as " block_id",Block as "block_name" ,DistrictId as "district_id" from flowfile""",
 "static_same_record_check_block_state":"""SELECT BlockId,Block,DistrictId,count(*)-1  num_of_times
@@ -90,10 +94,9 @@ over (partition by DistrictId) as rn from FLOWFILE) sq Where rn >1) group by Dis
 "static_cluster_exception":"""select school_id,school_name,block_id,district_id,cluster_id from school_hierarchy_details where cluster_name is null """,
 "static_same_record_check_school_management_state":"""select school_management_type_id,school_management_type, count(*)-1 as num_of_times
 from flowfile
-group by school_management_type_id,school_management_type
-having count(*) >1""",
-"static_same_id_filter_school_udise":"""SELECT schoolid,school,stateid,districtid,blockid,clusterid,latitude,longitude from 
-(SELECT schoolid,school,stateid,districtid,blockid,clusterid,latitude,longitude,count(*)
+group by school_management_type_id,school_management_type having count(*) >1""",
+"static_same_id_filter_school_udise":"""SELECT schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude from 
+(SELECT schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude,count(*)
 over (partition by schoolid) as rn from FLOWFILE) sq Where rn =1""",
 "static_process_rec_school_category":"""update log_summary as b
 set processed_records= a.processed_records from (select ff_uuid,(sum(total_records)-sum(blank_lines+duplicate_records+datatype_mismatch)-sum(school_category_id+school_category))as processed_records from log_summary group by ff_uuid) as a
@@ -276,11 +279,11 @@ Optional(ParseInt()),Optional(ParseInt()),Optional(ParseLong()),Optional(ParseLo
 "static_select_cols_district_udise_final":"""SELECT DistrictId as " district_id",District as "district_name" from flowfile""",
 "static_data_type_cluster_state":"""Optional(ParseLong()),Optional(StrNotNullOrEmpty()),Optional(ParseLong()),optional(ParseInt())""",
 "static_select_cols_block_udise":"""select block_name as block,udise_block_code as blockid,udise_dist_code as districtid,udise_state_code as stateid from flowfile""",
-"static_select_cols_school_udise_final":"""select SchoolId as school_id,School as school_name,StateId as state_id,
+"static_select_cols_school_udise_final":"""select SchoolId as school_id,School as school_name,school_management_type_id,school_category_id,StateId as state_id,
 DistrictId as district_id,BlockId as block_id,ClusterId as cluster_id,Latitude,Longitude  from flowfile""",
 "static_same_id_check_school_udise":"""select *,count(*) as num_of_times from (
-select schoolid,school,stateid,districtid,blockid,clusterid,latitude,longitude from (
-select schoolid,school,stateid,districtid,blockid,clusterid,latitude,longitude,count(*) over (partition by schoolid) as rn from FLOWFILE) sq Where rn >1) group by  schoolid,school,stateid,districtid,blockid,clusterid,latitude,longitude""",
+select schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude from (
+select schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude,count(*) over (partition by schoolid) as rn from FLOWFILE) sq Where rn >1) group by  schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude""",
 "static_save_school_geo_master_udise":"""insert into school_geo_master as a (school_id,district_id ,block_id,cluster_id,school_latitude,school_longitude,created_on)
 SELECT school_id,district_id ,block_id,cluster_id,latitude,longitude,now() from school_master
 on conflict (school_id)
@@ -306,7 +309,7 @@ select BlockId,Block,DistrictId,stateid from (SELECT BlockId,Block,DistrictId,st
 over (partition by BlockId) as rn from FLOWFILE) sq Where rn >1) group by  BlockId,Block,DistrictId,stateid""",
 "static_data_type_school_category_udise":"""Optional(ParseInt()),Optional(StrNotNullOrEmpty())""",
 "static_select_cols_block_state_final":"""SELECT BlockId as " block_id",Block as "block_name" ,DistrictId as "district_id" from flowfile""",
-"static_data_type_school_udise":"""Optional(ParseLong()),Optional(StrNotNullOrEmpty()),Optional(ParseInt()),Optional(ParseLong()),Optional(ParseLong()),
+"static_data_type_school_udise":"""Optional(ParseLong()),Optional(StrNotNullOrEmpty()), Optional(ParseInt()),Optional(ParseInt()), Optional(ParseInt()),Optional(ParseLong()),Optional(ParseLong()),
 Optional(ParseLong()),Optional(ParseBigDecimal()),Optional(ParseBigDecimal())""",
 "static_select_cols_cluster_udise":"""select cluster_name as cluster,udise_block_code as blockid,udise_cluster_code as clusterid from flowfile""",
 "static_select_cols_school_category_udise":"""select SchoolCategoryId as school_category_id,SchoolCategory as school_category from flowfile""",
@@ -357,8 +360,7 @@ block_id = block_null_col.count_null_blockid from block_null_col
 where block_null_col.ff_uuid = log_summary.ff_uuid""",
 "static_same_record_check_school_management_udise":"""select school_management_type_id,school_management_type, count(*)-1 as num_of_times
 from flowfile
-group by school_management_type_id,school_management_type
-having  count(*) >1""",
+group by school_management_type_id,school_management_type having  count(*) >1""",
 "static_same_record_filter_cluster_state":"""select ClusterId,Cluster,BlockId,DistrictId from (SELECT ClusterId,Cluster,BlockId,DistrictId,row_number() over (partition by  ClusterId,Cluster,BlockId,DistrictId) as rn from flowfile)sq where rn=1""",
 "static_select_cols_block_state":"""SELECT BlockId,Block,DistrictId from flowfile""",
 "static_save_cluster_mst_state":"""cluster_mst""",
@@ -398,6 +400,16 @@ where school_category_null_col.ff_uuid = log_summary.ff_uuid""",
 select schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,StateId,districtid,blockid,clusterid,latitude,longitude from (
 select schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,StateId,districtid,blockid,clusterid,latitude,longitude,count(*) over (partition by schoolid) as rn from FLOWFILE) sq Where rn >1) group by  schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,StateId,districtid,blockid,clusterid,latitude,longitude""",
 "static_data_type_district_udise":"""Optional(StrNotNullOrEmpty()),Optional(ParseInt())""",
+"static_jolt_school_management_category_meta":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "@management": "management[]"
+      }
+    }
+  }
+]""",
 "static_school_check_if_null_lat_long":"""select * from flowfile 
 where school is NULL
 or latitude is NULL
@@ -418,17 +430,5 @@ or longitude like '0' or longitude like '0.0'""",
 "static_data_type_district_state":"""Optional(ParseInt()),Optional(StrNotNullOrEmpty())""",
 "static_school_management_check_if_null":"""select * from flowfile
 where school_management_type_id IS NULL
-or school_management_type IS NULL""",
-"static_jolt_school_management_category_meta":"""[
-  {
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "@management": "management[]"
-      }
-    }
-  }
-]
-""",
-"school_management_category_meta": """select distinct school_management_type as management from school_hierarchy_details where school_management_type is not null;"""
+or school_management_type IS NULL"""
 }
