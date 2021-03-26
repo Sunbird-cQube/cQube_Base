@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import * as Highcharts from 'highcharts/highstock';
-import HeatmapModule from 'highcharts/modules/heatmap';
+import { Component, OnInit } from "@angular/core";
+import * as Highcharts from "highcharts/highstock";
+import HeatmapModule from "highcharts/modules/heatmap";
 HeatmapModule(Highcharts);
-import { AppServiceComponent } from '../../../app.service';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { PatReportService } from '../../../services/pat-report.service';
+import { AppServiceComponent } from "../../../app.service";
+import { Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import { PatReportService } from "../../../services/pat-report.service";
 declare const $;
 
 @Component({
-  selector: 'app-pat-lo-table',
-  templateUrl: './pat-lo-table.component.html',
-  styleUrls: ['./pat-lo-table.component.css']
+  selector: "app-pat-lo-table",
+  templateUrl: "./pat-lo-table.component.html",
+  styleUrls: ["./pat-lo-table.component.css"],
 })
 export class PATLOTableComponent implements OnInit {
-  level = '';
+  level = "";
 
   // For filter implementation
   districtNames = [];
@@ -33,11 +33,11 @@ export class PATLOTableComponent implements OnInit {
   examDates = [];
   allViews = [];
 
-  public year = '';
-  public grade = 'all';
-  public subject = 'all';
-  public examDate = 'all';
-  public viewBy = 'indicator';
+  public year = "";
+  public grade = "all";
+  public subject = "all";
+  public examDate = "all";
+  public viewBy = "indicator";
 
   //to set hierarchy level
   skul = true;
@@ -53,16 +53,19 @@ export class PATLOTableComponent implements OnInit {
   data;
 
   // to download the excel report
-  public fileName: any = ``
+  public fileName: any = ``;
   public reportData: any = [];
 
   public metaData: any;
   myData;
   state: string;
   months: string[];
-  month: string = '';
+  month: string = "";
 
-  reportName = 'periodic_assessment_test_loTable';
+  reportName = "periodic_assessment_test_loTable";
+  managementName;
+  management;
+  category;
 
   constructor(
     public http: HttpClient,
@@ -70,62 +73,90 @@ export class PATLOTableComponent implements OnInit {
     public commonService: AppServiceComponent,
     public router: Router
   ) {
-    service.PATHeatMapMetaData({ report: 'pat' }).subscribe(res => {
-      this.metaData = res['data'];
-      for (let i = 0; i < this.metaData.length; i++) {
-        this.years.push(this.metaData[i]['academic_year']);
-      }
-      this.year = this.years[this.years.length - 1];
-      let i;
-      for (i = 0; i < this.metaData.length; i++) {
-        if (this.metaData[i]['academic_year'] == this.year) {
-          this.months = (Object.keys(res['data'][i].data.months));
-          this.grades = this.metaData[i].data['grades'];
-          this.subjects = this.metaData[i].data['subjects'];
-          this.allViews = this.metaData[i].data['viewBy'];
-          break;
+    service.PATHeatMapMetaData({ report: "pat" }).subscribe(
+      (res) => {
+        this.metaData = res["data"];
+        for (let i = 0; i < this.metaData.length; i++) {
+          this.years.push(this.metaData[i]["academic_year"]);
         }
-      };
-      this.month = this.months[this.months.length - 1];
-      this.examDates = this.metaData[i].data['months'][`${this.month}`]['examDate'];
-      this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
-      this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
-      this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
+        this.year = this.years[this.years.length - 1];
+        let i;
+        for (i = 0; i < this.metaData.length; i++) {
+          if (this.metaData[i]["academic_year"] == this.year) {
+            this.months = Object.keys(res["data"][i].data.months);
+            this.grades = this.metaData[i].data["grades"];
+            this.subjects = this.metaData[i].data["subjects"];
+            this.allViews = this.metaData[i].data["viewBy"];
+            break;
+          }
+        }
+        this.month = this.months[this.months.length - 1];
+        this.examDates = this.metaData[i].data["months"][`${this.month}`][
+          "examDate"
+        ];
+        this.grades = [
+          { grade: "all" },
+          ...this.grades.filter((item) => item !== { grade: "all" }),
+        ];
+        this.subjects = [
+          { subject: "all" },
+          ...this.subjects.filter((item) => item !== { subject: "all" }),
+        ];
+        this.examDates = [
+          { exam_date: "all" },
+          ...this.examDates.filter((item) => item !== { exam_date: "all" }),
+        ];
 
-      this.fileName = `${this.reportName}_overall_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_overall_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
 
-      this.commonFunc();
-    }, err => {
-      this.metaData = [];
-      this.commonService.loaderAndErr(this.metaData);
-    })
+        this.commonFunc();
+      },
+      (err) => {
+        this.metaData = [];
+        this.commonService.loaderAndErr(this.metaData);
+      }
+    );
   }
 
   ngOnInit(): void {
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     this.state = this.commonService.state;
-    document.getElementById('homeBtn').style.display = 'block';
-    document.getElementById('backBtn').style.display = 'none';
+    document.getElementById("homeBtn").style.display = "block";
+    document.getElementById("backBtn").style.display = "none";
   }
 
   fetchFilters(metaData) {
     let i;
     for (i = 0; i < metaData.length; i++) {
-      if (metaData[i]['academic_year'] == this.year) {
-        this.months = (Object.keys(this.metaData[i].data.months));
-        this.grades = metaData[i].data['grades'];
-        this.subjects = metaData[i].data['subjects'];
-        this.allViews = metaData[i].data['viewBy'];
+      if (metaData[i]["academic_year"] == this.year) {
+        this.months = Object.keys(this.metaData[i].data.months);
+        this.grades = metaData[i].data["grades"];
+        this.subjects = metaData[i].data["subjects"];
+        this.allViews = metaData[i].data["viewBy"];
         break;
       }
     }
     if (!this.months.includes(this.month)) {
       this.month = this.months[this.months.length - 1];
     }
-    this.examDates = metaData[i].data['months'][`${this.month}`]['examDate'];
-    this.examDates = [{ exam_date: "all" }, ...this.examDates.filter(item => item !== { exam_date: "all" })];
+    this.examDates = metaData[i].data["months"][`${this.month}`]["examDate"];
+    this.examDates = [
+      { exam_date: "all" },
+      ...this.examDates.filter((item) => item !== { exam_date: "all" }),
+    ];
 
-    this.grades = [{ grade: "all" }, ...this.grades.filter(item => item !== { grade: "all" })];
-    this.subjects = [{ subject: "all" }, ...this.subjects.filter(item => item !== { subject: "all" })];
+    this.grades = [
+      { grade: "all" },
+      ...this.grades.filter((item) => item !== { grade: "all" }),
+    ];
+    this.subjects = [
+      { subject: "all" },
+      ...this.subjects.filter((item) => item !== { subject: "all" }),
+    ];
   }
 
   resetToInitPage() {
@@ -135,10 +166,10 @@ export class PATLOTableComponent implements OnInit {
     this.dist = false;
     this.blok = false;
     this.clust = false;
-    this.grade = 'all';
-    this.examDate = 'all';
-    this.subject = 'all';
-    this.viewBy = 'indicator';
+    this.grade = "all";
+    this.examDate = "all";
+    this.subject = "all";
+    this.viewBy = "indicator";
     this.district = undefined;
     this.block = undefined;
     this.cluster = undefined;
@@ -146,55 +177,66 @@ export class PATLOTableComponent implements OnInit {
     this.clusterHidden = true;
     this.year = this.years[this.years.length - 1];
     this.commonFunc();
-    document.getElementById('home').style.display = 'none';
+    document.getElementById("home").style.display = "none";
   }
 
   commonFunc = () => {
     this.commonService.errMsg();
-    this.level = 'district';
+    this.level = "district";
     this.fetchFilters(this.metaData);
     // $(`#LOtable`).empty();
     let a = {
       year: this.year,
       month: this.month,
-      grade: this.grade == 'all' ? '' : this.grade,
-      subject_name: this.subject == 'all' ? '' : this.subject,
-      exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
-    }
+      grade: this.grade == "all" ? "" : this.grade,
+      subject_name: this.subject == "all" ? "" : this.subject,
+      exam_date: this.examDate == "all" ? "" : this.examDate,
+      viewBy: this.viewBy == "indicator" ? "indicator" : this.viewBy,
+      management: this.management,
+      category: this.category,
+    };
     this.month = a.month;
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.patLOTableDistData(a).subscribe(response => {
-      this.resetTable();
-      this.reportData = response['tableData'];
-      var districtNames = response['districtDetails'];
-      this.districtNames = districtNames.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
-      this.createTable(this.reportData);
-      this.commonService.loaderAndErr(this.reportData);
-    }, err => {
-      this.handleError();
-    })
-  }
+    this.myData = this.service.patLOTableDistData(a).subscribe(
+      (response) => {
+        this.resetTable();
+        this.reportData = response["tableData"];
+        var districtNames = response["districtDetails"];
+        this.districtNames = districtNames.sort((a, b) =>
+          a.district_name > b.district_name
+            ? 1
+            : b.district_name > a.district_name
+            ? -1
+            : 0
+        );
+        this.createTable(this.reportData);
+        this.commonService.loaderAndErr(this.reportData);
+      },
+      (err) => {
+        this.handleError();
+      }
+    );
+  };
 
   createTable(dataSet) {
     var my_columns = [];
     $.each(dataSet[0], function (key, value) {
       var my_item = {};
-      my_item['data'] = key;
-      my_item['value'] = value;
+      my_item["data"] = key;
+      my_item["value"] = value;
       my_columns.push(my_item);
     });
 
     $(document).ready(function () {
-      var headers = '<thead><tr>'
-      var body = '<tbody>';
+      var headers = "<thead><tr>";
+      var body = "<tbody>";
       my_columns.forEach((column, i) => {
-        var col = (column.data.replace(/_/g, ' ')).replace(/\w\S*/g, (txt) => {
+        var col = column.data.replace(/_/g, " ").replace(/\w\S*/g, (txt) => {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
-        headers += `<th>${col}</th>`
+        headers += `<th>${col}</th>`;
       });
 
       let newArr = [];
@@ -202,47 +244,51 @@ export class PATLOTableComponent implements OnInit {
         let temp = [];
         $.each(b, function (key, value) {
           var new_item = {};
-          new_item['data'] = key;
-          new_item['value'] = value;
+          new_item["data"] = key;
+          new_item["value"] = value;
           temp.push(new_item);
         });
-        newArr.push(temp)
+        newArr.push(temp);
       });
 
       newArr.forEach((columns) => {
-        body += '<tr>';
+        body += "<tr>";
         columns.forEach((column) => {
-          body += `<td>${column.value}</td>`
+          body += `<td>${column.value}</td>`;
         });
-        body += '</tr>';
+        body += "</tr>";
       });
 
-
-
       headers += `</tr></thead>`;
-      body += '</tbody>';
+      body += "</tbody>";
       $(`#LOtable`).empty();
       $(`#LOtable`).append(headers);
       $(`#LOtable`).append(body);
       $(`#LOtable`).DataTable({
-        destroy: false, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: "60vh", scrollX: true,
-        scrollCollapse: true, paging: false, searching: false,
+        destroy: false,
+        bLengthChange: false,
+        bInfo: false,
+        bPaginate: false,
+        scrollY: "60vh",
+        scrollX: true,
+        scrollCollapse: true,
+        paging: false,
+        searching: false,
         fixedColumns: {
-          leftColumns: 1
+          leftColumns: 1,
         },
-        columnDefs: [{ "targets": 0, "type": "date-dd-mm-yyyy" }],
-        order: [[0, 'asc']]
+        columnDefs: [{ targets: 0, type: "date-dd-mm-yyyy" }],
+        order: [[0, "asc"]],
       });
     });
   }
 
   selectedYear() {
-    document.getElementById('home').style.display = 'none';
-    this.month = '';
-    this.grade = 'all';
-    this.examDate = 'all';
-    this.subject = 'all';
+    document.getElementById("home").style.display = "none";
+    this.month = "";
+    this.grade = "all";
+    this.examDate = "all";
+    this.subject = "all";
     this.fetchFilters(this.metaData);
     this.levelWiseFilter();
   }
@@ -250,10 +296,10 @@ export class PATLOTableComponent implements OnInit {
   selectedMonth() {
     this.fileName = `${this.reportName}_${this.grade}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.fetchFilters(this.metaData);
-    this.grade = 'all';
-    this.examDate = 'all';
-    this.subject = 'all';
-    document.getElementById('home').style.display = 'none';
+    this.grade = "all";
+    this.examDate = "all";
+    this.subject = "all";
+    document.getElementById("home").style.display = "none";
     this.levelWiseFilter();
   }
 
@@ -279,132 +325,153 @@ export class PATLOTableComponent implements OnInit {
 
   selectedDistrict(districtId) {
     this.resetTable();
-    this.level = 'block';
+    this.level = "block";
     this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_district_${districtId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.block = undefined;
     this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = true;
-    document.getElementById('home').style.display = 'block';
+    document.getElementById("home").style.display = "block";
     this.commonService.errMsg();
 
     let a = {
       year: this.year,
       month: this.month,
-      grade: this.grade == 'all' ? '' : this.grade,
-      subject_name: this.subject == 'all' ? '' : this.subject,
-      exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
-      districtId: districtId
-    }
+      grade: this.grade == "all" ? "" : this.grade,
+      subject_name: this.subject == "all" ? "" : this.subject,
+      exam_date: this.examDate == "all" ? "" : this.examDate,
+      viewBy: this.viewBy == "indicator" ? "indicator" : this.viewBy,
+      districtId: districtId,
+      management: this.management,
+      category: this.category,
+    };
 
+    this.service.patLOTableBlockData(a).subscribe(
+      (response) => {
+        this.reportData = response["tableData"];
+        var blockNames = response["blockDetails"];
+        this.blockNames = blockNames.sort((a, b) =>
+          a.block_name > b.block_name ? 1 : b.block_name > a.block_name ? -1 : 0
+        );
 
-    this.service.patLOTableBlockData(a).subscribe(response => {
-      this.reportData = response['tableData'];
-      var blockNames = response['blockDetails'];
-      this.blockNames = blockNames.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
-
-      this.createTable(this.reportData);
-      var dist = this.districtNames.find(a => a.district_id == districtId);
-      this.districtHierarchy = {
-        districtName: dist.district_name,
-        distId: dist.district_id
+        this.createTable(this.reportData);
+        var dist = this.districtNames.find((a) => a.district_id == districtId);
+        this.districtHierarchy = {
+          districtName: dist.district_name,
+          distId: dist.district_id,
+        };
+        this.skul = false;
+        this.dist = true;
+        this.blok = false;
+        this.clust = false;
+        this.commonService.loaderAndErr(this.reportData);
+      },
+      (err) => {
+        this.handleError();
       }
-      this.skul = false;
-      this.dist = true;
-      this.blok = false;
-      this.clust = false;
-      this.commonService.loaderAndErr(this.reportData);
-    }, err => {
-      this.handleError();
-    })
-
+    );
   }
 
   selectedBlock(blockId) {
     this.resetTable();
-    this.level = 'cluster';
+    this.level = "cluster";
     this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_block_${blockId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = false;
-    document.getElementById('home').style.display = 'block';
+    document.getElementById("home").style.display = "block";
     this.commonService.errMsg();
 
     let a = {
       year: this.year,
       month: this.month,
-      grade: this.grade == 'all' ? '' : this.grade,
-      subject_name: this.subject == 'all' ? '' : this.subject,
-      exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
+      grade: this.grade == "all" ? "" : this.grade,
+      subject_name: this.subject == "all" ? "" : this.subject,
+      exam_date: this.examDate == "all" ? "" : this.examDate,
+      viewBy: this.viewBy == "indicator" ? "indicator" : this.viewBy,
       districtId: this.district,
-      blockId: blockId
-    }
+      blockId: blockId,
+      management: this.management,
+      category: this.category,
+    };
 
-    this.service.patLOTableClusterData(a).subscribe(response => {
-      this.reportData = response['tableData'];
-      var clusterNames = response['clusterDetails'];
-      this.clusterNames = clusterNames.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
-      this.createTable(this.reportData);
-      var block = this.blockNames.find(a => a.block_id == blockId);
-      this.blockHierarchy = {
-        districtName: block.district_name,
-        distId: block.district_id,
-        blockName: block.block_name,
-        blockId: block.block_id
+    this.service.patLOTableClusterData(a).subscribe(
+      (response) => {
+        this.reportData = response["tableData"];
+        var clusterNames = response["clusterDetails"];
+        this.clusterNames = clusterNames.sort((a, b) =>
+          a.cluster_name > b.cluster_name
+            ? 1
+            : b.cluster_name > a.cluster_name
+            ? -1
+            : 0
+        );
+        this.createTable(this.reportData);
+        var block = this.blockNames.find((a) => a.block_id == blockId);
+        this.blockHierarchy = {
+          districtName: block.district_name,
+          distId: block.district_id,
+          blockName: block.block_name,
+          blockId: block.block_id,
+        };
+
+        this.skul = false;
+        this.dist = false;
+        this.blok = true;
+        this.clust = false;
+        this.commonService.loaderAndErr(this.reportData);
+      },
+      (err) => {
+        this.handleError();
       }
-
-      this.skul = false;
-      this.dist = false;
-      this.blok = true;
-      this.clust = false;
-      this.commonService.loaderAndErr(this.reportData);
-    }, err => {
-      this.handleError();
-    })
+    );
   }
 
   selectedCluster(clusterId) {
     this.resetTable();
-    this.level = 'school';
+    this.level = "school";
     this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_cluster_${clusterId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
-    document.getElementById('home').style.display = 'block';
+    document.getElementById("home").style.display = "block";
     this.commonService.errMsg();
 
     let a = {
       year: this.year,
       month: this.month,
-      grade: this.grade == 'all' ? '' : this.grade,
-      subject_name: this.subject == 'all' ? '' : this.subject,
-      exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
+      grade: this.grade == "all" ? "" : this.grade,
+      subject_name: this.subject == "all" ? "" : this.subject,
+      exam_date: this.examDate == "all" ? "" : this.examDate,
+      viewBy: this.viewBy == "indicator" ? "indicator" : this.viewBy,
       districtId: this.district,
       blockId: this.block,
-      clusterId: clusterId
-    }
+      clusterId: clusterId,
+      management: this.management,
+      category: this.category,
+    };
 
-    this.service.patLOTableSchoolData(a).subscribe(response => {
-      this.reportData = response['tableData'];
-      this.createTable(this.reportData);
-      var cluster = this.clusterNames.find(a => a.cluster_id == clusterId);
-      this.clusterHierarchy = {
-        districtName: cluster.district_name,
-        distId: cluster.district_id,
-        blockName: cluster.block_name,
-        blockId: cluster.block_id,
-        clusterId: cluster.cluster_id,
-        clusterName: cluster.cluster_name
+    this.service.patLOTableSchoolData(a).subscribe(
+      (response) => {
+        this.reportData = response["tableData"];
+        this.createTable(this.reportData);
+        var cluster = this.clusterNames.find((a) => a.cluster_id == clusterId);
+        this.clusterHierarchy = {
+          districtName: cluster.district_name,
+          distId: cluster.district_id,
+          blockName: cluster.block_name,
+          blockId: cluster.block_id,
+          clusterId: cluster.cluster_id,
+          clusterName: cluster.cluster_name,
+        };
+        this.skul = false;
+        this.dist = false;
+        this.blok = false;
+        this.clust = true;
+
+        this.commonService.loaderAndErr(this.reportData);
+      },
+      (err) => {
+        this.handleError();
       }
-      this.skul = false;
-      this.dist = false;
-      this.blok = false;
-      this.clust = true;
-
-      this.commonService.loaderAndErr(this.reportData);
-    }, err => {
-      this.handleError();
-    })
+    );
   }
 
   //resetting table
@@ -412,24 +479,24 @@ export class PATLOTableComponent implements OnInit {
     if (this.reportData.length > 0) {
       this.reportData = [];
       $(`#LOtable`).empty();
-      $('#LOtable').DataTable().destroy();
+      $("#LOtable").DataTable().destroy();
     }
   }
   //level wise filter
   levelWiseFilter() {
-    document.getElementById('initTable').style.display = 'block';
-    document.getElementById('home').style.display = 'block';
-    if (this.level == 'district') {
+    document.getElementById("initTable").style.display = "block";
+    document.getElementById("home").style.display = "block";
+    if (this.level == "district") {
       this.resetTable();
-      this.commonFunc()
+      this.commonFunc();
     }
-    if (this.level == 'block') {
+    if (this.level == "block") {
       this.selectedDistrict(this.district);
     }
-    if (this.level == 'cluster') {
-      this.selectedBlock(this.block)
+    if (this.level == "cluster") {
+      this.selectedBlock(this.block);
     }
-    if (this.level == 'school') {
+    if (this.level == "school") {
       this.selectedCluster(this.cluster);
     }
   }
@@ -439,7 +506,7 @@ export class PATLOTableComponent implements OnInit {
     $(`#LOtable`).empty();
     this.reportData = [];
     this.commonService.loaderAndErr(this.reportData);
-    document.getElementById('initTable').style.display = 'none';
+    document.getElementById("initTable").style.display = "none";
   }
 
   // to download the csv report

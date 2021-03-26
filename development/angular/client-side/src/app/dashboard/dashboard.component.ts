@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { AppServiceComponent } from "../app.service";
 import { KeycloakSecurityService } from "../keycloak-security.service";
 import { environment } from "../../environments/environment";
@@ -92,7 +92,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private service: AppServiceComponent,
-    public keyCloakService: KeycloakSecurityService
+    public keyCloakService: KeycloakSecurityService,
+    private changeDetection: ChangeDetectorRef,
   ) {
     service.logoutOnTokenExpire();
     this.changeDataSourceStatus();
@@ -149,16 +150,28 @@ export class DashboardComponent implements OnInit {
       this.categories = res["mydata"].category;
       this.categories.unshift({ id: "overall", value: "Overall" });
       document.getElementById("spinner").style.display = "none";
+    }, err=>{
+      this.managements.unshift(JSON.parse(localStorage.getItem('management')));
+      document.getElementById("spinner").style.display = "none";
     });
     if(!localStorage.getItem('management') && !localStorage.getItem('category')){
       this.management  = this.service.management;
       this.category  = this.service.category;
-      localStorage.setItem("management", this.management);
-      localStorage.setItem("category", this.category);
+      let obj = {
+        id: this.management,
+        value: this.service.changeingStringCases(this.management.replace(/_/g, ' '))
+      }
+      localStorage.setItem("management", JSON.stringify(obj));
+      obj = {
+        id: this.category,
+        value: this.service.changeingStringCases(this.category.replace(/_/g, ' '))
+      }
+      localStorage.setItem("category", JSON.stringify(obj));
     }else{
-      this.management = localStorage.getItem('management');
-      this.category = localStorage.getItem('category');
+      this.management = JSON.parse(localStorage.getItem('management')).id;
+      this.category = JSON.parse(localStorage.getItem('category')).id;
     }
+    this.changeDetection.detectChanges();
   }
 
   //Management and category
@@ -167,10 +180,20 @@ export class DashboardComponent implements OnInit {
   categories = [];
   public category;
   onSelectManagement() {
-    localStorage.setItem("management", this.management);
+    var obj = {
+      id: this.management,
+      value: this.service.changeingStringCases(this.management.replace(/_/g, ' '))
+    }
+    localStorage.setItem("management", JSON.stringify(obj));
+    this.changeDetection.detectChanges();
   }
   onSelectCategory() {
-    localStorage.setItem("category", this.category);
+    var obj = {
+      id: this.category,
+      value: this.service.changeingStringCases(this.category.replace(/_/g, ' '))
+    }
+    localStorage.setItem("category", JSON.stringify(obj));
+    this.changeDetection.detectChanges();
   }
 
   changeDataSourceStatus() {
