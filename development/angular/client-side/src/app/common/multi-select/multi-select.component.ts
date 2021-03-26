@@ -38,7 +38,7 @@ export class MultiSelectComponent implements OnInit {
         this.checkedList.splice(index, 1);
       }
 
-      if (this.checkedList.length <= 2) {
+      if (this.checkedList.length <= 9) {
         if (status) {
           this.checkedList.push(id);
         }
