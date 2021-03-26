@@ -1,5 +1,11 @@
 {"crc_user_location_temp_table_name":"""crc_location_temp""",
 "crc_insp_dup_tb_name":"""crc_inspection_dup""",
+"crc_user_location_temp_trans_qry":"""insert into crc_location_trans(crc_location_id,crc_id,inspection_id,school_id,latitude,longitude,in_school_location,year,month,created_on,updated_on) 
+select data.*,now(),now() from
+((select crc_location_id,crc_id,inspection_id,school_id,latitude,longitude,in_school_location,year,month
+from crc_location_temp) 
+except (select crc_location_id,crc_id,inspection_id,school_id,latitude,longitude,in_school_location,year,month
+from crc_location_trans))as data;""",
 "crc_transform_cluster_wise_jolt":"""[{
     "operation": "shift",
     "spec": {
@@ -19,6 +25,9 @@
         "visit_percent_per_school": "data.[&1].visits_per_school",
         "data_from_date": "data.[&1].data_from_date",
         "data_upto_date": "data.[&1].data_upto_date",
+        "year":"data.[&1].year", 
+       "month":"data.[&1].month", 
+       "school_management_type":"data.[&1].school_management_type",
         "@total_schools": "data.[&1].totalSchools",
         "@visited_school_count": "data.[&1].visitedSchoolCount",
         "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
@@ -64,6 +73,9 @@
           "visits_per_school": "data.[&1].visits_per_school",
           "data_from_date": "data.[&1].data_from_date",
           "data_upto_date": "data.[&1].data_upto_date",
+        "year":"data.[&1].year", 
+       "month":"data.[&1].month", 
+       "school_management_type":"data.[&1].school_management_type",
           "@totalSchools": "data.[&1].totalSchools",
           "@visitedSchoolCount": "data.[&1].visitedSchoolCount",
           "@totalVisits": "data.[&1].totalVisits",
@@ -117,6 +129,9 @@ where crc_inspec_null_col.ff_uuid = log_summary.ff_uuid""",
         "visit_percent_per_school": "data.[&1].visits_per_school",
         "data_from_date": "data.[&1].data_from_date",
         "data_upto_date": "data.[&1].data_upto_date",
+        "year":"data.[&1].year", 
+       "month":"data.[&1].month", 
+       "school_management_type":"data.[&1].school_management_type",
         "@total_schools": "data.[&1].totalSchools",
         "@visited_school_count": "data.[&1].visitedSchoolCount",
         "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
@@ -160,6 +175,9 @@ where crc_inspec_null_col.ff_uuid = log_summary.ff_uuid""",
           "visits_per_school": "data.[&1].visits_per_school",
           "data_from_date": "data.[&1].data_from_date",
           "data_upto_date": "data.[&1].data_upto_date",
+        "year":"data.[&1].year", 
+       "month":"data.[&1].month", 
+       "school_management_type":"data.[&1].school_management_type",
           "@totalSchools": "data.[&1].totalSchools",
           "@visitedSchoolCount": "data.[&1].visitedSchoolCount",
           "@totalVisits": "data.[&1].totalVisits",
@@ -184,6 +202,7 @@ where crc_inspec_null_col.ff_uuid = log_summary.ff_uuid""",
     }
  }
 ]""",
+"crc_queries_filename":"""crc_queries.json""",
 "crc_inspec_duplicate_data":"""Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
 BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
 ActualClassRooms as "actual_class_rooms",
@@ -192,27 +211,33 @@ TotalScore as "total_score",Score as "score",IsOffline as "is_offline",count(Ins
 FROM flowfile
 GROUP BY inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline
 HAVING  COUNT(*) > 1""",
-"crc_queries_filename":"""crc_queries.json""",
 "distinct_crc_loc_records":"""select UserLocationMasterId ,UserMasterId ,SchoolId ,InspectionId ,Latitude ,Longitude ,InSchoolLocation ,CreatedOn  from (SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn, row_number() over (partition by  UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn) as rn from flowfile)sq where rn=1
-""",
-"distinct_crc_inspec_records":"""Select  inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline from (select inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline, row_number() over(partition by
-inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline) as rn from flowfile) sq where rn=1
 """,
 "crc_inspec_dup_check":"""SELECT InspectionId,ObserverId,ObserverName,SchoolId,BeginningStandard,EndStandard,TotalClassRooms,VisitDate,VisitStartTime,VisitEndTime,ActualClassRooms,TotalSuggestionLastMonth,ResolvedFromThat,IsInspection,ReasonType,ReasonDesc,TotalScore,Score,IsOffline,
 count(InspectionId)-1 as "num_of_times"
 FROM flowfile
 GROUP BY inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline
 HAVING  COUNT(*) > 1""",
+"distinct_crc_inspec_records":"""Select  inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline from (select inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline, row_number() over(partition by
+inspectionid,observerid,observername,schoolid,beginningstandard,endstandard,totalclassrooms,visitdate,visitstarttime,visitendtime,actualclassrooms,totalsuggestionlastmonth,resolvedfromthat,isinspection,reasontype,reasondesc,totalscore,score,isoffline) as rn from flowfile) sq where rn=1
+""",
 "crc_insp_check_if_null":"""select * from flowfile
 where SchoolId IS NULL
 or InspectionId IS NULL""",
 "crc_insp_count_null":"""(select 
 SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
 SUM(CASE when InspectionId IS NULL THEN 1 ELSE 0 END) AS count_null_inspectionid from flowfile)""",
+"crc_check_if_null":"""select * from flowfile 
+where SchoolId IS NULL
+or InspectionId IS NULL
+or InSchoolLocation IS NULL
+or CreatedOn IS NULL
+or Latitude IS NULL
+or Longitude IS NULL""",
 "crc_trans_to_crc_visits_frequency_pre_query":"""create or replace view crc_trans_to_aggregate as 
 select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b.district_name)as district_name,b.block_id,
   INITCAP(b.block_name)as block_name,b.cluster_id,
-  INITCAP(b.cluster_name)as cluster_name ,INITCAP(b.crc_name)as crc_name,
+  INITCAP(b.cluster_name)as cluster_name ,INITCAP(b.crc_name)as crc_name,b.school_management_type,school_category,
   sum(cast((case when in_school_location='true' or in_school_location='t' then 1 else 0 end ) as int)) as visit_count,
   sum(cast((case when in_school_location is null or in_school_location ='f' or in_school_location='false' then 1 else 0 end ) as int)) as missed_visit_count,
       a.month,
@@ -223,39 +248,34 @@ select  a.school_id,INITCAP(b.school_name)as school_name,b.district_id,INITCAP(b
  from crc_inspection_trans cit inner join crc_location_trans clt on clt.inspection_id=cit.crc_inspection_id 
  group by crc_inspection_id, clt.school_id,month,year) as a left join school_hierarchy_details as b on a.school_id=b.school_id
   where a.school_id<>0 and a.inspection_id<>0 and b.school_id<>9999 and b.cluster_name is not null and b.district_name is not null and b.block_name is not null and b.school_name is not null
-  group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id, b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year
+  group by a.school_id,b.school_name,b.district_id,b.district_name,b.block_id, b.block_name,b.cluster_id,b.cluster_name,b.crc_name,a.month,a.year,b.school_management_type,b.school_category
   order by school_id desc ;
 
 
 insert into crc_visits_frequency as a (year,month,school_id,school_name,district_id,district_name,
-block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on)
+block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,school_management_type,school_category,created_on,updated_on)
 select year,month,school_id,school_name,district_id,district_name,
-block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,created_on,updated_on from crc_trans_to_aggregate
+block_id,block_name,cluster_id,cluster_name,crc_name,visit_count,missed_visit_count,school_management_type,school_category,created_on,updated_on from crc_trans_to_aggregate
 on conflict (month,year,school_id)
 do update set year= excluded.year,month=excluded.month,school_id=excluded.school_id,school_name=excluded.school_name,
 district_id=excluded.district_id,district_name=excluded.district_name,
 block_id=excluded.block_id,block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
-visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,updated_on=now(),created_on=excluded.created_on;""",
-"crc_check_if_null":"""select * from flowfile 
-where SchoolId IS NULL
-or InspectionId IS NULL
-or InSchoolLocation IS NULL
-or CreatedOn IS NULL
-or Latitude IS NULL
-or Longitude IS NULL""",
+visit_count=excluded.visit_count,missed_visit_count=excluded.missed_visit_count,school_management_type=excluded.school_management_type,school_category=excluded.school_category,
+updated_on=now(),created_on=excluded.created_on ;""",
 "crc_inpsec_master_column_change":"""Select  InspectionId as "crc_inspection_id",ObserverId as "crc_id",ObserverName as "crc_name",SchoolId as "school_id",
 BeginningStandard as "lowest_class",EndStandard as "highest_class",TotalClassRooms as "total_class_rooms",visitdate as "visit_date", VisitStartTime as "visit_start_time",VisitEndTime as "visit_end_time",
 ActualClassRooms as "actual_class_rooms",
 TotalSuggestionLastMonth as "total_suggestion_last_month",ResolvedFromThat as "resolved_from_that",IsInspection as "is_inspection",ReasonType as "reason_type",ReasonDesc as "reason_desc",
 TotalScore as "total_score",Score as "score",IsOffline as "is_offline"
 FROM flowfile""",
+"crc_inspection_temp_trans_qry":"""insert into crc_inspection_trans(crc_inspection_id,crc_id,crc_name,school_id,lowest_class,highest_class,visit_date,visit_start_time,visit_end_time,total_class_rooms,actual_class_rooms,total_suggestion_last_month,resolved_from_that,is_inspection,reason_type,reason_desc,total_score,score,is_offline,created_on,updated_on) select data.*,now(),now() from ((select crc_inspection_id,crc_id,crc_name,school_id,lowest_class,highest_class,visit_date,visit_start_time,visit_end_time,total_class_rooms,actual_class_rooms,total_suggestion_last_month,resolved_from_that,is_inspection,reason_type,reason_desc,total_score,score,is_offline from crc_inspection_temp) except (select crc_inspection_id,crc_id,crc_name,school_id,lowest_class,highest_class,visit_date,visit_start_time,visit_end_time,total_class_rooms,actual_class_rooms,total_suggestion_last_month,resolved_from_that,is_inspection,reason_type,reason_desc,total_score,score,is_offline from crc_inspection_trans))as data;""",
 "crc_loc_duplicate_data":"""select UserLocationMasterId as "crc_location_id",UserMasterId as "crc_id",SchoolId as "school_id",InspectionId as "inspection_id",Latitude as "latitude",Longitude as "longitude",InSchoolLocation as "in_school_location",CreatedOn as "created_on",count(UserLocationMasterId)-1  num_of_times
 FROM flowfile
 GROUP BY UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
 HAVING  COUNT(*) > 1""",
-"crc_inspec_count_qry":"""select count(*) from crc_inspection_trans""",
 "crc_user_loc_normalize":"""select UserLocationMasterId as "crc_location_id",UserMasterId as "crc_id",SchoolId as "school_id",InspectionId as "inspection_id",Latitude as "latitude",Longitude as "longitude",InSchoolLocation as "in_school_location",CreatedOn as "created_on"
 from flowfile""",
+"crc_inspec_count_qry":"""select count(*) from crc_inspection_trans""",
 "crc_loc_null_log_summary":"""update log_summary
 SET school_id = crc_loc_null_col.count_null_schoolid,
 inspection_id = crc_loc_null_col.count_null_inspectionid,
@@ -297,6 +317,9 @@ where crc_loc_null_col.ff_uuid = log_summary.ff_uuid""",
         "visit_percent_per_school": "data.[&1].visits_per_school",
         "data_from_date": "data.[&1].data_from_date",
         "data_upto_date": "data.[&1].data_upto_date",
+        "year":"data.[&1].year", 
+       "month":"data.[&1].month", 
+       "school_management_type":"data.[&1].school_management_type",
         "@total_schools": "data.[&1].totalSchools",
         "@visited_school_count": "data.[&1].visitedSchoolCount",
         "@not_visited_school_count": "data.[&1].totalSchoolsNotVisited",
@@ -344,6 +367,9 @@ where crc_loc_null_col.ff_uuid = log_summary.ff_uuid""",
           "visits_per_school": "data.[&1].visits_per_school",
           "data_from_date": "data.[&1].data_from_date",
           "data_upto_date": "data.[&1].data_upto_date",
+        "year":"data.[&1].year", 
+       "month":"data.[&1].month", 
+       "school_management_type":"data.[&1].school_management_type",
           "@totalSchools": "data.[&1].totalSchools",
           "@visitedSchoolCount": "data.[&1].visitedSchoolCount",
           "@totalVisits": "data.[&1].totalVisits",
@@ -368,6 +394,10 @@ where crc_loc_null_col.ff_uuid = log_summary.ff_uuid""",
     }
  }
 ]""",
+"crc_loc_dup_check":"""SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(UserLocationMasterId)  num_of_times
+FROM flowfile
+GROUP BY UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
+HAVING  COUNT(*) > 1""",
 "crc_not_null":"""select * from flowfile 
 where SchoolId IS NOT NULL
 AND InspectionId IS NOT NULL
@@ -375,10 +405,6 @@ AND InSchoolLocation IS NOT NULL
 AND CreatedOn IS NOT NULL
 AND Latitude IS NOT NULL
 AND Longitude IS NOT NULL""",
-"crc_loc_dup_check":"""SELECT UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn,count(UserLocationMasterId)  num_of_times
-FROM flowfile
-GROUP BY UserLocationMasterId,UserMasterId,SchoolId,InspectionId,Latitude,Longitude,InSchoolLocation,CreatedOn
-HAVING  COUNT(*) > 1""",
 "crc_loc_null_table":"""crc_loc_null_col""",
 "crc_count_null":"""(select 
 SUM(CASE when SchoolId IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
@@ -388,7 +414,6 @@ SUM(CASE when CreatedOn IS NULL THEN 1 ELSE 0 END) AS count_null_createdon,
 SUM(CASE when  Latitude IS NULL THEN 1 ELSE 0 END) AS count_latitude,
 SUM(CASE when  Longitude IS NULL THEN 1 ELSE 0 END) AS count_longitude
 from flowfile)""",
-"crc_inspec_null_table":"""crc_inspec_null_col""",
 "crc_transform_district_wise_jolt":"""[{
     "operation": "shift",
     "spec": {
@@ -405,6 +430,10 @@ from flowfile)""",
         "visit_percent_per_school": "data.[&1].visits_per_school",
         "data_from_date": "data.[&1].data_from_date",
         "data_upto_date": "data.[&1].data_upto_date",
+        "year":"data.[&1].year", 
+       "month":"data.[&1].month",        
+       "school_management_type":"data.[&1].school_management_type",        
+ 
         "@total_schools": "data.[&1].totalSchools",
         "@visited_school_count": "data.[&1].visitedSchoolCount",
         "@total_crc_visits": "data.[&1].totalVisits",
@@ -428,15 +457,9 @@ from flowfile)""",
 	}
 
 ]""",
+"crc_inspec_null_table":"""crc_inspec_null_col""",
 "crc_insp_not_null":"""select * from flowfile
 where SchoolId IS NOT NULL
 AND InspectionId IS NOT NULL
-""",
-"crc_inspection_temp_trans_qry":"""insert into crc_inspection_trans(crc_inspection_id,crc_id,crc_name,school_id,lowest_class,highest_class,visit_date,visit_start_time,visit_end_time,total_class_rooms,actual_class_rooms,total_suggestion_last_month,resolved_from_that,is_inspection,reason_type,reason_desc,total_score,score,is_offline,created_on,updated_on) select data.*,now(),now() from ((select crc_inspection_id,crc_id,crc_name,school_id,lowest_class,highest_class,visit_date,visit_start_time,visit_end_time,total_class_rooms,actual_class_rooms,total_suggestion_last_month,resolved_from_that,is_inspection,reason_type,reason_desc,total_score,score,is_offline from crc_inspection_temp) except (select crc_inspection_id,crc_id,crc_name,school_id,lowest_class,highest_class,visit_date,visit_start_time,visit_end_time,total_class_rooms,actual_class_rooms,total_suggestion_last_month,resolved_from_that,is_inspection,reason_type,reason_desc,total_score,score,is_offline from crc_inspection_trans))as data;""",
-"crc_user_location_temp_trans_qry":"""insert into crc_location_trans(crc_location_id,crc_id,inspection_id,school_id,latitude,longitude,in_school_location,year,month,created_on,updated_on) 
-select data.*,now(),now() from
-((select crc_location_id,crc_id,inspection_id,school_id,latitude,longitude,in_school_location,year,month
-from crc_location_temp) 
-except (select crc_location_id,crc_id,inspection_id,school_id,latitude,longitude,in_school_location,year,month
-from crc_location_trans))as data;"""
+"""
 }
