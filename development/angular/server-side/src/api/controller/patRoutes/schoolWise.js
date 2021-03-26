@@ -76,7 +76,6 @@ router.post('/allSchoolWise', auth.authController, async(req, res) => {
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async(req, res) => {
     try {
         logger.info('---PAT schoolPerCluster api ---');
-        console.log(req.body)
         var period = req.body.data.period;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
@@ -107,8 +106,6 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 fileName = `${report}/${period}/${semester}/${report}_school.json`;
             }
         }
-
-        console.log(fileName)
 
         var schoolData = await s3File.readS3File(fileName);
         let clusterId = req.params.clusterId;

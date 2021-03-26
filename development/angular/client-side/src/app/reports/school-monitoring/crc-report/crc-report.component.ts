@@ -1091,7 +1091,7 @@ export class CrcReportComponent implements OnInit {
     ctx.attr(
       "height",
       this.height > 1760
-        ? "68vh"
+        ? "67vh"
         : this.height > 1180 && this.height < 1760
         ? "60vh"
         : this.height > 667 && this.height < 1180

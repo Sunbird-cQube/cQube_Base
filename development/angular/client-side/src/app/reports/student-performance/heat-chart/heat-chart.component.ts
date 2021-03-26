@@ -177,7 +177,7 @@ export class HeatChartComponent implements OnInit {
     this.state = this.commonService.state;
     this.managementName = this.management = JSON.parse(localStorage.getItem("management")).id;
     this.managementName = this.commonService.changeingStringCases(this.managementName.replace(/_/g, " "));
-    this.category = localStorage.getItem("category");
+    this.category = JSON.parse(localStorage.getItem("category")).id;
     document.getElementById("homeBtn").style.display = "block";
     document.getElementById("backBtn").style.display = "none";
   }

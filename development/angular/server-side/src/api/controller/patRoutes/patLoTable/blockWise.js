@@ -11,9 +11,9 @@ router.post('/blockWise', auth.authController, async(req, res) => {
         let fileName;
         if (management != 'overall' && category == 'overall') {
             if (viewBy == 'indicator') {
-                fileName = `${report}/school_management_category/heatChart/indicatorIdLevel/${year}/${month}/overall_category/${management}/districts/${districtId}.json`;
+                fileName = `pat/school_management_category/heatChart/indicatorIdLevel/${year}/${month}/overall_category/${management}/districts/${districtId}.json`;
             } else if (viewBy == 'question_id')
-                fileName = `${report}/school_management_category/heatChart/questionIdLevel/${year}/${month}/overall_category/${management}/districts/${districtId}.json`;
+                fileName = `pat/school_management_category/heatChart/questionIdLevel/${year}/${month}/overall_category/${management}/districts/${districtId}.json`;
         } else {
             if (viewBy == 'indicator') {
                 fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/districts/${districtId}.json`;

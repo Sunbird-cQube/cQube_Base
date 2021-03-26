@@ -1,4 +1,5 @@
-<mat-toolbar class="header" color="primary">
+<mat-toolbar class="header" color="primary"
+  style="position: fixed; top: 0; z-index: 9999;">
   <button class="menu" mat-icon-button (click)="sidenav.toggle()" id="menu">
     <mat-icon style="color: #24223e;">menu</mat-icon>
   </button>
@@ -16,10 +17,10 @@
 </mat-toolbar>
 
 <mat-sidenav-container style="background-color: rgb(245, 245, 245);">
-  <mat-sidenav #sidenav>
-    <div id="div1" style="height: 82vh; position:relative;">
-      <div id="div2" style="max-height:100%;overflow:auto;">
-        <div id="div3" style="height:1500px auto;">
+  <mat-sidenav #sidenav id="sideNav">
+    <div style="height: 83vh; position:relative;">
+      <div style="max-height:100%;overflow:auto;">
+        <div style="height:1500px auto;">
           <mat-nav-list class=sidenav>
             <mat-toolbar style="height: 50px; background-color: white; border-bottom: 1px solid lightgray;">
               <mat-toolbar-row style="color: rgb(84, 116, 223);">
@@ -279,12 +280,12 @@
     </div>
     <hr>
     <div>
-      <span id="version">Version : 1.11 </span>
-      <span id="releaseDate">Date: 03/03/2021</span>
+      <span id="version" style="float: left;">Version : 1.11 </span>
+      <span id="releaseDate" style="float: right;">Date: 03/03/2021</span>
     </div>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <mat-sidenav-content style="margin-top: 1.5%;">
     <div style="min-height: 95vh; overflow-x: hidden;">
       <router-outlet></router-outlet>
     </div>

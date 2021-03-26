@@ -295,6 +295,7 @@ export class PATReportComponent implements OnInit {
               ? -1
               : 0
           );
+          this.changeDetection.detectChanges();
         },
         (err) => {
           this.data = [];
@@ -313,7 +314,7 @@ export class PATReportComponent implements OnInit {
       .subscribe(
         (res) => {
           this.data = res["data"];
-          this.blockMarkers = this.data;
+          this.blockMarkers = this.allBlocks = this.data;
 
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
@@ -338,7 +339,7 @@ export class PATReportComponent implements OnInit {
       .subscribe(
         (res) => {
           this.data = res["data"];
-          this.clusterMarkers = this.data;
+          this.clusterMarkers = this.allClusters = this.data;
 
           if (!this.clusterMarkers[0]["Subjects"]) {
             this.clusterFilter = this.clusterMarkers;
@@ -554,6 +555,7 @@ export class PATReportComponent implements OnInit {
                       ? -1
                       : 0
                   );
+                  this.changeDetection.detectChanges();
                 },
                 (err) => {
                   this.data = [];
@@ -660,7 +662,7 @@ export class PATReportComponent implements OnInit {
 
                   if (this.data.length > 0) {
                     let result = this.data;
-                    this.blockMarkers = [];
+                    // this.blockMarkers = [];
                     this.blockMarkers = result;
                     if (!this.blockMarkers[0]["Subjects"]) {
                       this.blockFilter = this.blockMarkers;
@@ -1382,7 +1384,6 @@ export class PATReportComponent implements OnInit {
     }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${
       this.commonService.dateAndTime
     }`;
-    console.log(this.blockFilter);
     var myData = this.blockFilter.find((a) => a.Details.block_id == blockId);
     var grades = [];
     Object.keys(myData["Grades"]).forEach((grade) => {

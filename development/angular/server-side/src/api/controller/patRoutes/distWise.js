@@ -6,7 +6,6 @@ const s3File = require('../../lib/reads3File');
 router.post('/distWise', auth.authController, async(req, res) => {
     try {
         logger.info('---PAT dist wise api ---');
-        console.log(req.body);
         var period = req.body.data.period;
         var grade = req.body.data.grade;
         var report = req.body.data.report;

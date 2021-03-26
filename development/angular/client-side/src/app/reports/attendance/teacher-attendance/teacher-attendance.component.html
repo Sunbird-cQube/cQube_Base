@@ -143,7 +143,7 @@
         <div class="col-sm-12">
             <div style="float: left; width: 90%;">
                 <div #mapContainer id="mapContainer" class="active" style="width: 100%;"
-                    [ngStyle]="{height: heigth > 1760 ? '84.1vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '74vh':'68vh'}">
+                    [ngStyle]="{height: heigth > 1760 ? '83vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '74vh':'70vh'}">
                 </div>
             </div>
             <div style="float: left; width: 9%; margin-left: 1%;">
@@ -175,17 +175,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-10">
             <span *ngIf="managementName != 'Overall'" id="name" class="note" style="text-align: center;">Name of
                 Management: {{managementName}}</span>
-        </div>
-        <div class="col-sm-2">
-            <span id="students">Number of teachers: {{teacherCount}}</span>
-        </div>
-        <div class="col-sm-2">
-            <span id="schools" style="text-align: center;">Number of Schools: {{schoolCount}}</span>
-        </div>
-        <div class="col-sm-3">
+        
+            <span id="students" style="margin-left: 4%;">Number of teachers: {{teacherCount}}</span>
+        
+            <span id="schools" style="text-align: center; margin-left: 4%;">Number of Schools: {{schoolCount}}</span>
+        
             <span id="dateRange" style="float: right;">Date range: {{dateRange}}</span>
         </div>
     </div>

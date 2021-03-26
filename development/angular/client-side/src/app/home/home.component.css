@@ -166,7 +166,7 @@ img{
 }
 
 .submenu9.expanded {
-  height: 144px;
+  height: 96px;
 }
 
 a{
@@ -197,6 +197,10 @@ a{
   height: 35px; 
   background-color: rgb(245, 245, 245); 
   width: 100%;
+}
+#sideNav{
+  top: 35px; 
+  position: fixed;
 }
 
 #backBtn,#homeBtn{
@@ -233,6 +237,11 @@ a{
     height: 50px; 
     background-color: rgb(245, 245, 245); 
     width: 100%;
+  }
+
+  #sideNav{
+    top: 50px; 
+    position: fixed;
   }
 
   #logoImg{
@@ -280,7 +289,10 @@ a{
     background-color: rgb(245, 245, 245); 
     width: 100%;
   }
-
+  #sideNav{
+    top: 60px; 
+    position: fixed;
+  }
   #logoImg{
     height:50px; 
     width:160px;
@@ -324,6 +336,10 @@ a{
     height: 70px !important; 
     background-color: rgb(245, 245, 245); 
     width: 100% !important;
+  }
+  #sideNav{
+    top: 70px !important; 
+    position: fixed;
   }
 
   #logoImg{

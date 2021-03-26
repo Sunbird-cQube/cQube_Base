@@ -48,7 +48,6 @@ export class StudentAttendanceChartComponent implements OnInit {
       this.selectedYear = this.years[this.years.length-1];
       this.onResize();
       this.onHomeClick(false);
-      this.getDistrictData();
     })
     this.changeDetection.detectChanges();
   }
@@ -97,6 +96,7 @@ export class StudentAttendanceChartComponent implements OnInit {
         this.currentData.push({data: data, name: this.state, color: '#00FF00'});
         this.commonService.loaderAndErr(this.currentData);
       })
+      this.getDistrictData();
     },err=>{
       this.data = [];
       this.currentData = [];
