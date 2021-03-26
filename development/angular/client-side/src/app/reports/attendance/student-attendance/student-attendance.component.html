@@ -151,7 +151,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <span id="name" class="note" style="text-align: center;">Name of Management: {{managementName}}</span>
+            <span *ngIf="managementName != 'Overall'" id="name" class="note" style="text-align: center;">Name of Management: {{managementName}}</span>
         </div>
         <div class="col-sm-2">
             <span id="students">Number of Students: {{studentCount}}</span>

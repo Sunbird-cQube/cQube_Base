@@ -78,6 +78,10 @@ export class HeatChartComponent implements OnInit {
   reportName = 'periodic_assessment_test_heatmap';
   screenWidth: number;
 
+  managementName;
+  management;
+  category;
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.screenWidth = window.innerWidth;
@@ -148,6 +152,9 @@ export class HeatChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.state = this.commonService.state;
+    this.managementName = this.management = localStorage.getItem('management');
+    this.managementName = this.commonService.changeingStringCases(this.managementName.replace(/_/g, ' '));
+    this.category = localStorage.getItem('category');
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
   }
@@ -192,7 +199,9 @@ export class HeatChartComponent implements OnInit {
       grade: this.grade == 'all' ? '' : this.grade,
       subject_name: this.subject == 'all' ? '' : this.subject,
       exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
+      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
+      management: this.management,
+      category: this.category
     }
     this.month = a.month;
     if (this.myData) {
@@ -611,7 +620,9 @@ export class HeatChartComponent implements OnInit {
       subject_name: this.subject == 'all' ? '' : this.subject,
       exam_date: this.examDate == 'all' ? '' : this.examDate,
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
-      districtId: districtId
+      districtId: districtId,
+      management: this.management,
+      category: this.category
     }
 
     this.service.PATHeatMapDistData(a).subscribe(response => {
@@ -656,7 +667,9 @@ export class HeatChartComponent implements OnInit {
       exam_date: this.examDate == 'all' ? '' : this.examDate,
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
       districtId: this.district,
-      blockId: blockId
+      blockId: blockId,
+      management: this.management,
+      category: this.category
     }
 
     this.service.PATHeatMapBlockData(a).subscribe(response => {
@@ -702,7 +715,9 @@ export class HeatChartComponent implements OnInit {
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
       districtId: this.district,
       blockId: this.block,
-      clusterId: clusterId
+      clusterId: clusterId,
+      management: this.management,
+      category: this.category
     }
 
     this.service.PATHeatMapClusterData(a).subscribe(response => {

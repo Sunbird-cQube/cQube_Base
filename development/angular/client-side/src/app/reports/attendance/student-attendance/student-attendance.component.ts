@@ -115,8 +115,8 @@ export class StudengtAttendanceComponent implements OnInit {
     this.timePeriod = {
       period: 'overall'
     }
-   this.managementName = this.management = localStorage.getItem('management');
-   this.managementName = this.commonService.changeingStringCases(this.managementName.replace(/_/g, ' '));
+    this.managementName = this.management = localStorage.getItem('management');
+    this.managementName = this.commonService.changeingStringCases(this.managementName.replace(/_/g, ' '));
     this.category = localStorage.getItem('category');
     this.service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
