@@ -115,6 +115,10 @@ export class PATReportComponent implements OnInit {
   month_year: { month: any; year: any };
   timePeriod: { period: any };
 
+  management;
+  category;
+  managementName;
+
   constructor(
     public http: HttpClient,
     public service: PatReportService,
@@ -181,6 +185,11 @@ export class PATReportComponent implements OnInit {
     }`;
     this.skul = true;
     this.period = "all";
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     this.service.getMonthYear().subscribe((res) => {
       this.getMonthYear = res;
       this.getMonthYear.map((item) => {
@@ -266,6 +275,7 @@ export class PATReportComponent implements OnInit {
       .PATDistWiseData({
         ...{ grade: this.grade, period: this.period, report: "pat" },
         ...this.month_year,
+        ...{ management: this.management, category: this.category },
       })
       .subscribe(
         (res) => {
@@ -298,6 +308,7 @@ export class PATReportComponent implements OnInit {
       .PATBlocksPerDistData(distId, {
         ...{ period: this.period, report: "pat" },
         ...this.month_year,
+        ...{ management: this.management, category: this.category },
       })
       .subscribe(
         (res) => {
@@ -322,6 +333,7 @@ export class PATReportComponent implements OnInit {
       .PATClustersPerBlockData(distId, blockId, {
         ...{ period: this.period, report: "pat" },
         ...this.month_year,
+        ...{ management: this.management, category: this.category },
       })
       .subscribe(
         (res) => {
@@ -491,8 +503,10 @@ export class PATReportComponent implements OnInit {
                 ...{
                   ...{ grade: this.grade, period: this.period, report: "pat" },
                   ...this.month_year,
+                  ...{ management: this.management, category: this.category },
                 },
                 ...this.month_year,
+                ...{ management: this.management, category: this.category },
               })
               .subscribe(
                 (res) => {
@@ -526,13 +540,13 @@ export class PATReportComponent implements OnInit {
                     [options.centerLat + 3.5, options.centerLng + 6],
                   ]);
                   this.changeDetection.detectChanges();
+                  this.genericFun(this.myDistData, options, this.fileName);
                   this.setZoomLevel(
                     options.centerLat,
                     options.centerLng,
                     globalMap,
                     options.mapZoom
                   );
-                  this.genericFun(this.myDistData, options, this.fileName);
                   this.allDistricts.sort((a, b) =>
                     a.Details["district_name"] > b.Details["district_name"]
                       ? 1
@@ -607,6 +621,7 @@ export class PATReportComponent implements OnInit {
         .gradeMetaData({
           ...{ period: this.period, report: "pat" },
           ...this.month_year,
+          ...{ management: this.management, category: this.category },
         })
         .subscribe(
           (res) => {
@@ -625,6 +640,7 @@ export class PATReportComponent implements OnInit {
               .PATBlockWiseData({
                 ...{ grade: this.grade, period: this.period, report: "pat" },
                 ...this.month_year,
+                ...{ management: this.management, category: this.category },
               })
               .subscribe(
                 (res) => {
@@ -828,6 +844,7 @@ export class PATReportComponent implements OnInit {
         .gradeMetaData({
           ...{ period: this.period, report: "pat" },
           ...this.month_year,
+          ...{ management: this.management, category: this.category },
         })
         .subscribe(
           (res) => {
@@ -846,6 +863,7 @@ export class PATReportComponent implements OnInit {
               .PATClusterWiseData({
                 ...{ grade: this.grade, period: this.period, report: "pat" },
                 ...this.month_year,
+                ...{ management: this.management, category: this.category },
               })
               .subscribe(
                 (res) => {
@@ -1044,6 +1062,7 @@ export class PATReportComponent implements OnInit {
         .gradeMetaData({
           ...{ period: this.period, report: "pat" },
           ...this.month_year,
+          ...{ management: this.management, category: this.category },
         })
         .subscribe(
           (res) => {
@@ -1062,6 +1081,7 @@ export class PATReportComponent implements OnInit {
               .PATSchoolWiseData({
                 ...{ grade: this.grade, period: this.period, report: "pat" },
                 ...this.month_year,
+                ...{ management: this.management, category: this.category },
               })
               .subscribe(
                 (res) => {
@@ -1257,6 +1277,7 @@ export class PATReportComponent implements OnInit {
       .PATBlocksPerDistData(districtId, {
         ...{ period: this.period, report: "pat" },
         ...this.month_year,
+        ...{ management: this.management, category: this.category },
       })
       .subscribe(
         (res) => {
@@ -1306,13 +1327,14 @@ export class PATReportComponent implements OnInit {
             [options.centerLat + 1.5, options.centerLng + 2],
           ]);
           this.changeDetection.detectChanges();
+
+          this.genericFun(res, options, this.fileName);
           this.setZoomLevel(
             options.centerLat,
             options.centerLng,
             globalMap,
             options.mapZoom
           );
-          this.genericFun(res, options, this.fileName);
           // sort the blockname alphabetically
           this.blockMarkers.sort((a, b) =>
             a.Details.block_name > b.Details.block_name
@@ -1360,6 +1382,7 @@ export class PATReportComponent implements OnInit {
     }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${
       this.commonService.dateAndTime
     }`;
+    console.log(this.blockFilter);
     var myData = this.blockFilter.find((a) => a.Details.block_id == blockId);
     var grades = [];
     Object.keys(myData["Grades"]).forEach((grade) => {
@@ -1374,6 +1397,7 @@ export class PATReportComponent implements OnInit {
       .PATClustersPerBlockData(this.districtHierarchy.distId, blockId, {
         ...{ period: this.period, report: "pat" },
         ...this.month_year,
+        ...{ management: this.management, category: this.category },
       })
       .subscribe(
         (res) => {
@@ -1431,13 +1455,14 @@ export class PATReportComponent implements OnInit {
             [options.centerLat + 1.5, options.centerLng + 2],
           ]);
           this.changeDetection.detectChanges();
+
+          this.genericFun(res, options, this.fileName);
           this.setZoomLevel(
             options.centerLat,
             options.centerLng,
             globalMap,
             options.mapZoom
           );
-          this.genericFun(res, options, this.fileName);
           // sort the clusterName alphabetically
           this.clusterMarkers.sort((a, b) =>
             a.Details.cluster_name > b.Details.cluster_name
@@ -1493,6 +1518,7 @@ export class PATReportComponent implements OnInit {
       .PATBlockWiseData({
         ...{ grade: this.grade, period: this.period, report: "pat" },
         ...this.month_year,
+        ...{ management: this.management, category: this.category },
       })
       .subscribe(
         (result: any) => {
@@ -1501,7 +1527,11 @@ export class PATReportComponent implements OnInit {
               this.blockHierarchy.distId,
               this.blockHierarchy.blockId,
               clusterId,
-              { ...{ period: this.period, report: "pat" }, ...this.month_year }
+              {
+                ...{ period: this.period, report: "pat" },
+                ...this.month_year,
+                ...{ management: this.management, category: this.category },
+              }
             )
             .subscribe(
               (res) => {
@@ -1590,13 +1620,14 @@ export class PATReportComponent implements OnInit {
                   [options.centerLat + 1.5, options.centerLng + 2],
                 ]);
                 this.changeDetection.detectChanges();
+
+                this.genericFun(res, options, this.fileName);
                 this.setZoomLevel(
                   options.centerLat,
                   options.centerLng,
                   globalMap,
                   options.mapZoom
                 );
-                this.genericFun(res, options, this.fileName);
               },
               (err) => {
                 this.data = [];
@@ -2169,7 +2200,7 @@ export class PATReportComponent implements OnInit {
     data["timePeriod"] = this.period == "all" ? "overall" : this.period;
 
     sessionStorage.setItem("health-card-info", JSON.stringify(data));
-    this._router.navigate(["/healthCard"]);
+    this._router.navigate(["/progressCard"]);
   }
 
   public legendColors: any = [

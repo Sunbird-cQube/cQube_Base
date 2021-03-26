@@ -12561,6 +12561,39 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>fa642774-550f-397e-0000-000000000000</id>
+                            <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>-2216.0</x>
+<y>1392.0</y>
+                            </bends>
+                            <bends>
+<x>1250.19482421875</x>
+<y>1250.8123779296875</y>
+                            </bends>
+                            <destination>
+<groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
+<id>704656b9-80e1-3041-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
+<id>0a939b40-55c0-3789-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>fb309aac-d449-3fb6-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -21130,12 +21163,12 @@ file: ${filename} columns did not match.</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1day</schedulingPeriod>
+<schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>statict_management_category_meta</name>
+                            <name>static_management_category_meta</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -27284,5 +27317,5 @@ ${filename:startsWith('school_management_master'):ifElse(#{static_school_managem
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/24/2021 20:54:36 IST</timestamp>
+    <timestamp>03/26/2021 12:51:11 IST</timestamp>
 </template>

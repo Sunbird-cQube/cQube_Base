@@ -281,13 +281,13 @@ export class UdiseReportComponent implements OnInit {
           centerLng: this.lng,
           level: "district",
         };
+        this.genericFun(this.myDistData, options, this.fileName);
         this.setZoomLevel(
           options.centerLat,
           options.centerLng,
           globalMap,
           options.mapZoom
         );
-        this.genericFun(this.myDistData, options, this.fileName);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) =>
           a.details.District_Name > b.details.District_Name
@@ -327,13 +327,13 @@ export class UdiseReportComponent implements OnInit {
                 ? -1
                 : 0
             );
+            this.genericFun(this.myDistData, options, this.fileName);
             this.setZoomLevel(
               options.centerLat,
               options.centerLng,
               globalMap,
               options.mapZoom
             );
-            this.genericFun(this.myDistData, options, this.fileName);
 
             // sort the districtname alphabetically
             this.districtMarkers.sort((a, b) =>
@@ -777,13 +777,13 @@ export class UdiseReportComponent implements OnInit {
           centerLng: this.data[0].details.longitude,
           level: "block",
         };
+        this.genericFun(res, options, this.fileName);
         this.setZoomLevel(
           options.centerLat,
           options.centerLng,
           globalMap,
           options.mapZoom
         );
-        this.genericFun(res, options, this.fileName);
         // sort the blockname alphabetically
         this.blockMarkers.sort((a, b) =>
           a.details.Block_Name > b.details.Block_Name
@@ -866,13 +866,13 @@ export class UdiseReportComponent implements OnInit {
             centerLng: this.data[0].details.longitude,
             level: "cluster",
           };
+          this.genericFun(res, options, this.fileName);
           this.setZoomLevel(
             options.centerLat,
             options.centerLng,
             globalMap,
             options.mapZoom
           );
-          this.genericFun(res, options, this.fileName);
           // sort the clusterName alphabetically
           this.clusterMarkers.sort((a, b) =>
             a.details.Cluster_Name > b.details.Cluster_Name
@@ -975,13 +975,14 @@ export class UdiseReportComponent implements OnInit {
                 centerLng: this.data[0].details.longitude,
                 level: "school",
               };
+
+              this.genericFun(res, options, this.fileName);
               this.setZoomLevel(
                 options.centerLat,
                 options.centerLng,
                 globalMap,
                 options.mapZoom
               );
-              this.genericFun(res, options, this.fileName);
             },
             (err) => {
               this.data = [];
@@ -1520,7 +1521,7 @@ export class UdiseReportComponent implements OnInit {
     }
 
     sessionStorage.setItem("health-card-info", JSON.stringify(data));
-    this._router.navigate(["/healthCard"]);
+    this._router.navigate(["/progressCard"]);
   }
   public legendColors: any = [
     "#a50026",

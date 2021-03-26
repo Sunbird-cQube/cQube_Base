@@ -4,19 +4,31 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const helper = require('./helper');
 
-router.post('/distWise', auth.authController, async (req, res) => {
+router.post('/distWise', auth.authController, async(req, res) => {
     try {
         logger.info(`---${req.body.report} heat map distwise api ---`);
-        let { year, month, grade, subject_name, exam_date, viewBy, report } = req.body
+        let { year, month, grade, subject_name, exam_date, viewBy, report, management, category } = req.body
         let fileName;
-        if (grade == "") {
-            fileName = `${report}/heatmap-summary/${year}/${month}/allData.json`
+        if (management != 'overall' && category == 'overall') {
+            if (grade == "") {
+                fileName = `${report}/school_management_category/heatmap-summary/${year}/${month}/overall_category/${management}/allData.json`
+            } else {
+                if (viewBy == 'indicator') {
+                    fileName = `${report}/school_management_category/heatChart/indicatorIdLevel/${year}/${month}/overall_category/${management}/allData.json`;
+                } else if (viewBy == 'question_id')
+                    fileName = `${report}/school_management_category/heatChart/questionIdLevel/${year}/${month}/overall_category/${management}/allData.json`;
+            }
         } else {
-            if (viewBy == 'indicator') {
-                fileName = `${report}/heatChart/indicatorIdLevel/${year}/${month}/allData.json`;
-            } else if (viewBy == 'question_id')
-                fileName = `${report}/heatChart/questionIdLevel/${year}/${month}/allData.json`;
+            if (grade == "") {
+                fileName = `${report}/heatmap-summary/${year}/${month}/allData.json`
+            } else {
+                if (viewBy == 'indicator') {
+                    fileName = `${report}/heatChart/indicatorIdLevel/${year}/${month}/allData.json`;
+                } else if (viewBy == 'question_id')
+                    fileName = `${report}/heatChart/questionIdLevel/${year}/${month}/allData.json`;
+            }
         }
+
         var data = await s3File.readS3File(fileName);
         let districtDetails = data.map(e => {
             return {

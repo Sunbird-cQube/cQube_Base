@@ -1,25 +1,30 @@
-import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { TeacherAttendanceReportService } from '../../../services/teacher-attendance-report.service';
-import { Router } from '@angular/router';
-import * as L from 'leaflet';
-import * as R from 'leaflet-responsive-popup';
-import { KeycloakSecurityService } from '../../../keycloak-security.service';
-import { AppServiceComponent, globalMap } from '../../../app.service';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ViewEncapsulation,
+} from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { TeacherAttendanceReportService } from "../../../services/teacher-attendance-report.service";
+import { Router } from "@angular/router";
+import * as L from "leaflet";
+import * as R from "leaflet-responsive-popup";
+import { KeycloakSecurityService } from "../../../keycloak-security.service";
+import { AppServiceComponent, globalMap } from "../../../app.service";
 
 @Component({
-  selector: 'app-teacher-attendance',
-  templateUrl: './teacher-attendance.component.html',
-  styleUrls: ['./teacher-attendance.component.css'],
-  encapsulation: ViewEncapsulation.None
+  selector: "app-teacher-attendance",
+  templateUrl: "./teacher-attendance.component.html",
+  styleUrls: ["./teacher-attendance.component.css"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TeacherAttendanceComponent implements OnInit {
   state;
   edate;
-  public telemData = {}
+  public telemData = {};
   public disabled = false;
-  public title: string = '';
-  public titleName: string = '';
+  public title: string = "";
+  public titleName: string = "";
   public districts: any = [];
   public blocks: any = [];
   public cluster: any = [];
@@ -32,7 +37,7 @@ export class TeacherAttendanceComponent implements OnInit {
   public blocksNames: any = [];
   public clusterNames: any = [];
   public schoolsNames: any = [];
-  public id: any = '';
+  public id: any = "";
   public blockHidden: boolean = true;
   public clusterHidden: boolean = true;
   public myDistrict: any;
@@ -41,7 +46,7 @@ export class TeacherAttendanceComponent implements OnInit {
   public colors: any;
   public teacherCount: any;
   public schoolCount: any;
-  public dateRange: any = '';
+  public dateRange: any = "";
   public dist: boolean = false;
   public blok: boolean = false;
   public clust: boolean = false;
@@ -53,7 +58,7 @@ export class TeacherAttendanceComponent implements OnInit {
   public markerData;
   public layerMarkers: any = new L.layerGroup();
   public markersList = new L.FeatureGroup();
-  public levelWise: any = 'District';
+  public levelWise: any = "District";
 
   // google maps zoom level
   public zoom: number = 7;
@@ -75,18 +80,30 @@ export class TeacherAttendanceComponent implements OnInit {
   params: any;
   yearMonth = true;
   selected = "absolute";
-  reportName = 'teacher_attendance';
+  reportName = "teacher_attendance";
 
-  timeRange = [{ key: 'overall', value: "Overall" }, { key: 'last_30_days', value: "Last 30 Days" }, { key: 'last_7_days', value: "Last 7 Days" }, { key: "last_day", value: "Last Day" }, { key: 'select_month', value: "Year and Month" }];
-  period = 'overall';
+  timeRange = [
+    { key: "overall", value: "Overall" },
+    { key: "last_30_days", value: "Last 30 Days" },
+    { key: "last_7_days", value: "Last 7 Days" },
+    { key: "last_day", value: "Last Day" },
+    { key: "select_month", value: "Year and Month" },
+  ];
+  period = "overall";
   timePeriod = {};
   rawFileName: string;
   academicYear: any;
   academicYears: any;
 
-  constructor(public http: HttpClient, public service: TeacherAttendanceReportService, public router: Router, public keyCloakSevice: KeycloakSecurityService, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent, private readonly _router: Router) {
-
-  }
+  constructor(
+    public http: HttpClient,
+    public service: TeacherAttendanceReportService,
+    public router: Router,
+    public keyCloakSevice: KeycloakSecurityService,
+    private changeDetection: ChangeDetectorRef,
+    public commonService: AppServiceComponent,
+    private readonly _router: Router
+  ) {}
 
   getColor(data) {
     this.selected = data;
@@ -98,7 +115,14 @@ export class TeacherAttendanceComponent implements OnInit {
   onResize(event) {
     this.width = window.innerWidth;
     this.heigth = window.innerHeight;
-    this.commonService.zoomLevel = this.width > 3820 ? this.commonService.mapCenterLatlng.zoomLevel + 2 : this.width < 3820 && this.width >= 2500 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.width < 2500 && this.width > 1920 ? this.commonService.mapCenterLatlng.zoomLevel + 1 : this.commonService.mapCenterLatlng.zoomLevel;
+    this.commonService.zoomLevel =
+      this.width > 3820
+        ? this.commonService.mapCenterLatlng.zoomLevel + 2
+        : this.width < 3820 && this.width >= 2500
+        ? this.commonService.mapCenterLatlng.zoomLevel + 1
+        : this.width < 2500 && this.width > 1920
+        ? this.commonService.mapCenterLatlng.zoomLevel + 1
+        : this.commonService.mapCenterLatlng.zoomLevel;
     this.changeDetection.detectChanges();
     this.levelWiseFilter();
   }
@@ -108,10 +132,17 @@ export class TeacherAttendanceComponent implements OnInit {
     this.changeDetection.detectChanges();
   }
   getMarkerRadius(rad1, rad2, rad3, rad4) {
-    let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
+    let radius =
+      this.width > 3820
+        ? rad1
+        : this.width > 2500 && this.width < 3820
+        ? rad2
+        : this.width < 2500 && this.width > 1920
+        ? rad3
+        : rad4;
     return radius;
   }
-
+  managementName;
   management;
   category;
 
@@ -120,210 +151,258 @@ export class TeacherAttendanceComponent implements OnInit {
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
     this.changeDetection.detectChanges();
-    this.commonService.initMap('mapContainer', [[this.lat, this.lng]]);
-    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-    document.getElementById('homeBtn').style.display = 'block';
-    document.getElementById('backBtn').style.display = 'none';
+    this.commonService.initMap("mapContainer", [[this.lat, this.lng]]);
+    globalMap.setMaxBounds([
+      [this.lat - 4.5, this.lng - 6],
+      [this.lat + 3.5, this.lng + 6],
+    ]);
+    document.getElementById("homeBtn").style.display = "block";
+    document.getElementById("backBtn").style.display = "none";
     this.skul = true;
     this.timePeriod = {
-      period: 'overall'
-    }
+      period: "overall",
+    };
 
-    this.management = localStorage.getItem('management');
-    this.category = localStorage.getItem('category');
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
 
-    this.service.getDateRange().subscribe(res => {
-      this.getMonthYear = res;
-      this.years = Object.keys(this.getMonthYear);
-      this.year = this.years[this.years.length - 1];
-      var allMonths = [];
-      allMonths = this.getMonthYear[`${this.year}`];
-      this.months = [];
-      allMonths.forEach(month => {
-        var obj = {
-          name: month.month_name,
-          id: month.month
-        }
-        this.months.push(obj);
-      });
-      this.month = this.months[this.months.length - 1].id;
-      // this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
-      if (this.month) {
-        this.month_year = {
-          month: null,
-          year: null
-        };
+    this.service.getDateRange().subscribe(
+      (res) => {
+        this.getMonthYear = res;
+        this.years = Object.keys(this.getMonthYear);
+        this.year = this.years[this.years.length - 1];
+        var allMonths = [];
+        allMonths = this.getMonthYear[`${this.year}`];
+        this.months = [];
+        allMonths.forEach((month) => {
+          var obj = {
+            name: month.month_name,
+            id: month.month,
+          };
+          this.months.push(obj);
+        });
+        this.month = this.months[this.months.length - 1].id;
+        // this.dateRange = `${this.getMonthYear[`${this.year}`][this.months.length - 1].data_from_date} to ${this.getMonthYear[`${this.year}`][this.months.length - 1].data_upto_date}`;
+        if (this.month) {
+          this.month_year = {
+            month: null,
+            year: null,
+          };
 
-        this.params = JSON.parse(sessionStorage.getItem('report-level-info'));
-        let params = this.params;
+          this.params = JSON.parse(sessionStorage.getItem("report-level-info"));
+          let params = this.params;
 
-        if (params && params.level) {
-          let data = params.data;
-          if (params.level === 'district') {
-            this.myDistrict = data.id;
-          } else if (params.level === 'block') {
-            this.myDistrict = data.districtId
-            this.myBlock = data.id;
-          } else if (params.level === 'cluster') {
-            this.myDistrict = data.districtId
-            this.myBlock = Number(data.blockId);
-            this.myCluster = data.id;
+          if (params && params.level) {
+            let data = params.data;
+            if (params.level === "district") {
+              this.myDistrict = data.id;
+            } else if (params.level === "block") {
+              this.myDistrict = data.districtId;
+              this.myBlock = data.id;
+            } else if (params.level === "cluster") {
+              this.myDistrict = data.districtId;
+              this.myBlock = Number(data.blockId);
+              this.myCluster = data.id;
+            }
+
+            this.getDistricts();
+          } else {
+            this.onResize(event);
           }
-
-          this.getDistricts();
-        } else {
-          this.onResize(event);
         }
+      },
+      (err) => {
+        this.dateRange = "";
+        this.teacherCount = "";
+        this.schoolCount = "";
+        this.changeDetection.detectChanges();
+        document.getElementById("home").style.display = "none";
+        this.getMonthYear = {};
+        this.commonService.loaderAndErr(this.markers);
       }
-    }, err => {
-      this.dateRange = '';
-      this.teacherCount = ''; this.schoolCount = '';
-      this.changeDetection.detectChanges();
-      document.getElementById('home').style.display = 'none';
-      this.getMonthYear = {};
-      this.commonService.loaderAndErr(this.markers);
-    });
-    this.service.getRawMeta({ report: 'tar' }).subscribe(res => {
+    );
+    this.service.getRawMeta({ report: "tar" }).subscribe((res) => {
       this.academicYears = res;
-    })
+    });
   }
 
   showYearMonth() {
-    document.getElementById('home').style.display = 'block';
+    document.getElementById("home").style.display = "block";
     this.yearMonth = false;
     this.month_year = {
       month: this.month,
-      year: this.year
+      year: this.year,
     };
     this.timePeriod = {
-      period: null
-    }
+      period: null,
+    };
     this.onResize(event);
   }
 
   onPeriodSelect() {
-    if (this.period != 'overall') {
-      document.getElementById('home').style.display = 'block';
+    if (this.period != "overall") {
+      document.getElementById("home").style.display = "block";
     } else {
-      document.getElementById('home').style.display = 'none';
+      document.getElementById("home").style.display = "none";
     }
     this.yearMonth = true;
     this.timePeriod = {
-      period: this.period
-    }
+      period: this.period,
+    };
     this.month_year = {
       month: null,
-      year: null
+      year: null,
     };
     this.onResize(event);
   }
 
-
   getDistricts(): void {
-    this.service.dist_wise_data(this.month_year).subscribe(res => {
-      var sorted = res['distData'].sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
-      var distNames = [];
-      this.markers = sorted;
+    this.service.dist_wise_data(this.month_year).subscribe(
+      (res) => {
+        var sorted = res["distData"].sort((a, b) =>
+          a.attendance > b.attendance ? 1 : -1
+        );
+        var distNames = [];
+        this.markers = sorted;
 
-      if (this.markers.length > 0) {
-        for (var i = 0; i < this.markers.length; i++) {
-          if (this.myDistrict === this.markers[i]['district_id']) {
-            localStorage.setItem('dist', this.markers[i].district_name);
-            localStorage.setItem('distId', this.markers[i].district_id);
+        if (this.markers.length > 0) {
+          for (var i = 0; i < this.markers.length; i++) {
+            if (this.myDistrict === this.markers[i]["district_id"]) {
+              localStorage.setItem("dist", this.markers[i].district_name);
+              localStorage.setItem("distId", this.markers[i].district_id);
+            }
+
+            this.districtsIds.push(this.markers[i]["district_id"]);
+            distNames.push({
+              id: this.markers[i]["district_id"],
+              name: this.markers[i]["district_name"],
+            });
           }
-
-          this.districtsIds.push(this.markers[i]['district_id']);
-          distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
         }
-      }
 
-      distNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-      this.districtsNames = distNames;
+        distNames.sort((a, b) =>
+          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+        );
+        this.districtsNames = distNames;
 
-      if (this.params.level === 'district') {
-        this.distSelect({ type: 'click' }, this.myDistrict);
-      } else {
-        this.getBlocks();
+        if (this.params.level === "district") {
+          this.distSelect({ type: "click" }, this.myDistrict);
+        } else {
+          this.getBlocks();
+        }
+      },
+      (err) => {
+        this.markers = [];
+        this.commonService.loaderAndErr(this.markers);
       }
-    }, err => {
-      this.markers = [];
-      this.commonService.loaderAndErr(this.markers);
-    });
+    );
   }
 
   getBlocks(): void {
-    this.month_year['id'] = this.myDistrict;
-    this.service.blockPerDist(this.month_year).subscribe(res => {
-      let blockData = res['blockData'];
-      var uniqueData = blockData.reduce(function (previous, current) {
-        var object = previous.filter(object => object['block_id'] === current['block_id']);
-        if (object.length == 0) previous.push(current);
-        return previous;
-      }, []);
-      blockData = uniqueData;
-      var blokName = [];
-      var sorted = blockData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+    this.month_year["id"] = this.myDistrict;
+    this.service.blockPerDist(this.month_year).subscribe(
+      (res) => {
+        let blockData = res["blockData"];
+        var uniqueData = blockData.reduce(function (previous, current) {
+          var object = previous.filter(
+            (object) => object["block_id"] === current["block_id"]
+          );
+          if (object.length == 0) previous.push(current);
+          return previous;
+        }, []);
+        blockData = uniqueData;
+        var blokName = [];
+        var sorted = blockData.sort((a, b) =>
+          parseInt(a.attendance) > parseInt(b.attendance) ? 1 : -1
+        );
 
-      this.markers = sorted;
+        this.markers = sorted;
 
-      for (var i = 0; i < this.markers.length; i++) {
-        if (this.myBlock === this.markers[i]['block_id']) {
-          localStorage.setItem('block', this.markers[i].block_name);
-          localStorage.setItem('blockId', this.markers[i].block_id);
+        for (var i = 0; i < this.markers.length; i++) {
+          if (this.myBlock === this.markers[i]["block_id"]) {
+            localStorage.setItem("block", this.markers[i].block_name);
+            localStorage.setItem("blockId", this.markers[i].block_id);
+          }
+
+          this.blocksIds.push(this.markers[i]["block_id"]);
+          blokName.push({
+            id: this.markers[i]["block_id"],
+            name: this.markers[i]["block_name"],
+          });
         }
+        blokName.sort((a, b) =>
+          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+        );
+        this.blocksNames = blokName;
 
-        this.blocksIds.push(this.markers[i]['block_id']);
-        blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] });
+        if (this.params.level === "block") {
+          this.blockSelect({ type: "click" }, this.myBlock);
+        } else {
+          this.getClusters();
+        }
+      },
+      (err) => {
+        this.markers = [];
+        this.commonService.loaderAndErr(this.markers);
       }
-      blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-      this.blocksNames = blokName;
-
-      if (this.params.level === 'block') {
-        this.blockSelect({ type: 'click' }, this.myBlock);
-      } else {
-        this.getClusters();
-      }
-    }, err => {
-      this.markers = [];
-      this.commonService.loaderAndErr(this.markers);
-    });
+    );
   }
 
   getClusters(): void {
-    this.month_year['id'] = this.myBlock;
-    this.service.clusterPerBlock(this.month_year).subscribe(res => {
-      let clusterData = res['clusterDetails'];
-      var uniqueData = clusterData.reduce(function (previous, current) {
-        var object = previous.filter(object => object['cluster_id'] === current['cluster_id']);
-        if (object.length == 0) previous.push(current);
-        return previous;
-      }, []);
-      clusterData = uniqueData;
-      var clustNames = [];
+    this.month_year["id"] = this.myBlock;
+    this.service.clusterPerBlock(this.month_year).subscribe(
+      (res) => {
+        let clusterData = res["clusterDetails"];
+        var uniqueData = clusterData.reduce(function (previous, current) {
+          var object = previous.filter(
+            (object) => object["cluster_id"] === current["cluster_id"]
+          );
+          if (object.length == 0) previous.push(current);
+          return previous;
+        }, []);
+        clusterData = uniqueData;
+        var clustNames = [];
 
-      var sorted = clusterData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
-      for (var i = 0; i < sorted.length; i++) {
-        if (this.myCluster === sorted[i]['cluster_id']) {
-          localStorage.setItem('cluster', sorted[i].cluster_name);
-          localStorage.setItem('clusterId', sorted[i].cluster_id);
+        var sorted = clusterData.sort((a, b) =>
+          parseInt(a.attendance) > parseInt(b.attendance) ? 1 : -1
+        );
+        for (var i = 0; i < sorted.length; i++) {
+          if (this.myCluster === sorted[i]["cluster_id"]) {
+            localStorage.setItem("cluster", sorted[i].cluster_name);
+            localStorage.setItem("clusterId", sorted[i].cluster_id);
+          }
+
+          this.clusterIds.push(sorted[i]["cluster_id"]);
+          if (sorted[i]["name"] !== null) {
+            clustNames.push({
+              id: sorted[i]["cluster_id"],
+              name: sorted[i]["cluster_name"],
+              blockId: sorted[i]["block_id"],
+            });
+          } else {
+            clustNames.push({
+              id: sorted[i]["cluster_id"],
+              name: "NO NAME FOUND",
+              blockId: sorted[i]["block_id"],
+            });
+          }
         }
 
-        this.clusterIds.push(sorted[i]['cluster_id']);
-        if (sorted[i]['name'] !== null) {
-          clustNames.push({ id: sorted[i]['cluster_id'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
-        } else {
-          clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
-        }
+        clustNames.sort((a, b) =>
+          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+        );
+        this.clusterNames = clustNames;
+
+        this.clusterSelect({ type: "click" }, this.myCluster);
+      },
+      (err) => {
+        this.markers = [];
+        this.commonService.loaderAndErr(this.markers);
       }
-
-      clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-      this.clusterNames = clustNames;
-
-      this.clusterSelect({ type: 'click' }, this.myCluster);
-    }, err => {
-      this.markers = [];
-      this.commonService.loaderAndErr(this.markers);
-    });
+    );
   }
 
   public fileName: any;
@@ -334,14 +413,14 @@ export class TeacherAttendanceComponent implements OnInit {
   downloadReport(event) {
     if (this.globalId == this.myDistrict) {
       var distData: any = {};
-      this.districtData.find(a => {
+      this.districtData.find((a) => {
         if (a.district_id == this.myDistrict) {
           distData = {
             id: a.district_id,
             name: a.district_name,
             lat: a.lat,
-            lng: a.lng
-          }
+            lng: a.lng,
+          };
         }
       });
       this.getTelemetryData(distData, event.target.id, "district");
@@ -349,51 +428,57 @@ export class TeacherAttendanceComponent implements OnInit {
 
     if (this.globalId == this.myBlock) {
       var blokData: any = {};
-      this.blockData.find(a => {
+      this.blockData.find((a) => {
         if (a.block_id == this.myBlock) {
           blokData = {
             id: a.block_id,
             name: a.block_name,
             lat: a.lat,
-            lng: a.lng
-          }
+            lng: a.lng,
+          };
         }
       });
       this.getTelemetryData(blokData, event.target.id, "block");
     }
     if (this.globalId == this.myCluster) {
       var clustData: any = {};
-      this.clusterData.find(a => {
+      this.clusterData.find((a) => {
         if (a.cluster_id == this.myCluster) {
           clustData = {
             id: a.cluster_id,
             name: a.cluster_name,
             lat: a.lat,
-            lng: a.lng
-          }
+            lng: a.lng,
+          };
         }
       });
       this.getTelemetryData(clustData, event.target.id, "cluster");
     }
 
     var myReport = [];
-    this.reportData.forEach(element => {
-      if (this.levelWise != 'school') {
+    this.reportData.forEach((element) => {
+      if (this.levelWise != "school") {
         if (element.number_of_schools) {
-          element.number_of_schools = (element.number_of_schools.replace(/\,/g, ''));
+          element.number_of_schools = element.number_of_schools.replace(
+            /\,/g,
+            ""
+          );
         }
       }
       if (element.number_of_students) {
-        element.number_of_students = (element.number_of_students.replace(/\,/g, ''));
+        element.number_of_students = element.number_of_students.replace(
+          /\,/g,
+          ""
+        );
       }
       var data = {};
       var downloadable_data = {};
-      Object.keys(element).forEach(key => {
+      Object.keys(element).forEach((key) => {
         if (key !== "lat") {
           data[key] = element[key];
         }
       });
-      Object.keys(data).forEach(key => {
+      Object.keys(data).forEach((key) => {
         if (key !== "lng") {
           downloadable_data[key] = data[key];
         }
@@ -405,14 +490,15 @@ export class TeacherAttendanceComponent implements OnInit {
 
   public month_year;
   getMonth(event) {
-    var month = this.getMonthYear[`${this.year}`].find(a => a.month === this.month);
+    var month = this.getMonthYear[`${this.year}`].find(
+      (a) => a.month === this.month
+    );
     // this.dateRange = `${month.data_from_date} to ${month.data_upto_date}`;
     this.month_year = {
       month: this.month,
-      year: this.year
+      year: this.year,
     };
     this.onResize(event);
-
   }
 
   levelWiseFilter() {
@@ -447,11 +533,11 @@ export class TeacherAttendanceComponent implements OnInit {
     this.month = undefined;
     var allMonths = [];
     allMonths = this.getMonthYear[`${this.year}`];
-    allMonths.forEach(month => {
+    allMonths.forEach((month) => {
       var obj = {
         name: month.month_name,
-        id: month.month
-      }
+        id: month.month,
+      };
       this.months.push(obj);
     });
     // this.element.disabled = false;
@@ -463,84 +549,144 @@ export class TeacherAttendanceComponent implements OnInit {
   onClickHome() {
     this.yearMonth = true;
     this.academicYear = undefined;
-    this.period = 'overall';
+    this.period = "overall";
     this.levelWise = "District";
     this.month_year = {
       month: null,
-      year: null
+      year: null,
     };
     this.timePeriod = {
-      period: this.period
-    }
+      period: this.period,
+    };
     this.districtWise();
-    document.getElementById('home').style.display = 'none';
+    document.getElementById("home").style.display = "none";
   }
 
   async districtWise() {
     this.commonAtStateLevel();
     if (this.months.length > 0) {
-      var month = this.months.find(a => a.id === this.month);
+      var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${
+          this.year
+        }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allDistricts_${this.period}_${this.commonService.dateAndTime}`;
       }
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.dist_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
-        this.reportData = this.districtData = this.mylatlngData = res['distData'];
-        this.dateRange = res['dateRange'];
-        var sorted = this.mylatlngData.sort((a, b) => (a.attendance > b.attendance) ? 1 : -1);
+      this.myData = this.service
+        .dist_wise_data({
+          ...this.month_year,
+          ...this.timePeriod,
+          ...{ management: this.management, category: this.category },
+        })
+        .subscribe(
+          (res) => {
+            this.reportData = this.districtData = this.mylatlngData =
+              res["distData"];
+            this.dateRange = res["dateRange"];
+            var sorted = this.mylatlngData.sort((a, b) =>
+              a.attendance > b.attendance ? 1 : -1
+            );
 
-        var distNames = [];
-        this.teacherCount = res['teacherCount'];
-        this.schoolCount = res['schoolCount'];
+            var distNames = [];
+            this.teacherCount = res["teacherCount"];
+            this.schoolCount = res["schoolCount"];
 
-        this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
-        if (this.markers.length > 0) {
-          for (var i = 0; i < this.markers.length; i++) {
-            var color = this.commonService.color(this.markers[i], 'attendance');
-            this.districtsIds.push(this.markers[i]['district_id']);
-            distNames.push({ id: this.markers[i]['district_id'], name: this.markers[i]['district_name'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 5), 0.01, 1, this.levelWise);
-            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
+            this.markers = sorted;
+            let colors = this.commonService.getRelativeColors(sorted, {
+              value: "attendance",
+              report: "reports",
+            });
+            if (this.markers.length > 0) {
+              for (var i = 0; i < this.markers.length; i++) {
+                var color = this.commonService.color(
+                  this.markers[i],
+                  "attendance"
+                );
+                this.districtsIds.push(this.markers[i]["district_id"]);
+                distNames.push({
+                  id: this.markers[i]["district_id"],
+                  name: this.markers[i]["district_name"],
+                });
+                var markerIcon = this.commonService.initMarkers(
+                  this.markers[i].lat,
+                  this.markers[i].lng,
+                  this.selected == "absolute"
+                    ? color
+                    : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                  this.getMarkerRadius(14, 10, 8, 5),
+                  0.01,
+                  1,
+                  this.levelWise
+                );
+                this.generateToolTip(
+                  markerIcon,
+                  this.markers[i],
+                  this.onClick_Marker,
+                  this.layerMarkers,
+                  this.levelWise
+                );
+              }
+            }
+
+            distNames.sort((a, b) =>
+              a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+            );
+            this.districtsNames = distNames;
+
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([
+              [this.lat - 4.5, this.lng - 6],
+              [this.lat + 3.5, this.lng + 6],
+            ]);
+            this.setZoomLevel(
+              this.lat,
+              this.lng,
+              globalMap,
+              this.commonService.zoomLevel
+            );
+            this.schoolCount = this.schoolCount
+              .toString()
+              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.teacherCount = this.teacherCount
+              .toString()
+              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.commonService.loaderAndErr(this.markers);
+            this.changeDetection.markForCheck();
+          },
+          (err) => {
+            this.dateRange = "";
+            this.teacherCount = "";
+            this.schoolCount = "";
+            this.changeDetection.detectChanges();
+            this.markers = [];
+            this.commonService.loaderAndErr(this.markers);
           }
-        }
-
-        distNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        this.districtsNames = distNames;
-
-        this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
-        this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.commonService.loaderAndErr(this.markers);
-        this.changeDetection.markForCheck();
-      }, err => {
-        this.dateRange = '';
-        this.teacherCount = ''; this.schoolCount = '';
-        this.changeDetection.detectChanges();
-        this.markers = [];
-        this.commonService.loaderAndErr(this.markers);
-      });
+        );
     } else {
       this.markers = [];
       this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'none';
+    document.getElementById("home").style.display = "none";
   }
 
   blockWise(event) {
     this.commonAtStateLevel();
     this.levelWise = "Block";
     if (this.months.length > 0) {
-      var month = this.months.find(a => a.id === this.month);
+      var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${
+          this.year
+        }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allBlocks_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -548,59 +694,116 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.block_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
-        this.reportData = this.mylatlngData = res['blockData'];
-        this.dateRange = res['dateRange'];
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1);
+      this.myData = this.service
+        .block_wise_data({
+          ...this.month_year,
+          ...this.timePeriod,
+          ...{ management: this.management, category: this.category },
+        })
+        .subscribe(
+          (res) => {
+            this.reportData = this.mylatlngData = res["blockData"];
+            this.dateRange = res["dateRange"];
+            var sorted = this.mylatlngData.sort((a, b) =>
+              parseInt(a.attendance) > parseInt(b.attendance) ? 1 : -1
+            );
 
-        var blockNames = [];
-        this.teacherCount = res['teacherCount'];
-        this.schoolCount = res['schoolCount'];
+            var blockNames = [];
+            this.teacherCount = res["teacherCount"];
+            this.schoolCount = res["schoolCount"];
 
-        this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
-        if (this.markers.length !== 0) {
-          for (let i = 0; i < this.markers.length; i++) {
-            var color = this.commonService.color(this.markers[i], 'attendance');
-            this.blocksIds.push(this.markers[i]['block_id']);
-            blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['dist'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(12, 8, 6, 3.5), 0.01, 1, this.levelWise);
-            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
+            this.markers = sorted;
+            let colors = this.commonService.getRelativeColors(sorted, {
+              value: "attendance",
+              report: "reports",
+            });
+            if (this.markers.length !== 0) {
+              for (let i = 0; i < this.markers.length; i++) {
+                var color = this.commonService.color(
+                  this.markers[i],
+                  "attendance"
+                );
+                this.blocksIds.push(this.markers[i]["block_id"]);
+                blockNames.push({
+                  id: this.markers[i]["block_id"],
+                  name: this.markers[i]["block_name"],
+                  distId: this.markers[i]["dist"],
+                });
+                var markerIcon = this.commonService.initMarkers(
+                  this.markers[i].lat,
+                  this.markers[i].lng,
+                  this.selected == "absolute"
+                    ? color
+                    : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                  this.getMarkerRadius(12, 8, 6, 3.5),
+                  0.01,
+                  1,
+                  this.levelWise
+                );
+                this.generateToolTip(
+                  markerIcon,
+                  this.markers[i],
+                  this.onClick_Marker,
+                  this.layerMarkers,
+                  this.levelWise
+                );
+              }
+              blockNames.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+              );
+              this.blocksNames = blockNames;
+
+              this.commonService.restrictZoom(globalMap);
+              globalMap.setMaxBounds([
+                [this.lat - 4.5, this.lng - 6],
+                [this.lat + 3.5, this.lng + 6],
+              ]);
+              this.setZoomLevel(
+                this.lat,
+                this.lng,
+                globalMap,
+                this.commonService.zoomLevel
+              );
+              this.schoolCount = this.schoolCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.teacherCount = this.teacherCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.commonService.loaderAndErr(this.markers);
+              this.changeDetection.markForCheck();
+            }
+          },
+          (err) => {
+            this.dateRange = "";
+            this.teacherCount = "";
+            this.schoolCount = "";
+            this.changeDetection.detectChanges();
+            this.markers = [];
+            this.commonService.loaderAndErr(this.markers);
           }
-          blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-          this.blocksNames = blockNames;
-
-          this.commonService.restrictZoom(globalMap);
-          globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
-          this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.commonService.loaderAndErr(this.markers);
-          this.changeDetection.markForCheck();
-        }
-      }, err => {
-        this.dateRange = '';
-        this.teacherCount = ''; this.schoolCount = '';
-        this.changeDetection.detectChanges();
-        this.markers = [];
-        this.commonService.loaderAndErr(this.markers);
-      });
+        );
     } else {
       this.markers = [];
       this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
-    ;
+    document.getElementById("home").style.display = "block";
   }
 
   clusterWise(event) {
     this.commonAtStateLevel();
     this.levelWise = "Cluster";
     if (this.months.length > 0) {
-      var month = this.months.find(a => a.id === this.month);
+      var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${
+          this.year
+        }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allClusters_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -608,61 +811,125 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.cluster_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
-        this.reportData = this.mylatlngData = res['clusterData'];
-        this.dateRange = res['dateRange'];
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+      this.myData = this.service
+        .cluster_wise_data({
+          ...this.month_year,
+          ...this.timePeriod,
+          ...{ management: this.management, category: this.category },
+        })
+        .subscribe(
+          (res) => {
+            this.reportData = this.mylatlngData = res["clusterData"];
+            this.dateRange = res["dateRange"];
+            var sorted = this.mylatlngData.sort((a, b) =>
+              parseInt(a.attendance) > parseInt(b.attendance) ? 1 : -1
+            );
 
-        var clustNames = [];
-        var blockNames = [];
-        this.teacherCount = res['teacherCount'];
-        this.schoolCount = res['schoolCount'];
+            var clustNames = [];
+            var blockNames = [];
+            this.teacherCount = res["teacherCount"];
+            this.schoolCount = res["schoolCount"];
 
+            this.markers = sorted;
+            let colors = this.commonService.getRelativeColors(sorted, {
+              value: "attendance",
+              report: "reports",
+            });
+            if (this.markers.length !== 0) {
+              for (let i = 0; i < this.markers.length; i++) {
+                var color = this.commonService.color(
+                  this.markers[i],
+                  "attendance"
+                );
+                this.clusterIds.push(this.markers[i]["cluster_id"]);
+                this.blocksIds.push(this.markers[i]["block_id"]);
+                if (this.markers[i]["cluster_name"] !== null) {
+                  clustNames.push({
+                    id: this.markers[i]["cluster_id"],
+                    name: this.markers[i]["cluster_name"],
+                    blockId: this.markers[i]["block_id"],
+                  });
+                } else {
+                  clustNames.push({
+                    id: this.markers[i]["cluster_id"],
+                    name: "NO NAME FOUND",
+                    blockId: this.markers[i]["block_id"],
+                  });
+                }
+                blockNames.push({
+                  id: this.markers[i]["block_id"],
+                  name: this.markers[i]["block_name"],
+                  distId: this.markers[i]["district_id"],
+                });
+                var markerIcon = this.commonService.initMarkers(
+                  this.markers[i].lat,
+                  this.markers[i].lng,
+                  this.selected == "absolute"
+                    ? color
+                    : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                  this.getMarkerRadius(2.5, 2, 1.5, 1),
+                  0.01,
+                  0.5,
+                  this.levelWise
+                );
+                this.generateToolTip(
+                  markerIcon,
+                  this.markers[i],
+                  this.onClick_Marker,
+                  this.layerMarkers,
+                  this.levelWise
+                );
+              }
 
-        this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
-        if (this.markers.length !== 0) {
-          for (let i = 0; i < this.markers.length; i++) {
-            var color = this.commonService.color(this.markers[i], 'attendance');
-            this.clusterIds.push(this.markers[i]['cluster_id']);
-            this.blocksIds.push(this.markers[i]['block_id']);
-            if (this.markers[i]['cluster_name'] !== null) {
-              clustNames.push({ id: this.markers[i]['cluster_id'], name: this.markers[i]['cluster_name'], blockId: this.markers[i]['block_id'] });
-            } else {
-              clustNames.push({ id: this.markers[i]['cluster_id'], name: 'NO NAME FOUND', blockId: this.markers[i]['block_id'] });
+              clustNames.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+              );
+              this.clusterNames = clustNames;
+              blockNames.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+              );
+              this.blocksNames = blockNames;
+
+              this.commonService.restrictZoom(globalMap);
+              globalMap.setMaxBounds([
+                [this.lat - 4.5, this.lng - 6],
+                [this.lat + 3.5, this.lng + 6],
+              ]);
+              this.setZoomLevel(
+                this.lat,
+                this.lng,
+                globalMap,
+                this.commonService.zoomLevel
+              );
+              this.schoolCount = this.schoolCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.teacherCount = this.teacherCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.commonService.loaderAndErr(this.markers);
+              this.changeDetection.markForCheck();
             }
-            blockNames.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'], distId: this.markers[i]['district_id'] });
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(2.5, 2, 1.5, 1), 0.01, 0.5, this.levelWise);
-            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
+          },
+          (err) => {
+            this.dateRange = "";
+            this.teacherCount = "";
+            this.schoolCount = "";
+            this.changeDetection.detectChanges();
+            this.markers = [];
+            this.commonService.loaderAndErr(this.markers);
           }
-
-          clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-          this.clusterNames = clustNames;
-          blockNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-          this.blocksNames = blockNames;
-
-          this.commonService.restrictZoom(globalMap);
-          globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
-          this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.commonService.loaderAndErr(this.markers);
-          this.changeDetection.markForCheck();
-        }
-      }, err => {
-        this.dateRange = '';
-        this.teacherCount = ''; this.schoolCount = '';
-        this.changeDetection.detectChanges();
-        this.markers = [];
-        this.commonService.loaderAndErr(this.markers);
-      });
+        );
     } else {
       this.markers = [];
       this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.markersList);
-    document.getElementById('home').style.display = 'block';
-    ;
+    document.getElementById("home").style.display = "block";
     this.cluster = [];
   }
 
@@ -670,9 +937,11 @@ export class TeacherAttendanceComponent implements OnInit {
     this.commonAtStateLevel();
     this.levelWise = "school";
     if (this.months.length > 0) {
-      var month = this.months.find(a => a.id === this.month);
+      var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${
+          this.year
+        }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allSchools_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -680,47 +949,96 @@ export class TeacherAttendanceComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.school_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
-        this.reportData = this.mylatlngData = res['schoolData'];
-        this.dateRange = res['dateRange'];
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+      this.myData = this.service
+        .school_wise_data({
+          ...this.month_year,
+          ...this.timePeriod,
+          ...{ management: this.management, category: this.category },
+        })
+        .subscribe(
+          (res) => {
+            this.reportData = this.mylatlngData = res["schoolData"];
+            this.dateRange = res["dateRange"];
+            var sorted = this.mylatlngData.sort((a, b) =>
+              parseInt(a.attendance) > parseInt(b.attendance) ? 1 : -1
+            );
 
-        this.teacherCount = res['teacherCount'];
-        this.schoolCount = res['schoolCount'];
+            this.teacherCount = res["teacherCount"];
+            this.schoolCount = res["schoolCount"];
 
-        this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
-        if (this.markers.length !== 0) {
-          for (let i = 0; i < this.markers.length; i++) {
-            var color = this.commonService.color(this.markers[i], 'attendance');
-            this.districtsIds.push(sorted[i]['district_id']);
-            var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(1.5, 1.2, 1, 0), 0, 0.3, this.levelWise);
-            this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
+            this.markers = sorted;
+            let colors = this.commonService.getRelativeColors(sorted, {
+              value: "attendance",
+              report: "reports",
+            });
+            if (this.markers.length !== 0) {
+              for (let i = 0; i < this.markers.length; i++) {
+                var color = this.commonService.color(
+                  this.markers[i],
+                  "attendance"
+                );
+                this.districtsIds.push(sorted[i]["district_id"]);
+                var markerIcon = this.commonService.initMarkers(
+                  this.markers[i].lat,
+                  this.markers[i].lng,
+                  this.selected == "absolute"
+                    ? color
+                    : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                  this.getMarkerRadius(1.5, 1.2, 1, 0),
+                  0,
+                  0.3,
+                  this.levelWise
+                );
+                this.generateToolTip(
+                  markerIcon,
+                  this.markers[i],
+                  this.onClick_Marker,
+                  this.layerMarkers,
+                  this.levelWise
+                );
+              }
+
+              globalMap.doubleClickZoom.enable();
+              globalMap.scrollWheelZoom.enable();
+              globalMap.setMaxBounds([
+                [this.lat - 4.5, this.lng - 6],
+                [this.lat + 3.5, this.lng + 6],
+              ]);
+              this.setZoomLevel(
+                this.lat,
+                this.lng,
+                globalMap,
+                this.commonService.zoomLevel
+              );
+              this.schoolCount = this.markers.length
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.teacherCount = this.teacherCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.commonService.loaderAndErr(this.markers);
+              this.changeDetection.markForCheck();
+            }
+          },
+          (err) => {
+            this.dateRange = "";
+            this.teacherCount = "";
+            this.schoolCount = "";
+            this.changeDetection.detectChanges();
+            this.markers = [];
+            this.commonService.loaderAndErr(this.markers);
           }
-
-          globalMap.doubleClickZoom.enable();
-          globalMap.scrollWheelZoom.enable();
-          globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-          this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel);
-          this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-          this.commonService.loaderAndErr(this.markers);
-          this.changeDetection.markForCheck();
-        }
-      }, err => {
-        this.dateRange = '';
-        this.teacherCount = ''; this.schoolCount = '';
-        this.changeDetection.detectChanges();
-        this.markers = [];
-        this.commonService.loaderAndErr(this.markers);
-      });
+        );
     } else {
       this.markers = [];
       this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
-    ;
+    document.getElementById("home").style.display = "block";
   }
 
   commonAtStateLevel() {
@@ -737,48 +1055,51 @@ export class TeacherAttendanceComponent implements OnInit {
     this.blok = false;
     this.clust = false;
     this.skul = true;
-    this.hierName = '';
-    this.distName = '';
-    this.blockName = '';
-    this.title = '';
-    this.titleName = '';
-    this.clustName = '';
+    this.hierName = "";
+    this.distName = "";
+    this.blockName = "";
+    this.title = "";
+    this.titleName = "";
+    this.clustName = "";
     this.lat = this.commonService.mapCenterLatlng.lat;
-    this.lng = this.commonService.mapCenterLatlng.lng; globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
+    this.lng = this.commonService.mapCenterLatlng.lng;
+    globalMap.setMaxBounds([
+      [this.lat - 4.5, this.lng - 6],
+      [this.lat + 3.5, this.lng + 6],
+    ]);
     this.markerData = {};
     this.myDistrict = null;
   }
-
 
   clickedMarker(event, label) {
     var level;
     var obj = {};
     if (this.districtsIds.includes(label.district_id)) {
       level = "district";
-      localStorage.setItem('dist', label.district_name);
-      localStorage.setItem('distId', label.district_id);
+      localStorage.setItem("dist", label.district_name);
+      localStorage.setItem("distId", label.district_id);
       this.myDistData(label.district_id);
       if (event.latlng) {
         obj = {
           id: label.district_id,
           name: label.district_name,
           lat: event.latlng.lat,
-          lng: event.latlng.lng
-        }
+          lng: event.latlng.lng,
+        };
       }
     }
 
     if (this.blocksIds.includes(label.block_id)) {
       level = "block";
       if (this.skul) {
-        localStorage.setItem('dist', label.district_name);
-        localStorage.setItem('distId', label.district_id);
+        localStorage.setItem("dist", label.district_name);
+        localStorage.setItem("distId", label.district_id);
       } else {
-        localStorage.setItem('dist', localStorage.getItem('dist'));
-        localStorage.setItem('distId', localStorage.getItem('distId'));
+        localStorage.setItem("dist", localStorage.getItem("dist"));
+        localStorage.setItem("distId", localStorage.getItem("distId"));
       }
-      localStorage.setItem('block', label.block_name);
-      localStorage.setItem('blockId', label.block_id);
+      localStorage.setItem("block", label.block_name);
+      localStorage.setItem("blockId", label.block_id);
       this.myBlockData(label.block_id);
 
       if (event.latlng) {
@@ -786,19 +1107,19 @@ export class TeacherAttendanceComponent implements OnInit {
           id: label.block_id,
           name: label.block_name,
           lat: event.latlng.lat,
-          lng: event.latlng.lng
-        }
+          lng: event.latlng.lng,
+        };
       }
     }
 
     if (this.clusterIds.includes(label.cluster_id)) {
       level = "cluster";
-      localStorage.setItem('dist', label.district_name);
-      localStorage.setItem('distId', label.district_id);
-      localStorage.setItem('block', label.block_name);
-      localStorage.setItem('blockId', label.block_id);
-      localStorage.setItem('cluster', label.cluster_name);
-      localStorage.setItem('clusterId', label.cluster_id);
+      localStorage.setItem("dist", label.district_name);
+      localStorage.setItem("distId", label.district_id);
+      localStorage.setItem("block", label.block_name);
+      localStorage.setItem("blockId", label.block_id);
+      localStorage.setItem("cluster", label.cluster_name);
+      localStorage.setItem("clusterId", label.cluster_id);
 
       this.myClusterData(label.cluster_id);
       if (event.latlng) {
@@ -806,8 +1127,8 @@ export class TeacherAttendanceComponent implements OnInit {
           id: label.cluster_id,
           name: label.cluster_name,
           lat: event.latlng.lat,
-          lng: event.latlng.lng
-        }
+          lng: event.latlng.lng,
+        };
       }
     }
     this.getTelemetryData(obj, event.type, level);
@@ -827,14 +1148,14 @@ export class TeacherAttendanceComponent implements OnInit {
   }
 
   onClickSchool(event) {
-    this.levelWise = 'school';
+    this.levelWise = "school";
     if (event.latlng) {
       var obj = {
         id: event.target.myJsonData.school_id,
         name: event.target.myJsonData.school_name,
         lat: event.target.myJsonData.lat,
-        lng: event.target.myJsonData.lng
-      }
+        lng: event.target.myJsonData.lng,
+      };
       this.getTelemetryData(obj, event.type, this.levelWise);
     }
   }
@@ -847,14 +1168,14 @@ export class TeacherAttendanceComponent implements OnInit {
 
   distSelect(event, data) {
     var distData: any = {};
-    this.districtData.find(a => {
+    this.districtData.find((a) => {
       if (a.district_id == data) {
         distData = {
           id: a.district_id,
           name: a.district_name,
           lat: a.lat,
-          lng: a.lng
-        }
+          lng: a.lng,
+        };
       }
     });
     this.getTelemetryData(distData, event.type, "district");
@@ -879,91 +1200,157 @@ export class TeacherAttendanceComponent implements OnInit {
     this.skul = false;
     this.blockHidden = false;
     this.clusterHidden = true;
-    let obj = this.districtsNames.find(o => o.id == data);
-    this.hierName = '';
+    let obj = this.districtsNames.find((o) => o.id == data);
+    this.hierName = "";
     if (this.months.length > 0) {
-      var month = this.months.find(a => a.id === this.month);
+      var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${this.levelWise}s_of_district_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_${
+          this.levelWise
+        }s_of_district_${data}_${month.name.trim()}_${this.year}_${
+          this.commonService.dateAndTime
+        }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_district_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
       this.distName = { district_id: data, district_name: obj.name };
       this.hierName = obj.name;
-      localStorage.setItem('dist', obj.name);
-      localStorage.setItem('distId', data);
+      localStorage.setItem("dist", obj.name);
+      localStorage.setItem("distId", data);
 
       this.globalId = this.myDistrict = data;
       this.myBlock = null;
 
-      this.month_year['id'] = data;
+      this.month_year["id"] = data;
 
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.blockPerDist({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
-        this.reportData = this.blockData = this.mylatlngData = res['blockData'];
-        this.dateRange = res['dateRange'];
-        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-          var object = previous.filter(object => object['block_id'] === current['block_id']);
-          if (object.length == 0) previous.push(current);
-          return previous;
-        }, []);
-        this.mylatlngData = uniqueData;
-        this.lat = Number(this.mylatlngData[0]['lat']);
-        this.lng = Number(this.mylatlngData[0]['lng']);
+      this.myData = this.service
+        .blockPerDist({
+          ...this.month_year,
+          ...this.timePeriod,
+          ...{ management: this.management, category: this.category },
+        })
+        .subscribe(
+          (res) => {
+            this.reportData = this.blockData = this.mylatlngData =
+              res["blockData"];
+            this.dateRange = res["dateRange"];
+            var uniqueData = this.mylatlngData.reduce(function (
+              previous,
+              current
+            ) {
+              var object = previous.filter(
+                (object) => object["block_id"] === current["block_id"]
+              );
+              if (object.length == 0) previous.push(current);
+              return previous;
+            },
+            []);
+            this.mylatlngData = uniqueData;
+            this.lat = Number(this.mylatlngData[0]["lat"]);
+            this.lng = Number(this.mylatlngData[0]["lng"]);
 
-        var blokName = [];
+            var blokName = [];
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+            var sorted = this.mylatlngData.sort((a, b) =>
+              parseInt(a.attendance) > parseInt(b.attendance) ? 1 : -1
+            );
 
-        this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
-        this.teacherCount = res['teacherCount'];
-        this.schoolCount = res['schoolCount'];
+            this.markers = sorted;
+            let colors = this.commonService.getRelativeColors(sorted, {
+              value: "attendance",
+              report: "reports",
+            });
+            this.teacherCount = res["teacherCount"];
+            this.schoolCount = res["schoolCount"];
 
-        for (var i = 0; i < this.markers.length; i++) {
-          var color = this.commonService.color(this.markers[i], 'attendance');
-          this.blocksIds.push(this.markers[i]['block_id']);
-          blokName.push({ id: this.markers[i]['block_id'], name: this.markers[i]['block_name'] })
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.01, 1, this.levelWise);
-          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
-        }
-        blokName.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        this.blocksNames = blokName;
+            for (var i = 0; i < this.markers.length; i++) {
+              var color = this.commonService.color(
+                this.markers[i],
+                "attendance"
+              );
+              this.blocksIds.push(this.markers[i]["block_id"]);
+              blokName.push({
+                id: this.markers[i]["block_id"],
+                name: this.markers[i]["block_name"],
+              });
+              var markerIcon = this.commonService.initMarkers(
+                this.markers[i].lat,
+                this.markers[i].lng,
+                this.selected == "absolute"
+                  ? color
+                  : this.commonService.relativeColorGredient(
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
+                this.getMarkerRadius(14, 10, 8, 4),
+                0.01,
+                1,
+                this.levelWise
+              );
+              this.generateToolTip(
+                markerIcon,
+                this.markers[i],
+                this.onClick_Marker,
+                this.layerMarkers,
+                this.levelWise
+              );
+            }
+            blokName.sort((a, b) =>
+              a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+            );
+            this.blocksNames = blokName;
 
-        this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 1)
-        this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.commonService.loaderAndErr(this.markers);
-        this.changeDetection.markForCheck();
-      }, err => {
-        this.dateRange = '';
-        this.teacherCount = ''; this.schoolCount = '';
-        this.changeDetection.detectChanges();
-        this.markers = [];
-        this.commonService.loaderAndErr(this.markers);
-      });
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([
+              [this.lat - 1.5, this.lng - 3],
+              [this.lat + 1.5, this.lng + 2],
+            ]);
+            this.setZoomLevel(
+              this.lat,
+              this.lng,
+              globalMap,
+              this.commonService.zoomLevel + 1
+            );
+            this.schoolCount = this.schoolCount
+              .toString()
+              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.teacherCount = this.teacherCount
+              .toString()
+              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.commonService.loaderAndErr(this.markers);
+            this.changeDetection.markForCheck();
+          },
+          (err) => {
+            this.dateRange = "";
+            this.teacherCount = "";
+            this.schoolCount = "";
+            this.changeDetection.detectChanges();
+            this.markers = [];
+            this.commonService.loaderAndErr(this.markers);
+          }
+        );
     } else {
       this.markers = [];
       this.commonService.loaderAndErr(this.markers);
     }
-    document.getElementById('home').style.display = 'block';
+    document.getElementById("home").style.display = "block";
     globalMap.addLayer(this.layerMarkers);
   }
 
   blockSelect(event, data) {
     var blokData: any = {};
-    this.blockData.find(a => {
+    this.blockData.find((a) => {
       if (a.block_id == data) {
         blokData = {
           id: a.block_id,
           name: a.block_name,
           lat: a.lat,
-          lng: a.lng
-        }
+          lng: a.lng,
+        };
       }
     });
     this.getTelemetryData(blokData, event.type, "block");
@@ -987,15 +1374,22 @@ export class TeacherAttendanceComponent implements OnInit {
     this.clusterHidden = false;
     this.blockHidden = false;
     if (this.months.length > 0) {
-      var month = this.months.find(a => a.id === this.month);
+      var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${this.levelWise}s_of_block_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_${
+          this.levelWise
+        }s_of_block_${data}_${month.name.trim()}_${this.year}_${
+          this.commonService.dateAndTime
+        }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_block_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
       var blockNames = [];
-      this.blocksNames.forEach(item => {
-        if (item.distId && item.distId === Number(localStorage.getItem('distId'))) {
+      this.blocksNames.forEach((item) => {
+        if (
+          item.distId &&
+          item.distId === Number(localStorage.getItem("distId"))
+        ) {
           blockNames.push(item);
         }
       });
@@ -1003,91 +1397,160 @@ export class TeacherAttendanceComponent implements OnInit {
       if (blockNames.length > 1) {
         this.blocksNames = blockNames;
       }
-      let obj = this.blocksNames.find(o => o.id == data);
-      localStorage.setItem('block', obj.name);
-      localStorage.setItem('blockId', data);
-      this.titleName = localStorage.getItem('dist');
-      this.distName = { district_id: Number(localStorage.getItem('distId')), district_name: this.titleName };
+      let obj = this.blocksNames.find((o) => o.id == data);
+      localStorage.setItem("block", obj.name);
+      localStorage.setItem("blockId", data);
+      this.titleName = localStorage.getItem("dist");
+      this.distName = {
+        district_id: Number(localStorage.getItem("distId")),
+        district_name: this.titleName,
+      };
       this.blockName = { block_id: data, block_name: obj.name };
       this.hierName = obj.name;
 
       this.globalId = this.myBlock = data;
-      this.myDistrict = Number(localStorage.getItem('distId'));
+      this.myDistrict = Number(localStorage.getItem("distId"));
       this.myCluster = null;
 
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.month_year['id'] = data;
-      this.myData = this.service.clusterPerBlock({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
-        this.reportData = this.clusterData = this.mylatlngData = res['clusterDetails'];
-        this.dateRange = res['dateRange'];
-        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-          var object = previous.filter(object => object['cluster_id'] === current['cluster_id']);
-          if (object.length == 0) previous.push(current);
-          return previous;
-        }, []);
-        this.mylatlngData = uniqueData;
-        this.lat = Number(this.mylatlngData[0]['lat']);
-        this.lng = Number(this.mylatlngData[0]['lng']);
-        var clustNames = [];
+      this.month_year["id"] = data;
+      this.myData = this.service
+        .clusterPerBlock({
+          ...this.month_year,
+          ...this.timePeriod,
+          ...{ management: this.management, category: this.category },
+        })
+        .subscribe(
+          (res) => {
+            this.reportData = this.clusterData = this.mylatlngData =
+              res["clusterDetails"];
+            this.dateRange = res["dateRange"];
+            var uniqueData = this.mylatlngData.reduce(function (
+              previous,
+              current
+            ) {
+              var object = previous.filter(
+                (object) => object["cluster_id"] === current["cluster_id"]
+              );
+              if (object.length == 0) previous.push(current);
+              return previous;
+            },
+            []);
+            this.mylatlngData = uniqueData;
+            this.lat = Number(this.mylatlngData[0]["lat"]);
+            this.lng = Number(this.mylatlngData[0]["lng"]);
+            var clustNames = [];
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+            var sorted = this.mylatlngData.sort((a, b) =>
+              parseInt(a.attendance) > parseInt(b.attendance) ? 1 : -1
+            );
 
-        this.markers = [];
-        this.teacherCount = res['teacherCount'];
-        this.schoolCount = res['schoolCount'];
-        // sorted.pop();
-        this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
-        for (var i = 0; i < sorted.length; i++) {
-          var color = this.commonService.color(this.markers[i], 'attendance');
-          this.clusterIds.push(sorted[i]['cluster_id']);
-          if (sorted[i]['name'] !== null) {
-            clustNames.push({ id: sorted[i]['cluster_id'], name: sorted[i]['cluster_name'], blockId: sorted[i]['block_id'] });
-          } else {
-            clustNames.push({ id: sorted[i]['cluster_id'], name: 'NO NAME FOUND', blockId: sorted[i]['block_id'] });
+            this.markers = [];
+            this.teacherCount = res["teacherCount"];
+            this.schoolCount = res["schoolCount"];
+            // sorted.pop();
+            this.markers = sorted;
+            let colors = this.commonService.getRelativeColors(sorted, {
+              value: "attendance",
+              report: "reports",
+            });
+            for (var i = 0; i < sorted.length; i++) {
+              var color = this.commonService.color(
+                this.markers[i],
+                "attendance"
+              );
+              this.clusterIds.push(sorted[i]["cluster_id"]);
+              if (sorted[i]["name"] !== null) {
+                clustNames.push({
+                  id: sorted[i]["cluster_id"],
+                  name: sorted[i]["cluster_name"],
+                  blockId: sorted[i]["block_id"],
+                });
+              } else {
+                clustNames.push({
+                  id: sorted[i]["cluster_id"],
+                  name: "NO NAME FOUND",
+                  blockId: sorted[i]["block_id"],
+                });
+              }
+              var markerIcon = this.commonService.initMarkers(
+                this.markers[i].lat,
+                this.markers[i].lng,
+                this.selected == "absolute"
+                  ? color
+                  : this.commonService.relativeColorGredient(
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
+                this.getMarkerRadius(14, 10, 8, 4),
+                0.01,
+                1,
+                this.levelWise
+              );
+              this.generateToolTip(
+                markerIcon,
+                this.markers[i],
+                this.onClick_Marker,
+                this.layerMarkers,
+                this.levelWise
+              );
+            }
+
+            clustNames.sort((a, b) =>
+              a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+            );
+            this.clusterNames = clustNames;
+
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([
+              [this.lat - 1.5, this.lng - 3],
+              [this.lat + 1.5, this.lng + 2],
+            ]);
+            this.setZoomLevel(
+              this.lat,
+              this.lng,
+              globalMap,
+              this.commonService.zoomLevel + 3
+            );
+            this.schoolCount = this.schoolCount
+              .toString()
+              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.teacherCount = this.teacherCount
+              .toString()
+              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.commonService.loaderAndErr(this.markers);
+            this.changeDetection.markForCheck();
+          },
+          (err) => {
+            this.dateRange = "";
+            this.teacherCount = "";
+            this.schoolCount = "";
+            this.changeDetection.detectChanges();
+            this.markers = [];
+            this.commonService.loaderAndErr(this.markers);
           }
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.01, 1, this.levelWise);
-          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
-        }
-
-        clustNames.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        this.clusterNames = clustNames;
-
-        this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 3)
-        this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.commonService.loaderAndErr(this.markers);
-        this.changeDetection.markForCheck();
-      }, err => {
-        this.dateRange = '';
-        this.teacherCount = ''; this.schoolCount = '';
-        this.changeDetection.detectChanges();
-        this.markers = [];
-        this.commonService.loaderAndErr(this.markers);
-      });
+        );
     } else {
       this.markers = [];
       this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
+    document.getElementById("home").style.display = "block";
   }
-
 
   clusterSelect(event, data) {
     var clustData: any = {};
-    this.clusterData.find(a => {
+    this.clusterData.find((a) => {
       if (a.cluster_id == data) {
         clustData = {
           id: a.cluster_id,
           name: a.cluster_name,
           lat: a.lat,
-          lng: a.lng
-        }
+          lng: a.lng,
+        };
       }
     });
     this.getTelemetryData(clustData, event.type, "cluster");
@@ -1112,24 +1575,33 @@ export class TeacherAttendanceComponent implements OnInit {
     this.clusterHidden = false;
     this.blockHidden = false;
     if (this.months.length > 0) {
-      var month = this.months.find(a => a.id === this.month);
+      var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${this.levelWise}s_of_cluster_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_${
+          this.levelWise
+        }s_of_cluster_${data}_${month.name.trim()}_${this.year}_${
+          this.commonService.dateAndTime
+        }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_cluster_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
 
-      let obj = this.clusterNames.find(o => o.id == data);
+      let obj = this.clusterNames.find((o) => o.id == data);
       var blockNames = [];
-      this.blocksNames.forEach(item => {
-        if (item.distId && item.distId === Number(localStorage.getItem('distId'))) {
+      this.blocksNames.forEach((item) => {
+        if (
+          item.distId &&
+          item.distId === Number(localStorage.getItem("distId"))
+        ) {
           blockNames.push(item);
         }
       });
-      var uniqueData
+      var uniqueData;
       if (blockNames.length > 1) {
         uniqueData = blockNames.reduce(function (previous, current) {
-          var object = previous.filter(object => object['id'] === current['id']);
+          var object = previous.filter(
+            (object) => object["id"] === current["id"]
+          );
           if (object.length == 0) previous.push(current);
           return previous;
         }, []);
@@ -1137,131 +1609,217 @@ export class TeacherAttendanceComponent implements OnInit {
       }
 
       var clustName = [];
-      this.clusterNames.forEach(item => {
-        if (item.blockId && item.blockId === Number(localStorage.getItem('blockId'))) {
+      this.clusterNames.forEach((item) => {
+        if (
+          item.blockId &&
+          item.blockId === Number(localStorage.getItem("blockId"))
+        ) {
           clustName.push(item);
         }
       });
 
       if (clustName.length > 1) {
         uniqueData = clustName.reduce(function (previous, current) {
-          var object = previous.filter(object => object['id'] === current['id']);
+          var object = previous.filter(
+            (object) => object["id"] === current["id"]
+          );
           if (object.length == 0) previous.push(current);
           return previous;
         }, []);
         this.clusterNames = uniqueData;
       }
 
-      this.title = localStorage.getItem('block');
-      this.titleName = localStorage.getItem('dist');
-      var blockId = Number(localStorage.getItem('blockId'));
-      this.distName = { district_id: Number(localStorage.getItem('distId')), district_name: this.titleName };
-      this.blockName = { block_id: blockId, block_name: this.title, district_id: this.distName.id, district_name: this.distName.name }
+      this.title = localStorage.getItem("block");
+      this.titleName = localStorage.getItem("dist");
+      var blockId = Number(localStorage.getItem("blockId"));
+      this.distName = {
+        district_id: Number(localStorage.getItem("distId")),
+        district_name: this.titleName,
+      };
+      this.blockName = {
+        block_id: blockId,
+        block_name: this.title,
+        district_id: this.distName.id,
+        district_name: this.distName.name,
+      };
       this.clustName = { cluster_id: data };
       this.hierName = obj.name;
 
       this.globalId = this.myCluster = data;
       // this.myBlock = this.myBlock;
-      this.myDistrict = Number(localStorage.getItem('distId'));
+      this.myDistrict = Number(localStorage.getItem("distId"));
 
       if (this.myData) {
         this.myData.unsubscribe();
       }
 
-      this.month_year['id'] = data;
-      this.myData = this.service.schoolsPerCluster({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category} }).subscribe(res => {
-        this.reportData = this.mylatlngData = res['schoolsDetails'];
-        this.dateRange = res['dateRange'];
-        var uniqueData = this.mylatlngData.reduce(function (previous, current) {
-          var object = previous.filter(object => object['school_id'] === current['school_id']);
-          if (object.length == 0) previous.push(current);
-          return previous;
-        }, []);
-        this.mylatlngData = uniqueData;
-        this.lat = Number(this.mylatlngData[0]['lat']);
-        this.lng = Number(this.mylatlngData[0]['lng']);
+      this.month_year["id"] = data;
+      this.myData = this.service
+        .schoolsPerCluster({
+          ...this.month_year,
+          ...this.timePeriod,
+          ...{ management: this.management, category: this.category },
+        })
+        .subscribe(
+          (res) => {
+            this.reportData = this.mylatlngData = res["schoolsDetails"];
+            this.dateRange = res["dateRange"];
+            var uniqueData = this.mylatlngData.reduce(function (
+              previous,
+              current
+            ) {
+              var object = previous.filter(
+                (object) => object["school_id"] === current["school_id"]
+              );
+              if (object.length == 0) previous.push(current);
+              return previous;
+            },
+            []);
+            this.mylatlngData = uniqueData;
+            this.lat = Number(this.mylatlngData[0]["lat"]);
+            this.lng = Number(this.mylatlngData[0]["lng"]);
 
-        var sorted = this.mylatlngData.sort((a, b) => (parseInt(a.attendance) > parseInt(b.attendance)) ? 1 : -1)
+            var sorted = this.mylatlngData.sort((a, b) =>
+              parseInt(a.attendance) > parseInt(b.attendance) ? 1 : -1
+            );
 
-        this.markers = [];
-        this.teacherCount = res['teacherCount'];
-        this.schoolCount = res['schoolCount'];
+            this.markers = [];
+            this.teacherCount = res["teacherCount"];
+            this.schoolCount = res["schoolCount"];
 
-        this.markers = sorted;
-        let colors = this.commonService.getRelativeColors(sorted, { value: 'attendance', report: 'reports' });
-        for (var i = 0; i < sorted.length; i++) {
-          var color = this.commonService.color(this.markers[i], 'attendance');
-          var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(sorted[i], { value: 'attendance', report: 'reports' }, colors), this.getMarkerRadius(14, 10, 8, 4), 0.1, 1, this.levelWise);
-          this.generateToolTip(markerIcon, this.markers[i], this.onClick_Marker, this.layerMarkers, this.levelWise);
-        }
-        globalMap.doubleClickZoom.enable();
-        globalMap.scrollWheelZoom.enable();
-        globalMap.setMaxBounds([[this.lat - 1.5, this.lng - 3], [this.lat + 1.5, this.lng + 2]]);
-        this.setZoomLevel(this.lat, this.lng, globalMap, this.commonService.zoomLevel + 5)
-        this.schoolCount = (this.markers.length).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.teacherCount = (this.teacherCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-        this.commonService.loaderAndErr(this.markers);
-        this.changeDetection.markForCheck();
-      }, err => {
-        this.dateRange = '';
-        this.teacherCount = ''; this.schoolCount = '';
-        this.changeDetection.detectChanges();
-        this.markers = [];
-        this.commonService.loaderAndErr(this.markers);
-      });
+            this.markers = sorted;
+            let colors = this.commonService.getRelativeColors(sorted, {
+              value: "attendance",
+              report: "reports",
+            });
+            for (var i = 0; i < sorted.length; i++) {
+              var color = this.commonService.color(
+                this.markers[i],
+                "attendance"
+              );
+              var markerIcon = this.commonService.initMarkers(
+                this.markers[i].lat,
+                this.markers[i].lng,
+                this.selected == "absolute"
+                  ? color
+                  : this.commonService.relativeColorGredient(
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
+                this.getMarkerRadius(14, 10, 8, 4),
+                0.1,
+                1,
+                this.levelWise
+              );
+              this.generateToolTip(
+                markerIcon,
+                this.markers[i],
+                this.onClick_Marker,
+                this.layerMarkers,
+                this.levelWise
+              );
+            }
+            globalMap.doubleClickZoom.enable();
+            globalMap.scrollWheelZoom.enable();
+            globalMap.setMaxBounds([
+              [this.lat - 1.5, this.lng - 3],
+              [this.lat + 1.5, this.lng + 2],
+            ]);
+            this.setZoomLevel(
+              this.lat,
+              this.lng,
+              globalMap,
+              this.commonService.zoomLevel + 5
+            );
+            this.schoolCount = this.markers.length
+              .toString()
+              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.teacherCount = this.teacherCount
+              .toString()
+              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.commonService.loaderAndErr(this.markers);
+            this.changeDetection.markForCheck();
+          },
+          (err) => {
+            this.dateRange = "";
+            this.teacherCount = "";
+            this.schoolCount = "";
+            this.changeDetection.detectChanges();
+            this.markers = [];
+            this.commonService.loaderAndErr(this.markers);
+          }
+        );
     } else {
       this.markers = [];
       this.commonService.loaderAndErr(this.markers);
     }
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
+    document.getElementById("home").style.display = "block";
   }
 
   popups(markerIcon, markers, onClick_Marker, layerMarkers, levelWise) {
-    markerIcon.on('mouseover', function (e) {
+    markerIcon.on("mouseover", function (e) {
       this.openPopup();
     });
-    markerIcon.on('mouseout', function (e) {
+    markerIcon.on("mouseout", function (e) {
       this.closePopup();
     });
 
     layerMarkers.addLayer(markerIcon);
     if (levelWise != "school") {
-      markerIcon.on('click', onClick_Marker, this);
+      markerIcon.on("click", onClick_Marker, this);
     } else {
-      markerIcon.on('click', this.onClickSchool, this);
+      markerIcon.on("click", this.onClickSchool, this);
     }
     markerIcon.myJsonData = markers;
   }
 
   //Generate dynamic tool-tip
-  generateToolTip(markerIcon, markers, onClick_Marker, layerMarkers, levelWise) {
+  generateToolTip(
+    markerIcon,
+    markers,
+    onClick_Marker,
+    layerMarkers,
+    levelWise
+  ) {
     this.popups(markerIcon, markers, onClick_Marker, layerMarkers, levelWise);
     var details = {};
     var orgObject = {};
-    Object.keys(markers).forEach(key => {
+    Object.keys(markers).forEach((key) => {
       if (key !== "lat") {
         details[key] = markers[key];
       }
     });
-    Object.keys(details).forEach(key => {
+    Object.keys(details).forEach((key) => {
       if (key !== "lng") {
         orgObject[key] = details[key];
       }
     });
 
-    var yourData = this.commonService.getInfoFrom(orgObject, "attendance", levelWise, "std-attd", undefined, undefined).join(" <br>");
-    const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-      yourData);
+    var yourData = this.commonService
+      .getInfoFrom(
+        orgObject,
+        "attendance",
+        levelWise,
+        "std-attd",
+        undefined,
+        undefined
+      )
+      .join(" <br>");
+    const popup = R.responsivePopup({
+      hasTip: false,
+      autoPan: false,
+      offset: [15, 20],
+    }).setContent(yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);
   }
-
 
   getTelemetryData(data, event, level) {
     this.service.telemetryData = [];
     var obj = {};
     if (data.id != undefined) {
-      if (event == 'download') {
+      if (event == "download") {
         obj = {
           pageId: "student_attendance",
           uid: this.keyCloakSevice.kc.tokenParsed.sub,
@@ -1271,8 +1829,8 @@ export class TeacherAttendanceComponent implements OnInit {
           locationname: data.name,
           lat: data.lat,
           lng: data.lng,
-          download: 1
-        }
+          download: 1,
+        };
         this.service.telemetryData.push(obj);
       } else {
         obj = {
@@ -1284,8 +1842,8 @@ export class TeacherAttendanceComponent implements OnInit {
           locationname: data.name,
           lat: data.lat,
           lng: data.lng,
-          download: 0
-        }
+          download: 0,
+        };
         this.service.telemetryData.push(obj);
       }
 
@@ -1293,16 +1851,19 @@ export class TeacherAttendanceComponent implements OnInit {
       var dateObj = {
         year: this.edate.getFullYear(),
         month: ("0" + (this.edate.getMonth() + 1)).slice(-2),
-        date: ("0" + (this.edate.getDate())).slice(-2),
-        hour: ("0" + (this.edate.getHours())).slice(-2),
-      }
-      this.service.telemetrySar(dateObj).subscribe(res => {
-      }, err => {
-        this.dateRange = '';
-        this.teacherCount = ''; this.schoolCount = '';
-        this.changeDetection.detectChanges();
-        console.log(err);
-      });
+        date: ("0" + this.edate.getDate()).slice(-2),
+        hour: ("0" + this.edate.getHours()).slice(-2),
+      };
+      this.service.telemetrySar(dateObj).subscribe(
+        (res) => {},
+        (err) => {
+          this.dateRange = "";
+          this.teacherCount = "";
+          this.schoolCount = "";
+          this.changeDetection.detectChanges();
+          console.log(err);
+        }
+      );
     }
   }
 
@@ -1324,23 +1885,48 @@ export class TeacherAttendanceComponent implements OnInit {
   //   }
 
   //   sessionStorage.setItem('health-card-info', JSON.stringify(data));
-  //   this._router.navigate(['/healthCard']);
+  //   this._router.navigate(['/progressCard']);
   // }
 
   downloadRaw() {
-    document.getElementById('spinner').style.display = 'block';
+    document.getElementById("spinner").style.display = "block";
     var selectedAcademicYear = this.academicYear;
     this.rawFileName = `teacher_attendance/raw/teacher_attendance_all_${this.levelWise.toLowerCase()}s_${selectedAcademicYear}.csv`;
-    this.service.downloadFile({ fileName: this.rawFileName }).subscribe(res => {
-      this.academicYear = undefined;
-      document.getElementById('spinner').style.display = 'none';
-      window.open(`${res['downloadUrl']}`, "_blank");
-    }, err => {
-      alert("No Raw Data File Available in Bucket");
-      document.getElementById('spinner').style.display = 'none';
-    })
+    this.service.downloadFile({ fileName: this.rawFileName }).subscribe(
+      (res) => {
+        this.academicYear = undefined;
+        document.getElementById("spinner").style.display = "none";
+        window.open(`${res["downloadUrl"]}`, "_blank");
+      },
+      (err) => {
+        alert("No Raw Data File Available in Bucket");
+        document.getElementById("spinner").style.display = "none";
+      }
+    );
   }
 
-  public legendColors: any = ["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"];
-  public values = ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100']
+  public legendColors: any = [
+    "#a50026",
+    "#d73027",
+    "#f46d43",
+    "#fdae61",
+    "#fee08b",
+    "#d9ef8b",
+    "#a6d96a",
+    "#66bd63",
+    "#1a9850",
+    "#006837",
+  ];
+  public values = [
+    "0-10",
+    "11-20",
+    "21-30",
+    "31-40",
+    "41-50",
+    "51-60",
+    "61-70",
+    "71-80",
+    "81-90",
+    "91-100",
+  ];
 }
