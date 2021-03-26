@@ -1495,6 +1495,10 @@ primary key(school_id,month,year)
 
 create index if not exists school_student_total_attendance_id on school_student_total_attendance(month,school_id,block_id,cluster_id);
 
+
+alter table school_student_total_attendance add column if not exists school_management_type varchar(100);
+alter table school_student_total_attendance add column if not exists school_category varchar(100);
+
 /*school_teacher_total_attendance*/
 
 create table if not exists school_teacher_total_attendance
@@ -1527,6 +1531,10 @@ created_on  TIMESTAMP without time zone ,
 updated_on  TIMESTAMP without time zone,
 primary key(school_id,month,year)
 );
+
+
+alter table school_teacher_total_attendance add column if not exists school_management_type varchar(100);
+alter table school_teacher_total_attendance add column if not exists school_category varchar(100);
 
 create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
 
@@ -6018,3 +6026,45 @@ alter table school_hierarchy_details add column if not exists school_management_
 alter table school_hierarchy_details add column if not exists school_category varchar(100);
 
 alter table crc_inspection_temp add column IF NOT EXISTS visit_date date;
+
+alter table crc_visits_frequency add column if not exists school_management_type varchar(100);
+alter table crc_visits_frequency add column if not exists school_category varchar(100);
+
+alter table periodic_exam_school_qst_result add column if not exists school_management_type varchar(100);
+alter table periodic_exam_school_qst_result add column if not exists school_category varchar(100);
+
+alter table periodic_exam_school_result add column if not exists school_management_type varchar(100);
+alter table periodic_exam_school_result add column if not exists school_category varchar(100);
+
+
+create table if not exists school_category_null_col( filename varchar(200),
+ff_uuid varchar(200),
+count_null_school_category_id int,
+count_null_school_category  int);
+
+create table if not exists school_management_null_col( filename varchar(200),
+ff_uuid varchar(200),
+count_null_school_management_type_id int,
+count_null_school_management_type  int);
+
+create table if not exists school_category_dup( 
+school_category_id int,
+school_category  varchar(100),
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process timestamp default current_timestamp);
+
+create table if not exists school_management_dup( 
+school_management_type_id int,
+school_management_type  varchar(100),
+num_of_times int,
+default_option boolean,
+ff_uuid varchar(255),
+created_on_file_process timestamp default current_timestamp);
+
+alter table log_summary add column if not exists school_category_id int,add column if not exists school_category int, add column if not exists school_management_type_id int,
+add column if not exists school_management_type int;
+
+alter table school_master add column if not exists state_id bigint,add column if not exists district_id bigint,add column if not exists block_id bigint,add column if not exists cluster_id bigint,add column if not exists latitude double precision,add column if not exists longitude double precision;
+
+alter table school_management_master add column if not exists default_option boolean;
