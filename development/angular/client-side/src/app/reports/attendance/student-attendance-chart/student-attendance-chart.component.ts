@@ -345,7 +345,7 @@ export class StudentAttendanceChartComponent implements OnInit {
       if(this.multiSelect3)
         this.multiSelect3.showDropDown = false;
 
-      this.shareCheckedList(this.selectedBlock);
+      this.shareCheckedList1(this.selectedBlock);
       document.getElementById('home').style.display = 'none';
     }
   }
@@ -380,7 +380,7 @@ export class StudentAttendanceChartComponent implements OnInit {
       if(this.multiSelect2)
         this.multiSelect2.showDropDown = false;
 
-      this.shareCheckedList(this.selectedCluster);
+      this.shareCheckedList2(this.selectedCluster);
       document.getElementById('home').style.display = 'none';
     }
   }
