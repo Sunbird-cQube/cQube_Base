@@ -299,6 +299,11 @@ export class CrcReportComponent implements OnInit {
   }
   onClockHome() {
     this.period = 'overall';
+    this.yearMonth = true;
+    this.month_year = {
+      month: null,
+      year: null
+    };
     document.getElementById('home').style.display = 'none';
     this.districtWise();
   }

@@ -28,6 +28,7 @@ const sttendanceRoutes: Routes = [
   declarations: [
     TeacherAttendanceComponent,
     ComingSoonComponent,
+    StudengtAttendanceComponent
   ],
   imports: [
     CommonModule,
