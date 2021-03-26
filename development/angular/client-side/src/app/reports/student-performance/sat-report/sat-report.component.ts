@@ -108,6 +108,10 @@ export class SatReportComponent implements OnInit {
   semesters: any = [];
   semester;
 
+  management;
+  category;
+  managementName;
+
   constructor(
     public http: HttpClient,
     public service: PatReportService,
@@ -167,6 +171,12 @@ export class SatReportComponent implements OnInit {
     document.getElementById("homeBtn").style.display = "block";
     document.getElementById("backBtn").style.display = "none";
     let params = JSON.parse(sessionStorage.getItem("report-level-info"));
+
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
 
     this.fileName = `${this.reportName}_${this.period}_${
       this.grade ? this.grade : "allGrades"
@@ -248,12 +258,12 @@ export class SatReportComponent implements OnInit {
       this.semester = this.semesters[this.semesters.length - 1].id;
 
       this.service
-        .PATDistWiseData({
+        .PATDistWiseData({...{
           grade: this.grade,
           period: this.period,
           report: "sat",
           sem: this.semester,
-        })
+        }, ...{ management: this.management, category: this.category}})
         .subscribe((res) => {
           this.data = res["data"];
           this.allDistricts = this.districtMarkers = this.data;
@@ -279,11 +289,11 @@ export class SatReportComponent implements OnInit {
 
   getBlocks(level, distId, blockId?: any): void {
     this.service
-      .PATBlocksPerDistData(distId, {
+      .PATBlocksPerDistData(distId, {...{
         period: this.period,
         report: "sat",
         sem: this.semester,
-      })
+      }, ...{ management: this.management, category: this.category}})
       .subscribe((res) => {
         this.data = res["data"];
         this.blockMarkers = this.data;
@@ -299,11 +309,11 @@ export class SatReportComponent implements OnInit {
 
   getClusters(distId, blockId, clusterId): void {
     this.service
-      .PATClustersPerBlockData(distId, blockId, {
+      .PATClustersPerBlockData(distId, blockId, {...{
         period: this.period,
         report: "sat",
         sem: this.semester,
-      })
+      }, ...{ management: this.management, category: this.category}})
       .subscribe((res) => {
         this.data = res["data"];
         this.clusterMarkers = this.data;
@@ -423,12 +433,12 @@ export class SatReportComponent implements OnInit {
               this.myData.unsubscribe();
             }
             this.myData = this.service
-              .PATDistWiseData({
+              .PATDistWiseData({...{
                 grade: this.grade,
                 period: this.period,
                 report: "sat",
                 sem: this.semester,
-              })
+              }, ...{ management: this.management, category: this.category}})
               .subscribe(
                 (res) => {
                   this.myDistData = res;
@@ -462,13 +472,14 @@ export class SatReportComponent implements OnInit {
                     [options.centerLat - 4.5, options.centerLng - 6],
                     [options.centerLat + 3.5, options.centerLng + 6],
                   ]);
+
+                  this.genericFun(this.myDistData, options, this.fileName);
                   this.setZoomLevel(
                     options.centerLat,
                     options.centerLng,
                     globalMap,
                     options.mapZoom
                   );
-                  this.genericFun(this.myDistData, options, this.fileName);
                   this.allDistricts.sort((a, b) =>
                     a.Details.district_name > b.Details.district_name
                       ? 1
@@ -559,12 +570,12 @@ export class SatReportComponent implements OnInit {
               this.myData.unsubscribe();
             }
             this.myData = this.service
-              .PATBlockWiseData({
+              .PATBlockWiseData({...{
                 grade: this.grade,
                 period: this.period,
                 report: "sat",
                 sem: this.semester,
-              })
+              }, ...{ management: this.management, category: this.category}})
               .subscribe(
                 (res) => {
                   this.myBlockData = res["data"];
@@ -780,12 +791,12 @@ export class SatReportComponent implements OnInit {
               this.myData.unsubscribe();
             }
             this.myData = this.service
-              .PATClusterWiseData({
+              .PATClusterWiseData({...{
                 grade: this.grade,
                 period: this.period,
                 report: "sat",
                 sem: this.semester,
-              })
+              }, ...{ management: this.management, category: this.category}})
               .subscribe(
                 (res) => {
                   this.data = res["data"];
@@ -996,12 +1007,12 @@ export class SatReportComponent implements OnInit {
               this.myData.unsubscribe();
             }
             this.myData = this.service
-              .PATSchoolWiseData({
+              .PATSchoolWiseData({...{
                 grade: this.grade,
                 period: this.period,
                 report: "sat",
                 sem: this.semester,
-              })
+              }, ...{ management: this.management, category: this.category}})
               .subscribe(
                 (res) => {
                   this.data = res["data"];
@@ -1191,11 +1202,11 @@ export class SatReportComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .PATBlocksPerDistData(districtId, {
+      .PATBlocksPerDistData(districtId, {...{
         period: this.period,
         report: "sat",
         sem: this.semester,
-      })
+      }, ...{ management: this.management, category: this.category}})
       .subscribe(
         (res) => {
           this.data = res["data"];
@@ -1243,13 +1254,14 @@ export class SatReportComponent implements OnInit {
             [options.centerLat - 1.5, options.centerLng - 3],
             [options.centerLat + 1.5, options.centerLng + 2],
           ]);
+
+          this.genericFun(res, options, this.fileName);
           this.setZoomLevel(
             options.centerLat,
             options.centerLng,
             globalMap,
             options.mapZoom
           );
-          this.genericFun(res, options, this.fileName);
           // sort the blockname alphabetically
           this.blockMarkers.sort((a, b) =>
             a.Details.block_name > b.Details.block_name
@@ -1307,11 +1319,11 @@ export class SatReportComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .PATClustersPerBlockData(this.districtHierarchy.distId, blockId, {
+      .PATClustersPerBlockData(this.districtHierarchy.distId, blockId, {...{
         period: this.period,
         report: "sat",
         sem: this.semester,
-      })
+      }, ...{ management: this.management, category: this.category}})
       .subscribe(
         (res) => {
           this.data = res["data"];
@@ -1367,13 +1379,14 @@ export class SatReportComponent implements OnInit {
             [options.centerLat - 1.5, options.centerLng - 3],
             [options.centerLat + 1.5, options.centerLng + 2],
           ]);
+
+          this.genericFun(res, options, this.fileName);
           this.setZoomLevel(
             options.centerLat,
             options.centerLng,
             globalMap,
             options.mapZoom
           );
-          this.genericFun(res, options, this.fileName);
           // sort the clusterName alphabetically
           this.clusterMarkers.sort((a, b) =>
             a.Details.cluster_name > b.Details.cluster_name
@@ -1426,12 +1439,12 @@ export class SatReportComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .PATBlockWiseData({
+      .PATBlockWiseData({...{
         grade: this.grade,
         period: this.period,
         report: "sat",
         sem: this.semester,
-      })
+      }, ...{ management: this.management, category: this.category}})
       .subscribe(
         (result: any) => {
           this.myData = this.service
@@ -1439,7 +1452,7 @@ export class SatReportComponent implements OnInit {
               this.blockHierarchy.distId,
               this.blockHierarchy.blockId,
               clusterId,
-              { period: this.period, report: "sat", sem: this.semester }
+              {...{ period: this.period, report: "sat", sem: this.semester }, ...{ management: this.management, category: this.category}}
             )
             .subscribe(
               (res) => {
@@ -1527,13 +1540,14 @@ export class SatReportComponent implements OnInit {
                   [options.centerLat - 1.5, options.centerLng - 3],
                   [options.centerLat + 1.5, options.centerLng + 2],
                 ]);
+
+                this.genericFun(res, options, this.fileName);
                 this.setZoomLevel(
                   options.centerLat,
                   options.centerLng,
                   globalMap,
                   options.mapZoom
                 );
-                this.genericFun(res, options, this.fileName);
               },
               (err) => {
                 this.data = [];

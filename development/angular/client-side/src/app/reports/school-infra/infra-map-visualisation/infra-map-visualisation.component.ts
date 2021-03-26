@@ -262,13 +262,9 @@ export class InfraMapVisualisationComponent implements OnInit {
           [options.centerLat + 3.5, options.centerLng + 6],
         ]);
         this.changeDetection.detectChanges();
-        this.setZoomLevel(
-          options.centerLat,
-          options.centerLng,
-          globalMap,
-          options.mapZoom
-        );
+        
         this.genericFun(this.myDistData, options, this.fileName);
+        this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) =>
           a.details.district_name > b.details.district_name
@@ -307,12 +303,7 @@ export class InfraMapVisualisationComponent implements OnInit {
               [options.centerLat + 3.5, options.centerLng + 6],
             ]);
             this.changeDetection.detectChanges();
-            this.setZoomLevel(
-              options.centerLat,
-              options.centerLng,
-              globalMap,
-              options.mapZoom
-            );
+            
             this.data.sort((a, b) =>
               `${a[this.infraData]}` > `${b[this.infraData]}`
                 ? 1
@@ -321,6 +312,7 @@ export class InfraMapVisualisationComponent implements OnInit {
                 : 0
             );
             this.genericFun(this.myDistData, options, this.fileName);
+            this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
 
             // sort the districtname alphabetically
             this.districtMarkers.sort((a, b) =>
@@ -766,13 +758,9 @@ export class InfraMapVisualisationComponent implements OnInit {
           [options.centerLat + 1.5, options.centerLng + 2],
         ]);
         this.changeDetection.detectChanges();
-        this.setZoomLevel(
-          options.centerLat,
-          options.centerLng,
-          globalMap,
-          options.mapZoom
-        );
+        
         this.genericFun(res, options, this.fileName);
+        this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         // sort the blockname alphabetically
         this.blockMarkers.sort((a, b) =>
           a.details.block_name > b.details.block_name
@@ -862,13 +850,9 @@ export class InfraMapVisualisationComponent implements OnInit {
             [options.centerLat + 1.5, options.centerLng + 2],
           ]);
           this.changeDetection.detectChanges();
-          this.setZoomLevel(
-            options.centerLat,
-            options.centerLng,
-            globalMap,
-            options.mapZoom
-          );
+         
           this.genericFun(res, options, this.fileName);
+          this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           // sort the clusterName alphabetically
           this.clusterMarkers.sort((a, b) =>
             a.details.cluster_name > b.details.cluster_name
@@ -984,14 +968,10 @@ export class InfraMapVisualisationComponent implements OnInit {
                 [options.centerLat + 1.5, options.centerLng + 2],
               ]);
               this.changeDetection.detectChanges();
-              this.setZoomLevel(
-                options.centerLat,
-                options.centerLng,
-                globalMap,
-                options.mapZoom
-              );
+              
               this.level = options.level;
               this.genericFun(res, options, this.fileName);
+              this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
             },
             (err) => {
               this.data = [];

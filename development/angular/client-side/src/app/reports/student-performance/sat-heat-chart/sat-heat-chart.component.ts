@@ -77,6 +77,10 @@ export class SatHeatChartComponent implements OnInit {
 
   reportName = 'semester_assessment_test_heatmap';
 
+  managementName;
+  management;
+  category;
+
   getHeight(event) {
     this.height = event.target.innerHeight;
     this.onChangePage();
@@ -148,6 +152,11 @@ export class SatHeatChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
@@ -193,7 +202,9 @@ export class SatHeatChartComponent implements OnInit {
       grade: this.grade == 'all' ? '' : this.grade,
       subject_name: this.subject == 'all' ? '' : this.subject,
       exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
+      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
+      management: this.management,
+      category: this.category
     }
     this.month = a.month;
     if (this.myData) {
@@ -613,7 +624,9 @@ export class SatHeatChartComponent implements OnInit {
       subject_name: this.subject == 'all' ? '' : this.subject,
       exam_date: this.examDate == 'all' ? '' : this.examDate,
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
-      districtId: districtId
+      districtId: districtId,
+      management: this.management,
+      category: this.category
     }
 
     this.service.PATHeatMapDistData(a).subscribe(response => {
@@ -658,7 +671,9 @@ export class SatHeatChartComponent implements OnInit {
       exam_date: this.examDate == 'all' ? '' : this.examDate,
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
       districtId: this.district,
-      blockId: blockId
+      blockId: blockId,
+      management: this.management,
+      category: this.category
     }
 
     this.service.PATHeatMapBlockData(a).subscribe(response => {
@@ -704,7 +719,9 @@ export class SatHeatChartComponent implements OnInit {
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
       districtId: this.district,
       blockId: this.block,
-      clusterId: clusterId
+      clusterId: clusterId,
+      management: this.management,
+      category: this.category
     }
 
     this.service.PATHeatMapClusterData(a).subscribe(response => {
