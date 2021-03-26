@@ -179,7 +179,7 @@ export class LineChartComponent implements OnInit, OnChanges {
       var obj = '';
         obj = `<b>Acedmic Year:</b> ${academicYear} 
         <br><b>Month:</b> ${point.category}
-        <br> ${level != 'state' ? `<b>District Name:</b> ${point.series.name}` : `<b>State Name:</b> ${point.series.name}`}
+        <br> ${`<b>${level} Name:</b> ${point.series.name}`}
         <br> ${point.y !== null ? `<b>Attendance:</b> ${point.y.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")} % ` : ''}`
         return obj;
     }
