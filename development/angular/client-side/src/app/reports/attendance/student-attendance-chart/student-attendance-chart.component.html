@@ -3,7 +3,7 @@
         <div class="col-lg-7 col-md-12 col-sm-12">
             <div>
                 <p id="dist">
-                    Student Attendance Report for: <span id="state" style="cursor: pointer;text-decoration: underline;" (click)="onHomeClick()">{{state}}</span></p>
+                    Student Attendance Report for: <span id="state" style="cursor: pointer;text-decoration: underline;" (click)="onHomeClick(false)">{{state}}</span></p>
             </div>
         </div>
         <div class="col-lg-5 col-md-12 col-sm-12">
@@ -12,7 +12,7 @@
                     <p id="errMsg"></p>
                 </div>
                 <div class="col-sm-5">
-                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="onHomeClick()"></em>
+                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="onHomeClick(false)"></em>
                 </div>
             </div>
         </div>

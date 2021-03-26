@@ -47,7 +47,7 @@ export class StudentAttendanceChartComponent implements OnInit {
       this.years = Object.keys(res);
       this.selectedYear = this.years[this.years.length-1];
       this.onResize();
-      this.onHomeClick();
+      this.onHomeClick(false);
       this.getDistrictData();
     })
     this.changeDetection.detectChanges();
@@ -61,12 +61,13 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.commonService.errMsg();
     this.currentColors = [];
     this.dataWithColors = [];
-    this.onHomeClick();
+    this.onHomeClick(true);
   }
 
-  onHomeClick(){
+  onHomeClick(defYear){
     this.commonService.errMsg();
-    this.selectedYear = this.years[this.years.length-1];
+    if(!defYear)
+      this.selectedYear = this.years[this.years.length-1];
     this.getStateData();
     this.selectedDistricts = [];
     this.selectedBlock = [];
@@ -260,7 +261,7 @@ export class StudentAttendanceChartComponent implements OnInit {
       document.getElementById('home').style.display = 'block';
       this.changeDetection.detectChanges();
     }else{
-      this.onHomeClick();
+      this.onHomeClick(false);
       document.getElementById('home').style.display = 'none';
     }
     console.log(this.selectedDistricts);
