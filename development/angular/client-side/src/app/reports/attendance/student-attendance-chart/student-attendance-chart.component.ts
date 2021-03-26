@@ -191,17 +191,47 @@ export class StudentAttendanceChartComponent implements OnInit {
   }
   }
 
-  public colors = ['#339933', '#00ffcc', '#0099ff', '#6666ff', '#99ff99', '#003399', '#666699', '#ffcc00', '#660033', '#ff3300'];
+  public colors = ['#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837'];
   public currentColors = [];
   public dataWithColors = [];
+
+  clearSuccessors(type: string): any {
+    if (type === 'District') {
+      this.selectedBlock = [];
+      this.blockData = [];
+      this.blockList = [];
+      this.selectedCluster = [];
+      this.clusterData = [];
+      this.clusterList = [];
+      this.selectedSchool = [];
+      this.schoolData = [];
+      this.schoolList = [];
+    } else if (type === 'Block') {
+      this.selectedCluster = [];
+      this.clusterData = [];
+      this.clusterList = [];
+      this.selectedSchool = [];
+      this.schoolData = [];
+      this.schoolList = [];
+    } else if (type === 'Cluster') {
+      this.selectedSchool = [];
+      this.schoolData = [];
+      this.schoolList = [];
+    }
+  }
 
   shareCheckedList(list){
     this.currentColors = [];
     this.dataWithColors = [];
     this.selectedBlock = [];
+    this.blockData = [];
+    this.blockList = [];
     this.selectedCluster = [];
+    this.clusterData = [];
+    this.clusterList = [];
     this.selectedSchool = [];
-    this.blockData  = [ ]
+    this.schoolData = [];
+    this.schoolList = [];
 
     var names = [];
     this.selectedDistricts = list;
@@ -240,7 +270,11 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.currentColors = [];
     this.dataWithColors = [];
     this.selectedCluster = [];
+    this.clusterList = [];
+    this.clusterData = [];
     this.selectedSchool = [];
+    this.schoolData = [];
+    this.schoolList = [];
     var names = [];
     this.selectedBlock = list;
     this.blockList.map((item)=>{

@@ -10,9 +10,11 @@ export class MultiSelectComponent implements OnInit {
   @Input() text: any;
   @Input() width1;
   @Input() width2;
+  @Input() from: string = '';
 
   @Output() shareCheckedList = new EventEmitter();
   @Output() shareIndividualCheckedList = new EventEmitter();
+  @Output() clearSuccessors = new EventEmitter();
 
   status;
   checkedList: any[];
@@ -24,6 +26,12 @@ export class MultiSelectComponent implements OnInit {
 
   getSelectedValue(id, status) {
     var index;
+
+    if (this.from === 'trendChart' && this.checkedList.length > 0) {
+      //this.shareCheckedlist();
+      this.clearSuccessors.emit(this.text);
+    }
+
     if (this.text == "District") {
       if (this.checkedList.length <= 9) {
         if (status) {
