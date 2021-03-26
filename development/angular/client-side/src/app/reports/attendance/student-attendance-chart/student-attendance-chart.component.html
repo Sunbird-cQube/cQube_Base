@@ -3,7 +3,7 @@
         <div class="col-lg-7 col-md-12 col-sm-12">
             <div>
                 <p id="dist">
-                    Student Attendance Report for: <span id="state" style="cursor: pointer;text-decoration: underline;" (click)="onHomeClick()">{{state}}</span></p>
+                    Student Attendance Report for: <span id="state" style="cursor: pointer;text-decoration: underline;" (click)="onHomeClick(false)">{{state}}</span></p>
             </div>
         </div>
         <div class="col-lg-5 col-md-12 col-sm-12">
@@ -12,7 +12,7 @@
                     <p id="errMsg"></p>
                 </div>
                 <div class="col-sm-5">
-                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="onHomeClick()"></em>
+                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="onHomeClick(false)"></em>
                 </div>
             </div>
         </div>
@@ -28,22 +28,22 @@
             </select>
             <div>
                 <app-multi-select #multiSelect1 style="float: left;width: auto; margin-right: 10px;" [list]="districtList" [text]="'District'" [width1]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'"
-                    [width2]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'" (shareCheckedList)="shareCheckedList($event)">
+                    [width2]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'" (shareCheckedList)="shareCheckedList($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
                 </app-multi-select>
             </div>
             <div *ngIf="blockData.length > 0 && selectedDistricts.length == 1">
                 <app-multi-select #multiSelect2 style="float: left;width: auto; margin-right: 10px;" [list]="blockList" [text]="'Block'" [width1]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'" [width2]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'"
-                    (shareCheckedList)="shareCheckedList1($event)">
+                    (shareCheckedList)="shareCheckedList1($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
                 </app-multi-select>
             </div>
             <div *ngIf="clusterData.length > 0 && selectedBlock.length == 1">
                 <app-multi-select #multiSelect3 style="float: left;width: auto; margin-right: 10px;" [list]="clusterList" [text]="'Cluster'" [width1]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'"
-                    [width2]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'" (shareCheckedList)="shareCheckedList2($event)">
+                    [width2]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'" (shareCheckedList)="shareCheckedList2($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
                 </app-multi-select>
             </div>
             <div *ngIf="schoolData.length > 0 && selectedCluster.length == 1">
                 <app-multi-select #multiSelect4 style="float: left;width: auto; margin-right: 10px;" [list]="schoolList" [text]="'School'" [width1]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'" [width2]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'"
-                    (shareCheckedList)="shareCheckedList3($event)">
+                    (shareCheckedList)="shareCheckedList3($event)" from="trendChart">
                 </app-multi-select>
             </div>
             <!-- <span class="note" style="float: left; margin-left: 3%;"><strong>Recommended: </strong>Please select maximum

@@ -47,7 +47,7 @@ export class StudentAttendanceChartComponent implements OnInit {
       this.years = Object.keys(res);
       this.selectedYear = this.years[this.years.length-1];
       this.onResize();
-      this.onHomeClick();
+      this.onHomeClick(false);
       this.getDistrictData();
     })
     this.changeDetection.detectChanges();
@@ -61,12 +61,13 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.commonService.errMsg();
     this.currentColors = [];
     this.dataWithColors = [];
-    this.onHomeClick();
+    this.onHomeClick(true);
   }
 
-  onHomeClick(){
+  onHomeClick(defYear){
     this.commonService.errMsg();
-    this.selectedYear = this.years[this.years.length-1];
+    if(!defYear)
+      this.selectedYear = this.years[this.years.length-1];
     this.getStateData();
     this.selectedDistricts = [];
     this.selectedBlock = [];
@@ -191,17 +192,47 @@ export class StudentAttendanceChartComponent implements OnInit {
   }
   }
 
-  public colors = ['#339933', '#00ffcc', '#0099ff', '#6666ff', '#99ff99', '#003399', '#666699', '#ffcc00', '#660033', '#ff3300'];
+  public colors = ['#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837'];
   public currentColors = [];
   public dataWithColors = [];
+
+  clearSuccessors(type: string): any {
+    if (type === 'District') {
+      this.selectedBlock = [];
+      this.blockData = [];
+      this.blockList = [];
+      this.selectedCluster = [];
+      this.clusterData = [];
+      this.clusterList = [];
+      this.selectedSchool = [];
+      this.schoolData = [];
+      this.schoolList = [];
+    } else if (type === 'Block') {
+      this.selectedCluster = [];
+      this.clusterData = [];
+      this.clusterList = [];
+      this.selectedSchool = [];
+      this.schoolData = [];
+      this.schoolList = [];
+    } else if (type === 'Cluster') {
+      this.selectedSchool = [];
+      this.schoolData = [];
+      this.schoolList = [];
+    }
+  }
 
   shareCheckedList(list){
     this.currentColors = [];
     this.dataWithColors = [];
     this.selectedBlock = [];
+    this.blockData = [];
+    this.blockList = [];
     this.selectedCluster = [];
+    this.clusterData = [];
+    this.clusterList = [];
     this.selectedSchool = [];
-    this.blockData  = [ ]
+    this.schoolData = [];
+    this.schoolList = [];
 
     var names = [];
     this.selectedDistricts = list;
@@ -230,7 +261,7 @@ export class StudentAttendanceChartComponent implements OnInit {
       document.getElementById('home').style.display = 'block';
       this.changeDetection.detectChanges();
     }else{
-      this.onHomeClick();
+      this.onHomeClick(false);
       document.getElementById('home').style.display = 'none';
     }
     console.log(this.selectedDistricts);
@@ -240,7 +271,11 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.currentColors = [];
     this.dataWithColors = [];
     this.selectedCluster = [];
+    this.clusterList = [];
+    this.clusterData = [];
     this.selectedSchool = [];
+    this.schoolData = [];
+    this.schoolList = [];
     var names = [];
     this.selectedBlock = list;
     this.blockList.map((item)=>{
@@ -310,7 +345,7 @@ export class StudentAttendanceChartComponent implements OnInit {
       if(this.multiSelect3)
         this.multiSelect3.showDropDown = false;
 
-      this.shareCheckedList(this.selectedBlock);
+      this.shareCheckedList1(this.selectedBlock);
       document.getElementById('home').style.display = 'none';
     }
   }
@@ -345,7 +380,7 @@ export class StudentAttendanceChartComponent implements OnInit {
       if(this.multiSelect2)
         this.multiSelect2.showDropDown = false;
 
-      this.shareCheckedList(this.selectedCluster);
+      this.shareCheckedList2(this.selectedCluster);
       document.getElementById('home').style.display = 'none';
     }
   }

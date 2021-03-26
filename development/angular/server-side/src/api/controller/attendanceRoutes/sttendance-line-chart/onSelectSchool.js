@@ -73,7 +73,7 @@ router.post('/schoolWise', auth.authController, async(req, res) => {
             });
             let obj2 = {
                 schoolId: key,
-                schoolName: '',
+                schoolName: schoolData[key].school_name[0],
                 attendance: attendanceTest
             }
             mydata.push(obj2);
