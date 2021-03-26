@@ -265,6 +265,12 @@ router.use('/sarException', sarExceptionSchoolWise);
 //Attendance Line-chart
 const onDistSelect = require('./controller/attendanceRoutes/sttendance-line-chart/onSelectDistrict');
 router.use('/line-chart', onDistSelect);
+const onBlockSelect = require('./controller/attendanceRoutes/sttendance-line-chart/onSelectBlock');
+router.use('/line-chart', onBlockSelect);
+const onClusterSelect = require('./controller/attendanceRoutes/sttendance-line-chart/onSelectCluster');
+router.use('/line-chart', onClusterSelect);
+const onSchoolSelect = require('./controller/attendanceRoutes/sttendance-line-chart/onSelectSchool');
+router.use('/line-chart', onSchoolSelect);
 
 const management_category_meta = require('./controller/attendanceRoutes/management_category_meta');
 router.use('/management-category-meta', management_category_meta);

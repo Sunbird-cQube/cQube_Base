@@ -89,7 +89,7 @@ router.post('/distWise', auth.authController, async(req, res) => {
     try {
         logger.info('---Trends dist wise api ---');
         var year = req.body.year;
-        let fileName = `attendance/trend_line_chart/district_${year}.json`;
+        let fileName = `attendance/trend_line_chart/district/district_${year}.json`;
         var districtData = await s3File.readS3File(fileName);
         var keys = Object.keys(districtData);
         var mydata = [];

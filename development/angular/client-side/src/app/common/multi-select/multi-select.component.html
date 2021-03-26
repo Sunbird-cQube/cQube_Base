@@ -7,10 +7,8 @@
                 {{checkedList.length == 1 ? text : text+'s'}} Selected</span>
             <em class="fa fa-angle-down" style="margin-top:3.5px;padding: 0px 3px 0px 0px; font-size: 15px; font-weight: bold;"></em>
         </button>
-        <button *ngIf="checkedList.length > 0" class="btn btn-primary"
-            style="padding: 4px;font-size: 11px; font-weight:bold; background-color: #284d8a;"
-            (click)="getSelected()">SUBMIT</button>
-        <div class="drop-show" *ngIf="showDropDown" [ngStyle]="{width: width1}">
+        <button *ngIf="checkedList.length > 0" class="btn btn-primary" style="padding: 4px;font-size: 11px; font-weight:bold; background-color: #284d8a;" (click)="getSelected()">SUBMIT</button>
+        <div class="drop-show" *ngIf="showDropDown" [ngStyle]="{width: width2}">
             <div *ngIf="list.length > 0" id="div1" style="height: 200px;position:relative; border-radius: 10px;">
                 <div id="div2" style="max-height:100%;overflow:auto;">
                     <div id="div3" style="height:1000px auto;">

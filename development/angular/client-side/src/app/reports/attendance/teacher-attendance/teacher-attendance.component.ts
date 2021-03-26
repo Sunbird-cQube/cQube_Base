@@ -111,7 +111,7 @@ export class TeacherAttendanceComponent implements OnInit {
     let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
     return radius;
   }
-
+  managementName;
   management;
   category;
 
@@ -129,8 +129,9 @@ export class TeacherAttendanceComponent implements OnInit {
       period: 'overall'
     }
 
-    this.management = localStorage.getItem('management');
+    this.managementName = this.management = localStorage.getItem('management');
     this.category = localStorage.getItem('category');
+    this.managementName = this.commonService.changeingStringCases(this.managementName.replace(/_/g, ' '));
 
     this.service.getDateRange().subscribe(res => {
       this.getMonthYear = res;

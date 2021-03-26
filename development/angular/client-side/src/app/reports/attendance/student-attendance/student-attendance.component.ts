@@ -6,7 +6,7 @@ import * as L from 'leaflet';
 import * as R from 'leaflet-responsive-popup';
 import { KeycloakSecurityService } from '../../../keycloak-security.service';
 import { AppServiceComponent, globalMap } from '../../../app.service';
-import {MapLegendsComponent} from '../../../common/map-legends/map-legends.component';
+// import {MapLegendsComponent} from '../../../common/map-legends/map-legends.component';
 
 @Component({
   selector: 'app-student-attendance',
@@ -99,6 +99,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.height = window.innerHeight;
   }
 
+  managementName;
   management;
   category;
 
@@ -114,7 +115,8 @@ export class StudengtAttendanceComponent implements OnInit {
     this.timePeriod = {
       period: 'overall'
     }
-    this.management = localStorage.getItem('management');
+   this.managementName = this.management = localStorage.getItem('management');
+   this.managementName = this.commonService.changeingStringCases(this.managementName.replace(/_/g, ' '));
     this.category = localStorage.getItem('category');
     this.service.getDateRange().subscribe(res => {
       this.getMonthYear = res;
