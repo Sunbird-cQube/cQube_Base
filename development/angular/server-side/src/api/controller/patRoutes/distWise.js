@@ -6,6 +6,7 @@ const s3File = require('../../lib/reads3File');
 router.post('/distWise', auth.authController, async(req, res) => {
     try {
         logger.info('---PAT dist wise api ---');
+        console.log(req.body);
         var period = req.body.data.period;
         var grade = req.body.data.grade;
         var report = req.body.data.report;
@@ -33,22 +34,22 @@ router.post('/distWise', auth.authController, async(req, res) => {
                 if (report == 'pat') {
                     if (grade) {
                         if (period != 'select_month') {
-                            fileName = `${report}/school_management_category/${period == 'all'? 'overall': period }/overall_category/${management}/district/${grade}.json`;
+                            fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/district/${grade}.json`;
                         } else {
                             fileName = `${report}/${academic_year}/${month}/district/${grade}.json`;
                         }
                     } else {
                         if (period != 'select_month') {
-                            fileName = `${report}/school_management_category/${period == 'all'? 'overall': period }/overall_category/${management}/district.json`;
+                            fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/district.json`;
                         } else {
                             fileName = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/district.json`;
                         }
                     }
                 } else {
                     if (grade) {
-                        fileName = `${report}/${period}/district/${semester}/${grade}.json`;
+                        fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/district/${grade}.json`;
                     } else {
-                        fileName = `${report}/${period}/${semester}/${report}_district.json`;
+                        fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/district.json`;
                     }
                 }
             }

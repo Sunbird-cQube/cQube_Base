@@ -220,7 +220,7 @@
               </mat-nav-list>
 
               <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;"
-                [routerLink]="!nifi_semester ? ['/coming-soon'] :['/healthCard']"
+                [routerLink]="!nifi_semester ? ['/coming-soon'] :['/progressCard']"
                 (click)="fetchTelemetry($event,'healthCard')" id="healthCard">
                 <td>
                   <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">

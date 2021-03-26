@@ -3,17 +3,23 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/distWise', auth.authController, async (req, res) => {
+router.post('/distWise', auth.authController, async(req, res) => {
     try {
         logger.info('---PAT LO table distWise api ---');
 
-        let { year, grade, month, subject_name, exam_date, viewBy } = req.body
+        let { year, grade, month, subject_name, exam_date, viewBy, management, category } = req.body
         let fileName;
-        if (viewBy == 'indicator') {
-            fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/allData.json`;
-        } else if (viewBy == 'question_id')
-            fileName = `pat/heatChart/questionIdLevel/${year}/${month}/allData.json`;
-
+        if (management != 'overall' && category == 'overall') {
+            if (viewBy == 'indicator') {
+                fileName = `${report}/school_management_category/heatChart/indicatorIdLevel/${year}/${month}/overall_category/${management}/allData.json`;
+            } else if (viewBy == 'question_id')
+                fileName = `${report}/school_management_category/heatChart/questionIdLevel/${year}/${month}/overall_category/${management}/allData.json`;
+        } else {
+            if (viewBy == 'indicator') {
+                fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/allData.json`;
+            } else if (viewBy == 'question_id')
+                fileName = `pat/heatChart/questionIdLevel/${year}/${month}/allData.json`;
+        }
         var data = await s3File.readS3File(fileName);
 
         let districtDetails = data.map(e => {
@@ -22,7 +28,6 @@ router.post('/distWise', auth.authController, async (req, res) => {
                 district_name: e.district_name
             }
         })
-
 
         districtDetails = districtDetails.reduce((unique, o) => {
             if (!unique.some(obj => obj.district_id === o.district_id)) {
@@ -50,9 +55,9 @@ router.post('/distWise', auth.authController, async (req, res) => {
         }
 
         Promise.all(data.map(item => {
-            let label = item.exam_date + "/"
-                + "grade" + item.grade + "/"
-                + item.subject_name + "/"
+            let label = item.exam_date + "/" +
+                "grade" + item.grade + "/" +
+                item.subject_name + "/"
             label += viewBy == "indicator" ? item.indicator : item.question_id
 
             arr[label] = arr.hasOwnProperty(label) ? [...arr[label], ...[item]] : [item];
@@ -73,7 +78,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
                     let y = {
                         [`${val1.district_name}`]: val1.marks
                     }
-                    x = { ...x, ...y }
+                    x = {...x, ...y }
                 })
                 val.push(x);
             }
@@ -81,13 +86,13 @@ router.post('/distWise', auth.authController, async (req, res) => {
             var tableData = [];
             // filling the missing key - value to make the object contains same data set
             if (val.length > 0) {
-                let obj = val.reduce((res1, item) => ({ ...res1, ...item }));
+                let obj = val.reduce((res1, item) => ({...res1, ...item }));
                 let keys1 = Object.keys(obj);
                 let def = keys1.reduce((result1, key) => {
                     result1[key] = ''
                     return result1;
                 }, {});
-                tableData = val.map((item) => ({ ...def, ...item }));
+                tableData = val.map((item) => ({...def, ...item }));
                 logger.info('--- PAT LO table distWise response sent ---');
                 res.status(200).send({ districtDetails, tableData });
             } else {

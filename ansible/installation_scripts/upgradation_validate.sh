@@ -57,8 +57,10 @@ fi
 }
 
 check_static_datasource(){
-if ! [[ $2 == "udise" || $2 == "state" ]]; then
-    echo "Error - Please enter either udise or state for $1"; fail=1
+temp_static_datasource=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STATIC_DATASOURCE )
+installed_static_datasource=$(cut -d "=" -f2 <<< "$temp_static_datasource")
+if [[ ! "$2" == "$installed_static_datasource" ]]; then
+    echo "Error - static_datasource should be same as previous installation. Please enter the correct value."; fail=1
 fi
 }
 
