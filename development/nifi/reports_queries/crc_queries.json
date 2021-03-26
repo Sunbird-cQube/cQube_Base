@@ -1,6 +1,6 @@
 [
     {
-        "crc_meta_year_month": "select academic_year,jsonb_agg(a.month_name) as month from (select distinct year,trim(TO_CHAR(TO_DATE (month::text, 'MM'), 'Month')) AS month_name,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year from crc_visits_frequency order by year,month_name) as a group by academic_year;"
+        "crc_meta_year_month": "select academic_year,jsonb_agg(a.month_name) as month from (select distinct year,month,trim(TO_CHAR(TO_DATE (month::text, 'MM'), 'Month')) AS month_name,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year from crc_visits_frequency order by academic_year,month) as a group by academic_year;"
     },
     {
         "crc_school_year_month": "Select * from crc_school_report_year_month"
