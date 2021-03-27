@@ -617,6 +617,14 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     if (healthCardData['pat_performance'] && healthCardData['pat_performance'] != null) {
       this.tooltipPat = Object.keys(healthCardData['pat_performance']);
       if (healthCardData['pat_performance']['grade_wise_performance']) {
+        const ordered = Object.keys(healthCardData['pat_performance']['grade_wise_performance']).sort().reduce(
+          (obj, key) => { 
+            obj[key] = healthCardData['pat_performance']['grade_wise_performance'][key]; 
+            return obj;
+          }, 
+          {}
+        );
+        healthCardData['pat_performance']['grade_wise_performance'] = ordered;
         this.patPerformTooltip = Object.keys(healthCardData['pat_performance']['grade_wise_performance']);
         this.patPerformTooltip.filter(key => {
           myKey = this.stringConverter(key);

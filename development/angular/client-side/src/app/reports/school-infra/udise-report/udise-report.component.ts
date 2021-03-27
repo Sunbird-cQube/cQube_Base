@@ -343,6 +343,7 @@ export class UdiseReportComponent implements OnInit {
                 ? -1
                 : 0
             );
+            this.changeDetection.detectChanges();
           },
           (err) => {
             this.data = [];

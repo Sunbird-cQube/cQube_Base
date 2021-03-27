@@ -1,9 +1,9 @@
 <div class="container-fluid" style="background-color: rgb(245, 245, 245);padding-top: 30px; padding-bottom: 10px">
     <div class="row">
         <!-- <div class="col-lg-3 col-md-2 col-sm-0"></div> -->
-        <div class="col-lg-12 col-md-12 col-sm-12" style="margin-left: 20px;">
+        <div class="col-lg-12 col-md-12 col-sm-12" style="margin-left: 20px; margin-bottom: 1%;">
             <span class="chooseLevel">Select Management</span> <br><select id="management" [(ngModel)]="management"
-                (change)="onSelectManagement()">
+                (change)="onSelectManagement()" style="background-color: white; color: black;">
                 <option [value]="management" disabled selected="selected">Choose a Management Name</option>
                 <option *ngFor="let management of managements,  let i =index" style="width: 100px;"
                     [(ngValue)]="management.id">

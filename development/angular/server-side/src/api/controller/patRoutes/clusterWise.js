@@ -108,7 +108,6 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async(req, res
             }
         }
 
-        console.log('::::::', fileName)
         var clusterData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId;
