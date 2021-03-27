@@ -3,10 +3,18 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allClusterWise', auth.authController, async (req, res) => {
+router.post('/allClusterWise', auth.authController, async(req, res) => {
     try {
         logger.info('---UDISE cluster wise api ---');
-        let fileName = `udise/udise_cluster_wise.json`;
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `udise/school_management_category/overall_category/${management}/cluster.json`;
+        } else {
+            fileName = `udise/udise_cluster_wise.json`
+        }
         var clusterData = await s3File.readS3File(fileName);
         var mydata = clusterData.data;
         logger.info('---UDISE cluster wise api response sent---');
@@ -17,10 +25,18 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
     }
 });
 
-router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
+router.post('/clusterWise/:distId/:blockId', auth.authController, async(req, res) => {
     try {
         logger.info('---UDISE clusterperBlock api ---');
-        let fileName = `udise/udise_cluster_wise.json`;
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `udise/school_management_category/overall_category/${management}/cluster.json`;
+        } else {
+            fileName = `udise/udise_cluster_wise.json`
+        }
         var clusterData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId;

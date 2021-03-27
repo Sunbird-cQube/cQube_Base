@@ -3,10 +3,18 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/distWise', auth.authController, async (req, res) => {
+router.post('/distWise', auth.authController, async(req, res) => {
     try {
         logger.info('---UDISE dist wise api ---');
-        let fileName = `udise/udise_district_wise.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `udise/school_management_category/overall_category/${management}/district.json`;
+        } else {
+            fileName = `udise/udise_district_wise.json`
+        }
         var districtData = await s3File.readS3File(fileName);
         var mydata = districtData.data;
 

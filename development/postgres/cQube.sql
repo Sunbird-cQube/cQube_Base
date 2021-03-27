@@ -6068,3 +6068,9 @@ add column if not exists school_management_type int;
 alter table school_master add column if not exists state_id bigint,add column if not exists district_id bigint,add column if not exists block_id bigint,add column if not exists cluster_id bigint,add column if not exists latitude double precision,add column if not exists longitude double precision;
 
 alter table school_management_master add column if not exists default_option boolean;
+
+alter table semester_exam_school_qst_result add column if not exists school_management_type varchar(100);
+alter table semester_exam_school_qst_result add column if not exists school_category varchar(100);
+
+alter table semester_exam_school_result add column if not exists school_management_type varchar(100);
+alter table semester_exam_school_result add column if not exists school_category varchar(100);

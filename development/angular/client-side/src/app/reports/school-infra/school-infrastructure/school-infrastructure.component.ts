@@ -57,6 +57,10 @@ export class SchoolInfrastructureComponent implements OnInit {
   public myData;
   state: string;
 
+  managementName;
+  management;
+  category;
+
   constructor(public http: HttpClient, public service: SchoolInfraService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent,) {
     localStorage.removeItem('resData');
   }
@@ -65,6 +69,13 @@ export class SchoolInfrastructureComponent implements OnInit {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
+
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
+
     this.onResize();
     document.getElementById('spinner').style.display = 'block';
   }
@@ -111,7 +122,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraDistWise().subscribe(res => {
+    this.myData = this.service.infraDistWise({ management: this.management, category: this.category }).subscribe(res => {
       this.SchoolInfrastructureDistrictsNames = this.result = res;
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
@@ -165,7 +176,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraBlockWise(data).subscribe(res => {
+    this.myData = this.service.infraBlockWise(data, { management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureBlocksNames = this.result = res;
       // for download========
       this.funToDownload(this.reportData);
@@ -223,7 +234,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraClusterWise(this.distName, data).subscribe(res => {
+    this.myData = this.service.infraClusterWise(this.distName, data, { management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureClusterNames = this.result = res;
       // for download========
       this.funToDownload(this.reportData);
@@ -280,7 +291,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraSchoolWise(distId, blockId, data).subscribe(res => {
+    this.myData = this.service.infraSchoolWise(distId, blockId, data, { management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureSchoolNames = this.result = res;
       // for download========
       this.funToDownload(this.reportData);
@@ -312,7 +323,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraDistWise().subscribe(res => {
+    this.myData = this.service.infraDistWise({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = res;
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -335,7 +346,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraAllBlockWise().subscribe(res => {
+    this.myData = this.service.infraAllBlockWise({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = res;
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -358,7 +369,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraAllClusterWise().subscribe(res => {
+    this.myData = this.service.infraAllClusterWise({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = res;
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -381,7 +392,7 @@ export class SchoolInfrastructureComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraAllSchoolWise().subscribe(res => {
+    this.myData = this.service.infraAllSchoolWise({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = res;
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';

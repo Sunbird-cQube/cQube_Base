@@ -16,71 +16,73 @@ export class SchoolInfraService {
   }
 
   //Infra
-  infraDistWise() {
+  infraDistWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infra/distWise`, {});
+    return this.http.post(`${this.baseUrl}/infra/distWise`, data);
   }
-  infraAllBlockWise() {
+  infraAllBlockWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infra/blockWise`, {});
-  }
-
-  infraBlockWise(distId) {
-    this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infra/blockWise/${distId}`, {});
+    return this.http.post(`${this.baseUrl}/infra/blockWise`, data);
   }
 
-  infraClusterWise(distId, blockId) {
+  infraBlockWise(distId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infra/clusterWise/${distId}/${blockId}`, {});
+    return this.http.post(`${this.baseUrl}/infra/blockWise/${distId}`, data);
   }
 
-  infraAllClusterWise() {
+  infraClusterWise(distId, blockId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infra/allClusterWise`, {});
+    return this.http.post(`${this.baseUrl}/infra/clusterWise/${distId}/${blockId}`, data);
   }
 
-  infraSchoolWise(distId, blockId, clusterId) {
+  infraAllClusterWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infra/schoolWise/${distId}/${blockId}/${clusterId}`, {});
+    return this.http.post(`${this.baseUrl}/infra/allClusterWise`, data);
   }
 
-  infraAllSchoolWise() {
+  infraSchoolWise(distId, blockId, clusterId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infra/allSchoolWise`, {});
+    return this.http.post(`${this.baseUrl}/infra/schoolWise/${distId}/${blockId}/${clusterId}`, data);
   }
+
+  infraAllSchoolWise(data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/infra/allSchoolWise`, data);
+  }
+
+
   //infra map...
-  infraMapDistWise() {
+  infraMapDistWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infraMap/distWise`, {});
+    return this.http.post(`${this.baseUrl}/infraMap/distWise`, data);
   }
-  infraMapAllBlockWise() {
+  infraMapAllBlockWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infraMap/allBlockWise`, {});
-  }
-
-  infraMapBlockWise(distId) {
-    this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infraMap/blockWise/${distId}`, {});
+    return this.http.post(`${this.baseUrl}/infraMap/allBlockWise`, data);
   }
 
-  infraMapAllClusterWise() {
+  infraMapBlockWise(distId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infraMap/allClusterWise`, {});
+    return this.http.post(`${this.baseUrl}/infraMap/blockWise/${distId}`, data);
   }
 
-  infraMapClusterWise(distId, blockId) {
+  infraMapAllClusterWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infraMap/clusterWise/${distId}/${blockId}`, {});
+    return this.http.post(`${this.baseUrl}/infraMap/allClusterWise`, data);
   }
 
-  infraMapAllSchoolWise() {
+  infraMapClusterWise(distId, blockId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infraMap/allSchoolWise`, {});
+    return this.http.post(`${this.baseUrl}/infraMap/clusterWise/${distId}/${blockId}`, data);
   }
 
-  infraMapSchoolWise(distId, blockId, clusterId) {
+  infraMapAllSchoolWise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/infraMap/schoolWise/${distId}/${blockId}/${clusterId}`, {});
+    return this.http.post(`${this.baseUrl}/infraMap/allSchoolWise`, data);
+  }
+
+  infraMapSchoolWise(distId, blockId, clusterId, data) {
+    this.service.logoutOnTokenExpire();
+    return this.http.post(`${this.baseUrl}/infraMap/schoolWise/${distId}/${blockId}/${clusterId}`, data);
   }
 }
