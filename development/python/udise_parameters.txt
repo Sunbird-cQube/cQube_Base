@@ -857,7 +857,11 @@ row_number() over (partition by udise_sch_code,ac_year,sector_no,marks_range_id,
 "udise_select_fun":"""Select udise_district_score();
 Select udise_block_score();
 Select udise_cluster_score();
-Select udise_school_score();""",
+Select udise_school_score();
+Select udise_district_mgt_score();
+Select udise_block_mgt_score();
+Select udise_cluster_mgt_score();
+Select udise_school_mgt_score();""",
 "select_columns_nsqf_enr_caste_qry":"""select udise_sch_code,ac_year,sector_no,item_id,c9_b,c9_g,c10_b,c10_g,c11_b,c11_g,c12_b,c12_g from flowfile""",
 "udise_update_null_count_sch_exmres_c12_qry":"""update log_summary SET udise_sch_code = udise_null_col.count_null_udise_sch_code, item_id=udise_null_col.count_null_item_id, stream_id=udise_null_col.count_null_stream_id from udise_null_col where udise_null_col.ff_uuid = log_summary.ff_uuid""",
 "udise_filter_same_record_sch_enr_sch_exmmarks_c12_qry":"""select udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g from(select udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g,row_number() over (partition by udise_sch_code,ac_year,item_id,marks_range_id,gen_b,gen_g,obc_b,obc_g,sc_b,sc_g,st_b,st_g) as rn from flowfile) sq Where rn =1""",
