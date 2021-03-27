@@ -12,6 +12,7 @@ import {AttendanceReportService} from '../../../services/student.attendance-repo
 export class StudentAttendanceChartComponent implements OnInit {
   state;
   level = 'state';
+  counts:any = [];
   districtList:any = [];
   blockList: any = [];
   blockData: any = [];
@@ -88,10 +89,12 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.service.getStateData({year: this.selectedYear}).subscribe(res=>{
       this.data = res['data'];
       var data = [];
+      this.counts = [];
       this.currentData = [];
       this.data.map(item=>{
         item.attendance.map(i=>{
           data.push(i.attendance);
+          this.counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
         })
         this.currentData.push({data: data, name: this.state, color: '#00FF00'});
         this.commonService.loaderAndErr(this.currentData);
@@ -264,7 +267,6 @@ export class StudentAttendanceChartComponent implements OnInit {
       this.onHomeClick(false);
       document.getElementById('home').style.display = 'none';
     }
-    console.log(this.selectedDistricts);
   }
 
   shareCheckedList1(list){
@@ -388,6 +390,7 @@ export class StudentAttendanceChartComponent implements OnInit {
   getCurrentDistData(){
     document.getElementById('spinner').style.display = 'block';   
     this.currentData = [];
+    this.counts = [];
     this.level = 'District';
     if(this.districtData.length > 0){
     this.dataWithColors.map((item, i)=>{
@@ -397,6 +400,7 @@ export class StudentAttendanceChartComponent implements OnInit {
             var data = [];
             element.attendance.map(i=>{
               data.push(i.attendance);
+              this.counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
             })
             this.currentData.push({data: data, name: element.districtName, color: this.currentColors[i]});
          }
@@ -413,6 +417,7 @@ export class StudentAttendanceChartComponent implements OnInit {
   getCurrentBlockData(){
     document.getElementById('spinner').style.display = 'block';   
     this.currentData = [];
+    this.counts = [];
     this.level = 'Block';
     if(this.blockData.length > 0){
     this.dataWithColors.map((item, i)=>{
@@ -422,6 +427,7 @@ export class StudentAttendanceChartComponent implements OnInit {
             var data = [];
             element.attendance.map(i=>{
               data.push(i.attendance);
+              this.counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
             })
             this.currentData.push({data: data, name: element.blockName, color: this.currentColors[i]});
          }
@@ -438,6 +444,7 @@ export class StudentAttendanceChartComponent implements OnInit {
   getCurrentClusterData(){
     document.getElementById('spinner').style.display = 'block';   
     this.currentData = [];
+    this.counts = [];
     this.level = 'Cluster';
     if(this.clusterData.length > 0){
     this.dataWithColors.map((item, i)=>{
@@ -447,6 +454,7 @@ export class StudentAttendanceChartComponent implements OnInit {
             var data = [];
             element.attendance.map(i=>{
               data.push(i.attendance);
+              this.counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
             })
             this.currentData.push({data: data, name: element.clusterName, color: this.currentColors[i]});
          }
@@ -463,6 +471,7 @@ export class StudentAttendanceChartComponent implements OnInit {
   getCurrentSchoolData(){
     document.getElementById('spinner').style.display = 'block';   
     this.currentData = [];
+    this.counts = [];
     this.level = 'School';
     if(this.schoolData.length > 0){
     this.dataWithColors.map((item, i)=>{
@@ -472,6 +481,7 @@ export class StudentAttendanceChartComponent implements OnInit {
             var data = [];
             element.attendance.map(i=>{
               data.push(i.attendance);
+              this.counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
             })
             this.currentData.push({data: data, name: element.schoolName, color: this.currentColors[i]});
          }

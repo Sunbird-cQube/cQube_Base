@@ -17,56 +17,95 @@ router.post('/stateWise', auth.authController, async(req, res) => {
             var attendanceTest = [{
                 monthId: 6,
                 month: 'June',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 7,
                 month: 'July',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 8,
                 month: 'August',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 9,
                 month: 'September',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 10,
                 month: 'October',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 11,
                 month: 'November',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 12,
                 month: 'December',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 1,
                 month: 'January',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 2,
                 month: 'February',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 3,
                 month: 'March',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 4,
                 month: 'April',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 5,
                 month: 'May',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
-            }, ]
+            }]
             stateData[year].map(data => {
                 attendanceTest.map(item => {
                     if (item.monthId == data.month) {
                         item.attendance = data.attendance_percentage;
+                        item.year = data.year;
+                        item.studentCount = data.students_count;
+                        item.schoolCount = data.total_schools;
                     }
                 })
             });
@@ -90,7 +129,6 @@ router.post('/distWise', auth.authController, async(req, res) => {
         logger.info('---Trends dist wise api ---');
         var year = req.body.year;
         let fileName = `attendance/trend_line_chart/district/district_${year}.json`;
-        console.log(fileName);
         var districtData = await s3File.readS3File(fileName);
         var keys = Object.keys(districtData);
         var mydata = [];
@@ -99,56 +137,95 @@ router.post('/distWise', auth.authController, async(req, res) => {
             var attendanceTest = [{
                 monthId: 6,
                 month: 'June',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 7,
                 month: 'July',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 8,
                 month: 'August',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 9,
                 month: 'September',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 10,
                 month: 'October',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 11,
                 month: 'November',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 12,
                 month: 'December',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 1,
                 month: 'January',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 2,
                 month: 'February',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 3,
                 month: 'March',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 4,
                 month: 'April',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
             }, {
                 monthId: 5,
                 month: 'May',
+                year: undefined,
+                studentCount: undefined,
+                schoolCount: undefined,
                 attendance: ''
-            }, ]
+            }]
             districtData[key].attendance.map(a => {
                 attendanceTest.map(item => {
                     if (item.monthId == a.month) {
                         item.attendance = a.attendance_percentage;
+                        item.year = a.year;
+                        item.studentCount = a.students_count;
+                        item.schoolCount = a.total_schools;
                     }
                 })
             });
@@ -159,6 +236,7 @@ router.post('/distWise', auth.authController, async(req, res) => {
             }
             mydata.push(obj2);
         });
+
         logger.info('--- Trends dist wise api response sent ---');
         res.status(200).send({ data: mydata });
     } catch (e) {
