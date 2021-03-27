@@ -280,7 +280,7 @@ Optional(ParseInt()),Optional(ParseInt()),Optional(ParseLong()),Optional(ParseLo
 "static_data_type_cluster_state":"""Optional(ParseLong()),Optional(StrNotNullOrEmpty()),Optional(ParseLong()),optional(ParseInt())""",
 "static_select_cols_block_udise":"""select block_name as block,udise_block_code as blockid,udise_dist_code as districtid,udise_state_code as stateid from flowfile""",
 "static_select_cols_school_udise_final":"""select SchoolId as school_id,School as school_name,school_management_type_id,school_category_id,StateId as state_id,
-DistrictId as district_id,BlockId as block_id,ClusterId as cluster_id,Latitude,Longitude  from flowfile""",
+DistrictId as district_id,BlockId as block_id,ClusterId as cluster_id,latitude,longitude  from flowfile""",
 "static_same_id_check_school_udise":"""select *,count(*) as num_of_times from (
 select schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude from (
 select schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude,count(*) over (partition by schoolid) as rn from FLOWFILE) sq Where rn >1) group by  schoolid,school,school_management_type_id,school_category_id,stateid,districtid,blockid,clusterid,latitude,longitude""",
