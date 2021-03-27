@@ -111,7 +111,7 @@ export class AppServiceComponent {
                 fontWeight: "bold"
             }).addTo(map);
         }
-        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=71d0487c-8986-475a-8319-fdd74e405354',
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=71d0487c-8986-475a-8319-fdd74e405354',
             {
                 // token: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
                 // id: 'mapbox.streets',
