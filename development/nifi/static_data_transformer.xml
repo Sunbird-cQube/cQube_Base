@@ -15415,7 +15415,7 @@ ${static_datasource:toLower():equals('udise'):and(${filename:startsWith('school_
         <value>${filename:startsWith('district_m'):ifElse('log_summary/static/log_summary_district.json',
 ${filename:startsWith('block_m'):ifElse('log_summary/static/log_summary_block.json',
 ${filename:startsWith('cluster_m'):ifElse('log_summary/static/log_summary_cluster.json',
-${filename:startsWith('school_m'):ifElse('log_summary/static/log_summary_school.json','meta/school_management_category_meta.json')}
+${filename:startsWith('school_mst'):ifElse('log_summary/static/log_summary_school.json','meta/school_management_category_meta.json')}
 )} )} )}</value>
     </entry>
     <entry>
@@ -16941,7 +16941,7 @@ ${filename:startsWith('school_management_master'):ifElse(#{static_school_managem
         <value>${filename:startsWith('district_m'):
 or(${filename:startsWith('block_m')}):
 or(${filename:startsWith('cluster_m')}):
-or(${filename:startsWith('school_m')}):
+or(${filename:startsWith('school_mst')}):
 ifElse(#{static_jolt_log_summary},#{static_jolt_school_management_category_meta})}</value>
     </entry>
     <entry>
@@ -27317,5 +27317,5 @@ ${filename:startsWith('school_management_master'):ifElse(#{static_school_managem
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/26/2021 12:51:11 IST</timestamp>
+    <timestamp>03/27/2021 15:47:42 IST</timestamp>
 </template>
