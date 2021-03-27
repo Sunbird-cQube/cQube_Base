@@ -279,10 +279,10 @@ check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
 if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
-  min_shared_mem=$(echo $mem_total*11.5/100 | bc)
+  min_shared_mem=$(echo $mem_total*13/100 | bc)
   min_work_mem=$(echo $mem_total*2/100 | bc)
-  min_java_arg_2=$(echo $mem_total*52/100 | bc)
-  min_java_arg_3=$(echo $mem_total*71.5/100 | bc)
+  min_java_arg_2=$(echo $mem_total*13/100 | bc)
+  min_java_arg_3=$(echo $mem_total*65/100 | bc)
   echo """---
 shared_buffers: ${min_shared_mem}MB
 work_mem: ${min_work_mem}MB
