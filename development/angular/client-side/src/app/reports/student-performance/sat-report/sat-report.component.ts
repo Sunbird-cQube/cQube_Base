@@ -296,7 +296,7 @@ export class SatReportComponent implements OnInit {
       }, ...{ management: this.management, category: this.category}})
       .subscribe((res) => {
         this.data = res["data"];
-        this.blockMarkers = this.data;
+        this.allBlocks =  this.blockMarkers = this.data;
 
         if (!this.blockMarkers[0]["Subjects"]) {
           this.blockFilter = this.blockMarkers;
@@ -316,7 +316,7 @@ export class SatReportComponent implements OnInit {
       }, ...{ management: this.management, category: this.category}})
       .subscribe((res) => {
         this.data = res["data"];
-        this.clusterMarkers = this.data;
+       this.allClusters = this.clusterMarkers = this.data;
 
         if (!this.clusterMarkers[0]["Subjects"]) {
           this.clusterFilter = this.clusterMarkers;
@@ -487,6 +487,7 @@ export class SatReportComponent implements OnInit {
                       ? -1
                       : 0
                   );
+                  this.changeDetection.detectChanges();
                 },
                 (err) => {
                   this.data = [];
@@ -2121,7 +2122,7 @@ export class SatReportComponent implements OnInit {
     data["timePeriod"] = this.period == "all" ? "overall" : this.period;
 
     sessionStorage.setItem("health-card-info", JSON.stringify(data));
-    this._router.navigate(["/healthCard"]);
+    this._router.navigate(["/progressCard"]);
   }
 
   public legendColors: any = [

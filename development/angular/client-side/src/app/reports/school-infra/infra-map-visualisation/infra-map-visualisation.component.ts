@@ -267,12 +267,12 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) =>
-          a.details.district_name > b.details.district_name
-            ? 1
-            : b.details.district_name > a.details.district_name
-            ? -1
-            : 0
-        );
+              a.details.district_name > b.details.district_name
+                ? 1
+                : b.details.district_name > a.details.district_name
+                ? -1
+                : 0
+            );
       } else {
         if (this.myData) {
           this.myData.unsubscribe();
@@ -322,6 +322,7 @@ export class InfraMapVisualisationComponent implements OnInit {
                 ? -1
                 : 0
             );
+            this.changeDetection.detectChanges();
           },
           (err) => {
             this.data = [];
