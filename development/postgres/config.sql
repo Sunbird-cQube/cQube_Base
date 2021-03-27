@@ -1751,11 +1751,11 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-alter table udise_school_metrics_agg add column if not exists school_management_type varchar(100);
-alter table udise_school_metrics_agg add column if not exists school_category varchar(100);
-
 update udise_config set metric_config ='static' where metric_config in ('') or metric_config is null;
 select create_udise_table();
+
+alter table udise_school_metrics_agg add column if not exists school_management_type varchar(100);
+alter table udise_school_metrics_agg add column if not exists school_category varchar(100);
 
 CREATE OR REPLACE FUNCTION insert_udise_temp()
 RETURNS text AS
