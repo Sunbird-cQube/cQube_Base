@@ -36,7 +36,14 @@ drop view if exists health_card_index_state;
 drop view if exists health_card_index_state_last30;
 drop view if exists insert_diksha_trans_view;
 drop view if exists crc_trans_to_aggregate_with_date cascade;
-
+drop view if exists infra_district_table_mgt_view cascade;
+drop view if exists infra_district_map_mgt_view cascade;
+drop view if exists infra_block_map_mgt_view cascade;
+drop view if exists infra_block_table_mgt_view cascade;
+drop view if exists infra_cluster_table_mgt_view cascade;
+drop view if exists infra_cluster_map_mgt_view cascade;
+drop view if exists infra_school_table_mgt_view cascade;
+drop view if exists infra_school_map_mgt_view cascade;
 /* Create infra tables */
 
 CREATE OR REPLACE FUNCTION create_infra_table()
@@ -93,71 +100,71 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+
+alter table school_infrastructure_score add column if not exists school_management_type varchar(100);
+alter table school_infrastructure_score add column if not exists school_category varchar(100);
+
 /* Inserting/updating Aggregated data from trans to aggregation table */
 
-create or replace FUNCTION insert_infra_agg()
-RETURNS text AS
-$$
-DECLARE
-infra_trans text:='select string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''*(select score from infrastructure_master where infrastructure_name=''
+create or replace FUNCTION insert_infra_agg() RETURNS text AS $$
+DECLARE infra_trans text := 'select string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''*(select score from infrastructure_master where infrastructure_name=''
 	||''''''''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''''''''||'') as ''||replace(trim(LOWER(infrastructure_name)),'' '',''_''),'','')
 from infrastructure_master where status = true';
-infra_trans_cols text; 
-select_1 text:= 'select string_agg(''a.''||replace(trim(LOWER(infrastructure_name)),'' '',''_''),'','') from infrastructure_master where status = true order by 1';
+infra_trans_cols text;
+select_1 text := 'select string_agg(''a.''||replace(trim(LOWER(infrastructure_name)),'' '',''_''),'','') from infrastructure_master where status = true order by 1';
 select_1_cols text;
-select_2 text:= 'select string_agg(''c.''||replace(trim(LOWER(infrastructure_name)),'' '',''_''),'','') from infrastructure_master where status = true 
+select_2 text := 'select string_agg(''c.''||replace(trim(LOWER(infrastructure_name)),'' '',''_''),'','') from infrastructure_master where status = true 
 order by 1';
 select_2_cols text;
-select_3 text:= 'select string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'','') from infrastructure_master where status = true order by 1';
+select_3 text := 'select string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'','') from infrastructure_master where status = true order by 1';
 select_3_cols text;
-insert_infra_agg text:= 'select string_agg(column_name,'','') from information_schema.columns WHERE table_name = ''school_infrastructure_score'' and column_name not in 
+insert_infra_agg text := 'select string_agg(column_name,'','') from information_schema.columns WHERE table_name = ''school_infrastructure_score'' and column_name not in 
                          (''created_on'',''updated_on'',''id'',''inspection_id'',''year'',''month'') order by 1';
 insert_infra_agg_cols text;
-update_query text:='select string_agg(column_name||'' = excluded.''||column_name,'','') from information_schema.columns WHERE table_name = ''school_infrastructure_score'' 
+update_query text := 'select string_agg(column_name||'' = excluded.''||column_name,'','') from information_schema.columns WHERE table_name = ''school_infrastructure_score'' 
 and column_name not in (''created_on'',''updated_on'',''id'',''inspection_id'',''year'',''month'') order by 1';
 update_cols text;
 infra_score text;
 aggregation_select text;
 aggregation_insert text;
-BEGIN
-Execute infra_trans into infra_trans_cols;
+BEGIN Execute infra_trans into infra_trans_cols;
 Execute select_1 into select_1_cols;
 Execute select_2 into select_2_cols;
 Execute select_3 into select_3_cols;
 Execute insert_infra_agg into insert_infra_agg_cols;
 Execute update_query into update_cols;
-IF infra_trans_cols <> '' THEN 
-infra_score= '
+IF infra_trans_cols <> '' THEN infra_score = '
 create or replace view infra_score_view as 
-select c.school_id,'||select_2_cols||',initcap(c.school_name) as school_name,c.district_id,
+select c.school_id,' || select_2_cols || ',initcap(c.school_name) as school_name,c.district_id,
 initcap(c.district_name) as district_name,c.block_id,initcap(c.block_name) as block_name,c.cluster_id,initcap(c.cluster_name) as cluster_name,d.school_latitude,d.school_longitude,d.cluster_latitude,
-d.cluster_longitude,d.block_latitude,d.block_longitude,d.district_latitude,d.district_longitude from  
-(select a.school_id,'||select_1_cols||',b.school_name,b.district_id,b.district_name,b.block_id,b.block_name,b.cluster_id,b.cluster_name
-from (select school_id,'||infra_trans_cols||' from infrastructure_trans) as a left join school_hierarchy_details as b on a.school_id=b.school_id
+d.cluster_longitude,d.block_latitude,d.block_longitude,d.district_latitude,d.district_longitude,c.school_management_type,c.school_category from  
+(select a.school_id,' || select_1_cols || ',b.school_name,b.district_id,b.district_name,b.block_id,b.block_name,b.cluster_id,b.cluster_name,b.school_management_type,b.school_category
+from (select school_id,' || infra_trans_cols || ' from infrastructure_trans) as a left join school_hierarchy_details as b on a.school_id=b.school_id
 where cluster_name is not null)as c left join school_geo_master as d on c.school_id=d.school_id
 WHERE district_name IS NOT NULL AND block_latitude>0 AND cluster_latitude > 0 AND school_latitude >0 AND district_latitude >0 
 AND school_name IS NOT NULL and cluster_name is not null AND block_name IS NOT NULL';
-Execute infra_score; 
-aggregation_select ='create or replace view insert_infra_agg_view as
-select c.school_id,'||select_2_cols||',initcap(c.school_name) as school_name,c.district_id,
+Execute infra_score;
+aggregation_select = 'create or replace view insert_infra_agg_view as
+select c.school_id,' || select_2_cols || ',initcap(c.school_name) as school_name,c.district_id,
 initcap(c.district_name) as district_name,c.block_id,initcap(c.block_name) as block_name,c.cluster_id,initcap(c.cluster_name) as cluster_name,d.school_latitude,d.school_longitude,d.cluster_latitude,
-d.cluster_longitude,d.block_latitude,d.block_longitude,d.district_latitude,d.district_longitude from  
-(select a.school_id,'||select_1_cols||',b.school_name,b.district_id,b.district_name,b.block_id,b.block_name,b.cluster_id,b.cluster_name
-from (select school_id,'||select_3_cols||' from infrastructure_trans) as a left join school_hierarchy_details as b on a.school_id=b.school_id
+d.cluster_longitude,d.block_latitude,d.block_longitude,d.district_latitude,d.district_longitude,c.school_management_type,c.school_category from  
+(select a.school_id,' || select_1_cols || ',b.school_name,b.district_id,b.district_name,b.block_id,b.block_name,b.cluster_id,b.cluster_name,b.school_management_type,b.school_category
+from (select school_id,' || select_3_cols || ' from infrastructure_trans) as a left join school_hierarchy_details as b on a.school_id=b.school_id
 where cluster_name is not null)as c left join school_geo_master as d on c.school_id=d.school_id
 WHERE district_name IS NOT NULL AND block_latitude>0 AND cluster_latitude > 0 AND school_latitude >0 AND district_latitude >0 
 AND school_name IS NOT NULL and cluster_name is not null AND block_name IS NOT NULL';
-Execute aggregation_select; 
-aggregation_insert ='insert into school_infrastructure_score('||insert_infra_agg_cols||')
-select '||insert_infra_agg_cols||' from (select '||insert_infra_agg_cols||' from insert_infra_agg_view except select '||insert_infra_agg_cols||'
+Execute aggregation_select;
+aggregation_insert = 'insert into school_infrastructure_score(' || insert_infra_agg_cols || ')
+select ' || insert_infra_agg_cols || ' from (select ' || insert_infra_agg_cols || ' from insert_infra_agg_view except select ' || insert_infra_agg_cols || '
  from school_infrastructure_score )as a
  on conflict(school_id) do update
-set '||update_cols||',updated_on=now()';
+set ' || update_cols || ',updated_on=now()';
 Execute aggregation_insert;
 END IF;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
 
 select insert_infra_agg();
 
@@ -617,6 +624,8 @@ select ''[
           "infra_score": "[&1].infra_score.value",
           "average_value": "[&1].average.value",
           "average_percent": "[&1].average.percent",
+          "school_management_type": "[&1].school_management_type",
+          "school_category": "[&1].school_category",
 '||infra_table_value_cols||','||infra_table_percent_cols||'         
         }
       }
@@ -639,12 +648,13 @@ as select ''
           "infra_score": "[&1].infra_score.value",
           "average_value": "[&1].average.value",
           "average_percent": "[&1].average.percent",
+          "school_management_type": "[&1].school_management_type",
+          "school_category": "[&1].school_category",
 '||infra_table_value_cols||','||infra_table_percent_cols||'
         }
       }
     }
   ]
-
 '' as jolt_spec;
 create or replace view Infra_jolt_cluster_table
 as select ''
@@ -664,12 +674,13 @@ as select ''
           "infra_score": "[&1].infra_score.value",
           "average_value": "[&1].average.value",
           "average_percent": "[&1].average.percent",
+          "school_management_type": "[&1].school_management_type",
+          "school_category": "[&1].school_category",
 '||infra_table_value_cols||','||infra_table_percent_cols||'
         }
       }
     }
   ]
-
 ''as jolt_spec;
 create or replace view Infra_jolt_school_table
 as select ''
@@ -691,6 +702,8 @@ as select ''
           "infra_score": "[&1].infra_score.value",
           "average_value": "[&1].average.value",
           "average_percent": "[&1].average.percent",
+          "school_management_type": "[&1].school_management_type",
+          "school_category": "[&1].school_category",
 '||infra_table_value_cols||','||infra_table_percent_cols||'        }
       }
     }
@@ -710,7 +723,8 @@ select ''
               "district_longitude": "data.[&1].details.longitude",
               "district_name": "data.[&1].details.district_name",
               "infra_score": "data.[&1].details.infrastructure_score",
-
+              "school_management_type": "[&1].school_management_type",
+              "school_category": "[&1].school_category",
 			'||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
               
               "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
@@ -726,7 +740,6 @@ select ''
 			}
 		}
 	}
-
 ]
 ''as jolt_spec;
 create or replace view Infra_jolt_block_map
@@ -744,7 +757,8 @@ as select ''
         "infra_score": "data.[&1].details.infrastructure_score",
         "average_value": "data.[&1].details.average_value",
         "average_percent": "data.[&1].details.average_percent",
-
+        "school_management_type": "[&1].school_management_type",
+        "school_category": "[&1].school_category",
               '||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
         "total_schools": "data.[&1].total_schools",
         "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
@@ -765,7 +779,6 @@ as select ''
       "footer": "&"
     }
 	},
-
   {
     "operation": "modify-overwrite-beta",
     "spec": {
@@ -784,7 +797,6 @@ as select ''
       }
     }
 	}
-
 ]
 '' as jolt_spec;
 create or replace view Infra_jolt_cluster_map
@@ -804,6 +816,8 @@ as select ''
         "infra_score": "data.[&1].details.infrastructure_score",
         "average_value": "data.[&1].details.average_value",
         "average_percent": "data.[&1].details.average_percent",
+        "school_management_type": "[&1].school_management_type",
+        "school_category": "[&1].school_category",
 '||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
         "total_schools": "data.[&1].total_schools",
         "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
@@ -824,7 +838,6 @@ as select ''
       "footer": "&"
     }
 	},
-
   {
     "operation": "modify-overwrite-beta",
     "spec": {
@@ -843,9 +856,7 @@ as select ''
       }
     }
 	}
-
 ]
-
 ''as jolt_spec;
 create or replace view Infra_jolt_school_map
 as select ''
@@ -854,11 +865,9 @@ as select ''
 		"spec": {
 			"*": {
 				"cluster_id": ["=toString", null]
-
 			}
 		}
 	},
-
   {
 		"operation": "shift",
 		"spec": {
@@ -876,7 +885,8 @@ as select ''
 				"infra_score": "data.[&1].details.infrastructure_score",
 				"average_value": "data.[&1].details.average_value",
 				"average_percent": "data.[&1].details.average_percent",
-
+                "school_management_type": "[&1].school_management_type",
+                "school_category": "[&1].school_category",
 '||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
 				"total_schools": "data.[&1].total_schools",
 				"@total_schools_data_received": "data.[&1].details.total_schools_data_received",
@@ -896,7 +906,6 @@ as select ''
 			"footer": "&"
 		}
 	},
-
 	{
 		"operation": "modify-overwrite-beta",
 		"spec": {
@@ -914,7 +923,6 @@ as select ''
 			}
 		}
 	}
-
 ]
 ''as jolt_spec;';
 Execute jolt_map_query;
@@ -1746,6 +1754,9 @@ $$LANGUAGE plpgsql;
 update udise_config set metric_config ='static' where metric_config in ('') or metric_config is null;
 select create_udise_table();
 
+alter table udise_school_metrics_agg add column if not exists school_management_type varchar(100);
+alter table udise_school_metrics_agg add column if not exists school_category varchar(100);
+
 CREATE OR REPLACE FUNCTION insert_udise_temp()
 RETURNS text AS
 $$
@@ -2086,10 +2097,10 @@ aggregation_table='
 insert into udise_school_metrics_agg
 (udise_school_id,academic_year,'||insert_cols||',
 school_name,school_latitude,school_longitude,cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,block_name,block_latitude,block_longitude,
-district_id,district_name,district_latitude,district_longitude,created_on,updated_on)
+district_id,district_name,district_latitude,district_longitude,created_on,updated_on,school_management_type,school_category)
 select udise_school_id,academic_year,'||select_cols||',b.school_name,c.school_latitude,c.school_longitude,
 b.cluster_id,b.cluster_name,c.cluster_latitude,c.cluster_longitude,b.block_id,b.block_name,c.block_latitude,c.block_longitude,b.district_id,b.district_name,
-c.district_latitude,c.district_longitude,now(),now()
+c.district_latitude,c.district_longitude,now(),now(),b.school_management_type,b.school_category
 from 
 (select udise_school_id,academic_year,'||range_cols_fwd||','||range_cols_bwd||','||range_cols_gen||',now(),now() from udise_school_metrics_temp ) as a left join 
 school_hierarchy_details as b on a.udise_school_id=b.school_id left join school_geo_master as c on b.school_id=c.school_id
@@ -2305,6 +2316,8 @@ select ''
         "district_latitude": "data.[&1].details.latitude",
         "district_longitude": "data.[&1].details.longitude",
         "infrastructure_score": "data.[&1].details.Infrastructure_Score",
+        "school_management_type": "data.[&1].details.School_Management_Type",
+        "school_category": "data.[&1].details.School_Category",
 '||indices_cols||',
         "district_level_rank_within_the_state": "data.[&1].rank.District_Level_Rank_Within_The_State",
         "@total_schools": "data.[&1].total_schools",
@@ -2333,12 +2346,10 @@ select ''
     }
 	}
 ]
-
 ''as jolt_spec;
 create or replace view udise_jolt_block
 as select ''
 [
-
 	{
 		"operation": "shift",
 		"spec": {
@@ -2350,6 +2361,8 @@ as select ''
 				"block_latitude": "data.[&1].details.latitude",
 				"block_longitude": "data.[&1].details.longitude",
 				"infrastructure_score": "data.[&1].details.Infrastructure_Score",
+                "school_management_type": "data.[&1].details.School_Management_Type",
+                "school_category": "data.[&1].details.School_Category",
 '||indices_cols||',
 				"block_level_rank_within_the_district": "data.[&1].rank.Block_Level_Rank_Within_The_District",
 				"block_level_rank_within_the_state": "data.[&1].rank.Block_Level_Rank_Within_The_State",
@@ -2371,7 +2384,6 @@ as select ''
 			"footer": "&"
 		}
 	},
-
 	{
 		"operation": "modify-overwrite-beta",
 		"spec": {
@@ -2389,13 +2401,11 @@ as select ''
 			}
 		}
 	}
-
 ]
 '' as jolt_spec;
 create or replace view udise_jolt_cluster
 as select ''
 [
-
   {
     "operation": "shift",
     "spec": {
@@ -2409,6 +2419,8 @@ as select ''
         "cluster_latitude": "data.[&1].details.latitude",
         "cluster_longitude": "data.[&1].details.longitude",
         "infrastructure_score": "data.[&1].details.Infrastructure_Score",
+        "school_management_type": "data.[&1].details.School_Management_Type",
+        "school_category": "data.[&1].details.School_Category",
 '||indices_cols||',
         "cluster_level_rank_within_the_block": "data.[&1].rank.Cluster_Level_Rank_Within_The_Block",
         "cluster_level_rank_within_the_district": "data.[&1].rank.Cluster_Level_Rank_Within_The_District",
@@ -2431,7 +2443,6 @@ as select ''
       "footer": "&"
     }
 	},
-
   {
     "operation": "modify-overwrite-beta",
     "spec": {
@@ -2462,7 +2473,6 @@ as select ''
       }
     }
 	},
-
   {
     "operation": "shift",
     "spec": {
@@ -2478,6 +2488,8 @@ as select ''
         "school_latitude": "data.[&1].details.latitude",
         "school_longitude": "data.[&1].details.longitude",
         "infrastructure_score": "data.[&1].details.Infrastructure_Score",
+        "school_management_type": "data.[&1].details.School_Management_Type",
+        "school_category": "data.[&1].details.School_Category",
 '||indices_cols||',
         "school_level_rank_within_the_cluster": "data.[&1].rank.School_Level_Rank_Within_The_Cluster",
         "school_level_rank_within_the_block": "data.[&1].rank.School_Level_Rank_Within_The_Block",
@@ -2501,7 +2513,6 @@ as select ''
       "footer": "&"
     }
 	},
-
   {
     "operation": "modify-overwrite-beta",
     "spec": {
@@ -13960,5 +13971,577 @@ from periodic_exam_school_result where school_management_type is not null group 
 school_id order by 3,grade))as a
 group by school_id,grade,academic_year,month,school_management_type
 order by 1,grade)as b on a.academic_year=b.academic_year and a.school_id=b.school_id and a.month=b.month and a.school_management_type=b.school_management_type;
+
+/* udise management */
+
+CREATE OR REPLACE FUNCTION udise_district_mgt_score()
+RETURNS text AS
+$$
+DECLARE
+select_query text:='select string_agg(''round(cast(sum(''||column_name||'') as numeric)/NULLIF(cast(count(distinct(udise_school_id)) as numeric),0),2)
+    *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
+   (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
+indices text:='select string_agg(b.sum_cols||'' ''||c.column_name||'''','','') from
+(select ''round(sum(COALESCE(''||string_agg(column_name,'',0)+COALESCE('')||'',0))*100.0/''||
+ ''NULLIF(sum((case when ''||string_agg(column_name||'' is not null then 1 else 0 end)*(SELECT udise_config.score FROM   udise_config WHERE  
+( lower(udise_config.column_name) = ''''''||column_name||'''''''',''::text))+(case when '')||''::text))),0),0) as '' as sum_cols,indice_id from                                                                                                                                 
+     (select lower(column_name)as column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a group by indice_id ) as b
+ left join udise_config as c on b.indice_id=c.id';
+infra_score text:='select ''round(''||string_agg(''coalesce(''||column_name||'',0)*0.01*(SELECT score FROM   udise_config WHERE  lower(column_name) =''''''||lower(column_name)||'''''')'',''+'')||
+'',0) as Infrastructure_Score''
+from udise_config where status=''1'' and type = ''indice'' order by 1';
+select_cols text;
+indices_cols text; 
+infra_score_cols text;
+district_score text;
+BEGIN
+Execute select_query into select_cols;
+Execute indices into indices_cols;
+Execute infra_score into infra_score_cols;
+district_score='
+create or replace view udise_district_mgt_score as 
+select c.*,'||'''overall_category'''||' as school_category,((rank () over ( order by Infrastructure_Score desc))||'' out of ''||(select count(distinct(district_id)) 
+from udise_school_metrics_agg)) as district_level_rank_within_the_state,coalesce(1-round(( Rank() over (ORDER BY Infrastructure_Score DESC) / ((select count(distinct(district_id)) from udise_school_metrics_agg)*1.0)),2)) as state_level_score from
+(select b.*,'||infra_score_cols||'
+from 
+(select district_id,initcap(district_name)as district_name,district_latitude,district_longitude,sum(total_schools)as total_schools,
+	sum(total_clusters)as total_clusters,sum(total_blocks)as total_blocks,'||indices_cols||',school_management_type
+from 
+(select district_id,district_name,district_latitude,district_longitude,count(distinct(udise_school_id)) as total_schools,
+	count(distinct(cluster_id)) as total_clusters,count(distinct(block_id)) as total_blocks,'||select_cols||',school_management_type
+from udise_school_metrics_agg where school_management_type is not null group by district_id,district_name,district_latitude,district_longitude,school_management_type)as a
+ group by district_id,district_name,district_latitude,district_longitude,school_management_type)as b)as c';
+
+Execute district_score; 
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION udise_block_mgt_score()
+RETURNS text AS
+$$
+DECLARE
+select_query text:='select string_agg(''round(cast(sum(''||column_name||'') as numeric)/NULLIF(cast(count(distinct(udise_school_id)) as numeric),0),2)
+    *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
+   (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
+indices text:='select string_agg(b.sum_cols||'' ''||c.column_name||'''','','') from
+(select ''round(sum(COALESCE(''||string_agg(column_name,'',0)+COALESCE('')||'',0))*100.0/''||
+ ''NULLIF(sum((case when ''||string_agg(column_name||'' is not null then 1 else 0 end)*(SELECT udise_config.score FROM   udise_config WHERE  
+( lower(udise_config.column_name) = ''''''||column_name||'''''''',''::text))+(case when '')||''::text))),0),0) as '' as sum_cols,indice_id from                                                                                                                                 
+     (select lower(column_name)as column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a group by indice_id ) as b
+ left join udise_config as c on b.indice_id=c.id';
+infra_score text:='select ''round(''||string_agg(''coalesce(''||column_name||'',0)*0.01*(SELECT score FROM   udise_config WHERE  lower(column_name) =''''''||lower(column_name)||'''''')'',''+'')||
+'',0) as Infrastructure_Score''
+from udise_config where status=''1'' and type = ''indice'' order by 1';
+select_cols text;
+indices_cols text; 
+infra_score_cols text;
+district_score text;
+BEGIN
+Execute select_query into select_cols;
+Execute indices into indices_cols;
+Execute infra_score into infra_score_cols;
+district_score='
+create or replace view udise_block_mgt_score as 
+select b.*,'||infra_score_cols||','||'''overall_category'''||' as school_category
+from 
+(select block_id,initcap(block_name)as block_name,block_latitude,block_longitude,district_id,initcap(district_name)as district_name,school_management_type
+,sum(total_schools)as total_schools,sum(total_clusters)as total_clusters,
+'||indices_cols||'
+from 
+(select block_id,block_name,block_latitude,block_longitude,district_id,district_name,count(distinct(udise_school_id)) as total_schools,
+	count(distinct(cluster_id)) as total_clusters,'||select_cols||',school_management_type
+from udise_school_metrics_agg where school_management_type is not null group by block_id,block_name,block_latitude,block_longitude,district_id,district_name,school_management_type)as a
+ group by block_id,block_name,block_latitude,block_longitude,district_id,district_name,school_management_type)as b';
+Execute district_score; 
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION udise_cluster_mgt_score()
+RETURNS text AS
+$$
+DECLARE
+select_query text:='select string_agg(''round(cast(sum(''||column_name||'') as numeric)/NULLIF(cast(count(distinct(udise_school_id)) as numeric),0),2)
+    *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
+   (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
+indices text:='select string_agg(b.sum_cols||'' ''||c.column_name||'''','','') from
+(select ''round(sum(COALESCE(''||string_agg(column_name,'',0)+COALESCE('')||'',0))*100.0/''||
+ ''NULLIF(sum((case when ''||string_agg(column_name||'' is not null then 1 else 0 end)*(SELECT udise_config.score FROM   udise_config WHERE  
+( lower(udise_config.column_name) = ''''''||column_name||'''''''',''::text))+(case when '')||''::text))),0),0) as '' as sum_cols,indice_id from                                                                                                                                 
+     (select lower(column_name)as column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a group by indice_id ) as b
+ left join udise_config as c on b.indice_id=c.id';
+infra_score text:='select ''round(''||string_agg(''coalesce(''||column_name||'',0)*0.01*(SELECT score FROM   udise_config WHERE  lower(column_name) =''''''||lower(column_name)||'''''')'',''+'')||
+'',0) as Infrastructure_Score''
+from udise_config where status=''1'' and type = ''indice'' order by 1';
+select_cols text;
+indices_cols text; 
+infra_score_cols text;
+district_score text;
+BEGIN
+Execute select_query into select_cols;
+Execute indices into indices_cols;
+Execute infra_score into infra_score_cols;
+district_score='
+create or replace view udise_cluster_mgt_score as 
+select b.*,'||infra_score_cols||','||'''overall_category'''||' as school_category from 
+(select cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,block_id,initcap(block_name)as block_name,
+district_id,initcap(district_name)as district_name,sum(total_schools)as total_schools,
+'||indices_cols||',school_management_type
+from 
+(select cluster_id,cluster_name,cluster_latitude,cluster_longitude,block_id,block_name,district_id,district_name,count(distinct(udise_school_id)) as total_schools,
+'||select_cols||',school_management_type from udise_school_metrics_agg where school_management_type is not null group by block_id,block_name,cluster_id,cluster_name,cluster_latitude,cluster_longitude,district_id,district_name,school_management_type)as a
+ group by block_id,block_name,cluster_id,cluster_name,cluster_latitude,cluster_longitude,district_id,district_name,school_management_type)as b';
+Execute district_score; 
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION udise_school_mgt_score()
+RETURNS text AS
+$$
+DECLARE
+select_query text:='select string_agg(''round(cast(sum(''||column_name||'') as numeric)/NULLIF(cast(count(distinct(udise_school_id)) as numeric),0),2)
+    *(select score from udise_config where column_name=''''''||column_name||'''''' ) as ''||column_name||'''','','') from                                                                                                                                 
+   (select column_name from udise_config where status=''1'' and type = ''metric'' order by 1)as a';   
+indices text:='select string_agg(b.sum_cols||'' ''||c.column_name||'''','','') from
+(select ''round(sum(COALESCE(''||string_agg(column_name,'',0)+COALESCE('')||'',0))*100.0/''||
+ ''NULLIF(sum((case when ''||string_agg(column_name||'' is not null then 1 else 0 end)*(SELECT udise_config.score FROM   udise_config WHERE  
+( lower(udise_config.column_name) = ''''''||column_name||'''''''',''::text))+(case when '')||''::text))),0),0) as '' as sum_cols,indice_id from                                                                                                                                 
+     (select lower(column_name)as column_name,indice_id from udise_config where status=''1'' and type = ''metric'' order by 1)as a group by indice_id ) as b
+ left join udise_config as c on b.indice_id=c.id';
+infra_score text:='select ''round(''||string_agg(''coalesce(''||column_name||'',0)*0.01*(SELECT score FROM   udise_config WHERE  lower(column_name) =''''''||lower(column_name)||'''''')'',''+'')||
+'',0) as Infrastructure_Score''
+from udise_config where status=''1'' and type = ''indice'' order by 1';
+select_cols text;
+indices_cols text; 
+infra_score_cols text;
+district_score text;
+BEGIN
+Execute select_query into select_cols;
+Execute indices into indices_cols;
+Execute infra_score into infra_score_cols;
+district_score='
+create or replace view udise_school_mgt_score as 
+select b.*,'||infra_score_cols||','||'''overall_category'''||' as school_category
+from 
+(select udise_school_id,initcap(school_name)as school_name,school_latitude,school_longitude,cluster_id,initcap(cluster_name)as cluster_name,
+	block_id,initcap(block_name)as block_name,district_id,initcap(district_name)as district_name,sum(total_schools)as total_schools,
+'||indices_cols||',school_management_type
+from 
+(select udise_school_id,school_name,school_latitude,school_longitude,
+	cluster_id,cluster_name,block_id,block_name,district_id,district_name,count(distinct(udise_school_id)) as total_schools,
+'||select_cols||',school_management_type from udise_school_metrics_agg where school_management_type is not null group by udise_school_id,school_name,school_latitude,school_longitude,block_id,block_name,cluster_id,cluster_name,district_id,district_name,school_management_type)as a
+ group by udise_school_id,school_name,school_latitude,school_longitude,block_id,block_name,cluster_id,cluster_name,district_id,district_name,school_management_type)as b';
+Execute district_score; 
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+
+
+drop view if exists udise_school_mgt_score cascade;
+drop view if exists udise_cluster_mgt_score cascade;
+drop view if exists udise_block_mgt_score cascade;
+drop view if exists udise_district_mgt_score cascade;
+
+select * from udise_school_mgt_score();
+select * from udise_cluster_mgt_score();
+select * from udise_block_mgt_score();
+select * from udise_district_mgt_score();
+
+
+/* Infrstructure management changes */
+
+
+create or replace FUNCTION infra_district_mgt_reports(category_1 text,category_2 text)
+RETURNS text AS
+$$
+DECLARE
+select_infra_score text:= 'select concat(''round(coalesce(''||''SUM('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),
+  '')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
+select_infra_score_cols text;
+select_average_value text:= 'select concat(''sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')
+||'' =0 then 0 else 1 end)'',''/'',''(select count(infrastructure_name) from infrastructure_master where status=true) as average_value'') 
+from infrastructure_master where status = true order by 1';
+select_average_value_cols text;
+select_average_percent text:= 'select concat(''round((sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')||'' =0 then 0 else 1 end)'',''/'',
+''(select count(infrastructure_name) from infrastructure_master where status=true))*100.0/count(distinct(school_id)),0) as average_percent'') 
+from infrastructure_master where status = true order by 1';
+select_average_percent_cols text;
+select_infra_value text:= 'select string_agg(concat(''sum(case when '',replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end) as '',
+replace(trim(LOWER(infrastructure_name)),'' '',''_''))||''_value'','','') from infrastructure_master where status = true order by 1';
+select_infra_value_cols text;
+select_infra_percent text:= 'select string_agg(concat(''round(sum(case when '',replace(trim(LOWER(infrastructure_name)),'' '',''_''),
+'' =0 then 0 else 1 end)*100.0/count(distinct(school_id)),0)as '',replace(trim(LOWER(infrastructure_name)),'' '',''_''))||''_percent'','','')  
+ from infrastructure_master where status = true order by 1';
+select_infra_percent_cols text;
+select_1 text:='select string_agg(''d.''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value''||'',''||''d.''
+||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','','')
+ from infrastructure_master where status = true order by 1';
+select_1_cols text;
+select_2 text:='select string_agg(''d.''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','','')
+ from infrastructure_master where status = true order by 1';
+select_2_cols text;
+composite_infra_1 text:='select concat(''round(coalesce(sum('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),'')*100.0/(count(distinct(school_id))* (select sum(score) from infrastructure_master
+where infrastructure_category ='''''||category_1||''''') ),0),0) as access_to_'||category_1||'_percent'')
+from infrastructure_master where status = true and infrastructure_category ='''||category_1||''' order by 1';
+composite_infra_1_cols text;
+composite_infra_2 text:='select concat(''round(coalesce(sum('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),'')*100.0/(count(distinct(school_id))* (select sum(score) from infrastructure_master
+where infrastructure_category ='''''||category_2||''''') ),0),0) as access_to_'||category_2||'_percent'')
+from infrastructure_master where status = true and infrastructure_category ='''||category_2||''' order by 1';
+composite_infra_2_cols text;
+composite_1 text;
+infra_table text;
+infra_map text;
+BEGIN
+Execute select_infra_score into select_infra_score_cols;
+Execute select_average_value into select_average_value_cols;
+Execute select_average_percent into select_average_percent_cols;
+Execute select_infra_value into select_infra_value_cols;
+Execute select_infra_percent into select_infra_percent_cols;
+Execute composite_infra_1 into composite_infra_1_cols;
+Execute composite_infra_2 into composite_infra_2_cols;
+Execute select_1 into select_1_cols;
+Execute select_2 into select_2_cols;
+IF select_infra_score_cols <> '' THEN 
+infra_table= 'create or replace view infra_district_table_mgt_view as 
+select d.district_id,
+initcap(c.district_name)as district_name,c.total_schools,d.total_schools_data_received,c.infra_score,
+d.average_value,d.average_percent,'||select_1_cols||',c.school_management_type,'||'''overall_category'''||' as school_category from (
+select district_id,count(distinct(school_id)) as total_schools_data_received,'||select_average_value_cols||',
+'||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||',school_management_type
+ from school_infrastructure_score where school_management_type is not null group by district_id,school_management_type)as d
+inner join 
+(select a.district_id,a.district_name,b.total_schools,c.infra_score,school_management_type 
+from 
+(select district_id,district_name from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
+  group by district_id,district_name)as a 
+inner join (select district_id,count(distinct(school_id)) as total_schools from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
+  group by district_id)as b on a.district_id=b.district_id
+inner join (select district_id,'||select_infra_score_cols||',school_management_type
+from infra_score_view where school_management_type is not null group by district_id,school_management_type) as c on a.district_id=c.district_id) as c
+on d.district_id=c.district_id and d.school_management_type=c.school_management_type';
+infra_map= 'create or replace view infra_district_map_mgt_view as 
+select d.district_id,d.total_schools_data_received,c.infra_score,'||select_2_cols||',c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent,
+initcap(c.district_name)as district_name,c.district_latitude,c.district_longitude,c.school_management_type,'||'''overall_category'''||' as school_category
+ from (
+select district_id,count(distinct(school_id)) as total_schools_data_received,'||select_infra_percent_cols||',school_management_type from school_infrastructure_score where school_management_type is not null group by district_id,school_management_type)as d
+inner join 
+(select a.district_id,a.district_name,b.district_latitude,b.district_longitude,c.infra_score,c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent,school_management_type
+ from 
+(select district_id,district_name from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
+  group by district_id,district_name)as a inner join 
+(select district_id,district_latitude,district_longitude from school_geo_master where cluster_latitude>0 and block_latitude>0 and school_latitude>0 and district_latitude>0
+  group by district_id,district_latitude,district_longitude)as b
+ on a.district_id=b.district_id
+ inner join (select district_id,'||select_infra_score_cols||','||composite_infra_1_cols||',
+ '||composite_infra_2_cols||',school_management_type
+from infra_score_view where school_management_type is not null group by district_id,school_management_type) as c on a.district_id=c.district_id)as c
+on d.district_id=c.district_id and d.school_management_type=c.school_management_type';
+Execute infra_table; 
+Execute infra_map;
+END IF;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+
+create or replace FUNCTION infra_block_mgt_reports(category_1 text,category_2 text)
+RETURNS text AS
+$$
+DECLARE
+select_infra_score text:= 'select concat(''round(coalesce(''||''SUM('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),
+  '')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
+select_infra_score_cols text;
+select_average_value text:= 'select concat(''sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')
+||'' =0 then 0 else 1 end)'',''/'',''(select count(infrastructure_name) from infrastructure_master where status=true) as average_value'') 
+from infrastructure_master where status = true order by 1';
+select_average_value_cols text;
+select_average_percent text:= 'select concat(''round((sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')||'' =0 then 0 else 1 end)'',''/'',
+''(select count(infrastructure_name) from infrastructure_master where status=true))*100.0/count(distinct(school_id)),0) as average_percent'') 
+from infrastructure_master where status = true order by 1';
+select_average_percent_cols text;
+select_infra_value text:= 'select string_agg(concat(''sum(case when '',replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end) as '',
+replace(trim(LOWER(infrastructure_name)),'' '',''_''))||''_value'','','') from infrastructure_master where status = true order by 1';
+select_infra_value_cols text;
+select_infra_percent text:= 'select string_agg(concat(''round(sum(case when '',replace(trim(LOWER(infrastructure_name)),'' '',''_''),
+'' =0 then 0 else 1 end)*100.0/count(distinct(school_id)),0)as '',replace(trim(LOWER(infrastructure_name)),'' '',''_''))||''_percent'','','')  
+ from infrastructure_master where status = true order by 1';
+select_infra_percent_cols text;
+select_1 text:='select string_agg(''d.''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value''||'',''||''d.''
+||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','','')
+ from infrastructure_master where status = true order by 1';
+select_1_cols text;
+select_2 text:='select string_agg(''d.''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','','')
+ from infrastructure_master where status = true order by 1';
+select_2_cols text;
+composite_infra_1 text:='select concat(''round(coalesce(sum('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),'')*100.0/(count(distinct(school_id))* (select sum(score) from infrastructure_master
+where infrastructure_category ='''''||category_1||''''') ),0),0) as access_to_'||category_1||'_percent'')
+from infrastructure_master where status = true and infrastructure_category ='''||category_1||''' order by 1';
+composite_infra_1_cols text;
+composite_infra_2 text:='select concat(''round(coalesce(sum('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),'')*100.0/(count(distinct(school_id))* (select sum(score) from infrastructure_master
+where infrastructure_category ='''''||category_2||''''') ),0),0) as access_to_'||category_2||'_percent'')
+from infrastructure_master where status = true and infrastructure_category ='''||category_2||''' order by 1';
+composite_infra_2_cols text;
+composite_1 text;
+infra_table text;
+infra_map text;
+BEGIN
+Execute select_infra_score into select_infra_score_cols;
+Execute select_average_value into select_average_value_cols;
+Execute select_average_percent into select_average_percent_cols;
+Execute select_infra_value into select_infra_value_cols;
+Execute select_infra_percent into select_infra_percent_cols;
+Execute composite_infra_1 into composite_infra_1_cols;
+Execute composite_infra_2 into composite_infra_2_cols;
+Execute select_1 into select_1_cols;
+Execute select_2 into select_2_cols;
+IF select_infra_score_cols <> '' THEN 
+infra_table= 'create or replace view infra_block_table_mgt_view as 
+select d.block_id,
+initcap(c.block_name)as block_name,c.district_id,initcap(c.district_name)as district_name,c.total_schools,
+d.total_schools_data_received,c.infra_score,d.average_value,d.average_percent,'||select_1_cols||',c.school_management_type,'||'''overall_category'''||' as school_category
+ from (
+select block_id,count(distinct(school_id)) as total_schools_data_received,'||select_average_value_cols||',
+'||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||',school_management_type
+from school_infrastructure_score where school_management_type is not null group by block_id,school_management_type) as d
+inner join 
+(select a.block_id,a.block_name,a.district_id,a.district_name,b.total_schools,c.infra_score,c.school_management_type from 
+(select block_id,block_name,district_id,district_name from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
+  group by block_id,block_name,district_id,district_name)as a inner join 
+(select block_id,count(distinct(school_id)) as total_schools from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
+  group by block_id)as b on a.block_id=b.block_id
+inner join (select block_id,'||select_infra_score_cols||',school_management_type
+from infra_score_view where school_management_type is not null group by block_id,school_management_type) as c on a.block_id=c.block_id) as c
+on d.block_id=c.block_id and d.school_management_type=c.school_management_type';
+infra_map= 'create or replace view infra_block_map_mgt_view as 
+select d.block_id,d.total_schools_data_received,c.infra_score,'||select_2_cols||',c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent,
+initcap(c.district_name)as district_name,initcap(c.block_name)as block_name,c.district_id,c.block_latitude,c.block_longitude,c.school_management_type,'||'''overall_category'''||' as school_category
+from 
+(select block_id,count(distinct(school_id)) as total_schools_data_received,'||select_infra_percent_cols||',school_management_type from school_infrastructure_score where school_management_type is not null group by block_id,school_management_type)as d
+inner join 
+(select a.block_id,a.block_name,a.district_id,a.district_name,b.block_latitude,b.block_longitude,c.infra_score,c.school_management_type,
+  c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent from 
+(select block_id,block_name,district_id,district_name from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
+  group by block_id,block_name,district_id,district_name)as a inner join 
+(select block_id,block_latitude,block_longitude from school_geo_master where cluster_latitude>0 and block_latitude>0 and school_latitude>0 and district_latitude>0
+  group by block_id,block_latitude,block_longitude)as b
+ on a.block_id=b.block_id
+ inner join (select block_id,'||select_infra_score_cols||','||composite_infra_1_cols||',
+ '||composite_infra_2_cols||',school_management_type 
+from infra_score_view where school_management_type is not null group by block_id,school_management_type)as c on a.block_id=c.block_id)as c
+on d.block_id=c.block_id and d.school_management_type=c.school_management_type';
+Execute infra_table; 
+Execute infra_map;
+END IF;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+select infra_block_mgt_reports('water','toilet');
+
+
+create or replace FUNCTION infra_cluster_mgt_reports(category_1 text,category_2 text)
+RETURNS text AS
+$$
+DECLARE
+select_infra_score text:= 'select concat(''round(coalesce(''||''SUM('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),
+  '')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
+select_infra_score_cols text;
+select_average_value text:= 'select concat(''sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')
+||'' =0 then 0 else 1 end)'',''/'',''(select count(infrastructure_name) from infrastructure_master where status=true) as average_value'') 
+from infrastructure_master where status = true order by 1';
+select_average_value_cols text;
+select_average_percent text:= 'select concat(''round((sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')||'' =0 then 0 else 1 end)'',''/'',
+''(select count(infrastructure_name) from infrastructure_master where status=true))*100.0/count(distinct(school_id)),0) as average_percent'') 
+from infrastructure_master where status = true order by 1';
+select_average_percent_cols text;
+select_infra_value text:= 'select string_agg(concat(''sum(case when '',replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end) as '',
+replace(trim(LOWER(infrastructure_name)),'' '',''_''))||''_value'','','') from infrastructure_master where status = true order by 1';
+select_infra_value_cols text;
+select_infra_percent text:= 'select string_agg(concat(''round(sum(case when '',replace(trim(LOWER(infrastructure_name)),'' '',''_''),
+'' =0 then 0 else 1 end)*100.0/count(distinct(school_id)),0)as '',replace(trim(LOWER(infrastructure_name)),'' '',''_''))||''_percent'','','')  
+ from infrastructure_master where status = true order by 1';
+select_infra_percent_cols text;
+select_1 text:='select string_agg(''d.''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value''||'',''||''d.''
+||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','','')
+ from infrastructure_master where status = true order by 1';
+select_1_cols text;
+select_2 text:='select string_agg(''d.''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','','')
+ from infrastructure_master where status = true order by 1';
+select_2_cols text;
+composite_infra_1 text:='select concat(''round(coalesce(sum('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),'')*100.0/(count(distinct(school_id))* (select sum(score) from infrastructure_master
+where infrastructure_category ='''''||category_1||''''') ),0),0) as access_to_'||category_1||'_percent'')
+from infrastructure_master where status = true and infrastructure_category ='''||category_1||''' order by 1';
+composite_infra_1_cols text;
+composite_infra_2 text:='select concat(''round(coalesce(sum('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),'')*100.0/(count(distinct(school_id))* (select sum(score) from infrastructure_master
+where infrastructure_category ='''''||category_2||''''') ),0),0) as access_to_'||category_2||'_percent'')
+from infrastructure_master where status = true and infrastructure_category ='''||category_2||''' order by 1';
+composite_infra_2_cols text;
+composite_1 text;
+infra_table text;
+infra_map text;
+BEGIN
+Execute select_infra_score into select_infra_score_cols;
+Execute select_average_value into select_average_value_cols;
+Execute select_average_percent into select_average_percent_cols;
+Execute select_infra_value into select_infra_value_cols;
+Execute select_infra_percent into select_infra_percent_cols;
+Execute composite_infra_1 into composite_infra_1_cols;
+Execute composite_infra_2 into composite_infra_2_cols;
+Execute select_1 into select_1_cols;
+Execute select_2 into select_2_cols;
+IF select_infra_score_cols <> '' THEN 
+infra_table= 'create or replace view infra_cluster_table_mgt_view as 
+select d.cluster_id,
+initcap(c.cluster_name)as cluster_name,c.block_id,initcap(c.block_name)as block_name,
+c.district_id,initcap(c.district_name)as district_name,c.total_schools,d.total_schools_data_received,
+c.infra_score,d.average_value,d.average_percent,'||select_1_cols||',c.school_management_type,'||'''overall_category'''||' as school_category from 
+(
+select cluster_id,count(distinct(school_id)) as total_schools_data_received,'||select_average_value_cols||',
+'||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||',school_management_type
+from school_infrastructure_score where school_management_type is not null group by cluster_id,school_management_type ) as d
+inner join 
+(select a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,b.total_schools,c.infra_score,c.school_management_type from 
+(select cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details 
+  where cluster_name is not null and block_name is not null and school_name is not null
+  group by cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
+(select cluster_id,count(distinct(school_id)) as total_schools from school_hierarchy_details 
+  where cluster_name is not null and block_name is not null and school_name is not null
+  group by cluster_id)as b on a.cluster_id=b.cluster_id
+inner join (select cluster_id,'||select_infra_score_cols||',school_management_type
+from infra_score_view where school_management_type is not null group by cluster_id,school_management_type) as c on a.cluster_id=c.cluster_id) as c
+on d.cluster_id=c.cluster_id and d.school_management_type=c.school_management_type';
+infra_map= 'create or replace view infra_cluster_map_mgt_view as 
+select d.cluster_id,d.total_schools_data_received,c.infra_score,'||select_2_cols||',c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent,
+initcap(c.district_name)as district_name,initcap(c.cluster_name)as cluster_name,c.block_id,initcap(c.block_name)as block_name,c.district_id,c.cluster_latitude,c.cluster_longitude,c.school_management_type,'||'''overall_category'''||' as school_category
+from 
+(select cluster_id,count(distinct(school_id)) as total_schools_data_received,'||select_infra_percent_cols||',school_management_type 
+ from school_infrastructure_score where school_management_type is not null group by cluster_id,school_management_type)as d
+inner join 
+(select a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,b.cluster_latitude,b.cluster_longitude,c.infra_score,c.school_management_type
+,c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent from 
+(select cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details 
+  where cluster_name is not null and block_name is not null and school_name is not null
+  group by cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
+(select cluster_id,cluster_latitude,cluster_longitude from school_geo_master where cluster_latitude>0 and block_latitude>0 and school_latitude>0 and district_latitude>0
+  group by cluster_id,cluster_latitude,cluster_longitude)as b
+ on a.cluster_id=b.cluster_id
+ inner join (select cluster_id,'||select_infra_score_cols||','||composite_infra_1_cols||',
+ '||composite_infra_2_cols||',school_management_type
+from infra_score_view where school_management_type is not null group by cluster_id,school_management_type)as c on a.cluster_id=c.cluster_id)as c
+on d.cluster_id=c.cluster_id and d.school_management_type=c.school_management_type';
+Execute infra_table; 
+Execute infra_map;
+END IF;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+select infra_cluster_mgt_reports('water','toilet');
+
+
+create or replace FUNCTION infra_school_mgt_reports(category_1 text,category_2 text)
+RETURNS text AS
+$$
+DECLARE
+select_infra_score text:= 'select concat(''round(coalesce(''||''SUM('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),
+  '')/count(distinct(school_id)),0),0) as infra_score'') as a from infrastructure_master where status = true order by 1';
+select_infra_score_cols text;
+select_average_value text:= 'select concat(''sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')
+||'' =0 then 0 else 1 end)'',''/'',''(select count(infrastructure_name) from infrastructure_master where status=true) as average_value'') 
+from infrastructure_master where status = true order by 1';
+select_average_value_cols text;
+select_average_percent text:= 'select concat(''round((sum(case when '',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end + case when '')||'' =0 then 0 else 1 end)'',''/'',
+''(select count(infrastructure_name) from infrastructure_master where status=true))*100.0/count(distinct(school_id)),0) as average_percent'') 
+from infrastructure_master where status = true order by 1';
+select_average_percent_cols text;
+select_infra_value text:= 'select string_agg(concat(''sum(case when '',replace(trim(LOWER(infrastructure_name)),'' '',''_''),'' =0 then 0 else 1 end) as '',
+replace(trim(LOWER(infrastructure_name)),'' '',''_''))||''_value'','','') from infrastructure_master where status = true order by 1';
+select_infra_value_cols text;
+select_infra_percent text:= 'select string_agg(concat(''round(sum(case when '',replace(trim(LOWER(infrastructure_name)),'' '',''_''),
+'' =0 then 0 else 1 end)*100.0/count(distinct(school_id)),0)as '',replace(trim(LOWER(infrastructure_name)),'' '',''_''))||''_percent'','','')  
+ from infrastructure_master where status = true order by 1';
+select_infra_percent_cols text;
+select_1 text:='select string_agg(''d.''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value''||'',''||''d.''
+||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','','')
+ from infrastructure_master where status = true order by 1';
+select_1_cols text;
+select_2 text:='select string_agg(''d.''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','','')
+ from infrastructure_master where status = true order by 1';
+select_2_cols text;
+composite_infra_1 text:='select concat(''round(coalesce(sum('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),'')*100.0/(count(distinct(school_id))* (select sum(score) from infrastructure_master
+where infrastructure_category ='''''||category_1||''''') ),0),0) as access_to_'||category_1||'_percent'')
+from infrastructure_master where status = true and infrastructure_category ='''||category_1||''' order by 1';
+composite_infra_1_cols text;
+composite_infra_2 text:='select concat(''round(coalesce(sum('',string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_''),''+''),'')*100.0/(count(distinct(school_id))* (select sum(score) from infrastructure_master
+where infrastructure_category ='''''||category_2||''''') ),0),0) as access_to_'||category_2||'_percent'')
+from infrastructure_master where status = true and infrastructure_category ='''||category_2||''' order by 1';
+composite_infra_2_cols text;
+composite_1 text;
+infra_table text;
+infra_map text;
+BEGIN
+Execute select_infra_score into select_infra_score_cols;
+Execute select_average_value into select_average_value_cols;
+Execute select_average_percent into select_average_percent_cols;
+Execute select_infra_value into select_infra_value_cols;
+Execute select_infra_percent into select_infra_percent_cols;
+Execute composite_infra_1 into composite_infra_1_cols;
+Execute composite_infra_2 into composite_infra_2_cols;
+Execute select_1 into select_1_cols;
+Execute select_2 into select_2_cols;
+IF select_infra_score_cols <> '' THEN 
+infra_table= 'create or replace view infra_school_table_mgt_view as 
+select d.school_id,
+initcap(c.school_name)as school_name,c.cluster_id,initcap(c.cluster_name)as cluster_name,c.block_id,
+initcap(c.block_name)as block_name,c.district_id,initcap(c.district_name)as district_name,c.total_schools
+,d.total_schools_data_received,c.infra_score,d.average_value,d.average_percent,'||select_1_cols||',c.school_management_type,'||'''overall_category'''||' as school_category from 
+(
+  select school_id,count(distinct(school_id)) as total_schools_data_received,'||select_average_value_cols||',
+'||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||',school_management_type
+ from school_infrastructure_score where school_management_type is not null group by school_id,school_management_type ) as d
+inner join 
+(select a.school_id,a.school_name,a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,b.total_schools,c.infra_score,c.school_management_type from 
+(select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details 
+  where cluster_name is not null and block_name is not null and school_name is not null
+  group by school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
+(select school_id,count(distinct(school_id)) as total_schools from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
+  group by school_id)as b on a.school_id=b.school_id
+inner join (select school_id,'||select_infra_score_cols||',school_management_type
+from infra_score_view where school_management_type is not null group by school_id,school_management_type)as c on a.school_id=c.school_id) as c
+on d.school_id=c.school_id';
+infra_map= 'create or replace view infra_school_map_mgt_view as 
+select d.school_id,d.total_schools_data_received,c.infra_score,'||select_2_cols||',c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent,
+initcap(c.district_name)as district_name,initcap(c.school_name)as school_name,
+c.cluster_id,initcap(c.cluster_name)as cluster_name,c.block_id,initcap(c.block_name)as block_name,c.district_id,c.school_latitude,c.school_longitude,c.school_management_type,'||'''overall_category'''||' as school_category 
+from 
+(select school_id,count(distinct(school_id)) as total_schools_data_received,'||select_infra_percent_cols||',school_management_type 
+  from school_infrastructure_score where school_management_type is not null group by school_id,school_management_type)as d
+inner join 
+(select a.school_id,a.school_name,a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,b.school_latitude,b.school_longitude,c.infra_score,c.school_management_type 
+  ,c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent from 
+(select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details 
+  where cluster_name is not null and block_name is not null and school_name is not null
+  group by school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
+(select school_id,school_latitude,school_longitude from school_geo_master where cluster_latitude>0 and block_latitude>0 and school_latitude>0 and district_latitude>0
+  group by school_id,school_latitude,school_longitude)as b
+ on a.school_id=b.school_id
+ inner join (select school_id,'||select_infra_score_cols||','||composite_infra_1_cols||',
+ '||composite_infra_2_cols||',school_management_type
+from infra_score_view where school_management_type is not null group by school_id,school_management_type) as c on a.school_id=c.school_id)as c
+on d.school_id=c.school_id';
+Execute infra_table; 
+Execute infra_map;
+END IF;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+select infra_school_mgt_reports('water','toilet');
 
 
