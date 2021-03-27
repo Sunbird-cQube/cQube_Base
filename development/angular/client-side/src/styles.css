@@ -334,6 +334,7 @@ leaflet-right {
 #clusterbtn,
 #schoolbtn {
     margin-right: 15px;
+    margin-top: 2px;
     font-size: 11px;
     width: 75px;
     padding: 4px;
@@ -553,7 +554,7 @@ leaflet-right {
     #blockbtn,
     #clusterbtn,
     #schoolbtn {
-        margin-top: -4px;
+        margin-top: -3px;
         margin-right: 15px;
         font-size: 18px;
         width: 120px;
@@ -710,7 +711,7 @@ leaflet-right {
         margin-right: 15px;
         font-size: 22px !important;
         width: 130px !important;
-        padding: 4.5px !important;
+        padding: 4.3px !important;
         background-color: rgb(152, 160, 163);
     }
     .legends {
