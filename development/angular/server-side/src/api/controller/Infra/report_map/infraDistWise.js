@@ -4,10 +4,19 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/distWise', auth.authController, async (req, res) => {
+router.post('/distWise', auth.authController, async(req, res) => {
     try {
         logger.info('---Infra dist wise api ---');
-        let fileName = `infra/infra_district_map.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `infra/school_management_category/overall_category/${management}/infra_district_map.json`;
+        } else {
+            fileName = `infra/infra_district_map.json`
+        }
+        console.log(fileName)
         var districtData = await s3File.readS3File(fileName);
         var mydata = districtData.data;
 

@@ -230,7 +230,11 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   getDistricts(): void {
-    this.service.dist_wise_data(this.timePeriod).subscribe(
+    this.service.dist_wise_data({
+      ...this.month_year,
+      ...this.timePeriod,
+      ...{ management: this.management, category: this.category },
+    }).subscribe(
       (res) => {
         var sorted = res["distData"].sort((a, b) =>
           a.attendance > b.attendance ? 1 : -1

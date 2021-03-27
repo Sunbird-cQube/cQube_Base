@@ -4,10 +4,18 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/blockWise', auth.authController, async (req, res) => {
+router.post('/blockWise', auth.authController, async(req, res) => {
     try {
         logger.info('---Infra block wise api ---');
-        let fileName = `infra/infra_block_table.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `infra/school_management_category/overall_category/${management}/infra_block_table.json`;
+        } else {
+            fileName = `infra/infra_block_table.json`
+        }
         var data = await s3File.readS3File(fileName);
 
         logger.info('--- Infra dist block api response sent ---');
@@ -19,10 +27,18 @@ router.post('/blockWise', auth.authController, async (req, res) => {
     }
 });
 
-router.post('/blockWise/:distId', auth.authController, async (req, res) => {
+router.post('/blockWise/:distId', auth.authController, async(req, res) => {
     try {
         logger.info('---Infra block per district api ---');
-        let fileName = `infra/infra_block_table.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `infra/school_management_category/overall_category/${management}/infra_block_table.json`;
+        } else {
+            fileName = `infra/infra_block_table.json`
+        }
         var blockData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId
