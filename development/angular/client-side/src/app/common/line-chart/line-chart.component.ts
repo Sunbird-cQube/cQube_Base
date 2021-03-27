@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts/highstock'
 
 @Component({
@@ -15,6 +15,7 @@ export class LineChartComponent implements OnInit, OnChanges {
   @Input() level = '';
   @Input() xAxisTitle;
   @Input() yAxisTitle;
+  @Input() counts = [];
   constructor(private changeDetection: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -78,6 +79,7 @@ export class LineChartComponent implements OnInit, OnChanges {
   }
 
   createChart() {
+    var counts = this.counts;
     var academicYear = this.selectedYear;
     var level = this.level;
     var xAxisTitle = this.xAxisTitle;
@@ -166,7 +168,7 @@ export class LineChartComponent implements OnInit, OnChanges {
         },
         formatter: function () {
           if (this.point.category != 0) {
-            return '<b>' + getPointCategoryName(this.point,level, academicYear) + '</b>';
+            return '<b>' + getPointCategoryName(this.point,level, counts, academicYear) + '</b>';
           }else{
             return false;
         }
@@ -175,11 +177,13 @@ export class LineChartComponent implements OnInit, OnChanges {
     }
     this.Highcharts.chart("container", this.chartOptions);
 
-    function getPointCategoryName(point, level, academicYear) {
+    function getPointCategoryName(point, level,counts, academicYear) {
       var obj = '';
         obj = `<b>Acedmic Year:</b> ${academicYear} 
         <br><b>Month:</b> ${point.category}
         <br> ${`<b>${level} Name:</b> ${point.series.name}`}
+        <br>${counts[point.index].schoolCount ? `<b>School Count:</b> ${counts[point.index].schoolCount}` : ''}
+        <br>${counts[point.index].studentCount ? `<b>Student Count:</b> ${counts[point.index].studentCount}` : ''}
         <br> ${point.y !== null ? `<b>Attendance:</b> ${point.y.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")} % ` : ''}`
         return obj;
     }
