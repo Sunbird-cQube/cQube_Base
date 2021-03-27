@@ -55,7 +55,7 @@
     <hr>
     <div class="row" style="margin-top: 1%;">
         <div [ngClass]="dataWithColors.length > 0 ? 'col-lg-10 col-md-10 col-sm-12' : 'col-lg-12 col-md-12 col-sm-12'">
-            <app-line-chart *ngIf="currentData.length > 0" [selectedYear]="selectedYear" [data]="data" [xAxisLabels]="xAxisLabels" [lineData]="currentData" [level]="level" [xAxisTitle]="'Months'" [yAxisTitle]="'Attendance'">
+            <app-line-chart *ngIf="currentData.length > 0" [selectedYear]="selectedYear" [data]="data" [xAxisLabels]="xAxisLabels" [lineData]="currentData" [level]="level" [xAxisTitle]="'Months'" [yAxisTitle]="'Attendance'" [counts]="counts">
             </app-line-chart>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-12" *ngIf="dataWithColors.length > 0">
