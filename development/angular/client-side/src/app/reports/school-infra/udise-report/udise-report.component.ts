@@ -84,6 +84,9 @@ export class UdiseReportComponent implements OnInit {
   public lng: any;
 
   reportName = "UDISE_report";
+  managementName;
+  management;
+  category;
 
   constructor(
     public http: HttpClient,
@@ -148,6 +151,12 @@ export class UdiseReportComponent implements OnInit {
     document.getElementById("backBtn").style.display = "none";
     let params = JSON.parse(sessionStorage.getItem("report-level-info"));
 
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
+
     if (params && params.level) {
       let data = params.data;
       if (params.level === "district") {
@@ -201,7 +210,7 @@ export class UdiseReportComponent implements OnInit {
   }
 
   getDistricts(): void {
-    this.service.udise_dist_wise().subscribe((res) => {
+    this.service.udise_dist_wise({ management: this.management, category: this.category }).subscribe((res) => {
       this.myDistData = res;
       this.data = res["data"];
       this.districtMarkers = this.data;
@@ -209,7 +218,7 @@ export class UdiseReportComponent implements OnInit {
   }
 
   getBlocks(distId, blockId?: any): void {
-    this.service.udise_blocks_per_dist(distId).subscribe((res) => {
+    this.service.udise_blocks_per_dist(distId, { management: this.management, category: this.category }).subscribe((res) => {
       this.data = res["data"];
       this.blockMarkers = this.data;
 
@@ -218,7 +227,7 @@ export class UdiseReportComponent implements OnInit {
   }
 
   getClusters(distId, blockId, clusterId): void {
-    this.service.udise_cluster_per_block(distId, blockId).subscribe((res) => {
+    this.service.udise_cluster_per_block(distId, blockId, { management: this.management, category: this.category }).subscribe((res) => {
       this.data = res["data"];
       this.clusterMarkers = this.data;
       this.onClusterSelect(clusterId);
@@ -300,7 +309,7 @@ export class UdiseReportComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.udise_dist_wise().subscribe(
+        this.myData = this.service.udise_dist_wise({ management: this.management, category: this.category }).subscribe(
           (res) => {
             this.myDistData = res;
             this.data = res["data"];
@@ -388,7 +397,7 @@ export class UdiseReportComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.udise_block_wise().subscribe(
+      this.myData = this.service.udise_block_wise({ management: this.management, category: this.category }).subscribe(
         (res) => {
           this.data = this.myBlockData = res["data"];
           this.gettingIndiceFilters(this.data);
@@ -466,7 +475,7 @@ export class UdiseReportComponent implements OnInit {
                 .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
               this.loaderAndErr();
-              this.changeDetection.markForCheck();
+              this.changeDetection.detectChanges();
             }
           }
         },
@@ -511,7 +520,7 @@ export class UdiseReportComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.udise_cluster_wise().subscribe(
+      this.myData = this.service.udise_cluster_wise({ management: this.management, category: this.category }).subscribe(
         (res) => {
           this.data = res["data"];
           this.gettingIndiceFilters(this.data);
@@ -587,7 +596,7 @@ export class UdiseReportComponent implements OnInit {
               );
 
               this.loaderAndErr();
-              this.changeDetection.markForCheck();
+              this.changeDetection.detectChanges();
             }
           }
         },
@@ -632,7 +641,7 @@ export class UdiseReportComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.udise_school_wise().subscribe(
+      this.myData = this.service.udise_school_wise({ management: this.management, category: this.category }).subscribe(
         (res) => {
           this.data = res["data"];
           this.gettingIndiceFilters(this.data);
@@ -710,7 +719,7 @@ export class UdiseReportComponent implements OnInit {
                 .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
               this.loaderAndErr();
-              this.changeDetection.markForCheck();
+              this.changeDetection.detectChanges();
             }
           }
         },
@@ -744,7 +753,7 @@ export class UdiseReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.udise_blocks_per_dist(districtId).subscribe(
+    this.myData = this.service.udise_blocks_per_dist(districtId, { management: this.management, category: this.category }).subscribe(
       (res) => {
         this.data = res["data"];
         this.gettingIndiceFilters(this.data);
@@ -779,6 +788,7 @@ export class UdiseReportComponent implements OnInit {
           level: "block",
         };
         this.genericFun(res, options, this.fileName);
+        this.changeDetection.detectChanges();
         this.setZoomLevel(
           options.centerLat,
           options.centerLng,
@@ -793,7 +803,7 @@ export class UdiseReportComponent implements OnInit {
             ? -1
             : 0
         );
-      },
+        },
       (err) => {
         this.data = [];
         this.loaderAndErr();
@@ -821,7 +831,7 @@ export class UdiseReportComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .udise_cluster_per_block(this.districtHierarchy.distId, blockId)
+      .udise_cluster_per_block(this.districtHierarchy.distId, blockId, { management: this.management, category: this.category })
       .subscribe(
         (res) => {
           this.data = res["data"];
@@ -868,6 +878,7 @@ export class UdiseReportComponent implements OnInit {
             level: "cluster",
           };
           this.genericFun(res, options, this.fileName);
+          this.changeDetection.detectChanges();
           this.setZoomLevel(
             options.centerLat,
             options.centerLng,
@@ -881,7 +892,7 @@ export class UdiseReportComponent implements OnInit {
               : b.details.Cluster_Name > a.details.Cluster_Name
               ? -1
               : 0
-          );
+          )
         },
         (err) => {
           this.data = [];
@@ -906,13 +917,13 @@ export class UdiseReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.udise_block_wise().subscribe(
+    this.myData = this.service.udise_block_wise({ management: this.management, category: this.category }).subscribe(
       (result: any) => {
         this.myData = this.service
           .udise_school_per_cluster(
             this.blockHierarchy.distId,
             this.blockHierarchy.blockId,
-            clusterId
+            clusterId, { management: this.management, category: this.category }
           )
           .subscribe(
             (res) => {
@@ -978,6 +989,7 @@ export class UdiseReportComponent implements OnInit {
               };
 
               this.genericFun(res, options, this.fileName);
+              this.changeDetection.detectChanges();
               this.setZoomLevel(
                 options.centerLat,
                 options.centerLng,

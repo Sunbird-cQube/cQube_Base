@@ -98,6 +98,10 @@ export class InfraMapVisualisationComponent implements OnInit {
 
   selected = "absolute";
 
+  managementName;
+  management;
+  category;
+
   getColor(data) {
     this.selected = data;
     this.onResize(event);
@@ -144,7 +148,11 @@ export class InfraMapVisualisationComponent implements OnInit {
     this.commonService.initMap("infraMap", [[this.lat, this.lng]]);
     document.getElementById("homeBtn").style.display = "block";
     document.getElementById("backBtn").style.display = "none";
-
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     let params = JSON.parse(sessionStorage.getItem("report-level-info"));
     if (params && params.level) {
       let data = params.data;
@@ -199,14 +207,14 @@ export class InfraMapVisualisationComponent implements OnInit {
   }
 
   getDistricts(): void {
-    this.service.infraMapDistWise().subscribe((res) => {
+    this.service.infraMapDistWise({ management: this.management, category: this.category }).subscribe((res) => {
       this.data = res["data"];
       this.districtMarkers = this.data;
     });
   }
 
   getBlocks(distId, blockId?: any): void {
-    this.service.infraMapBlockWise(distId).subscribe((res) => {
+    this.service.infraMapBlockWise(distId, { management: this.management, category: this.category }).subscribe((res) => {
       this.data = res["data"];
       this.blockMarkers = this.data;
       if (blockId) this.onBlockSelect(blockId);
@@ -214,7 +222,7 @@ export class InfraMapVisualisationComponent implements OnInit {
   }
 
   getClusters(distId, blockId, clusterId): void {
-    this.service.infraMapClusterWise(distId, blockId).subscribe((res) => {
+    this.service.infraMapClusterWise(distId, blockId, { management: this.management, category: this.category }).subscribe((res) => {
       this.data = res["data"];
       this.clusterMarkers = this.data;
       this.onClusterSelect(clusterId);
@@ -277,7 +285,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.infraMapDistWise().subscribe(
+        this.myData = this.service.infraMapDistWise({ management: this.management, category: this.category }).subscribe(
           (res) => {
             this.myDistData = res;
             this.data = res["data"];
@@ -368,7 +376,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.infraMapAllBlockWise().subscribe(
+      this.myData = this.service.infraMapAllBlockWise({ management: this.management, category: this.category }).subscribe(
         (res) => {
           this.myBlockData = res["data"];
           this.data = res["data"];
@@ -489,7 +497,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.infraMapAllClusterWise().subscribe(
+      this.myData = this.service.infraMapAllClusterWise({ management: this.management, category: this.category }).subscribe(
         (res) => {
           this.data = res["data"];
           this.gettingInfraFilters(this.data);
@@ -609,7 +617,7 @@ export class InfraMapVisualisationComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.infraMapAllSchoolWise().subscribe(
+      this.myData = this.service.infraMapAllSchoolWise({ management: this.management, category: this.category }).subscribe(
         (res) => {
           this.data = res["data"];
           this.gettingInfraFilters(this.data);
@@ -718,7 +726,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraMapBlockWise(districtId).subscribe(
+    this.myData = this.service.infraMapBlockWise(districtId, { management: this.management, category: this.category }).subscribe(
       (res) => {
         this.data = res["data"];
         this.gettingInfraFilters(this.data);
@@ -797,7 +805,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
 
     this.myData = this.service
-      .infraMapClusterWise(this.districtHierarchy.distId, blockId)
+      .infraMapClusterWise(this.districtHierarchy.distId, blockId, { management: this.management, category: this.category })
       .subscribe(
         (res) => {
           this.data = res["data"];
@@ -884,13 +892,13 @@ export class InfraMapVisualisationComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.infraMapAllBlockWise().subscribe(
+    this.myData = this.service.infraMapAllBlockWise({ management: this.management, category: this.category }).subscribe(
       (result: any) => {
         this.myData = this.service
           .infraMapSchoolWise(
             this.blockHierarchy.distId,
             this.blockHierarchy.blockId,
-            clusterId
+            clusterId, { management: this.management, category: this.category }
           )
           .subscribe(
             (res) => {
@@ -1341,7 +1349,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     }
 
     sessionStorage.setItem("health-card-info", JSON.stringify(data));
-    this._router.navigate(["/healthCard"]);
+    this._router.navigate(["/progressCard"]);
   }
 
   public legendColors: any = [
