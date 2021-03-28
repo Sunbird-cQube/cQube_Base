@@ -177,7 +177,8 @@ select:focus {
 }
 
 .card {
-  box-shadow: 12px 10px 6px 0 rgba(232, 236, 252, 0.05), 5px 4px 8px 0 rgba(140, 168, 243, 0.2);
+  box-shadow: 12px 10px 6px 0 rgba(232, 236, 252, 0.05),
+    5px 4px 8px 0 rgba(140, 168, 243, 0.2);
   border-radius: 10px;
   min-height: 300px;
   padding: 10px;
@@ -197,7 +198,8 @@ select:focus {
 }
 
 .container-fluid {
-  font-family: "Inv Maison Neue", "Maison Neue", -apple-system, BlinkMacSystemFont, "Open Sans", open-sans, sans-serif;
+  font-family: "Inv Maison Neue", "Maison Neue", -apple-system,
+    BlinkMacSystemFont, "Open Sans", open-sans, sans-serif;
 }
 
 .details {
@@ -271,7 +273,7 @@ select:focus {
 
 @media only screen and (min-width: 2560px) {
   .regional-detail-card {
-    min-height: 100px;
+    min-height: 145px;
     max-height: fit-content;
     background-color: #3100cc;
     margin-top: 10px;
@@ -280,9 +282,9 @@ select:focus {
   }
 
   .regional-detail-card .regional-details-container {
-    padding: 30px 0px 30px 100px;
-    font-size: 2rem;
-    line-height: 2.5rem;
+    padding: 15px 0px 15px 80px;
+    font-size: 1.5rem;
+    line-height: 2.2rem;
   }
 
   .select-control,
@@ -376,9 +378,9 @@ select:focus {
   }
 }
 
-@media only screen and (min-width: 3840px) {
+@media only screen and (min-width: 3820px) {
   .regional-detail-card {
-    min-height: 100px;
+    min-height: 195px !important;
     max-height: fit-content;
     background-color: #3100cc;
     margin-top: 10px;
@@ -387,9 +389,9 @@ select:focus {
   }
 
   .regional-detail-card .regional-details-container {
-    padding: 40px 0px 40px 100px;
-    font-size: 3rem;
-    line-height: 3.5rem;
+    padding: 20px 0px 20px 100px;
+    font-size: 2rem;
+    line-height: 3rem;
   }
 
   .select-control,
