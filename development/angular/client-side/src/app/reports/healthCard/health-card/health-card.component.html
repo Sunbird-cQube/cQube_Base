@@ -151,7 +151,7 @@
                 </div>
                 <div class="row" style="padding-top: 8px !important;">
                     <div class="col-lg-4 col-md-3 col-sm-12">
-                        <label for="" class="form-label">Choose Level</label>
+                        <label for="" class="form-label note">Choose Level</label>
                         <select id="level" class="select-control full-width"
                             [(ngModel)]="level" name="level" (change)="selectedLevel()">
                             <option [value]="level" disabled selected="selected">Choose Level
@@ -163,7 +163,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="autocomplete" style="width:100%;">
-                            <label id="warning" class="form-label"> Please enter at
+                            <label id="warning" class="form-label note"> Please enter at
                                 least 2
                                 characters/digits</label>
                             <label class="form-label" for="" *ngIf="len >= 2">&nbsp;</label>
