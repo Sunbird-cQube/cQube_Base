@@ -142,40 +142,48 @@ export class AppServiceComponent {
     //Initialise markers.....
     markersIcons = [];
     public initMarkers(lat, lng, color, radius, strokeWeight, weight, levelWise) {
-        var markerIcon;
-        if (radius >= 1) {
-            markerIcon = L.circleMarker([lat, lng], {
-                radius: radius + 1,
-                color: "gray",
-                fillColor: color,
-                fillOpacity: 1,
-                strokeWeight: strokeWeight,
-                weight: weight
-            });
-        } else {
-            markerIcon = L.circleMarker([lat, lng], {
-                radius: 1,
-                color: color,
-                fillColor: color,
-                fillOpacity: 1,
-                strokeWeight: strokeWeight,
-                weight: weight
-            });
+        if (lat !== undefined && lng !== undefined) {
+            var markerIcon;
+            if (radius >= 1) {
+                markerIcon = L.circleMarker([lat, lng], {
+                    radius: radius + 1,
+                    color: "gray",
+                    fillColor: color,
+                    fillOpacity: 1,
+                    strokeWeight: strokeWeight,
+                    weight: weight
+                });
+            } else {
+                markerIcon = L.circleMarker([lat, lng], {
+                    radius: 1,
+                    color: color,
+                    fillColor: color,
+                    fillOpacity: 1,
+                    strokeWeight: strokeWeight,
+                    weight: weight
+                });
+            }
+            this.markersIcons.push(markerIcon);
+            return markerIcon;
         }
-        this.markersIcons.push(markerIcon);
-        return markerIcon;
+
+        return undefined;
     }
     public initMarkers1(lat, lng, color, strokeWeight, weight, levelWise) {
-        var markerIcon;
-            markerIcon = L.circleMarker([lat, lng], {
-                color: "gray",
-                fillColor: color,
-                fillOpacity: 1,
-                strokeWeight: strokeWeight,
-                weight: weight
-            });
-        this.markersIcons.push(markerIcon);
-        return markerIcon;
+        if (lat !== undefined && lng !== undefined) {
+            var markerIcon;
+                markerIcon = L.circleMarker([lat, lng], {
+                    color: "gray",
+                    fillColor: color,
+                    fillOpacity: 1,
+                    strokeWeight: strokeWeight,
+                    weight: weight
+                });
+            this.markersIcons.push(markerIcon);
+            return markerIcon;
+        }
+
+        return undefined;
     }
 
     setMarkerRadius(level){
@@ -219,7 +227,8 @@ export class AppServiceComponent {
             zoomLevel =  this.zoomLevel + 5;
          }
         globalMap.options.minZoom = zoomLevel;
-        globalMap.setView(new L.LatLng(this.latitude, this.longitude), zoomLevel);
+        if (this.latitude !== null && this.longitude !== null)
+            globalMap.setView(new L.LatLng(this.latitude, this.longitude), zoomLevel);
     }
 
 
