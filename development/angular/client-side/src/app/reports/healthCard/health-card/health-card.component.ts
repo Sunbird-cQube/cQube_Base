@@ -514,6 +514,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       if(this.level != 'school')
         healthCardData['total_schools'] = healthCardData['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       healthCardData['total_students'] = healthCardData['total_students'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      if(healthCardData['school_management_type'])
+        healthCardData['school_management_type'] = this.commonService.changeingStringCases(healthCardData['school_management_type'].replace(/_/g, ' '))
       this.updatedKeys = [];
       this.keys = Object.keys(healthCardData);
       let index = this.keys.indexOf('district_id');
@@ -543,6 +545,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.updatedKeys = [];
       healthCardData['basic_details']['total_schools'] = healthCardData['basic_details']['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       healthCardData['basic_details']['total_students'] = healthCardData['basic_details']['total_students'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      if(healthCardData['basic_details']['school_management_type'])
+        healthCardData['basic_details']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['basic_details']['school_management_type'].replace(/_/g, ' '))
       this.keys = Object.keys(healthCardData['basic_details']);
       this.keys = this.keys.filter(key => {
         let myKey = this.stringConverter(key);
@@ -569,6 +573,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.semPerformTooltip = [];
     this.semPerformTooltipKeys = [];
     if (healthCardData['school_infrastructure'] && healthCardData['school_infrastructure'] != null) {
+      if(healthCardData['school_infrastructure']['school_management_type'])
+        healthCardData['school_infrastructure']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['school_infrastructure']['school_management_type'].replace(/_/g, ' '))
       this.tooltipInfra = Object.keys(healthCardData['school_infrastructure']);
       this.tooltipInfra = this.tooltipInfra.filter((key) => {
         return !this.schoolInfra.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key) && key != 'areas_to_focus';
@@ -586,6 +592,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.infraRankMatrixColor = this.service.colorRankMatrics(this.infraRankMatrixValue);
     }
     if (healthCardData['student_attendance'] && healthCardData['student_attendance'] != null) {
+      if(healthCardData['student_attendance']['school_management_type'])
+        healthCardData['student_attendance']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['student_attendance']['school_management_type'].replace(/_/g, ' '))
       this.tooltipStdAttendance = Object.keys(healthCardData['student_attendance']);
       this.tooltipStdAttendance = this.tooltipStdAttendance.filter((key) => {
         return !this.schoolAttendance.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
@@ -599,6 +607,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.stdAttdRankMatrixColor = this.service.colorRankMatrics(this.stdAttdRankMatrixValue);
     }
     if (healthCardData['student_semester'] && healthCardData['student_semester'] != null) {
+      if(healthCardData['student_semester']['school_management_type'])
+        healthCardData['student_semester']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['student_semester']['school_management_type'].replace(/_/g, ' '))
       this.tooltimSem = Object.keys(healthCardData['student_semester']);
       this.tooltimSem = this.tooltimSem.filter((key) => {
         return !this.semPerformance.includes(key) && !this.semPerformancePercent.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
@@ -627,6 +637,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.semRankMatrixColor = this.service.colorRankMatrics(this.semRankMatrixValue);
     }
     if (healthCardData['pat_performance'] && healthCardData['pat_performance'] != null) {
+      if(healthCardData['pat_performance']['school_management_type'])
+        healthCardData['pat_performance']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['pat_performance']['school_management_type'].replace(/_/g, ' '))
       this.tooltipPat = Object.keys(healthCardData['pat_performance']);
       if (healthCardData['pat_performance']['grade_wise_performance']) {
         const ordered = Object.keys(healthCardData['pat_performance']['grade_wise_performance']).sort().reduce(
@@ -663,6 +675,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.patRankMatrixColor = this.service.colorRankMatrics(this.patRankMatrixValue);
     }
     if (healthCardData['crc_visit'] && healthCardData['crc_visit'] != null) {
+      if(healthCardData['crc_visit']['school_management_type'])
+        healthCardData['crc_visit']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['crc_visit']['school_management_type'].replace(/_/g, ' '))
       this.tooltipCrc = Object.keys(healthCardData['crc_visit']);
       this.tooltipCrc = this.tooltipCrc.filter((key) => {
         return !this.crcVisit.includes(key);
@@ -678,6 +692,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.crcRankMatrixColor = this.service.colorRankMatrics(this.crcRankMatrixValue);
     }
     if (healthCardData['udise'] && healthCardData['udise'] != null) {
+      if(healthCardData['udise']['school_management_type'])
+        healthCardData['udise']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['udise']['school_management_type'].replace(/_/g, ' '))
       this.tooltipUDISE = Object.keys(healthCardData['udise']);
       this.tooltipUDISE = this.tooltipUDISE.filter((key) => {
         return !this.UDISE.includes(key) && !this.UDISECategory.includes(key) && !this.schoolInfraRank.includes(key) && key != "district_latitude" && key != "block_latitude" && key != "cluster_latitude" && key != "school_latitude" && key != "district_longitude" && key != "block_longitude" && key != "cluster_longitude" && key != "school_longitude";
