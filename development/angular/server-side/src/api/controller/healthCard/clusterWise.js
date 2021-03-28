@@ -5,11 +5,19 @@ const s3File = require('../../lib/reads3File');
 
 router.post('/clusterWise', auth.authController, async (req, res) => {
     try {
+        logger.info('---healthCard cluster wise api ---');
         var blockId = req.body.blockId;
         var clusterId = req.body.id;
         var timePeriod = req.body.timePeriod;
-        logger.info('---healthCard cluster wise api ---');
-        let fileName = `healthCard/cluster/${timePeriod}/${blockId}.json`;
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `healthCard/school_management_category/${timePeriod}/overall_category/${management}/cluster/${blockId}.json`;
+        } else {
+            fileName = `healthCard/cluster/${timePeriod}/${blockId}.json`;
+        }
         var clusterData = await s3File.readS3File(fileName);
         clusterData = clusterData.filter(a => {
             if (a.cluster_id == clusterId) {
