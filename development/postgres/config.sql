@@ -18368,6 +18368,8 @@ drop view if exists hc_pat_state_mgmt_overall;
 drop view if exists hc_pat_state_mgmt_last30;
 drop view if exists hc_sat_state_mgmt_overall;
 drop view if exists hc_sat_state_mgmt_last30;
+drop view if exists hc_student_attendance_state_mgmt_overall;
+drop view if exists hc_student_attendance_state_mgmt_last30;
 
 
 /* Student attendance management overall */
