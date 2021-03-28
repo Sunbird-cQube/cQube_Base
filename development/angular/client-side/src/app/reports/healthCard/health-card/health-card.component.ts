@@ -109,6 +109,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
   progress = 50.5;
   progressBar = document.querySelector('.progress-bar');
 
+  managementName;
+  management;
+  category;
+
+
   constructor(private cdr: ChangeDetectorRef, public commonService: AppServiceComponent, public service: HealthCardService, private readonly _router: Router, private readonly _cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -116,6 +121,12 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('myInput')['disabled'] = true;
     this.state = this.commonService.state;
+
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
 
     this.params = JSON.parse(sessionStorage.getItem('health-card-info'));
     
@@ -182,7 +193,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     document.getElementById('myInput')['disabled'] = true;
     document.getElementById('myInput')['value'] = '';
     this.placeHolder = "First Choose Level From Drop-down";
-    this.service.stateData({ timePeriod: this.period }).subscribe(res => {
+    this.service.stateData({...{ timePeriod: this.period }, ...{ management: this.management, category: this.category }}).subscribe(res => {
       this.healthCardData = res['data'];
       this.schoolInfra = ['infra_score'];
       this.schoolInfraKey = ['Infrastructure Score'];
@@ -264,7 +275,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         }
 
         this.selectedLevelData = dist;
-        this.service.districtWiseData({ id: id, timePeriod: this.period }).subscribe(res => {
+        this.service.districtWiseData({...{ id: id, timePeriod: this.period }, ...{ management: this.management, category: this.category }}).subscribe(res => {
           this.healthCardData = res['districtData'][0];
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
@@ -320,7 +331,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         }
 
         this.selectedLevelData = block;
-        this.service.blockWiseData({ id: id, timePeriod: this.period }).subscribe(res => {
+        this.service.blockWiseData({...{ id: id, timePeriod: this.period }, ...{ management: this.management, category: this.category }}).subscribe(res => {
           this.healthCardData = res['blockData'][0];
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
@@ -376,7 +387,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         }
 
         this.selectedLevelData = cluster;
-        this.service.clusterWiseData({ id: id, blockId: blkId, timePeriod: this.period }).subscribe(res => {
+        this.service.clusterWiseData({...{ id: id, blockId: blkId, timePeriod: this.period }, ...{ management: this.management, category: this.category }}).subscribe(res => {
           this.healthCardData = res['clusterData'][0];
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
@@ -431,7 +442,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
             blok = school.blockId;
           }
         }
-        this.service.schoolWiseData({ id: id, blockId: blok, timePeriod: this.period }).subscribe(res => {
+        this.service.schoolWiseData({...{ id: id, blockId: blok, timePeriod: this.period }, ...{ management: this.management, category: this.category }}).subscribe(res => {
           this.healthCardData = res['schoolData'][0];
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];

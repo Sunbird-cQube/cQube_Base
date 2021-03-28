@@ -8,7 +8,15 @@ router.post('/distWise', auth.authController, async (req, res) => {
         var districtId = req.body.id;
         logger.info('---healthCard dist wise api ---');
         var timePeriod = req.body.timePeriod;
-        let fileName = `healthCard/district/${timePeriod}/${districtId}.json`;
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `healthCard/school_management_category/${timePeriod}/overall_category/${management}/district/${districtId}.json`;
+        } else {
+            fileName = `healthCard/district/${timePeriod}/${districtId}.json`;
+        }
 
         var districtData = await s3File.readS3File(fileName);
         logger.info('--- healthCard dist wise api response sent ---');
