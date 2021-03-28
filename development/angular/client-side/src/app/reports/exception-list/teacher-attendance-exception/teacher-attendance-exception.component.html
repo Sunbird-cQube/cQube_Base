@@ -66,7 +66,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="padding-bottom: 10px !important">
             <select id="period" [(ngModel)]="period"
                 (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
                 <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
@@ -89,14 +89,13 @@
                 </option>
             </select>
 
-            <button class="btn btn-secondary" id="blockbtn" name="block" (click)="blockWise($event)">&nbsp;<strong
-                    id="allBlock">Blocks</strong>
+            <button class="btn btn-secondary" id="blockbtn" name="block"
+                (click)="blockWise($event)">&nbsp;<strong>Blocks</strong>
             </button>
-            <button class="btn btn-secondary" id="clusterbtn" (click)="clusterWise($event)">&nbsp;<strong
-                    id="allCluster">Clusters</strong>
+            <button class="btn btn-secondary" id="clusterbtn"
+                (click)="clusterWise($event)">&nbsp;<strong>Clusters</strong>
             </button>
-            <button class="btn btn-secondary" id="schoolbtn" (click)="schoolWise($event)">&nbsp;<strong
-                    id="allSchool">Schools</strong>
+            <button class="btn btn-secondary" id="schoolbtn" (click)="schoolWise($event)">&nbsp;<strong>Schools</strong>
             </button>
 
             <select id="choose_dist" [(ngModel)]="myDistrict" name="myDistrict"
