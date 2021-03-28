@@ -100,10 +100,12 @@ export class PATExceptionComponent implements OnInit {
     this.levelWiseFilter();
   }
   setZoomLevel(lat, lng, globalMap, zoomLevel) {
-    globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
+    if (lat !== undefined && lng !== undefined)
+      globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
     globalMap.options.minZoom = this.commonService.zoomLevel;
     this.changeDetection.detectChanges();
   }
+  
   getMarkerRadius(rad1, rad2, rad3, rad4) {
     let radius = this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
     return radius;
@@ -453,7 +455,7 @@ export class PATExceptionComponent implements OnInit {
             mapZoom: this.commonService.zoomLevel,
             centerLat: this.lat,
             centerLng: this.lng,
-            level: 'cluster'
+            level: 'school'
           }
           this.schoolMarkers = [];
           if (this.data['data'].length > 0) {
@@ -734,7 +736,8 @@ export class PATExceptionComponent implements OnInit {
       for (let i = 0; i < this.markers.length; i++) {
         this.getLatLng(options.level, this.markers[i]);
         var markerIcon = this.commonService.initMarkers(this.latitude, this.longitude, this.commonService.relativeColorGredient(this.markers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, this.colors), options.radius, options.strokeWeight, options.weight, options.level);
-        this.generateToolTip(this.markers[i], options.level, markerIcon, this.strLat, this.strLng);
+        if (markerIcon)
+          this.generateToolTip(this.markers[i], options.level, markerIcon, this.strLat, this.strLng);
       }
 
       this.fileName = fileName;
@@ -774,7 +777,19 @@ export class PATExceptionComponent implements OnInit {
   }
 
   popups(markerIcon, markers, level) {
-    for (var i = 0; i < this.markers.length; i++) {
+    markerIcon.on('mouseover', function (e) {
+      this.openPopup();
+    });
+    markerIcon.on('mouseout', function (e) {
+      this.closePopup();
+    });
+
+    this.layerMarkers.addLayer(markerIcon);
+    if (level != 'school') {
+      markerIcon.on('click', this.onClick_Marker, this)
+    }
+    markerIcon.myJsonData = markers;
+    /* for (var i = 0; i < this.markers.length; i++) {
       markerIcon.on('mouseover', function (e) {
         this.openPopup();
       });
@@ -787,7 +802,7 @@ export class PATExceptionComponent implements OnInit {
         markerIcon.on('click', this.onClick_Marker, this)
       }
       markerIcon.myJsonData = markers;
-    }
+    } */
   }
 
   onSubjectSelect(data) {
