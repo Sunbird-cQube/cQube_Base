@@ -15343,6 +15343,8 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+select infra_district_mgt_reports('water','toilet');
+
 
 create or replace FUNCTION infra_block_mgt_reports(category_1 text,category_2 text)
 RETURNS text AS
@@ -16243,6 +16245,42 @@ else replace(trim(initcap(infrastructure_name)),''_'','' '') end||'''''' else ''
 '']as areas_to_focus from infra_cluster_table_mgt_view'' 
 from infrastructure_master where status = true order by 1';
 cluster_atf_value text; 
+block_atf text:='select ''select block_id,school_management_type, array[''||string_agg(''case when ''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<(select abs(avg(coalesce(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent,0))::int-5) from infra_district_table_mgt_view)  then ''''''||
+case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
+else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
+'']as areas_to_focus from infra_block_table_mgt_view'' 
+from infrastructure_master where status = true order by 1';
+block_atf_value text; 
+district_atf text:='select ''select district_id, school_management_type,array[''||string_agg(''case when ''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<(select abs(avg(coalesce(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent,0))::int-5) from infra_district_table_mgt_view)  then ''''''||
+case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
+else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
+'']as areas_to_focus from infra_district_table_mgt_view'' 
+from infrastructure_master where status = true order by 1';
+district_atf_value text; 
+query text;
+BEGIN
+Execute district_atf into district_atf_value;
+Execute school_atf into school_atf_value;
+Execute cluster_atf into cluster_atf_value;
+Execute block_atf into block_atf_value;
+IF school_atf <> '' THEN 
+query='create or replace view infra_district_atf_mgmt as 
+select district_id,school_management_type,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||district_atf_value||') as a;
+create or replace view infra_school_atf_mgmt as 
+select school_id,school_management_type,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||school_atf_value||') as a;
+create or replace view infra_cluster_atf_mgmt as 
+select cluster_id,school_management_type,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||cluster_atf_value||') as a;
+create or replace view infra_block_atf_mgmt as 
+select block_id,school_management_type,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||block_atf_value||') as a;';
+Execute query; 
+END IF;
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+select infra_areas_to_focus_mgmt();
 
 /*udise*/
 
@@ -16286,42 +16324,6 @@ select uds.*,usc.value_below_33,usc.value_between_33_60,usc.value_between_60_75,
    from udise_school_mgt_score group by udise_school_id,school_management_type)as usc
 on uds.udise_school_id= usc.udise_school_id and uds.school_management_type=usc.school_management_type;
 
-block_atf text:='select ''select block_id,school_management_type, array[''||string_agg(''case when ''||
-replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<(select abs(avg(coalesce(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent,0))::int-5) from infra_district_table_mgt_view)  then ''''''||
-case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
-else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
-'']as areas_to_focus from infra_block_table_mgt_view'' 
-from infrastructure_master where status = true order by 1';
-block_atf_value text; 
-district_atf text:='select ''select district_id, school_management_type,array[''||string_agg(''case when ''||
-replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent<(select abs(avg(coalesce(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent,0))::int-5) from infra_district_table_mgt_view)  then ''''''||
-case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
-else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
-'']as areas_to_focus from infra_district_table_mgt_view'' 
-from infrastructure_master where status = true order by 1';
-district_atf_value text; 
-query text;
-BEGIN
-Execute district_atf into district_atf_value;
-Execute school_atf into school_atf_value;
-Execute cluster_atf into cluster_atf_value;
-Execute block_atf into block_atf_value;
-IF school_atf <> '' THEN 
-query='create or replace view infra_district_atf_mgmt as 
-select district_id,school_management_type,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||district_atf_value||') as a;
-create or replace view infra_school_atf_mgmt as 
-select school_id,school_management_type,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||school_atf_value||') as a;
-create or replace view infra_cluster_atf_mgmt as 
-select cluster_id,school_management_type,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||cluster_atf_value||') as a;
-create or replace view infra_block_atf_mgmt as 
-select block_id,school_management_type,array_remove(areas_to_focus,''0'')as areas_to_focus from ('||block_atf_value||') as a;';
-Execute query; 
-END IF;
-return 0;
-END;
-$$LANGUAGE plpgsql;
-
-select infra_areas_to_focus_mgmt();
 
 
 /*school - infra*/
@@ -16516,7 +16518,7 @@ left join infra_block_atf_mgmt as atf on b.block_id=atf.block_id and b.school_ma
 create or replace view hc_infra_mgmt_district as 
 select idt.*,atf.areas_to_focus,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
 (select *,((rank () over ( order by infra_score desc))||' out of '||(select count(distinct(district_id)) 
-from infra_district_mgt_table_view)) as district_level_rank_within_the_state,coalesce(1-round(( Rank() over (ORDER BY infra_score DESC) / ((select count(distinct(district_id)) from infra_district_mgt_table_view)*1.0)),2)) as state_level_score from infra_district_mgt_table_view) as idt
+from infra_district_table_mgt_view)) as district_level_rank_within_the_state,coalesce(1-round(( Rank() over (ORDER BY infra_score DESC) / ((select count(distinct(district_id)) from infra_district_table_mgt_view)*1.0)),2)) as state_level_score from infra_district_table_mgt_view) as idt
 left join
 (select district_id,school_management_type,
  sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
@@ -18366,6 +18368,48 @@ drop view if exists hc_pat_state_mgmt_overall;
 drop view if exists hc_pat_state_mgmt_last30;
 drop view if exists hc_sat_state_mgmt_overall;
 drop view if exists hc_sat_state_mgmt_last30;
+
+
+/* Student attendance management overall */
+
+
+create or replace view hc_student_attendance_state_mgmt_overall as 
+SELECT round(((sum(total_present) * 100.0) / sum(total_students)), 1) AS attendance,
+    sum(students_count) AS students_count,
+    count(DISTINCT school_id) AS total_schools,
+    school_management_type,
+    ( SELECT data_from_date(min(year), min(month)) AS data_from_date
+           FROM student_attendance_trans
+          WHERE year = ( SELECT min(year) AS min
+                   FROM student_attendance_trans )
+          GROUP BY year) AS data_from_date,
+    ( SELECT
+                CASE
+                    WHEN ((matt.year = date_part('year'::text, now())) AND (matt.month = date_part('month'::text, now()))) THEN to_char(now(), 'DD-MM-YYYY'::text)::character varying
+                    ELSE data_upto_date(matt.year, matt.month)
+                END AS data_upto_date
+           FROM ( SELECT max(student_attendance_trans.month) AS month,
+                    max(student_attendance_trans.year) AS year
+                   FROM student_attendance_trans
+                  WHERE (student_attendance_trans.year = ( SELECT max(year) AS max
+                           FROM student_attendance_trans ))) matt) AS data_upto_date
+   FROM student_attendance_agg_overall
+  WHERE district_latitude > 0 AND district_longitude > 0 AND block_latitude > 0 AND block_longitude > 0 AND cluster_latitude > 0 AND cluster_longitude > 0 AND school_latitude > 0 AND school_longitude > 0 AND school_name IS NOT NULL AND cluster_name IS NOT NULL AND block_name IS NOT NULL AND district_name IS NOT NULL AND total_students > 0 AND school_management_type IS NOT NULL
+  GROUP BY school_management_type;
+  
+  
+create or replace view hc_student_attendance_state_mgmt_last30 as 
+   SELECT round(((sum(total_present) * 100.0) / sum(total_students)), 1) AS attendance,
+    school_management_type,
+    sum(students_count) AS students_count,
+    count(DISTINCT school_id) AS total_schools,
+    ( SELECT to_char((min(days_in_period.day))::timestamp with time zone, 'DD-MM-YYYY'::text) AS data_from_date
+           FROM ( SELECT (generate_series((now()::date - '30 days'::interval), (((now()::date - '1 day'::interval))::date)::timestamp without time zone, '1 day'::interval))::date AS day) days_in_period) AS data_from_date,
+    ( SELECT to_char((max(days_in_period.day))::timestamp with time zone, 'DD-MM-YYYY'::text) AS data_upto_date
+           FROM ( SELECT (generate_series((now()::date - '30 days'::interval), (((now()::date - '1 day'::interval))::date)::timestamp without time zone, '1 day'::interval))::date AS day) days_in_period) AS data_upto_date
+   FROM student_attendance_agg_last_30_days
+  WHERE ((district_latitude > (0)::double precision) AND (district_longitude > (0)::double precision) AND (block_latitude > (0)::double precision) AND (block_longitude > (0)::double precision) AND (cluster_latitude > (0)::double precision) AND (cluster_longitude > (0)::double precision) AND (school_latitude > (0)::double precision) AND (school_longitude > (0)::double precision) AND (school_name IS NOT NULL) AND (cluster_name IS NOT NULL) AND (block_name IS NOT NULL) AND (district_name IS NOT NULL) AND (total_students > 0) AND (school_management_type IS NOT NULL))
+  GROUP BY school_management_type;
 
 
 /* SAT MGMT overall */
