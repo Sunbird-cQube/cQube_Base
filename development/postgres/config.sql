@@ -10599,16 +10599,16 @@ select d.*,b.total_schools,b.students_count from
 (select a.*,b.grade_wise_performance from
 (select academic_year,
 district_id,initcap(district_name)as district_name,district_latitude,district_longitude,semester,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as district_performance,school_management_type
-from semester_exam_school_result where school_management_type is not null group by academic_year,semester,school_management_type,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as district_performance,school_management_type
+from semester_exam_school_result where school_management_type is not null and total_marks > 0group by academic_year,semester,school_management_type,
 district_id,district_name,district_latitude,district_longitude) as a
 left join 
 (select academic_year,semester,json_object_agg(grade,percentage) as grade_wise_performance,school_management_type,
 district_id from
 (select academic_year,cast('Grade '||grade as text)as grade,
 district_id,semester,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
-from semester_exam_school_result where school_management_type is not null group by academic_year,grade,semester,school_management_type,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage
+from semester_exam_school_result where school_management_type is not null and total_marks > 0group by academic_year,grade,semester,school_management_type,
 district_id)as a
 group by district_id,academic_year,semester,school_management_type)as b
 on a.academic_year=b.academic_year and a.district_id=b.district_id and a.semester=b.semester and a.school_management_type=b.school_management_type)as c
@@ -10620,21 +10620,21 @@ json_build_object(grade,json_object_agg(subject_name,percentage  order by subjec
 
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,semester,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
-from semester_exam_school_result where school_management_type is not null group by academic_year,grade,subject,semester,school_management_type,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,school_management_type
+from semester_exam_school_result where school_management_type is not null and total_marks > 0 group by academic_year,grade,subject,semester,school_management_type,
 district_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 district_id,semester,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
-from semester_exam_school_result where school_management_type is not null group by academic_year,grade,school_management_type,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,school_management_type
+from semester_exam_school_result where school_management_type is not null and total_marks > 0 group by academic_year,grade,school_management_type,
 district_id,semester order by grade desc,subject_name))as b
 group by academic_year,district_id,grade,semester,school_management_type)as d
 group by academic_year,district_id,semester,school_management_type
 )as d on c.academic_year=d.academic_year and c.district_id=d.district_id and c.semester=d.semester and c.school_management_type=d.school_management_type)as d
 left join 
  (select c.district_id,b.assessment_year as academic_year,semester,
-	count(distinct(student_uid)) as students_count,count(distinct(a.school_id)) as total_schools,school_management_type
+       count(distinct(student_uid)) as students_count,count(distinct(a.school_id)) as total_schools,school_management_type
 from
 (select exam_id,school_id,student_uid
 from semester_exam_result_trans where school_id in (select school_id from semester_exam_school_result where school_management_type is not null )
@@ -10643,7 +10643,6 @@ left join (select exam_id,assessment_year,semester from semester_exam_mst) as b 
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.district_id,b.assessment_year,semester,school_management_type)as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id  and d.semester=b.semester and d.school_management_type=b.school_management_type and d.school_management_type is not null ;
-
 /*semester exam block*/
 
 create or replace view semester_exam_block_mgmt_all as
@@ -10660,7 +10659,7 @@ left join
 block_id,school_management_type from
 (select academic_year,cast('Grade '||grade as text)as grade,
 block_id,semester,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,school_management_type
 from semester_exam_school_result group by academic_year,grade,semester,school_management_type,
 block_id)as a
 group by block_id,academic_year,semester,school_management_type)as b
@@ -10672,13 +10671,13 @@ select academic_year,semester,block_id,jsonb_agg(subject_wise_performance)as sub
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance,school_management_type from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,semester,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,school_management_type
 from semester_exam_school_result  where school_management_type is not null group by academic_year,grade,subject,semester,school_management_type,
 block_id order by grade desc,subject_name)
 union
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 block_id,semester,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,school_management_type
 from semester_exam_school_result where school_management_type is not null group by academic_year,grade,semester,school_management_type,
 block_id order by grade desc,subject_name)) as a
 group by academic_year,block_id,grade,semester,school_management_type)as d
@@ -10919,9 +10918,9 @@ select d.*,b.total_schools,b.students_count from
 (select a.*,b.grade_wise_performance from
 (select academic_year,semester,
 district_id,initcap(district_name)as district_name,district_latitude,district_longitude,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as district_performance,school_management_type
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as district_performance,school_management_type
 from semester_exam_school_result 
-where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null
+where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null and total_marks>0 
 group by academic_year,semester,school_management_type,
 district_id,district_name,district_latitude,district_longitude) as a
 left join 
@@ -10929,9 +10928,9 @@ left join
 district_id,school_management_type from
 (select academic_year,semester,cast('Grade '||grade as text)as grade,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,school_management_type
 from semester_exam_school_result 
-where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null
+where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null and total_marks>0 
 group by academic_year,grade,semester,school_management_type,
 district_id)as a
 group by district_id,academic_year,semester,school_management_type)as b
@@ -10943,17 +10942,17 @@ select academic_year,semester,district_id,jsonb_agg(subject_wise_performance)as 
 json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance,school_management_type from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,school_management_type
 from semester_exam_school_result 
-where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null
+where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null and total_marks>0 
 group by academic_year,grade,subject,semester,school_management_type,
 district_id order by grade desc,subject_name)
 union
 (select academic_year,semester,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,school_management_type
 from semester_exam_school_result 
-where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null
+where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null and total_marks>0 
 group by academic_year,grade,semester,school_management_type,
 district_id order by grade desc,subject_name))as b
 group by academic_year,district_id,grade,semester,school_management_type)as d
@@ -15068,6 +15067,7 @@ order by 1,grade)as b on a.academic_year=b.academic_year and a.school_id=b.schoo
 
 /* udise management */
 
+
 CREATE OR REPLACE FUNCTION udise_district_mgt_score()
 RETURNS text AS
 $$
@@ -15094,8 +15094,8 @@ Execute indices into indices_cols;
 Execute infra_score into infra_score_cols;
 district_score='
 create or replace view udise_district_mgt_score as 
-select c.*,'||'''overall_category'''||' as school_category,((rank () over ( order by Infrastructure_Score desc))||'' out of ''||(select count(distinct(district_id)) 
-from udise_school_metrics_agg)) as district_level_rank_within_the_state,coalesce(1-round(( Rank() over (ORDER BY Infrastructure_Score DESC) / ((select count(distinct(district_id)) from udise_school_metrics_agg)*1.0)),2)) as state_level_score from
+select c.*,'||'''overall_category'''||' as school_category,((rank () over ( partition by c.school_management_type order by Infrastructure_Score desc))||'' out of ''||(select count(distinct(district_id)) 
+from udise_school_metrics_agg)) as district_level_rank_within_the_state,coalesce(1-round(( Rank() over (partition by c.school_management_type ORDER BY Infrastructure_Score DESC) / ((select count(distinct(district_id)) from udise_school_metrics_agg where school_management_type=c.school_management_type)*1.0)),2)) as state_level_score from
 (select b.*,'||infra_score_cols||'
 from 
 (select district_id,initcap(district_name)as district_name,district_latitude,district_longitude,sum(total_schools)as total_schools,
@@ -16294,15 +16294,15 @@ select uds.*,usc.value_below_33,usc.value_between_33_60,usc.value_between_60_75,
    from udise_school_mgt_score group by district_id,school_management_type)as usc
 on uds.district_id= usc.district_id and uds.school_management_type=usc.school_management_type;
 
-	create or replace view hc_udise_mgmt_block as  
-	select uds.*,usc.value_below_33,usc.value_between_33_60,usc.value_between_60_75,usc.value_above_75 from udise_block_mgt_score as uds left join 
-	(select block_id,school_management_type,
-	 sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
-	 sum(case when Infrastructure_score > 33 and Infrastructure_score<=60 then 1 else 0 end)as value_between_33_60,
-	 sum(case when Infrastructure_score > 60 and Infrastructure_score<=75 then 1 else 0 end)as value_between_60_75,
-	 sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
-	   from udise_school_mgt_score group by block_id,school_management_type)as usc
-	on uds.block_id= usc.block_id and uds.school_management_type=usc.school_management_type;
+create or replace view hc_udise_mgmt_block as  
+select uds.*,usc.value_below_33,usc.value_between_33_60,usc.value_between_60_75,usc.value_above_75 from udise_block_mgt_score as uds left join 
+(select block_id,school_management_type,
+ sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when Infrastructure_score > 33 and Infrastructure_score<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when Infrastructure_score > 60 and Infrastructure_score<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
+   from udise_school_mgt_score group by block_id,school_management_type)as usc
+on uds.block_id= usc.block_id and uds.school_management_type=usc.school_management_type;
 
 create or replace view hc_udise_mgmt_cluster as  
 select uds.*,usc.value_below_33,usc.value_between_33_60,usc.value_between_60_75,usc.value_above_75 from udise_cluster_mgt_score as uds left join 
@@ -16517,8 +16517,8 @@ left join infra_block_atf_mgmt as atf on b.block_id=atf.block_id and b.school_ma
 
 create or replace view hc_infra_mgmt_district as 
 select idt.*,atf.areas_to_focus,ist.value_below_33,ist.value_between_33_60,ist.value_between_60_75,ist.value_above_75 from 
-(select *,((rank () over ( order by infra_score desc))||' out of '||(select count(distinct(district_id)) 
-from infra_district_table_mgt_view)) as district_level_rank_within_the_state,coalesce(1-round(( Rank() over (ORDER BY infra_score DESC) / ((select count(distinct(district_id)) from infra_district_table_mgt_view)*1.0)),2)) as state_level_score from infra_district_table_mgt_view) as idt
+(select *,((rank () over ( partition by school_management_type order by infra_score desc))||' out of '||(select count(distinct(district_id)) 
+from infra_district_table_mgt_view)) as district_level_rank_within_the_state,coalesce(1-round(( Rank() over (partition by school_management_type ORDER BY infra_score DESC) / ((select count(distinct(district_id)) from infra_district_table_mgt_view)*1.0)),2)) as state_level_score from infra_district_table_mgt_view) as idt
 left join
 (select district_id,school_management_type,
  sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
@@ -17448,7 +17448,7 @@ left join
 (select b.*,c.cluster_level_rank_within_the_state,
 c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from 
 (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_cluster_mgmt_overall as sad left join
+ from hc_student_attendance_cluster_mgmt_last_30_days as sad left join
 (select cluster_id,school_management_type,
  sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
  sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
@@ -17479,7 +17479,7 @@ coalesce(1-round(( Rank()
              over (partition by usc.school_management_type
                ORDER BY usc.attendance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                        
  from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_cluster_mgmt_overall as sad left join
+ from hc_student_attendance_cluster_mgmt_last_30_days as sad left join
 (select cluster_id,school_management_type,
  sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
  sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
@@ -17850,8 +17850,6 @@ group by infrastructure_score,usc.school_management_type
 ON b.block_id = c.block_id and b.school_management_type=c.school_management_type)as udise
 on basic.block_id=udise.block_id and basic.school_management_type=udise.school_management_type
 left join 
-
-
 (select b.*,c.block_level_rank_within_the_state,
 c.block_level_rank_within_the_district,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
 (Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,data_from_date,data_upto_date,school_management_type
@@ -18277,6 +18275,7 @@ left join
 hc_infra_mgmt_district as infra
 on basic.district_id=infra.district_id and basic.school_management_type=infra.school_management_type;
 
+
 create or replace view health_card_index_district_mgmt_last30 as 
 select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
 row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
@@ -18287,22 +18286,23 @@ on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_
 group by shd.district_id,shd.district_name,school_management_type)as basic
 left join 
 (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75,((rank () over (partition by sac.school_management_type order by attendance desc))||' out of '||(select count(distinct(district_id)) 
-from school_student_total_attendance)) as district_level_rank_within_the_state,coalesce(1-round((Rank() over (partition by sac.school_management_type ORDER BY attendance DESC) / ((select count(distinct(district_id)) 
-from school_student_total_attendance)*1.0)),2)) as state_level_score
+from school_student_total_attendance)) as district_level_rank_within_the_state,
+1-round((Rank() over (partition by sac.school_management_type ORDER BY attendance DESC) / coalesce((select count(distinct(district_id)) from school_student_total_attendance),1)*1.0),2) as state_level_score
  from hc_student_attendance_district_mgmt_last_30_days as sad left join
 (select district_id,school_management_type,
  sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
  sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
  sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
  sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_mgmt_overall group by district_id,school_management_type)as sac
+   from hc_student_attendance_school_mgmt_last_30_days group by district_id,school_management_type)as sac
 on sad.district_id= sac.district_id and sad.school_management_type=sac.school_management_type
 )as student_attendance
 on basic.district_id=student_attendance.district_id and basic.school_management_type=student_attendance.school_management_type
 left join 
 (select *,((rank () over ( partition by school_management_type order by district_performance desc))||' out of '||(select count(distinct(district_id))
 from semester_exam_district_mgmt_last30)) as district_level_rank_within_the_state,
-coalesce(1-round(( Rank() over (partition by school_management_type ORDER BY district_performance DESC) / ((select count(distinct(district_id)) from semester_exam_district_mgmt_last30)*1.0)),2)) as state_level_score from semester_exam_district_mgmt_all)as semester
+1-round( Rank() over (partition by school_management_type ORDER BY district_performance DESC) / 
+coalesce(((select count(distinct(district_id)) from semester_exam_district_mgmt_last30)*1.0),1),2) as state_level_score from semester_exam_district_mgmt_last30)as semester
 on basic.district_id=semester.district_id and basic.school_management_type=semester.school_management_type
 left join 
 (select uds.*,usc.value_below_33,usc.value_between_33_60,usc.value_between_60_75,usc.value_above_75 from udise_district_mgt_score as uds left join 
@@ -18319,7 +18319,7 @@ left join
 (Select district_id,district_name,grade_wise_performance,district_performance,data_from_date,data_upto_date,school_management_type,
   ((rank () over ( partition by school_management_type order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
 from hc_periodic_exam_district_mgmt_last30)) as district_level_rank_within_the_state, 
-coalesce(1-round(( Rank() over (partition by school_management_type ORDER BY district_performance DESC) / ((select count(distinct(district_id)) from semester_exam_district_mgmt_last30)*1.0)),2)) as state_level_score
+1-round( Rank() over (partition by school_management_type ORDER BY district_performance DESC) / coalesce(((select count(distinct(district_id)) from semester_exam_district_mgmt_last30)*1.0),1),2) as state_level_score
  from hc_periodic_exam_district_mgmt_last30 )as ped left join
 (select district_id,school_management_type,
  sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
@@ -18346,10 +18346,9 @@ join
          ||  ((select count(distinct(district_id)) 
 from crc_visits_frequency))) AS district_level_rank_within_the_state ,
 case when visit_score>0 then 
-coalesce(1-round(( Rank()
+1-round( Rank()
              over (partition by a.school_management_type
-               ORDER BY a.visit_score DESC) / ((select count(distinct(district_id)) 
-from crc_visits_frequency)*1.0)),2)) else 0 end  AS state_level_score                  
+               ORDER BY a.visit_score DESC) / coalesce(((select count(distinct(district_id)) from crc_visits_frequency)*1.0),1),2) else 0 end  AS state_level_score                  
                 
  from (select  crc.visit_score,crc.district_id ,crc.school_management_type
  from
@@ -18373,7 +18372,6 @@ drop view if exists hc_student_attendance_state_mgmt_last30;
 
 
 /* Student attendance management overall */
-
 
 create or replace view hc_student_attendance_state_mgmt_overall as 
 SELECT round(((sum(total_present) * 100.0) / sum(total_students)), 1) AS attendance,
@@ -18962,3 +18960,4 @@ END;
 $$LANGUAGE plpgsql;
 
 select health_card_index_state_mgmt_last30();
+
