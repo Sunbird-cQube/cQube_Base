@@ -118,6 +118,7 @@ export class PATReportComponent implements OnInit {
   management;
   category;
   managementName;
+  public allMonths:any = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
 
   constructor(
     public http: HttpClient,
@@ -202,6 +203,9 @@ export class PATReportComponent implements OnInit {
         if (item["academic_year"] == this.year) {
           this.months = item["month"];
         }
+      });
+      this.months.sort((a,b)=> {
+        return this.allMonths.indexOf(a) - this.allMonths.indexOf(b);
       });
       this.month = this.months[this.months.length - 1];
       if (this.month) {
