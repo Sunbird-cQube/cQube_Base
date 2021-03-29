@@ -18661,6 +18661,124 @@ select sp.school_performance,smt.grade_wise_performance,b.school_management_type
           GROUP BY c.school_management_type) b ON smt.school_management_type::text = b.school_management_type::text;
 
 
+/* HC Semester School Management views */
+create or replace view hc_semester_exam_school_mgmt_last30 as
+select d.*,b.total_schools,b.students_count from
+(select c.*,d.subject_wise_performance from
+(select a.*,b.grade_wise_performance from
+(select school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
+district_id,initcap(district_name)as district_name,school_latitude,school_longitude,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as school_performance,
+(select to_char(min(days_in_period.day),'DD-MM-YYYY') as data_from_date from (select (generate_series('now()'::date-'30days'::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period),
+(select to_char(max(days_in_period.day),'DD-MM-YYYY') as data_upto_date from (select (generate_series('now()'::date-'30days'::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period),
+school_management_type
+from semester_exam_school_result 
+where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null
+group by school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,school_latitude,school_longitude,school_management_type) as a
+left join 
+(select json_object_agg(grade,percentage) as grade_wise_performance,
+school_id,school_management_type from
+(select cast('Grade '||grade as text)as grade,
+school_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+from semester_exam_school_result 
+where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null
+group by grade,school_id,school_management_type)as a
+group by school_id,school_management_type)as b
+on a.school_id=b.school_id and a.school_management_type=b.school_management_type)as c
+left join 
+(
+select school_id,jsonb_agg(subject_wise_performance)as subject_wise_performance,school_management_type from
+(select school_id,
+json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance,school_management_type from
+((select cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
+school_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+from semester_exam_school_result 
+where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null
+group by grade,subject,school_management_type,
+school_id order by grade desc,subject_name)
+union
+(select cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
+school_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+from semester_exam_school_result 
+where exam_code in (select exam_code from sat_date_range where date_range='last30days') and school_management_type is not null
+group by grade,school_management_type,
+school_id order by grade desc,subject_name)) as a
+group by school_id,grade,school_management_type)as d
+group by school_id,school_management_type
+)as d on c.school_id=d.school_id and c.school_management_type=d.school_management_type)as d
+left join 
+ (select a.school_id,
+	count(distinct(student_uid)) as students_count,count(distinct(a.school_id)) as total_schools,school_management_type
+from
+(select exam_id,school_id,student_uid
+from semester_exam_result_trans where school_id in (select school_id from semester_exam_school_result where school_management_type is not null)
+and exam_code in (select exam_code from sat_date_range where date_range='last30days')
+group by exam_id,school_id,student_uid) as a
+left join (select exam_id,date_part('year',exam_date)::text as assessment_year from semester_exam_mst) as b on a.exam_id=b.exam_id
+left join school_hierarchy_details as c on a.school_id=c.school_id
+group by a.school_id,school_management_type)as b
+ on d.school_id=b.school_id and d.school_management_type=b.school_management_type;
+
+
+/* HC semester exam school overall*/
+
+create or replace view hc_semester_exam_school_mgmt_all as
+select d.*,b.total_schools,b.students_count from
+(select c.*,d.subject_wise_performance from
+(select a.*,b.grade_wise_performance from
+(select school_id,initcap(school_name)as school_name,cluster_id,initcap(cluster_name)as cluster_name,block_id,initcap(block_name)as block_name,
+district_id,initcap(district_name)as district_name,school_latitude,school_longitude,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as school_performance,
+(select to_char(min(exam_date),'DD-MM-YYYY')   from semester_exam_school_result) as data_from_date,
+(select to_char(now(),'DD-MM-YYYY') as data_upto_date),school_management_type
+from semester_exam_school_result where  school_management_type is not null
+ group by school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,school_latitude,school_longitude,school_management_type) as a
+left join 
+(select json_object_agg(grade,percentage) as grade_wise_performance,
+school_id,school_management_type from
+(select cast('Grade '||grade as text)as grade,
+school_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+from semester_exam_school_result where  school_management_type is not null
+group by grade,school_id,school_management_type)as a
+group by school_id,school_management_type)as b
+on a.school_id=b.school_id and a.school_management_type=b.school_management_type)as c
+left join 
+(
+select school_id,jsonb_agg(subject_wise_performance)as subject_wise_performance,school_management_type from
+(select school_id,
+json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance,school_management_type from
+((select cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
+school_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+from semester_exam_school_result where  school_management_type is not null 
+group by grade,subject,school_management_type,school_id order by grade desc,subject_name)
+union
+(select cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
+school_id,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
+from semester_exam_school_result where  school_management_type is not null group by grade,school_management_type,
+school_id order by grade desc,subject_name)) as a
+group by school_id,grade,school_management_type)as d
+group by school_id,school_management_type
+)as d on c.school_id=d.school_id and c.school_management_type=d.school_management_type)as d
+left join 
+ (select a.school_id,
+	count(distinct(student_uid)) as students_count,count(distinct(a.school_id)) as total_schools,school_management_type
+from
+(select exam_id,school_id,student_uid
+from semester_exam_result_trans where school_id in (select school_id from semester_exam_school_result where  school_management_type is not null)
+group by exam_id,school_id,student_uid) as a
+left join (select exam_id,date_part('year',exam_date)::text as assessment_year from semester_exam_mst) as b on a.exam_id=b.exam_id
+left join school_hierarchy_details as c on a.school_id=c.school_id
+group by a.school_id ,school_management_type)as b
+ on d.school_id=b.school_id and d.school_management_type=b.school_management_type;
+
+
+
 /* Health Card index overall state */
 
 create or replace function health_card_index_state_mgmt_overall()
@@ -18697,7 +18815,7 @@ Execute infra_query into infra_cols;
 Execute infra_atf_query into infra_atf_cols;
 Execute infra_atf_cols into infra_atf;
 create_state_view=
-'create or replace view health_card_index_state_mgmt_overall as select ''basic_details'' as data_source,row_to_json(basic_details)::text as values  from 
+'create or replace view health_card_index_state_mgmt_overall as select ''basic_details'' as data_source,school_management_type,row_to_json(basic_details)::text as values  from 
 (select distinct(substring(cast(avg(district_id) as text),1,2))as state_id,sum(total_schools)as total_schools,sum(total_students)as total_students,school_management_type,'||'''overall_category'''||' as school_category from 
 (select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
   shd.school_id,initcap(shd.school_name)as school_name,
@@ -18707,26 +18825,34 @@ on usmt.udise_school_id=shd.school_id where
 cluster_name is not null and school_name is not null and block_name is not null and district_name is not null and shd.school_management_type IS NOT NULL
 group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name,shd.school_management_type) as data group by school_management_type)as basic_details
 union
-(select ''student_attendance''as data,row_to_json(state_attendance)::text from
+(select ''student_attendance'' as data,school_management_type,row_to_json(state_attendance)::text from
   (select hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date,
-  school_management_type,'||'''overall_category'''||' as school_category,
- sum(case when data.attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when data.attendance > 33 and data.attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when data.attendance > 60 and data.attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when data.attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_state_overall as data, hc_student_attendance_state_mgmt_overall hsao
-   group by hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date,hsao.school_management_type)as state_attendance)
+  hsao.school_management_type,'||'''overall_category'''||' as school_category,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75  
+from hc_student_attendance_state_mgmt_overall hsao group by  hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date,hsao.school_management_type)as state_attendance)
 union
-(select ''sat_performance''as data,
-  row_to_json(sat)::text from (select hc_sat_state_mgmt_overall.*,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+(select ''pat_performance'' as data,school_management_type,
+  row_to_json(pat)::text from (select hs.*,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
 from
 (select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
  sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
  sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all) as data, hc_sat_state_mgmt_overall) as sat)
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75,school_management_type
+   from hc_periodic_exam_school_mgmt_all where school_management_type is not null group by school_management_type) as data left join hc_pat_state_mgmt_overall hs on data.school_management_type=hs.school_management_type) as pat)
 union
-(select ''udise''as data,row_to_json(udise)::text from (select sum(total_schools) as total_schools
+(select ''student_semester'' as data,school_management_type,
+  row_to_json(sat)::text from (select hs.*,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+from
+(select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75,school_management_type
+   from hc_semester_exam_school_mgmt_all where school_management_type is not null group by school_management_type) as data left join hc_sat_state_mgmt_overall hs on data.school_management_type=hs.school_management_type) as sat)
+union
+(select ''udise''as data,school_management_type,row_to_json(udise)::text from (select sum(total_schools) as total_schools
   ,'||udise_cols||',
     cast(avg(infrastructure_score)as int)as infrastructure_score,
  sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
@@ -18735,7 +18861,7 @@ union
  sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75,school_management_type,'||'''overall_category'''||' as school_category
    from udise_school_mgt_score group by school_management_type)as udise)
   union
- (select ''school_infrastructure''as data,row_to_json(infra)::text 
+ (select ''school_infrastructure''as data,school_management_type,row_to_json(infra)::text 
  from (select sum(total_schools_data_received) as total_schools_data_received, 
    cast(avg(infra_score)as int)as infra_score,
 '||infra_cols||','''||infra_atf||''' as areas_to_focus,
@@ -18745,7 +18871,7 @@ union
  sum(case when infra_score >75 then 1 else 0 end)as value_above_75,school_management_type,'||'''overall_category'''||' as school_category
  from hc_infra_mgmt_school group by school_management_type)as infra)
  union
-SELECT ''crc_visit''::text AS data_source, row_to_json(crc.*)::text FROM (
+SELECT ''crc_visit''::text AS data_source,school_management_type, row_to_json(crc.*)::text FROM (
 select res.*,cast((100 - (res.schools_0)) as float) as visit_score from
 (
 select total_schools,total_crc_visits,visited_school_count,not_visited_school_count,
@@ -18851,7 +18977,7 @@ Execute infra_query into infra_cols;
 Execute infra_atf_query into infra_atf_cols;
 Execute infra_atf_cols into infra_atf;
 create_state_view=
-'create or replace view health_card_index_state_mgmt_last30 as select ''basic_details'' as data_source,row_to_json(basic_details)::text as values  from 
+'create or replace view health_card_index_state_mgmt_last30 as select ''basic_details'' as data_source,school_management_type,row_to_json(basic_details)::text as values  from 
 (select distinct(substring(cast(avg(district_id) as text),1,2))as state_id,sum(total_schools)as total_schools,sum(total_students)as total_students,school_management_type,'||'''overall_category'''||' as school_category from 
 (select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
   shd.school_id,initcap(shd.school_name)as school_name,
@@ -18861,35 +18987,34 @@ on usmt.udise_school_id=shd.school_id where
 cluster_name is not null and school_name is not null and block_name is not null and district_name is not null and shd.school_management_type IS NOT NULL
 group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name,shd.school_management_type) as data group by school_management_type)as basic_details
 union
-(select ''student_attendance''as data,row_to_json(state_attendance)::text from
+(select ''student_attendance'' as data,school_management_type,row_to_json(state_attendance)::text from
   (select hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date,
-  school_management_type,'||'''overall_category'''||' as school_category,
- sum(case when data.attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when data.attendance > 33 and data.attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when data.attendance > 60 and data.attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when data.attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_state_last30 as data, hc_student_attendance_state_mgmt_last30 hsao
-   group by hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date,hsao.school_management_type)as state_attendance)
+  hsao.school_management_type,'||'''overall_category'''||' as school_category,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75  
+from hc_student_attendance_state_mgmt_last30 hsao group by  hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date,hsao.school_management_type)as state_attendance)
 union
-(select ''sat_performance'' as data,
-  row_to_json(sat)::text from (select hc_sat_state_mgmt_last30.*,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+(select ''pat_performance'' as data,school_management_type,
+  row_to_json(pat)::text from (select hs.*,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
 from
 (select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
  sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
  sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_last30) as data, hc_sat_state_mgmt_last30) as sat)
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75,school_management_type
+   from hc_periodic_exam_school_mgmt_last30 where school_management_type is not null group by school_management_type) as data left join hc_pat_state_mgmt_last30 hs on data.school_management_type=hs.school_management_type) as pat)
 union
-(select ''pat_performance'' as data,
-  row_to_json(pat)::text from (select hc_pat_state_mgmt_last30.*,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+(select ''student_semester'' as data,school_management_type,
+  row_to_json(sat)::text from (select hs.*,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
 from
 (select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
  sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
  sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from periodic_exam_school_last30) as data, hc_pat_state_mgmt_last30) as pat)
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75,school_management_type
+   from hc_semester_exam_school_mgmt_last30 where school_management_type is not null group by school_management_type) as data left join hc_sat_state_mgmt_last30 hs on data.school_management_type=hs.school_management_type) as sat)
 union
-(select ''udise''as data,row_to_json(udise)::text from (select sum(total_schools) as total_schools
+(select ''udise''as data,school_management_type,row_to_json(udise)::text from (select sum(total_schools) as total_schools
   ,'||udise_cols||',
     cast(avg(infrastructure_score)as int)as infrastructure_score,
  sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
@@ -18898,17 +19023,17 @@ union
  sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75,school_management_type,'||'''overall_category'''||' as school_category
    from udise_school_mgt_score group by school_management_type)as udise)
   union
- (select ''school_infrastructure''as data,row_to_json(infra)::text 
+ (select ''school_infrastructure''as data,school_management_type,row_to_json(infra)::text 
  from (select sum(total_schools_data_received) as total_schools_data_received, 
    cast(avg(infra_score)as int)as infra_score,
 '||infra_cols||','''||infra_atf||''' as areas_to_focus,
  sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
  sum(case when infra_score > 33 and infra_score<= 60 then 1 else 0 end)as value_between_33_60,
  sum(case when infra_score > 60 and infra_score<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when infra_score >75 then 1 else 0 end)as value_above_75
+ sum(case when infra_score >75 then 1 else 0 end)as value_above_75,school_management_type
  from hc_infra_mgmt_school group by school_management_type)as infra)
  union
-SELECT ''crc_visit''::text AS data_source,
+SELECT ''crc_visit''::text AS data_source,school_management_type,
     row_to_json(crc.*)::text AS "values"
    FROM (select res.*,cast((100 - (res.schools_0)) as float) as visit_score from
 (
