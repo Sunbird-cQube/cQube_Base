@@ -153,6 +153,7 @@ export class CrcReportComponent implements OnInit {
 
   myData;
   state: string;
+  public allMonths:any = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
   constructor(
     public http: HttpClient,
     public service: CrcReportService,
@@ -194,6 +195,9 @@ export class CrcReportComponent implements OnInit {
         if (item["academic_year"] == this.year) {
           this.months = item["month"];
         }
+      });
+      this.months.sort((a,b)=> {
+        return this.allMonths.indexOf(a) - this.allMonths.indexOf(b);
       });
       this.month = this.months[this.months.length - 1];
       if (this.month) {

@@ -214,18 +214,12 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.patPerformanceKeys = ['Performance'];
       this.patPerformanceCategory = ['value_below_33', 'value_between_33_60', 'value_between_60_75', 'value_above_75'];
       this.patPerformanceCategoryKay = ['Schools Less Than 33%', 'Schools Between 33% to 60%', 'Schools Between 60% to 75%', 'Schools Above 75%'];
-
-      this.crcVisit = Object.keys(this.healthCardData['crc_visit']);
-      this.crcVisitKeys = [];
+      // if(this.healthCardData['crc_visit'])
+      //   this.crcVisit = Object.keys(this.healthCardData['crc_visit']);
+      // this.crcVisitKeys = [];
 
       this.crcVisit = ['schools_0', 'schools_1_2', 'schools_3_5', 'schools_6_10', 'schools_10'];
       this.crcVisitKeys = ['Schools Visited 0 Times', 'Schools Visited 1-2 Times', 'Schools Visited 3-5 Times', 'Schools Visited 6-10 Times', 'Schools Visited more Than 10 Times'];
-
-      /*this.crcVisit.filter(key => {
-        var myKey = this.stringConverter(key);
-        this.crcVisitKeys.push(myKey);
-      });
-      console.log(this.crcVisitKeys);*/
 
       this.UDISE = ['infrastructure_score'];
       this.UDISEKeys = ['Infrastructure Score'];
