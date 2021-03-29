@@ -6074,3 +6074,6 @@ alter table semester_exam_school_qst_result add column if not exists school_cate
 
 alter table semester_exam_school_result add column if not exists school_management_type varchar(100);
 alter table semester_exam_school_result add column if not exists school_category varchar(100);
+
+drop view if exists crc_trans_to_aggregate cascade;
+ 
