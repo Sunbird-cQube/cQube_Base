@@ -8679,376 +8679,6 @@ Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_school
 FROM student_attendance_agg_last_30_days WHERE district_latitude > 0 AND district_longitude > 0 AND block_latitude > 0 AND block_longitude > 0 AND cluster_latitude > 0 AND cluster_longitude > 0 AND school_latitude >0 AND school_longitude >0 
 AND school_name IS NOT NULL and cluster_name is NOT NULL AND block_name is NOT NULL AND district_name is NOT NULL and total_students>0;
 
-/* Health Card index overall state */
-
-create or replace function health_card_index_state()
-RETURNS text AS
-$$
-DECLARE
-udise_query text:= 'select string_agg(''cast(avg(''||lower(column_name)||'')as int)as ''||lower(column_name),'','')
-   from udise_config where status = ''1'' and type=''indice''';
-udise_cols text ;
-infra_query text:= 
-'select concat(''cast(sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
-  '')/10 as int) as average_value,'',''cast((sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
-'')/10)*100/sum(total_schools_data_received)as int) as average_percent,
-  '',string_agg(''sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)as ''
-  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value ,''||''cast(sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||
-  ''_value)*100/sum(total_schools_data_received)as int) as ''
-  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','',''))
-    from infrastructure_master where status = true';
-infra_atf_query text:=
-'select ''(select json_agg(areas_to_focus)as areas_to_focus  from 
- 	(select array_remove(array[''||string_agg(''case when cast(sum(''||
-replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)*100/sum(total_schools_data_received)as int)<30 then ''''''||
- case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
-else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
-''],''''0'''')as areas_to_focus from hc_infra_school)as infra)'' 
-from infrastructure_master where status = true order by 1';   
-infra_cols text;
-infra_atf_cols text;
-infra_atf text;
-create_state_view text;
-BEGIN
-Execute udise_query into udise_cols;
-Execute infra_query into infra_cols;
-Execute infra_atf_query into infra_atf_cols;
-Execute infra_atf_cols into infra_atf;
-create_state_view=
-'create or replace view health_card_index_state as select ''basic_details'' as data_source,row_to_json(basic_details)::text as values  from 
-(select distinct(substring(cast(avg(district_id) as text),1,2))as state_id,sum(total_schools)as total_schools,sum(total_students)as total_students from 
-(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
-  shd.school_id,initcap(shd.school_name)as school_name,
-  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
-(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
-on usmt.udise_school_id=shd.school_id where 
-cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
-group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name)as data
-)as basic_details
-union
-(select ''student_attendance''as data,row_to_json(state_attendance)::text from
-  (select hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date,
- sum(case when data.attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when data.attendance > 33 and data.attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when data.attendance > 60 and data.attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when data.attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_overall as data, hc_student_attendance_state_overall hsao
-   group by hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date)as state_attendance)
-union
-(select ''student_semester''as data,row_to_json(semster)::text from(select x_value as Performance,a.semester,c.total_schools,
-c.value_below_33,c.value_between_33_60,c.value_between_60_75,c.value_above_75,
-c.percent_below_33,c.percent_between_33_60,c.percent_between_60_75,c.percent_above_75,grade_wise_performance
-from
-(SELECT  
-Round(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
-  case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
-  +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
-  case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
-  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
-  )*100.0/
-Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
-  subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value,
-Sum(students_count) AS students_count,semester
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL
-AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 and cluster_name is not null
-AND school_latitude IS NOT NULL AND school_name IS NOT NULL
-and semester=(select max(semester) from school_student_subject_total_marks)
-GROUP BY semester
-having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
- case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
- +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
- case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
- +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
- ) <> 0)as a
-left join (select semester,count(distinct(school_id))as total_schools,
- sum(case when x_value <=33 then 1 else 0 end)as value_below_33,
- sum(case when x_value > 33 and x_value<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when x_value > 60 and x_value<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when x_value >75 then 1 else 0 end)as value_above_75,
- round(sum(case when x_value <=33 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_below_33,
- round(sum(case when x_value > 33 and x_value<=60 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_33_60,
- round(sum(case when x_value > 60 and x_value<=75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_60_75,
- round(sum(case when x_value >75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_above_75
-   from district_school group by semester) as c
-   on a.semester=c.semester
-   left join
-(select semester,json_object_agg(concat(''grade_'',grade),x_value)as grade_wise_performance
- from hc_semester_performance_state group by semester order by 1)as grade
-   on a.semester=grade.semester)as semster)
-union
-(select ''pat_performance''as data,
-  row_to_json(pat)::text from (select hc_pat_state_overall.*,value_below_33,value_between_33_60,value_between_60_75,value_above_75
-from
-(select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from periodic_exam_school_all) as data, hc_pat_state_overall) as pat)
-union
-(select ''udise''as data,row_to_json(udise)::text from (select sum(total_schools) as total_schools
-  ,'||udise_cols||',
-    cast(avg(infrastructure_score)as int)as infrastructure_score,
- sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when Infrastructure_score > 33 and infrastructure_score<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when Infrastructure_score > 60 and infrastructure_score<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
-   from udise_school_score)as udise)
-  union
- (select ''school_infrastructure''as data,row_to_json(infra)::text 
- from (select sum(total_schools_data_received) as total_schools_data_received, 
-   cast(avg(infra_score)as int)as infra_score,
-'||infra_cols||','''||infra_atf||''' as areas_to_focus,
- sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when infra_score > 33 and infra_score<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when infra_score > 60 and infra_score<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when infra_score >75 then 1 else 0 end)as value_above_75
- from hc_infra_school)as infra)
- union
-SELECT ''crc_visit''::text AS data_source, row_to_json(crc.*)::text FROM (
-select res.*,cast((100 - (res.schools_0)) as float) as visit_score from
-(
-select total_schools,total_crc_visits,visited_school_count,not_visited_school_count,
-(SELECT round(NULLIF((((count(DISTINCT school_hierarchy_details.school_id))::double precision / NULLIF((count(DISTINCT school_hierarchy_details.cluster_id))::double precision, (0)::double precision)))::numeric, (1)::numeric)) AS no_of_schools_per_crc FROM school_hierarchy_details) as no_of_schools_per_crc,
-( SELECT min(a.visit_date) AS min FROM ( SELECT crc_inspection_trans.visit_date,
-(date_part(''month''::text, crc_inspection_trans.visit_date))::text AS month,
-(date_part(''year''::text, crc_inspection_trans.visit_date))::text AS year
-FROM crc_inspection_trans) a WHERE ((a.year IN ( SELECT "substring"(min_year.monthyear, 1, 4) AS year
-FROM ( SELECT min(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
-FROM crc_visits_frequency) min_year)) AND (a.month IN ( SELECT "substring"(min_month.monthyear, 6) AS month
-FROM ( SELECT min(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
-FROM crc_visits_frequency) min_month)))) AS data_from_date,
-( SELECT max(a.visit_date) AS max
-FROM ( SELECT crc_inspection_trans.visit_date,
-(date_part(''month''::text, crc_inspection_trans.visit_date))::text AS month,
-(date_part(''year''::text, crc_inspection_trans.visit_date))::text AS year
-FROM crc_inspection_trans) a
-          WHERE ((a.year IN ( SELECT "substring"(max_year.monthyear, 1, 4) AS year
-                   FROM ( SELECT max(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
-                           FROM crc_visits_frequency) max_year)) AND (a.month IN ( SELECT "substring"(max_month.monthyear, 6) AS month
-                   FROM ( SELECT max(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
-                           FROM crc_visits_frequency) max_month)))) AS data_upto_date,
-COALESCE(round(((schools_0 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_0,
-    COALESCE(round(((schools_1_2 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_1_2,
-    COALESCE(round(((schools_3_5 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_3_5,
-    COALESCE(round(((schools_6_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_6_10,
-    COALESCE(round(((schools_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_10
-from (
-SELECT  sum(hc_crc_school.total_schools) AS total_schools,
-sum(hc_crc_school.total_crc_visits) AS total_crc_visits,
-            sum(hc_crc_school.visited_school_count) AS visited_school_count,
-            sum(hc_crc_school.not_visited_school_count) AS not_visited_school_count,
-                    sum(
-                        CASE
-                            WHEN (hc_crc_school.schools_0 > (0)::numeric) THEN 1
-                            ELSE 0
-                        END) AS schools_0,
-                    sum(
-                        CASE
-                            WHEN (hc_crc_school.schools_1_2 > (0)::numeric) THEN 1
-                            ELSE 0
-                        END) AS schools_1_2,
-                    sum(
-                        CASE
-                            WHEN (hc_crc_school.schools_3_5 > (0)::numeric) THEN 1
-                            ELSE 0
-                        END) AS schools_3_5,
-                    sum(
-                        CASE
-                            WHEN (hc_crc_school.schools_6_10 > (0)::numeric) THEN 1
-                            ELSE 0
-                        END) AS schools_6_10,
-                    sum(
-                        CASE
-                            WHEN (hc_crc_school.schools_10 > (0)::numeric) THEN 1
-                            ELSE 0
-                        END) AS schools_10
-                   FROM hc_crc_school) as spd) as res
-				   ) crc';
-Execute create_state_view; 
-return 0;
-END;
-$$LANGUAGE plpgsql;
-
-select health_card_index_state();
-
-/* Health Card index last 30 days state */
-
-create or replace function health_card_index_state_last_30()
-RETURNS text AS
-$$
-DECLARE
-udise_query text:= 'select string_agg(''cast(avg(''||lower(column_name)||'')as int)as ''||lower(column_name),'','')
-   from udise_config where status = ''1'' and type=''indice''';
-udise_cols text ;
-infra_query text:= 
-'select concat(''cast(sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
-  '')/10 as int) as average_value,'',''cast((sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
-'')/10)*100/sum(total_schools_data_received)as int) as average_percent,
-  '',string_agg(''sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)as ''
-  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value ,''||''cast(sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||
-  ''_value)*100/sum(total_schools_data_received)as int) as ''
-  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','',''))
-    from infrastructure_master where status = true';
-infra_atf_query text:=
-'select ''(select json_agg(areas_to_focus)as areas_to_focus  from 
- 	(select array_remove(array[''||string_agg(''case when cast(sum(''||
-replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)*100/sum(total_schools_data_received)as int)<30 then ''''''||
- case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
-else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
-''],''''0'''')as areas_to_focus from hc_infra_school)as infra)'' 
-from infrastructure_master where status = true order by 1';   
-infra_cols text;
-infra_atf_cols text;
-infra_atf text;
-create_state_view text;
-BEGIN
-Execute udise_query into udise_cols;
-Execute infra_query into infra_cols;
-Execute infra_atf_query into infra_atf_cols;
-Execute infra_atf_cols into infra_atf;
-create_state_view=
-'create or replace view health_card_index_state_last30 as select ''basic_details'' as data_source,row_to_json(basic_details)::text as values  from 
-(select distinct(substring(cast(avg(district_id) as text),1,2))as state_id,sum(total_schools)as total_schools,sum(total_students)as total_students from 
-(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
-  shd.school_id,initcap(shd.school_name)as school_name,
-  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
-(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
-on usmt.udise_school_id=shd.school_id where 
-cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
-group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name)as data
-)as basic_details
-union
-(select ''student_attendance''as data,row_to_json(state_attendance)::text from
-  (select hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date,
- sum(case when data.attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when data.attendance > 33 and data.attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when data.attendance > 60 and data.attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when data.attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_last_30_days as data, hc_student_attendance_state_last30 hsao
-   group by hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date)as state_attendance)
-union
-(select ''student_semester''as data,row_to_json(semster)::text from(select x_value as Performance,a.semester,c.total_schools,
-c.value_below_33,c.value_between_33_60,c.value_between_60_75,c.value_above_75,
-c.percent_below_33,c.percent_between_33_60,c.percent_between_60_75,c.percent_above_75,grade_wise_performance
-from
-(SELECT  
-Round(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
-  case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
-  +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
-  case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
-  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
-  )*100.0/
-Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
-  subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value,
-Sum(students_count) AS students_count,semester
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL
-AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 and cluster_name is not null
-AND school_latitude IS NOT NULL AND school_name IS NOT NULL
-and semester=(select max(semester) from school_student_subject_total_marks)
-GROUP BY semester
-having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
- case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
- +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
- case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
- +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
- ) <> 0)as a
-left join (select semester,count(distinct(school_id))as total_schools,
- sum(case when x_value <=33 then 1 else 0 end)as value_below_33,
- sum(case when x_value > 33 and x_value<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when x_value > 60 and x_value<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when x_value >75 then 1 else 0 end)as value_above_75,
- round(sum(case when x_value <=33 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_below_33,
- round(sum(case when x_value > 33 and x_value<=60 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_33_60,
- round(sum(case when x_value > 60 and x_value<=75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_between_60_75,
- round(sum(case when x_value >75 then 1 else 0 end)*100.0/count(distinct(school_id)),1) as percent_above_75
-   from district_school group by semester) as c
-   on a.semester=c.semester
-   left join
-(select semester,json_object_agg(concat(''grade_'',grade),x_value)as grade_wise_performance
- from hc_semester_performance_state group by semester order by 1)as grade
-   on a.semester=grade.semester)as semster)
-union
-(select ''pat_performance'' as data,
-  row_to_json(pat)::text from (select hc_pat_state_last30.*,value_below_33,value_between_33_60,value_between_60_75,value_above_75
-from
-(select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from periodic_exam_school_last30) as data, hc_pat_state_last30) as pat)
-union
-(select ''udise''as data,row_to_json(udise)::text from (select sum(total_schools) as total_schools
-  ,'||udise_cols||',
-    cast(avg(infrastructure_score)as int)as infrastructure_score,
- sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when Infrastructure_score > 33 and infrastructure_score<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when Infrastructure_score > 60 and infrastructure_score<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
-   from udise_school_score)as udise)
-  union
- (select ''school_infrastructure''as data,row_to_json(infra)::text 
- from (select sum(total_schools_data_received) as total_schools_data_received, 
-   cast(avg(infra_score)as int)as infra_score,
-'||infra_cols||','''||infra_atf||''' as areas_to_focus,
- sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when infra_score > 33 and infra_score<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when infra_score > 60 and infra_score<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when infra_score >75 then 1 else 0 end)as value_above_75
- from hc_infra_school)as infra)
- union
-SELECT ''crc_visit''::text AS data_source,
-    row_to_json(crc.*)::text AS "values"
-   FROM (select res.*,cast((100 - (res.schools_0)) as float) as visit_score from
-(
-select
-total_schools,total_crc_visits,visited_school_count,not_visited_school_count,(SELECT round(NULLIF((((count(DISTINCT school_hierarchy_details.school_id))::double precision / NULLIF((count(DISTINCT school_hierarchy_details.cluster_id))::double precision, (0)::double precision)))::numeric, (1)::numeric)) AS no_of_schools_per_crc FROM school_hierarchy_details) as no_of_schools_per_crc,
-( SELECT to_char(min(days_in_period.day)::timestamp with time zone, ''DD-MM-YYYY''::text) AS data_from_date
-           FROM ( SELECT generate_series(now()::date - ''30 days''::interval, (now()::date - ''30 days''::interval)::date::timestamp without time zone, ''30 days''::interval)::date AS day) days_in_period) AS data_from_date,
-( SELECT to_char(max(days_in_period.day)::timestamp with time zone, ''DD-MM-YYYY''::text) AS data_upto_date
-           FROM ( SELECT generate_series(now()::date - ''30 days''::interval, (now()::date - ''1 day''::interval)::date::timestamp without time zone, ''1 day''::interval)::date AS day) days_in_period) AS data_upto_date,
-COALESCE(round(((schools_0 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_0,
-    COALESCE(round(((schools_1_2 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_1_2,
-    COALESCE(round(((schools_3_5 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_3_5,
-    COALESCE(round(((schools_6_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_6_10,
-    COALESCE(round(((schools_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_10
-from (
-SELECT  sum(crc_school_report_last_30_days.total_schools) AS total_schools,
-sum(crc_school_report_last_30_days.total_crc_visits) AS total_crc_visits,
-            sum(crc_school_report_last_30_days.visited_school_count) AS visited_school_count,
-            sum(crc_school_report_last_30_days.not_visited_school_count) AS not_visited_school_count,
-                    sum(
-                        CASE
-                            WHEN (crc_school_report_last_30_days.schools_0 > (0)::numeric) THEN 1
-                            ELSE 0
-                        END) AS schools_0,
-                    sum(
-                        CASE
-                            WHEN (crc_school_report_last_30_days.schools_1_2 > (0)::numeric) THEN 1
-                            ELSE 0
-                        END) AS schools_1_2,
-                    sum(
-                        CASE
-                            WHEN (crc_school_report_last_30_days.schools_3_5 > (0)::numeric) THEN 1
-                            ELSE 0
-                        END) AS schools_3_5,
-                    sum(
-                        CASE
-                            WHEN (crc_school_report_last_30_days.schools_6_10 > (0)::numeric) THEN 1
-                            ELSE 0
-                        END) AS schools_6_10,
-                    sum(
-                        CASE
-                            WHEN (crc_school_report_last_30_days.schools_10 > (0)::numeric) THEN 1
-                            ELSE 0
-                        END) AS schools_10
-                   FROM crc_school_report_last_30_days) as spd)as res ) crc;';
-Execute create_state_view; 
-return 0;
-END;
-$$LANGUAGE plpgsql;
-
-select health_card_index_state_last_30();
-
 /*SAT views*/
 
 /*daterange*/
@@ -18776,8 +18406,338 @@ left join (select exam_id,date_part('year',exam_date)::text as assessment_year f
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by a.school_id ,school_management_type)as b
  on d.school_id=b.school_id and d.school_management_type=b.school_management_type;
+ 
+ 
+
+create or replace view hc_sat_state_last30 as
+ select (select round(((coalesce(sum(semester_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(semester_exam_school_result.total_marks), (1)::numeric)), 1) as school_performance
+        from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last30days')),
+        (select json_object_agg(a_1.grade, a_1.percentage) as grade_wise_performance
+                   from ( select ('grade '::text || semester_exam_school_result.grade) as grade,
+                            round(((coalesce(sum(semester_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(semester_exam_school_result.total_marks), (1)::numeric)), 1) as percentage
+                           from semester_exam_school_result where exam_code in (select exam_code from sat_date_range where date_range='last30days')
+                          group by semester_exam_school_result.grade) a_1),
+        (select sum(students_count) as students_count from semester_exam_school_result where exam_code in (select exam_code from sat_date_range where date_range='last30days')),
+        (select count(distinct school_id) as total_schools from semester_exam_school_result where exam_code in (select exam_code from sat_date_range where date_range='last30days'));
+        
+
+create or replace view hc_sat_state_overall as
+ select (select round(((coalesce(sum(semester_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(semester_exam_school_result.total_marks), (0)::numeric)), 1) as school_performance
+        from semester_exam_school_result),
+        (select json_object_agg(a_1.grade, a_1.percentage) as grade_wise_performance
+                   from ( select ('grade '::text || semester_exam_school_result.grade) as grade,
+                            round(((coalesce(sum(semester_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(semester_exam_school_result.total_marks), (0)::numeric)), 1) as percentage
+                           from semester_exam_school_result
+                          group by semester_exam_school_result.grade) a_1),
+        (select sum(semester_exam_school_all.students_count) as students_count from semester_exam_school_all),
+        (select sum(semester_exam_school_all.total_schools) as total_schools from semester_exam_school_all);
 
 
+/* Health Card index overall state */
+
+create or replace function health_card_index_state()
+RETURNS text AS
+$$
+DECLARE
+udise_query text:= 'select string_agg(''cast(avg(''||lower(column_name)||'')as int)as ''||lower(column_name),'','')
+   from udise_config where status = ''1'' and type=''indice''';
+udise_cols text ;
+infra_query text:= 
+'select concat(''cast(sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
+  '')/10 as int) as average_value,'',''cast((sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
+'')/10)*100/sum(total_schools_data_received)as int) as average_percent,
+  '',string_agg(''sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)as ''
+  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value ,''||''cast(sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||
+  ''_value)*100/sum(total_schools_data_received)as int) as ''
+  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','',''))
+    from infrastructure_master where status = true';
+infra_atf_query text:=
+'select ''(select json_agg(areas_to_focus)as areas_to_focus  from 
+ 	(select array_remove(array[''||string_agg(''case when cast(sum(''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)*100/sum(total_schools_data_received)as int)<30 then ''''''||
+ case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
+else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
+''],''''0'''')as areas_to_focus from hc_infra_school)as infra)'' 
+from infrastructure_master where status = true order by 1';   
+infra_cols text;
+infra_atf_cols text;
+infra_atf text;
+create_state_view text;
+BEGIN
+Execute udise_query into udise_cols;
+Execute infra_query into infra_cols;
+Execute infra_atf_query into infra_atf_cols;
+Execute infra_atf_cols into infra_atf;
+create_state_view=
+'create or replace view health_card_index_state as select ''basic_details'' as data_source,row_to_json(basic_details)::text as values  from 
+(select distinct(substring(cast(avg(district_id) as text),1,2))as state_id,sum(total_schools)as total_schools,sum(total_students)as total_students from 
+(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
+  shd.school_id,initcap(shd.school_name)as school_name,
+  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where 
+cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name)as data
+)as basic_details
+union
+(select ''student_attendance''as data,row_to_json(state_attendance)::text from
+  (select hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date,
+ sum(case when data.attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when data.attendance > 33 and data.attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when data.attendance > 60 and data.attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when data.attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_overall as data, hc_student_attendance_state_overall hsao
+   group by hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date)as state_attendance)
+union
+(select ''sat_performance'' as data,
+  row_to_json(sat)::text from (select hc_sat_state_overall.school_performance as performance,hc_sat_state_overall.grade_wise_performance,hc_sat_state_overall.students_count,hc_sat_state_overall.total_schools,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+from
+(select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all) as data, hc_sat_state_overall) as sat)
+union
+(select ''pat_performance''as data,
+  row_to_json(pat)::text from (select hc_pat_state_overall.*,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+from
+(select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from periodic_exam_school_all) as data, hc_pat_state_overall) as pat)
+union
+(select ''udise''as data,row_to_json(udise)::text from (select sum(total_schools) as total_schools
+  ,'||udise_cols||',
+    cast(avg(infrastructure_score)as int)as infrastructure_score,
+ sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when Infrastructure_score > 33 and infrastructure_score<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when Infrastructure_score > 60 and infrastructure_score<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
+   from udise_school_score)as udise)
+  union
+ (select ''school_infrastructure''as data,row_to_json(infra)::text 
+ from (select sum(total_schools_data_received) as total_schools_data_received, 
+   cast(avg(infra_score)as int)as infra_score,
+'||infra_cols||','''||infra_atf||''' as areas_to_focus,
+ sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when infra_score > 33 and infra_score<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when infra_score > 60 and infra_score<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when infra_score >75 then 1 else 0 end)as value_above_75
+ from hc_infra_school)as infra)
+ union
+SELECT ''crc_visit''::text AS data_source, row_to_json(crc.*)::text FROM (
+select res.*,cast((100 - (res.schools_0)) as float) as visit_score from
+(
+select total_schools,total_crc_visits,visited_school_count,not_visited_school_count,
+(SELECT round(NULLIF((((count(DISTINCT school_hierarchy_details.school_id))::double precision / NULLIF((count(DISTINCT school_hierarchy_details.cluster_id))::double precision, (0)::double precision)))::numeric, (1)::numeric)) AS no_of_schools_per_crc FROM school_hierarchy_details) as no_of_schools_per_crc,
+( SELECT min(a.visit_date) AS min FROM ( SELECT crc_inspection_trans.visit_date,
+(date_part(''month''::text, crc_inspection_trans.visit_date))::text AS month,
+(date_part(''year''::text, crc_inspection_trans.visit_date))::text AS year
+FROM crc_inspection_trans) a WHERE ((a.year IN ( SELECT "substring"(min_year.monthyear, 1, 4) AS year
+FROM ( SELECT min(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
+FROM crc_visits_frequency) min_year)) AND (a.month IN ( SELECT "substring"(min_month.monthyear, 6) AS month
+FROM ( SELECT min(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
+FROM crc_visits_frequency) min_month)))) AS data_from_date,
+( SELECT max(a.visit_date) AS max
+FROM ( SELECT crc_inspection_trans.visit_date,
+(date_part(''month''::text, crc_inspection_trans.visit_date))::text AS month,
+(date_part(''year''::text, crc_inspection_trans.visit_date))::text AS year
+FROM crc_inspection_trans) a
+          WHERE ((a.year IN ( SELECT "substring"(max_year.monthyear, 1, 4) AS year
+                   FROM ( SELECT max(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
+                           FROM crc_visits_frequency) max_year)) AND (a.month IN ( SELECT "substring"(max_month.monthyear, 6) AS month
+                   FROM ( SELECT max(concat(crc_visits_frequency.year, ''-'', crc_visits_frequency.month)) AS monthyear
+                           FROM crc_visits_frequency) max_month)))) AS data_upto_date,
+COALESCE(round(((schools_0 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_0,
+    COALESCE(round(((schools_1_2 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_1_2,
+    COALESCE(round(((schools_3_5 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_3_5,
+    COALESCE(round(((schools_6_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_6_10,
+    COALESCE(round(((schools_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_10
+from (
+SELECT  sum(hc_crc_school.total_schools) AS total_schools,
+sum(hc_crc_school.total_crc_visits) AS total_crc_visits,
+            sum(hc_crc_school.visited_school_count) AS visited_school_count,
+            sum(hc_crc_school.not_visited_school_count) AS not_visited_school_count,
+                    sum(
+                        CASE
+                            WHEN (hc_crc_school.schools_0 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_0,
+                    sum(
+                        CASE
+                            WHEN (hc_crc_school.schools_1_2 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_1_2,
+                    sum(
+                        CASE
+                            WHEN (hc_crc_school.schools_3_5 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_3_5,
+                    sum(
+                        CASE
+                            WHEN (hc_crc_school.schools_6_10 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_6_10,
+                    sum(
+                        CASE
+                            WHEN (hc_crc_school.schools_10 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_10
+                   FROM hc_crc_school) as spd) as res
+				   ) crc';
+Execute create_state_view; 
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+select health_card_index_state();
+
+/* Health Card index last 30 days state */
+
+create or replace function health_card_index_state_last_30()
+RETURNS text AS
+$$
+DECLARE
+udise_query text:= 'select string_agg(''cast(avg(''||lower(column_name)||'')as int)as ''||lower(column_name),'','')
+   from udise_config where status = ''1'' and type=''indice''';
+udise_cols text ;
+infra_query text:= 
+'select concat(''cast(sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
+  '')/10 as int) as average_value,'',''cast((sum(''||string_agg(replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value'',''+'')||
+'')/10)*100/sum(total_schools_data_received)as int) as average_percent,
+  '',string_agg(''sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)as ''
+  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value ,''||''cast(sum(''||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||
+  ''_value)*100/sum(total_schools_data_received)as int) as ''
+  ||replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_percent'','',''))
+    from infrastructure_master where status = true';
+infra_atf_query text:=
+'select ''(select json_agg(areas_to_focus)as areas_to_focus  from 
+ 	(select array_remove(array[''||string_agg(''case when cast(sum(''||
+replace(trim(LOWER(infrastructure_name)),'' '',''_'')||''_value)*100/sum(total_schools_data_received)as int)<30 then ''''''||
+ case when infrastructure_name ~* ''^[^aeyiuo]+$'' then replace(trim(upper(infrastructure_name)),''_'','' '')
+else replace(trim(initcap(infrastructure_name)),''_'','' '') end ||'''''' else ''''0'''' end'','','')||
+''],''''0'''')as areas_to_focus from hc_infra_school)as infra)'' 
+from infrastructure_master where status = true order by 1';   
+infra_cols text;
+infra_atf_cols text;
+infra_atf text;
+create_state_view text;
+BEGIN
+Execute udise_query into udise_cols;
+Execute infra_query into infra_cols;
+Execute infra_atf_query into infra_atf_cols;
+Execute infra_atf_cols into infra_atf;
+create_state_view=
+'create or replace view health_card_index_state_last30 as select ''basic_details'' as data_source,row_to_json(basic_details)::text as values  from 
+(select distinct(substring(cast(avg(district_id) as text),1,2))as state_id,sum(total_schools)as total_schools,sum(total_students)as total_students from 
+(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
+  shd.school_id,initcap(shd.school_name)as school_name,
+  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where 
+cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name)as data
+)as basic_details
+union
+(select ''student_attendance''as data,row_to_json(state_attendance)::text from
+  (select hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date,
+ sum(case when data.attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when data.attendance > 33 and data.attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when data.attendance > 60 and data.attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when data.attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_last_30_days as data, hc_student_attendance_state_last30 hsao
+   group by hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date)as state_attendance)
+union
+(select ''sat_performance'' as data,
+  row_to_json(sat)::text from (select hc_sat_state_last30.school_performance as performance,hc_sat_state_last30.grade_wise_performance,hc_sat_state_last30.students_count,hc_sat_state_last30.total_schools,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+from
+(select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_last30) as data, hc_sat_state_last30) as sat)
+union
+(select ''pat_performance'' as data,
+  row_to_json(pat)::text from (select hc_pat_state_last30.*,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+from
+(select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from periodic_exam_school_last30) as data, hc_pat_state_last30) as pat)
+union
+(select ''udise''as data,row_to_json(udise)::text from (select sum(total_schools) as total_schools
+  ,'||udise_cols||',
+    cast(avg(infrastructure_score)as int)as infrastructure_score,
+ sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when Infrastructure_score > 33 and infrastructure_score<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when Infrastructure_score > 60 and infrastructure_score<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
+   from udise_school_score)as udise)
+  union
+ (select ''school_infrastructure''as data,row_to_json(infra)::text 
+ from (select sum(total_schools_data_received) as total_schools_data_received, 
+   cast(avg(infra_score)as int)as infra_score,
+'||infra_cols||','''||infra_atf||''' as areas_to_focus,
+ sum(case when infra_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when infra_score > 33 and infra_score<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when infra_score > 60 and infra_score<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when infra_score >75 then 1 else 0 end)as value_above_75
+ from hc_infra_school)as infra)
+ union
+SELECT ''crc_visit''::text AS data_source,
+    row_to_json(crc.*)::text AS "values"
+   FROM (select res.*,cast((100 - (res.schools_0)) as float) as visit_score from
+(
+select
+total_schools,total_crc_visits,visited_school_count,not_visited_school_count,(SELECT round(NULLIF((((count(DISTINCT school_hierarchy_details.school_id))::double precision / NULLIF((count(DISTINCT school_hierarchy_details.cluster_id))::double precision, (0)::double precision)))::numeric, (1)::numeric)) AS no_of_schools_per_crc FROM school_hierarchy_details) as no_of_schools_per_crc,
+( SELECT to_char(min(days_in_period.day)::timestamp with time zone, ''DD-MM-YYYY''::text) AS data_from_date
+           FROM ( SELECT generate_series(now()::date - ''30 days''::interval, (now()::date - ''30 days''::interval)::date::timestamp without time zone, ''30 days''::interval)::date AS day) days_in_period) AS data_from_date,
+( SELECT to_char(max(days_in_period.day)::timestamp with time zone, ''DD-MM-YYYY''::text) AS data_upto_date
+           FROM ( SELECT generate_series(now()::date - ''30 days''::interval, (now()::date - ''1 day''::interval)::date::timestamp without time zone, ''1 day''::interval)::date AS day) days_in_period) AS data_upto_date,
+COALESCE(round(((schools_0 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_0,
+    COALESCE(round(((schools_1_2 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_1_2,
+    COALESCE(round(((schools_3_5 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_3_5,
+    COALESCE(round(((schools_6_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_6_10,
+    COALESCE(round(((schools_10 * (100)::numeric) / (total_schools)::numeric), 1), (0)::numeric) AS schools_10
+from (
+SELECT  sum(crc_school_report_last_30_days.total_schools) AS total_schools,
+sum(crc_school_report_last_30_days.total_crc_visits) AS total_crc_visits,
+            sum(crc_school_report_last_30_days.visited_school_count) AS visited_school_count,
+            sum(crc_school_report_last_30_days.not_visited_school_count) AS not_visited_school_count,
+                    sum(
+                        CASE
+                            WHEN (crc_school_report_last_30_days.schools_0 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_0,
+                    sum(
+                        CASE
+                            WHEN (crc_school_report_last_30_days.schools_1_2 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_1_2,
+                    sum(
+                        CASE
+                            WHEN (crc_school_report_last_30_days.schools_3_5 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_3_5,
+                    sum(
+                        CASE
+                            WHEN (crc_school_report_last_30_days.schools_6_10 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_6_10,
+                    sum(
+                        CASE
+                            WHEN (crc_school_report_last_30_days.schools_10 > (0)::numeric) THEN 1
+                            ELSE 0
+                        END) AS schools_10
+                   FROM crc_school_report_last_30_days) as spd)as res ) crc;';
+Execute create_state_view; 
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+select health_card_index_state_last_30();
 
 /* Health Card index overall state */
 
@@ -18844,7 +18804,7 @@ from
    from hc_periodic_exam_school_mgmt_all where school_management_type is not null group by school_management_type) as data left join hc_pat_state_mgmt_overall hs on data.school_management_type=hs.school_management_type) as pat)
 union
 (select ''student_semester'' as data,school_management_type,
-  row_to_json(sat)::text from (select hs.*,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+  row_to_json(sat)::text from (select hs.school_performance as performance,hs.grade_wise_performance,hs.school_management_type,hs.students_count,hs.total_schools,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
 from
 (select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
  sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
@@ -19006,7 +18966,7 @@ from
    from hc_periodic_exam_school_mgmt_last30 where school_management_type is not null group by school_management_type) as data left join hc_pat_state_mgmt_last30 hs on data.school_management_type=hs.school_management_type) as pat)
 union
 (select ''student_semester'' as data,school_management_type,
-  row_to_json(sat)::text from (select hs.*,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
+  row_to_json(sat)::text from (select hs.school_performance as performance,hs.grade_wise_performance,hs.school_management_type,hs.students_count,hs.total_schools,'||'''overall_category'''||' as school_category,value_below_33,value_between_33_60,value_between_60_75,value_above_75
 from
 (select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
  sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
