@@ -6,7 +6,15 @@ const s3File = require('../../lib/reads3File');
 router.post('/blockWise', auth.authController, async (req, res) => {
     try {
         logger.info('---composite report block wise api ---');
-        let fileName = `composite/comp_block.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `composite/school_management_category/overall_category/${management}/comp_block.json`
+        }else{
+            fileName = `composite/comp_block.json`
+        }
         var data = await s3File.readS3File(fileName);
 
         logger.info('--- composite report block api response sent ---');
@@ -21,7 +29,15 @@ router.post('/blockWise', auth.authController, async (req, res) => {
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         logger.info('---composite report blocks per district api ---');
-        let fileName = `composite/comp_block.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `composite/school_management_category/overall_category/${management}/comp_block.json`
+        }else{
+            fileName = `composite/comp_block.json`
+        }
         var blockData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId

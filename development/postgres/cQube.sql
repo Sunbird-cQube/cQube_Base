@@ -6081,4 +6081,6 @@ drop view if exists crc_trans_to_aggregate cascade;
 alter table student_attendance_exception_agg add column if not exists school_management_type varchar(100);
 alter table student_attendance_exception_agg add column if not exists school_category varchar(100);
 
- 
+alter table teacher_attendance_exception_agg add column if not exists school_management_type varchar(100);
+alter table teacher_attendance_exception_agg add column if not exists school_category varchar(100);
+
