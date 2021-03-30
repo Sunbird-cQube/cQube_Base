@@ -27,11 +27,6 @@ export class MultiSelectComponent implements OnInit {
   getSelectedValue(id, status, a) {
     var index;
 
-    if (this.from === 'trendChart' && this.checkedList.length > 0) {
-      //this.shareCheckedlist();
-      this.clearSuccessors.emit(this.text);
-    }
-
     if (this.text !== "State") {
       if (!status) {
         index = this.checkedList.indexOf(id);
@@ -45,6 +40,8 @@ export class MultiSelectComponent implements OnInit {
 
         if (this.checkedList.length == 0) {
           this.shareCheckedlist();
+        } else {
+          this.clearSuccessors.emit(this.text);
         }
       } else {
         a.status = false;

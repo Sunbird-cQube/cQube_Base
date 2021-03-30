@@ -1,9 +1,9 @@
 [
     {
-        "health_card_management_index_state_overall": "select * from health_card_index_state_mgmt_overall"
+        "health_card_management_index_state_overall": "SELECT school_management_type,json_object_agg(data_source,values) as data_source FROM health_card_index_state_mgmt_overall group by school_management_type; "
     },
     {
-        "health_card_management_index_state_last_30_days": "select * from health_card_index_state_mgmt_last30"
+        "health_card_management_index_state_last_30_days": "SELECT school_management_type,json_object_agg(data_source,values) as data_source FROM health_card_index_state_mgmt_last30 group by school_management_type;"
     },
     {
         "health_card_management_index_district_overall": "select * from health_card_index_district_mgmt_overall"

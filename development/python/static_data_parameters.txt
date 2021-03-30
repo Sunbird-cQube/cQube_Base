@@ -430,5 +430,13 @@ or longitude like '0' or longitude like '0.0'""",
 "static_data_type_district_state":"""Optional(ParseInt()),Optional(StrNotNullOrEmpty())""",
 "static_school_management_check_if_null":"""select * from flowfile
 where school_management_type_id IS NULL
-or school_management_type IS NULL"""
+or school_management_type IS NULL""",
+"static_school_mgt_exception_list":"""select data.*,shd.school_management_type from (select a.ff_uuid,a.school_id,a.block_id,a.cluster_id,a.district_id,
+string_agg(a.exception_type,' and ') as  exception_type
+from school_invalid_data as a 
+group by a.ff_uuid,a.school_id,a.block_id,a.cluster_id,a.district_id) as data 
+left join 
+(select sm.school_id,smm.school_management_type from school_master sm left join school_management_master smm on sm.school_management_type_id=smm.school_management_type_id) shd  
+on data.school_id=shd.school_id where data.ff_uuid= ff_uuid""",
+"school_managment_unique":"""select * from flowfile where school_management_type is NOT NULL"""
 }
