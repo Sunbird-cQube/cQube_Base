@@ -92,6 +92,10 @@ export class StudentAttendanceExceptionComponent implements OnInit {
   period = "overall";
   timePeriod = {};
 
+  managementName;
+  management;
+  category;
+
   constructor(
     public http: HttpClient,
     public service: ExceptionReportService,
@@ -145,6 +149,11 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       [this.lat - 4.5, this.lng - 6],
       [this.lat + 3.5, this.lng + 6],
     ]);
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     document.getElementById("homeBtn").style.display = "block";
     document.getElementById("backBtn").style.display = "none";
     this.skul = true;
@@ -400,7 +409,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service
-        .dist_wise_data({ ...this.month_year, ...this.timePeriod })
+        .dist_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category } })
         .subscribe(
           (res) => {
             this.reportData = this.districtData = this.mylatlngData =
@@ -506,7 +515,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service
-        .block_wise_data({ ...this.month_year, ...this.timePeriod })
+        .block_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category } })
         .subscribe(
           (res) => {
             this.reportData = this.mylatlngData = res["blockData"];
@@ -611,7 +620,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service
-        .cluster_wise_data({ ...this.month_year, ...this.timePeriod })
+        .cluster_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category } })
         .subscribe(
           (res) => {
             this.reportData = this.mylatlngData = res["clusterData"];
@@ -737,7 +746,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service
-        .school_wise_data({ ...this.month_year, ...this.timePeriod })
+        .school_wise_data({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category } })
         .subscribe(
           (res) => {
             this.reportData = this.mylatlngData = res["schoolData"];
@@ -991,7 +1000,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
         this.myData.unsubscribe();
       }
       this.myData = this.service
-        .blockPerDist({ ...this.month_year, ...this.timePeriod })
+        .blockPerDist({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category } })
         .subscribe(
           (res) => {
             this.reportData = this.blockData = this.mylatlngData =
@@ -1168,7 +1177,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       }
       this.month_year["id"] = data;
       this.myData = this.service
-        .clusterPerBlock({ ...this.month_year, ...this.timePeriod })
+        .clusterPerBlock({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category } })
         .subscribe(
           (res) => {
             this.reportData = this.clusterData = this.mylatlngData =
@@ -1394,7 +1403,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
       this.month_year["id"] = data;
       this.myData = this.service
-        .schoolsPerCluster({ ...this.month_year, ...this.timePeriod })
+        .schoolsPerCluster({ ...this.month_year, ...this.timePeriod, ...{ management: this.management, category: this.category } })
         .subscribe(
           (res) => {
             this.reportData = this.mylatlngData = res["schoolsDetails"];

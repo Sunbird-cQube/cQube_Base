@@ -10,18 +10,36 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         var year = req.body.year;
         var timePeriod = req.body.period;
         var report = req.body.report;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
         if (report == 'sarException') {
-            if (timePeriod != null) {
-                fileName = `exception_list/student_attendance_completion/${timePeriod}/block.json`;
+            if (management != 'overall' && category == 'overall') {
+                if (timePeriod != null) {
+                    fileName = `exception_list/student_attendance_completion/school_management_category/${timePeriod}/overall_category/${management}/block.json`;
+                } else {
+                    fileName = `exception_list/student_attendance_completion/school_management_category/overall_category/${management}/block_${year}_${month}.json`;
+                }
             } else {
-                fileName = `exception_list/student_attendance_completion/block_${year}_${month}.json`;
+                if (timePeriod != null) {
+                    fileName = `exception_list/student_attendance_completion/${timePeriod}/block.json`;
+                } else {
+                    fileName = `exception_list/student_attendance_completion/block_${year}_${month}.json`;
+                }
             }
         } else {
-            if (timePeriod != null) {
-                fileName = `exception_list/teacher_attendance_completion/${timePeriod}/block.json`;
+            if (management != 'overall' && category == 'overall') {
+                if (timePeriod != null) {
+                    fileName = `exception_list/teacher_attendance_completion/school_management_category/${timePeriod}/overall_category/${management}/block.json`;
+                } else {
+                    fileName = `exception_list/teacher_attendance_completion/school_management_category/overall_category/${management}/block_${year}_${month}.json`;
+                }
             } else {
-                fileName = `exception_list/teacher_attendance_completion/block_${year}_${month}.json`;
+                if (timePeriod != null) {
+                    fileName = `exception_list/teacher_attendance_completion/${timePeriod}/block.json`;
+                } else {
+                    fileName = `exception_list/teacher_attendance_completion/block_${year}_${month}.json`;
+                }
             }
         }
         var jsonData = await s3File.readS3File(fileName);
@@ -44,7 +62,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
             blockData.push(obj);
         }
         logger.info(`---${req.body.report} block wise api response sent ---`);
-        res.status(200).send({ blockData: blockData, missingSchoolsCount: jsonData.allBlocksFooter.total_schools_with_missing_data,dateRange: dateRange });
+        res.status(200).send({ blockData: blockData, missingSchoolsCount: jsonData.allBlocksFooter.total_schools_with_missing_data, dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -59,19 +77,38 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
         var year = req.body.year;
         var timePeriod = req.body.period;
         var report = req.body.report;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
         if (report == 'sarException') {
-            if (timePeriod != null) {
-                fileName = `exception_list/student_attendance_completion/${timePeriod}/block.json`;
+            if (management != 'overall' && category == 'overall') {
+                if (timePeriod != null) {
+                    fileName = `exception_list/student_attendance_completion/school_management_category/${timePeriod}/overall_category/${management}/block.json`;
+                } else {
+                    fileName = `exception_list/student_attendance_completion/school_management_category/overall_category/${management}/block_${year}_${month}.json`;
+                }
             } else {
-                fileName = `exception_list/student_attendance_completion/block_${year}_${month}.json`;
+                if (timePeriod != null) {
+                    fileName = `exception_list/student_attendance_completion/${timePeriod}/block.json`;
+                } else {
+                    fileName = `exception_list/student_attendance_completion/block_${year}_${month}.json`;
+                }
             }
         } else {
-            if (timePeriod != null) {
-                fileName = `exception_list/teacher_attendance_completion/${timePeriod}/block.json`;
+            if (management != 'overall' && category == 'overall') {
+                if (timePeriod != null) {
+                    fileName = `exception_list/teacher_attendance_completion/school_management_category/${timePeriod}/overall_category/${management}/block.json`;
+                } else {
+                    fileName = `exception_list/teacher_attendance_completion/school_management_category/overall_category/${management}/block_${year}_${month}.json`;
+                }
             } else {
-                fileName = `exception_list/teacher_attendance_completion/block_${year}_${month}.json`;
-            }        }
+                if (timePeriod != null) {
+                    fileName = `exception_list/teacher_attendance_completion/${timePeriod}/block.json`;
+                } else {
+                    fileName = `exception_list/teacher_attendance_completion/block_${year}_${month}.json`;
+                }
+            }
+        }
         var jsonData = await s3File.readS3File(fileName);
         var blockData = [];
         var filterData = jsonData.data.filter(data => {
@@ -95,7 +132,7 @@ router.post('/blockPerDist', auth.authController, async (req, res) => {
             blockData.push(obj);
         }
         logger.info(`---${req.body.report} blockPerDist api response sent ---`);
-        res.status(200).send({ blockData: blockData, missingSchoolsCount: jsonData.footer[distId].total_schools_with_missing_data,dateRange: dateRange });
+        res.status(200).send({ blockData: blockData, missingSchoolsCount: jsonData.footer[distId].total_schools_with_missing_data, dateRange: dateRange });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
