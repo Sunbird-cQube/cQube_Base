@@ -362,6 +362,7 @@ leaflet-right {
 #management,
 #category {
     margin-right: 15px;
+    margin-bottom: 3px;
     padding: 5.2px;
     color: white;
     border-radius: 4px;
@@ -544,6 +545,7 @@ leaflet-right {
     #management,
     #category {
         margin-right: 15px;
+        margin-bottom: 3px;
         padding: 7.2px;
         color: white;
         border-radius: 4px;
@@ -697,6 +699,7 @@ leaflet-right {
     #management,
     #category {
         margin-right: 15px;
+        margin-bottom: 3px;
         padding: 8px !important;
         color: white;
         border-radius: 4px;
@@ -850,6 +853,7 @@ leaflet-right {
     #management,
     #category {
         margin-right: 20px;
+        margin-bottom: 4px;
         padding: 12px !important;
         color: white;
         border-radius: 6px;

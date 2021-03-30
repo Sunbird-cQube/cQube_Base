@@ -90,8 +90,8 @@
                         Card</a>
                 </div>
             </div>
-            <br>
-            <p class="note">
+            
+            <p class="note" style="margin-top: 15px;">
                 <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the dropdown below. You can alter the metrics (calculated from the CRC App) to update the scatter plot.
             </p>
             <br>
@@ -101,7 +101,7 @@
         </div>
         <div class="col-sm-6">
             <div class="row">
-                <select id="period" [(ngModel)]="period" (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
+                <select id="period"  [(ngModel)]="period" (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
                     <option [value]="period" disabled selected="selected">Choose TimeRange</option>
                     <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
                         {{period.value}}
@@ -147,8 +147,7 @@
                     </option>
                 </select> -->
             </div>
-            <br>
-            <p class="note">
+            <p class="note" style="margin-top: 15px;">
                 <strong> NOTE:</strong> The table provides information about the various metrics (calculated from the CRC App). You can sort the entire table based on any metrics available in this table.
             </p>
             <div class="myDiv">
@@ -157,16 +156,19 @@
         </div>
     </div>
     <div class="row" style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; padding: 2px 0px 2px 0px;margin: 0px 0px 0px 0px;position: fixed; bottom: 0; left: 0;">
-        <div style="margin-right: 7%; margin-left: 1%;">
+        <div  *ngIf="managementName != 'Overall'" style="margin-right: 5%; margin-left: 1%;">
+            <span id="nm" class="note" style="text-align: center;">Name of Management: {{managementName}}</span>
+        </div>
+        <div style="margin-right: 5%;">
             <span id="visits">Total Number of visits: {{visitCount}}</span>
         </div>
-        <div style="margin-right: 7%;">
+        <div style="margin-right: 5%;">
             <span id="schools" style="text-align: center;">Total Number of Schools: {{schoolCount}}</span>
         </div>
-        <div style="margin-right:7%;">
+        <div style="margin-right:5%;">
             <span id="visited" style="float: right;">Total schools visited: {{visitedSchools}}</span>
         </div>
-        <div style="margin-right: 7%;">
+        <div style="margin-right: 5%;">
             <span id="notVisited" style="float: right;">Total schools not visited: {{notVisitedSchools}}</span>
         </div>
     </div>

@@ -122,7 +122,8 @@ export class StudengtAttendanceComponent implements OnInit {
   managementName;
   management;
   category;
-
+  public allMonths:any = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
+  
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
@@ -154,6 +155,9 @@ export class StudengtAttendanceComponent implements OnInit {
             id: month.month,
           };
           this.months.push(obj);
+        });
+        this.months.sort((a,b)=> {
+          return this.allMonths.indexOf(a) - this.allMonths.indexOf(b);
         });
         this.month = this.months[this.months.length - 1].id;
         if (this.month) {
