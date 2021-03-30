@@ -224,6 +224,21 @@ export class StudentAttendanceChartComponent implements OnInit {
     }
   }
 
+  getDistrictName(districtId: number): string {
+    let district = this.districtList.find(district => district.id === districtId);
+    return district.name;
+  }
+
+  getBlockName(blockId: number): string {
+    let block = this.blockList.find(block => block.id === blockId);
+    return block.name;
+  }
+
+  getClusterName(clusterId: number): string {
+    let cluster = this.clusterList.find(cluster => cluster.id === clusterId);
+    return cluster.name;
+  }
+
   shareCheckedList(list){
     this.currentColors = [];
     this.dataWithColors = [];
