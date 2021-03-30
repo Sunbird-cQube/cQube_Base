@@ -18803,7 +18803,7 @@ group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.clust
 union
 (select ''student_attendance'' as data,school_management_type,row_to_json(state_attendance)::text from
   (select hsamo.attendance,hsamo.students_count,hsamo.total_schools,hsamo.data_from_date,hsamo.data_upto_date,
-  hsamo.school_management_type,value_below_33,value_between_60_75,value_above_75
+  hsamo.school_management_type,value_below_33,value_between_33_60,value_between_60_75,value_above_75
 from (select
  sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
  sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
@@ -18968,7 +18968,7 @@ group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.clust
 union
 (select ''student_attendance'' as data,school_management_type,row_to_json(state_attendance)::text from
   (select hsamo.attendance,hsamo.students_count,hsamo.total_schools,hsamo.data_from_date,hsamo.data_upto_date,
-  hsamo.school_management_type,value_below_33,value_between_60_75,value_above_75
+  hsamo.school_management_type,value_below_33,value_between_33_60,value_between_60_75,value_above_75
 from (select
  sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
  sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
