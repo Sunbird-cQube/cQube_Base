@@ -495,10 +495,10 @@
 
     <!-- ENERGISED TEXTBOOK USAGE rows -- added two blocks for enabling and disabling -->
     <div *ngIf="diksha_column" class="row" style="padding: 20px">
-        <div class="col-lg-9 col-md-6 col-sm-6" style="padding:  0% 25px 0px 25px">
+        <div class="col-lg-9 col-md-12 col-sm-12" style="padding:  0% 25px 0px 25px">
             <div class="headings">Energised Textbook Usage</div>
             <div class="row outer12">
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #e79c7a 0%, #eeb79d 100%);"
                         id="dsc" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-user-profile']"
                         (click)="fetchTelemetry($event,'dsc')">
@@ -534,7 +534,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #e79c7a 0%, #eeb79d 100%);"
                         id="ut" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook']"
                         (click)="fetchTelemetry($event,'ut')">
@@ -570,7 +570,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #e79c7a 0%, #eeb79d 100%);"
                         id="utc" [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook-content']"
                         (click)="fetchTelemetry($event,'utc')">
@@ -929,7 +929,7 @@
                 </div>
             </div>
             <div class="row" [hidden]="!semester">
-                <div class="col-lg-9 col-md-9 col-sm-9" style="padding:  20px 25px 0px 25px">
+                <div class="col-lg-9 col-md-12 col-sm-12" style="padding:  20px 25px 0px 25px">
                     <div class="row outer12">
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="card card-stats"
