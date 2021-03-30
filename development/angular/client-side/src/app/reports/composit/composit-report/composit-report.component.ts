@@ -58,6 +58,9 @@ export class CompositReportComponent implements OnInit {
   state: string;
 
   selected = '';
+  managementName;
+  management;
+  category;
 
   height = window.innerHeight;
   onResize() {
@@ -74,11 +77,16 @@ export class CompositReportComponent implements OnInit {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     this.onResize();
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.dist_wise_data().subscribe(res => {
+    this.myData = this.service.dist_wise_data({ management: this.management, category: this.category }).subscribe(res => {
       this.result = res;
       if (Object.keys(this.result[0]).includes("Student Attendance(%)")) {
         this.xAxis = "Student Attendance(%)";
@@ -138,7 +146,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.dist_wise_data().subscribe(res => {
+    this.myData = this.service.dist_wise_data({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureDistrictsNames = this.result = res;
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
@@ -189,7 +197,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.block_per_dist_data(data).subscribe(res => {
+    this.myData = this.service.block_per_dist_data(data, { management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureBlocksNames = this.result = res;
       // for download========
       this.funToDownload(this.reportData);
@@ -246,7 +254,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.cluster_per_block_data(this.distName, data).subscribe(res => {
+    this.myData = this.service.cluster_per_block_data(this.distName, data, { management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureClusterNames = this.result = res;
       // for download========
       this.funToDownload(this.reportData);
@@ -302,7 +310,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.school_per_cluster_data(distId, blockId, data).subscribe(res => {
+    this.myData = this.service.school_per_cluster_data(distId, blockId, data, { management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureSchoolNames = this.result = res;
       // for download========
       this.funToDownload(this.reportData);
@@ -330,7 +338,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.dist_wise_data().subscribe(res => {
+    this.myData = this.service.dist_wise_data({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = res;
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -368,7 +376,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.block_wise_data().subscribe(res => {
+    this.myData = this.service.block_wise_data({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.result = res;
       this.funToDownload(this.reportData);
       //for chart =============================================
@@ -406,7 +414,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.cluster_wise_data().subscribe(res => {
+    this.myData = this.service.cluster_wise_data({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.result = res;
       this.funToDownload(this.reportData);
       //for chart =============================================

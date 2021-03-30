@@ -201,6 +201,7 @@ export class StudentAttendanceChartComponent implements OnInit {
 
   clearSuccessors(type: string): any {
     if (type === 'District') {
+      this.selectedDistricts = [];
       this.selectedBlock = [];
       this.blockData = [];
       this.blockList = [];
@@ -211,6 +212,7 @@ export class StudentAttendanceChartComponent implements OnInit {
       this.schoolData = [];
       this.schoolList = [];
     } else if (type === 'Block') {
+      this.selectedBlock = [];
       this.selectedCluster = [];
       this.clusterData = [];
       this.clusterList = [];
@@ -218,6 +220,7 @@ export class StudentAttendanceChartComponent implements OnInit {
       this.schoolData = [];
       this.schoolList = [];
     } else if (type === 'Cluster') {
+      this.selectedCluster = [];
       this.selectedSchool = [];
       this.schoolData = [];
       this.schoolList = [];
