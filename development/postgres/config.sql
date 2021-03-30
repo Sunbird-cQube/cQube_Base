@@ -4613,7 +4613,7 @@ select b.district_id,b.district_name,b.block_id,b.block_name,b.cluster_id,b.clus
 (select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
 where year in(select substring(monthyear,1,4) as year from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as min_year) 
 and month in(select substring(monthyear,6) as month from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency) as min_month)) as data_from_date,
-(select max(a.visit_date) from 
+(select distinct max(a.visit_date) from 
 (select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
 where year in(select substring(monthyear,1,4) as year from (select max(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as max_year) 
 and month in(select substring(monthyear,6) as month from (select max(concat(year,'-',month)) as monthyear from crc_visits_frequency) as max_month) ) as data_upto_date,
@@ -4640,7 +4640,7 @@ b.total_schools,b.total_crc_visits,b.visited_school_count,b.not_visited_school_c
              over (
                ORDER BY b.visit_score DESC)
            || ' out of ' :: text )
-         ||  b.total_schools_state) AS school_level_rank_within_the_state
+         ||  sum(b.total_schools_state)) AS school_level_rank_within_the_state
 		 from 
 (select res.district_id,res.district_name,res.block_id,res.block_name,res.cluster_id,res.cluster_name,res.school_id,res.school_name,res.total_schools,res.total_crc_visits,res.visited_school_count,res.not_visited_school_count,
 res.schools_0,res.schools_1_2,res.schools_3_5,res.schools_6_10,res.schools_10 ,res.no_of_schools_per_crc,res.visit_percent_per_school,schools_in_cluster,schools_in_block,schools_in_district,
@@ -4687,25 +4687,30 @@ left join
   where visit_count>0  and cluster_name is not null group by school_id)as scl_v
 on spd.school_id=scl_v.school_id) as res
 left join
-(select a.*,(select count(DISTINCT(school_id)) from crc_visits_frequency)as total_schools_state 
-from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from crc_visits_frequency as scl
+(select  distinct a.*,(select count(DISTINCT(school_id)) from school_hierarchy_details 
+where school_name is not null and cluster_name is not null )as total_schools_state 
+from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from school_hierarchy_details  as  scl
 left join 
-(SELECT cluster_id,Count(DISTINCT crc_visits_frequency.school_id) AS schools_in_cluster FROM   crc_visits_frequency group by cluster_id) as c
+(SELECT cluster_id,Count(DISTINCT school_hierarchy_details.school_id) AS schools_in_cluster FROM school_hierarchy_details 
+where school_name is not null and cluster_name is not null  group by cluster_id) as c
 on scl.cluster_id=c.cluster_id
 left join
-(SELECT block_id,Count(DISTINCT crc_visits_frequency.school_id) AS schools_in_block FROM   crc_visits_frequency group by block_id)as b
+(SELECT block_id,Count(DISTINCT school_hierarchy_details.school_id) AS schools_in_block FROM   school_hierarchy_details 
+where school_name is not null and cluster_name is not null  group by block_id)as b
 on scl.block_id=b.block_id
 left join 
-(SELECT district_id,Count(DISTINCT crc_visits_frequency.school_id) AS schools_in_district FROM   crc_visits_frequency group by district_id) as d
+(SELECT district_id,Count(DISTINCT school_hierarchy_details.school_id) AS schools_in_district FROM   school_hierarchy_details 
+where school_name is not null and cluster_name is not null  group by district_id) as d
 on scl.district_id=d.district_id)as a)as b
-on res.school_id=b.school_id) as b
+on res.school_id=b.school_id) as b 
 group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,visit_score,data_from_date,data_upto_date,total_schools,total_crc_visits,
 visited_school_count,not_visited_school_count,schools_0,schools_1_2,schools_3_5,schools_6_10,schools_10 ,no_of_schools_per_crc,visit_percent_per_school,state_level_score,schools_in_cluster,schools_in_block,
 schools_in_district,total_schools_state;
 
 
 create or replace view hc_crc_cluster as
-select b.district_id,b.district_name,b.block_id,b.block_name,b.cluster_id,b.cluster_name,b.visit_score,
+select 
+b.district_id,b.district_name,b.block_id,b.block_name,b.cluster_id,b.cluster_name,b.visit_score,
 (select min(a.visit_date) from 
 (select visit_date,date_part('month',visit_date)::text as month,date_part('year',visit_date)::text as year from crc_inspection_trans ) as a
 where year in(select substring(monthyear,1,4) as year from (select min(concat(year,'-',month)) as monthyear from crc_visits_frequency)  as min_year) 
@@ -4738,7 +4743,8 @@ coalesce(1-round(( Rank()
              over (
                ORDER BY b.visit_score DESC) / (b.total_clusters*1.0)),2)) else 0 end AS state_level_score
 		 from 
-(select res.district_id,res.district_name,res.block_id,res.block_name,res.cluster_id,res.cluster_name,res.total_schools,res.total_crc_visits,res.visited_school_count,res.not_visited_school_count,res.schools_0,res.schools_1_2,res.schools_3_5,res.schools_6_10,res.schools_10 ,res.no_of_schools_per_crc,res.visit_percent_per_school,b.clusters_in_block,b.clusters_in_district,
+(select res.district_id,res.district_name,res.block_id,res.block_name,res.cluster_id,res.cluster_name,res.total_schools,res.total_crc_visits,res.visited_school_count,
+res.not_visited_school_count,res.schools_0,res.schools_1_2,res.schools_3_5,res.schools_6_10,res.schools_10 ,res.no_of_schools_per_crc,res.visit_percent_per_school,b.clusters_in_block,b.clusters_in_district,
 b.total_clusters,
 cast(COALESCE(100 - cast(schools_0 as float),0) as float)  as visit_score 
 from
@@ -4774,17 +4780,22 @@ left join
     where visit_count>0  and cluster_name is not null group by cluster_id)as scl_v
 on spd.cluster_id=scl_v.cluster_id ) as res
 left join
-(select a.*,(select count(DISTINCT(cluster_id)) from crc_visits_frequency)as total_clusters
-from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from crc_visits_frequency as scl
+(select a.*,(select count(DISTINCT(cluster_id)) from school_hierarchy_details 
+where school_name is not null and cluster_name is not null and district_id!=9999)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from school_hierarchy_details 
+ as scl
 left join
-(SELECT block_id,Count(DISTINCT crc_visits_frequency.cluster_id) AS clusters_in_block FROM   crc_visits_frequency group by block_id)as b
+(SELECT block_id,Count(DISTINCT school_hierarchy_details.cluster_id) AS clusters_in_block FROM   school_hierarchy_details 
+where school_name is not null and cluster_name is not null and district_id!=9999 group by block_id)as b
 on scl.block_id=b.block_id
 left join 
-(SELECT district_id,Count(DISTINCT crc_visits_frequency.cluster_id) AS clusters_in_district FROM   crc_visits_frequency group by district_id) as d
+(SELECT district_id,Count(DISTINCT school_hierarchy_details.cluster_id) AS clusters_in_district FROM   school_hierarchy_details 
+where school_name is not null and cluster_name is not null and district_id!=9999 group by district_id) as d
 on scl.district_id=d.district_id)as a)as b
-on res.cluster_id=b.cluster_id) as b  group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,visit_score,total_clusters,data_from_date,data_upto_date,total_schools,total_crc_visits,
+on res.cluster_id=b.cluster_id) as b   group by district_id,district_name,block_id,block_name,cluster_id,cluster_name,visit_score,total_clusters,data_from_date,data_upto_date,total_schools,total_crc_visits,
 visited_school_count,not_visited_school_count,schools_0,schools_1_2,schools_3_5,schools_6_10,schools_10 ,no_of_schools_per_crc,visit_percent_per_school,clusters_in_block,clusters_in_district,
 total_clusters;
+
 
 
 create or replace view hc_crc_block as
@@ -4815,7 +4826,7 @@ case when visit_score>0 then
 coalesce(1-round(( Rank()
              over (
                ORDER BY b.visit_score DESC) / (b.total_blocks*1.0)),2)) else 0 end AS state_level_score
-from 
+		 from 
 (select res.district_id,res.district_name,res.block_id,res.block_name,res.total_schools,res.total_crc_visits,res.visited_school_count,res.not_visited_school_count,res.schools_0,res.schools_1_2,
 res.schools_3_5,res.schools_6_10,res.schools_10 ,res.no_of_schools_per_crc,res.visit_percent_per_school,b.blocks_in_district,
 b.total_blocks,
@@ -4850,16 +4861,17 @@ left join
     where visit_count>0  and cluster_name is not null group by block_id)as scl_v
 on spd.block_id=scl_v.block_id ) as res
 left join
-(select a.*,(select count(DISTINCT(block_id)) from crc_visits_frequency)as total_blocks
-from (select distinct(scl.block_id),blocks_in_district,d.district_id from crc_visits_frequency as scl
+(select a.*,(select count(DISTINCT(block_id)) from  school_hierarchy_details 
+where school_name is not null and cluster_name is not null and district_id!=9999)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from school_hierarchy_details as scl
 left join
-(SELECT district_id,Count(DISTINCT crc_visits_frequency.block_id) AS blocks_in_district FROM   crc_visits_frequency group by district_id) as d
+(SELECT district_id,Count(DISTINCT school_hierarchy_details.block_id) AS blocks_in_district FROM     school_hierarchy_details 
+where school_name is not null and cluster_name is not null and district_id!=9999 group by district_id) as d
 on scl.district_id=d.district_id)as a)as b
 on res.block_id=b.block_id) as b group by district_id,district_name,block_id,block_name,visit_score,total_blocks,data_from_date,data_upto_date,total_schools,total_crc_visits,
 visited_school_count,not_visited_school_count,schools_0,schools_1_2,schools_3_5,schools_6_10,schools_10 ,no_of_schools_per_crc,visit_percent_per_school,blocks_in_district,
 total_blocks;
 
-/* crc */
 
 
 create or replace view hc_crc_district as
@@ -4878,13 +4890,15 @@ b.total_schools,b.total_crc_visits,b.visited_school_count,b.not_visited_school_c
                ORDER BY b.visit_score DESC)
            || ' out of ' :: text )
          || (select count(distinct(district_id)) 
-from crc_visits_frequency) ) AS district_level_rank_within_the_state,
+from school_hierarchy_details 
+where school_name is not null and cluster_name is not null and district_id!=9999) ) AS district_level_rank_within_the_state,
 case when visit_score>0 then 
 coalesce(1-round(( Rank()
              over (
                ORDER BY b.visit_score DESC) / ((select count(distinct(district_id)) 
-from crc_visits_frequency)*1.0)),2)) else 0 end AS state_level_score
- from 
+from school_hierarchy_details 
+where school_name is not null and cluster_name is not null and district_id!=9999)*1.0)),2)) else 0 end AS state_level_score
+		 from 
 (select res.district_id,res.district_name,res.total_schools,res.total_crc_visits,res.visited_school_count,res.not_visited_school_count,res.schools_0,res.schools_1_2,
 res.schools_3_5,res.schools_6_10,res.schools_10 ,res.no_of_schools_per_crc,res.visit_percent_per_school,
 cast(COALESCE(100 - cast(schools_0 as float),0) as float)  as visit_score 
@@ -4919,6 +4933,8 @@ left join
 on spd.district_id=scl_v.district_id) as res)as b
 group by district_id,district_name,visit_score,data_from_date,data_upto_date,total_schools,total_crc_visits,
 visited_school_count,not_visited_school_count,schools_0,schools_1_2,schools_3_5,schools_6_10,schools_10 ,no_of_schools_per_crc,visit_percent_per_school;
+
+
 
 CREATE OR REPLACE FUNCTION infra_areas_to_focus()
 RETURNS text AS
