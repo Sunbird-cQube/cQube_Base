@@ -48,9 +48,9 @@ export class ExceptionReportService {
   }
 
   //missing school data api
-  school_invalid() {
+  school_invalid(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/school_invalid/school_invalid_data`);
+    return this.http.post(`${this.baseUrl}/school_invalid/school_invalid_data`, data);
   }
 
 
