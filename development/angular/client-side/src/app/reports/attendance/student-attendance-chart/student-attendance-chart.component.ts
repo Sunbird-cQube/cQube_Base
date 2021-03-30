@@ -253,7 +253,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.schoolList = [];
 
     var names = [];
-    this.selectedDistricts = list;
+    this.selectedDistricts = list.slice();
     this.districtList.map((item)=>{
       this.selectedDistricts.map(i=>{
         if(i == item.id){
@@ -294,7 +294,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.schoolData = [];
     this.schoolList = [];
     var names = [];
-    this.selectedBlock = list;
+    this.selectedBlock = list.slice();
     this.blockList.map((item)=>{
       this.selectedBlock.map(i=>{
         if(i == item.id){
@@ -333,7 +333,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.dataWithColors = [];
     this.selectedSchool = [];
     var names = [];
-    this.selectedCluster = list;
+    this.selectedCluster = list.slice();
     this.clusterList.map((item)=>{
       this.selectedCluster.map(i=>{
         if(i == item.id){
@@ -371,7 +371,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.dataWithColors = [];
     this.selectedSchool = [];
     var names = [];
-    this.selectedSchool = list;
+    this.selectedSchool = list.slice();
     this.schoolList.map((item)=>{
       this.selectedSchool.map(i=>{
         if(i == item.id){
