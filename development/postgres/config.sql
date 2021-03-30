@@ -3928,7 +3928,7 @@ insert into composite_config(template,status,category,table_join) values('udise'
 on stat.school_id=udise_school_score.udise_school_id')
 on conflict on constraint composite_config_pkey do nothing;
 
-	update composite_config as uds set select_query= stg.select_query from 
+update composite_config as uds set select_query= stg.select_query from 
 (select string_agg(lower(column_name),',')||',infrastructure_score' as select_query from udise_config where type='indice' and status=true)as stg
 where uds.template='udise';
 
@@ -4050,6 +4050,7 @@ select ''
       "*": {
         "district_id": "[&1].district.id",
         "district_name": "[&1].district.value",
+        "school_management_type": "[&1].school_management_type.value",
 '||comp_cols||'
       }
     }
@@ -4068,6 +4069,7 @@ as select ''
         "district_name": "[&1].district.value",
         "block_id": "[&1].block.id",
         "block_name": "[&1].block.value",
+        "school_management_type": "[&1].school_management_type.value",
 '||comp_cols||'
       }
     }
@@ -4088,6 +4090,7 @@ as select ''
         "block_name": "[&1].block.value",
         "cluster_id": "[&1].cluster.id",
         "cluster_name": "[&1].cluster.value",
+        "school_management_type": "[&1].school_management_type.value",
 '||comp_cols||'
       }
     }
@@ -4109,6 +4112,7 @@ as select ''
         "cluster_id": "[&1].cluster.id",
         "cluster_name": "[&1].cluster.value",
         "school_id": "[&1].school.id",
+        "school_management_type": "[&1].school_management_type.value",
         "school_name": "[&1].school.value",
 '||comp_cols||'
       }
@@ -4136,7 +4140,8 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
  ) = 0;
 
-select * from composite_create_views();
+
+select composite_create_views();
 select composite_jolt_spec();
 
 CREATE OR REPLACE FUNCTION insert_diksha_tpd_trans()
@@ -19083,4 +19088,243 @@ $$LANGUAGE plpgsql;
 
 select health_card_index_state_mgmt_last30();
 
+/* Composite Management Queries */
 
+/*Composite reports */
+
+/*insert script for composite dynamic queries*/
+
+/*district*/
+
+insert into composite_config(template,status,category,select_query,table_join) values('static',true,'district_mgt','select stat.district_id,stat.district_name,stat.school_management_type',
+		'from (select distinct(sh.district_id),initcap(sh.district_name)as district_name,sh.school_management_type as school_management_type from
+school_geo_master as sg 
+left join 
+school_hierarchy_details as sh on sg.district_id=sh.district_id
+where school_latitude>0 and school_longitude>0 and cluster_latitude>0 and cluster_longitude>0 and school_name is not null and district_name is not null 
+	and cluster_name is not null and block_name is not null and school_management_type is not null) as stat')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('attendance',true,'district_mgt','sa.student_attendance',
+		'left join (SELECT district_id,
+Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS student_attendance,school_management_type 
+FROM school_student_total_attendance WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0 and school_management_type is not null
+AND year =(select max(year) from school_student_total_attendance) AND
+month= (select max(month) from school_student_total_attendance where year=(select max(year) from school_student_total_attendance))
+GROUP BY district_id,year,month,school_management_type) as sa 
+on stat.district_id=sa.district_id and stat.school_management_type=sa.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('pat',true,'district_mgt','pat.Periodic_exam_performance',
+		'left join (select district_id,district_performance as Periodic_exam_performance,school_management_type from periodic_exam_district_mgmt_all where school_management_type is not null) as pat 
+on stat.district_id=pat.district_id and stat.school_management_type=pat.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('diksha',true,'district_mgt','dik.Total_content_plays_textbook,
+	dik.Total_content_plays_course,dik.Total_content_plays_all',
+		'inner join (select district_id,sum(textbook) as Total_content_plays_textbook,
+sum(course) as Total_content_plays_course,sum(textbook+course)as Total_content_plays_all from 
+(select district_id,(case when lower(collection_type)=''textbook'' then sum(total_count) else 0 end)as textbook,
+	(case when lower(collection_type)=''course'' then sum(total_count) else 0 end)as course
+	from diksha_total_content where collection_type is not null
+group by district_id,collection_type
+order by 1)as f group by district_id) as dik 
+on stat.district_id=dik.district_id')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('semester',true,'district_mgmt','sat.Semester_exam_performance',
+		'left join (select district_id,district_performance as Semester_exam_performance,school_management_type from semester_exam_district_mgmt_all where school_management_type is not null) as sat 
+on stat.district_id=sat.district_id and stat.school_management_type=sat.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+
+insert into composite_config(template,status,category,table_join) values('udise',true,'district_mgmt','left join udise_district_mgt_score
+on stat.district_id=udise_district_mgt_score.district_id and stat.school_management_type=udise_district_mgt_score.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+/*block*/
+
+insert into composite_config(template,status,category,select_query,table_join) values('static',true,'block_mgt',
+	'select stat.block_id,stat.block_name,stat.district_id,stat.district_name,stat.school_management_type',
+		'from (select distinct(sh.block_id),initcap(sh.block_name)as block_name,sh.district_id,initcap(sh.district_name)as district_name,sh.school_management_type as school_management_type from
+school_geo_master as sg 
+left join 
+school_hierarchy_details as sh on sg.block_id=sh.block_id
+where school_latitude>0 and school_longitude>0 and cluster_latitude>0 and cluster_longitude>0 and school_name is not null and district_name is not null 
+	and cluster_name is not null and block_name is not null and school_management_type is not null) as stat')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('attendance',true,'block_mgt','sa.student_attendance',
+		'left join (SELECT block_id,
+Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS student_attendance,school_management_type
+FROM school_student_total_attendance WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0 and school_management_type is not null
+AND year =(select max(year) from school_student_total_attendance) AND
+month= (select max(month) from school_student_total_attendance where year=(select max(year) from school_student_total_attendance))
+GROUP BY block_id,year,month,school_management_type) as sa 
+on stat.block_id=sa.block_id and stat.school_management_type=sa.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('pat',true,'block_mgt','pat.Periodic_exam_performance',
+		'left join (select block_id,block_performance as Periodic_exam_performance,school_management_type from periodic_exam_block_mgmt_all where school_management_type is not null) as pat 
+on stat.block_id=pat.block_id and stat.school_management_type=pat.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('sat',true,'block_mgt','sat.Semester_exam_performance',
+		'left join (select block_id,block_performance as Semester_exam_performance,school_management_type from semester_exam_block_mgmt_all where school_management_type is not null) as sat 
+on stat.block_id=sat.block_id and stat.school_management_type=sat.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,table_join) values('udise',true,'block_mgt','left join udise_block_mgt_score
+on stat.block_id=udise_block_mgt_score.block_id and stat.school_management_type=udise_block_mgt_score.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+/*cluster*/
+
+insert into composite_config(template,status,category,select_query,table_join) values('static',true,'cluster_mgt',
+	'select stat.cluster_id,stat.cluster_name,stat.block_id,stat.block_name,stat.district_id,stat.district_name,stat.school_management_type',
+		'from (select distinct(sh.cluster_id),initcap(sh.cluster_name)as cluster_name,sh.block_id,initcap(sh.block_name)as block_name
+		,sh.district_id,initcap(sh.district_name)as district_name,sh.school_management_type as school_management_type from
+school_geo_master as sg 
+left join 
+school_hierarchy_details as sh on sg.cluster_id=sh.cluster_id
+where school_latitude>0 and school_longitude>0 and cluster_latitude>0 and cluster_longitude>0 and school_name is not null and district_name is not null 
+	and cluster_name is not null and block_name is not null and school_management_type is not null) as stat')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('attendance',true,'cluster_mgt','sa.student_attendance',
+		'left join (SELECT cluster_id,
+Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS student_attendance,school_management_type
+FROM school_student_total_attendance WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0 and school_management_type is not null
+AND year =(select max(year) from school_student_total_attendance) AND
+month= (select max(month) from school_student_total_attendance where year=(select max(year) from school_student_total_attendance))
+GROUP BY cluster_id,year,month,school_management_type) as sa 
+on stat.cluster_id=sa.cluster_id and stat.school_management_type=sa.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('pat',true,'cluster_mgt','pat.Periodic_exam_performance',
+		'left join (select cluster_id,cluster_performance as Periodic_exam_performance,school_management_type from periodic_exam_cluster_mgmt_all where school_management_type is not null) as pat 
+on stat.cluster_id=pat.cluster_id and stat.school_management_type=pat.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('sat',true,'cluster_mgt','sat.semester_exam_performance',
+		'left join (select cluster_id,cluster_performance as semester_exam_performance,school_management_type from semester_exam_cluster_mgmt_all where school_management_type is not null) as sat 
+on stat.cluster_id=sat.cluster_id and stat.school_management_type=sat.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,table_join) values('udise',true,'cluster_mgt','left join udise_cluster_mgt_score
+on stat.cluster_id=udise_cluster_mgt_score.cluster_id and stat.school_management_type=udise_cluster_mgt_score.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+/*school*/
+
+insert into composite_config(template,status,category,select_query,table_join) values('static',true,'school_mgt',
+	'select stat.school_id,stat.school_name,stat.cluster_id,stat.cluster_name,stat.block_id,stat.block_name,stat.district_id,stat.district_name,stat.school_management_type',
+		'from (select distinct(sh.school_id),initcap(sh.school_name)as school_name,sh.cluster_id,initcap(sh.cluster_name)as cluster_name,
+		sh.block_id,initcap(sh.block_name)as block_name,sh.district_id,initcap(sh.district_name)as district_name,sh.school_management_type as school_management_type from
+school_geo_master as sg 
+left join 
+school_hierarchy_details as sh on sg.school_id=sh.school_id
+where school_latitude>0 and school_longitude>0 and cluster_latitude>0 and cluster_longitude>0 and school_name is not null and district_name is not null 
+	and cluster_name is not null and block_name is not null and school_management_type is not null) as stat')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('attendance',true,'school_mgt','sa.student_attendance',
+		'left join (SELECT school_id,
+Round(Sum(total_present)*100.0/Sum(total_working_days),1)AS student_attendance,school_management_type
+FROM school_student_total_attendance WHERE district_name IS NOT NULL AND block_latitude IS NOT NULL 
+AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 
+AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null and total_working_days>0 and school_management_type is not null
+AND year =(select max(year) from school_student_total_attendance) AND
+month= (select max(month) from school_student_total_attendance where year=(select max(year) from school_student_total_attendance))
+GROUP BY school_id,year,month,school_management_type) as sa 
+on stat.school_id=sa.school_id and stat.school_management_type=sa.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('pat',true,'school_mgt','pat.Periodic_exam_performance',
+		'left join (select school_id,school_performance as Periodic_exam_performance,school_management_type from periodic_exam_school_mgmt_all where school_management_type is not null) as pat 
+on stat.school_id=pat.school_id and stat.school_management_type=pat.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,select_query,table_join) values('sat',true,'school_mgt','sat.Semester_exam_performance',
+		'left join (select school_id,school_performance as semester_exam_performance,school_management_type from semester_exam_school_mgmt_all where school_management_type is not null) as sat 
+on stat.school_id=sat.school_id and stat.school_management_type=sat.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+insert into composite_config(template,status,category,table_join) values('udise',true,'school_mgt','left join udise_school_mgt_score
+on stat.school_id=udise_school_mgt_score.udise_school_id and stat.school_management_type=udise_school_mgt_score.school_management_type')
+on conflict on constraint composite_config_pkey do nothing;
+
+	update composite_config as uds set select_query= stg.select_query from 
+(select string_agg(lower(column_name),',')||',infrastructure_score' as select_query from udise_config where type='indice' and status=true)as stg
+where uds.template='udise';
+
+
+update composite_config set status= false where lower(template) in (select split_part(lower(template),'_',2) from nifi_template_info where status=false);
+
+/*Function to create composite management views*/
+
+CREATE OR REPLACE FUNCTION composite_create_mgt_views()
+RETURNS text AS
+$$
+DECLARE
+select_query_dist text:='select string_agg(col,'','') from (select concat(select_query)as col from composite_config where status=''true'' and category=''district_mgt'' order by id)as d';   
+select_cols_dist text;
+join_query_dist text:='select string_agg(col,'' '') from (select concat(table_join)as col from composite_config where status=''true'' and category=''district_mgt'' order by id)as d';
+join_cols_dist text;
+district_view text;
+select_query_blk text:='select string_agg(col,'','') from (select concat(select_query)as col from composite_config where status=''true'' and category=''block_mgt'' order by id)as d';   
+select_cols_blk text;
+join_query_blk text:='select string_agg(col,'' '') from (select concat(table_join)as col from composite_config where status=''true'' and category=''block_mgt'' order by id)as d';
+join_cols_blk text;
+block_view text;
+select_query_cst text:='select string_agg(col,'','') from (select concat(select_query)as col from composite_config where status=''true'' and category=''cluster_mgt'' order by id)as d';   
+select_cols_cst text;
+join_query_cst text:='select string_agg(col,'' '') from (select concat(table_join)as col from composite_config where status=''true'' and category=''cluster_mgt'' order by id)as d';
+join_cols_cst text;
+cluster_view text;
+select_query_scl text:='select string_agg(col,'','') from (select concat(select_query)as col from composite_config where status=''true'' and category=''school_mgt'' order by id)as d';   
+select_cols_scl text;
+join_query_scl text:='select string_agg(col,'' '') from (select concat(table_join)as col from composite_config where status=''true'' and category=''school_mgt'' order by id)as d';
+join_cols_scl text;
+school_view text;
+BEGIN
+Execute select_query_dist into select_cols_dist;
+Execute join_query_dist into join_cols_dist;
+Execute select_query_blk into select_cols_blk;
+Execute join_query_blk into join_cols_blk;
+Execute select_query_cst into select_cols_cst;
+Execute join_query_cst into join_cols_cst;
+Execute select_query_scl into select_cols_scl;
+Execute join_query_scl into join_cols_scl;
+district_view='create or replace view composite_mgt_district as 
+'||select_cols_dist||' '||join_cols_dist||';
+';
+Execute district_view; 
+block_view='create or replace view composite_mgt_block as 
+'||select_cols_blk||' '||join_cols_blk||';
+';
+Execute block_view; 
+cluster_view='create or replace view composite_mgt_cluster as 
+'||select_cols_cst||' '||join_cols_cst||';
+';
+Execute cluster_view; 
+school_view='create or replace view composite_mgt_school as 
+'||select_cols_scl||' '||join_cols_scl||';
+';
+Execute school_view; 
+return 0;
+END;
+$$LANGUAGE plpgsql;
+
+drop view if exists composite_mgt_district;
+drop view if exists composite_mgt_block;
+drop view if exists composite_mgt_cluster;
+drop view if exists composite_mgt_school;
+
+select composite_create_mgt_views();
