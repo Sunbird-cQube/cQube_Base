@@ -54,6 +54,18 @@ drop view if exists teacher_attendance_exception_last_1_day cascade;
 drop view if exists teacher_attendance_exception_last_30_days cascade;
 drop view if exists teacher_attendance_exception_last_7_days cascade;
 drop view if exists teacher_attendance_exception_overall cascade;
+drop view if exists sat_exception_data_all  cascade;
+drop view if exists sat_exception_data_last7  cascade;
+drop view if exists sat_exception_data_last30  cascade;
+drop view if exists sat_exception_grade_data_all cascade;
+drop view if exists sat_exception_grade_data_last7 cascade;
+drop view if exists sat_exception_grade_data_last30 cascade;
+drop view if exists pat_exception_data_all  cascade;
+drop view if exists pat_exception_data_last7  cascade;
+drop view if exists pat_exception_data_last30  cascade;
+drop view if exists pat_exception_grade_data_all cascade;
+drop view if exists pat_exception_grade_data_last7 cascade;
+drop view if exists pat_exception_grade_data_last30 cascade;
 
 
 /* Create infra tables */
@@ -5664,29 +5676,27 @@ pat_no_schools_all= 'create or replace view pat_exception_data_all as
 select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
- b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ b.district_latitude,b.district_longitude,a.school_management_type from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 where a.school_id !=9999 AND a.school_id not in 
 (select distinct e.school_id from (select school_id from periodic_exam_school_all)as e)
 and cluster_name is not null';
 
-
 pat_no_schools_last7= 'create or replace view pat_exception_data_last7 as 
 select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
- b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ b.district_latitude,b.district_longitude,a.school_management_type from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 left join periodic_exam_school_last7 c on a.school_id=c.school_id
 where exists ( select pat_date_range.exam_code from pat_date_range where pat_date_range.date_range=''last7days''::text) and c.school_id is null
 and a.school_id<>9999';
 
-
 pat_no_schools_last30= 'create or replace view pat_exception_data_last30 as 
 select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
- b.district_latitude,b.district_longitude from school_hierarchy_details as a
+ b.district_latitude,b.district_longitude,a.school_management_type from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 left join periodic_exam_school_last30 c on a.school_id=c.school_id
 where exists ( select pat_date_range.exam_code from pat_date_range where pat_date_range.date_range=''last30days''::text) and c.school_id is null
@@ -5715,7 +5725,7 @@ if EXISTS (select * from school_grade_enrolment)  then
 pat_grade_no_schools_all = 'create or replace view pat_exception_grade_data_all as
 select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
-,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,a.school_management_type,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 inner join (select sm.*,sd.subject from (select school_id,grade from school_grade_enrolment) sm inner join subject_details sd on sd.grade=sm.grade 
@@ -5728,7 +5738,7 @@ select distinct sma.*,''grade'' as subject from (select school_id,grade from sch
 pat_grade_no_schools_last7 = 'create or replace view pat_exception_grade_data_last7 as
 select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
-,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,a.school_management_type,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 inner join (select sm.*,sd.subject from (select school_id,grade from school_grade_enrolment) sm inner join subject_details sd on sd.grade=sm.grade 
@@ -5743,7 +5753,7 @@ select distinct sma.*,''grade'' as subject from (select school_id,grade from sch
 pat_grade_no_schools_last30 = 'create or replace view pat_exception_grade_data_last30 as
 select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
-,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,a.school_management_type,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 inner join (select sm.*,sd.subject from (select school_id,grade from school_grade_enrolment) sm inner join subject_details sd on sd.grade=sm.grade 
@@ -5762,7 +5772,7 @@ else
 pat_grade_no_schools_all = 'create or replace view pat_exception_grade_data_all as
 select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
-,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,a.school_management_type,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 inner join (select sm.*,sd.subject from (select school_id,generate_series(school_lowest_class,school_highest_class) as grade from school_master) sm inner join subject_details sd on sd.grade=sm.grade 
@@ -5776,7 +5786,7 @@ select distinct sma.*,''grade'' as subject from (select school_id,generate_serie
 pat_grade_no_schools_last7 = 'create or replace view pat_exception_grade_data_last7 as
 select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
-,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,a.school_management_type,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 inner join (select sm.*,sd.subject from (select school_id,generate_series(school_lowest_class,school_highest_class) as grade from school_master) sm inner join subject_details sd on sd.grade=sm.grade 
@@ -5791,7 +5801,7 @@ select distinct sma.*,''grade'' as subject from (select school_id,generate_serie
 pat_grade_no_schools_last30 = 'create or replace view pat_exception_grade_data_last30 as
 select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
-,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
+,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,a.school_management_type,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
  	inner join school_geo_master as b on a.school_id=b.school_id
 inner join (select sm.*,sd.subject from (select school_id,generate_series(school_lowest_class,school_highest_class) as grade from school_master) sm inner join subject_details sd on sd.grade=sm.grade 
@@ -11326,7 +11336,7 @@ sat_no_schools_last7 text;
 sat_no_schools_last30 text;
 BEGIN
 sat_no_schools_all= 'create or replace view sat_exception_data_all as 
-select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,a.school_management_type,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude from school_hierarchy_details as a
@@ -11337,7 +11347,7 @@ and cluster_name is not null';
 
 
 sat_no_schools_last7= 'create or replace view sat_exception_data_last7 as 
-select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,a.school_management_type,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude from school_hierarchy_details as a
@@ -11347,7 +11357,7 @@ initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as dist
 
 
 sat_no_schools_last30= 'create or replace view sat_exception_data_last30 as 
-select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,a.school_management_type,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude from school_hierarchy_details as a
@@ -11378,7 +11388,7 @@ BEGIN
 
 if EXISTS (select * from school_grade_enrolment)  then
 sat_grade_no_schools_all = 'create or replace view sat_exception_grade_data_all as
-select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,a.school_management_type,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
@@ -11391,7 +11401,7 @@ select distinct sma.*,''grade'' as subject from (select school_id,grade from sch
  except select school_id,grade,''grade'' as subject from semester_exam_school_result) as d on a.school_id = d.school_id';
 
 sat_grade_no_schools_last7 = 'create or replace view sat_exception_grade_data_last7 as
-select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,a.school_management_type,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
@@ -11404,7 +11414,7 @@ select distinct sma.*,''grade'' as subject from (select school_id,grade from sch
  except select school_id,grade,''grade'' as subject from semester_exam_school_result) as d on a.school_id = d.school_id';
 
 sat_grade_no_schools_last30 = 'create or replace view sat_exception_grade_data_last30 as
-select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,a.school_management_type,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
@@ -11422,7 +11432,7 @@ Execute sat_grade_no_schools_last30;
 
 else
 sat_grade_no_schools_all = 'create or replace view sat_exception_grade_data_all as
-select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,a.school_management_type,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
@@ -11435,7 +11445,7 @@ select distinct sma.*,''grade'' as subject from (select school_id,generate_serie
  except select school_id,grade,''grade'' as subject from semester_exam_school_result) as d on a.school_id = d.school_id';
 
 sat_grade_no_schools_last7 = 'create or replace view sat_exception_grade_data_last7 as
-select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,a.school_management_type,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
@@ -11448,7 +11458,7 @@ select distinct sma.*,''grade'' as subject from (select school_id,generate_serie
  except select school_id,grade,''grade'' as subject from semester_exam_school_result) as d on a.school_id = d.school_id';
 
 sat_grade_no_schools_last30 = 'create or replace view sat_exception_grade_data_last30 as
-select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,
+select distinct a.school_id,initcap(a.school_name)as school_name,a.cluster_id,initcap(a.cluster_name)as cluster_name,a.block_id,a.school_management_type,
 initcap(a.block_name)as block_name,a.district_id,initcap(a.district_name)as district_name
 ,b.school_latitude,b.school_longitude,b.cluster_latitude,b.cluster_longitude,b.block_latitude,b.block_longitude,
  b.district_latitude,b.district_longitude,cast(''Grade ''||d.grade as text)as grade,d.subject from school_hierarchy_details as a
@@ -11471,6 +11481,7 @@ END;
 $function$;
 
 select sat_no_schools_grade();
+
 
 /* All months data in one Excel sheet at Teacher attendance report */
 drop view if exists teacher_attendance_all_months_data_dist cascade;
