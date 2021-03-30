@@ -388,6 +388,35 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>07a3165f-646a-3c6e-0000-000000000000</id>
+                            <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>5440.0</x>
+<y>232.0</y>
+                            </bends>
+                            <destination>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>7c173549-f1c2-3aa5-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>tch_att_management_exception_time_range</selectedRelationships>
+                            <source>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>211fb978-5689-3207-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>08cce9a2-09f7-3c88-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
@@ -460,7 +489,7 @@
 <id>a8a738dd-9439-3600-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
-                            <zIndex>0</zIndex>
+                            <zIndex>4</zIndex>
                         </connections>
                         <connections>
                             <id>0e944ddf-cf60-3a60-0000-000000000000</id>
@@ -523,7 +552,7 @@
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
+                            <labelIndex>0</labelIndex>
                             <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                             <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -886,35 +915,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>25767595-3187-3ce0-0000-000000000000</id>
-                            <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>3136.0</x>
-<y>88.0</y>
-                            </bends>
-                            <destination>
-<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
-<id>72a4be39-4f24-3978-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>0</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
-<id>29ff4c52-56a5-3a12-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>1</zIndex>
-                        </connections>
-                        <connections>
                             <id>25eeea5b-8a46-3ca1-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -1075,7 +1075,7 @@
 <id>232678da-ca3a-3d59-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
-                            <zIndex>0</zIndex>
+                            <zIndex>3</zIndex>
                         </connections>
                         <connections>
                             <id>2ab7d4b2-a37f-3203-0000-000000000000</id>
@@ -2292,6 +2292,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>6b1f292c-a1a3-3359-0000-000000000000</id>
+                            <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>72a4be39-4f24-3978-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>unmatched</selectedRelationships>
+                            <source>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>96dc0d5c-2bc0-358d-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>6cad87b6-2fe1-3982-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>8 GB</backPressureDataSizeThreshold>
@@ -2442,6 +2467,39 @@
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
 <id>f2f89f4e-2884-3328-0000-000000000000</id>
 <type>FUNNEL</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>78583507-1752-3f0e-0000-000000000000</id>
+                            <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>5032.0</x>
+<y>360.0</y>
+                            </bends>
+                            <bends>
+<x>3184.0</x>
+<y>504.0</y>
+                            </bends>
+                            <destination>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>72a4be39-4f24-3978-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>unmatched</selectedRelationships>
+                            <source>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>211fb978-5689-3207-0000-000000000000</id>
+<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -3308,7 +3366,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
-<id>72a4be39-4f24-3978-0000-000000000000</id>
+<id>96dc0d5c-2bc0-358d-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -3613,6 +3671,7 @@
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name></name>
                             <selectedRelationships>tch_att_exception_time_range</selectedRelationships>
+                            <selectedRelationships>tch_att_management_exception_time_range</selectedRelationships>
                             <source>
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
 <id>51ea3de7-9d2c-33a5-0000-000000000000</id>
@@ -3901,6 +3960,47 @@
                             <source>
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
 <id>a8a738dd-9439-3600-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>c5bf9d10-6627-3878-0000-000000000000</id>
+                            <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>1928.0</x>
+<y>-512.0</y>
+                            </bends>
+                            <bends>
+<x>1984.0</x>
+<y>-1648.0</y>
+                            </bends>
+                            <bends>
+<x>7976.0</x>
+<y>-1712.0</y>
+                            </bends>
+                            <bends>
+<x>7984.0</x>
+<y>-1072.0</y>
+                            </bends>
+                            <destination>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>145c3238-28ea-323c-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>tch_att_managment_exception_year_month</selectedRelationships>
+                            <source>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>96dc0d5c-2bc0-358d-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -4291,6 +4391,7 @@
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name></name>
                             <selectedRelationships>tch_att_exception_by_month_year</selectedRelationships>
+                            <selectedRelationships>tch_att_management_exception_year_month</selectedRelationships>
                             <source>
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
 <id>51ea3de7-9d2c-33a5-0000-000000000000</id>
@@ -4771,6 +4872,35 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>fbb4a936-0ef4-30d7-0000-000000000000</id>
+                            <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>4784.0</x>
+<y>8.0</y>
+                            </bends>
+                            <destination>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>211fb978-5689-3207-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
+<id>29ff4c52-56a5-3a12-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>fe4408e4-814e-3653-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
@@ -4801,8 +4931,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>4648.0</x>
-<y>-168.0</y>
+<x>4016.0</x>
+<y>-104.0</y>
                             </bends>
                             <destination>
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
@@ -9335,6 +9465,75 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines:mi
                             <type>org.apache.nifi.processors.standard.ValidateCsv</type>
                         </processors>
                         <processors>
+                            <id>211fb978-5689-3207-0000-000000000000</id>
+                            <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
+                            <position>
+<x>4920.0</x>
+<y>-176.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>
+            <name>Routing Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>tch_att_management_exception_time_range</key>
+        <value>
+            <name>tch_att_management_exception_time_range</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>Route to Property name</value>
+    </entry>
+    <entry>
+        <key>tch_att_management_exception_time_range</key>
+        <value>${query_type:startsWith('tch_att_management_exception_school_last'):
+or(${query_type:startsWith('tch_att_management_exception_school_overall')}):
+or(${query_type:startsWith('tch_att_management_exception_cluster_last')}):
+or(${query_type:startsWith('tch_att_management_exception_cluster_overall')}):
+or(${query_type:startsWith('tch_att_management_exception_block_last')}):
+or(${query_type:startsWith('tch_att_management_exception_block_overall')}):
+or(${query_type:startsWith('tch_att_management_exception_district_last')}):
+or(${query_type:startsWith('tch_att_management_exception_district_overall')})}</value>
+    </entry>
+</properties>
+<runDurationMillis>25</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>tch_att_route_management_exception</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>tch_att_management_exception_time_range</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
+                        </processors>
+                        <processors>
                             <id>232678da-ca3a-3d59-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
@@ -9868,7 +10067,7 @@ file: ${filename} columns validation started.</value>
         <value>/year</value>
     </entry>
 </properties>
-<runDurationMillis>1000</runDurationMillis>
+<runDurationMillis>25</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
@@ -10276,7 +10475,12 @@ file: ${filename} columns validation started.</value>
         <value>${query_type:startsWith('tch_att_management_category_district_by_month_year'):ifElse('teacher_attendance/school_management_category/${year}/${month}/${category}/${management}/district.json',
 ${query_type:startsWith('tch_att_management_category_block_by_month_year'):ifElse('teacher_attendance/school_management_category/${year}/${month}/${category}/${management}/block.json',
 ${query_type:startsWith('tch_att_management_category_cluster_by_month_year'):ifElse('teacher_attendance/school_management_category/${year}/${month}/${category}/${management}/cluster.json',
-${query_type:startsWith('tch_att_management_category_school_by_month_year'):ifElse('teacher_attendance/school_management_category/${year}/${month}/${category}/${management}/school.json','None')} )} )} )}</value>
+${query_type:startsWith('tch_att_management_category_school_by_month_year'):ifElse('teacher_attendance/school_management_category/${year}/${month}/${category}/${management}/school.json',
+${query_type:startsWith('tch_att_management_exception_district_by_month_year'):ifElse("exception_list/teacher_attendance_completion/school_management_category/overall_category/${management}/district_${year}_${month}.json",
+${query_type:startsWith('tch_att_management_exception_block_by_month_year'):ifElse("exception_list/teacher_attendance_completion/school_management_category/overall_category/${management}/block_${year}_${month}.json",
+${query_type:startsWith('tch_att_management_exception_cluster_by_month_year'):ifElse("exception_list/teacher_attendance_completion/school_management_category/overall_category/${management}/cluster_${year}_${month}.json",
+${query_type:startsWith('tch_att_management_exception_school_by_month_year'):ifElse("exception_list/teacher_attendance_completion/school_management_category/overall_category/${management}/school_${year}_${month}.json",'None')} )} )} )}
+)})})})}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -10411,7 +10615,7 @@ ${query_type:startsWith('tch_att_management_category_school_by_month_year'):ifEl
         <key>proxy-user-password</key>
     </entry>
 </properties>
-<runDurationMillis>25</runDurationMillis>
+<runDurationMillis>50</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>60 sec</yieldDuration>
@@ -11135,7 +11339,7 @@ WHERE filename like 'teacher_attendance%';</value>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>jolt-transform</key>
@@ -11193,8 +11397,12 @@ WHERE filename like 'teacher_attendance%';</value>
         <value>${query_type:startsWith('tch_att_management_category_district'):ifElse(#{tch_att_jolt_spec_district},
 ${query_type:startsWith('tch_att_management_category_block'):ifElse(#{tch_att_jolt_spec_block},
 ${query_type:startsWith('tch_att_management_category_cluster'):ifElse(#{tch_att_jolt_spec_cluster},
-${query_type:startsWith('tch_att_management_category_school'):ifElse(#{tch_att_jolt_spec_school},'None')}  )} 
-)} )}</value>
+${query_type:startsWith('tch_att_management_category_school'):ifElse(#{tch_att_jolt_spec_school},
+${query_type:startsWith('tch_att_management_exception_school_by_month_year'):ifElse(#{tch_att_exception_school_jolt_spec},
+${query_type:startsWith('tch_att_management_exception_cluster_by_month_year'):ifElse(#{tch_att_exception_cluster_jolt_spec},
+${query_type:startsWith('tch_att_management_exception_block_by_month_year'):ifElse(#{tch_att_exception_block_jolt_spec},
+${query_type:startsWith('tch_att_management_exception_district_by_month_year'):ifElse(#{tch_att_exception_district_jolt_spec},'None')}  )} 
+)} )} )})})})}</value>
     </entry>
     <entry>
         <key>Transform Cache Size</key>
@@ -11205,7 +11413,7 @@ ${query_type:startsWith('tch_att_management_category_school'):ifElse(#{tch_att_j
         <value>false</value>
     </entry>
 </properties>
-<runDurationMillis>25</runDurationMillis>
+<runDurationMillis>50</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
@@ -12047,6 +12255,18 @@ same id data validation of file:${filename} started</value>
         </value>
     </entry>
     <entry>
+        <key>tch_att_management_exception_time_range</key>
+        <value>
+            <name>tch_att_management_exception_time_range</name>
+        </value>
+    </entry>
+    <entry>
+        <key>tch_att_management_exception_year_month</key>
+        <value>
+            <name>tch_att_management_exception_year_month</name>
+        </value>
+    </entry>
+    <entry>
         <key>tch_att_raw</key>
         <value>
             <name>tch_att_raw</name>
@@ -12087,6 +12307,24 @@ ${query_type:startsWith('tch_att_exception_school_overall')} )} )} )}
 )} )} )} )}</value>
     </entry>
     <entry>
+        <key>tch_att_management_exception_time_range</key>
+        <value>${query_type:startsWith('tch_att_management_exception_school_last'):
+or(${query_type:startsWith('tch_att_management_exception_school_overall')}):
+or(${query_type:startsWith('tch_att_management_exception_cluster_last')}):
+or(${query_type:startsWith('tch_att_management_exception_cluster_overall')}):
+or(${query_type:startsWith('tch_att_management_exception_block_last')}):
+or(${query_type:startsWith('tch_att_management_exception_block_overall')}):
+or(${query_type:startsWith('tch_att_management_exception_district_last')}):
+or(${query_type:startsWith('tch_att_management_exception_district_overall')})}</value>
+    </entry>
+    <entry>
+        <key>tch_att_management_exception_year_month</key>
+        <value>${query_type:startsWith('tch_att_management_exception_district_by_month_year'):
+or(${query_type:startsWith('tch_att_management_exception_block_by_month_year')}):
+or(${query_type:startsWith('tch_att_management_exception_cluster_by_month_year')}):
+or(${query_type:startsWith('tch_att_management_exception_school_by_month_year')})}</value>
+    </entry>
+    <entry>
         <key>tch_att_raw</key>
         <value>${query_type:startsWith('tch_att_raw_district'):or(
 ${query_type:startsWith('tch_att_raw_block'):or(
@@ -12112,6 +12350,14 @@ ${query_type:startsWith('tch_att_raw_school')} )} )} )}</value>
                             <relationships>
 <autoTerminate>false</autoTerminate>
 <name>tch_att_exception_time_range</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>tch_att_management_exception_time_range</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>tch_att_management_exception_year_month</name>
                             </relationships>
                             <relationships>
 <autoTerminate>false</autoTerminate>
@@ -13321,8 +13567,12 @@ where ff_uuid= '${files_uuid}'</value>
         <value>${query_type:startsWith('tch_att_management_category_district'):ifElse(#{tch_att_jolt_spec_district},
 ${query_type:startsWith('tch_att_management_category_block'):ifElse(#{tch_att_jolt_spec_block},
 ${query_type:startsWith('tch_att_management_category_cluster'):ifElse(#{tch_att_jolt_spec_cluster},
-${query_type:startsWith('tch_att_management_category_school'):ifElse(#{tch_att_jolt_spec_school},'None')}  )} 
-)} )}</value>
+${query_type:startsWith('tch_att_management_category_school'):ifElse(#{tch_att_jolt_spec_school},
+${query_type:startsWith('tch_att_management_exception_school'):ifElse(#{tch_att_exception_school_jolt_spec},
+${query_type:startsWith('tch_att_management_exception_cluster'):ifElse(#{tch_att_exception_cluster_jolt_spec},
+${query_type:startsWith('tch_att_management_exception_block'):ifElse(#{tch_att_exception_block_jolt_spec},
+${query_type:startsWith('tch_att_management_exception_district'):ifElse(#{tch_att_exception_district_jolt_spec},'None')}  )} 
+)} )} )})})})}</value>
     </entry>
     <entry>
         <key>Transform Cache Size</key>
@@ -13981,8 +14231,8 @@ ${query_type:startsWith('tch_att_raw_school'):ifElse(#{tch_att_raw_school_jolt_s
                             <id>743e3d5b-495c-3dce-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>1480.0</x>
-<y>-320.0</y>
+<x>1584.0</x>
+<y>-96.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -15291,16 +15541,18 @@ ${query_type:startsWith('tch_att_management_category_school_overall'):ifElse('te
         <key>sql-pre-query</key>
         <value>select teacher_attendance_no_schools(${hd:substringAfter('|')},${hd:substringBefore('|')});
 insert into teacher_attendance_exception_agg as a (school_id,year,month,school_name,block_id,block_name,district_id,district_name,cluster_id,cluster_name,
-	school_latitude,school_longitude,district_latitude,district_longitude,block_latitude,block_longitude,cluster_latitude,cluster_longitude,
-	created_on,updated_on)
-select school_id,year,month,school_name,block_id,block_name,district_id,district_name,cluster_id,cluster_name,
-	school_latitude,school_longitude,district_latitude,district_longitude,block_latitude,block_longitude,cluster_latitude,cluster_longitude,now(),now() from teacher_attendance_exception_data
+school_latitude,school_longitude,district_latitude,district_longitude,block_latitude,block_longitude,cluster_latitude,cluster_longitude,school_management_type,school_category,
+created_on,updated_on)
+select school_id,year,month,school_name,block_id,block_name,district_id,district_name,cluster_id,cluster_name,	school_latitude,school_longitude,district_latitude,district_longitude,block_latitude,
+block_longitude,cluster_latitude,cluster_longitude,school_management_type,'overall' as school_category,now(),now() from teacher_attendance_exception_data
 on conflict (school_id,month,year)
 do update set school_id=excluded.school_id,school_name=excluded.school_name,year=excluded.year,month=excluded.month,block_id=excluded.block_id,
 block_name=excluded.block_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,district_id=excluded.district_id,district_name=excluded.district_name,
 school_latitude=excluded.school_latitude,school_longitude=excluded.school_longitude,cluster_latitude=excluded.cluster_latitude,
 cluster_longitude=excluded.cluster_longitude,block_latitude=excluded.block_latitude,block_longitude=excluded.block_longitude,district_latitude=excluded.district_latitude,
-district_longitude=excluded.district_longitude,created_on=excluded.created_on,updated_on=now();</value>
+district_longitude=excluded.district_longitude,school_management_type=excluded.school_management_type,
+school_category=excluded.school_category,created_on=excluded.created_on,updated_on=now();
+</value>
     </entry>
     <entry>
         <key>SQL select query</key>
@@ -15343,7 +15595,7 @@ district_longitude=excluded.district_longitude,created_on=excluded.created_on,up
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>tch_att_queries_execution</name>
+                            <name>tch_att_queries_execution_exception_year_month</name>
                             <relationships>
 <autoTerminate>false</autoTerminate>
 <name>failure</name>
@@ -15859,6 +16111,71 @@ file: ${filename} with ${count.valid.lines} null values are found.</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
+                        <processors>
+                            <id>96dc0d5c-2bc0-358d-0000-000000000000</id>
+                            <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
+                            <position>
+<x>1608.0</x>
+<y>-432.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>
+            <name>Routing Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>tch_att_managment_exception_year_month</key>
+        <value>
+            <name>tch_att_managment_exception_year_month</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>Route to Property name</value>
+    </entry>
+    <entry>
+        <key>tch_att_managment_exception_year_month</key>
+        <value>${query_type:startsWith('tch_att_management_exception_school_by_month_year'):
+or(${query_type:startsWith('tch_att_management_exception_cluster_by_month_year')}):
+or(${query_type:startsWith('tch_att_management_exception_block_by_month_year')}):
+or(${query_type:startsWith('tch_att_management_exception_district_by_month_year')})}</value>
+    </entry>
+</properties>
+<runDurationMillis>25</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>tch_att_route_after_partiton_year_month</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>tch_att_managment_exception_year_month</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
                         <processors>
                             <id>a1ce299e-0425-316f-0000-000000000000</id>
@@ -22078,8 +22395,24 @@ ${query_type:startsWith('tch_att_management_category_school_last_30_days'):ifEls
 ${query_type:startsWith('tch_att_management_category_district_overall'):ifElse('teacher_attendance/overall/school_management_category/${category}/${management}/district.json',
 ${query_type:startsWith('tch_att_management_category_block_overall'):ifElse('teacher_attendance/overall/school_management_category/${category}/${management}/block.json',
 ${query_type:startsWith('tch_att_management_category_cluster_overall'):ifElse('teacher_attendance/overall/school_management_category/${category}/${management}/cluster.json',
-${query_type:startsWith('tch_att_management_category_school_overall'):ifElse('teacher_attendance/overall/school_management_category/${category}/${management}/school.json','None')} )} )} )} )} )} )} 
-)} )} )} )} )} )} )} )} )}</value>
+${query_type:startsWith('tch_att_management_category_school_overall'):ifElse('teacher_attendance/overall/school_management_category/${category}/${management}/school.json',
+${query_type:startsWith('tch_att_management_exception_district_last_day'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_day/overall_category/${management}/district.json',
+${query_type:startsWith('tch_att_management_exception_district_last_7_days'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_7_days/overall_category/${management}/district.json',
+${query_type:startsWith('tch_att_management_exception_district_last_30_days'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_30_days/overall_category/${management}/district.json',
+${query_type:startsWith('tch_att_management_exception_district_overall'):ifElse('exception_list/teacher_attendance_completion/school_management_category/overall/overall_category/${management}/district.json',
+${query_type:startsWith('tch_att_management_exception_block_last_day'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_day/overall_category/${management}/block.json',
+${query_type:startsWith('tch_att_management_exception_block_last_7_days'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_7_days/overall_category/${management}/block.json',
+${query_type:startsWith('tch_att_management_exception_block_last_30_days'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_30_days/overall_category/${management}/block.json',
+${query_type:startsWith('tch_att_management_exception_block_overall'):ifElse('exception_list/teacher_attendance_completion/school_management_category/overall/overall_category/${management}/block.json',
+${query_type:startsWith('tch_att_management_exception_cluster_last_day'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_day/overall_category/${management}/cluster.json',
+${query_type:startsWith('tch_att_management_exception_cluster_last_7_days'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_7_days/overall_category/${management}/cluster.json',
+${query_type:startsWith('tch_att_management_exception_cluster_last_30_days'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_30_days/overall_category/${management}/cluster.json',
+${query_type:startsWith('tch_att_management_exception_cluster_overall'):ifElse('exception_list/teacher_attendance_completion/school_management_category/overall/overall_category/${management}/cluster.json',
+${query_type:startsWith('tch_att_management_exception_school_last_day'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_day/overall_category/${management}/school.json',
+${query_type:startsWith('tch_att_management_exception_school_last_7_days'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_7_days/overall_category/${management}/school.json',
+${query_type:startsWith('tch_att_management_exception_school_last_30_days'):ifElse('exception_list/teacher_attendance_completion/school_management_category/last_30_days/overall_category/${management}/school.json',
+${query_type:startsWith('tch_att_management_exception_school_overall'):ifElse('exception_list/teacher_attendance_completion/school_management_category/overall/overall_category/${management}/school.json','None')} )} )} )} )} )} )} 
+)} )} )} )} )} )} )} )} )} )})})})})})})})})})})})})})})})}</value>
     </entry>
     <entry>
         <key>Bucket</key>
@@ -22627,7 +22960,7 @@ ${query_type:startsWith('tch_att_management_category_school_by_month_year'):ifEl
         <key>proxy-user-password</key>
     </entry>
 </properties>
-<runDurationMillis>25</runDurationMillis>
+<runDurationMillis>50</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>60 sec</yieldDuration>
@@ -32058,5 +32391,5 @@ VALUES
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/25/2021 15:03:33 IST</timestamp>
+    <timestamp>03/30/2021 16:09:30 IST</timestamp>
 </template>
