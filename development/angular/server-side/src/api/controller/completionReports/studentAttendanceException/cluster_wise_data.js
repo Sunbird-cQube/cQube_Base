@@ -10,19 +10,38 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         var year = req.body.year;
         var timePeriod = req.body.period;
         var report = req.body.report;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
         if (report == 'sarException') {
-            if (timePeriod != null) {
-                fileName = `exception_list/student_attendance_completion/${timePeriod}/cluster.json`;
+            if (management != 'overall' && category == 'overall') {
+                if (timePeriod != null) {
+                    fileName = `exception_list/student_attendance_completion/school_management_category/${timePeriod}/overall_category/${management}/cluster.json`;
+                } else {
+                    fileName = `exception_list/student_attendance_completion/school_management_category/overall_category/${management}/cluster_${year}_${month}.json`;
+                }
             } else {
-                fileName = `exception_list/student_attendance_completion/cluster_${year}_${month}.json`;
+                if (timePeriod != null) {
+                    fileName = `exception_list/student_attendance_completion/${timePeriod}/cluster.json`;
+                } else {
+                    fileName = `exception_list/student_attendance_completion/cluster_${year}_${month}.json`;
+                }
             }
         } else {
-            if (timePeriod != null) {
-                fileName = `exception_list/teacher_attendance_completion/${timePeriod}/cluster.json`;
+            if (management != 'overall' && category == 'overall') {
+                if (timePeriod != null) {
+                    fileName = `exception_list/teacher_attendance_completion/school_management_category/${timePeriod}/overall_category/${management}/cluster.json`;
+                } else {
+                    fileName = `exception_list/teacher_attendance_completion/school_management_category/overall_category/${management}/cluster_${year}_${month}.json`;
+                }
             } else {
-                fileName = `exception_list/teacher_attendance_completion/cluster_${year}_${month}.json`;
-            }        }
+                if (timePeriod != null) {
+                    fileName = `exception_list/teacher_attendance_completion/${timePeriod}/cluster.json`;
+                } else {
+                    fileName = `exception_list/teacher_attendance_completion/cluster_${year}_${month}.json`;
+                }
+            }
+        }
         var jsonData = await s3File.readS3File(fileName);
         var clustersAttendanceData = jsonData.data
         var dateRange = `${clustersAttendanceData[0]['data_from_date']} to ${clustersAttendanceData[0]['data_upto_date']}`;
@@ -60,18 +79,36 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
         var year = req.body.year;
         var timePeriod = req.body.period;
         var report = req.body.report;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
         if (report == 'sarException') {
-            if (timePeriod != null) {
-                fileName = `exception_list/student_attendance_completion/${timePeriod}/cluster.json`;
+            if (management != 'overall' && category == 'overall') {
+                if (timePeriod != null) {
+                    fileName = `exception_list/student_attendance_completion/school_management_category/${timePeriod}/overall_category/${management}/cluster.json`;
+                } else {
+                    fileName = `exception_list/student_attendance_completion/school_management_category/overall_category/${management}/cluster_${year}_${month}.json`;
+                }
             } else {
-                fileName = `exception_list/student_attendance_completion/cluster_${year}_${month}.json`;
+                if (timePeriod != null) {
+                    fileName = `exception_list/student_attendance_completion/${timePeriod}/cluster.json`;
+                } else {
+                    fileName = `exception_list/student_attendance_completion/cluster_${year}_${month}.json`;
+                }
             }
         } else {
-            if (timePeriod != null) {
-                fileName = `exception_list/teacher_attendance_completion/${timePeriod}/cluster.json`;
+            if (management != 'overall' && category == 'overall') {
+                if (timePeriod != null) {
+                    fileName = `exception_list/teacher_attendance_completion/school_management_category/${timePeriod}/overall_category/${management}/cluster.json`;
+                } else {
+                    fileName = `exception_list/teacher_attendance_completion/school_management_category/overall_category/${management}/cluster_${year}_${month}.json`;
+                }
             } else {
-                fileName = `exception_list/teacher_attendance_completion/cluster_${year}_${month}.json`;
+                if (timePeriod != null) {
+                    fileName = `exception_list/teacher_attendance_completion/${timePeriod}/cluster.json`;
+                } else {
+                    fileName = `exception_list/teacher_attendance_completion/cluster_${year}_${month}.json`;
+                }
             }
         }
         var jsonData = await s3File.readS3File(fileName);

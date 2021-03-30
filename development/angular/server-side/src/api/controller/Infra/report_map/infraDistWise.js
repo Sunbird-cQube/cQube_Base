@@ -16,7 +16,6 @@ router.post('/distWise', auth.authController, async(req, res) => {
         } else {
             fileName = `infra/infra_district_map.json`
         }
-        console.log(fileName)
         var districtData = await s3File.readS3File(fileName);
         var mydata = districtData.data;
 
