@@ -6,7 +6,15 @@ const s3File = require('../../lib/reads3File');
 router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info('---composite report dist wise api ---');
-        let fileName = `composite/comp_district.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `composite/school_management_category/overall_category/${management}/comp_district.json`
+        }else{
+            fileName = `composite/comp_district.json`
+        }
         var data = await s3File.readS3File(fileName);
 
         logger.info('--- composite dist wise api response sent ---');

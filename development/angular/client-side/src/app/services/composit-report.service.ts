@@ -15,38 +15,38 @@ export class CompositReportService {
   }
 
   //Composit report
-  dist_wise_data() {
+  dist_wise_data(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/composit/distWise`, {});
+    return this.http.post(`${this.baseUrl}/composit/distWise`, data);
   }
 
-  block_wise_data() {
+  block_wise_data(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/composit/blockWise`, {});
+    return this.http.post(`${this.baseUrl}/composit/blockWise`, data);
   }
 
-  block_per_dist_data(distId) {
+  block_per_dist_data(distId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/composit/blockWise/${distId}`, {});
+    return this.http.post(`${this.baseUrl}/composit/blockWise/${distId}`, data);
   }
 
-  cluster_wise_data() {
+  cluster_wise_data(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/composit/clusterWise`, {});
+    return this.http.post(`${this.baseUrl}/composit/clusterWise`, data);
   }
 
-  cluster_per_block_data(distId, blockId) {
+  cluster_per_block_data(distId, blockId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/composit/clusterWise/${distId}/${blockId}`, {});
+    return this.http.post(`${this.baseUrl}/composit/clusterWise/${distId}/${blockId}`, data);
   }
 
-  school_wise_data() {
+  school_wise_data(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/composit/schoolWise`, {});
+    return this.http.post(`${this.baseUrl}/composit/schoolWise`, data);
   }
 
-  school_per_cluster_data(distId, blockId, clusterId) {
+  school_per_cluster_data(distId, blockId, clusterId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/composit/schoolWise/${distId}/${blockId}/${clusterId}`, {});
+    return this.http.post(`${this.baseUrl}/composit/schoolWise/${distId}/${blockId}/${clusterId}`, data);
   }
 }
