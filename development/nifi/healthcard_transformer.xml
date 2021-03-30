@@ -870,6 +870,180 @@
                     <zIndex>0</zIndex>
                 </connections>
                 <controllerServices>
+                    <id>1555f266-d13c-361f-0000-000000000000</id>
+                    <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
+                    <bundle>
+                        <artifact>nifi-record-serialization-services-nar</artifact>
+                        <group>org.apache.nifi</group>
+                        <version>1.12.1</version>
+                    </bundle>
+                    <comments></comments>
+                    <descriptors>
+                        <entry>
+                            <key>Schema Write Strategy</key>
+                            <value>
+<name>Schema Write Strategy</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-cache</key>
+                            <value>
+<identifiesControllerService>org.apache.nifi.serialization.RecordSchemaCacheService</identifiesControllerService>
+<name>schema-cache</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-protocol-version</key>
+                            <value>
+<name>schema-protocol-version</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-access-strategy</key>
+                            <value>
+<name>schema-access-strategy</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-registry</key>
+                            <value>
+<identifiesControllerService>org.apache.nifi.schemaregistry.services.SchemaRegistry</identifiesControllerService>
+<name>schema-registry</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-name</key>
+                            <value>
+<name>schema-name</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-version</key>
+                            <value>
+<name>schema-version</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-branch</key>
+                            <value>
+<name>schema-branch</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>schema-text</key>
+                            <value>
+<name>schema-text</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Date Format</key>
+                            <value>
+<name>Date Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Time Format</key>
+                            <value>
+<name>Time Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Timestamp Format</key>
+                            <value>
+<name>Timestamp Format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>Pretty Print JSON</key>
+                            <value>
+<name>Pretty Print JSON</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>suppress-nulls</key>
+                            <value>
+<name>suppress-nulls</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>output-grouping</key>
+                            <value>
+<name>output-grouping</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>compression-format</key>
+                            <value>
+<name>compression-format</name>
+                            </value>
+                        </entry>
+                        <entry>
+                            <key>compression-level</key>
+                            <value>
+<name>compression-level</name>
+                            </value>
+                        </entry>
+                    </descriptors>
+                    <name>JsonRecordSetWriter-without-array</name>
+                    <persistsState>false</persistsState>
+                    <properties>
+                        <entry>
+                            <key>Schema Write Strategy</key>
+                        </entry>
+                        <entry>
+                            <key>schema-cache</key>
+                        </entry>
+                        <entry>
+                            <key>schema-protocol-version</key>
+                        </entry>
+                        <entry>
+                            <key>schema-access-strategy</key>
+                        </entry>
+                        <entry>
+                            <key>schema-registry</key>
+                        </entry>
+                        <entry>
+                            <key>schema-name</key>
+                        </entry>
+                        <entry>
+                            <key>schema-version</key>
+                        </entry>
+                        <entry>
+                            <key>schema-branch</key>
+                        </entry>
+                        <entry>
+                            <key>schema-text</key>
+                        </entry>
+                        <entry>
+                            <key>Date Format</key>
+                        </entry>
+                        <entry>
+                            <key>Time Format</key>
+                        </entry>
+                        <entry>
+                            <key>Timestamp Format</key>
+                        </entry>
+                        <entry>
+                            <key>Pretty Print JSON</key>
+                        </entry>
+                        <entry>
+                            <key>suppress-nulls</key>
+                        </entry>
+                        <entry>
+                            <key>output-grouping</key>
+                            <value>output-oneline</value>
+                        </entry>
+                        <entry>
+                            <key>compression-format</key>
+                        </entry>
+                        <entry>
+                            <key>compression-level</key>
+                        </entry>
+                    </properties>
+                    <state>ENABLED</state>
+                    <type>org.apache.nifi.json.JsonRecordSetWriter</type>
+                </controllerServices>
+                <controllerServices>
                     <id>19770eca-6d33-3379-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <bundle>
@@ -1557,16 +1731,12 @@
                             </entry>
                             <entry>
 <key>jolt-spec</key>
-<value>[
-  {
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "@values": "@data_source"
-      }
-    }
-  }
-]</value>
+<value>${query_type:startsWith('health_card_management_index_state_overall')
+:or(${query_type:startsWith('health_card_management_index_state_last_30_days')}):ifElse(#{health_card_jolt_management_state},
+${query_type:startsWith('health_card_index_state_overall')
+:or(${query_type:startsWith('health_card_index_state_last_30_days')})
+:ifElse(#{health_card_jolt_state},'None'
+)} )}</value>
                             </entry>
                             <entry>
 <key>Transform Cache Size</key>
@@ -1592,7 +1762,7 @@
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                 </processors>
@@ -1675,7 +1845,7 @@ ${query_type:startsWith('health_card_management_index_school'):ifElse('/school_m
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                 </processors>
@@ -1741,7 +1911,7 @@ ${query_type:startsWith('health_card_management_index_school'):ifElse('/school_m
                         <autoTerminate>false</autoTerminate>
                         <name>split</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.SplitJson</type>
                 </processors>
@@ -1915,7 +2085,7 @@ ${query_type:startsWith('health_card_management_index_school'):ifElse('/school_m
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -2107,7 +2277,7 @@ ${query_type:startsWith('health_card_management_index_school'):ifElse('/school_m
                         <autoTerminate>true</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExtractText</type>
                 </processors>
@@ -2219,7 +2389,7 @@ ${query_type:startsWith('health_card_management_index_school'):ifElse('/school_m
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -2348,7 +2518,7 @@ ${query_type:startsWith('health_card_index_school')} )} )} )}</value>
                         <autoTerminate>true</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -2434,7 +2604,7 @@ ${query_type:startsWith('health_card_index_school')} )} )} )}</value>
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                 </processors>
@@ -2504,7 +2674,7 @@ file:${filename},Error while partitioning "${query_type
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -2512,7 +2682,7 @@ file:${filename},Error while partitioning "${query_type
                     <id>79cd2aa4-4a25-3c84-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <position>
-                        <x>712.0</x>
+                        <x>704.0</x>
                         <y>1136.0</y>
                     </position>
                     <bundle>
@@ -2939,7 +3109,7 @@ ${query_type:startsWith('health_card_management_index_district_last_30_days'):if
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                 </processors>
@@ -3051,7 +3221,7 @@ ${query_type:startsWith('health_card_management_index_district_last_30_days'):if
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -3243,7 +3413,7 @@ ${query_type:startsWith('health_card_management_index_district_last_30_days'):if
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExtractText</type>
                 </processors>
@@ -3355,7 +3525,7 @@ ${query_type:startsWith('health_card_management_index_district_last_30_days'):if
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -3513,7 +3683,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                 </processors>
@@ -3579,7 +3749,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                         <autoTerminate>false</autoTerminate>
                         <name>split</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.SplitJson</type>
                 </processors>
@@ -3691,7 +3861,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -3754,7 +3924,7 @@ ${query_type:startsWith('health_card_index_school'):ifElse("select infra_school_
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -3823,7 +3993,7 @@ file:${filename},Error while extracting "${query_type}" query.</value>
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -3905,7 +4075,7 @@ ${query_type:startsWith('health_card_index_school'):or(${query_type:startsWith('
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                 </processors>
@@ -3913,8 +4083,8 @@ ${query_type:startsWith('health_card_index_school'):or(${query_type:startsWith('
                     <id>c96c123b-3c78-3dbf-0000-000000000000</id>
                     <parentGroupId>3d3d3e12-bede-3d2e-0000-000000000000</parentGroupId>
                     <position>
-                        <x>-96.0</x>
-                        <y>1736.0</y>
+                        <x>-104.0</x>
+                        <y>1760.0</y>
                     </position>
                     <bundle>
                         <artifact>nifi-standard-nar</artifact>
@@ -3957,7 +4127,7 @@ ${query_type:startsWith('health_card_index_school'):or(${query_type:startsWith('
                             </entry>
                             <entry>
 <key>record-writer</key>
-<value>5aa91358-a425-36ac-0000-000000000000</value>
+<value>1555f266-d13c-361f-0000-000000000000</value>
                             </entry>
                             <entry>
 <key>management</key>
@@ -3983,7 +4153,7 @@ ${query_type:startsWith('health_card_index_school'):or(${query_type:startsWith('
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                 </processors>
@@ -4092,7 +4262,7 @@ ${query_type:startsWith('health_card_index_school'):or(${query_type:startsWith('
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.FetchFile</type>
                 </processors>
@@ -4174,7 +4344,7 @@ ${query_type:startsWith('health_card_index_school'):or(${query_type:startsWith('
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                 </processors>
@@ -4286,7 +4456,7 @@ ${query_type:startsWith('health_card_index_school'):or(${query_type:startsWith('
                         <autoTerminate>false</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.ReplaceText</type>
                 </processors>
@@ -4355,7 +4525,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
                         <autoTerminate>true</autoTerminate>
                         <name>success</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.LogMessage</type>
                 </processors>
@@ -4432,7 +4602,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
                         <autoTerminate>false</autoTerminate>
                         <name>unmatched</name>
                     </relationships>
-                    <state>RUNNING</state>
+                    <state>STOPPED</state>
                     <style/>
                     <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                 </processors>
@@ -4443,5 +4613,5 @@ file:${filename},Error while executing "${query_type}" query.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/28/2021 10:42:09 IST</timestamp>
+    <timestamp>03/29/2021 22:32:21 IST</timestamp>
 </template>
