@@ -469,13 +469,13 @@ export class CompositReportComponent implements OnInit {
   showChart(result, downloadType) {
     var l = undefined;
     if (downloadType == "dist") {
-      l = 1;
+      l = this.management != 'overall' ? 2 : 1;
     } else if (downloadType == "block") {
-      l = 2;
+      l = this.management != 'overall' ? 3 : 2;
     } else if (downloadType == "cluster") {
-      l = 3;
+      l = this.management != 'overall' ? 4 : 3;
     } else if (downloadType == "school") {
-      l = 4;
+      l = this.management != 'overall' ? 5 : 4;
     }
 
     var replace = ['_', ' %']
