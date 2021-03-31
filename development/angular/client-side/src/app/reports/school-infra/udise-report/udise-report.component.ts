@@ -1302,6 +1302,9 @@ export class UdiseReportComponent implements OnInit {
     var popupFood = [];
     var stringLine;
     for (var key in object) {
+      if(key == 'School_Management_Type' || key == 'School_Category'){
+        object[`${key}`] = this.commonService.changeingStringCases(object[key].replace(/_/g, ' '));
+      }
       if (object.hasOwnProperty(key)) {
         stringLine =
           `<span ${indiceName == key ? colorText : ""}>` +
