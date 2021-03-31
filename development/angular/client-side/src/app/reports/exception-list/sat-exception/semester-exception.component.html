@@ -94,12 +94,12 @@
                     {{allSubjects[i]}}
                 </option>
             </select>
-            <!-- <select id="choose_semester" [(ngModel)]="semester" (change)="semSelect()">
+            <select id="choose_semester" [(ngModel)]="semester" (change)="semSelect()">
                 <option [value]="semester" disabled selected="selected">Choose semester</option>
                 <option *ngFor="let sem of semesters" [(ngValue)]="sem.id">
                     {{sem.name}}
                 </option>
-            </select> -->
+            </select>
             <select id="choose_dist" [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.district_id">
