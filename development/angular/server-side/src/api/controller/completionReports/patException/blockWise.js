@@ -14,19 +14,20 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         var management = req.body.management;
         var category = req.body.category;
         var report = req.body.report;
+        var semester = req.body.semester;
         let fileName;
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}/block/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/block/${grade}.json`
             } else {
-                fileName = `exception_list/${report}/school_management_category/${timePeriod}/overall_category/${management}/block.json`
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/block.json`
             }
         } else {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}/block/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/block/${grade}.json`
             } else {
-                fileName = `exception_list/${report}/${timePeriod}/block.json`
+                fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/block.json`
             }
         }
         var blockData = await s3File.readS3File(fileName);
@@ -62,19 +63,20 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         var management = req.body.management;
         var category = req.body.category;
         var report = req.body.report;
+        var semester = req.body.semester;
         let fileName;
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}/block/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/block/${grade}.json`
             } else {
-                fileName = `exception_list/${report}/school_management_category/${timePeriod}/overall_category/${management}/block.json`
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/block.json`
             }
         } else {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}/block/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/block/${grade}.json`
             } else {
-                fileName = `exception_list/${report}/${timePeriod}/block.json`
+                fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/block.json`
             }
         }
 

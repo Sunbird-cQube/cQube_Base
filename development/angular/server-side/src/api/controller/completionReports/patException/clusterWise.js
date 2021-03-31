@@ -15,19 +15,20 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         var management = req.body.management;
         var category = req.body.category;
         var report = req.body.report;
+        var semester = req.body.semester;
         let fileName;
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}/cluster/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster/${grade}.json`
             } else {
-                fileName = `exception_list/${report}/school_management_category/${timePeriod}/overall_category/${management}/cluster.json`
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/cluster.json`
             }
         } else {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}/cluster/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster/${grade}.json`
             } else {
-                fileName = `exception_list/${report}/${timePeriod}/cluster.json`
+                fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster.json`
             }
         }
         var clusterData = await s3File.readS3File(fileName);
@@ -65,19 +66,20 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         var management = req.body.management;
         var category = req.body.category;
         var report = req.body.report;
+        var semester = req.body.semester;
         let fileName;
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}/cluster/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster/${grade}.json`
             } else {
-                fileName = `exception_list/${report}/school_management_category/${timePeriod}/overall_category/${management}/cluster.json`
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/cluster.json`
             }
         } else {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}/cluster/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster/${grade}.json`
             } else {
-                fileName = `exception_list/${report}/${timePeriod}/cluster.json`
+                fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster.json`
             }
         }
         var clusterData = await s3File.readS3File(fileName);

@@ -122,7 +122,6 @@ export class SemesterExceptionComponent implements OnInit {
     this.lng = this.commonService.mapCenterLatlng.lng;
     this.changeDetection.detectChanges();
     this.commonService.initMap('patExceMap', [[this.lat, this.lng]]);
-    
     this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
     this.category = JSON.parse(localStorage.getItem('category')).id;
     this.managementName = this.commonService.changeingStringCases(
@@ -132,7 +131,6 @@ export class SemesterExceptionComponent implements OnInit {
     document.getElementById('backBtn').style.display = 'none';
     document.getElementById('spinner').style.display = 'none';
     this.fileName = `${this.reportName}_${this.period}_${this.grade != 'all' ? this.grade : 'allGrades'}_${this.subject ? this.subject : ''}_allDistricts_${this.commonService.dateAndTime}`;
-    this.onResize();
     this.getSemesters();
   }
 
@@ -231,7 +229,7 @@ export class SemesterExceptionComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.patExceptionDistWise({...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception' },...{ management: this.management, category: this.category }}).subscribe(res => {
+        this.myData = this.service.patExceptionDistWise({...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception', semester: this.semester },...{ management: this.management, category: this.category }}).subscribe(res => {
           this.data = res;
           // to show only in dropdowns
           this.markers = this.districtMarkers = this.data['data'];
@@ -311,7 +309,7 @@ export class SemesterExceptionComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.patExceptionBlock({...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception' },...{ management: this.management, category: this.category }}).subscribe(res => {
+        this.myData = this.service.patExceptionBlock({...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception', semester: this.semester },...{ management: this.management, category: this.category }}).subscribe(res => {
           this.data = res
           let options = {
             radius: this.getMarkerRadius(12, 8, 6, 4),
@@ -393,7 +391,7 @@ export class SemesterExceptionComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.patExceptionCluster({...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception' },...{ management: this.management, category: this.category }}).subscribe(res => {
+        this.myData = this.service.patExceptionCluster({...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception', semester: this.semester },...{ management: this.management, category: this.category }}).subscribe(res => {
           this.data = res
           let options = {
             radius: this.getMarkerRadius(2.5, 1.8, 1.5, 1),
@@ -472,7 +470,7 @@ export class SemesterExceptionComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.patExceptionSchool({...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception' },...{ management: this.management, category: this.category }}).subscribe(res => {
+        this.myData = this.service.patExceptionSchool({...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception', semester: this.semester },...{ management: this.management, category: this.category }}).subscribe(res => {
           this.data = res
           let options = {
             radius: this.getMarkerRadius(1.5, 1.2, 1, 0),
@@ -536,7 +534,7 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.patExceptionBlockPerDist(districtId, {...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception' },...{ management: this.management, category: this.category }}).subscribe(res => {
+    this.myData = this.service.patExceptionBlockPerDist(districtId, {...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception', semester: this.semester },...{ management: this.management, category: this.category }}).subscribe(res => {
       this.data = res;
 
       this.markers = this.blockMarkers = this.data['data'];
@@ -601,7 +599,7 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.patExceptionClusterPerBlock(this.districtHierarchy.distId, blockId, {...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception' },...{ management: this.management, category: this.category }}).subscribe(res => {
+    this.myData = this.service.patExceptionClusterPerBlock(this.districtHierarchy.distId, blockId, {...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception', semester: this.semester },...{ management: this.management, category: this.category }}).subscribe(res => {
       this.data = res;
       this.markers = this.clusterMarkers = this.data['data'];
       this.allSubjects = [];
@@ -672,8 +670,8 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.patExceptionBlock({...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception' },...{ management: this.management, category: this.category }}).subscribe(result => {
-      this.myData = this.service.patExceptionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, {...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception' },...{ management: this.management, category: this.category }}).subscribe(res => {
+    this.myData = this.service.patExceptionBlock({...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception', semester: this.semester },...{ management: this.management, category: this.category }}).subscribe(result => {
+      this.myData = this.service.patExceptionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, {...{ grade: this.grade, subject: this.subject, timePeriod: this.period, report: 'sat_exception', semester: this.semester },...{ management: this.management, category: this.category }}).subscribe(res => {
         this.data = res;
         this.markers = this.schoolMarkers = this.data['data'];
         this.allSubjects = [];

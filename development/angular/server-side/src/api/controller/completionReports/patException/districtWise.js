@@ -14,22 +14,22 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
         var management = req.body.management;
         var category = req.body.category;
         var report = req.body.report;
+        var semester = req.body.semester;
         let fileName;
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}/district/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/district/${grade}.json`
             } else {
-                fileName = `exception_list/${report}/school_management_category/${timePeriod}/overall_category/${management}/district.json`
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/district.json`
             }
         } else {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}/district/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/district/${grade}.json`
             } else {
-                fileName = `exception_list/${report}/${timePeriod}/district.json`
+                fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/district.json`
             }
         }
-
         var districtData = await s3File.readS3File(fileName);
         var Subjects = [];
         var sortedData;
@@ -80,6 +80,25 @@ router.post('/grades', async (req, res, next) => {
 
         var data = await s3File.readS3File(fileName);
         logger.info('---grades metadata api response sent---');
+        res.status(200).send({ data: data });
+    } catch (e) {
+        logger.error(`Error :: ${e}`)
+        res.status(500).json({ errMessage: "Internal error. Please try again!!" });
+    }
+})
+
+router.post('/getSemesters', async (req, res) => {
+    try {
+        logger.info('---sat metadata api ---');
+        var fileName;
+        var period = req.body.period;
+        if (period != 'overall') {
+            fileName = `sat/${period}/sat_semester_metadata.json`;
+        } else {
+            fileName = `sat/all/sat_semester_metadata.json`;
+        }
+        var data = await s3File.readS3File(fileName);
+        logger.info('---sat metadata api response sent---');
         res.status(200).send({ data: data });
     } catch (e) {
         logger.error(`Error :: ${e}`)
