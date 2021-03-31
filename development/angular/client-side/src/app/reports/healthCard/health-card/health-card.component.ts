@@ -508,8 +508,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       if(this.level != 'school')
         healthCardData['total_schools'] = healthCardData['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       healthCardData['total_students'] = healthCardData['total_students'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      if(healthCardData['school_management_type'])
-        healthCardData['school_management_type'] = this.commonService.changeingStringCases(healthCardData['school_management_type'].replace(/_/g, ' '))
+      /* if(healthCardData['school_management_type'])
+        healthCardData['school_management_type'] = this.commonService.changeingStringCases(healthCardData['school_management_type'].replace(/_/g, ' ')) */
       this.updatedKeys = [];
       this.keys = Object.keys(healthCardData);
       let index = this.keys.indexOf('district_id');
@@ -567,11 +567,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     this.semPerformTooltip = [];
     this.semPerformTooltipKeys = [];
     if (healthCardData['school_infrastructure'] && healthCardData['school_infrastructure'] != null) {
-      if(healthCardData['school_infrastructure']['school_management_type'])
-        healthCardData['school_infrastructure']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['school_infrastructure']['school_management_type'].replace(/_/g, ' '))
+      /* if(healthCardData['school_infrastructure']['school_management_type'])
+        healthCardData['school_infrastructure']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['school_infrastructure']['school_management_type'].replace(/_/g, ' ')) */
       this.tooltipInfra = Object.keys(healthCardData['school_infrastructure']);
       this.tooltipInfra = this.tooltipInfra.filter((key) => {
-        return !this.schoolInfra.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key) && key != 'areas_to_focus';
+        return !this.schoolInfra.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key) && key != 'areas_to_focus' && key !== 'school_management_type';
       });
       this.tooltipInfra.map(key => {
         myKey = this.stringConverter(key);
@@ -586,11 +586,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.infraRankMatrixColor = this.service.colorRankMatrics(this.infraRankMatrixValue);
     }
     if (healthCardData['student_attendance'] && healthCardData['student_attendance'] != null) {
-      if(healthCardData['student_attendance']['school_management_type'])
-        healthCardData['student_attendance']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['student_attendance']['school_management_type'].replace(/_/g, ' '))
+      /* if(healthCardData['student_attendance']['school_management_type'])
+        healthCardData['student_attendance']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['student_attendance']['school_management_type'].replace(/_/g, ' ')) */
       this.tooltipStdAttendance = Object.keys(healthCardData['student_attendance']);
       this.tooltipStdAttendance = this.tooltipStdAttendance.filter((key) => {
-        return !this.schoolAttendance.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
+        return !this.schoolAttendance.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key) && key !== 'school_management_type';
       });
       this.tooltipStdAttendance.filter(key => {
         myKey = this.stringConverter(key);
@@ -601,38 +601,32 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.stdAttdRankMatrixColor = this.service.colorRankMatrics(this.stdAttdRankMatrixValue);
     }
     if (healthCardData['student_semester'] && healthCardData['student_semester'] != null) {
-      if(healthCardData['student_semester']['school_management_type'])
-        healthCardData['student_semester']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['student_semester']['school_management_type'].replace(/_/g, ' '))
+      /* if(healthCardData['student_semester']['school_management_type'])
+        healthCardData['student_semester']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['student_semester']['school_management_type'].replace(/_/g, ' ')) */
       this.tooltimSem = Object.keys(healthCardData['student_semester']);
       this.tooltimSem = this.tooltimSem.filter((key) => {
-        return !this.semPerformance.includes(key) && !this.semPerformancePercent.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
+        return !this.semPerformance.includes(key) && !this.semPerformancePercent.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key) && key !== 'grade_wise_performance' && key !== 'school_management_type';
       });
       this.tooltimSem.filter(key => {
         myKey = this.stringConverter(key);
         this.tooltipSemKeys.push(myKey);
       });
-      if (this.level == 'state') {
+      if (healthCardData['student_semester']['grade_wise_performance']) {
         this.semPerformTooltip = Object.keys(healthCardData['student_semester']['grade_wise_performance']);
         this.semPerformTooltip.filter(key => {
           myKey = this.stringConverter(key);
           this.semPerformTooltipKeys.push(myKey);
         });
-        this.tooltimSem.filter(key => {
-          if (key != 'grade_wise_performance') {
-            myKey = this.stringConverter(key);
-            this.tooltipSemKeys.push(myKey);
-          }
-        });
-        let i = this.tooltimSem.indexOf('grade_wise_performance');
-        this.tooltimSem.splice(i, 1);
+        /* let i = this.tooltimSem.indexOf('grade_wise_performance');
+        this.tooltimSem.splice(i, 1); */
       }
       this.semColor = this.service.colorGredient(healthCardData['student_semester']['performance']);
       this.semRankMatrixValue = healthCardData['student_semester']['state_level_score'] * 10;
       this.semRankMatrixColor = this.service.colorRankMatrics(this.semRankMatrixValue);
     }
     if (healthCardData['pat_performance'] && healthCardData['pat_performance'] != null) {
-      if(healthCardData['pat_performance']['school_management_type'])
-        healthCardData['pat_performance']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['pat_performance']['school_management_type'].replace(/_/g, ' '))
+      /* if(healthCardData['pat_performance']['school_management_type'])
+        healthCardData['pat_performance']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['pat_performance']['school_management_type'].replace(/_/g, ' ')) */
       this.tooltipPat = Object.keys(healthCardData['pat_performance']);
       if (healthCardData['pat_performance']['grade_wise_performance']) {
         const ordered = Object.keys(healthCardData['pat_performance']['grade_wise_performance']).sort().reduce(
@@ -650,7 +644,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         });
       }
       this.tooltipPat = this.tooltipPat.filter((key) => {
-        return !this.patPerformance.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key);
+        return !this.patPerformance.includes(key) && !this.schoolAttendanceCategory.includes(key) && !this.schoolInfraRank.includes(key) && key !== 'school_management_type';
       });
       this.tooltipPat.filter(key => {
         if (key != 'grade_wise_performance') {
@@ -669,11 +663,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.patRankMatrixColor = this.service.colorRankMatrics(this.patRankMatrixValue);
     }
     if (healthCardData['crc_visit'] && healthCardData['crc_visit'] != null) {
-      if(healthCardData['crc_visit']['school_management_type'])
-        healthCardData['crc_visit']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['crc_visit']['school_management_type'].replace(/_/g, ' '))
+      /* if(healthCardData['crc_visit']['school_management_type'])
+        healthCardData['crc_visit']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['crc_visit']['school_management_type'].replace(/_/g, ' ')) */
       this.tooltipCrc = Object.keys(healthCardData['crc_visit']);
       this.tooltipCrc = this.tooltipCrc.filter((key) => {
-        return !this.crcVisit.includes(key);
+        return !this.crcVisit.includes(key) && key !== 'school_management_type';
       });
 
       this.tooltipCrc.filter(key => {
@@ -686,11 +680,11 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.crcRankMatrixColor = this.service.colorRankMatrics(this.crcRankMatrixValue);
     }
     if (healthCardData['udise'] && healthCardData['udise'] != null) {
-      if(healthCardData['udise']['school_management_type'])
-        healthCardData['udise']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['udise']['school_management_type'].replace(/_/g, ' '))
+      /* if(healthCardData['udise']['school_management_type'])
+        healthCardData['udise']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['udise']['school_management_type'].replace(/_/g, ' ')) */
       this.tooltipUDISE = Object.keys(healthCardData['udise']);
       this.tooltipUDISE = this.tooltipUDISE.filter((key) => {
-        return !this.UDISE.includes(key) && !this.UDISECategory.includes(key) && !this.schoolInfraRank.includes(key) && key != "district_latitude" && key != "block_latitude" && key != "cluster_latitude" && key != "school_latitude" && key != "district_longitude" && key != "block_longitude" && key != "cluster_longitude" && key != "school_longitude";
+        return !this.UDISE.includes(key) && !this.UDISECategory.includes(key) && !this.schoolInfraRank.includes(key) && key != "district_latitude" && key != "block_latitude" && key != "cluster_latitude" && key != "school_latitude" && key != "district_longitude" && key != "block_longitude" && key != "cluster_longitude" && key != "school_longitude" && key !== 'school_management_type';
       });
       this.tooltipUDISE.filter(key => {
         var myKey = this.stringConverter(key);

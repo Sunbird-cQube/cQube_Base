@@ -365,17 +365,16 @@
                                                             </tr>
                                                             <tr class="tooltip-values-row" style="font-size: 12px;"
                                                                 *ngFor="let key of semPerformTooltip;let i=index">
-                                                                <td
-                                                                    *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
-                                                                    {{semPerformTooltipKeys[i]}}</td>
-                                                                <td
-                                                                    *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
-                                                                    :</td>
-                                                                <td
-                                                                    *ngIf="healthCardData['student_semester']['grade_wise_performance'][key] && level =='state'">
-                                                                    {{healthCardData['student_semester']['grade_wise_performance'][key]}}
-                                                                    %
-                                                                </td>
+                                                                <ng-container *ngIf="healthCardData['student_semester']['grade_wise_performance'][key]">
+                                                                    <td>
+                                                                        {{semPerformTooltipKeys[i]}}</td>
+                                                                    <td>
+                                                                        :</td>
+                                                                    <td>
+                                                                        {{healthCardData['student_semester']['grade_wise_performance'][key]}}
+                                                                        %
+                                                                    </td>
+                                                                </ng-container>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -443,7 +442,7 @@
                                                     {{semPerformanceCategoryKey[i]}}</td>
                                                 <td *ngIf="level != 'school'">:</td>
                                                 <td *ngIf="level != 'school'">
-                                                    {{healthCardData['student_semester'][sem]}}</td>
+                                                    {{healthCardData['student_semester'][sem] ? healthCardData['student_semester'][sem] : '-'}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -584,7 +583,7 @@
                                                     {{semPerformanceCategoryKey[i]}}</td>
                                                 <td *ngIf="level != 'school'">:</td>
                                                 <td *ngIf="level != 'school'">
-                                                    {{healthCardData['pat_performance'][pat]}}</td>
+                                                    {{healthCardData['pat_performance'][pat] ? healthCardData['pat_performance'][pat] : '-'}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
