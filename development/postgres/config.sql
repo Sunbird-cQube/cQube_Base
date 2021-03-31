@@ -19540,6 +19540,7 @@ update composite_config as uds set jolt_spec=
         
 update composite_config as uds set jolt_spec=
 	 '"semester_performance": "[&1].Semester Performance(%).percent",
+	 "semester_exam_performance": "[&1].SAT Performance(%).percent",
         "semester_performance_grade_3": "[&1].Semester Performance Grade-3(%).percent",
         "semester_performance_grade_4": "[&1].Semester Performance Grade-4(%).percent",
         "semester_performance_grade_5": "[&1].Semester Performance Grade-5(%).percent",

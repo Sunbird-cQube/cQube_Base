@@ -290,10 +290,10 @@ java_arg_2: -Xms${min_java_arg_2}m
 java_arg_3: -Xmx${min_java_arg_3}m""" > memory_config.yml
 
 elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
-  max_shared_mem=$(echo $mem_total*10/100 | bc)
-  max_work_mem=$(echo $mem_total*3/100 | bc)
-  max_java_arg_2=$(echo $mem_total*40/100 | bc)
-  max_java_arg_3=$(echo $mem_total*57/100 | bc)
+  max_shared_mem=$(echo $mem_total*13/100 | bc)
+  max_work_mem=$(echo $mem_total*2/100 | bc)
+  max_java_arg_2=$(echo $mem_total*7/100 | bc)
+  max_java_arg_3=$(echo $mem_total*65/100 | bc)
   echo """---
 shared_buffers: ${max_shared_mem}MB
 work_mem: ${max_work_mem}MB
