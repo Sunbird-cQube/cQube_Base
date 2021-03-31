@@ -3989,37 +3989,6 @@ where uds.template='udise';
 
 update composite_config set status= false where lower(template) in (select split_part(lower(template),'_',2) from nifi_template_info where status=false);
 
-/*Composite jolt spec*/
-
-update composite_config as uds set jolt_spec=stg.jolt_spec from 
-(select string_agg(cols,',')||',"infrastructure_score": "[&1].Infrastructure Score(%).percent"' as jolt_spec from 
-(select case when column_name like '%_Index' then string_agg('"'||lower(column_name)||'": "[&1].'||replace(split_part(column_name,'_Index',1),'_',' ')||
-	'(%).percent"',',') else
-string_agg('"'||lower(column_name)||'": "[&1].'||replace(column_name,'_',' ')||'(%).percent"',',') end as cols
-from udise_config where status = '1' and type='indice' group by column_name)as a)as stg
-where uds.template='udise';
-
-update composite_config as uds set jolt_spec='"student_attendance": "[&1].Student Attendance(%).percent"' where uds.template='attendance';
-
-        
-update composite_config as uds set jolt_spec='"periodic_exam_performance": "[&1].Periodic Exam Performance(%).percent"' where uds.template='pat';        
-
-update composite_config as uds set jolt_spec=
-	 '"total_content_plays_textbook": "[&1].Total Content Plays-Textbook.value",
-        "total_content_plays_course": "[&1].Total Content Plays-Course.value",
-        "total_content_plays_all": "[&1].Total Content Plays-All.value"'
-         where uds.template='diksha';        	
-        
-update composite_config as uds set jolt_spec=
-	 '"semester_performance": "[&1].Semester Performance(%).percent",
-        "semester_performance_grade_3": "[&1].Semester Performance Grade-3(%).percent",
-        "semester_performance_grade_4": "[&1].Semester Performance Grade-4(%).percent",
-        "semester_performance_grade_5": "[&1].Semester Performance Grade-5(%).percent",
-        "semester_performance_grade_6": "[&1].Semester Performance Grade-6(%).percent",
-        "semester_performance_grade_7": "[&1].Semester Performance Grade-7(%).percent",
-        "semester_performance_grade_8": "[&1].Semester Performance Grade-8(%).percent"'
-         where uds.template='semester';
-
 /*Function to create composite views*/
 
 CREATE OR REPLACE FUNCTION composite_create_views()
@@ -19537,8 +19506,47 @@ on conflict on constraint composite_config_pkey do nothing;
 (select string_agg(lower(column_name),',')||',infrastructure_score' as select_query from udise_config where type='indice' and status=true)as stg
 where uds.template='udise';
 
+update composite_config as uds set jolt_spec=stg.jolt_spec from 
+(select string_agg(cols,',')||',"infrastructure_score": "[&1].Infrastructure Score(%).percent"' as jolt_spec from 
+(select case when column_name like '%_Index' then string_agg('"'||lower(column_name)||'": "[&1].'||replace(split_part(column_name,'_Index',1),'_',' ')||
+	'(%).percent"',',') else
+string_agg('"'||lower(column_name)||'": "[&1].'||replace(column_name,'_',' ')||'(%).percent"',',') end as cols
+from udise_config where status = '1' and type='indice' group by column_name)as a)as stg
+where uds.template='udise';
+
 
 update composite_config set status= false where lower(template) in (select split_part(lower(template),'_',2) from nifi_template_info where status=false);
+
+/*Composite jolt spec*/
+
+update composite_config as uds set jolt_spec=stg.jolt_spec from 
+(select string_agg(cols,',')||',"infrastructure_score": "[&1].Infrastructure Score(%).percent"' as jolt_spec from 
+(select case when column_name like '%_Index' then string_agg('"'||lower(column_name)||'": "[&1].'||replace(split_part(column_name,'_Index',1),'_',' ')||
+	'(%).percent"',',') else
+string_agg('"'||lower(column_name)||'": "[&1].'||replace(column_name,'_',' ')||'(%).percent"',',') end as cols
+from udise_config where status = '1' and type='indice' group by column_name)as a)as stg
+where uds.template='udise';
+
+update composite_config as uds set jolt_spec='"student_attendance": "[&1].Student Attendance(%).percent"' where uds.template='attendance';
+
+        
+update composite_config as uds set jolt_spec='"periodic_exam_performance": "[&1].Periodic Exam Performance(%).percent"' where uds.template='pat';        
+
+update composite_config as uds set jolt_spec=
+	 '"total_content_plays_textbook": "[&1].Total Content Plays-Textbook.value",
+        "total_content_plays_course": "[&1].Total Content Plays-Course.value",
+        "total_content_plays_all": "[&1].Total Content Plays-All.value"'
+         where uds.template='diksha';        	
+        
+update composite_config as uds set jolt_spec=
+	 '"semester_performance": "[&1].Semester Performance(%).percent",
+        "semester_performance_grade_3": "[&1].Semester Performance Grade-3(%).percent",
+        "semester_performance_grade_4": "[&1].Semester Performance Grade-4(%).percent",
+        "semester_performance_grade_5": "[&1].Semester Performance Grade-5(%).percent",
+        "semester_performance_grade_6": "[&1].Semester Performance Grade-6(%).percent",
+        "semester_performance_grade_7": "[&1].Semester Performance Grade-7(%).percent",
+        "semester_performance_grade_8": "[&1].Semester Performance Grade-8(%).percent"'
+         where uds.template='semester';
 
 /*Function to create composite management views*/
 
