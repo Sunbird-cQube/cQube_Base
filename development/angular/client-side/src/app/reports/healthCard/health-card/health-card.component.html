@@ -128,9 +128,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div style="float: left;">
-                            <select id="period" class="select-control"
-                                [(ngModel)]="period" (change)="onPeriodSelect()">
-                                <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
+                            <select id="period" class="select-control" [(ngModel)]="period" (change)="onPeriodSelect()">
+                                <option [value]="period" disabled selected="selected">Choose TimeRange</option>
                                 <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
                                     {{period.value}}
                                 </option>
@@ -152,8 +151,8 @@
                 <div class="row" style="padding-top: 8px !important;">
                     <div class="col-lg-4 col-md-3 col-sm-12">
                         <label for="" class="form-label note">Choose Level</label>
-                        <select id="level" class="select-control full-width"
-                            [(ngModel)]="level" name="level" (change)="selectedLevel()">
+                        <select id="level" class="select-control full-width" [(ngModel)]="level" name="level"
+                            (change)="selectedLevel()">
                             <option [value]="level" disabled selected="selected">Choose Level
                             </option>
                             <option *ngFor="let level of levels" [(ngValue)]="level.key">
@@ -168,9 +167,9 @@
                                 characters/digits</label>
                             <label class="form-label" for="" *ngIf="len >= 2">&nbsp;</label>
                             <!-- <p style="line-height: 1em; float: left;">&nbsp;</p> -->
-                            <input #searchInput id="myInput" class="input-control full-width"
-                                type="search" class="clearable" autocomplete="off" name="districtName"
-                                [(ngModel)]="value" (input)="onChange()" [placeholder]="placeHolder">
+                            <input #searchInput id="myInput" class="input-control full-width" type="search"
+                                class="clearable" autocomplete="off" name="districtName" [(ngModel)]="value"
+                                (input)="onChange()" [placeholder]="placeHolder">
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-3 col-sm-12">
@@ -238,7 +237,8 @@
                         <div class="row" *ngIf="healthCardData['student_attendance']">
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div class="mar-lef-35" style="margin-left: 15px;">
-                                    <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Attendance
+                                    <strong class="fon-siz-15rem"
+                                        style="font-size: 15px;line-height: 2em; font-weight: bold;">Attendance
                                     </strong>
                                     <div class="progress-circle-container" style="font-weight: bold; ">
                                         <app-progress-circle
@@ -252,7 +252,8 @@
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="font-size: 15px;line-height: 2em; margin-left: 20px;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Rank</strong>
-                                    <table class="metric-values-table mar-lef-35 no-fixed-width" style="margin-left: 20px;">
+                                    <table class="metric-values-table mar-lef-35 no-fixed-width"
+                                        style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let attendance of schoolInfraRank; let i=index">
                                                 <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}} level</td>
@@ -395,7 +396,8 @@
                         <div class="row" *ngIf="healthCardData['student_semester']">
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div class="mar-lef-35" style="margin-left: 15px;">
-                                    <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;"> Performance
+                                    <strong class="fon-siz-15rem"
+                                        style="font-size: 15px;line-height: 2em; font-weight: bold;"> Performance
                                     </strong>
                                     <div class="progress-circle-container" style="font-weight: bold; ">
                                         <app-progress-circle [value]="healthCardData['student_semester']['performance']"
@@ -408,7 +410,8 @@
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Rank</strong>
-                                    <table class="metric-values-table mar-lef-35 no-fixed-width" style="margin-left: 20px;">
+                                    <table class="metric-values-table mar-lef-35 no-fixed-width"
+                                        style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let sem of schoolInfraRank; let i=index">
                                                 <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}} level</td>
@@ -491,7 +494,7 @@
                                                                 <td>{{healthCardData['pat_performance'][key]}}</td>
                                                             </tr>
                                                             <ng-container
-                                                                    *ngIf="healthCardData['pat_performance']['grade_wise_performance']">
+                                                                *ngIf="healthCardData['pat_performance']['grade_wise_performance']">
                                                                 <tr>
                                                                     <td colspan="3">
                                                                         <strong class="tooltip-table-header-txt"
@@ -501,7 +504,7 @@
                                                                 </tr>
                                                                 <tr class="tooltip-values-row" style="font-size: 12px;"
                                                                     *ngFor="let key of patPerformTooltip;let i=index">
-                                                                    
+
                                                                     <td
                                                                         *ngIf="healthCardData['pat_performance']['grade_wise_performance'][key]">
                                                                         {{patPerformTooltipKeys[i]}}</td>
@@ -533,7 +536,8 @@
                         <div class="row" *ngIf="healthCardData['pat_performance']">
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div class="mar-lef-35" style="margin-left: 15px;">
-                                    <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Performance
+                                    <strong class="fon-siz-15rem"
+                                        style="font-size: 15px;line-height: 2em; font-weight: bold;">Performance
                                     </strong>
                                     <div class="progress-circle-container" style="font-weight: bold; ">
                                         <app-progress-circle
@@ -547,7 +551,8 @@
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Rank</strong>
-                                    <table class="metric-values-table mar-lef-35 no-fixed-width" style="margin-left: 20px;">
+                                    <table class="metric-values-table mar-lef-35 no-fixed-width"
+                                        style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let pat of schoolInfraRank; let i=index">
                                                 <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}} level</td>
@@ -687,7 +692,8 @@
                         <div class="row" *ngIf="healthCardData['school_infrastructure']">
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div class="mar-lef-35" style="margin-left: 15px;">
-                                    <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Infrastructure
+                                    <strong class="fon-siz-15rem"
+                                        style="font-size: 15px;line-height: 2em; font-weight: bold;">Infrastructure
                                         Score
                                     </strong>
                                     <div class="progress-circle-container" style="font-weight: bold; ">
@@ -702,7 +708,8 @@
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Rank</strong>
-                                    <table class="mar-lef-35 metric-values-table no-fixed-width" style="margin-left: 20px;">
+                                    <table class="mar-lef-35 metric-values-table no-fixed-width"
+                                        style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let infra of schoolInfraRank; let i=index">
                                                 <td *ngIf="level != 'state'">
@@ -720,8 +727,10 @@
                         </div>
                         <div class="row" *ngIf="healthCardData['school_infrastructure']">
                             <div class="col-sm-12">
-                                <strong class="mar-lef-35 metric-name" style="margin-left: 20px;">Areas To Focus </strong>
-                                <ul class="metric-list-values" style="font-weight: normal; list-style-type:none;margin-left: 0px;">
+                                <strong class="mar-lef-35 metric-name" style="margin-left: 20px;">Areas To Focus
+                                </strong>
+                                <ul class="metric-list-values"
+                                    style="font-weight: normal; list-style-type:none;margin-left: 0px;">
                                     <li
                                         *ngFor="let list of healthCardData['school_infrastructure']['areas_to_focus'], let i=index">
                                         {{healthCardData['school_infrastructure']['areas_to_focus'][i]}}</li>
@@ -823,7 +832,8 @@
                         <div class="row" *ngIf="healthCardData['udise']">
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div class="mar-lef-35" style="margin-left: 15px;">
-                                    <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Infrastructure
+                                    <strong class="fon-siz-15rem"
+                                        style="font-size: 15px;line-height: 2em; font-weight: bold;">Infrastructure
                                         Score
                                     </strong>
                                     <div class="progress-circle-container" style="font-weight: bold; ">
@@ -837,7 +847,8 @@
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Rank</strong>
-                                    <table class="mar-lef-35 metric-values-table no-fixed-width" style="margin-left: 20px;">
+                                    <table class="mar-lef-35 metric-values-table no-fixed-width"
+                                        style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let key of schoolInfraRank; let i=index">
                                                 <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}} level</td>
@@ -956,7 +967,8 @@
                         <div class="row" *ngIf="healthCardData['crc_visit']">
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <div class="mar-lef-35" style="margin-left: 15px;">
-                                    <strong class="fon-siz-15rem" style="font-size: 15px;line-height: 2em; font-weight: bold;">Total Visit Score
+                                    <strong class="fon-siz-15rem"
+                                        style="font-size: 15px;line-height: 2em; font-weight: bold;">Total Visit Score
                                     </strong>
                                     <div class="progress-circle-container" style="font-weight: bold; ">
                                         <app-progress-circle [value]="healthCardData['crc_visit']['visit_score']"
@@ -969,7 +981,8 @@
                                     <strong class="metric-name mar-lef-35" *ngIf="level != 'state'"
                                         style="margin-left: 20px; font-size: 15px;line-height: 2em;">{{level.charAt(0).toUpperCase()
                                         + level.substr(1)}} Rank</strong>
-                                    <table class="mar-lef-35 metric-values-table no-fixed-width" style="margin-left: 20px;">
+                                    <table class="mar-lef-35 metric-values-table no-fixed-width"
+                                        style="margin-left: 20px;">
                                         <thead>
                                             <tr *ngFor="let key of schoolInfraRank; let i=index">
                                                 <td *ngIf="level != 'state'">{{schoolInfraRankKye[i]}} level</td>
@@ -984,7 +997,8 @@
                         </div>
                         <div class="row" *ngIf="healthCardData['crc_visit']">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                <strong class="metric-name mar-lef-35" style="margin-left: 15px; font-size: 15px;line-height: 2em;">Schools
+                                <strong class="metric-name mar-lef-35"
+                                    style="margin-left: 15px; font-size: 15px;line-height: 2em;">Schools
                                     Visit
                                     Category</strong>
                                 <!-- <strong class="metric-name mar-lef-35" *ngIf="level == 'state'"

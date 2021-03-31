@@ -815,6 +815,8 @@ export class SatHeatChartComponent implements OnInit {
 
   // to download the csv report
   downloadReport() {
+    var position = this.reportName.length;
+    this.fileName = [this.fileName.slice(0, position), `_${this.management}`, this.fileName.slice(position)].join('');
     this.commonService.download(this.fileName, this.reportData);
   }
 }

@@ -69,7 +69,7 @@
     <div class="row">
         <div class="col-sm-12" style="padding-bottom: 10px !important">
             <select id="period" [(ngModel)]="period" (change)="onPeriodSelect()">
-                <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
+                <option [value]="period" disabled selected="selected">Choose TimeRange</option>
                 <option *ngFor="let period of timeRange,  let i =index" style="width: 100px;" [(ngValue)]="period.key">
                     {{period.value}}
                 </option>
@@ -82,7 +82,7 @@
             </button>
 
             <select [hidden]="" id="grades" [(ngModel)]="grade" (change)="onGradeSelect(grade)">
-                <option [value]="grade" disabled selected="selected">Choose a Grade</option>
+                <option [value]="grade" disabled selected="selected">Choose Grade</option>
                 <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="grade.grade">
                     {{grade.grade}}
                 </option>
