@@ -508,8 +508,8 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       if(this.level != 'school')
         healthCardData['total_schools'] = healthCardData['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       healthCardData['total_students'] = healthCardData['total_students'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      /* if(healthCardData['school_management_type'])
-        healthCardData['school_management_type'] = this.commonService.changeingStringCases(healthCardData['school_management_type'].replace(/_/g, ' ')) */
+      if(healthCardData['school_management_type'])
+        healthCardData['school_management_type'] = this.commonService.changeingStringCases(healthCardData['school_management_type'].replace(/_/g, ' '))
       this.updatedKeys = [];
       this.keys = Object.keys(healthCardData);
       let index = this.keys.indexOf('district_id');
@@ -582,6 +582,10 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.toolTipInfraKeys.map(key => {
         this.infraTooltipMetrics.push(key.includes('Percent'));
       });
+      let index = this.tooltipInfra.indexOf('school_category');
+      if (index !== -1) {
+        this.tooltipInfra.splice(index, 1);
+      }
       this.infraRankMatrixValue = healthCardData['school_infrastructure']['state_level_score'] * 10;
       this.infraRankMatrixColor = this.service.colorRankMatrics(this.infraRankMatrixValue);
     }
@@ -690,6 +694,10 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         var myKey = this.stringConverter(key);
         this.tooltipUDISEKyes.push(myKey);
       });
+      let index = this.tooltipUDISE.indexOf('school_category');
+      if (index !== -1) {
+        this.tooltipUDISE.splice(index, 1);
+      }
       this.udiseColor = this.service.colorGredient(healthCardData['udise']['school_infrastructure']);
       this.udiseRankMatrixValue = healthCardData['udise']['state_level_score'] * 10;
       this.udiseRankMatrixColor = this.service.colorRankMatrics(this.udiseRankMatrixValue);
