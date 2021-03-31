@@ -355,6 +355,8 @@ month is null""",
     "spec": {
       "*": {
         "x_value": "attendance.[&1].attendance_percentage",
+        "students_count": "attendance.[&1].students_count",
+        "total_schools": "attendance.[&1].total_schools",
         "month": "attendance.[&1].month",
         "year": "attendance.[&1].year"
       }
