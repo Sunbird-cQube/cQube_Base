@@ -28,6 +28,15 @@ drop view if exists hc_crc_school cascade;
 drop view if exists hc_crc_cluster cascade;
 drop view if exists hc_crc_block cascade;
 drop view if exists hc_crc_district cascade;
+
+drop view if exists hc_periodic_exam_school_last30 cascade;
+drop view if exists hc_periodic_exam_school_all cascade;
+drop view if exists hc_periodic_exam_cluster_last30 cascade;
+drop view if exists hc_periodic_exam_cluster_all cascade;
+drop view if exists hc_periodic_exam_block_last30 cascade;
+drop view if exists hc_periodic_exam_block_all cascade;
+drop view if exists hc_periodic_exam_district_last30 cascade;
+drop view if exists hc_periodic_exam_district_all cascade;
 drop view if exists health_card_index_school_last30 cascade;
 drop view if exists health_card_index_cluster_last30 cascade;
 drop view if exists health_card_index_block_last30 cascade;
@@ -66,6 +75,39 @@ drop view if exists pat_exception_data_last30  cascade;
 drop view if exists pat_exception_grade_data_all cascade;
 drop view if exists pat_exception_grade_data_last7 cascade;
 drop view if exists pat_exception_grade_data_last30 cascade;
+drop view if exists composite_mgt_district;
+drop view if exists composite_mgt_block;
+drop view if exists composite_mgt_cluster;
+drop view if exists composite_mgt_school;
+drop view if exists semester_exam_district_all cascade;
+drop view if exists semester_exam_block_all cascade;
+drop view if exists semester_exam_cluster_all cascade;
+drop view if exists semester_exam_school_all cascade;
+
+drop view if exists semester_grade_district_all cascade;
+drop view if exists semester_grade_block_all cascade;
+drop view if exists semester_grade_cluster_all cascade;
+drop view if exists semester_grade_school_all cascade;
+
+drop view if exists semester_exam_district_last30 cascade;
+drop view if exists semester_exam_block_last30 cascade;
+drop view if exists semester_exam_cluster_last30 cascade;
+drop view if exists semester_exam_school_last30 cascade;
+
+drop view if exists semester_grade_district_last30 cascade;
+drop view if exists semester_grade_block_last30 cascade;
+drop view if exists semester_grade_cluster_last30 cascade;
+drop view if exists semester_grade_school_last30 cascade;
+
+drop view if exists semester_exam_district_last7 cascade;
+drop view if exists semester_exam_block_last7 cascade;
+drop view if exists semester_exam_cluster_last7 cascade;
+drop view if exists semester_exam_school_last7 cascade;
+
+drop view if exists semester_grade_district_last7 cascade;
+drop view if exists semester_grade_block_last7 cascade;
+drop view if exists semester_grade_cluster_last7 cascade;
+drop view if exists semester_grade_school_last7 cascade;
 
 
 /* Create infra tables */
@@ -6566,17 +6608,6 @@ FROM student_attendance_agg_overall WHERE district_name IS NOT NULL AND block_la
 AND school_latitude IS NOT NULL AND school_name IS NOT NULL and cluster_name is not null and total_students>0
 GROUP BY district_id,district_latitude,district_longitude,district_name;
 
-
-drop view if exists hc_periodic_exam_school_last30 cascade;
-drop view if exists hc_periodic_exam_school_all cascade;
-drop view if exists hc_periodic_exam_cluster_last30 cascade;
-drop view if exists hc_periodic_exam_cluster_all cascade;
-drop view if exists hc_periodic_exam_block_last30 cascade;
-drop view if exists hc_periodic_exam_block_all cascade;
-drop view if exists hc_periodic_exam_district_last30 cascade;
-drop view if exists hc_periodic_exam_district_all cascade;
-
-
 /* pat queries */
 /*periodic exam school last 30 days */
 
@@ -7050,1821 +7081,6 @@ left join school_hierarchy_details as c on a.school_id=c.school_id
 group by c.district_id )as b
  on d.district_id=b.district_id;
 
-
-/*--------------------------------------------------------------HEALTH CARD INDEX main views---------------------------------*/
-
-/*Health card index school overall*/
-
-create or replace view health_card_index_school_overall as 
-select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
-row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
- from 
-(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
-  shd.school_id,initcap(shd.school_name)as school_name,
-  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
-(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
-on usmt.udise_school_id=shd.school_id where 
-cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
-group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name)as basic
-left join 
-(select b.*,c.school_level_rank_within_the_state,
-c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
-(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_school_overall as sad left join
-(select school_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_overall group by school_id)as sac
-on sad.school_id= sac.school_id) as b
-left join(select usc.school_id,attendance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.cluster_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         ||  a.total_schools) AS school_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.attendance DESC) / (a.total_schools*1.0)),2)) AS state_level_score
- from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_school_overall as sad left join
-(select school_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_overall  group by school_id)as sac
-on sad.school_id= sac.school_id ) as usc
-left join
-(select a.*,(select count(DISTINCT(school_id)) from hc_student_attendance_school_overall)as total_schools 
-from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from hc_student_attendance_school_overall as scl
-left join 
-(SELECT cluster_id,Count(DISTINCT hc_student_attendance_school_overall.school_id) AS schools_in_cluster FROM   hc_student_attendance_school_overall group by cluster_id) as c
-on scl.cluster_id=c.cluster_id
-left join
-(SELECT block_id,Count(DISTINCT hc_student_attendance_school_overall.school_id) AS schools_in_block FROM   hc_student_attendance_school_overall group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT hc_student_attendance_school_overall.school_id) AS schools_in_district FROM   hc_student_attendance_school_overall group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.school_id=a.school_id
-group by usc.school_id,attendance
-,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
-ON b.school_id = c.school_id)as student_attendance
-on basic.school_id=student_attendance.school_id
-left join 
-(select b.*,c.school_level_rank_within_the_state,
-c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
-(select ped.block_id,ped.block_name,ped.cluster_id,ped.cluster_name,ped.school_id,ped.school_name,ped.district_id,ped.district_name,ped.performance,ped.semester,
-pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75,ped.grade_wise_performance from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance as performance,semester
- from semester_exam_school_all where semester=(select max(semester) from semester_exam_school_all))as ped left join
-(select school_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all 
-   group by school_id,semester)as pes
-on ped.school_id= pes.school_id and ped.semester=pes.semester) as b
-left join(select usc.school_id,school_performance,usc.semester,
-       ( ( Rank()
-             over (
-               PARTITION BY a.cluster_id,usc.semester
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id,usc.semester
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id,usc.semester
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
-( ( Rank()
-             over (partition by usc.semester
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_schools) AS school_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (partition by usc.semester
-               ORDER BY usc.school_performance DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance,semester
-from semester_exam_school_all)as ped left join
-(select school_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all group by school_id,semester)as pes
-on ped.school_id= pes.school_id and ped.semester=pes.semester) as usc
-left join
-(select a.*,(select count(DISTINCT(school_id)) from semester_exam_school_all)as total_schools 
-from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from semester_exam_school_all as scl
-left join 
-(SELECT cluster_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_cluster FROM semester_exam_school_all group by cluster_id) as c
-on scl.cluster_id=c.cluster_id
-left join
-(SELECT block_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_block FROM   semester_exam_school_all group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_district FROM   semester_exam_school_all group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.school_id=a.school_id
-group by usc.school_id,school_performance,usc.semester
-,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
-ON b.school_id = c.school_id and b.semester=c.semester
-)as semester
-on basic.school_id=semester.school_id
-left join 
-(select b.*,c.school_level_rank_within_the_state,
-c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from hc_udise_school as b
-left join(select usc.udise_school_id,infrastructure_score,
-       ( ( Rank()
-             over (
-               PARTITION BY a.cluster_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_schools) AS school_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
- from hc_udise_school as usc
-left join
-(select a.*,(select count(DISTINCT(udise_school_id)) from udise_school_metrics_agg)as total_schools 
-from (select udise_school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from udise_school_metrics_agg as scl
-left join 
-(SELECT cluster_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_cluster FROM   udise_school_metrics_agg group by cluster_id) as c
-on scl.cluster_id=c.cluster_id
-left join
-(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_block FROM   udise_school_metrics_agg group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_district FROM   udise_school_metrics_agg group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.udise_school_id=a.udise_school_id
-group by usc.udise_school_id,infrastructure_score
-,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
-ON b.udise_school_id = c.udise_school_id)as udise
-on basic.school_id=udise.udise_school_id
-left join 
-(select b.*,c.school_level_rank_within_the_state,
-c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
-(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance,data_from_date,data_upto_date
- from hc_periodic_exam_school_all)as ped left join
-(select school_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_all 
-   group by school_id)as pes
-on ped.school_id= pes.school_id) as b
-left join(select usc.school_id,school_performance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.cluster_id
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_schools) AS school_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.school_performance DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance,data_from_date,data_upto_date
-from hc_periodic_exam_school_all)as ped left join
-(select school_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_all group by school_id)as pes
-on ped.school_id= pes.school_id) as usc
-left join
-(select a.*,(select count(DISTINCT(school_id)) from hc_periodic_exam_school_all)as total_schools 
-from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from hc_periodic_exam_school_all as scl
-left join 
-(SELECT cluster_id,Count(DISTINCT hc_periodic_exam_school_all.school_id) AS schools_in_cluster FROM hc_periodic_exam_school_all group by cluster_id) as c
-on scl.cluster_id=c.cluster_id
-left join
-(SELECT block_id,Count(DISTINCT hc_periodic_exam_school_all.school_id) AS schools_in_block FROM   hc_periodic_exam_school_all group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT hc_periodic_exam_school_all.school_id) AS schools_in_district FROM   hc_periodic_exam_school_all group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.school_id=a.school_id
-group by usc.school_id,school_performance
-,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
-ON b.school_id = c.school_id)as pat
-on basic.school_id=pat.school_id
-left join 
-hc_crc_school as crc
-on basic.school_id=crc.school_id
-left join
-hc_infra_school as infra
-on basic.school_id=infra.school_id;
-
-
-/*Health card index school last 30 days*/
-
-create or replace view health_card_index_school_last30 as 
-select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
-row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
- from 
-(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
-  shd.school_id,initcap(shd.school_name)as school_name,
-  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
-(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
-on usmt.udise_school_id=shd.school_id where 
-cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
-group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name)as basic
-left join 
-(select b.*,c.school_level_rank_within_the_state,
-c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
-(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_school_last_30_days as sad left join
-(select school_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_last_30_days group by school_id)as sac
-on sad.school_id= sac.school_id) as b
-left join(select usc.school_id,attendance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.cluster_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         ||  a.total_schools) AS school_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.attendance DESC) / (a.total_schools*1.0)),2)) AS state_level_score
- from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_school_last_30_days as sad left join
-(select school_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_last_30_days  group by school_id)as sac
-on sad.school_id= sac.school_id ) as usc
-left join
-(select a.*,(select count(DISTINCT(school_id)) from hc_student_attendance_school_last_30_days)as total_schools 
-from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from hc_student_attendance_school_last_30_days as scl
-left join 
-(SELECT cluster_id,Count(DISTINCT hc_student_attendance_school_last_30_days.school_id) AS schools_in_cluster FROM   hc_student_attendance_school_last_30_days group by cluster_id) as c
-on scl.cluster_id=c.cluster_id
-left join
-(SELECT block_id,Count(DISTINCT hc_student_attendance_school_last_30_days.school_id) AS schools_in_block FROM   hc_student_attendance_school_last_30_days group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT hc_student_attendance_school_last_30_days.school_id) AS schools_in_district FROM   hc_student_attendance_school_last_30_days group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.school_id=a.school_id
-group by usc.school_id,attendance
-,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
-ON b.school_id = c.school_id)as student_attendance
-on basic.school_id=student_attendance.school_id
-left join 
-(select b.*,c.school_level_rank_within_the_state,
-c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
-(select ped.block_id,ped.block_name,ped.cluster_id,ped.cluster_name,ped.school_id,ped.school_name,ped.district_id,ped.district_name,ped.performance,ped.semester,
-pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75,ped.grade_wise_performance from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance as performance,semester
- from semester_exam_school_all where semester=(select max(semester) from semester_exam_school_all))as ped left join
-(select school_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all 
-   group by school_id,semester)as pes
-on ped.school_id= pes.school_id and ped.semester=pes.semester) as b
-left join(select usc.school_id,school_performance,usc.semester,
-       ( ( Rank()
-             over (
-               PARTITION BY a.cluster_id,usc.semester
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id,usc.semester
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id,usc.semester
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
-( ( Rank()
-             over (partition by usc.semester
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_schools) AS school_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (partition by usc.semester
-               ORDER BY usc.school_performance DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance,semester
-from semester_exam_school_all)as ped left join
-(select school_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all group by school_id,semester)as pes
-on ped.school_id= pes.school_id and ped.semester=pes.semester) as usc
-left join
-(select a.*,(select count(DISTINCT(school_id)) from semester_exam_school_all)as total_schools 
-from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from semester_exam_school_all as scl
-left join 
-(SELECT cluster_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_cluster FROM semester_exam_school_all group by cluster_id) as c
-on scl.cluster_id=c.cluster_id
-left join
-(SELECT block_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_block FROM   semester_exam_school_all group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_district FROM   semester_exam_school_all group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.school_id=a.school_id
-group by usc.school_id,school_performance,usc.semester
-,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
-ON b.school_id = c.school_id and b.semester=c.semester
-)as semester
-on basic.school_id=semester.school_id
-left join 
-(select b.*,c.school_level_rank_within_the_state,
-c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from hc_udise_school as b
-left join(select usc.udise_school_id,infrastructure_score,
-       ( ( Rank()
-             over (
-               PARTITION BY a.cluster_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_schools) AS school_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
- from hc_udise_school as usc
-left join
-(select a.*,(select count(DISTINCT(udise_school_id)) from udise_school_metrics_agg)as total_schools 
-from (select udise_school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from udise_school_metrics_agg as scl
-left join 
-(SELECT cluster_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_cluster FROM   udise_school_metrics_agg group by cluster_id) as c
-on scl.cluster_id=c.cluster_id
-left join
-(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_block FROM   udise_school_metrics_agg group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_district FROM   udise_school_metrics_agg group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.udise_school_id=a.udise_school_id
-group by usc.udise_school_id,infrastructure_score
-,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
-ON b.udise_school_id = c.udise_school_id)as udise
-on basic.school_id=udise.udise_school_id
-left join 
-(select b.*,c.school_level_rank_within_the_state,
-c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
-(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance,data_from_date,data_upto_date
- from hc_periodic_exam_school_last30 )as ped left join
-(select school_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_last30 group by school_id)as pes
-on ped.school_id= pes.school_id) as b
-left join(select usc.school_id,school_performance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.cluster_id
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.school_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_schools) AS school_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.school_performance DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance
- from hc_periodic_exam_school_last30 )as ped left join
-(select school_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_last30 group by school_id)as pes
-on ped.school_id= pes.school_id) as usc
-left join
-(select a.*,(select count(DISTINCT(school_id)) from hc_periodic_exam_school_last30)as total_schools 
-from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from hc_periodic_exam_school_last30 as scl
-left join 
-(SELECT cluster_id,Count(DISTINCT hc_periodic_exam_school_last30.school_id) AS schools_in_cluster FROM   hc_periodic_exam_school_last30 group by cluster_id) as c
-on scl.cluster_id=c.cluster_id
-left join
-(SELECT block_id,Count(DISTINCT hc_periodic_exam_school_last30.school_id) AS schools_in_block FROM   hc_periodic_exam_school_last30 group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT hc_periodic_exam_school_last30.school_id) AS schools_in_district FROM   hc_periodic_exam_school_last30 group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.school_id=a.school_id
-group by usc.school_id,school_performance
-,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
-ON b.school_id = c.school_id)as pat
-on basic.school_id=pat.school_id
-left join 
-(select crc_res.*
-from 
-(select res1.district_id,res1.district_name,res1.block_id,res1.block_name,res1.cluster_id,res1.cluster_name,res1.school_id,res1.school_name,res1.total_schools,res1.total_crc_visits,res1.visited_school_count,
-res1.not_visited_school_count,res1.data_from_date,res1.data_upto_date,res1.schools_0,res1.schools_1_2,res1.schools_3_5,res1.schools_6_10,res1.schools_10,res1.no_of_schools_per_crc,res1.visit_percent_per_school,
-res.visit_score,res.state_level_score,res.school_level_rank_within_the_cluster,res.school_level_rank_within_the_block,res.school_level_rank_within_the_district,res.school_level_rank_within_the_state 
-from
-(select * from crc_school_report_last_30_days) as res1
-join
-(select a.school_id,a.visit_score,a.state_level_score,
-       ( ( Rank()
-             over (
-               PARTITION BY a.cluster_id
-               ORDER BY a.visit_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY a.visit_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY a.visit_score DESC)
-           || ' out of ' :: text )
-         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY a.visit_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_schools_state) AS school_level_rank_within_the_state                   
- from (select  crc.school_id,crc.state_level_score,crc.visit_score,a.cluster_id,a.schools_in_cluster,a.block_id,a.schools_in_block,a.district_id,a.schools_in_district,a.total_schools_state 
- from
- (select  school_id,
- CASE 
-	WHEN COALESCE(round(schools_10 * 100::numeric / total_schools::numeric, 1), 0::numeric) > 0 then 1.0
-	WHEN COALESCE(round(schools_6_10 * 100::numeric / total_schools::numeric, 1), 0::numeric) > 0 then 0.75
-	WHEN COALESCE(round(schools_3_5 * 100::numeric / total_schools::numeric, 1), 0::numeric) > 0 then 0.50
-	WHEN COALESCE(round(schools_1_2 * 100::numeric / total_schools::numeric, 1), 0::numeric) > 0 then 0.25
-	WHEN COALESCE(round(((total_schools - COALESCE(visited_school_count, 0::bigint)) * 100 / total_schools)::numeric, 1)) > 0 then 0
-	ELSE 0
-	END as state_level_score,
-case when schools_0>0  then 0 else 100 end as visit_score
-from crc_school_report_last_30_days) as crc
-left join 
-(select a.*,(select count(DISTINCT(school_id)) from crc_school_report_last_30_days)as total_schools_state 
-from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from crc_school_report_last_30_days as scl
-left join 
-(SELECT cluster_id,Count(DISTINCT crc_school_report_last_30_days.school_id) AS schools_in_cluster FROM   crc_school_report_last_30_days group by cluster_id) as c
-on scl.cluster_id=c.cluster_id
-left join
-(SELECT block_id,Count(DISTINCT crc_school_report_last_30_days.school_id) AS schools_in_block FROM   crc_school_report_last_30_days group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT crc_school_report_last_30_days.school_id) AS schools_in_district FROM   crc_school_report_last_30_days group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on crc.school_id=a.school_id)as a group by school_id,visit_score,cluster_id,block_id,district_id,total_schools_state,state_level_score) as res
-on res1.school_id=res.school_id) as crc_res)as crc
-on basic.school_id=crc.school_id
-left join
-hc_infra_school as infra
-on basic.school_id=infra.school_id;
-
-
-/*Health card index cluster overall*/
-
-create or replace view health_card_index_cluster_overall as 
-select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
-row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
- from 
-(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
-  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
-(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
-on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
-group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name)as basic
-left join 
-(select b.*,c.cluster_level_rank_within_the_state,
-c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from 
-(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_cluster_overall as sad left join
-(select cluster_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_overall  group by cluster_id)as sac
-on sad.cluster_id= sac.cluster_id
-) as b
-left join(select usc.cluster_id,attendance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
-( ( Rank()
-             over (
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.attendance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                        
- from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_cluster_overall as sad left join
-(select cluster_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_overall  group by cluster_id)as sac
-on sad.cluster_id= sac.cluster_id
-) as usc
-left join
-(select a.*,(select count(DISTINCT(cluster_id)) from hc_student_attendance_school_overall)as total_clusters
-from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from hc_student_attendance_school_overall as scl
-left join
-(SELECT block_id,Count(DISTINCT hc_student_attendance_school_overall.cluster_id) AS clusters_in_block FROM   hc_student_attendance_school_overall group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT hc_student_attendance_school_overall.cluster_id) AS clusters_in_district FROM   hc_student_attendance_school_overall group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.cluster_id=a.cluster_id
-group by attendance
-,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
-ON b.cluster_id = c.cluster_id)as student_attendance
-on basic.cluster_id=student_attendance.cluster_id
-left join 
-(select b.*,c.cluster_level_rank_within_the_state,
-c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from 
-(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance as performance,semester 
- from semester_exam_cluster_all  where semester=(select max(semester) from semester_exam_cluster_all)
-)as ped left join
-(select cluster_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all group by cluster_id,semester)as pes
-on ped.cluster_id= pes.cluster_id and ped.semester=pes.semester) as b
-left join(select usc.cluster_id,cluster_performance,usc.semester,
-       ( ( Rank()
-             over (
-               PARTITION BY a.block_id,usc.semester
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
-( ( Rank()
-             over (
-               PARTITION BY a.district_id,usc.semester
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
-( ( Rank()
-             over (partition by semester
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (partition by semester
-               ORDER BY usc.cluster_performance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,semester
- from semester_exam_cluster_all 
-)as ped left join
-(select cluster_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all group by cluster_id,semester)as pes
-on ped.cluster_id= pes.cluster_id and ped.semester=pes.semester) as usc
-left join
-(select a.*,(select count(DISTINCT(cluster_id)) from semester_exam_school_all)as total_clusters
-from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from semester_exam_school_all as scl
-left join
-(SELECT block_id,Count(DISTINCT semester_exam_school_all.cluster_id) AS clusters_in_block FROM   semester_exam_school_all group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT semester_exam_school_all.cluster_id) AS clusters_in_district FROM   semester_exam_school_all group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.cluster_id=a.cluster_id
-group by cluster_performance,usc.semester
-,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
-ON b.cluster_id = c.cluster_id and b.semester=c.semester
-)as semester
-on basic.cluster_id=semester.cluster_id
-left join 
-(select b.*,c.cluster_level_rank_within_the_state,
-c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from hc_udise_cluster as b
-left join(select usc.cluster_id,infrastructure_score,
-       ( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
-( ( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
- from hc_udise_cluster as usc
-left join
-(select a.*,(select count(DISTINCT(cluster_id)) from udise_school_metrics_agg)as total_clusters
-from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from udise_school_metrics_agg as scl
-left join
-(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_block FROM   udise_school_metrics_agg group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_district FROM   udise_school_metrics_agg group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.cluster_id=a.cluster_id
-group by infrastructure_score
-,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
-ON b.cluster_id = c.cluster_id)as udise
-on basic.cluster_id=udise.cluster_id
-left join 
-(select b.*,c.cluster_level_rank_within_the_state,
-c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,data_from_date,data_upto_date
- from hc_periodic_exam_cluster_all 
-)as ped left join
-(select cluster_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_all group by cluster_id)as pes
-on ped.cluster_id= pes.cluster_id) as b
-left join(select usc.cluster_id,cluster_performance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
-( ( Rank()
-             over (
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.cluster_performance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,data_from_date,data_upto_date
- from hc_periodic_exam_cluster_all 
-)as ped left join
-(select cluster_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_all group by cluster_id)as pes
-on ped.cluster_id= pes.cluster_id) as usc
-left join
-(select a.*,(select count(DISTINCT(cluster_id)) from hc_periodic_exam_school_all)as total_clusters
-from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from hc_periodic_exam_school_all as scl
-left join
-(SELECT block_id,Count(DISTINCT hc_periodic_exam_school_all.cluster_id) AS clusters_in_block FROM   hc_periodic_exam_school_all group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT hc_periodic_exam_school_all.cluster_id) AS clusters_in_district FROM   hc_periodic_exam_school_all group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.cluster_id=a.cluster_id
-group by cluster_performance
-,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
-ON b.cluster_id = c.cluster_id)as pat
-on basic.cluster_id=pat.cluster_id
-left join 
-hc_crc_cluster as crc
-on basic.cluster_id=crc.cluster_id
-left join
-hc_infra_cluster as infra
-on basic.cluster_id=infra.cluster_id;
-
-/*Health card index cluster last 30 days*/
-
-create or replace view health_card_index_cluster_last30 as 
-select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
-row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
- from 
-(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
-  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
-(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
-on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
-group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name)as basic
-left join 
-(select b.*,c.cluster_level_rank_within_the_state,
-c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from 
-(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_cluster_last_30_days as sad left join
-(select cluster_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_last_30_days group by cluster_id)as sac
-on sad.cluster_id= sac.cluster_id) as b
-left join(select usc.cluster_id,attendance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
-( ( Rank()
-             over (
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.attendance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                        
- from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_cluster_last_30_days as sad left join
-(select cluster_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_last_30_days group by cluster_id)as sac
-on sad.cluster_id= sac.cluster_id) as usc
-left join
-(select a.*,(select count(DISTINCT(cluster_id)) from hc_student_attendance_school_last_30_days)as total_clusters
-from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from hc_student_attendance_school_last_30_days as scl
-left join
-(SELECT block_id,Count(DISTINCT hc_student_attendance_school_last_30_days.cluster_id) AS clusters_in_block FROM   hc_student_attendance_school_last_30_days group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT hc_student_attendance_school_last_30_days.cluster_id) AS clusters_in_district FROM   hc_student_attendance_school_last_30_days group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.cluster_id=a.cluster_id
-group by attendance
-,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
-ON b.cluster_id = c.cluster_id)as student_attendance
-on basic.cluster_id=student_attendance.cluster_id
-left join 
-(select b.*,c.cluster_level_rank_within_the_state,
-c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from 
-(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance as performance,semester 
- from semester_exam_cluster_all  where semester=(select max(semester) from semester_exam_cluster_all)
-)as ped left join
-(select cluster_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all group by cluster_id,semester)as pes
-on ped.cluster_id= pes.cluster_id and ped.semester=pes.semester) as b
-left join(select usc.cluster_id,cluster_performance,usc.semester,
-       ( ( Rank()
-             over (
-               PARTITION BY a.block_id,usc.semester
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
-( ( Rank()
-             over (
-               PARTITION BY a.district_id,usc.semester
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
-( ( Rank()
-             over (partition by semester
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (partition by semester
-               ORDER BY usc.cluster_performance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,semester
- from semester_exam_cluster_all 
-)as ped left join
-(select cluster_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all group by cluster_id,semester)as pes
-on ped.cluster_id= pes.cluster_id and ped.semester=pes.semester) as usc
-left join
-(select a.*,(select count(DISTINCT(cluster_id)) from semester_exam_school_all)as total_clusters
-from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from semester_exam_school_all as scl
-left join
-(SELECT block_id,Count(DISTINCT semester_exam_school_all.cluster_id) AS clusters_in_block FROM   semester_exam_school_all group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT semester_exam_school_all.cluster_id) AS clusters_in_district FROM   semester_exam_school_all group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.cluster_id=a.cluster_id
-group by cluster_performance,usc.semester
-,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
-ON b.cluster_id = c.cluster_id and b.semester=c.semester
-)as semester
-on basic.cluster_id=semester.cluster_id
-left join 
-(select b.*,c.cluster_level_rank_within_the_state,
-c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from hc_udise_cluster as b
-left join(select usc.cluster_id,infrastructure_score,
-       ( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
-( ( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
- from hc_udise_cluster as usc
-left join
-(select a.*,(select count(DISTINCT(cluster_id)) from udise_school_metrics_agg)as total_clusters
-from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from udise_school_metrics_agg as scl
-left join
-(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_block FROM   udise_school_metrics_agg group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_district FROM   udise_school_metrics_agg group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.cluster_id=a.cluster_id
-group by infrastructure_score
-,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
-ON b.cluster_id = c.cluster_id)as udise
-on basic.cluster_id=udise.cluster_id
-left join 
-(select b.*,c.cluster_level_rank_within_the_state,
-c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,data_from_date,data_upto_date
- from hc_periodic_exam_cluster_last30)as ped left join
-(select cluster_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_last30 group by cluster_id)as pes
-on ped.cluster_id= pes.cluster_id) as b
-left join(select usc.cluster_id,cluster_performance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
-( ( Rank()
-             over (
-               ORDER BY usc.cluster_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.cluster_performance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,data_from_date,data_upto_date
- from hc_periodic_exam_cluster_last30)as ped left join
-(select cluster_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from periodic_exam_school_last30  group by cluster_id)as pes
-on ped.cluster_id= pes.cluster_id) as usc
-left join
-(select a.*,(select count(DISTINCT(cluster_id)) from periodic_exam_school_last30)as total_clusters
-from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from periodic_exam_school_last30 as scl
-left join
-(SELECT block_id,Count(DISTINCT periodic_exam_school_last30.cluster_id) AS clusters_in_block FROM   periodic_exam_school_last30 group by block_id)as b
-on scl.block_id=b.block_id
-left join 
-(SELECT district_id,Count(DISTINCT periodic_exam_school_last30.cluster_id) AS clusters_in_district FROM   periodic_exam_school_last30 group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on usc.cluster_id=a.cluster_id
-group by cluster_performance
-,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
-ON b.cluster_id = c.cluster_id)as pat
-on basic.cluster_id=pat.cluster_id
-left join 
-(select crc_res.*
-from 
-(select res1.district_id,res1.district_name,res1.block_id,res1.block_name,res1.cluster_id,res1.cluster_name,res1.total_schools,res1.total_crc_visits,res1.visited_school_count,
-res1.not_visited_school_count,res1.data_from_date,res1.data_upto_date,res1.schools_0,res1.schools_1_2,res1.schools_3_5,res1.schools_6_10,res1.schools_10,res1.no_of_schools_per_crc,res1.visit_percent_per_school,
-res.visit_score,res.state_level_score,res.cluster_level_rank_within_the_block,res.cluster_level_rank_within_the_district,res.cluster_level_rank_within_the_state 
-from
-(select * from crc_cluster_report_last_30_days) as res1
-join
-(select a.cluster_id,a.visit_score,
-( ( Rank()
-             over (
-               PARTITION BY a.block_id
-               ORDER BY a.visit_score DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block, 
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY a.visit_score DESC)
-           || ' out of ' :: text )
-         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY a.visit_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_clusters_state) AS cluster_level_rank_within_the_state,
-case when visit_score >0 then 
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY a.visit_score DESC) / (a.total_clusters_state*1.0)),2)) else 0 end AS state_level_score		 
- from (select  crc.visit_score,a.cluster_id,a.clusters_in_block,a.block_id,a.district_id,a.clusters_in_district,a.total_clusters_state 
- from
- (select  cluster_id,
- cast(COALESCE(100 - cast(schools_0 as float),0) as float)  as visit_score 
-from crc_cluster_report_last_30_days) as crc
-left join 
-(select a.*,(select count(DISTINCT(cluster_id)) from crc_cluster_report_last_30_days)as total_clusters_state 
-from (select cluster_id,c.block_id,clusters_in_block,d.district_id,clusters_in_district from crc_cluster_report_last_30_days as scl
-left join 
-(SELECT block_id,Count(DISTINCT crc_cluster_report_last_30_days.cluster_id) AS clusters_in_block FROM   crc_cluster_report_last_30_days group by block_id) as c
-on scl.block_id=c.block_id
-left join
-(SELECT district_id,Count(DISTINCT crc_cluster_report_last_30_days.cluster_id) AS clusters_in_district FROM   crc_cluster_report_last_30_days group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on crc.cluster_id=a.cluster_id)as a group by cluster_id,visit_score,block_id,district_id,total_clusters_state) as res
-on res1.cluster_id=res.cluster_id) as crc_res) as crc
-on basic.cluster_id=crc.cluster_id
-left join
-hc_infra_cluster as infra
-on basic.cluster_id=infra.cluster_id;
-
-
-/*Health card index block overall*/
-
-create or replace view health_card_index_block_overall as 
-select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
-row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
- from 
-(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
-(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
-on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
-group by shd.district_id,shd.district_name,shd.block_id,shd.block_name)as basic
-left join 
-(select b.*,c.block_level_rank_within_the_state,
-c.block_level_rank_within_the_district,c.state_level_score from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_block_overall as sad left join
-(select block_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_overall  group by block_id)as sac
-on sad.block_id= sac.block_id
-) as b
-left join(select usc.block_id,attendance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         ||  a.total_blocks) AS block_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.attendance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
- from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_block_overall as sad left join
-(select block_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_overall  group by block_id)as sac
-on sad.block_id= sac.block_id) as usc
-left join
-(select a.*,(select count(DISTINCT(block_id)) from hc_student_attendance_school_overall)as total_blocks
-from (select distinct(scl.block_id),blocks_in_district,d.district_id from hc_student_attendance_school_overall as scl
-left join
-(SELECT district_id,Count(DISTINCT hc_student_attendance_school_overall.block_id) AS blocks_in_district FROM   hc_student_attendance_school_overall group by district_id)as d
-on scl.district_id=d.district_id)as a)as a
-on usc.block_id=a.block_id
-group by attendance
-,usc.block_id,a.total_blocks,a.district_id) as c
-ON b.block_id = c.block_id )as student_attendance
-on basic.block_id=student_attendance.block_id
-left join 
-(
-select b.*,c.block_level_rank_within_the_state,
-c.block_level_rank_within_the_district,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance as performance,semester
- from semester_exam_block_all where semester=(select max(semester) from semester_exam_block_all))as ped left join
-(select block_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all  group by block_id,semester)as pes
-on ped.block_id= pes.block_id and ped.semester=pes.semester) as b
-left join(select usc.block_id,block_performance,usc.semester,
-       ( ( Rank()
-             over (
-               PARTITION BY a.district_id,usc.semester
-               ORDER BY usc.block_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
-( ( Rank()
-             over (partition by semester
-               ORDER BY usc.block_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_blocks) AS block_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (partition by usc.semester
-               ORDER BY usc.block_performance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
-                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,semester
- from semester_exam_block_all 
-)as ped left join
-(select block_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all  group by block_id,semester)as pes
-on ped.block_id= pes.block_id and ped.semester=pes.semester) as usc
-left join
-(select a.*,(select count(DISTINCT(block_id)) from semester_exam_school_all)as total_blocks
-from (select distinct(scl.block_id),blocks_in_district,d.district_id from semester_exam_school_all as scl
-left join
-(SELECT district_id,Count(DISTINCT semester_exam_school_all.block_id) AS blocks_in_district FROM  semester_exam_school_all group by district_id)as d
-on scl.district_id=d.district_id)as a)as a
-on usc.block_id=a.block_id
-group by block_performance,usc.semester
-,usc.block_id,a.total_blocks,a.district_id) as c
-ON b.block_id = c.block_id and b.semester=c.semester
-)as semester
-on basic.block_id=semester.block_id
-left join 
-(select b.*,c.block_level_rank_within_the_state,
-c.block_level_rank_within_the_district,c.state_level_score from hc_udise_block as b
-left join(select usc.block_id,infrastructure_score,
-       ( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_blocks) AS block_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
-                         
- from hc_udise_block as usc
-left join
-(select a.*,(select count(DISTINCT(block_id)) from udise_school_metrics_agg)as total_blocks
-from (select distinct(scl.block_id),blocks_in_district,d.district_id from udise_school_metrics_agg as scl
-left join
-(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.block_id) AS blocks_in_district FROM   udise_school_metrics_agg group by district_id)as d
-on scl.district_id=d.district_id)as a)as a
-on usc.block_id=a.block_id
-group by infrastructure_score
-,usc.block_id,a.total_blocks,a.district_id) as c
-ON b.block_id = c.block_id)as udise
-on basic.block_id=udise.block_id
-left join 
-(select b.*,c.block_level_rank_within_the_state,
-c.block_level_rank_within_the_district,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,data_from_date,data_upto_date
- from hc_periodic_exam_block_all )as ped left join
-(select block_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from periodic_exam_school_all  group by block_id)as pes
-on ped.block_id= pes.block_id) as b
-left join(select usc.block_id,block_performance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.block_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.block_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_blocks) AS block_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.block_performance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
-                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,data_from_date,data_upto_date
- from hc_periodic_exam_block_all 
-)as ped left join
-(select block_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from periodic_exam_school_all  group by block_id)as pes
-on ped.block_id= pes.block_id) as usc
-left join
-(select a.*,(select count(DISTINCT(block_id)) from periodic_exam_school_all)as total_blocks
-from (select distinct(scl.block_id),blocks_in_district,d.district_id from periodic_exam_school_all as scl
-left join
-(SELECT district_id,Count(DISTINCT periodic_exam_school_all.block_id) AS blocks_in_district FROM  periodic_exam_school_all group by district_id)as d
-on scl.district_id=d.district_id)as a)as a
-on usc.block_id=a.block_id
-group by block_performance
-,usc.block_id,a.total_blocks,a.district_id) as c
-ON b.block_id = c.block_id)as pat
-on basic.block_id=pat.block_id
-left join 
-hc_crc_block as crc
-on basic.block_id=crc.block_id
-left join
-hc_infra_block as infra
-on basic.block_id=infra.block_id;
-
-/*Health card index block last 30 days*/
-
-create or replace view health_card_index_block_last30 as 
-select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
-row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
- from 
-(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
-(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
-on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
-group by shd.district_id,shd.district_name,shd.block_id,shd.block_name)as basic
-left join 
-(select b.*,c.block_level_rank_within_the_state,
-c.block_level_rank_within_the_district,c.state_level_score from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_block_last_30_days as sad left join
-(select block_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_last_30_days group by block_id)as sac
-on sad.block_id= sac.block_id) as b
-left join(select usc.block_id,attendance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.attendance DESC)
-           || ' out of ' :: text )
-         ||  a.total_blocks) AS block_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.attendance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
- from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
- from hc_student_attendance_block_last_30_days as sad left join
-(select block_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_last_30_days group by block_id)as sac
-on sad.block_id= sac.block_id) as usc
-left join
-(select a.*,(select count(DISTINCT(block_id)) from hc_student_attendance_school_last_30_days)as total_blocks
-from (select distinct(scl.block_id),blocks_in_district,d.district_id from hc_student_attendance_school_last_30_days as scl
-left join
-(SELECT district_id,Count(DISTINCT hc_student_attendance_school_last_30_days.block_id) AS blocks_in_district FROM   hc_student_attendance_school_last_30_days group by district_id)as d
-on scl.district_id=d.district_id)as a)as a
-on usc.block_id=a.block_id
-group by attendance
-,usc.block_id,a.total_blocks,a.district_id) as c
-ON b.block_id = c.block_id )as student_attendance
-on basic.block_id=student_attendance.block_id
-left join 
-(select b.*,c.block_level_rank_within_the_state,
-c.block_level_rank_within_the_district,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance as performance,semester
- from semester_exam_block_all where semester=(select max(semester) from semester_exam_block_all))as ped left join
-(select block_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all  group by block_id,semester)as pes
-on ped.block_id= pes.block_id and ped.semester=pes.semester) as b
-left join(select usc.block_id,block_performance,usc.semester,
-       ( ( Rank()
-             over (
-               PARTITION BY a.district_id,usc.semester
-               ORDER BY usc.block_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
-( ( Rank()
-             over (partition by semester
-               ORDER BY usc.block_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_blocks) AS block_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (partition by usc.semester
-               ORDER BY usc.block_performance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
-                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,semester
- from semester_exam_block_all 
-)as ped left join
-(select block_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all  group by block_id,semester)as pes
-on ped.block_id= pes.block_id and ped.semester=pes.semester) as usc
-left join
-(select a.*,(select count(DISTINCT(block_id)) from semester_exam_school_all)as total_blocks
-from (select distinct(scl.block_id),blocks_in_district,d.district_id from semester_exam_school_all as scl
-left join
-(SELECT district_id,Count(DISTINCT semester_exam_school_all.block_id) AS blocks_in_district FROM  semester_exam_school_all group by district_id)as d
-on scl.district_id=d.district_id)as a)as a
-on usc.block_id=a.block_id
-group by block_performance,usc.semester
-,usc.block_id,a.total_blocks,a.district_id) as c
-ON b.block_id = c.block_id and b.semester=c.semester
-)as semester
-on basic.block_id=semester.block_id
-left join 
-(select b.*,c.block_level_rank_within_the_state,
-c.block_level_rank_within_the_district,c.state_level_score from hc_udise_block as b
-
-left join(select usc.block_id,infrastructure_score,
-       ( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_blocks) AS block_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.infrastructure_score DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
-                         
- from hc_udise_block as usc
-left join
-(select a.*,(select count(DISTINCT(block_id)) from udise_school_metrics_agg)as total_blocks
-from (select distinct(scl.block_id),blocks_in_district,d.district_id from udise_school_metrics_agg as scl
-left join
-(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.block_id) AS blocks_in_district FROM   udise_school_metrics_agg group by district_id)as d
-on scl.district_id=d.district_id)as a)as a
-on usc.block_id=a.block_id
-group by infrastructure_score
-,usc.block_id,a.total_blocks,a.district_id) as c
-ON b.block_id = c.block_id)as udise
-on basic.block_id=udise.block_id
-left join 
-(select b.*,c.block_level_rank_within_the_state,
-c.block_level_rank_within_the_district,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,data_from_date,data_upto_date
- from hc_periodic_exam_block_last30 )as ped left join
-(select block_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_last30 group by block_id)as pes
-on ped.block_id= pes.block_id) as b
-left join(select usc.block_id,block_performance,
-       ( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY usc.block_performance DESC)
-           || ' out of ' :: text )
-         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY usc.block_performance DESC)
-           || ' out of ' :: text )
-         ||  a.total_blocks) AS block_level_rank_within_the_state,
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY usc.block_performance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
-                         
- from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,data_from_date,data_upto_date
- from hc_periodic_exam_block_last30 
-)as ped left join
-(select block_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_last30 group by block_id)as pes
-on ped.block_id= pes.block_id) as usc
-left join
-(select a.*,(select count(DISTINCT(block_id)) from hc_periodic_exam_school_last30)as total_blocks
-from (select distinct(scl.block_id),blocks_in_district,d.district_id from hc_periodic_exam_school_last30 as scl
-left join
-(SELECT district_id,Count(DISTINCT hc_periodic_exam_school_last30.block_id) AS blocks_in_district FROM hc_periodic_exam_school_last30 group by district_id)as d
-on scl.district_id=d.district_id)as a)as a
-on usc.block_id=a.block_id
-group by block_performance
-,usc.block_id,a.total_blocks,a.district_id) as c
-ON b.block_id = c.block_id)as pat
-on basic.block_id=pat.block_id
-left join 
-(select crc_res.*
-from 
-(select res1.district_id,res1.district_name,res1.block_id,res1.block_name,res1.total_schools,res1.total_crc_visits,res1.visited_school_count,
-res1.not_visited_school_count,res1.data_from_date,res1.data_upto_date,res1.schools_0,res1.schools_1_2,res1.schools_3_5,res1.schools_6_10,res1.schools_10,res1.no_of_schools_per_crc,res1.visit_percent_per_school,
-res.visit_score,res.state_level_score,res.block_level_rank_within_the_district,res.block_level_rank_within_the_state 
-from
-(select * from crc_block_report_last_30_days) as res1
-join
-(select a.block_id,a.visit_score,
-( ( Rank()
-             over (
-               PARTITION BY a.district_id
-               ORDER BY a.visit_score DESC)
-           || ' out of ' :: text )
-         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
-( ( Rank()
-             over (
-               ORDER BY a.visit_score DESC)
-           || ' out of ' :: text )
-         ||  a.total_blocks_state) AS block_level_rank_within_the_state,
-case when (a.visit_score >0) then 
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY a.visit_score DESC) / (a.total_blocks_state*1.0)),2)) 
-else 0 end as state_level_score		 
- from (select  crc.visit_score,a.block_id,a.district_id,a.blocks_in_district,a.total_blocks_state 
- from
- (select  block_id,
- cast(COALESCE(100 - cast(schools_0 as float),0) as float)  as visit_score 
-from crc_block_report_last_30_days) as crc
-left join 
-(select a.*,(select count(DISTINCT(block_id)) from crc_block_report_last_30_days)as total_blocks_state 
-from (select distinct(scl.block_id),d.district_id,blocks_in_district from crc_block_report_last_30_days as scl
-left join 
-(SELECT district_id,Count(DISTINCT crc_block_report_last_30_days.block_id) AS blocks_in_district FROM   crc_block_report_last_30_days group by district_id) as d
-on scl.district_id=d.district_id)as a)as a
-on crc.block_id=a.block_id)as a group by visit_score,block_id,district_id,total_blocks_state) as res
-on res1.block_id=res.block_id) as crc_res
-) as crc
-on basic.block_id=crc.block_id
-left join
-hc_infra_block as infra
-on basic.block_id=infra.block_id;
-
-/* Health card index district overall */
-
-create or replace view health_card_index_district_overall as 
-select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
-row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
- from 
-(select shd.district_id,initcap(shd.district_name)as district_name,count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
-(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
-on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
-group by shd.district_id,shd.district_name)as basic
-left join 
-(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75,((rank () over ( order by attendance desc))||' out of '||(select count(distinct(district_id)) 
-from hc_semester_performance_district)) as district_level_rank_within_the_state,coalesce(1-round((Rank() over (ORDER BY attendance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
- from hc_student_attendance_district_overall as sad left join
-(select district_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_overall group by district_id)as sac
-on sad.district_id= sac.district_id
-)as student_attendance
-on basic.district_id=student_attendance.district_id
-left join 
-(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,grade_wise_performance,district_performance as performance,semester,
-  ((rank () over (partition by semester order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
-from semester_exam_district_all)) as district_level_rank_within_the_state, 
-coalesce(1-round(( Rank() over (partition by semester ORDER BY district_performance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
- from semester_exam_district_all where semester=(select max(semester) from semester_exam_district_all))as ped left join
-(select district_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all group by district_id,semester)as pes
-on ped.district_id= pes.district_id and ped.semester=pes.semester)as semester
-on basic.district_id=semester.district_id
-left join 
-(select uds.*,usc.value_below_33,usc.value_between_33_60,usc.value_between_60_75,usc.value_above_75 from udise_district_score as uds left join 
-(select district_id,
- sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when Infrastructure_score > 33 and infrastructure_score<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when Infrastructure_score > 60 and infrastructure_score<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
-   from udise_school_score group by district_id)as usc
-on uds.district_id= usc.district_id)as udise
-on basic.district_id=udise.district_id
-left join 
-(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,grade_wise_performance,district_performance,data_from_date,data_upto_date,
-  ((rank () over ( order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
-from hc_periodic_exam_district_all)) as district_level_rank_within_the_state, coalesce(1-round(( Rank() over (ORDER BY district_performance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
- from hc_periodic_exam_district_all )as ped left join
-(select district_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_all group by district_id)as pes
-on ped.district_id= pes.district_id)as pat
-on basic.district_id=pat.district_id
-left join 
-hc_crc_district as crc
-on basic.district_id=crc.district_id
-left join
-hc_infra_district as infra
-on basic.district_id=infra.district_id;
-
-
-/* health card index district last 30 days */
-
-create or replace view health_card_index_district_last30 as 
-select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
-row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
- from 
-(select shd.district_id,initcap(shd.district_name)as district_name,count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
-(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
-on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
-group by shd.district_id,shd.district_name)as basic
-left join 
-(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75,((rank () over ( order by attendance desc))||' out of '||(select count(distinct(district_id)) 
-from hc_semester_performance_district)) as district_level_rank_within_the_state,coalesce(1-round((Rank() over (ORDER BY attendance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
- from hc_student_attendance_district_last_30_days as sad left join
-(select district_id,
- sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
- sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
- sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
- sum(case when attendance > 75 then 1 else 0 end)as value_above_75
-   from hc_student_attendance_school_last_30_days group by district_id)as sac
-on sad.district_id= sac.district_id
-)as student_attendance
-on basic.district_id=student_attendance.district_id
-left join 
-(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,grade_wise_performance,district_performance as performance,semester,
-  ((rank () over (partition by semester order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
-from semester_exam_district_all)) as district_level_rank_within_the_state, 
-coalesce(1-round(( Rank() over (partition by semester ORDER BY district_performance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
- from semester_exam_district_all where semester=(select max(semester) from semester_exam_district_all))as ped left join
-(select district_id,semester,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from semester_exam_school_all group by district_id,semester)as pes
-on ped.district_id= pes.district_id and ped.semester=pes.semester
-)as semester
-on basic.district_id=semester.district_id
-left join 
-(select uds.*,usc.value_below_33,usc.value_between_33_60,usc.value_between_60_75,usc.value_above_75 from udise_district_score as uds left join 
-(select district_id,
- sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
- sum(case when Infrastructure_score > 33 and infrastructure_score<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when Infrastructure_score > 60 and infrastructure_score<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
-   from udise_school_score group by district_id)as usc
-on uds.district_id= usc.district_id)as udise
-on basic.district_id=udise.district_id
-left join 
-(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
-(Select district_id,district_name,grade_wise_performance,district_performance,data_from_date,data_upto_date,
-  ((rank () over ( order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
-from hc_periodic_exam_district_last30)) as district_level_rank_within_the_state, coalesce(1-round(( Rank() over (ORDER BY district_performance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
- from hc_periodic_exam_district_last30 )as ped left join
-(select district_id,
- sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
- sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
- sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
- sum(case when school_performance >75 then 1 else 0 end)as value_above_75
-   from hc_periodic_exam_school_last30 group by district_id)as pes
-on ped.district_id= pes.district_id)as pat
-on basic.district_id=pat.district_id
-left join 
-(select crc_res.*
-from 
-(select res1.district_id,res1.district_name,res1.total_schools,res1.total_crc_visits,res1.visited_school_count,
-res1.not_visited_school_count,res1.data_from_date,res1.data_upto_date,res1.schools_0,res1.schools_1_2,res1.schools_3_5,res1.schools_6_10,res1.schools_10,res1.no_of_schools_per_crc,res1.visit_percent_per_school,
-res.visit_score,res.state_level_score,res.district_level_rank_within_the_state 
-from
-(select * from crc_district_report_last_30_days) as res1
-join
-(select a.district_id,a.visit_score,
-( ( Rank()
-             over (
-               ORDER BY a.visit_score DESC)
-           || ' out of ' :: text )
-         ||  ((select count(distinct(district_id)) 
-from crc_visits_frequency))) AS district_level_rank_within_the_state ,
-case when visit_score>0 then 
-coalesce(1-round(( Rank()
-             over (
-               ORDER BY a.visit_score DESC) / ((select count(distinct(district_id)) 
-from crc_visits_frequency)*1.0)),2)) else 0 end  AS state_level_score                  
-                
- from (select  crc.visit_score,crc.district_id 
- from
- (select  district_id,
- cast(COALESCE(100 - cast(schools_0 as float),0) as float)  as visit_score 
-from crc_district_report_last_30_days) as crc
-group by visit_score,district_id)as a) as res
-on res1.district_id=res.district_id) as crc_res)
- as crc
-on basic.district_id=crc.district_id
-left join
-hc_infra_district as infra
-on basic.district_id=infra.district_id;
-/*Health card state*/
-
-
-create or replace view hc_student_attendance_state_overall as
-SELECT Round(Sum(total_present)*100.0/Sum(total_students),1)AS Attendance,
-Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools
-FROM student_attendance_agg_overall WHERE block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL
-AND school_name IS NOT NULL and cluster_name is not null and total_students>0;
-
-
-create or replace view hc_student_attendance_state_last30 as
-SELECT Round(Sum(total_present)*100.0/Sum(total_students),1)AS Attendance,
-Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools
-FROM student_attendance_agg_last_30_days WHERE block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL
-AND school_name IS NOT NULL and cluster_name is not null and total_students>0;
-
-create or replace view hc_semester_performance_state as
-  SELECT grade,semester,
-Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
-  case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
-  +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
-  case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
-  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
-  ),0)*100.0/
-Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
-  subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
-FROM school_student_subject_total_marks WHERE district_name IS NOT NULL
-AND block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL
-AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
- and cluster_name is not null
-GROUP BY grade,semester
-having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
- case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
- +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
- case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
- +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
- ) <> 0;
-
- create or replace view hc_pat_state as
-select d.*,b.total_schools,b.students_count from
-(select a.*,b.grade_wise_performance from
-(select academic_year,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as school_performance
-from periodic_exam_school_result group by academic_year) as a
-left join
-(select academic_year,json_object_agg(grade,percentage) as grade_wise_performance from
-(select academic_year,cast('Grade '||grade as text)as grade,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
-from periodic_exam_school_result group by academic_year,grade)as a
-group by academic_year)as b
-on a.academic_year=b.academic_year)as d
-left join
- (select academic_year,sum(students_count)as students_count,sum(total_schools)as total_schools
-  from periodic_exam_school_all group by academic_year
-  )as b
- on d.academic_year=b.academic_year;
-
-/*Health card state views */
-
-create or replace view hc_pat_state_overall as
- select (select round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (0)::numeric)), 1) as school_performance
-        from periodic_exam_school_result),
-        (select json_object_agg(a_1.grade, a_1.percentage) as grade_wise_performance
-                   from ( select ('grade '::text || periodic_exam_school_result.grade) as grade,
-                            round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (0)::numeric)), 1) as percentage
-                           from periodic_exam_school_result
-                          group by periodic_exam_school_result.grade) a_1),
-        (select sum(periodic_exam_school_all.students_count) as students_count from periodic_exam_school_all),
-        (select sum(periodic_exam_school_all.total_schools) as total_schools from periodic_exam_school_all);
-
-
-create or replace view hc_pat_state_last30 as
- select (select round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (1)::numeric)), 1) as school_performance
-        from periodic_exam_school_result  where exam_code in (select exam_code from pat_date_range where date_range='last30days')),
-        (select json_object_agg(a_1.grade, a_1.percentage) as grade_wise_performance
-                   from ( select ('grade '::text || periodic_exam_school_result.grade) as grade,
-                            round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (1)::numeric)), 1) as percentage
-                           from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days')
-                          group by periodic_exam_school_result.grade) a_1),
-        (select sum(students_count) as students_count from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days')),
-        (select count(distinct school_id) as total_schools from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'));
-
-
-create or replace view hc_student_attendance_state_overall as
-SELECT Round(Sum(total_present)*100.0/Sum(total_students),1)AS Attendance,
-Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
-(select Data_from_date(Min(year),min(month))  from student_attendance_trans where year = (select min(year) from student_attendance_trans) group by year) as data_from_date,
-(select   case when year=extract(year from now()) and month=extract(month from now()) then to_char(now(),'DD-MM-YYYY')   else Data_upto_date(year,month) end as data_upto_date 
-from (select max(month) as month ,max(year) as year from student_attendance_trans where year = (select max(year) from student_attendance_trans)) as matt)
-FROM student_attendance_agg_overall WHERE district_latitude > 0 AND district_longitude > 0 AND block_latitude > 0 AND block_longitude > 0 AND cluster_latitude > 0 AND cluster_longitude > 0 AND school_latitude >0 AND school_longitude >0 
-AND school_name IS NOT NULL and cluster_name is NOT NULL AND block_name is NOT NULL AND district_name is NOT NULL and total_students>0;
-
-
-create or replace view hc_student_attendance_state_last30 as
-SELECT Round(Sum(total_present)*100.0/Sum(total_students),1)AS Attendance,
-Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
-(select to_char(min(days_in_period.day),'DD-MM-YYYY') as data_from_date from (select (generate_series('now()'::date-'30days'::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period),
-(select to_char(max(days_in_period.day),'DD-MM-YYYY') as data_upto_date from (select (generate_series('now()'::date-'30days'::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period)
-FROM student_attendance_agg_last_30_days WHERE district_latitude > 0 AND district_longitude > 0 AND block_latitude > 0 AND block_longitude > 0 AND cluster_latitude > 0 AND cluster_longitude > 0 AND school_latitude >0 AND school_longitude >0 
-AND school_name IS NOT NULL and cluster_name is NOT NULL AND block_name is NOT NULL AND district_name is NOT NULL and total_students>0;
-
 /*SAT views*/
 
 /*daterange*/
@@ -8877,37 +7093,6 @@ union
 (select ((now()::Date)-INTERVAL '7 DAY')::Date) and (select now()::DATE) );
 
 /*------------------------Over all-------------------------------------------------*/
-
-
-drop view if exists semester_exam_district_all cascade;
-drop view if exists semester_exam_block_all cascade;
-drop view if exists semester_exam_cluster_all cascade;
-drop view if exists semester_exam_school_all cascade;
-
-drop view if exists semester_grade_district_all cascade;
-drop view if exists semester_grade_block_all cascade;
-drop view if exists semester_grade_cluster_all cascade;
-drop view if exists semester_grade_school_all cascade;
-
-drop view if exists semester_exam_district_last30 cascade;
-drop view if exists semester_exam_block_last30 cascade;
-drop view if exists semester_exam_cluster_last30 cascade;
-drop view if exists semester_exam_school_last30 cascade;
-
-drop view if exists semester_grade_district_last30 cascade;
-drop view if exists semester_grade_block_last30 cascade;
-drop view if exists semester_grade_cluster_last30 cascade;
-drop view if exists semester_grade_school_last30 cascade;
-
-drop view if exists semester_exam_district_last7 cascade;
-drop view if exists semester_exam_block_last7 cascade;
-drop view if exists semester_exam_cluster_last7 cascade;
-drop view if exists semester_exam_school_last7 cascade;
-
-drop view if exists semester_grade_district_last7 cascade;
-drop view if exists semester_grade_block_last7 cascade;
-drop view if exists semester_grade_cluster_last7 cascade;
-drop view if exists semester_grade_school_last7 cascade;
 
 /* semester exam district*/
 
@@ -15052,19 +13237,6 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-
-
-drop view if exists udise_school_mgt_score cascade;
-drop view if exists udise_cluster_mgt_score cascade;
-drop view if exists udise_block_mgt_score cascade;
-drop view if exists udise_district_mgt_score cascade;
-
-select * from udise_school_mgt_score();
-select * from udise_cluster_mgt_score();
-select * from udise_block_mgt_score();
-select * from udise_district_mgt_score();
-
-
 /* Infrstructure management changes */
 
 
@@ -15460,6 +13632,1820 @@ select infra_school_mgt_reports('water','toilet');
 
 /*----health card ----*/
 
+
+/*--------------------------------------------------------------HEALTH CARD INDEX main views---------------------------------*/
+
+/*Health card index school overall*/
+
+create or replace view health_card_index_school_overall as 
+select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
+row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
+ from 
+(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
+  shd.school_id,initcap(shd.school_name)as school_name,
+  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where 
+cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name)as basic
+left join 
+(select b.*,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
+(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_school_overall as sad left join
+(select school_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_overall group by school_id)as sac
+on sad.school_id= sac.school_id) as b
+left join(select usc.school_id,attendance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.attendance DESC) / (a.total_schools*1.0)),2)) AS state_level_score
+ from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_school_overall as sad left join
+(select school_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_overall  group by school_id)as sac
+on sad.school_id= sac.school_id ) as usc
+left join
+(select a.*,(select count(DISTINCT(school_id)) from hc_student_attendance_school_overall)as total_schools 
+from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from hc_student_attendance_school_overall as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT hc_student_attendance_school_overall.school_id) AS schools_in_cluster FROM   hc_student_attendance_school_overall group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT hc_student_attendance_school_overall.school_id) AS schools_in_block FROM   hc_student_attendance_school_overall group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT hc_student_attendance_school_overall.school_id) AS schools_in_district FROM   hc_student_attendance_school_overall group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.school_id=a.school_id
+group by usc.school_id,attendance
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.school_id = c.school_id)as student_attendance
+on basic.school_id=student_attendance.school_id
+left join 
+(select b.*,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
+(select ped.block_id,ped.block_name,ped.cluster_id,ped.cluster_name,ped.school_id,ped.school_name,ped.district_id,ped.district_name,ped.performance,ped.semester,
+pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75,ped.grade_wise_performance from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance as performance,semester
+ from semester_exam_school_all where semester=(select max(semester) from semester_exam_school_all))as ped left join
+(select school_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all 
+   group by school_id,semester)as pes
+on ped.school_id= pes.school_id and ped.semester=pes.semester) as b
+left join(select usc.school_id,school_performance,usc.semester,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id,usc.semester
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id,usc.semester
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id,usc.semester
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (partition by usc.semester
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (partition by usc.semester
+               ORDER BY usc.school_performance DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance,semester
+from semester_exam_school_all)as ped left join
+(select school_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all group by school_id,semester)as pes
+on ped.school_id= pes.school_id and ped.semester=pes.semester) as usc
+left join
+(select a.*,(select count(DISTINCT(school_id)) from semester_exam_school_all)as total_schools 
+from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from semester_exam_school_all as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_cluster FROM semester_exam_school_all group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_block FROM   semester_exam_school_all group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_district FROM   semester_exam_school_all group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.school_id=a.school_id
+group by usc.school_id,school_performance,usc.semester
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.school_id = c.school_id and b.semester=c.semester
+)as semester
+on basic.school_id=semester.school_id
+left join 
+(select b.*,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from hc_udise_school as b
+left join(select usc.udise_school_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
+ from hc_udise_school as usc
+left join
+(select a.*,(select count(DISTINCT(udise_school_id)) from udise_school_metrics_agg)as total_schools 
+from (select udise_school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from udise_school_metrics_agg as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_cluster FROM   udise_school_metrics_agg group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_block FROM   udise_school_metrics_agg group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_district FROM   udise_school_metrics_agg group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.udise_school_id=a.udise_school_id
+group by usc.udise_school_id,infrastructure_score
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.udise_school_id = c.udise_school_id)as udise
+on basic.school_id=udise.udise_school_id
+left join 
+(select b.*,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
+(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance,data_from_date,data_upto_date
+ from hc_periodic_exam_school_all)as ped left join
+(select school_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_all 
+   group by school_id)as pes
+on ped.school_id= pes.school_id) as b
+left join(select usc.school_id,school_performance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.school_performance DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance,data_from_date,data_upto_date
+from hc_periodic_exam_school_all)as ped left join
+(select school_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_all group by school_id)as pes
+on ped.school_id= pes.school_id) as usc
+left join
+(select a.*,(select count(DISTINCT(school_id)) from hc_periodic_exam_school_all)as total_schools 
+from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from hc_periodic_exam_school_all as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT hc_periodic_exam_school_all.school_id) AS schools_in_cluster FROM hc_periodic_exam_school_all group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT hc_periodic_exam_school_all.school_id) AS schools_in_block FROM   hc_periodic_exam_school_all group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT hc_periodic_exam_school_all.school_id) AS schools_in_district FROM   hc_periodic_exam_school_all group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.school_id=a.school_id
+group by usc.school_id,school_performance
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.school_id = c.school_id)as pat
+on basic.school_id=pat.school_id
+left join 
+hc_crc_school as crc
+on basic.school_id=crc.school_id
+left join
+hc_infra_school as infra
+on basic.school_id=infra.school_id;
+
+
+/*Health card index school last 30 days*/
+
+create or replace view health_card_index_school_last30 as 
+select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
+row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
+ from 
+(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
+  shd.school_id,initcap(shd.school_name)as school_name,
+  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where 
+cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name,shd.school_id,shd.school_name)as basic
+left join 
+(select b.*,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
+(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_school_last_30_days as sad left join
+(select school_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_last_30_days group by school_id)as sac
+on sad.school_id= sac.school_id) as b
+left join(select usc.school_id,attendance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.attendance DESC) / (a.total_schools*1.0)),2)) AS state_level_score
+ from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_school_last_30_days as sad left join
+(select school_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_last_30_days  group by school_id)as sac
+on sad.school_id= sac.school_id ) as usc
+left join
+(select a.*,(select count(DISTINCT(school_id)) from hc_student_attendance_school_last_30_days)as total_schools 
+from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from hc_student_attendance_school_last_30_days as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT hc_student_attendance_school_last_30_days.school_id) AS schools_in_cluster FROM   hc_student_attendance_school_last_30_days group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT hc_student_attendance_school_last_30_days.school_id) AS schools_in_block FROM   hc_student_attendance_school_last_30_days group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT hc_student_attendance_school_last_30_days.school_id) AS schools_in_district FROM   hc_student_attendance_school_last_30_days group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.school_id=a.school_id
+group by usc.school_id,attendance
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.school_id = c.school_id)as student_attendance
+on basic.school_id=student_attendance.school_id
+left join 
+(select b.*,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
+(select ped.block_id,ped.block_name,ped.cluster_id,ped.cluster_name,ped.school_id,ped.school_name,ped.district_id,ped.district_name,ped.performance,ped.semester,
+pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75,ped.grade_wise_performance from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance as performance,semester
+ from semester_exam_school_all where semester=(select max(semester) from semester_exam_school_all))as ped left join
+(select school_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all 
+   group by school_id,semester)as pes
+on ped.school_id= pes.school_id and ped.semester=pes.semester) as b
+left join(select usc.school_id,school_performance,usc.semester,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id,usc.semester
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id,usc.semester
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id,usc.semester
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (partition by usc.semester
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (partition by usc.semester
+               ORDER BY usc.school_performance DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance,semester
+from semester_exam_school_all)as ped left join
+(select school_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all group by school_id,semester)as pes
+on ped.school_id= pes.school_id and ped.semester=pes.semester) as usc
+left join
+(select a.*,(select count(DISTINCT(school_id)) from semester_exam_school_all)as total_schools 
+from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from semester_exam_school_all as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_cluster FROM semester_exam_school_all group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_block FROM   semester_exam_school_all group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT semester_exam_school_all.school_id) AS schools_in_district FROM   semester_exam_school_all group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.school_id=a.school_id
+group by usc.school_id,school_performance,usc.semester
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.school_id = c.school_id and b.semester=c.semester
+)as semester
+on basic.school_id=semester.school_id
+left join 
+(select b.*,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from hc_udise_school as b
+left join(select usc.udise_school_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
+ from hc_udise_school as usc
+left join
+(select a.*,(select count(DISTINCT(udise_school_id)) from udise_school_metrics_agg)as total_schools 
+from (select udise_school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from udise_school_metrics_agg as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_cluster FROM   udise_school_metrics_agg group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_block FROM   udise_school_metrics_agg group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.udise_school_id) AS schools_in_district FROM   udise_school_metrics_agg group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.udise_school_id=a.udise_school_id
+group by usc.udise_school_id,infrastructure_score
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.udise_school_id = c.udise_school_id)as udise
+on basic.school_id=udise.udise_school_id
+left join 
+(select b.*,c.school_level_rank_within_the_state,
+c.school_level_rank_within_the_district,c.school_level_rank_within_the_block,c.school_level_rank_within_the_cluster,c.state_level_score from 
+(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance,data_from_date,data_upto_date
+ from hc_periodic_exam_school_last30 )as ped left join
+(select school_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_last30 group by school_id)as pes
+on ped.school_id= pes.school_id) as b
+left join(select usc.school_id,school_performance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.school_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools) AS school_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.school_performance DESC) / (a.total_schools*1.0)),2)) AS state_level_score                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,school_id,school_name,grade_wise_performance,school_performance
+ from hc_periodic_exam_school_last30 )as ped left join
+(select school_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_last30 group by school_id)as pes
+on ped.school_id= pes.school_id) as usc
+left join
+(select a.*,(select count(DISTINCT(school_id)) from hc_periodic_exam_school_last30)as total_schools 
+from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from hc_periodic_exam_school_last30 as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT hc_periodic_exam_school_last30.school_id) AS schools_in_cluster FROM   hc_periodic_exam_school_last30 group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT hc_periodic_exam_school_last30.school_id) AS schools_in_block FROM   hc_periodic_exam_school_last30 group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT hc_periodic_exam_school_last30.school_id) AS schools_in_district FROM   hc_periodic_exam_school_last30 group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.school_id=a.school_id
+group by usc.school_id,school_performance
+,a.cluster_id,a.block_id,a.district_id,a.total_schools) as c
+ON b.school_id = c.school_id)as pat
+on basic.school_id=pat.school_id
+left join 
+(select crc_res.*
+from 
+(select res1.district_id,res1.district_name,res1.block_id,res1.block_name,res1.cluster_id,res1.cluster_name,res1.school_id,res1.school_name,res1.total_schools,res1.total_crc_visits,res1.visited_school_count,
+res1.not_visited_school_count,res1.data_from_date,res1.data_upto_date,res1.schools_0,res1.schools_1_2,res1.schools_3_5,res1.schools_6_10,res1.schools_10,res1.no_of_schools_per_crc,res1.visit_percent_per_school,
+res.visit_score,res.state_level_score,res.school_level_rank_within_the_cluster,res.school_level_rank_within_the_block,res.school_level_rank_within_the_district,res.school_level_rank_within_the_state 
+from
+(select * from crc_school_report_last_30_days) as res1
+join
+(select a.school_id,a.visit_score,a.state_level_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.cluster_id
+               ORDER BY a.visit_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_cluster) ) AS school_level_rank_within_the_cluster,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY a.visit_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_block) ) AS school_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY a.visit_score DESC)
+           || ' out of ' :: text )
+         || sum(a.schools_in_district) ) AS school_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY a.visit_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_schools_state) AS school_level_rank_within_the_state                   
+ from (select  crc.school_id,crc.state_level_score,crc.visit_score,a.cluster_id,a.schools_in_cluster,a.block_id,a.schools_in_block,a.district_id,a.schools_in_district,a.total_schools_state 
+ from
+ (select  school_id,
+ CASE 
+	WHEN COALESCE(round(schools_10 * 100::numeric / total_schools::numeric, 1), 0::numeric) > 0 then 1.0
+	WHEN COALESCE(round(schools_6_10 * 100::numeric / total_schools::numeric, 1), 0::numeric) > 0 then 0.75
+	WHEN COALESCE(round(schools_3_5 * 100::numeric / total_schools::numeric, 1), 0::numeric) > 0 then 0.50
+	WHEN COALESCE(round(schools_1_2 * 100::numeric / total_schools::numeric, 1), 0::numeric) > 0 then 0.25
+	WHEN COALESCE(round(((total_schools - COALESCE(visited_school_count, 0::bigint)) * 100 / total_schools)::numeric, 1)) > 0 then 0
+	ELSE 0
+	END as state_level_score,
+case when schools_0>0  then 0 else 100 end as visit_score
+from crc_school_report_last_30_days) as crc
+left join 
+(select a.*,(select count(DISTINCT(school_id)) from crc_school_report_last_30_days)as total_schools_state 
+from (select school_id,c.cluster_id,schools_in_cluster,b.block_id,schools_in_block,d.district_id,schools_in_district from crc_school_report_last_30_days as scl
+left join 
+(SELECT cluster_id,Count(DISTINCT crc_school_report_last_30_days.school_id) AS schools_in_cluster FROM   crc_school_report_last_30_days group by cluster_id) as c
+on scl.cluster_id=c.cluster_id
+left join
+(SELECT block_id,Count(DISTINCT crc_school_report_last_30_days.school_id) AS schools_in_block FROM   crc_school_report_last_30_days group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT crc_school_report_last_30_days.school_id) AS schools_in_district FROM   crc_school_report_last_30_days group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on crc.school_id=a.school_id)as a group by school_id,visit_score,cluster_id,block_id,district_id,total_schools_state,state_level_score) as res
+on res1.school_id=res.school_id) as crc_res)as crc
+on basic.school_id=crc.school_id
+left join
+hc_infra_school as infra
+on basic.school_id=infra.school_id;
+
+
+/*Health card index cluster overall*/
+
+create or replace view health_card_index_cluster_overall as 
+select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
+row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
+ from 
+(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
+  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name)as basic
+left join 
+(select b.*,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from 
+(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_cluster_overall as sad left join
+(select cluster_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_overall  group by cluster_id)as sac
+on sad.cluster_id= sac.cluster_id
+) as b
+left join(select usc.cluster_id,attendance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.attendance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                        
+ from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_cluster_overall as sad left join
+(select cluster_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_overall  group by cluster_id)as sac
+on sad.cluster_id= sac.cluster_id
+) as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from hc_student_attendance_school_overall)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from hc_student_attendance_school_overall as scl
+left join
+(SELECT block_id,Count(DISTINCT hc_student_attendance_school_overall.cluster_id) AS clusters_in_block FROM   hc_student_attendance_school_overall group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT hc_student_attendance_school_overall.cluster_id) AS clusters_in_district FROM   hc_student_attendance_school_overall group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by attendance
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id)as student_attendance
+on basic.cluster_id=student_attendance.cluster_id
+left join 
+(select b.*,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from 
+(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance as performance,semester 
+ from semester_exam_cluster_all  where semester=(select max(semester) from semester_exam_cluster_all)
+)as ped left join
+(select cluster_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all group by cluster_id,semester)as pes
+on ped.cluster_id= pes.cluster_id and ped.semester=pes.semester) as b
+left join(select usc.cluster_id,cluster_performance,usc.semester,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id,usc.semester
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id,usc.semester
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (partition by semester
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (partition by semester
+               ORDER BY usc.cluster_performance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,semester
+ from semester_exam_cluster_all 
+)as ped left join
+(select cluster_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all group by cluster_id,semester)as pes
+on ped.cluster_id= pes.cluster_id and ped.semester=pes.semester) as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from semester_exam_school_all)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from semester_exam_school_all as scl
+left join
+(SELECT block_id,Count(DISTINCT semester_exam_school_all.cluster_id) AS clusters_in_block FROM   semester_exam_school_all group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT semester_exam_school_all.cluster_id) AS clusters_in_district FROM   semester_exam_school_all group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by cluster_performance,usc.semester
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id and b.semester=c.semester
+)as semester
+on basic.cluster_id=semester.cluster_id
+left join 
+(select b.*,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from hc_udise_cluster as b
+left join(select usc.cluster_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
+ from hc_udise_cluster as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from udise_school_metrics_agg)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from udise_school_metrics_agg as scl
+left join
+(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_block FROM   udise_school_metrics_agg group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_district FROM   udise_school_metrics_agg group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by infrastructure_score
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id)as udise
+on basic.cluster_id=udise.cluster_id
+left join 
+(select b.*,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,data_from_date,data_upto_date
+ from hc_periodic_exam_cluster_all 
+)as ped left join
+(select cluster_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_all group by cluster_id)as pes
+on ped.cluster_id= pes.cluster_id) as b
+left join(select usc.cluster_id,cluster_performance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.cluster_performance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,data_from_date,data_upto_date
+ from hc_periodic_exam_cluster_all 
+)as ped left join
+(select cluster_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_all group by cluster_id)as pes
+on ped.cluster_id= pes.cluster_id) as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from hc_periodic_exam_school_all)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from hc_periodic_exam_school_all as scl
+left join
+(SELECT block_id,Count(DISTINCT hc_periodic_exam_school_all.cluster_id) AS clusters_in_block FROM   hc_periodic_exam_school_all group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT hc_periodic_exam_school_all.cluster_id) AS clusters_in_district FROM   hc_periodic_exam_school_all group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by cluster_performance
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id)as pat
+on basic.cluster_id=pat.cluster_id
+left join 
+hc_crc_cluster as crc
+on basic.cluster_id=crc.cluster_id
+left join
+hc_infra_cluster as infra
+on basic.cluster_id=infra.cluster_id;
+
+/*Health card index cluster last 30 days*/
+
+create or replace view health_card_index_cluster_last30 as 
+select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
+row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
+ from 
+(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,shd.cluster_id,initcap(shd.cluster_name)as cluster_name,
+  count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name,shd.block_id,shd.block_name,shd.cluster_id,shd.cluster_name)as basic
+left join 
+(select b.*,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from 
+(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_cluster_last_30_days as sad left join
+(select cluster_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_last_30_days group by cluster_id)as sac
+on sad.cluster_id= sac.cluster_id) as b
+left join(select usc.cluster_id,attendance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.attendance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                        
+ from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_cluster_last_30_days as sad left join
+(select cluster_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_last_30_days group by cluster_id)as sac
+on sad.cluster_id= sac.cluster_id) as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from hc_student_attendance_school_last_30_days)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from hc_student_attendance_school_last_30_days as scl
+left join
+(SELECT block_id,Count(DISTINCT hc_student_attendance_school_last_30_days.cluster_id) AS clusters_in_block FROM   hc_student_attendance_school_last_30_days group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT hc_student_attendance_school_last_30_days.cluster_id) AS clusters_in_district FROM   hc_student_attendance_school_last_30_days group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by attendance
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id)as student_attendance
+on basic.cluster_id=student_attendance.cluster_id
+left join 
+(select b.*,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from 
+(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance as performance,semester 
+ from semester_exam_cluster_all  where semester=(select max(semester) from semester_exam_cluster_all)
+)as ped left join
+(select cluster_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all group by cluster_id,semester)as pes
+on ped.cluster_id= pes.cluster_id and ped.semester=pes.semester) as b
+left join(select usc.cluster_id,cluster_performance,usc.semester,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id,usc.semester
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id,usc.semester
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (partition by semester
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (partition by semester
+               ORDER BY usc.cluster_performance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,semester
+ from semester_exam_cluster_all 
+)as ped left join
+(select cluster_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all group by cluster_id,semester)as pes
+on ped.cluster_id= pes.cluster_id and ped.semester=pes.semester) as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from semester_exam_school_all)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from semester_exam_school_all as scl
+left join
+(SELECT block_id,Count(DISTINCT semester_exam_school_all.cluster_id) AS clusters_in_block FROM   semester_exam_school_all group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT semester_exam_school_all.cluster_id) AS clusters_in_district FROM   semester_exam_school_all group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by cluster_performance,usc.semester
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id and b.semester=c.semester
+)as semester
+on basic.cluster_id=semester.cluster_id
+left join 
+(select b.*,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from hc_udise_cluster as b
+left join(select usc.cluster_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
+ from hc_udise_cluster as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from udise_school_metrics_agg)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from udise_school_metrics_agg as scl
+left join
+(SELECT block_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_block FROM   udise_school_metrics_agg group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.cluster_id) AS clusters_in_district FROM   udise_school_metrics_agg group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by infrastructure_score
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id)as udise
+on basic.cluster_id=udise.cluster_id
+left join 
+(select b.*,c.cluster_level_rank_within_the_state,
+c.cluster_level_rank_within_the_district,c.cluster_level_rank_within_the_block,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,data_from_date,data_upto_date
+ from hc_periodic_exam_cluster_last30)as ped left join
+(select cluster_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_last30 group by cluster_id)as pes
+on ped.cluster_id= pes.cluster_id) as b
+left join(select usc.cluster_id,cluster_performance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district, 
+( ( Rank()
+             over (
+               ORDER BY usc.cluster_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters) AS cluster_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.cluster_performance DESC) / (a.total_clusters*1.0)),2)) AS state_level_score                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,cluster_id,cluster_name,grade_wise_performance,cluster_performance,data_from_date,data_upto_date
+ from hc_periodic_exam_cluster_last30)as ped left join
+(select cluster_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from periodic_exam_school_last30  group by cluster_id)as pes
+on ped.cluster_id= pes.cluster_id) as usc
+left join
+(select a.*,(select count(DISTINCT(cluster_id)) from periodic_exam_school_last30)as total_clusters
+from (select distinct(scl.cluster_id),clusters_in_block,b.block_id,clusters_in_district,d.district_id from periodic_exam_school_last30 as scl
+left join
+(SELECT block_id,Count(DISTINCT periodic_exam_school_last30.cluster_id) AS clusters_in_block FROM   periodic_exam_school_last30 group by block_id)as b
+on scl.block_id=b.block_id
+left join 
+(SELECT district_id,Count(DISTINCT periodic_exam_school_last30.cluster_id) AS clusters_in_district FROM   periodic_exam_school_last30 group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on usc.cluster_id=a.cluster_id
+group by cluster_performance
+,usc.cluster_id,a.total_clusters,a.block_id,a.district_id) as c
+ON b.cluster_id = c.cluster_id)as pat
+on basic.cluster_id=pat.cluster_id
+left join 
+(select crc_res.*
+from 
+(select res1.district_id,res1.district_name,res1.block_id,res1.block_name,res1.cluster_id,res1.cluster_name,res1.total_schools,res1.total_crc_visits,res1.visited_school_count,
+res1.not_visited_school_count,res1.data_from_date,res1.data_upto_date,res1.schools_0,res1.schools_1_2,res1.schools_3_5,res1.schools_6_10,res1.schools_10,res1.no_of_schools_per_crc,res1.visit_percent_per_school,
+res.visit_score,res.state_level_score,res.cluster_level_rank_within_the_block,res.cluster_level_rank_within_the_district,res.cluster_level_rank_within_the_state 
+from
+(select * from crc_cluster_report_last_30_days) as res1
+join
+(select a.cluster_id,a.visit_score,
+( ( Rank()
+             over (
+               PARTITION BY a.block_id
+               ORDER BY a.visit_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_block) ) AS cluster_level_rank_within_the_block, 
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY a.visit_score DESC)
+           || ' out of ' :: text )
+         || sum(a.clusters_in_district) ) AS cluster_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY a.visit_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_clusters_state) AS cluster_level_rank_within_the_state,
+case when visit_score >0 then 
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY a.visit_score DESC) / (a.total_clusters_state*1.0)),2)) else 0 end AS state_level_score		 
+ from (select  crc.visit_score,a.cluster_id,a.clusters_in_block,a.block_id,a.district_id,a.clusters_in_district,a.total_clusters_state 
+ from
+ (select  cluster_id,
+ cast(COALESCE(100 - cast(schools_0 as float),0) as float)  as visit_score 
+from crc_cluster_report_last_30_days) as crc
+left join 
+(select a.*,(select count(DISTINCT(cluster_id)) from crc_cluster_report_last_30_days)as total_clusters_state 
+from (select cluster_id,c.block_id,clusters_in_block,d.district_id,clusters_in_district from crc_cluster_report_last_30_days as scl
+left join 
+(SELECT block_id,Count(DISTINCT crc_cluster_report_last_30_days.cluster_id) AS clusters_in_block FROM   crc_cluster_report_last_30_days group by block_id) as c
+on scl.block_id=c.block_id
+left join
+(SELECT district_id,Count(DISTINCT crc_cluster_report_last_30_days.cluster_id) AS clusters_in_district FROM   crc_cluster_report_last_30_days group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on crc.cluster_id=a.cluster_id)as a group by cluster_id,visit_score,block_id,district_id,total_clusters_state) as res
+on res1.cluster_id=res.cluster_id) as crc_res) as crc
+on basic.cluster_id=crc.cluster_id
+left join
+hc_infra_cluster as infra
+on basic.cluster_id=infra.cluster_id;
+
+
+/*Health card index block overall*/
+
+create or replace view health_card_index_block_overall as 
+select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
+row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
+ from 
+(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name,shd.block_id,shd.block_name)as basic
+left join 
+(select b.*,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district,c.state_level_score from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_block_overall as sad left join
+(select block_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_overall  group by block_id)as sac
+on sad.block_id= sac.block_id
+) as b
+left join(select usc.block_id,attendance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.attendance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
+ from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_block_overall as sad left join
+(select block_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_overall  group by block_id)as sac
+on sad.block_id= sac.block_id) as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from hc_student_attendance_school_overall)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from hc_student_attendance_school_overall as scl
+left join
+(SELECT district_id,Count(DISTINCT hc_student_attendance_school_overall.block_id) AS blocks_in_district FROM   hc_student_attendance_school_overall group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by attendance
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id )as student_attendance
+on basic.block_id=student_attendance.block_id
+left join 
+(
+select b.*,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance as performance,semester
+ from semester_exam_block_all where semester=(select max(semester) from semester_exam_block_all))as ped left join
+(select block_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all  group by block_id,semester)as pes
+on ped.block_id= pes.block_id and ped.semester=pes.semester) as b
+left join(select usc.block_id,block_performance,usc.semester,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id,usc.semester
+               ORDER BY usc.block_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (partition by semester
+               ORDER BY usc.block_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (partition by usc.semester
+               ORDER BY usc.block_performance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
+                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,semester
+ from semester_exam_block_all 
+)as ped left join
+(select block_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all  group by block_id,semester)as pes
+on ped.block_id= pes.block_id and ped.semester=pes.semester) as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from semester_exam_school_all)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from semester_exam_school_all as scl
+left join
+(SELECT district_id,Count(DISTINCT semester_exam_school_all.block_id) AS blocks_in_district FROM  semester_exam_school_all group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by block_performance,usc.semester
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id and b.semester=c.semester
+)as semester
+on basic.block_id=semester.block_id
+left join 
+(select b.*,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district,c.state_level_score from hc_udise_block as b
+left join(select usc.block_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
+                         
+ from hc_udise_block as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from udise_school_metrics_agg)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from udise_school_metrics_agg as scl
+left join
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.block_id) AS blocks_in_district FROM   udise_school_metrics_agg group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by infrastructure_score
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id)as udise
+on basic.block_id=udise.block_id
+left join 
+(select b.*,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,data_from_date,data_upto_date
+ from hc_periodic_exam_block_all )as ped left join
+(select block_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from periodic_exam_school_all  group by block_id)as pes
+on ped.block_id= pes.block_id) as b
+left join(select usc.block_id,block_performance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.block_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.block_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.block_performance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
+                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,data_from_date,data_upto_date
+ from hc_periodic_exam_block_all 
+)as ped left join
+(select block_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from periodic_exam_school_all  group by block_id)as pes
+on ped.block_id= pes.block_id) as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from periodic_exam_school_all)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from periodic_exam_school_all as scl
+left join
+(SELECT district_id,Count(DISTINCT periodic_exam_school_all.block_id) AS blocks_in_district FROM  periodic_exam_school_all group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by block_performance
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id)as pat
+on basic.block_id=pat.block_id
+left join 
+hc_crc_block as crc
+on basic.block_id=crc.block_id
+left join
+hc_infra_block as infra
+on basic.block_id=infra.block_id;
+
+/*Health card index block last 30 days*/
+
+create or replace view health_card_index_block_last30 as 
+select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
+row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
+ from 
+(select shd.district_id,initcap(shd.district_name)as district_name,shd.block_id,initcap(shd.block_name)as block_name,count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name,shd.block_id,shd.block_name)as basic
+left join 
+(select b.*,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district,c.state_level_score from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_block_last_30_days as sad left join
+(select block_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_last_30_days group by block_id)as sac
+on sad.block_id= sac.block_id) as b
+left join(select usc.block_id,attendance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.attendance DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.attendance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
+ from (select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75
+ from hc_student_attendance_block_last_30_days as sad left join
+(select block_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_last_30_days group by block_id)as sac
+on sad.block_id= sac.block_id) as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from hc_student_attendance_school_last_30_days)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from hc_student_attendance_school_last_30_days as scl
+left join
+(SELECT district_id,Count(DISTINCT hc_student_attendance_school_last_30_days.block_id) AS blocks_in_district FROM   hc_student_attendance_school_last_30_days group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by attendance
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id )as student_attendance
+on basic.block_id=student_attendance.block_id
+left join 
+(select b.*,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance as performance,semester
+ from semester_exam_block_all where semester=(select max(semester) from semester_exam_block_all))as ped left join
+(select block_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all  group by block_id,semester)as pes
+on ped.block_id= pes.block_id and ped.semester=pes.semester) as b
+left join(select usc.block_id,block_performance,usc.semester,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id,usc.semester
+               ORDER BY usc.block_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (partition by semester
+               ORDER BY usc.block_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (partition by usc.semester
+               ORDER BY usc.block_performance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
+                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,semester
+ from semester_exam_block_all 
+)as ped left join
+(select block_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all  group by block_id,semester)as pes
+on ped.block_id= pes.block_id and ped.semester=pes.semester) as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from semester_exam_school_all)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from semester_exam_school_all as scl
+left join
+(SELECT district_id,Count(DISTINCT semester_exam_school_all.block_id) AS blocks_in_district FROM  semester_exam_school_all group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by block_performance,usc.semester
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id and b.semester=c.semester
+)as semester
+on basic.block_id=semester.block_id
+left join 
+(select b.*,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district,c.state_level_score from hc_udise_block as b
+
+left join(select usc.block_id,infrastructure_score,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.infrastructure_score DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
+                         
+ from hc_udise_block as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from udise_school_metrics_agg)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from udise_school_metrics_agg as scl
+left join
+(SELECT district_id,Count(DISTINCT udise_school_metrics_agg.block_id) AS blocks_in_district FROM   udise_school_metrics_agg group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by infrastructure_score
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id)as udise
+on basic.block_id=udise.block_id
+left join 
+(select b.*,c.block_level_rank_within_the_state,
+c.block_level_rank_within_the_district,c.state_level_score from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,data_from_date,data_upto_date
+ from hc_periodic_exam_block_last30 )as ped left join
+(select block_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_last30 group by block_id)as pes
+on ped.block_id= pes.block_id) as b
+left join(select usc.block_id,block_performance,
+       ( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY usc.block_performance DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY usc.block_performance DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks) AS block_level_rank_within_the_state,
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY usc.block_performance DESC) / (a.total_blocks*1.0)),2)) AS state_level_score                            
+                         
+ from (select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,block_id,block_name,grade_wise_performance,block_performance,data_from_date,data_upto_date
+ from hc_periodic_exam_block_last30 
+)as ped left join
+(select block_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_last30 group by block_id)as pes
+on ped.block_id= pes.block_id) as usc
+left join
+(select a.*,(select count(DISTINCT(block_id)) from hc_periodic_exam_school_last30)as total_blocks
+from (select distinct(scl.block_id),blocks_in_district,d.district_id from hc_periodic_exam_school_last30 as scl
+left join
+(SELECT district_id,Count(DISTINCT hc_periodic_exam_school_last30.block_id) AS blocks_in_district FROM hc_periodic_exam_school_last30 group by district_id)as d
+on scl.district_id=d.district_id)as a)as a
+on usc.block_id=a.block_id
+group by block_performance
+,usc.block_id,a.total_blocks,a.district_id) as c
+ON b.block_id = c.block_id)as pat
+on basic.block_id=pat.block_id
+left join 
+(select crc_res.*
+from 
+(select res1.district_id,res1.district_name,res1.block_id,res1.block_name,res1.total_schools,res1.total_crc_visits,res1.visited_school_count,
+res1.not_visited_school_count,res1.data_from_date,res1.data_upto_date,res1.schools_0,res1.schools_1_2,res1.schools_3_5,res1.schools_6_10,res1.schools_10,res1.no_of_schools_per_crc,res1.visit_percent_per_school,
+res.visit_score,res.state_level_score,res.block_level_rank_within_the_district,res.block_level_rank_within_the_state 
+from
+(select * from crc_block_report_last_30_days) as res1
+join
+(select a.block_id,a.visit_score,
+( ( Rank()
+             over (
+               PARTITION BY a.district_id
+               ORDER BY a.visit_score DESC)
+           || ' out of ' :: text )
+         || sum(a.blocks_in_district) ) AS block_level_rank_within_the_district,
+( ( Rank()
+             over (
+               ORDER BY a.visit_score DESC)
+           || ' out of ' :: text )
+         ||  a.total_blocks_state) AS block_level_rank_within_the_state,
+case when (a.visit_score >0) then 
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY a.visit_score DESC) / (a.total_blocks_state*1.0)),2)) 
+else 0 end as state_level_score		 
+ from (select  crc.visit_score,a.block_id,a.district_id,a.blocks_in_district,a.total_blocks_state 
+ from
+ (select  block_id,
+ cast(COALESCE(100 - cast(schools_0 as float),0) as float)  as visit_score 
+from crc_block_report_last_30_days) as crc
+left join 
+(select a.*,(select count(DISTINCT(block_id)) from crc_block_report_last_30_days)as total_blocks_state 
+from (select distinct(scl.block_id),d.district_id,blocks_in_district from crc_block_report_last_30_days as scl
+left join 
+(SELECT district_id,Count(DISTINCT crc_block_report_last_30_days.block_id) AS blocks_in_district FROM   crc_block_report_last_30_days group by district_id) as d
+on scl.district_id=d.district_id)as a)as a
+on crc.block_id=a.block_id)as a group by visit_score,block_id,district_id,total_blocks_state) as res
+on res1.block_id=res.block_id) as crc_res
+) as crc
+on basic.block_id=crc.block_id
+left join
+hc_infra_block as infra
+on basic.block_id=infra.block_id;
+
+/* Health card index district overall */
+
+create or replace view health_card_index_district_overall as 
+select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
+row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
+ from 
+(select shd.district_id,initcap(shd.district_name)as district_name,count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name)as basic
+left join 
+(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75,((rank () over ( order by attendance desc))||' out of '||(select count(distinct(district_id)) 
+from hc_semester_performance_district)) as district_level_rank_within_the_state,coalesce(1-round((Rank() over (ORDER BY attendance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
+ from hc_student_attendance_district_overall as sad left join
+(select district_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_overall group by district_id)as sac
+on sad.district_id= sac.district_id
+)as student_attendance
+on basic.district_id=student_attendance.district_id
+left join 
+(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,grade_wise_performance,district_performance as performance,semester,
+  ((rank () over (partition by semester order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
+from semester_exam_district_all)) as district_level_rank_within_the_state, 
+coalesce(1-round(( Rank() over (partition by semester ORDER BY district_performance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
+ from semester_exam_district_all where semester=(select max(semester) from semester_exam_district_all))as ped left join
+(select district_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all group by district_id,semester)as pes
+on ped.district_id= pes.district_id and ped.semester=pes.semester)as semester
+on basic.district_id=semester.district_id
+left join 
+(select uds.*,usc.value_below_33,usc.value_between_33_60,usc.value_between_60_75,usc.value_above_75 from udise_district_score as uds left join 
+(select district_id,
+ sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when Infrastructure_score > 33 and infrastructure_score<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when Infrastructure_score > 60 and infrastructure_score<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
+   from udise_school_score group by district_id)as usc
+on uds.district_id= usc.district_id)as udise
+on basic.district_id=udise.district_id
+left join 
+(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,grade_wise_performance,district_performance,data_from_date,data_upto_date,
+  ((rank () over ( order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
+from hc_periodic_exam_district_all)) as district_level_rank_within_the_state, coalesce(1-round(( Rank() over (ORDER BY district_performance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
+ from hc_periodic_exam_district_all )as ped left join
+(select district_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_all group by district_id)as pes
+on ped.district_id= pes.district_id)as pat
+on basic.district_id=pat.district_id
+left join 
+hc_crc_district as crc
+on basic.district_id=crc.district_id
+left join
+hc_infra_district as infra
+on basic.district_id=infra.district_id;
+
+
+/* health card index district last 30 days */
+
+create or replace view health_card_index_district_last30 as 
+select basic.*,row_to_json(student_attendance.*) as student_attendance,row_to_json(semester.*) as student_semester,row_to_json(udise.*) as udise,
+row_to_json(pat.*) as PAT_performance,row_to_json(crc.*) as CRC_visit,row_to_json(infra.*) as school_infrastructure
+ from 
+(select shd.district_id,initcap(shd.district_name)as district_name,count(distinct(usmt.udise_school_id)) as total_schools,sum(usmt.total_students)as total_students from
+(select udise_school_id,sum(no_of_students) as total_students from udise_school_metrics_trans group by udise_school_id)as usmt right join school_hierarchy_details as shd
+on usmt.udise_school_id=shd.school_id where cluster_name is not null and school_name is not null and block_name is not null and district_name is not null
+group by shd.district_id,shd.district_name)as basic
+left join 
+(select sad.*,sac.value_below_33,sac.value_between_33_60,sac.value_between_60_75,sac.value_above_75,((rank () over ( order by attendance desc))||' out of '||(select count(distinct(district_id)) 
+from hc_semester_performance_district)) as district_level_rank_within_the_state,coalesce(1-round((Rank() over (ORDER BY attendance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
+ from hc_student_attendance_district_last_30_days as sad left join
+(select district_id,
+ sum(case when attendance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when attendance > 33 and attendance<=60 then 1 else 0 end)as value_between_33_60,
+ sum(case when attendance > 60 and attendance<=75 then 1 else 0 end)as value_between_60_75,
+ sum(case when attendance > 75 then 1 else 0 end)as value_above_75
+   from hc_student_attendance_school_last_30_days group by district_id)as sac
+on sad.district_id= sac.district_id
+)as student_attendance
+on basic.district_id=student_attendance.district_id
+left join 
+(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,grade_wise_performance,district_performance as performance,semester,
+  ((rank () over (partition by semester order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
+from semester_exam_district_all)) as district_level_rank_within_the_state, 
+coalesce(1-round(( Rank() over (partition by semester ORDER BY district_performance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
+ from semester_exam_district_all where semester=(select max(semester) from semester_exam_district_all))as ped left join
+(select district_id,semester,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from semester_exam_school_all group by district_id,semester)as pes
+on ped.district_id= pes.district_id and ped.semester=pes.semester
+)as semester
+on basic.district_id=semester.district_id
+left join 
+(select uds.*,usc.value_below_33,usc.value_between_33_60,usc.value_between_60_75,usc.value_above_75 from udise_district_score as uds left join 
+(select district_id,
+ sum(case when Infrastructure_score <=33 then 1 else 0 end)as value_below_33,
+ sum(case when Infrastructure_score > 33 and infrastructure_score<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when Infrastructure_score > 60 and infrastructure_score<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when Infrastructure_score >75 then 1 else 0 end)as value_above_75
+   from udise_school_score group by district_id)as usc
+on uds.district_id= usc.district_id)as udise
+on basic.district_id=udise.district_id
+left join 
+(select ped.*,pes.value_below_33,pes.value_between_33_60,pes.value_between_60_75,pes.value_above_75 from 
+(Select district_id,district_name,grade_wise_performance,district_performance,data_from_date,data_upto_date,
+  ((rank () over ( order by district_performance desc))||' out of '||(select count(distinct(district_id)) 
+from hc_periodic_exam_district_last30)) as district_level_rank_within_the_state, coalesce(1-round(( Rank() over (ORDER BY district_performance DESC) / ((select count(distinct(district_id)) from hc_semester_performance_district)*1.0)),2)) as state_level_score
+ from hc_periodic_exam_district_last30 )as ped left join
+(select district_id,
+ sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
+ sum(case when school_performance > 33 and school_performance<= 60 then 1 else 0 end)as value_between_33_60,
+ sum(case when school_performance > 60 and school_performance<= 75 then 1 else 0 end)as value_between_60_75,
+ sum(case when school_performance >75 then 1 else 0 end)as value_above_75
+   from hc_periodic_exam_school_last30 group by district_id)as pes
+on ped.district_id= pes.district_id)as pat
+on basic.district_id=pat.district_id
+left join 
+(select crc_res.*
+from 
+(select res1.district_id,res1.district_name,res1.total_schools,res1.total_crc_visits,res1.visited_school_count,
+res1.not_visited_school_count,res1.data_from_date,res1.data_upto_date,res1.schools_0,res1.schools_1_2,res1.schools_3_5,res1.schools_6_10,res1.schools_10,res1.no_of_schools_per_crc,res1.visit_percent_per_school,
+res.visit_score,res.state_level_score,res.district_level_rank_within_the_state 
+from
+(select * from crc_district_report_last_30_days) as res1
+join
+(select a.district_id,a.visit_score,
+( ( Rank()
+             over (
+               ORDER BY a.visit_score DESC)
+           || ' out of ' :: text )
+         ||  ((select count(distinct(district_id)) 
+from crc_visits_frequency))) AS district_level_rank_within_the_state ,
+case when visit_score>0 then 
+coalesce(1-round(( Rank()
+             over (
+               ORDER BY a.visit_score DESC) / ((select count(distinct(district_id)) 
+from crc_visits_frequency)*1.0)),2)) else 0 end  AS state_level_score                  
+                
+ from (select  crc.visit_score,crc.district_id 
+ from
+ (select  district_id,
+ cast(COALESCE(100 - cast(schools_0 as float),0) as float)  as visit_score 
+from crc_district_report_last_30_days) as crc
+group by visit_score,district_id)as a) as res
+on res1.district_id=res.district_id) as crc_res)
+ as crc
+on basic.district_id=crc.district_id
+left join
+hc_infra_district as infra
+on basic.district_id=infra.district_id;
+/*Health card state*/
+
+
+create or replace view hc_student_attendance_state_overall as
+SELECT Round(Sum(total_present)*100.0/Sum(total_students),1)AS Attendance,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools
+FROM student_attendance_agg_overall WHERE block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL
+AND school_name IS NOT NULL and cluster_name is not null and total_students>0;
+
+
+create or replace view hc_student_attendance_state_last30 as
+SELECT Round(Sum(total_present)*100.0/Sum(total_students),1)AS Attendance,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools
+FROM student_attendance_agg_last_30_days WHERE block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL
+AND school_name IS NOT NULL and cluster_name is not null and total_students>0;
+
+create or replace view hc_semester_performance_state as
+  SELECT grade,semester,
+Round(NULLIF(Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
+  case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+  +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+  case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+  +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+  ),0)*100.0/
+Sum(subject_1_total_marks+subject_3_total_marks+subject_2_total_marks+subject_4_total_marks+subject_5_total_marks+
+  subject_7_total_marks+subject_6_total_marks+subject_8_total_marks),1)AS x_value
+FROM school_student_subject_total_marks WHERE district_name IS NOT NULL
+AND block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL
+AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL AND school_name IS NOT NULL
+ and cluster_name is not null
+GROUP BY grade,semester
+having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_scored end +
+ case when subject_3_marks_scored is null then 0 else subject_3_marks_scored end+case when subject_2_marks_scored is null then 0 else subject_2_marks_scored end
+ +case when subject_4_marks_scored is null then 0 else subject_4_marks_scored end+
+ case when subject_5_marks_scored is null then 0 else subject_5_marks_scored end+case when subject_7_marks_scored is null then 0 else subject_7_marks_scored end
+ +case when subject_6_marks_scored is null then 0 else subject_6_marks_scored end+case when subject_8_marks_scored is null then 0 else subject_8_marks_scored end
+ ) <> 0;
+
+ create or replace view hc_pat_state as
+select d.*,b.total_schools,b.students_count from
+(select a.*,b.grade_wise_performance from
+(select academic_year,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as school_performance
+from periodic_exam_school_result group by academic_year) as a
+left join
+(select academic_year,json_object_agg(grade,percentage) as grade_wise_performance from
+(select academic_year,cast('Grade '||grade as text)as grade,
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
+from periodic_exam_school_result group by academic_year,grade)as a
+group by academic_year)as b
+on a.academic_year=b.academic_year)as d
+left join
+ (select academic_year,sum(students_count)as students_count,sum(total_schools)as total_schools
+  from periodic_exam_school_all group by academic_year
+  )as b
+ on d.academic_year=b.academic_year;
+
+/*Health card state views */
+
+create or replace view hc_pat_state_overall as
+ select (select round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (0)::numeric)), 1) as school_performance
+        from periodic_exam_school_result),
+        (select json_object_agg(a_1.grade, a_1.percentage) as grade_wise_performance
+                   from ( select ('grade '::text || periodic_exam_school_result.grade) as grade,
+                            round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (0)::numeric)), 1) as percentage
+                           from periodic_exam_school_result
+                          group by periodic_exam_school_result.grade) a_1),
+        (select sum(periodic_exam_school_all.students_count) as students_count from periodic_exam_school_all),
+        (select sum(periodic_exam_school_all.total_schools) as total_schools from periodic_exam_school_all);
+
+
+create or replace view hc_pat_state_last30 as
+ select (select round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (1)::numeric)), 1) as school_performance
+        from periodic_exam_school_result  where exam_code in (select exam_code from pat_date_range where date_range='last30days')),
+        (select json_object_agg(a_1.grade, a_1.percentage) as grade_wise_performance
+                   from ( select ('grade '::text || periodic_exam_school_result.grade) as grade,
+                            round(((coalesce(sum(periodic_exam_school_result.obtained_marks), (0)::numeric) * 100.0) / coalesce(sum(periodic_exam_school_result.total_marks), (1)::numeric)), 1) as percentage
+                           from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days')
+                          group by periodic_exam_school_result.grade) a_1),
+        (select sum(students_count) as students_count from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days')),
+        (select count(distinct school_id) as total_schools from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'));
+
+
+create or replace view hc_student_attendance_state_overall as
+SELECT Round(Sum(total_present)*100.0/Sum(total_students),1)AS Attendance,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select Data_from_date(Min(year),min(month))  from student_attendance_trans where year = (select min(year) from student_attendance_trans) group by year) as data_from_date,
+(select   case when year=extract(year from now()) and month=extract(month from now()) then to_char(now(),'DD-MM-YYYY')   else Data_upto_date(year,month) end as data_upto_date 
+from (select max(month) as month ,max(year) as year from student_attendance_trans where year = (select max(year) from student_attendance_trans)) as matt)
+FROM student_attendance_agg_overall WHERE district_latitude > 0 AND district_longitude > 0 AND block_latitude > 0 AND block_longitude > 0 AND cluster_latitude > 0 AND cluster_longitude > 0 AND school_latitude >0 AND school_longitude >0 
+AND school_name IS NOT NULL and cluster_name is NOT NULL AND block_name is NOT NULL AND district_name is NOT NULL and total_students>0;
+
+
+create or replace view hc_student_attendance_state_last30 as
+SELECT Round(Sum(total_present)*100.0/Sum(total_students),1)AS Attendance,
+Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools,
+(select to_char(min(days_in_period.day),'DD-MM-YYYY') as data_from_date from (select (generate_series('now()'::date-'30days'::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period),
+(select to_char(max(days_in_period.day),'DD-MM-YYYY') as data_upto_date from (select (generate_series('now()'::date-'30days'::interval,('now()'::date-'1day'::interval)::date,'1day'::interval)::date) as day) as days_in_period)
+FROM student_attendance_agg_last_30_days WHERE district_latitude > 0 AND district_longitude > 0 AND block_latitude > 0 AND block_longitude > 0 AND cluster_latitude > 0 AND cluster_longitude > 0 AND school_latitude >0 AND school_longitude >0 
+AND school_name IS NOT NULL and cluster_name is NOT NULL AND block_name is NOT NULL AND district_name is NOT NULL and total_students>0;
 
 /* health card time selection management */
 /* ---- student attendance  management--- */
@@ -16673,8 +16659,6 @@ on basic.school_id=crc.school_id and basic.school_management_type=crc.school_man
 left join
 hc_infra_mgmt_school as infra
 on basic.school_id=infra.school_id and basic.school_management_type=infra.school_management_type;
-
-
 
 
 
@@ -19607,9 +19591,5 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-drop view if exists composite_mgt_district;
-drop view if exists composite_mgt_block;
-drop view if exists composite_mgt_cluster;
-drop view if exists composite_mgt_school;
 
 select composite_create_mgt_views();
