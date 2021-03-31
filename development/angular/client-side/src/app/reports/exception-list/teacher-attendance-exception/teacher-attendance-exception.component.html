@@ -69,7 +69,7 @@
         <div class="col-sm-12" style="padding-bottom: 10px !important">
             <select id="period" [(ngModel)]="period"
                 (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
-                <option [value]="period" disabled selected="selected">Choose a TimeRange</option>
+                <option [value]="period" disabled selected="selected">Choose TimeRange</option>
                 <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
                     {{period.value}}
                 </option>

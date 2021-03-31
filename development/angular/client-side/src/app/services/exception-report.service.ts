@@ -54,9 +54,9 @@ export class ExceptionReportService {
   }
 
 
-  semExceptionMetaData() {
+  semExceptionMetaData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/sem/metadata`, {});
+    return this.http.post(`${this.baseUrl}/sem/metadata`, data);
   }
 
   patExceptionDistWise(data) {
@@ -134,7 +134,7 @@ export class ExceptionReportService {
 
   gradeMetaData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/patExcetpion/grades`, { data });
+    return this.http.post(`${this.baseUrl}/patExcetpion/grades`, data);
   }
 
 

@@ -14,19 +14,20 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         var start = 8;
         var management = req.body.management;
         var category = req.body.category;
+        var report = req.body.report;
         let fileName;
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_l ist/pat_exception/grade/${timePeriod}/cluster/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}/cluster/${grade}.json`
             } else {
-                fileName = `exception_list/pat_exception/school_management_category/${timePeriod}/overall_category/${management}/cluster.json`
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}/overall_category/${management}/cluster.json`
             }
         } else {
             if (grade && grade != 'all') {
-                fileName = `exception_list/pat_exception/grade/${timePeriod}/cluster/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}/cluster/${grade}.json`
             } else {
-                fileName = `exception_list/pat_exception/${timePeriod}/cluster.json`
+                fileName = `exception_list/${report}/${timePeriod}/cluster.json`
             }
         }
         var clusterData = await s3File.readS3File(fileName);
@@ -63,19 +64,20 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         var start = 8;
         var management = req.body.management;
         var category = req.body.category;
+        var report = req.body.report;
         let fileName;
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_l ist/pat_exception/grade/${timePeriod}/cluster/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}/cluster/${grade}.json`
             } else {
-                fileName = `exception_list/pat_exception/school_management_category/${timePeriod}/overall_category/${management}/cluster.json`
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}/overall_category/${management}/cluster.json`
             }
         } else {
             if (grade && grade != 'all') {
-                fileName = `exception_list/pat_exception/grade/${timePeriod}/cluster/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}/cluster/${grade}.json`
             } else {
-                fileName = `exception_list/pat_exception/${timePeriod}/cluster.json`
+                fileName = `exception_list/${report}/${timePeriod}/cluster.json`
             }
         }
         var clusterData = await s3File.readS3File(fileName);

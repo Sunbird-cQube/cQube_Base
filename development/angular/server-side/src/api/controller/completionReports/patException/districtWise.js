@@ -13,19 +13,20 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
         var start = 4;
         var management = req.body.management;
         var category = req.body.category;
+        var report = req.body.report;
         let fileName;
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_list/pat_exception/grade/${timePeriod}/district/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}/district/${grade}.json`
             } else {
-                fileName = `exception_list/pat_exception/school_management_category/${timePeriod}/overall_category/${management}/district.json`
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}/overall_category/${management}/district.json`
             }
-        }else{
+        } else {
             if (grade && grade != 'all') {
-                fileName = `exception_list/pat_exception/grade/${timePeriod}/district/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}/district/${grade}.json`
             } else {
-                fileName = `exception_list/pat_exception/${timePeriod}/district.json`
+                fileName = `exception_list/${report}/${timePeriod}/district.json`
             }
         }
 
@@ -60,12 +61,21 @@ router.post('/grades', async (req, res, next) => {
     try {
         logger.info('---grades metadata api ---');
         var fileName;
-        var period = req.body.data.period;
+        var period = req.body.period;
+        var report = req.body.report;
 
-        if (period == '' || period == undefined) {
-            fileName = `pat/all/pat_metadata.json`;
+        if (report == 'pat_exception') {
+            if (period == 'overall' || period == undefined) {
+                fileName = `pat/all/pat_metadata.json`;
+            } else {
+                fileName = `pat/${period}/pat_metadata.json`;
+            }
         } else {
-            fileName = `pat/${period}/pat_metadata.json`;
+            if (period == 'overall' || period == undefined) {
+                fileName = `sat/all/sat_metadata.json`;
+            } else {
+                fileName = `sat/${period}/sat_metadata.json`;
+            }
         }
 
         var data = await s3File.readS3File(fileName);

@@ -4195,9 +4195,6 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  ) = 0;
 
 
-select composite_create_views();
-select composite_jolt_spec();
-
 CREATE OR REPLACE FUNCTION insert_diksha_tpd_trans()
 RETURNS text AS
 $$
@@ -19410,13 +19407,13 @@ order by 1)as f group by district_id) as dik
 on stat.district_id=dik.district_id')
 on conflict on constraint composite_config_pkey do nothing;
 
-insert into composite_config(template,status,category,select_query,table_join) values('semester',true,'district_mgmt','sat.Semester_exam_performance',
+insert into composite_config(template,status,category,select_query,table_join) values('semester',true,'district_mgt','sat.Semester_exam_performance',
 		'left join (select district_id,district_performance as Semester_exam_performance,school_management_type from semester_exam_district_mgmt_all where school_management_type is not null) as sat 
 on stat.district_id=sat.district_id and stat.school_management_type=sat.school_management_type')
 on conflict on constraint composite_config_pkey do nothing;
 
 
-insert into composite_config(template,status,category,table_join) values('udise',true,'district_mgmt','left join udise_district_mgt_score
+insert into composite_config(template,status,category,table_join) values('udise',true,'district_mgt','left join udise_district_mgt_score
 on stat.district_id=udise_district_mgt_score.district_id and stat.school_management_type=udise_district_mgt_score.school_management_type')
 on conflict on constraint composite_config_pkey do nothing;
 
@@ -19598,5 +19595,6 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-
+select composite_create_views();
 select composite_create_mgt_views();
+select composite_jolt_spec();

@@ -14,22 +14,22 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         var start = 10;
         var management = req.body.management;
         var category = req.body.category;
+        var report = req.body.report;
         let fileName;
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_l ist/pat_exception/grade/${timePeriod}/school/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}/school/${grade}.json`
             } else {
-                fileName = `exception_list/pat_exception/school_management_category/${timePeriod}/overall_category/${management}/schools.json`
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}/overall_category/${management}/schools.json`
             }
         } else {
             if (grade && grade != 'all') {
-                fileName = `exception_list/pat_exception/grade/${timePeriod}/school/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}/school/${grade}.json`
             } else {
-                fileName = `exception_list/pat_exception/${timePeriod}/school.json`
+                fileName = `exception_list/${report}/${timePeriod}/school.json`
             }
         }
-        // console.log(fileName)
         var schoolData = await s3File.readS3File(fileName);
         var Subjects = [];
         var sortedData;
@@ -64,19 +64,20 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         var start = 10;
         var management = req.body.management;
         var category = req.body.category;
+        var report = req.body.report;
         let fileName;
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_l ist/pat_exception/grade/${timePeriod}/school/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}/school/${grade}.json`
             } else {
-                fileName = `exception_list/pat_exception/school_management_category/${timePeriod}/overall_category/${management}/schools.json`
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}/overall_category/${management}/schools.json`
             }
         } else {
             if (grade && grade != 'all') {
-                fileName = `exception_list/pat_exception/grade/${timePeriod}/school/${grade}.json`
+                fileName = `exception_list/${report}/grade/${timePeriod}/school/${grade}.json`
             } else {
-                fileName = `exception_list/pat_exception/${timePeriod}/school.json`
+                fileName = `exception_list/${report}/${timePeriod}/school.json`
             }
         }
 

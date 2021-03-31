@@ -73,7 +73,7 @@
             </select>
 
             <select id="grade" class="select-control" [(ngModel)]="grade" (change)="selectedGrade()">
-                <option [value]="grade" disabled selected="selected">Choose a Grade</option>
+                <option [value]="grade" disabled selected="selected">Choose Grade</option>
                 <option *ngFor="let grade of grades, let i =index" [(ngValue)]="grade.grade">
                     <span *ngIf="grade.grade == 'all'; else other_content">
                         All Grades
