@@ -231,8 +231,6 @@ export class AppServiceComponent {
             globalMap.setView(new L.LatLng(this.latitude, this.longitude), zoomLevel);
     }
 
-// School Management Type School Category
-//key == 'school_anagement_type' || key == 'school_category' ? toTitleCase(object[key]) :
     //map tooltip automation
     public getInfoFrom(object, value, levelWise, reportType, infraName, colorText) {
         var popupFood = [];
@@ -242,6 +240,9 @@ export class AppServiceComponent {
             if (object[key] && typeof object[key] != 'number' && object[key].includes('%')) {
                 var split = object[key].split("% ");
                 object[`${key}`] = parseFloat(split[0].replace(` `, '')).toFixed(1) + ' % ' + split[1];
+            }
+            if(key == 'school_management_type' || key == 'school_category'){
+                object[`${key}`] = this.changeingStringCases(object[key].replace(/_/g, ' '));
             }
             if (object.hasOwnProperty(key)) {
                 if (key == value) {
