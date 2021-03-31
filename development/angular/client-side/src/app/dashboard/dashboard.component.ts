@@ -86,6 +86,10 @@ export class DashboardComponent implements OnInit {
   nifi_pat;
   nifi_composite;
 
+
+  managementType;
+  categoryType;
+
   // diksha columns
   diksha_column =
     "diksha_columns" in environment ? environment["diksha_columns"] : true;
@@ -97,6 +101,34 @@ export class DashboardComponent implements OnInit {
   ) {
     service.logoutOnTokenExpire();
     this.changeDataSourceStatus();
+  }
+
+  getDefault(){
+    this.service.getDefault().subscribe(res=>{
+      this.managementType = res[0]['name'];
+      this.categoryType = res[1]['name'];
+      this.setDefault();
+    });
+  }
+
+  setDefault(){
+    if(!localStorage.getItem('management') && !localStorage.getItem('category')){
+      this.management  = this.managementType;
+      this.category  = this.categoryType;
+      let obj = {
+        id: this.management,
+        value: this.service.changeingStringCases(this.management.replace(/_/g, ' '))
+      }
+      localStorage.setItem("management", JSON.stringify(obj));
+      obj = {
+        id: this.category,
+        value: this.service.changeingStringCases(this.category.replace(/_/g, ' '))
+      }
+      localStorage.setItem("category", JSON.stringify(obj));
+    }else{
+      this.management = JSON.parse(localStorage.getItem('management')).id;
+      this.category = JSON.parse(localStorage.getItem('category')).id;
+    }
   }
 
   ngOnInit() {
@@ -154,23 +186,7 @@ export class DashboardComponent implements OnInit {
       this.managements.unshift(JSON.parse(localStorage.getItem('management')));
       document.getElementById("spinner").style.display = "none";
     });
-    if(!localStorage.getItem('management') && !localStorage.getItem('category')){
-      this.management  = this.service.management;
-      this.category  = this.service.category;
-      let obj = {
-        id: this.management,
-        value: this.service.changeingStringCases(this.management.replace(/_/g, ' '))
-      }
-      localStorage.setItem("management", JSON.stringify(obj));
-      obj = {
-        id: this.category,
-        value: this.service.changeingStringCases(this.category.replace(/_/g, ' '))
-      }
-      localStorage.setItem("category", JSON.stringify(obj));
-    }else{
-      this.management = JSON.parse(localStorage.getItem('management')).id;
-      this.category = JSON.parse(localStorage.getItem('category')).id;
-    }
+    this.getDefault();
     this.changeDetection.detectChanges();
   }
 
