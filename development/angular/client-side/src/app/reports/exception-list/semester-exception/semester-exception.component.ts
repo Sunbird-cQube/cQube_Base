@@ -75,6 +75,9 @@ export class SemesterExceptionComponent implements OnInit {
   public lng: any;
 
   reportName = 'semester_exception';
+  managementName;
+  management;
+  category;
 
   constructor(
     public http: HttpClient,
@@ -111,6 +114,13 @@ export class SemesterExceptionComponent implements OnInit {
     this.changeDetection.detectChanges();
     this.commonService.initMap('semExMap', [[this.lat, this.lng]]);
     globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
+
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
+
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.service.semExceptionMetaData().subscribe(res => {
@@ -188,7 +198,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionDist({ sem: this.semester }).subscribe(res => {
+      this.myData = this.service.semCompletionDist({...{ sem: this.semester }, ...{ management: this.management, category: this.category }}).subscribe(res => {
         this.data = res;
         // to show only in dropdowns
         this.districtMarkers = this.data['data'];
@@ -254,7 +264,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionBlock({ sem: this.semester }).subscribe(res => {
+      this.myData = this.service.semCompletionBlock({...{ sem: this.semester }, ...{ management: this.management, category: this.category }}).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: this.commonService.zoomLevel,
@@ -326,7 +336,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionCluster({ sem: this.semester }).subscribe(res => {
+      this.myData = this.service.semCompletionCluster({...{ sem: this.semester }, ...{ management: this.management, category: this.category }}).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: this.commonService.zoomLevel,
@@ -395,7 +405,7 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.semCompletionSchool({ sem: this.semester }).subscribe(res => {
+      this.myData = this.service.semCompletionSchool({...{ sem: this.semester }, ...{ management: this.management, category: this.category }}).subscribe(res => {
         this.data = res
         let options = {
           mapZoom: this.commonService.zoomLevel,
@@ -458,7 +468,7 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.semCompletionBlockPerDist(districtId, { sem: this.semester }).subscribe(res => {
+    this.myData = this.service.semCompletionBlockPerDist(districtId, {...{ sem: this.semester }, ...{ management: this.management, category: this.category }}).subscribe(res => {
       this.data = res;
 
       this.blockMarkers = this.data['data'];
@@ -519,7 +529,7 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.semCompletionClusterPerBlock(this.districtHierarchy.distId, blockId, { sem: this.semester }).subscribe(res => {
+    this.myData = this.service.semCompletionClusterPerBlock(this.districtHierarchy.distId, blockId, {...{ sem: this.semester }, ...{ management: this.management, category: this.category }}).subscribe(res => {
       this.data = res;
       this.clusterMarkers = this.data['data'];
       var myBlocks = [];
@@ -586,8 +596,8 @@ export class SemesterExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.semCompletionBlock({ sem: this.semester }).subscribe(result => {
-      this.myData = this.service.semCompletionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { sem: this.semester }).subscribe(res => {
+    this.myData = this.service.semCompletionBlock({...{ sem: this.semester }, ...{ management: this.management, category: this.category }}).subscribe(result => {
+      this.myData = this.service.semCompletionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, {...{ sem: this.semester }, ...{ management: this.management, category: this.category }}).subscribe(res => {
         this.data = res;
         this.schoolMarkers = this.data['data'];
 

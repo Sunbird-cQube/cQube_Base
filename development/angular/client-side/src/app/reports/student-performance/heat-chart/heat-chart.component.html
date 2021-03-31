@@ -60,13 +60,12 @@
     <div class="row">
         <div class="col-md-12" style="margin-bottom: 10px;">
             <select id="year" class="select-control" [(ngModel)]="year" (change)="selectedYear()">
-                <option value="" disabled selected="selected">Choose Academic Year</option>
+                <option value="" disabled selected="selected">Choose Year</option>
                 <option *ngFor="let year of years let i =index" [(ngValue)]="years[i]">
                     {{years[i]}}
                 </option>
             </select>
-            <select id="month" required class="select-control" [(ngModel)]="month"
-                (change)="selectedMonth()">
+            <select id="month" required class="select-control" [(ngModel)]="month" (change)="selectedMonth()">
                 <option [value]="month" disabled selected="selected">Choose a Month</option>
                 <option *ngFor="let month of months let i =index" [(ngValue)]="months[i]">
                     {{months[i]}}

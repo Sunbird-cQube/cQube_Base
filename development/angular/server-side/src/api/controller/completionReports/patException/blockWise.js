@@ -11,11 +11,22 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         var grade = req.body.grade;
         var subject = req.body.subject;
         var start = 6;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
-        if (grade && grade != 'all') {
-            fileName = `exception_list/pat_exception/grade/${timePeriod}/block/${grade}.json`
+
+        if (management != 'overall' && category == 'overall') {
+            if (grade && grade != 'all') {
+                fileName = `exception_l ist/pat_exception/grade/${timePeriod}/block/${grade}.json`
+            } else {
+                fileName = `exception_list/pat_exception/school_management_category/${timePeriod}/overall_category/${management}/block.json`
+            }
         } else {
-            fileName = `exception_list/pat_exception/${timePeriod}/block.json`
+            if (grade && grade != 'all') {
+                fileName = `exception_list/pat_exception/grade/${timePeriod}/block/${grade}.json`
+            } else {
+                fileName = `exception_list/pat_exception/${timePeriod}/block.json`
+            }
         }
         var blockData = await s3File.readS3File(fileName);
         var Subjects = [];
@@ -47,12 +58,24 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         var grade = req.body.grade;
         var subject = req.body.subject;
         var start = 6;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
-        if (grade && grade != 'all') {
-            fileName = `exception_list/pat_exception/grade/${timePeriod}/block/${grade}.json`
+
+        if (management != 'overall' && category == 'overall') {
+            if (grade && grade != 'all') {
+                fileName = `exception_l ist/pat_exception/grade/${timePeriod}/block/${grade}.json`
+            } else {
+                fileName = `exception_list/pat_exception/school_management_category/${timePeriod}/overall_category/${management}/block.json`
+            }
         } else {
-            fileName = `exception_list/pat_exception/${timePeriod}/block.json`
+            if (grade && grade != 'all') {
+                fileName = `exception_list/pat_exception/grade/${timePeriod}/block/${grade}.json`
+            } else {
+                fileName = `exception_list/pat_exception/${timePeriod}/block.json`
+            }
         }
+
         var blockData = await s3File.readS3File(fileName);
         let distId = req.params.distId
         let filterData = blockData.data.filter(obj => {
