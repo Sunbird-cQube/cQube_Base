@@ -1,14 +1,14 @@
 <div class="container-fluid" style="padding-top:15px !important;">
-    <div class="row"  (window:resize)="onResize()">
-        <div class="col-sm-9">
+    <div class="row" (window:resize)="onResize()">
+        <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist">
-                    Semester Exception Report for: <span (click)="homeClick()"
+                    Semester Assessment Test Exception Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block">
-                    Semester Exception Report for: <span (click)="homeClick()"
+                    Semester Assessment Test Exception Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -16,7 +16,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster">
-                    Semester Exception Report for: <span (click)="homeClick()"
+                    Semester Assessment Test Exception Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school">
-                    Semester Exception Report for: <span (click)="homeClick()"
+                    Semester Assessment Test Exception Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -39,7 +39,7 @@
                         {{clusterHierarchy.clusterName}}</span></p>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <div class="row">
                 <div class="col-sm-7">
                     <p id="errMsg">
@@ -56,30 +56,50 @@
     <div class="row">
         <div class="col-sm-12">
             <p class="note">
-                <strong> About the dashboard:</strong> This dashboard provides information about those schools whose
-                data is missing from
-                the Semester Exam results. The data has been collated at various administrative levels (i.e. District,
-                Block, Cluster and School) and this dashboard allows you to view and download the data at these various
-                administrative levels.
+                <strong> About the dashboard:</strong> This dashboard provides information about student's performance
+                in the Semester Assessment Test Exception. The data has been collated at
+                various
+                administrative levels (i.e. District, Block, Cluster and School) and this dashboard allows you to view
+                and download the data at these various administrative levels.
             </p>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12" style="margin-bottom: 10px;">
+            <select id="period" [(ngModel)]="period" (change)="onPeriodSelect()">
+                <option [value]="period" disabled selected="selected">Choose TimeRange</option>
+                <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
+                    {{period.value}}
+                </option>
+            </select>
+
             <button class="btn btn-secondary" id="blockbtn" (click)="blockWise()">&nbsp;<strong>Blocks</strong>
             </button>
             <button class="btn btn-secondary" id="clusterbtn" (click)="clusterWise()">&nbsp;<strong>Clusters</strong>
             </button>
             <button class="btn btn-secondary" id="schoolbtn" (click)="schoolWise()">&nbsp;<strong>Schools</strong>
             </button>
-            <span> </span>
-            <select id="choose_semester" [(ngModel)]="semester" (change)="semSelect()">
+            <select id="grades" [(ngModel)]="grade" (change)="onGradeSelect(grade)">
+                <option [value]="grade" disabled selected="selected">Choose Grade</option>
+                <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="grade.grade">
+                    <span *ngIf="grade.grade == 'all'; else other_content">
+                        All Grades
+                    </span>
+                    <ng-template #other_content> {{grade.grade}}</ng-template>
+                </option>
+            </select>
+            <select [hidden]="grade == 'all'" id="subjects" [(ngModel)]="subject" (change)="onSubjectSelect(subject)">
+                <option [value]="subject" disabled selected="selected">Choose a Subject</option>
+                <option *ngFor="let subject of allSubjects,  let i =index" [(ngValue)]="allSubjects[i]">
+                    {{allSubjects[i]}}
+                </option>
+            </select>
+            <!-- <select id="choose_semester" [(ngModel)]="semester" (change)="semSelect()">
                 <option [value]="semester" disabled selected="selected">Choose semester</option>
                 <option *ngFor="let sem of semesters" [(ngValue)]="sem.id">
                     {{sem.name}}
                 </option>
-            </select>
-
+            </select> -->
             <select id="choose_dist" [(ngModel)]="districtId" (change)="onDistrictSelect(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtMarkers" [(ngValue)]="dist.district_id">
@@ -102,13 +122,11 @@
                     {{cluster.cluster_name}}
                 </option>
             </select>
-
         </div>
-
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div #mapContainer id="semExMap" class="active" style="width: 100%;"
+            <div id="patExceMap" style="width: 100%;"
                 [ngStyle]="{height: heigth > 1760 ? '83vh': heigth > 1180 && heigth < 1760 ? '80vh': heigth > 667 && heigth < 1180 ? '76vh':'70vh'}">
             </div>
         </div>
@@ -121,5 +139,5 @@
     </div>
 </div>
 <div id="spinner">
-    <div class="loading">Loading&#8230;</div>
+    <div id="loader" class="loading">Loading&#8230;</div>
 </div>

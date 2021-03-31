@@ -35,7 +35,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
 
   reportType = "collection_progress";
   timePeriod = 'All';
-  timePeriods = [{ key: "Last_Day", value: "Last Day" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_30_Day", value: "Last 30 Days" }, { key: "All", value: "Overall" }]
+  timePeriods = [{ key: "All", value: "Overall" }, { key: "Last_30_Day", value: "Last 30 Days" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_Day", value: "Last Day" }]
 
   //to set hierarchy level
   skul = true;

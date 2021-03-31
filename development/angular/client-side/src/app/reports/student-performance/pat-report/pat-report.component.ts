@@ -103,8 +103,8 @@ export class PATReportComponent implements OnInit {
 
   timeRange = [
     { key: "all", value: "Overall" },
-    { key: "last_7_days", value: "Last 7 Days" },
     { key: "last_30_days", value: "Last 30 Days" },
+    { key: "last_7_days", value: "Last 7 Days" },
     { key: "select_month", value: "Year and Month" },
   ];
   period = "all";
@@ -2088,6 +2088,8 @@ export class PATReportComponent implements OnInit {
 
   // to download the csv report
   downloadReport() {
+    var position = this.reportName.length;
+    this.fileName = [this.fileName.slice(0, position), `_${this.management}`, this.fileName.slice(position)].join('');
     this.commonService.download(this.fileName, this.reportData);
   }
 

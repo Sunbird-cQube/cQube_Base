@@ -26,7 +26,7 @@ export class DikshaUsageByTextBookComponent implements OnInit {
   public hierName: any;
   public dist: boolean = false;
   public all: boolean = false;
-  public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" }, { id: "all", name: "Overall" }];
+  public timeDetails: any = [{ id: "all", name: "Overall" },{ id: "last_30_days", name: "Last 30 Days" }, { id: "last_7_days", name: "Last 7 Days" },  { id: "last_day", name: "Last Day" }];
   public districtsDetails: any = '';
   public myChart: Chart;
   public showAllChart: boolean = false;
