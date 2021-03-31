@@ -125,7 +125,7 @@
                     (click)="showSubmenu9 = !showSubmenu9"><span style="margin-left: 50px;">Usage by Textbook
                       Content</span></a>
                 </div>
-                <div class="submenu4" [ngClass]="{'expanded' : showSubmenu9}"
+                <div class="submenu9" [ngClass]="{'expanded' : showSubmenu9}"
                   *ngIf="!diksha_column && (isShowing || isExpanded)">
                   <a mat-list-item [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook']"
                     (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'dtr')" id="ut"
