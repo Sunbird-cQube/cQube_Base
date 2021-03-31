@@ -4195,9 +4195,6 @@ having Sum(case when subject_1_marks_scored is null then 0 else subject_1_marks_
  ) = 0;
 
 
-select composite_create_views();
-select composite_jolt_spec();
-
 CREATE OR REPLACE FUNCTION insert_diksha_tpd_trans()
 RETURNS text AS
 $$
@@ -19598,5 +19595,6 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
-
+select composite_create_views();
 select composite_create_mgt_views();
+select composite_jolt_spec();
