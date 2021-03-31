@@ -828,6 +828,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>19ab767e-17e5-3361-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>cd95bfdf-637b-3628-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>58dcd9b0-af8a-3fe5-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>19ca94da-263a-39ca-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
@@ -1652,13 +1677,17 @@
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>4991.220703125</x>
+<y>1106.5592041015625</y>
+                            </bends>
                             <destination>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>e2a298bb-4a2c-3182-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
+                            <labelIndex>0</labelIndex>
                             <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                             <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -1824,6 +1853,31 @@
                             <source>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>a974100e-0c5d-3a97-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>47bf6ce2-edec-3651-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>a648ba54-e72c-370c-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>pat_exception_management_grade</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>ca277bfd-8e24-3f8d-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -2094,6 +2148,31 @@
                             <source>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>17780928-b729-3be7-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>524a1c92-93d8-34f4-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>58dcd9b0-af8a-3fe5-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>pat_exception_school_management_list</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>ca277bfd-8e24-3f8d-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -2677,6 +2756,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>68064b7a-92e2-327a-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>9108ad86-ad34-3dba-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>638f7dd1-0233-33ac-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>68555b52-21af-36d9-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
@@ -2705,10 +2809,6 @@
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>6360.0</x>
-<y>1608.0</y>
-                            </bends>
                             <destination>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>ca277bfd-8e24-3f8d-0000-000000000000</id>
@@ -3612,6 +3712,31 @@
                             <source>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>eb20f2a9-06a5-37f3-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>859215ce-cfa2-3386-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>cd95bfdf-637b-3628-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>pat_exception_management_grade</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>c5ba42ba-7c6f-3eac-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -5051,6 +5176,14 @@
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>6632.0</x>
+<y>1416.0</y>
+                            </bends>
+                            <bends>
+<x>6632.0</x>
+<y>1408.0</y>
+                            </bends>
                             <destination>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>80dd6ebb-dbf2-3e71-0000-000000000000</id>
@@ -5343,8 +5476,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>5792.0</x>
-<y>2096.0</y>
+<x>7160.0</x>
+<y>2120.0</y>
                             </bends>
                             <bends>
 <x>7640.0</x>
@@ -5796,13 +5929,17 @@
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>6648.0</x>
+<y>1176.0</y>
+                            </bends>
                             <destination>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>c4f08d52-11a3-3150-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
+                            <labelIndex>0</labelIndex>
                             <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                             <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -6022,6 +6159,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>e8b18a51-ca7e-3b24-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>638f7dd1-0233-33ac-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>cd95bfdf-637b-3628-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>ea0d3ea8-056d-3016-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -6202,8 +6364,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>5688.0</x>
-<y>1896.0</y>
+<x>5560.0</x>
+<y>1816.0</y>
                             </bends>
                             <destination>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
@@ -6433,6 +6595,55 @@
                             <source>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>eb1b622a-4ca7-30ae-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>fee9534d-fa56-3e13-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>6480.0</x>
+<y>1792.0</y>
+                            </bends>
+                            <bends>
+<x>5984.0</x>
+<y>1784.0</y>
+                            </bends>
+                            <bends>
+<x>5944.0</x>
+<y>1472.0</y>
+                            </bends>
+                            <bends>
+<x>5816.0</x>
+<y>1400.0</y>
+                            </bends>
+                            <bends>
+<x>5480.0</x>
+<y>1392.0</y>
+                            </bends>
+                            <bends>
+<x>5472.0</x>
+<y>1192.0</y>
+                            </bends>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>1da4fb2e-ea44-3174-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>a648ba54-e72c-370c-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -12433,8 +12644,8 @@ ${query_type:startsWith('pat_exception_grade_school_last_30_days'):ifElse('excep
                             <id>378cf309-038b-30c0-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>5096.0</x>
-<y>1424.0</y>
+<x>5104.0</x>
+<y>1416.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -13323,7 +13534,7 @@ Mirror data validation of file:${filename} started</value>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
 <x>4496.0</x>
-<y>712.0</y>
+<y>728.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-update-attribute-nar</artifact>
@@ -14978,6 +15189,84 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
                             <type>org.apache.nifi.processors.standard.SplitJson</type>
                         </processors>
                         <processors>
+                            <id>58dcd9b0-af8a-3fe5-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>6008.0</x>
+<y>1616.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>record-reader</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+            <name>record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>management_type</key>
+        <value>
+            <name>management_type</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>record-reader</key>
+        <value>9079201a-08f5-3d16-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>26294b48-a413-3e38-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>management_type</key>
+        <value>/school_management_type</value>
+    </entry>
+</properties>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>pat_partition_exception_management_type</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>original</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.PartitionRecord</type>
+                        </processors>
+                        <processors>
                             <id>59342597-d00a-31ad-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
@@ -15892,6 +16181,440 @@ file: ${filename} columns did not match.</value>
                             <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
+                        <processors>
+                            <id>638f7dd1-0233-33ac-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>6008.0</x>
+<y>2168.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-aws-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Object Key</key>
+        <value>
+            <name>Object Key</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Bucket</key>
+        <value>
+            <name>Bucket</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Content Type</key>
+        <value>
+            <name>Content Type</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Content Disposition</key>
+        <value>
+            <name>Content Disposition</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Cache Control</key>
+        <value>
+            <name>Cache Control</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Access Key</key>
+        <value>
+            <name>Access Key</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Secret Key</key>
+        <value>
+            <name>Secret Key</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Credentials File</key>
+        <value>
+            <name>Credentials File</name>
+        </value>
+    </entry>
+    <entry>
+        <key>AWS Credentials Provider service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.processors.aws.credentials.provider.service.AWSCredentialsProviderService</identifiesControllerService>
+            <name>AWS Credentials Provider service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>s3-object-tags-prefix</key>
+        <value>
+            <name>s3-object-tags-prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>s3-object-remove-tags-prefix</key>
+        <value>
+            <name>s3-object-remove-tags-prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Storage Class</key>
+        <value>
+            <name>Storage Class</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Region</key>
+        <value>
+            <name>Region</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Communications Timeout</key>
+        <value>
+            <name>Communications Timeout</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Expiration Time Rule</key>
+        <value>
+            <name>Expiration Time Rule</name>
+        </value>
+    </entry>
+    <entry>
+        <key>FullControl User List</key>
+        <value>
+            <name>FullControl User List</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Read Permission User List</key>
+        <value>
+            <name>Read Permission User List</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Write Permission User List</key>
+        <value>
+            <name>Write Permission User List</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Read ACL User List</key>
+        <value>
+            <name>Read ACL User List</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Write ACL User List</key>
+        <value>
+            <name>Write ACL User List</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Owner</key>
+        <value>
+            <name>Owner</name>
+        </value>
+    </entry>
+    <entry>
+        <key>canned-acl</key>
+        <value>
+            <name>canned-acl</name>
+        </value>
+    </entry>
+    <entry>
+        <key>SSL Context Service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
+            <name>SSL Context Service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Endpoint Override URL</key>
+        <value>
+            <name>Endpoint Override URL</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Signer Override</key>
+        <value>
+            <name>Signer Override</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Multipart Threshold</key>
+        <value>
+            <name>Multipart Threshold</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Multipart Part Size</key>
+        <value>
+            <name>Multipart Part Size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Multipart Upload AgeOff Interval</key>
+        <value>
+            <name>Multipart Upload AgeOff Interval</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Multipart Upload Max Age Threshold</key>
+        <value>
+            <name>Multipart Upload Max Age Threshold</name>
+        </value>
+    </entry>
+    <entry>
+        <key>server-side-encryption</key>
+        <value>
+            <name>server-side-encryption</name>
+        </value>
+    </entry>
+    <entry>
+        <key>encryption-service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.processors.aws.s3.AmazonS3EncryptionService</identifiesControllerService>
+            <name>encryption-service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>use-chunked-encoding</key>
+        <value>
+            <name>use-chunked-encoding</name>
+        </value>
+    </entry>
+    <entry>
+        <key>use-path-style-access</key>
+        <value>
+            <name>use-path-style-access</name>
+        </value>
+    </entry>
+    <entry>
+        <key>proxy-configuration-service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
+            <name>proxy-configuration-service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Proxy Host</key>
+        <value>
+            <name>Proxy Host</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Proxy Host Port</key>
+        <value>
+            <name>Proxy Host Port</name>
+        </value>
+    </entry>
+    <entry>
+        <key>proxy-user-name</key>
+        <value>
+            <name>proxy-user-name</name>
+        </value>
+    </entry>
+    <entry>
+        <key>proxy-user-password</key>
+        <value>
+            <name>proxy-user-password</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Object Key</key>
+        <value>${query_type:startsWith('pat_exception_management_district_overall'):ifElse('exception_list/pat_exception/school_management_category/overall/overall_category/${management_type}/district.json',
+${query_type:startsWith('pat_exception_management_block_overall'):ifElse('exception_list/pat_exception/school_management_category/overall/overall_category/${management_type}/block.json',
+${query_type:startsWith('pat_exception_management_cluster_overall'):ifElse('exception_list/pat_exception/school_management_category/overall/overall_category/${management_type}/cluster.json',
+${query_type:startsWith('pat_exception_management_school_overall'):ifElse('exception_list/pat_exception/school_management_category/overall/overall_category/${management_type}/school.json',
+${query_type:startsWith('pat_exception_management_district_last_7_days'):ifElse('exception_list/pat_exception/school_management_category/last_7_days/overall_category/${management_type}/district.json',
+${query_type:startsWith('pat_exception_management_block_last_7_days'):ifElse('exception_list/pat_exception/school_management_category/last_7_days/overall_category/${management_type}/block.json',
+${query_type:startsWith('pat_exception_management_cluster_last_7_days'):ifElse('exception_list/pat_exception/school_management_category/last_7_days/overall_category/${management_type}/cluster.json',
+${query_type:startsWith('pat_exception_management_school_last_7_days'):ifElse('exception_list/pat_exception/school_management_category/last_7_days/overall_category/${management_type}/school.json',
+${query_type:startsWith('pat_exception_management_district_last_30_days'):ifElse('exception_list/pat_exception/school_management_category/last_30_days/overall_category/${management_type}/district.json',
+${query_type:startsWith('pat_exception_management_block_last_30_days'):ifElse('exception_list/pat_exception/school_management_category/last_30_days/overall_category/${management_type}/block.json',
+${query_type:startsWith('pat_exception_management_cluster_last_30_days'):ifElse('exception_list/pat_exception/school_management_category/last_30_days/overall_category/${management_type}/cluster.json',
+${query_type:startsWith('pat_exception_management_school_last_30_days'):ifElse('exception_list/pat_exception/school_management_category/last_30_days/overall_category/${management_type}/school.json',
+${query_type:startsWith('pat_exception_management_grade_district_overall'):ifElse('exception_list/pat_exception/school_management_category/grade/overall/overall_category/${management_type}/district/${grade}.json',
+${query_type:startsWith('pat_exception_management_grade_block_overall'):ifElse('exception_list/pat_exception/school_management_category/grade/overall/overall_category/${management_type}/block/${grade}.json',
+${query_type:startsWith('pat_exception_management_grade_cluster_overall'):ifElse('exception_list/pat_exception/school_management_category/grade/overall/overall_category/${management_type}/cluster/${grade}.json',
+${query_type:startsWith('pat_exception_management_grade_school_overall'):ifElse('exception_list/pat_exception/school_management_category/grade/overall/overall_category/${management_type}/school/${grade}.json',
+${query_type:startsWith('pat_exception_management_grade_district_last_7_days'):ifElse('exception_list/pat_exception/school_management_category/grade/last_7_days/overall_category/${management_type}/district/${grade}.json',  
+${query_type:startsWith('pat_exception_management_grade_block_last_7_days'):ifElse('exception_list/pat_exception/school_management_category/grade/last_7_days/overall_category/${management_type}/block/${grade}.json',  
+${query_type:startsWith('pat_exception_management_grade_cluster_last_7_days'):ifElse('exception_list/pat_exception/school_management_category/grade/last_7_days/overall_category/${management_type}/cluster/${grade}.json',  
+${query_type:startsWith('pat_exception_management_grade_school_last_7_days'):ifElse('exception_list/pat_exception/school_management_category/grade/last_7_days/overall_category/${management_type}/school/${grade}.json',  
+${query_type:startsWith('pat_exception_management_grade_district_last_30_days'):ifElse('exception_list/pat_exception/school_management_category/grade/last_30_days/overall_category/${management_type}/district/${grade}.json',  
+${query_type:startsWith('pat_exception_management_grade_block_last_30_days'):ifElse('exception_list/pat_exception/school_management_category/grade/last_30_days/overall_category/${management_type}/block/${grade}.json',  
+${query_type:startsWith('pat_exception_management_grade_cluster_last_30_days'):ifElse('exception_list/pat_exception/school_management_category/grade/last_30_days/overall_category/${management_type}/cluster/${grade}.json',  
+${query_type:startsWith('pat_exception_management_grade_school_last_30_days'):ifElse('exception_list/pat_exception/school_management_category/grade/last_30_days/overall_category/${management_type}/school/${grade}.json','')} )} )} )} )} )} )} )} )} )} )} )}
+)})})})})})})})})})})})}</value>
+    </entry>
+    <entry>
+        <key>Bucket</key>
+        <value>#{s3_output_bucket}</value>
+    </entry>
+    <entry>
+        <key>Content Type</key>
+    </entry>
+    <entry>
+        <key>Content Disposition</key>
+    </entry>
+    <entry>
+        <key>Cache Control</key>
+    </entry>
+    <entry>
+        <key>Access Key</key>
+    </entry>
+    <entry>
+        <key>Secret Key</key>
+    </entry>
+    <entry>
+        <key>Credentials File</key>
+    </entry>
+    <entry>
+        <key>AWS Credentials Provider service</key>
+        <value>3caf7280-9450-3849-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>s3-object-tags-prefix</key>
+    </entry>
+    <entry>
+        <key>s3-object-remove-tags-prefix</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>Storage Class</key>
+        <value>Standard</value>
+    </entry>
+    <entry>
+        <key>Region</key>
+        <value>ap-south-1</value>
+    </entry>
+    <entry>
+        <key>Communications Timeout</key>
+        <value>30 secs</value>
+    </entry>
+    <entry>
+        <key>Expiration Time Rule</key>
+    </entry>
+    <entry>
+        <key>FullControl User List</key>
+        <value>${s3.permissions.full.users}</value>
+    </entry>
+    <entry>
+        <key>Read Permission User List</key>
+        <value>${s3.permissions.read.users}</value>
+    </entry>
+    <entry>
+        <key>Write Permission User List</key>
+        <value>${s3.permissions.write.users}</value>
+    </entry>
+    <entry>
+        <key>Read ACL User List</key>
+        <value>${s3.permissions.readacl.users}</value>
+    </entry>
+    <entry>
+        <key>Write ACL User List</key>
+        <value>${s3.permissions.writeacl.users}</value>
+    </entry>
+    <entry>
+        <key>Owner</key>
+        <value>${s3.owner}</value>
+    </entry>
+    <entry>
+        <key>canned-acl</key>
+        <value>${s3.permissions.cannedacl}</value>
+    </entry>
+    <entry>
+        <key>SSL Context Service</key>
+    </entry>
+    <entry>
+        <key>Endpoint Override URL</key>
+    </entry>
+    <entry>
+        <key>Signer Override</key>
+        <value>Default Signature</value>
+    </entry>
+    <entry>
+        <key>Multipart Threshold</key>
+        <value>5 GB</value>
+    </entry>
+    <entry>
+        <key>Multipart Part Size</key>
+        <value>5 GB</value>
+    </entry>
+    <entry>
+        <key>Multipart Upload AgeOff Interval</key>
+        <value>60 min</value>
+    </entry>
+    <entry>
+        <key>Multipart Upload Max Age Threshold</key>
+        <value>7 days</value>
+    </entry>
+    <entry>
+        <key>server-side-encryption</key>
+        <value>None</value>
+    </entry>
+    <entry>
+        <key>encryption-service</key>
+    </entry>
+    <entry>
+        <key>use-chunked-encoding</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>use-path-style-access</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>proxy-configuration-service</key>
+    </entry>
+    <entry>
+        <key>Proxy Host</key>
+    </entry>
+    <entry>
+        <key>Proxy Host Port</key>
+    </entry>
+    <entry>
+        <key>proxy-user-name</key>
+    </entry>
+    <entry>
+        <key>proxy-user-password</key>
+    </entry>
+</properties>
+<runDurationMillis>25</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>pat_save_output_s3</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
                         <processors>
                             <id>644bcb94-5fc6-3c1c-0000-000000000000</id>
@@ -17977,7 +18700,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -18134,7 +18857,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
                             <id>85252cfb-26f8-37db-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>6424.0</x>
+<x>6872.0</x>
 <y>1432.0</y>
                             </position>
                             <bundle>
@@ -19239,6 +19962,75 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse('subject_id,grade'
         <key>log-message</key>
         <value>null validation
 file: ${filename} null values are not found.</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>LogMessage</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
+                        <processors>
+                            <id>9108ad86-ad34-3dba-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>6008.0</x>
+<y>2384.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>log-level</key>
+        <value>
+            <name>log-level</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>
+            <name>log-prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>
+            <name>log-message</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>log-level</key>
+        <value>info</value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>---------s3_output_exception_list-----------</value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>school_management exception list:
+file:${filename} successfully stored "${query_type}" output into s3 output bucket.</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -20482,6 +21274,94 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_filter_same_
                             <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
+                        </processors>
+                        <processors>
+                            <id>a648ba54-e72c-370c-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>6504.0</x>
+<y>1608.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>record-reader</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+            <name>record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>grade</key>
+        <value>
+            <name>grade</name>
+        </value>
+    </entry>
+    <entry>
+        <key>management_type</key>
+        <value>
+            <name>management_type</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>record-reader</key>
+        <value>9079201a-08f5-3d16-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>26294b48-a413-3e38-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>grade</key>
+        <value>/grade</value>
+    </entry>
+    <entry>
+        <key>management_type</key>
+        <value>/school_management_type</value>
+    </entry>
+</properties>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>pat_partition_exception_management_type_grade</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>original</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
                         <processors>
                             <id>a653991b-34b8-3c13-0000-000000000000</id>
@@ -22768,8 +23648,8 @@ ${query_type:startsWith('pat_management_grade_district'):ifElse(#{pat_grade_dist
                             <id>c4f08d52-11a3-3150-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>5968.0</x>
-<y>1048.0</y>
+<x>6072.0</x>
+<y>1000.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -22946,6 +23826,12 @@ ${query_type:startsWith('pat_management_grade_district'):ifElse(#{pat_grade_dist
         </value>
     </entry>
     <entry>
+        <key>pat_exception_management_grade</key>
+        <value>
+            <name>pat_exception_management_grade</name>
+        </value>
+    </entry>
+    <entry>
         <key>pat_heat_all</key>
         <value>
             <name>pat_heat_all</name>
@@ -23005,6 +23891,10 @@ ${query_type:startsWith('pat_management_grade_district'):ifElse(#{pat_grade_dist
     <entry>
         <key>pat_exception_grade</key>
         <value>${query_type:startsWith('pat_exception_grade')}</value>
+    </entry>
+    <entry>
+        <key>pat_exception_management_grade</key>
+        <value>${query_type:startsWith('pat_exception_management_grade')}</value>
     </entry>
     <entry>
         <key>pat_heat_all</key>
@@ -23088,6 +23978,10 @@ ${query_type:startsWith('pat_meta_last7')}
                             <relationships>
 <autoTerminate>false</autoTerminate>
 <name>pat_exception_grade</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>pat_exception_management_grade</name>
                             </relationships>
                             <relationships>
 <autoTerminate>false</autoTerminate>
@@ -23445,8 +24339,8 @@ ${query_type:startsWith('pat_meta_last7')}
                             <id>ca277bfd-8e24-3f8d-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>5960.0</x>
-<y>1424.0</y>
+<x>6008.0</x>
+<y>1432.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -23470,6 +24364,18 @@ ${query_type:startsWith('pat_meta_last7')}
             <name>pat_exception_grade</name>
         </value>
     </entry>
+    <entry>
+        <key>pat_exception_management_grade</key>
+        <value>
+            <name>pat_exception_management_grade</name>
+        </value>
+    </entry>
+    <entry>
+        <key>pat_exception_school_management_list</key>
+        <value>
+            <name>pat_exception_school_management_list</name>
+        </value>
+    </entry>
 </descriptors>
 <executionNode>ALL</executionNode>
 <lossTolerant>false</lossTolerant>
@@ -23483,6 +24389,26 @@ ${query_type:startsWith('pat_meta_last7')}
         <key>pat_exception_grade</key>
         <value>${query_type:startsWith('pat_exception_grade')}</value>
     </entry>
+    <entry>
+        <key>pat_exception_management_grade</key>
+        <value>${query_type:startsWith('pat_exception_management_grade')}</value>
+    </entry>
+    <entry>
+        <key>pat_exception_school_management_list</key>
+        <value>${query_type:startsWith('pat_exception_management_district_overall'):or(
+${query_type:startsWith('pat_exception_management_block_overall'):or(
+${query_type:startsWith('pat_exception_management_cluster_overall'):or(
+${query_type:startsWith('pat_exception_management_school_overall'):or(
+${query_type:startsWith('pat_exception_management_district_last_7_days'):or(
+${query_type:startsWith('pat_exception_management_block_last_7_days'):or(
+${query_type:startsWith('pat_exception_management_cluster_last_7_days'):or(
+${query_type:startsWith('pat_exception_management_school_last_7_days'):or(
+${query_type:startsWith('pat_exception_management_district_last_30_days'):or(
+${query_type:startsWith('pat_exception_management_block_last_30_days'):or(
+${query_type:startsWith('pat_exception_management_cluster_last_30_days'):or(
+${query_type:startsWith('pat_exception_management_school_last_30_days')}	
+)} )} )} )} )} )} )} )} )} )} )}</value>
+    </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
@@ -23494,6 +24420,14 @@ ${query_type:startsWith('pat_meta_last7')}
                             <relationships>
 <autoTerminate>false</autoTerminate>
 <name>pat_exception_grade</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>pat_exception_management_grade</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>pat_exception_school_management_list</name>
                             </relationships>
                             <relationships>
 <autoTerminate>false</autoTerminate>
@@ -23785,6 +24719,114 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_update_null_
                             <state>RUNNING</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
+                        </processors>
+                        <processors>
+                            <id>cd95bfdf-637b-3628-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>6008.0</x>
+<y>1888.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>jolt-transform</key>
+        <value>
+            <name>jolt-transform</name>
+        </value>
+    </entry>
+    <entry>
+        <key>jolt-custom-class</key>
+        <value>
+            <name>jolt-custom-class</name>
+        </value>
+    </entry>
+    <entry>
+        <key>jolt-custom-modules</key>
+        <value>
+            <name>jolt-custom-modules</name>
+        </value>
+    </entry>
+    <entry>
+        <key>jolt-spec</key>
+        <value>
+            <name>jolt-spec</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Transform Cache Size</key>
+        <value>
+            <name>Transform Cache Size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>pretty_print</key>
+        <value>
+            <name>pretty_print</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>jolt-transform</key>
+        <value>jolt-transform-chain</value>
+    </entry>
+    <entry>
+        <key>jolt-custom-class</key>
+    </entry>
+    <entry>
+        <key>jolt-custom-modules</key>
+    </entry>
+    <entry>
+        <key>jolt-spec</key>
+        <value>${query_type:startsWith('pat_exception_management_district'):ifElse(#{pat_exception_district_jolt_spec},
+${query_type:startsWith('pat_exception_management_block'):ifElse(#{pat_exception_block_jolt_spec},
+${query_type:startsWith('pat_exception_management_cluster'):ifElse(#{pat_exception_cluster_jolt_spec},
+${query_type:startsWith('pat_exception_management_school'):ifElse(#{pat_exception_school_jolt_spec},
+${query_type:startsWith('pat_exception_management_grade_district'):ifElse(#{pat_exception_grade_district_jolt_spec},
+${query_type:startsWith('pat_exception_management_grade_block'):ifElse(#{pat_exception_grade_block_jolt_spec},
+${query_type:startsWith('pat_exception_management_grade_cluster'):ifElse(#{pat_exception_grade_cluster_jolt_spec},
+${query_type:startsWith('pat_exception_management_grade_school'):ifElse(#{pat_exception_grade_school_jolt_spec},'')}
+)} )} )} )} )} )} )}</value>
+    </entry>
+    <entry>
+        <key>Transform Cache Size</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>pretty_print</key>
+        <value>false</value>
+    </entry>
+</properties>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>pat_jolt_transform</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>RUNNING</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
                         <processors>
                             <id>ce8f596f-51c9-3273-0000-000000000000</id>
@@ -24407,8 +25449,8 @@ file: ${filename} Error while getting null values</value>
                             <id>d30c1676-e30a-3607-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>5736.0</x>
-<y>1616.0</y>
+<x>5576.0</x>
+<y>1680.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -24468,7 +25510,7 @@ file:${filename} Error during jolt transformation of "${query_type}" query.</val
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -36801,5 +37843,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/26/2021 23:23:09 IST</timestamp>
+    <timestamp>04/01/2021 00:28:34 IST</timestamp>
 </template>
