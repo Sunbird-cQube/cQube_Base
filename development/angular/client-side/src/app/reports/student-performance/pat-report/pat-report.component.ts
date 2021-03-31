@@ -1268,13 +1268,7 @@ export class PATReportComponent implements OnInit {
     var myData = this.distFilter.find(
       (a) => a.Details.district_id == districtId
     );
-    var grades = [];
-    if (myData["Grades"]) {
-      Object.keys(myData["Grades"]).forEach((grade) => {
-        grades.push({ grade: grade });
-      });
-    }
-    this.allGrades = grades;
+    
     // api call to get the blockwise data for selected district
     if (this.myData) {
       this.myData.unsubscribe();
@@ -1288,11 +1282,7 @@ export class PATReportComponent implements OnInit {
       .subscribe(
         (res) => {
           this.data = res["data"];
-          // if (this.grade) {
-          //   this.allSubjects = Object.keys(this.data[0].Subjects);
-          //   var index = this.allSubjects.indexOf('Grade Performance') + 1;
-          //   this.allSubjects.splice(index, 1);
-          // }
+          this.allGrades = res['grades'];
           this.allBlocks = this.blockMarkers = this.data;
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
@@ -1388,13 +1378,7 @@ export class PATReportComponent implements OnInit {
     }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${
       this.commonService.dateAndTime
     }`;
-    var myData = this.blockFilter.find((a) => a.Details.block_id == blockId);
-    var grades = [];
-    Object.keys(myData["Grades"]).forEach((grade) => {
-      grades.push({ grade: grade });
-    });
-    this.allGrades = grades;
-    // api call to get the clusterwise data for selected district, block
+   
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -1407,10 +1391,7 @@ export class PATReportComponent implements OnInit {
       .subscribe(
         (res) => {
           this.data = res["data"];
-          // if (this.grade) {
-          //   this.allSubjects = Object.keys(this.data[0].Subjects)
-          //   this.allSubjects.pop()
-          // }
+          this.allGrades = res['grades'];
           this.allClusters = this.clusterMarkers = this.data;
           if (!this.clusterMarkers[0]["Subjects"]) {
             this.clusterFilter = this.clusterMarkers;
@@ -1510,11 +1491,6 @@ export class PATReportComponent implements OnInit {
     var myData = this.clusterFilter.find(
       (a) => a.Details.cluster_id == clusterId
     );
-    var grades = [];
-    Object.keys(myData["Grades"]).forEach((grade) => {
-      grades.push({ grade: grade });
-    });
-    this.allGrades = grades;
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
@@ -1541,10 +1517,7 @@ export class PATReportComponent implements OnInit {
             .subscribe(
               (res) => {
                 this.data = res["data"];
-                // if (this.grade) {
-                //   this.allSubjects = Object.keys(this.data[0].Subjects)
-                //   this.allSubjects.pop()
-                // }
+                this.allGrades = res['grades'];
                 this.schoolMarkers = this.data;
                 var markers = result["data"];
                 var myBlocks = [];

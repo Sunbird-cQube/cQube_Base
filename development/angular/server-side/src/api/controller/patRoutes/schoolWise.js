@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allSchoolWise', auth.authController, async(req, res) => {
+router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT school wise api ---');
         var period = req.body.data.period;
@@ -73,7 +73,7 @@ router.post('/allSchoolWise', auth.authController, async(req, res) => {
     }
 });
 
-router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async(req, res) => {
+router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT schoolPerCluster api ---');
         var period = req.body.data.period;
@@ -113,10 +113,20 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         let filterData = schoolData.data.filter(obj => {
             return (obj.Details.cluster_id == clusterId)
         })
+        var grades = [];
+        filterData.map(item => {
+            Object.keys(item.Grades).map(grade => {
+                grades.push(grade);
+            })
+        });
+        var uniqueGrades = [];
+        [...new Set(grades)].map(grade => {
+            uniqueGrades.push({ grade: grade });
+        })
         let mydata = filterData;
         logger.info('---PAT schoolPerCluster api response sent---');
         // , footer: schoolData.footer[`${clusterId}`]
-        res.status(200).send({ data: mydata });
+        res.status(200).send({ data: mydata, grades: uniqueGrades });
 
 
     } catch (e) {
