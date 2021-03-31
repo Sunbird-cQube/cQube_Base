@@ -231,7 +231,8 @@ export class AppServiceComponent {
             globalMap.setView(new L.LatLng(this.latitude, this.longitude), zoomLevel);
     }
 
-
+// School Management Type School Category
+//key == 'school_anagement_type' || key == 'school_category' ? toTitleCase(object[key]) :
     //map tooltip automation
     public getInfoFrom(object, value, levelWise, reportType, infraName, colorText) {
         var popupFood = [];
