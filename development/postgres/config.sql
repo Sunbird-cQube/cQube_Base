@@ -13113,6 +13113,8 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+select udise_district_mgt_score();
+
 
 CREATE OR REPLACE FUNCTION udise_block_mgt_score()
 RETURNS text AS
@@ -13155,6 +13157,8 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+select udise_block_mgt_score();
+
 
 CREATE OR REPLACE FUNCTION udise_cluster_mgt_score()
 RETURNS text AS
@@ -13195,6 +13199,7 @@ return 0;
 END;
 $$LANGUAGE plpgsql;
 
+select udise_cluster_mgt_score();
 
 CREATE OR REPLACE FUNCTION udise_school_mgt_score()
 RETURNS text AS
@@ -13236,6 +13241,8 @@ Execute district_score;
 return 0;
 END;
 $$LANGUAGE plpgsql;
+
+select udise_school_mgt_score();
 
 /* Infrstructure management changes */
 
