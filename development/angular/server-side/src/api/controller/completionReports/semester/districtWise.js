@@ -7,7 +7,14 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- semester_completion district api ---');
         var sem = req.body.sem;
-        let fileName = `exception_list/semester_completion/district_sem_completion_${sem}.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+        if (management != 'overall' && category == 'overall') {
+            fileName = `exception_list/sat_exception/school_management_category/overall/overall_category/${management_type}/district.json`
+        }else{
+            fileName = `exception_list/semester_completion/district_sem_completion_${sem}.json`
+        }
         var districtData = await s3File.readS3File(fileName);
         var sortedData = districtData['data'].sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1)
         logger.info('--- semester_completion district api response sent ---');

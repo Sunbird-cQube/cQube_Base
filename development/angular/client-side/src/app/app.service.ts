@@ -129,7 +129,7 @@ export class AppServiceComponent {
         // }
         // ).addTo(globalMap);
     }
-    
+    //https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png   //http://tile.stamen.com/toner/{z}/{x}/{y}.png
     restrictZoom(globalMap) {
         globalMap.touchZoom.disable();
         // globalMap.doubleClickZoom.disable();

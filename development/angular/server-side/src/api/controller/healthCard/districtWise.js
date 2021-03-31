@@ -19,6 +19,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
         }
 
         var districtData = await s3File.readS3File(fileName);
+        console.log(districtData)
         logger.info('--- healthCard dist wise api response sent ---');
         res.status(200).send({ districtData });
     } catch (e) {

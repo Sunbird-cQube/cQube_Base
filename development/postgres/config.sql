@@ -18801,7 +18801,7 @@ union
    from hc_student_attendance_school_overall as data, hc_student_attendance_state_overall hsao
    group by hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date)as state_attendance)
 union
-(select ''sat_performance'' as data,
+(select ''student_semester'' as data,
   row_to_json(sat)::text from (select hc_sat_state_overall.school_performance as performance,hc_sat_state_overall.grade_wise_performance,hc_sat_state_overall.students_count,hc_sat_state_overall.total_schools,value_below_33,value_between_33_60,value_between_60_75,value_above_75
 from
 (select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,
@@ -18961,7 +18961,7 @@ union
    from hc_student_attendance_school_last_30_days as data, hc_student_attendance_state_last30 hsao
    group by hsao.attendance,hsao.students_count,hsao.total_schools,hsao.data_from_date,hsao.data_upto_date)as state_attendance)
 union
-(select ''sat_performance'' as data,
+(select ''student_semester'' as data,
   row_to_json(sat)::text from (select hc_sat_state_last30.school_performance as performance,hc_sat_state_last30.grade_wise_performance,hc_sat_state_last30.students_count,hc_sat_state_last30.total_schools,value_below_33,value_between_33_60,value_between_60_75,value_above_75
 from
 (select sum(case when school_performance <=33 then 1 else 0 end)as value_below_33,

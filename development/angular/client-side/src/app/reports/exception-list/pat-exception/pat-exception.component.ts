@@ -80,6 +80,9 @@ export class PATExceptionComponent implements OnInit {
   subject = '';
 
   reportName = 'periodic_assessment_test_exception';
+  managementName;
+  management;
+  category;
 
   constructor(
     public http: HttpClient,
@@ -117,6 +120,12 @@ export class PATExceptionComponent implements OnInit {
     this.lng = this.commonService.mapCenterLatlng.lng;
     this.changeDetection.detectChanges();
     this.commonService.initMap('patExceMap', [[this.lat, this.lng]]);
+    
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     document.getElementById('spinner').style.display = 'none';
@@ -204,7 +213,7 @@ export class PATExceptionComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.patExceptionDistWise({ grade: this.grade, subject: this.subject, timePeriod: this.period }).subscribe(res => {
+        this.myData = this.service.patExceptionDistWise({...{ grade: this.grade, subject: this.subject, timePeriod: this.period },...{ management: this.management, category: this.category }}).subscribe(res => {
           this.data = res;
           // to show only in dropdowns
           this.markers = this.districtMarkers = this.data['data'];
@@ -284,7 +293,7 @@ export class PATExceptionComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.patExceptionBlock({ grade: this.grade, subject: this.subject, timePeriod: this.period }).subscribe(res => {
+        this.myData = this.service.patExceptionBlock({...{ grade: this.grade, subject: this.subject, timePeriod: this.period },...{ management: this.management, category: this.category }}).subscribe(res => {
           this.data = res
           let options = {
             radius: this.getMarkerRadius(12, 8, 6, 4),
@@ -366,7 +375,7 @@ export class PATExceptionComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.patExceptionCluster({ grade: this.grade, subject: this.subject, timePeriod: this.period }).subscribe(res => {
+        this.myData = this.service.patExceptionCluster({...{ grade: this.grade, subject: this.subject, timePeriod: this.period },...{ management: this.management, category: this.category }}).subscribe(res => {
           this.data = res
           let options = {
             radius: this.getMarkerRadius(2.5, 1.8, 1.5, 1),
@@ -445,7 +454,7 @@ export class PATExceptionComponent implements OnInit {
         if (this.myData) {
           this.myData.unsubscribe();
         }
-        this.myData = this.service.patExceptionSchool({ grade: this.grade, subject: this.subject, timePeriod: this.period }).subscribe(res => {
+        this.myData = this.service.patExceptionSchool({...{ grade: this.grade, subject: this.subject, timePeriod: this.period },...{ management: this.management, category: this.category }}).subscribe(res => {
           this.data = res
           let options = {
             radius: this.getMarkerRadius(1.5, 1.2, 1, 0),
@@ -509,7 +518,7 @@ export class PATExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.patExceptionBlockPerDist(districtId, { grade: this.grade, subject: this.subject, timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.patExceptionBlockPerDist(districtId, {...{ grade: this.grade, subject: this.subject, timePeriod: this.period },...{ management: this.management, category: this.category }}).subscribe(res => {
       this.data = res;
 
       this.markers = this.blockMarkers = this.data['data'];
@@ -574,7 +583,7 @@ export class PATExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.patExceptionClusterPerBlock(this.districtHierarchy.distId, blockId, { grade: this.grade, subject: this.subject, timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.patExceptionClusterPerBlock(this.districtHierarchy.distId, blockId, {...{ grade: this.grade, subject: this.subject, timePeriod: this.period },...{ management: this.management, category: this.category }}).subscribe(res => {
       this.data = res;
       this.markers = this.clusterMarkers = this.data['data'];
       this.allSubjects = [];
@@ -645,8 +654,8 @@ export class PATExceptionComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.patExceptionBlock({ grade: this.grade, subject: this.subject, timePeriod: this.period }).subscribe(result => {
-      this.myData = this.service.patExceptionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { grade: this.grade, subject: this.subject, timePeriod: this.period }).subscribe(res => {
+    this.myData = this.service.patExceptionBlock({...{ grade: this.grade, subject: this.subject, timePeriod: this.period },...{ management: this.management, category: this.category }}).subscribe(result => {
+      this.myData = this.service.patExceptionSchoolPerClustter(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, {...{ grade: this.grade, subject: this.subject, timePeriod: this.period },...{ management: this.management, category: this.category }}).subscribe(res => {
         this.data = res;
         this.markers = this.schoolMarkers = this.data['data'];
         this.allSubjects = [];
