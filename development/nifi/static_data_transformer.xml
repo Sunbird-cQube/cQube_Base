@@ -9963,8 +9963,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-104.0</x>
-<y>2520.0</y>
+<x>-96.0</x>
+<y>2536.0</y>
                             </bends>
                             <bends>
 <x>176.0</x>
@@ -10317,8 +10317,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>816.0</x>
-<y>2512.0</y>
+<x>840.0</x>
+<y>2528.0</y>
                             </bends>
                             <destination>
 <groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
@@ -11657,31 +11657,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>ae45b967-abdf-3cc0-0000-000000000000</id>
-                            <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
-<id>2a3e3e41-3576-3aa9-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
-<id>44c95b3e-a4fa-30d5-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>b02f024a-2be9-3969-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -12772,6 +12747,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
 <id>9e5d302a-ad1e-3aca-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>f8c3bfb0-4758-31cb-0000-000000000000</id>
+                            <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
+<id>2a3e3e41-3576-3aa9-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
+<id>a6bd9260-016d-3727-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -17691,8 +17691,8 @@ ifElse(#{static_jolt_log_summary},#{static_jolt_school_management_category_meta}
                             <id>22bb622a-0569-38b1-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <position>
-<x>-32.0</x>
-<y>2392.0</y>
+<x>-16.0</x>
+<y>2376.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -17944,8 +17944,8 @@ ifElse(#{static_jolt_log_summary},#{static_jolt_school_management_category_meta}
                             <id>2a3e3e41-3576-3aa9-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <position>
-<x>-648.0</x>
-<y>3152.0</y>
+<x>1504.0</x>
+<y>2600.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -29420,5 +29420,5 @@ ${filename:startsWith('school_management_master'):ifElse(#{static_school_managem
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/31/2021 11:17:58 IST</timestamp>
+    <timestamp>03/31/2021 13:26:11 IST</timestamp>
 </template>
