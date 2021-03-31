@@ -11,12 +11,24 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
         var grade = req.body.grade;
         var subject = req.body.subject;
         var start = 4;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
-        if (grade && grade != 'all') {
-            fileName = `exception_list/pat_exception/grade/${timePeriod}/district/${grade}.json`
-        } else {
-            fileName = `exception_list/pat_exception/${timePeriod}/district.json`
+
+        if (management != 'overall' && category == 'overall') {
+            if (grade && grade != 'all') {
+                fileName = `exception_list/pat_exception/grade/${timePeriod}/district/${grade}.json`
+            } else {
+                fileName = `exception_list/pat_exception/school_management_category/${timePeriod}/overall_category/${management}/district.json`
+            }
+        }else{
+            if (grade && grade != 'all') {
+                fileName = `exception_list/pat_exception/grade/${timePeriod}/district/${grade}.json`
+            } else {
+                fileName = `exception_list/pat_exception/${timePeriod}/district.json`
+            }
         }
+
         var districtData = await s3File.readS3File(fileName);
         var Subjects = [];
         var sortedData;

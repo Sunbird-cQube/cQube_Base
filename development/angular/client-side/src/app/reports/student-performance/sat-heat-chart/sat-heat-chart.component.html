@@ -60,7 +60,7 @@
     <div class="row">
         <div class="col-md-12" style="margin-bottom: 10px;">
             <select id="year" class="select-control" [(ngModel)]="year" (change)="selectedYear()">
-                <option [value]="year" disabled selected="selected">Choose Academic Year</option>
+                <option [value]="year" disabled selected="selected">Choose Year</option>
                 <option *ngFor="let year of years let i =index" [(ngValue)]="years[i]">
                     {{years[i]}}
                 </option>

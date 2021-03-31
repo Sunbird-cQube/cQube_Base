@@ -43,7 +43,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <select [disabled]="markers.length == 0" id="academicYear" [(ngModel)]="academicYear">
-                        <option [value]="academicYear" disabled selected="selected">Choose Academic Year</option>
+                        <option [value]="academicYear" disabled selected="selected">Choose Year</option>
                         <option *ngFor="let year of academicYears,  let i =index" [(ngValue)]="academicYears[i]">
                             {{academicYears[i]}}
                         </option>
@@ -180,13 +180,12 @@
             </div>
         </div>
         <div class="col-sm-10">
-            <span *ngIf="managementName != 'Overall'" id="name" class="note" style="text-align: center;">Name of
-                Management: {{managementName}}</span>
-        
+            <span id="name" class="note" style="text-align: center;">Management Type: {{managementName}}</span>
+
             <span id="students" style="margin-left: 4%;">Number of Students: {{studentCount}}</span>
-        
+
             <span id="schools" style="text-align: center; margin-left: 4%;">Number of Schools: {{schoolCount}}</span>
-    
+
             <span id="dateRange" style="float: right;">Date range: {{dateRange}}</span>
         </div>
 

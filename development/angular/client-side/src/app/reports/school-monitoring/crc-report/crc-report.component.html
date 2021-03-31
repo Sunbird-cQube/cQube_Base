@@ -3,24 +3,33 @@
         <div class="col-sm-7">
             <div *ngIf='skul'>
                 <p id="dist">
-                    CRC Report for: <span (click)="onClockHome()" style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
+                    CRC Report for: <span (click)="onClockHome()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block">
-                    CRC Report for: <span (click)="onClockHome()" style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
+                    CRC Report for: <span (click)="onClockHome()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
+                        (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span> </p>
             </div>
             <div *ngIf="blok">
                 <p id="cluster">
-                    CRC Report for: <span (click)="onClockHome()" style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
-                        {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)" style="cursor: pointer;text-decoration: underline;">
+                    CRC Report for: <span (click)="onClockHome()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
+                        (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">
                         {{hierName}}</span></p>
             </div>
 
             <div *ngIf="clust">
                 <p id="school">
-                    CRC Report for: <span (click)="onClockHome()" style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
-                        {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)" style="cursor: pointer;text-decoration: underline;">
+                    CRC Report for: <span (click)="onClockHome()"
+                        style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
+                        (click)="myDistData(distName)" style="cursor: pointer;text-decoration: underline;">
+                        {{titleName}}</span><span>/ </span><span (click)="myBlockData(blockName)"
+                        style="cursor: pointer;text-decoration: underline;">
                         {{title}}</span><span>/ </span><span>
                         {{hierName}}</span></p>
             </div>
@@ -33,7 +42,8 @@
                 </div>
                 <div class="col-sm-7">
                     <div *ngIf="skul; else ng_else" style="float: right; " id="select">
-                        <em class="fa fa-cloud-download" style="margin-top: 0px;" title="Download Report" id="download" (click)="downloadReportofState(downloadType)"></em>
+                        <em class="fa fa-cloud-download" style="margin-top: 0px;" title="Download Report" id="download"
+                            (click)="downloadReportofState(downloadType)"></em>
                         <select class="dwnld" id="downloader" [(ngModel)]="downloadType" name="downloadType">
                             <option [value]="downloadType" disabled selected="selected"> Download Report</option>
                             <option *ngFor="let md of modes, let i = index" [(ngValue)]="modes[i]">
@@ -43,9 +53,11 @@
                     </div>
 
                     <ng-template #ng_else>
-                        <em class="fa fa-cloud-download" style="margin-top: 0px;" title="Download Report" id="download" (click)="downloadReport()"></em>
+                        <em class="fa fa-cloud-download" style="margin-top: 0px;" title="Download Report" id="download"
+                            (click)="downloadReport()"></em>
                     </ng-template>
-                    <em class="fa fa-home" id="home" style="margin-top: -1px; margin-right: 10px" title="Home" alt="Home" (click)="onClockHome()"></em>
+                    <em class="fa fa-home" id="home" style="margin-top: -1px; margin-right: 10px" title="Home"
+                        alt="Home" (click)="onClockHome()"></em>
                 </div>
             </div>
         </div>
@@ -54,10 +66,17 @@
     <div class="row">
         <div class="col-sm-12">
             <p class="note">
-                <strong> About the dashboard:</strong> The dashboard here provides insights using the CRC App data. We have derived several normalised metrics using the raw data and you can read more about them using the following link. A key feature
-                of this dashboard is its ability to Zoom In and Out at various administrative levels. The administrative levels include District, Block and Cluster. This has been done to provide relevant insights at the appropriate administrative level.
-                In addition to visualising data, the dashboard also gives you the ability to download the data at various administrative levels. This feature has been enabled to provide freedom to power users to derive additional insights that may not
-                be captured in this dashboard. You can download the data using the dropdown option on the top right corner.
+                <strong> About the dashboard:</strong> The dashboard here provides insights using the CRC App data. We
+                have derived several normalised metrics using the raw data and you can read more about them using the
+                following link. A key feature
+                of this dashboard is its ability to Zoom In and Out at various administrative levels. The administrative
+                levels include District, Block and Cluster. This has been done to provide relevant insights at the
+                appropriate administrative level.
+                In addition to visualising data, the dashboard also gives you the ability to download the data at
+                various administrative levels. This feature has been enabled to provide freedom to power users to derive
+                additional insights that may not
+                be captured in this dashboard. You can download the data using the dropdown option on the top right
+                corner.
             </p>
         </div>
     </div>
@@ -65,7 +84,8 @@
         <div class="col-sm-6">
             <div class="row">
                 <div class="col-sm-12">
-                    <span class="chooseLevel">X-Axis: &nbsp;</span> <select id="x-axis" [(ngModel)]="xAxis" name="xAxis" (change)="selectAxis()">
+                    <span class="chooseLevel">X-Axis: &nbsp;</span> <select id="x-axis" [(ngModel)]="xAxis" name="xAxis"
+                        (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
                             x-axis
                         </option>
@@ -75,7 +95,8 @@
                     </select>
                     <!-- </div>
                 <div class="col-sm-4"> -->
-                    <span class="chooseLevel">Y-Axis: &nbsp;</span> <select id="y-axis" [(ngModel)]="yAxis" name="yAxis" (change)="selectAxis()">
+                    <span class="chooseLevel">Y-Axis: &nbsp;</span> <select id="y-axis" [(ngModel)]="yAxis" name="yAxis"
+                        (change)="selectAxis()">
                         <option [value]="yAxis" disabled selected="selected">choose
                             y-axis
                         </option>
@@ -85,14 +106,16 @@
                     </select>
                     <!-- </div>
                 <div class="col-sm-4"> -->
-                    <a class="float-right" href="javascript: void(0)" id="crcHealthcard" (click)="goToHealthCard()" style="font-weight: bold;right: 15px; bottom: 10px; position: absolute; text-decoration: underline;">Access
+                    <a class="float-right" href="javascript: void(0)" id="crcHealthcard" (click)="goToHealthCard()"
+                        style="font-weight: bold;right: 15px; bottom: 10px; position: absolute; text-decoration: underline;">Access
                         Health
                         Card</a>
                 </div>
             </div>
-            
+
             <p class="note" style="margin-top: 15px;">
-                <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the dropdown below. You can alter the metrics (calculated from the CRC App) to update the scatter plot.
+                <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
+                dropdown below. You can alter the metrics (calculated from the CRC App) to update the scatter plot.
             </p>
             <br>
             <div class="row">
@@ -101,14 +124,15 @@
         </div>
         <div class="col-sm-6">
             <div class="row">
-                <select id="period"  [(ngModel)]="period" (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
+                <select id="period" [(ngModel)]="period"
+                    (change)="period != 'select_month' ? onPeriodSelect() : showYearMonth()">
                     <option [value]="period" disabled selected="selected">Choose TimeRange</option>
                     <option *ngFor="let period of timeRange,  let i =index" [(ngValue)]="period.key">
                         {{period.value}}
                     </option>
                 </select>
                 <select [hidden]="yearMonth" id="year" [(ngModel)]="year" name="year" (change)="getYear()">
-                    <option [value]="year" disabled selected="selected">Choose Academic Year
+                    <option [value]="year" disabled selected="selected">Choose Year
                     </option>
                     <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]">
                         {{years[i]}}
@@ -129,7 +153,8 @@
                     </option>
                 </select>
 
-                <select [hidden]="blockHidden" id="choose_block" [(ngModel)]="myBlock" name="myBlock" (change)="myBlockData(myBlock)">
+                <select [hidden]="blockHidden" id="choose_block" [(ngModel)]="myBlock" name="myBlock"
+                    (change)="myBlockData(myBlock)">
                     <option [value]="myBlock" disabled selected="selected">Choose Block
                     </option>
                     <option *ngFor="let block of crcBlocksNames" [(ngValue)]="block.blockId">
@@ -148,16 +173,18 @@
                 </select> -->
             </div>
             <p class="note" style="margin-top: 15px;">
-                <strong> NOTE:</strong> The table provides information about the various metrics (calculated from the CRC App). You can sort the entire table based on any metrics available in this table.
+                <strong> NOTE:</strong> The table provides information about the various metrics (calculated from the
+                CRC App). You can sort the entire table based on any metrics available in this table.
             </p>
             <div class="myDiv">
                 <table #dataTable id="table" class="display responsive cell-border"> </table>
             </div>
         </div>
     </div>
-    <div class="row" style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; padding: 2px 0px 2px 0px;margin: 0px 0px 0px 0px;position: fixed; bottom: 0; left: 0;">
-        <div  *ngIf="managementName != 'Overall'" style="margin-right: 5%; margin-left: 1%;">
-            <span id="nm" class="note" style="text-align: center;">Name of Management: {{managementName}}</span>
+    <div class="row"
+        style="width:100%; background-color: gray;font-size: 13px;font-weight: bold; color: white; padding: 2px 0px 2px 0px;margin: 0px 0px 0px 0px;position: fixed; bottom: 0; left: 0;">
+        <div style="margin-right: 5%; margin-left: 1%;">
+            <span id="nm" class="note" style="text-align: center;">Management Type: {{managementName}}</span>
         </div>
         <div style="margin-right: 5%;">
             <span id="visits">Total Number of visits: {{visitCount}}</span>
