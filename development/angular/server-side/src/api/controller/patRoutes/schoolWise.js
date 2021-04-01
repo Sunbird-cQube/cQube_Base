@@ -106,23 +106,25 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 fileName = `${report}/${period}/${semester}/${report}_school.json`;
             }
         }
-
         var schoolData = await s3File.readS3File(fileName);
         let clusterId = req.params.clusterId;
 
         let filterData = schoolData.data.filter(obj => {
             return (obj.Details.cluster_id == clusterId)
         })
+        
         var grades = [];
         filterData.map(item => {
             Object.keys(item.Grades).map(grade => {
                 grades.push(grade);
             })
         });
+        
         var uniqueGrades = [];
         [...new Set(grades)].map(grade => {
             uniqueGrades.push({ grade: grade });
         })
+        uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
         let mydata = filterData;
         logger.info('---PAT schoolPerCluster api response sent---');
         // , footer: schoolData.footer[`${clusterId}`]

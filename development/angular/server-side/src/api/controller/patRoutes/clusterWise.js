@@ -107,7 +107,6 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                 fileName = `${report}/${period}/${semester}/${report}_cluster.json`;
             }
         }
-
         var clusterData = await s3File.readS3File(fileName);
 
         let distId = req.params.distId;
@@ -126,6 +125,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         [...new Set(grades)].map(grade => {
             uniqueGrades.push({ grade: grade });
         })
+        uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
         let mydata = filterData;
         logger.info('---PAT clusterperBlock api response sent---');
         // , footer: clusterData.footer[`${blockId}`] 
