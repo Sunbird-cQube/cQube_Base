@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allClusterWise', auth.authController, async(req, res) => {
+router.post('/allClusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT cluster wise api ---');
         var period = req.body.data.period;
@@ -74,7 +74,7 @@ router.post('/allClusterWise', auth.authController, async(req, res) => {
     }
 });
 
-router.post('/clusterWise/:distId/:blockId', auth.authController, async(req, res) => {
+router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT clusterperBlock api ---');
         var period = req.body.data.period;
@@ -115,11 +115,21 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async(req, res
 
         let filterData = clusterData.data.filter(obj => {
             return (obj.Details.district_id == distId && obj.Details.block_id == blockId)
+        });
+        var grades = [];
+        filterData.map(item => {
+            Object.keys(item.Grades).map(grade => {
+                grades.push(grade);
+            })
+        });
+        var uniqueGrades = [];
+        [...new Set(grades)].map(grade => {
+            uniqueGrades.push({ grade: grade });
         })
         let mydata = filterData;
         logger.info('---PAT clusterperBlock api response sent---');
         // , footer: clusterData.footer[`${blockId}`] 
-        res.status(200).send({ data: mydata });
+        res.status(200).send({ data: mydata, grades: uniqueGrades });
 
 
     } catch (e) {
