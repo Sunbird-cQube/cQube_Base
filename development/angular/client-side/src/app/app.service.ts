@@ -28,11 +28,7 @@ export class AppServiceComponent {
     latitude;
     longitude;
 
-    management;
-    category;
-
     constructor(public http: HttpClient, public keyCloakService: KeycloakSecurityService) {
-        this.getDefault();
         this.token = keyCloakService.kc.token;
         localStorage.setItem('token', this.token);
         this.dateAndTime = `${("0" + (this.date.getDate())).slice(-2)}-${("0" + (this.date.getMonth() + 1)).slice(-2)}-${this.date.getFullYear()}`;
@@ -667,10 +663,6 @@ export class AppServiceComponent {
 
 //getDefaultOptions
   getDefault(){
-    this.logoutOnTokenExpire();
-    this.http.get(`${this.baseUrl}/getDefault`).subscribe(res=>{
-        this.management = res[0]['name'];
-        this.category = res[1]['name'];
-    })
+   return this.http.get(`${this.baseUrl}/getDefault`);
   }
 }

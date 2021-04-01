@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allBlockWise', auth.authController, async(req, res) => {
+router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- all blocks PAT api ---');
         var period = req.body.data.period;
@@ -74,7 +74,7 @@ router.post('/allBlockWise', auth.authController, async(req, res) => {
     }
 })
 
-router.post('/blockWise/:distId', auth.authController, async(req, res) => {
+router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         logger.info('--- block wise PAT api ---');
         var period = req.body.data.period;
@@ -113,10 +113,20 @@ router.post('/blockWise/:distId', auth.authController, async(req, res) => {
         let filterData = blockData.data.filter(obj => {
             return (obj.Details.district_id == distId)
         })
+        var grades = [];
+        filterData.map(item => {
+            Object.keys(item.Grades).map(grade => {
+                grades.push(grade);
+            })
+        });
+        var uniqueGrades = [];
+        [...new Set(grades)].map(grade => {
+            uniqueGrades.push({ grade: grade });
+        })
         let mydata = filterData;
         logger.info('--- block per dist PAT api response sent---');
         // , footer: blockData.footer[`${distId}`]
-        res.status(200).send({ data: mydata });
+        res.status(200).send({ data: mydata, grades: uniqueGrades });
 
     } catch (e) {
         logger.error(e);
