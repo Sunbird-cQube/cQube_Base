@@ -14031,21 +14031,25 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <properties>
 <entry>
     <key>Schema Write Strategy</key>
+    <value>no-schema</value>
 </entry>
 <entry>
     <key>schema-cache</key>
 </entry>
 <entry>
     <key>schema-protocol-version</key>
+    <value>1</value>
 </entry>
 <entry>
     <key>schema-access-strategy</key>
+    <value>inherit-record-schema</value>
 </entry>
 <entry>
     <key>schema-registry</key>
 </entry>
 <entry>
     <key>schema-name</key>
+    <value>${schema.name}</value>
 </entry>
 <entry>
     <key>schema-version</key>
@@ -14055,6 +14059,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
 </entry>
 <entry>
     <key>schema-text</key>
+    <value>${avro.schema}</value>
 </entry>
 <entry>
     <key>Date Format</key>
@@ -14067,18 +14072,23 @@ WHERE ff_uuid = '${source.uuid}';</value>
 </entry>
 <entry>
     <key>CSV Format</key>
+    <value>custom</value>
 </entry>
 <entry>
     <key>Value Separator</key>
+    <value>,</value>
 </entry>
 <entry>
     <key>Include Header Line</key>
+    <value>true</value>
 </entry>
 <entry>
     <key>Quote Character</key>
+    <value>"</value>
 </entry>
 <entry>
     <key>Escape Character</key>
+    <value>\</value>
 </entry>
 <entry>
     <key>Comment Marker</key>
@@ -14088,18 +14098,23 @@ WHERE ff_uuid = '${source.uuid}';</value>
 </entry>
 <entry>
     <key>Trim Fields</key>
+    <value>true</value>
 </entry>
 <entry>
     <key>Quote Mode</key>
+    <value>MINIMAL</value>
 </entry>
 <entry>
     <key>Record Separator</key>
+    <value>\n</value>
 </entry>
 <entry>
     <key>Include Trailing Delimiter</key>
+    <value>false</value>
 </entry>
 <entry>
     <key>csvutils-character-set</key>
+    <value>UTF-8</value>
 </entry>
                             </properties>
                             <state>ENABLED</state>
@@ -18474,7 +18489,7 @@ ${filename:startsWith('school_management_master'):ifElse(#{static_school_managem
                             <id>34d99ce0-51da-369e-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <position>
-<x>848.0</x>
+<x>872.0</x>
 <y>2976.0</y>
                             </position>
                             <bundle>
@@ -29794,7 +29809,13 @@ where ff_uuid= '${zip_identifier}'</value>
     </entry>
     <entry>
         <key>SQL select query</key>
-        <value>#{static_school_mgt_exception_list}</value>
+        <value>select data.*,shd.school_management_type from (select a.ff_uuid,a.school_id,a.block_id,a.cluster_id,a.district_id,
+string_agg(a.exception_type,' and ') as  exception_type
+from school_invalid_data as a 
+group by a.ff_uuid,a.school_id,a.block_id,a.cluster_id,a.district_id) as data 
+left join 
+(select sm.school_id,smm.school_management_type from school_master sm left join school_management_master smm on sm.school_management_type_id=smm.school_management_type_id) shd  
+on data.school_id=shd.school_id where data.ff_uuid='${files_uuid}';</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -29962,5 +29983,5 @@ ${filename:startsWith('school_management_master'):ifElse(#{static_school_managem
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/31/2021 15:35:46 IST</timestamp>
+    <timestamp>04/01/2021 17:25:53 IST</timestamp>
 </template>
