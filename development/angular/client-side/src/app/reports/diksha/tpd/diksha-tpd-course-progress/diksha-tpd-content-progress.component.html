@@ -2,12 +2,12 @@
     <div class="row">
         <div class="col-sm-10">
             <div *ngIf='skul'>
-                <p id="dist" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist">
                     Diksha TPD Course Progress Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
-                <p id="block" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="block" >
                     Diksha TPD Course Progress Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="selectedDistrict(districtHierarchy.distId)"
@@ -15,7 +15,7 @@
                         {{districtHierarchy.districtName}}</span> </p>
             </div>
             <div *ngIf="blok">
-                <p id="cluster" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="cluster" >
                     Diksha TPD Course Progress Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="selectedDistrict(blockHierarchy.distId)"
@@ -27,7 +27,7 @@
             </div>
 
             <div *ngIf="clust">
-                <p id="school" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="school" >
                     Diksha TPD Course Progress Report for: <span (click)="resetToInitPage()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="selectedDistrict(clusterHierarchy.distId)"
@@ -59,7 +59,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <p style="text-align: justify; font-size: 11px;">
+            <p class="report-subtitle">
                 <strong> About the dashboard:</strong> The dashboard provides information on the Course Progress for
                 Teacher Professional Development courses at the district level.
             </p>
@@ -67,8 +67,7 @@
     </div>
     <div class="row">
         <div class="col-md-12" style="margin-bottom: 10px;">
-            <select id="timePeriod"
-                style="margin-right: 25px;float: left; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+            <select id="timePeriod" class="select-control" style="margin-right: 25px; float: left;"
                 [(ngModel)]="timePeriod" (change)="selectedTimePeriod()">
                 <option [value]="timePeriod" disabled selected="selected">Choose time period</option>
                 <option *ngFor="let timePeriod of timePeriods, let i =index" [(ngValue)]="timePeriod.key">
@@ -76,13 +75,12 @@
                 </option>
             </select>
 
-            <app-multi-select #multiSelect style="float: left;width: auto;" [list]="scousesTOShow"
+            <app-multi-select #multiSelect style="float: left;width: auto;" [list]="scousesTOShow" [text]="'Course'" [width1]="'200px auto'" [width2]="'200px auto'"
                 (shareCheckedList)="shareCheckedList($event)">
             </app-multi-select>
 
 
-            <select id="district"
-                style="margin-right: 25px; margin-left: 20px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+            <select id="district" class="select-control" style="margin-right: 25px; margin-left: 20px;"
                 [(ngModel)]="district" (change)="selectedDistrict(district)">
                 <option [value]="district" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let district of districtNames, let i =index" [(ngValue)]="district.district_id">
@@ -91,16 +89,14 @@
             </select>
 
 
-            <select [hidden]="blockHidden" id="block"
-                style="margin-right: 25px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+            <select [hidden]="blockHidden" id="block" class="select-control" style="margin-right: 25px;"
                 [(ngModel)]="block" (change)="selectedBlock(block)">
                 <option [value]="block" disabled selected="selected">Choose a Block</option>
                 <option *ngFor="let block of blockNames, let i =index" [(ngValue)]="block.block_id">
                     {{block.block_name}}
                 </option>
             </select>
-            <select [hidden]="clusterHidden" id="cluster"
-                style="margin-right: 0px; padding: 5px;color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
+            <select [hidden]="clusterHidden" id="cluster" class="select-control" style="margin-right: 0px;"
                 [(ngModel)]="cluster" (change)="selectedCluster(cluster)">
                 <option [value]="cluster" disabled selected="selected">Choose a Cluster</option>
                 <option *ngFor="let cluster of clusterNames, let i =index" [(ngValue)]="cluster.cluster_id">

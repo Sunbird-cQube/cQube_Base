@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts/highstock';
 import HeatmapModule from 'highcharts/modules/heatmap';
 HeatmapModule(Highcharts);
@@ -77,16 +77,30 @@ export class SatHeatChartComponent implements OnInit {
 
   reportName = 'semester_assessment_test_heatmap';
 
+  managementName;
+  management;
+  category;
+
   getHeight(event) {
     this.height = event.target.innerHeight;
     this.onChangePage();
   }
+
+  screenWidth: number;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.screenWidth = window.innerWidth;
+    this.resetFontSizesOfChart();
+  }
+
   constructor(
     public http: HttpClient,
     public service: PatReportService,
     public commonService: AppServiceComponent,
     public router: Router
   ) {
+    this.screenWidth = window.innerWidth;
     service.PATHeatMapMetaData({report: 'sat'}).subscribe(res => {
       this.metaData = res['data'];
       for (let i = 0; i < this.metaData.length; i++) {
@@ -138,6 +152,11 @@ export class SatHeatChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
@@ -183,7 +202,9 @@ export class SatHeatChartComponent implements OnInit {
       grade: this.grade == 'all' ? '' : this.grade,
       subject_name: this.subject == 'all' ? '' : this.subject,
       exam_date: this.examDate == 'all' ? '' : this.examDate,
-      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy
+      viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
+      management: this.management,
+      category: this.category
     }
     this.month = a.month;
     if (this.myData) {
@@ -201,10 +222,127 @@ export class SatHeatChartComponent implements OnInit {
     })
   }
 
+  resetFontSizesOfChart(): void {
+    if (this.chart) {
+      let xAxis, yAxis, dataLabels, tooltipStyle;
+
+      if (this.screenWidth <= 1920) {
+        xAxis = {
+          fontSize: '12px'
+        };
+
+        yAxis = {
+          fontSize: '12px'
+        };
+
+        dataLabels = {
+          fontSize: '11px'
+        };
+
+        tooltipStyle = {
+          fontSize: '12px'
+        }
+      } else if (this.screenWidth > 1920 && this.screenWidth < 3840) {
+        xAxis = {
+          fontSize: '1.2rem'
+        };
+
+        yAxis = {
+          fontSize: '1.2rem'
+        };
+
+        dataLabels = {
+          fontSize: '1.1rem'
+        };
+
+        tooltipStyle = {
+          fontSize: '1.2rem'
+        }
+      } else {
+        xAxis = {
+          fontSize: '1.6rem'
+        };
+
+        yAxis = {
+          fontSize: '1.6rem'
+        };
+
+        dataLabels = {
+          fontSize: '1.5rem'
+        };
+
+        tooltipStyle = {
+          fontSize: '1.6rem'
+        }
+      }
+
+      Highcharts.setOptions({
+        xAxis: {
+          labels: {
+            style: {
+              fontSize: xAxis.fontSize
+            }
+          }
+        }
+      });
+    }
+  }
+
   chart;
   chartFun = (xLabel, xLabelId, yLabel, zLabel, data, viewBy, level, xLabel1, yLabel1, tooltipData, grade) => {
     let scrollBarX
     let scrollBarY
+    let xAxis, yAxis, dataLabels, tooltipStyle;
+
+    if (this.screenWidth <= 1920) {
+      xAxis = {
+        fontSize: '12px'
+      };
+
+      yAxis = {
+        fontSize: '12px'
+      };
+
+      dataLabels = {
+        fontSize: '11px'
+      };
+
+      tooltipStyle = {
+        fontSize: '12px'
+      }
+    } else if (this.screenWidth > 1920 && this.screenWidth < 3840) {
+      xAxis = {
+        fontSize: '1.2rem'
+      };
+
+      yAxis = {
+        fontSize: '1.2rem'
+      };
+
+      dataLabels = {
+        fontSize: '1.1rem'
+      };
+
+      tooltipStyle = {
+        fontSize: '1.2rem'
+      }
+    } else {
+      xAxis = {
+        fontSize: '1.6rem'
+      };
+
+      yAxis = {
+        fontSize: '1.6rem'
+      };
+
+      dataLabels = {
+        fontSize: '1.5rem'
+      };
+
+      tooltipStyle = {
+        fontSize: '1.6rem'
+      }
+    }
 
     if (xLabel1.length <= 30) {
       scrollBarX = false
@@ -212,7 +350,7 @@ export class SatHeatChartComponent implements OnInit {
       scrollBarX = true
     }
 
-    var scrollLimit = this.height > 800 ? 20 : this.height > 650 && this.height < 800 ? 15 : this.height < 500 ? 8 : 12;
+    var scrollLimit = this.height > 800 ? 16 : this.height > 650 && this.height < 800 ? 12 : this.height < 500 ? 8 : 12;
     if (yLabel1.length <= scrollLimit) {
       scrollBarY = false
     } else {
@@ -258,7 +396,7 @@ export class SatHeatChartComponent implements OnInit {
           rotation: 270,
           style: {
             color: 'black',
-            fontSize: '12px',
+            fontSize: xAxis.fontSize,
             fontFamily: 'Arial',
           }
         },
@@ -268,25 +406,21 @@ export class SatHeatChartComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: '12px',
+            fontSize: yAxis.fontSize,
             textDecoration: "underline",
             textOverflow: "ellipsis",
             fontFamily: 'Arial'
           },
           align: "right",
-          formatter: function (this) {
-            if (typeof this.value === 'string') {
-              return `<p>${this.value}</p>`;
-            }
-
-            return '';
+          formatter: function(this) {
+            return this.value !== this.pos ? `${this.value}` : '';
           }
         },
         gridLineColor: 'transparent',
         title: null,
         reversed: true,
         min: 0,
-        max: this.height == screen.height ? 11 : this.height > 800 ? 19 : this.height > 650 && this.height < 800 ? 14 : this.height < 500 ? 7 : 11,
+        max: scrollLimit - 1,
         scrollbar: {
           enabled: scrollBarY
         }
@@ -304,6 +438,7 @@ export class SatHeatChartComponent implements OnInit {
           color: '#000000',
           style: {
             textOutline: 'none',
+            fontSize: dataLabels.fontSize
           },
           overflow: false,
           crop: true,
@@ -314,6 +449,9 @@ export class SatHeatChartComponent implements OnInit {
         text: null
       },
       tooltip: {
+        style: {
+          fontSize: tooltipStyle.fontSize
+        },
         formatter: function () {
           return '<b>' + getPointCategoryName(this.point, 'y', viewBy, level, grade) + '</b>';
         }
@@ -486,7 +624,9 @@ export class SatHeatChartComponent implements OnInit {
       subject_name: this.subject == 'all' ? '' : this.subject,
       exam_date: this.examDate == 'all' ? '' : this.examDate,
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
-      districtId: districtId
+      districtId: districtId,
+      management: this.management,
+      category: this.category
     }
 
     this.service.PATHeatMapDistData(a).subscribe(response => {
@@ -531,7 +671,9 @@ export class SatHeatChartComponent implements OnInit {
       exam_date: this.examDate == 'all' ? '' : this.examDate,
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
       districtId: this.district,
-      blockId: blockId
+      blockId: blockId,
+      management: this.management,
+      category: this.category
     }
 
     this.service.PATHeatMapBlockData(a).subscribe(response => {
@@ -577,7 +719,9 @@ export class SatHeatChartComponent implements OnInit {
       viewBy: this.viewBy == 'indicator' ? 'indicator' : this.viewBy,
       districtId: this.district,
       blockId: this.block,
-      clusterId: clusterId
+      clusterId: clusterId,
+      management: this.management,
+      category: this.category
     }
 
     this.service.PATHeatMapClusterData(a).subscribe(response => {
@@ -671,6 +815,8 @@ export class SatHeatChartComponent implements OnInit {
 
   // to download the csv report
   downloadReport() {
+    var position = this.reportName.length;
+    this.fileName = [this.fileName.slice(0, position), `_${this.management}`, this.fileName.slice(position)].join('');
     this.commonService.download(this.fileName, this.reportData);
   }
 }

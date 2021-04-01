@@ -221,7 +221,7 @@ c_query:='create table if not exists student_attendance_meta_temp as '||l_query;
 EXECUTE c_query;
 
 
-m_query:='update student_attendance_meta_temp set to_run=False where (extract(dow from processed_date)=0 and month='||month||' and year='||year||') or  processed_date>current_date';
+m_query:='update student_attendance_meta_temp set to_run=False where (extract(dow from processed_date)=0 and month='||month||' and year='||year||')';
 EXECUTE m_query;
 EXECUTE _cols into col_name;
 d_meta:='drop table if exists student_attendance_meta_stg';
@@ -1495,6 +1495,10 @@ primary key(school_id,month,year)
 
 create index if not exists school_student_total_attendance_id on school_student_total_attendance(month,school_id,block_id,cluster_id);
 
+
+alter table school_student_total_attendance add column if not exists school_management_type varchar(100);
+alter table school_student_total_attendance add column if not exists school_category varchar(100);
+
 /*school_teacher_total_attendance*/
 
 create table if not exists school_teacher_total_attendance
@@ -1527,6 +1531,10 @@ created_on  TIMESTAMP without time zone ,
 updated_on  TIMESTAMP without time zone,
 primary key(school_id,month,year)
 );
+
+
+alter table school_teacher_total_attendance add column if not exists school_management_type varchar(100);
+alter table school_teacher_total_attendance add column if not exists school_category varchar(100);
 
 create index if not exists school_teacher_total_attendance_id on school_teacher_total_attendance(month,school_id,block_id,cluster_id);
 
@@ -4991,7 +4999,7 @@ c_query:='create table if not exists teacher_attendance_meta_temp as '||l_query;
 EXECUTE c_query;
 
 
-m_query:='update teacher_attendance_meta_temp set to_run=False where (extract(dow from processed_date)=0 and month='||month||' and year='||year||') or  processed_date>current_date';
+m_query:='update teacher_attendance_meta_temp set to_run=False where (extract(dow from processed_date)=0 and month='||month||' and year='||year||')';
 EXECUTE m_query;
 EXECUTE _cols into col_name;
 d_meta:='drop table if exists teacher_attendance_meta_stg';
@@ -5471,7 +5479,6 @@ us_query := 'UPDATE teacher_attendance_meta sam
 return 0;
 END;
 $$  LANGUAGE plpgsql;
-
 
 create table IF NOT EXISTS diksha_tpd_staging(
   ff_uuid text,
@@ -5957,3 +5964,123 @@ months text,
 created_on timestamp default current_timestamp,
 updated_on timestamp,
 primary key(ff_uuid));
+
+
+alter table diksha_content_staging add column if not exists dimensions_mode text, add column if not exists dimensions_type text;
+alter table diksha_dup add column if not exists dimensions_mode text, add column if not exists dimensions_type text;
+alter table diksha_content_temp add column if not exists dimensions_mode text, add column if not exists dimensions_type text;
+alter table diksha_content_trans add column if not exists dimensions_mode text, add column if not exists dimensions_type text;
+
+
+/* crc_inspection_temp */
+
+create table if not exists crc_inspection_temp
+(
+crc_inspection_id bigint primary key not null,
+crc_id bigint,
+crc_name varchar(100),
+school_id  bigint,
+lowest_class smallint,
+highest_class smallint,
+visit_start_time TIME without time zone,
+visit_end_time TIME without time zone,
+total_class_rooms smallint,
+actual_class_rooms smallint,
+total_suggestion_last_month smallint,
+resolved_from_that smallint,
+is_inspection smallint,
+reason_type varchar(100),
+reason_desc text,
+total_score double precision,
+score double precision,
+is_offline boolean,
+ff_uuid text,
+created_on  TIMESTAMP without time zone, 
+updated_on  TIMESTAMP without time zone
+-- ,foreign key (school_id) references school_hierarchy_details(school_id)
+);
+
+
+/* crc_location_temp */
+
+create table if not exists crc_location_temp
+(
+crc_location_id bigint primary key not null,
+crc_id bigint,
+inspection_id  bigint,
+school_id  bigint ,
+latitude  double precision,
+longitude  double precision,
+in_school_location  boolean,
+year int,
+month int,
+ff_uuid text,
+created_on  TIMESTAMP without time zone, 
+updated_on  TIMESTAMP without time zone
+-- ,foreign key (school_id) references school_hierarchy_details(school_id),
+-- foreign key (inspection_id) references crc_inspection_trans(crc_inspection_id)
+);
+
+
+alter table school_hierarchy_details add column if not exists school_management_type varchar(100);
+alter table school_hierarchy_details add column if not exists school_category varchar(100);
+
+alter table crc_inspection_temp add column IF NOT EXISTS visit_date date;
+
+alter table crc_visits_frequency add column if not exists school_management_type varchar(100);
+alter table crc_visits_frequency add column if not exists school_category varchar(100);
+
+alter table periodic_exam_school_qst_result add column if not exists school_management_type varchar(100);
+alter table periodic_exam_school_qst_result add column if not exists school_category varchar(100);
+
+alter table periodic_exam_school_result add column if not exists school_management_type varchar(100);
+alter table periodic_exam_school_result add column if not exists school_category varchar(100);
+
+
+create table if not exists school_category_null_col( filename varchar(200),
+ff_uuid varchar(200),
+count_null_school_category_id int,
+count_null_school_category  int);
+
+create table if not exists school_management_null_col( filename varchar(200),
+ff_uuid varchar(200),
+count_null_school_management_type_id int,
+count_null_school_management_type  int);
+
+create table if not exists school_category_dup( 
+school_category_id int,
+school_category  varchar(100),
+num_of_times int,
+ff_uuid varchar(255),
+created_on_file_process timestamp default current_timestamp);
+
+create table if not exists school_management_dup( 
+school_management_type_id int,
+school_management_type  varchar(100),
+num_of_times int,
+default_option boolean,
+ff_uuid varchar(255),
+created_on_file_process timestamp default current_timestamp);
+
+alter table log_summary add column if not exists school_category_id int,add column if not exists school_category int, add column if not exists school_management_type_id int,
+add column if not exists school_management_type int;
+
+alter table school_master add column if not exists state_id bigint,add column if not exists district_id bigint,add column if not exists block_id bigint,add column if not exists cluster_id bigint,add column if not exists latitude double precision,add column if not exists longitude double precision;
+
+alter table school_management_master add column if not exists default_option boolean;
+
+alter table semester_exam_school_qst_result add column if not exists school_management_type varchar(100);
+alter table semester_exam_school_qst_result add column if not exists school_category varchar(100);
+
+alter table semester_exam_school_result add column if not exists school_management_type varchar(100);
+alter table semester_exam_school_result add column if not exists school_category varchar(100);
+
+drop view if exists crc_trans_to_aggregate cascade;
+
+
+alter table student_attendance_exception_agg add column if not exists school_management_type varchar(100);
+alter table student_attendance_exception_agg add column if not exists school_category varchar(100);
+
+alter table teacher_attendance_exception_agg add column if not exists school_management_type varchar(100);
+alter table teacher_attendance_exception_agg add column if not exists school_category varchar(100);
+

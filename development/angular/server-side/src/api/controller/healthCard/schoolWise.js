@@ -5,11 +5,20 @@ const s3File = require('../../lib/reads3File');
 
 router.post('/schoolWise', auth.authController, async (req, res) => {
     try {
+        logger.info('---healthCard school wise api ---');
         var blockId = req.body.blockId;
         var schoolId = req.body.id;
         var timePeriod = req.body.timePeriod;
-        logger.info('---healthCard school wise api ---');
-        let fileName = `healthCard/school/${timePeriod}/${blockId}.json`;
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `healthCard/school_management_category/${timePeriod}/overall_category/${management}/school/${blockId}.json`;
+        } else {
+            fileName = `healthCard/school/${timePeriod}/${blockId}.json`;
+        }
+
         var schoolData = await s3File.readS3File(fileName);
         schoolData = schoolData.filter(a => {
             if (a.school_id == schoolId) {

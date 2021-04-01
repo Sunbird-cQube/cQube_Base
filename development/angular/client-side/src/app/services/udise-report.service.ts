@@ -14,38 +14,38 @@ export class UdiseReportService {
   }
 
   //UDISE-report
-  udise_dist_wise() {
+  udise_dist_wise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/udise/distWise`, {});
+    return this.http.post(`${this.baseUrl}/udise/distWise`, data);
   }
 
-  udise_block_wise() {
+  udise_block_wise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/udise/allBlockWise`, {});
+    return this.http.post(`${this.baseUrl}/udise/allBlockWise`, data);
   }
 
-  udise_blocks_per_dist(distId) {
+  udise_blocks_per_dist(distId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/udise/blockWise/${distId}`, {});
+    return this.http.post(`${this.baseUrl}/udise/blockWise/${distId}`, data);
   }
 
-  udise_cluster_wise() {
+  udise_cluster_wise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/udise/allClusterWise`, {});
+    return this.http.post(`${this.baseUrl}/udise/allClusterWise`, data);
   }
 
-  udise_cluster_per_block(distId, blockId) {
+  udise_cluster_per_block(distId, blockId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/udise/clusterWise/${distId}/${blockId}`, {});
+    return this.http.post(`${this.baseUrl}/udise/clusterWise/${distId}/${blockId}`, data);
   }
 
-  udise_school_wise() {
+  udise_school_wise(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/udise/allSchoolWise`, {});
+    return this.http.post(`${this.baseUrl}/udise/allSchoolWise`, data);
   }
 
-  udise_school_per_cluster(distId, blockId, clusterId) {
+  udise_school_per_cluster(distId, blockId, clusterId, data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/udise/schoolWise/${distId}/${blockId}/${clusterId}`, {});
+    return this.http.post(`${this.baseUrl}/udise/schoolWise/${distId}/${blockId}/${clusterId}`, data);
   }
 }

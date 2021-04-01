@@ -23,7 +23,7 @@ const routes: Routes = [
         path: 'coming-soon', component: ComingSoonComponent, canActivateChild: [AuthGuard]
       },
       {
-        path: 'healthCard', component: HealthCardComponent
+        path: 'progressCard', component: HealthCardComponent
       },
       {
         path: 'diksha', loadChildren: () => import('./reports/diksha/diksha.module').then(m => m.DikshaModule)

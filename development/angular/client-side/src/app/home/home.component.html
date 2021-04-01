@@ -1,28 +1,26 @@
-<mat-toolbar color="primary" style="height: 35px; background-color: rgb(245, 245, 245); width: 100%;">
-  <button class="menu" mat-icon-button (click)="sidenav.toggle()" id="menu" style="margin-left: -9px;">
+<mat-toolbar class="header" color="primary"
+  style="position: fixed; top: 0; z-index: 9999;">
+  <button class="menu" mat-icon-button (click)="sidenav.toggle()" id="menu">
     <mat-icon style="color: #24223e;">menu</mat-icon>
   </button>
-  <img src="../../assets/dashboard.png" alt="" height="30px" width="90px">
+  <img src="../../assets/dashboard.png" id="logoImg" alt="">
   <span style="flex: 1 1 auto;"></span>
-  <span id="backBtn" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;"
-    [routerLink]="['/home']">
+  <span id="backBtn" class="headerBtn" [routerLink]="['/home']" (click)="onBackClick()">
     <strong *ngIf="userType">Back</strong>
   </span>
-  <span id="homeBtn" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px; margin-right: 2%;"
-    [routerLink]="['/dashboard']" (click)="clearSessionStorage()">
+  <span id="homeBtn" class="headerBtn" [routerLink]="['/dashboard']" (click)="clearSessionStorage()">
     <strong>Home</strong>
   </span>
-  <span id="logout" class="headerBtn" style="padding: 1.5px; cursor: pointer; font-size: 13px;" (click)="logout()"><em
-      class="fa fa-sign-out fa-rotate-180" style="font-size: 16px;"></em><strong>
+  <span id="logout" class="headerBtn" (click)="logout()"><em class="fa fa-sign-out fa-rotate-180"></em><strong>
       Logout</strong>
   </span>
 </mat-toolbar>
 
 <mat-sidenav-container style="background-color: rgb(245, 245, 245);">
-  <mat-sidenav #sidenav>
-    <div id="div1" style="height: 82vh; position:relative;">
-      <div id="div2" style="max-height:100%;overflow:auto;">
-        <div id="div3" style="height:1500px auto;">
+  <mat-sidenav #sidenav id="sideNav">
+    <div style="height: 83vh; position:relative;">
+      <div style="max-height:100%;overflow:auto;">
+        <div style="height:1500px auto;">
           <mat-nav-list class=sidenav>
             <mat-toolbar style="height: 50px; background-color: white; border-bottom: 1px solid lightgray;">
               <mat-toolbar-row style="color: rgb(84, 116, 223);">
@@ -127,7 +125,7 @@
                     (click)="showSubmenu9 = !showSubmenu9"><span style="margin-left: 50px;">Usage by Textbook
                       Content</span></a>
                 </div>
-                <div class="submenu4" [ngClass]="{'expanded' : showSubmenu9}"
+                <div class="submenu9" [ngClass]="{'expanded' : showSubmenu9}"
                   *ngIf="!diksha_column && (isShowing || isExpanded)">
                   <a mat-list-item [routerLink]="!nifi_diksha ? ['/coming-soon'] :['/diksha/usage-by-textbook']"
                     (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'dtr')" id="ut"
@@ -223,7 +221,7 @@
               </mat-nav-list>
 
               <a mat-list-item (click)="sidenav.toggle()" style="border-bottom: 1px solid lightgray;"
-                [routerLink]="!nifi_semester ? ['/coming-soon'] :['/healthCard']"
+                [routerLink]="!nifi_semester ? ['/coming-soon'] :['/progressCard']"
                 (click)="fetchTelemetry($event,'healthCard')" id="healthCard">
                 <td>
                   <img alt="Dashboard" src="../../assets/ico_task.png" style="width:30px;height:30px;">
@@ -282,13 +280,13 @@
     </div>
     <hr>
     <div>
-      <span style=" position: absolute; left: 5%; bottom: 2%; font-size: 12px;">Version : 1.11 </span>
-      <span style="position: absolute; right: 3%; bottom: 2%; font-size: 12px;">Date: 03/03/2021</span>
+      <span id="version" style="float: left;">Version : 1.12 </span>
+      <span id="releaseDate" style="float: right;">Date: 31/03/2021</span>
     </div>
   </mat-sidenav>
 
-  <mat-sidenav-content>
-    <div style="height: 93vh;">
+  <mat-sidenav-content style="margin-top: 1.5%;">
+    <div style="min-height: 95vh; overflow-x: hidden;">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>

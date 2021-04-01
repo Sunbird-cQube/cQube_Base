@@ -86,6 +86,7 @@ export class DikshaTableComponent implements OnInit {
         this.timeDetails.push(obj);
       });
       await this.timeDetails.push({ timeRange: "all", name: "Overall" });
+      await this.timeDetails.reverse();
     })
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();

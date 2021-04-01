@@ -11,23 +11,24 @@ export class InfoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  public fun = $(function () {
-    $('[data-toggle="tooltip"]').tooltip().on('inserted.bs.tooltip', function () {
-      $("body div.tooltip-inner").css({
-        "max-width": "350px",
-        "padding": "3%",
-        "text-align": "center",
-        "border-radius": "20px",
-        "background-color": "black",
-        "color": "white",
-        "font-family": "Arial",
-        "font-size": "12px"
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip().on('inserted.bs.tooltip', function () {
+        $("body div.tooltip-inner").css({
+          "max-width": "350px",
+          "padding": "3%",
+          "text-align": "center",
+          "border-radius": "20px",
+          "background-color": "black",
+          "color": "white",
+          "font-family": "Arial",
+          "font-size": "12px"
+        });
+      });
+      $('[data-toggle="tooltip"]').click(function () {
+        $('[data-toggle="tooltip"]').tooltip("hide");
       });
     });
-    $('[data-toggle="tooltip"]').click(function () {
-      $('[data-toggle="tooltip"]').tooltip("hide");
-    });
-  });
+  }
+
+
 }

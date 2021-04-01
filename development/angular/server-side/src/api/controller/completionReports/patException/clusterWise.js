@@ -3,25 +3,40 @@ var const_data = require('../../../lib/config');
 const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
+const filter = require('./filter');
 
 router.post('/allClusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- pat exception cluster wise api ---');
         var timePeriod = req.body.timePeriod;
         var grade = req.body.grade;
+        var subject = req.body.subject;
+        var start = 8;
+        var management = req.body.management;
+        var category = req.body.category;
+        var report = req.body.report;
+        var semester = req.body.semester;
         let fileName;
-        if (grade && grade != 'all') {
-            fileName = `exception_list/pat_exception/grade/${timePeriod}/cluster/${grade}.json`
+
+        if (management != 'overall' && category == 'overall') {
+            if (grade && grade != 'all') {
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster/${grade}.json`
+            } else {
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/cluster.json`
+            }
         } else {
-            fileName = `exception_list/pat_exception/${timePeriod}/cluster.json`
+            if (grade && grade != 'all') {
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster/${grade}.json`
+            } else {
+                fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster.json`
+            }
         }
         var clusterData = await s3File.readS3File(fileName);
         var Subjects = [];
         var sortedData;
         if (clusterData) {
-            sortedData = clusterData['data'].sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1);
             if (grade && grade != 'all') {
-                sortedData.map(item => {
+                clusterData['data'].map(item => {
                     if (item.subjects) {
                         Object.keys(item.subjects[0]).map(key => {
                             Subjects.push(key);
@@ -30,6 +45,8 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 });
                 Subjects = [...new Set(Subjects)];
             }
+            var filteredData = filter.data(clusterData['data'], grade, subject, start);
+            sortedData = filteredData.sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1);
         }
         logger.info('--- pat exception cluster wise api response sent---');
         res.status(200).send({ data: sortedData, footer: clusterData.allClustersFooter.total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
@@ -44,11 +61,26 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         logger.info('---pat exception clusterperBlock api ---');
         var timePeriod = req.body.timePeriod;
         var grade = req.body.grade;
+        var subject = req.body.subject;
+        var start = 8;
+        var management = req.body.management;
+        var category = req.body.category;
+        var report = req.body.report;
+        var semester = req.body.semester;
         let fileName;
-        if (grade && grade != 'all') {
-            fileName = `exception_list/pat_exception/grade/${timePeriod}/cluster/${grade}.json`
+
+        if (management != 'overall' && category == 'overall') {
+            if (grade && grade != 'all') {
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster/${grade}.json`
+            } else {
+                fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/cluster.json`
+            }
         } else {
-            fileName = `exception_list/pat_exception/${timePeriod}/cluster.json`
+            if (grade && grade != 'all') {
+                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster/${grade}.json`
+            } else {
+                fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster.json`
+            }
         }
         var clusterData = await s3File.readS3File(fileName);
 
@@ -61,9 +93,8 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         var Subjects = [];
         var sortedData;
         if (filterData) {
-            sortedData = filterData.sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1);
             if (grade && grade != 'all') {
-                sortedData.map(item => {
+                filterData.map(item => {
                     if (item.subjects) {
                         Object.keys(item.subjects[0]).map(key => {
                             Subjects.push(key);
@@ -72,6 +103,8 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                 });
                 Subjects = [...new Set(Subjects)];
             }
+            var filteredData = filter.data(filterData, grade, subject, start);
+            sortedData = filteredData.sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1);
         }
         logger.info('---pat exception clusterperBlock api response sent---');
         res.status(200).send({ data: sortedData, footer: clusterData.footer[`${blockId}`].total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });

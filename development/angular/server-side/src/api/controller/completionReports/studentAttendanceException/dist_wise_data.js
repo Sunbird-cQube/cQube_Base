@@ -10,20 +10,38 @@ router.post('/distWise', auth.authController, async function (req, res) {
         var year = req.body.year;
         var timePeriod = req.body.period;
         var report = req.body.report;
+        var management = req.body.management;
+        var category = req.body.category;
         let fileName;
+
         if (report == 'sarException') {
-            if (timePeriod != null) {
-                fileName = `exception_list/student_attendance_completion/${timePeriod}/district.json`;
+            if (management != 'overall' && category == 'overall') {
+                if (timePeriod != null) {
+                    fileName = `exception_list/student_attendance_completion/school_management_category/${timePeriod}/overall_category/${management}/district.json`;
+                } else {
+                    fileName = `exception_list/student_attendance_completion/school_management_category/overall_category/${management}/district_${year}_${month}.json`;
+                }
             } else {
-                fileName = `exception_list/student_attendance_completion/district_${year}_${month}.json`;
+                if (timePeriod != null) {
+                    fileName = `exception_list/student_attendance_completion/${timePeriod}/district.json`;
+                } else {
+                    fileName = `exception_list/student_attendance_completion/district_${year}_${month}.json`;
+                }
             }
         } else {
-            if (timePeriod != null) {
-                fileName = `exception_list/teacher_attendance_completion/${timePeriod}/district.json`;
+            if (management != 'overall' && category == 'overall') {
+                if (timePeriod != null) {
+                    fileName = `exception_list/teacher_attendance_completion/school_management_category/${timePeriod}/overall_category/${management}/district.json`;
+                } else {
+                    fileName = `exception_list/teacher_attendance_completion/school_management_category/overall_category/${management}/district_${year}_${month}.json`;
+                }
             } else {
-                fileName = `exception_list/teacher_attendance_completion/district_${year}_${month}.json`;
+                if (timePeriod != null) {
+                    fileName = `exception_list/teacher_attendance_completion/${timePeriod}/district.json`;
+                } else {
+                    fileName = `exception_list/teacher_attendance_completion/district_${year}_${month}.json`;
+                }
             }
-
         }
         var jsonData = await s3File.readS3File(fileName);
         var districtAttendanceData = jsonData.data;

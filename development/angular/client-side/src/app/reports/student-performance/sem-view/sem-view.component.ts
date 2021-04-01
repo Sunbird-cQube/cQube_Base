@@ -1,20 +1,26 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { SemesterReportService } from '../../../services/semester-report.service';
-import { Router } from '@angular/router';
-import * as L from 'leaflet';
-import * as R from 'leaflet-responsive-popup';
-import { AppServiceComponent, globalMap } from '../../../app.service';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  OnDestroy,
+  ViewEncapsulation,
+} from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { SemesterReportService } from "../../../services/semester-report.service";
+import { Router } from "@angular/router";
+import * as L from "leaflet";
+import * as R from "leaflet-responsive-popup";
+import { AppServiceComponent, globalMap } from "../../../app.service";
 
 @Component({
-  selector: 'app-sem-view',
-  templateUrl: './sem-view.component.html',
-  styleUrls: ['./sem-view.component.css'],
+  selector: "app-sem-view",
+  templateUrl: "./sem-view.component.html",
+  styleUrls: ["./sem-view.component.css"],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class SemViewComponent implements OnInit, OnDestroy {
-
   impressionId = Math.floor(100000 + Math.random() * 900000);
   pageId = "Semester";
   userId;
@@ -36,14 +42,14 @@ export class SemViewComponent implements OnInit, OnDestroy {
   //   interact: []
   // }
 
-  public title: string = '';
-  public titleName: string = '';
+  public title: string = "";
+  public titleName: string = "";
   public colors: any;
 
   // to assign the count of below values to show in the UI footer
   public studentCount: any;
   public schoolCount: any;
-  public dateRange: any = '';
+  public dateRange: any = "";
 
   // to hide and show the hierarchy details
   public skul: boolean = true;
@@ -56,9 +62,9 @@ export class SemViewComponent implements OnInit, OnDestroy {
   public clusterHidden: boolean = true;
 
   // to set the hierarchy names
-  public districtHierarchy: any = '';
-  public blockHierarchy: any = '';
-  public clusterHierarchy: any = '';
+  public districtHierarchy: any = "";
+  public blockHierarchy: any = "";
+  public clusterHierarchy: any = "";
 
   // leaflet layer dependencies
   public layerMarkers = new L.layerGroup();
@@ -82,13 +88,13 @@ export class SemViewComponent implements OnInit, OnDestroy {
   public reportData: any = [];
 
   // variables
-  public districtId: any = '';
-  public blockId: any = '';
-  public clusterId: any = '';
+  public districtId: any = "";
+  public blockId: any = "";
+  public clusterId: any = "";
 
   public semesters = [];
   public semester;
-  public levelWise = '';
+  public levelWise = "";
 
   public myData;
   state: string;
@@ -104,122 +110,139 @@ export class SemViewComponent implements OnInit, OnDestroy {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
     private readonly _router: Router
-  ) {
-  }
+  ) {}
 
   selected = "absolute";
-  reportName = 'semester_report';
+  reportName = "semester_report";
 
   getColor(data) {
     this.selected = data;
     this.levelWiseFilter();
   }
 
-  ngOnDestroy() { }
+  ngOnDestroy() {}
 
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
     this.lng = this.commonService.mapCenterLatlng.lng;
     this.commonService.zoomLevel = this.commonService.mapCenterLatlng.zoomLevel;
-    this.commonService.initMap('semMap', [[this.lat, this.lng]]);
-    globalMap.setMaxBounds([[this.lat - 4.5, this.lng - 6], [this.lat + 3.5, this.lng + 6]]);
-    document.getElementById('homeBtn').style.display = 'block';
-    document.getElementById('backBtn').style.display = 'none';
+    this.commonService.initMap("semMap", [[this.lat, this.lng]]);
+    globalMap.setMaxBounds([
+      [this.lat - 4.5, this.lng - 6],
+      [this.lat + 3.5, this.lng + 6],
+    ]);
+    document.getElementById("homeBtn").style.display = "block";
+    document.getElementById("backBtn").style.display = "none";
     var eventType = "pageLoad";
     this.btnId = "";
     var date = new Date();
     this.trackInteract(date, this.btnId, eventType);
-    this.service.semMetaData().subscribe(res => {
-      this.semesters = res['data'];
-      this.semester = this.semesters[this.semesters.length - 1].id;
-      let params = JSON.parse(sessionStorage.getItem('report-level-info'));
+    this.service.semMetaData().subscribe(
+      (res) => {
+        this.semesters = res["data"];
+        this.semester = this.semesters[this.semesters.length - 1].id;
+        let params = JSON.parse(sessionStorage.getItem("report-level-info"));
 
-      if (params && params.level) {
-        let data = params.data;
-        if (params.level === 'district') {
-          this.districtHierarchy = {
-            distId: data.id
-          };
+        if (params && params.level) {
+          let data = params.data;
+          if (params.level === "district") {
+            this.districtHierarchy = {
+              distId: data.id,
+            };
 
-          this.districtId = data.id;
-          this.getDistricts();
-          this.onDistrictSelect(data.id);
-        } else if (params.level === 'block') {
-          this.districtHierarchy = {
-            distId: data.districtId
-          };
+            this.districtId = data.id;
+            this.getDistricts();
+            this.onDistrictSelect(data.id);
+          } else if (params.level === "block") {
+            this.districtHierarchy = {
+              distId: data.districtId,
+            };
 
-          this.blockHierarchy = {
-            distId: data.districtId,
-            blockId: data.id
-          };
+            this.blockHierarchy = {
+              distId: data.districtId,
+              blockId: data.id,
+            };
 
-          this.districtId = data.districtId;
-          this.blockId = data.id;
-          this.getDistricts();
-          this.getBlocks(data.districtId, data.id);
-        } else if (params.level === 'cluster') {
-          this.districtHierarchy = {
-            distId: data.districtId
-          };
+            this.districtId = data.districtId;
+            this.blockId = data.id;
+            this.getDistricts();
+            this.getBlocks(data.districtId, data.id);
+          } else if (params.level === "cluster") {
+            this.districtHierarchy = {
+              distId: data.districtId,
+            };
 
-          this.blockHierarchy = {
-            distId: data.districtId,
-            blockId: data.blockId
-          };
+            this.blockHierarchy = {
+              distId: data.districtId,
+              blockId: data.blockId,
+            };
 
-          this.clusterHierarchy = {
-            distId: data.districtId,
-            blockId: data.blockId,
-            clusterId: data.id
-          };
+            this.clusterHierarchy = {
+              distId: data.districtId,
+              blockId: data.blockId,
+              clusterId: data.id,
+            };
 
-          this.districtId = data.blockHierarchy;
-          this.blockId = data.blockId;
-          this.clusterId = data.id;
-          this.getDistricts();
-          this.getBlocks(data.districtId);
-          this.getClusters(data.districtId, data.blockId, data.id);
+            this.districtId = data.blockHierarchy;
+            this.blockId = data.blockId;
+            this.clusterId = data.id;
+            this.getDistricts();
+            this.getBlocks(data.districtId);
+            this.getClusters(data.districtId, data.blockId, data.id);
+          }
+        } else {
+          this.districtWise();
         }
-      } else {
-        this.districtWise();
+      },
+      (err) => {
+        this.semesters = [];
+        this.commonService.loaderAndErr(this.semesters);
       }
-    }, err => {
-      this.semesters = [];
-      this.commonService.loaderAndErr(this.semesters);
-    });
+    );
   }
 
   getDistricts(): void {
-    this.service.all_dist_sem_data({ sem: this.semester }).subscribe(res => {
-      this.data = res;
-      // to show only in dropdowns
-      this.districtMarkers = this.data['sortedData'];
+    this.service.all_dist_sem_data({ sem: this.semester }).subscribe(
+      (res) => {
+        this.data = res;
+        // to show only in dropdowns
+        this.districtMarkers = this.data["sortedData"];
 
-      // sort the districtname alphabetically
-      this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
-    }, err => {
-      this.data = [];
-      this.commonService.loaderAndErr(this.data);
-    });
+        // sort the districtname alphabetically
+        this.districtMarkers.sort((a, b) =>
+          a.district_name > b.district_name
+            ? 1
+            : b.district_name > a.district_name
+            ? -1
+            : 0
+        );
+      },
+      (err) => {
+        this.data = [];
+        this.commonService.loaderAndErr(this.data);
+      }
+    );
   }
 
   getBlocks(distId, blockId?: any): void {
-    this.service.block_wise_sem_data(distId, { sem: this.semester }).subscribe(res => {
-      this.data = res;
-      this.blockMarkers = this.data['sortedData'];
-      if (blockId)
-        this.onBlockSelect(blockId);
-    });
+    this.service
+      .block_wise_sem_data(distId, { sem: this.semester })
+      .subscribe((res) => {
+        this.data = res;
+        this.blockMarkers = this.data["sortedData"];
+        if (blockId) this.onBlockSelect(blockId);
+      });
   }
 
   getClusters(distId, blockId, clusterId): void {
-    this.service.cluster_wise_sem_data(distId, blockId, { sem: this.semester }).subscribe(res => {
-      this.data = res;
-      this.clusterMarkers = this.data['sortedData'];
-      this.onClusterSelect(clusterId);
-    });
+    this.service
+      .cluster_wise_sem_data(distId, blockId, { sem: this.semester })
+      .subscribe((res) => {
+        this.data = res;
+        this.clusterMarkers = this.data["sortedData"];
+        this.onClusterSelect(clusterId);
+      });
   }
 
   homeClick(event) {
@@ -273,8 +296,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.levelWise = "district";
       this.districtMarkers = [];
       this.reportData = [];
-      this.schoolCount = '';
-      this.studentCount = '';
+      this.schoolCount = "";
+      this.studentCount = "";
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -290,38 +313,54 @@ export class SemViewComponent implements OnInit, OnDestroy {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_dist_sem_data({ sem: this.semester }).subscribe(res => {
-        this.data = res;
-        // to show only in dropdowns
-        this.districtMarkers = this.data['sortedData'];
+      this.myData = this.service
+        .all_dist_sem_data({ sem: this.semester })
+        .subscribe(
+          (res) => {
+            this.data = res;
+            // to show only in dropdowns
+            this.districtMarkers = this.data["sortedData"];
 
-        // options to set for markers in the map
-        let options = {
-          radius: 5,
-          fillOpacity: 1,
-          strokeWeight: 0.01,
-          mapZoom: this.commonService.zoomLevel,
-          centerLat: this.lat,
-          centerLng: this.lng,
-          level: 'district'
-        }
-        this.commonService.restrictZoom(globalMap);
-        globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
+            // options to set for markers in the map
+            let options = {
+              radius: 5,
+              fillOpacity: 1,
+              strokeWeight: 0.01,
+              mapZoom: this.commonService.zoomLevel,
+              centerLat: this.lat,
+              centerLng: this.lng,
+              level: "district",
+            };
+            this.commonService.restrictZoom(globalMap);
+            globalMap.setMaxBounds([
+              [options.centerLat - 4.5, options.centerLng - 6],
+              [options.centerLat + 3.5, options.centerLng + 6],
+            ]);
+            globalMap.setView(
+              new L.LatLng(options.centerLat, options.centerLng),
+              options.mapZoom
+            );
 
-        this.fileName = `${this.reportName}_${this.semester}nd_sem_allDistricts_${this.commonService.dateAndTime}`;
-        this.genericFun(this.data, options, this.fileName);
+            this.fileName = `${this.reportName}_${this.semester}nd_sem_allDistricts_${this.commonService.dateAndTime}`;
+            this.genericFun(this.data, options, this.fileName);
 
-        // sort the districtname alphabetically
-        this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
-      }, err => {
-        this.data = [];
-        this.commonService.loaderAndErr(this.data);
-      });
+            // sort the districtname alphabetically
+            this.districtMarkers.sort((a, b) =>
+              a.district_name > b.district_name
+                ? 1
+                : b.district_name > a.district_name
+                ? -1
+                : 0
+            );
+          },
+          (err) => {
+            this.data = [];
+            this.commonService.loaderAndErr(this.data);
+          }
+        );
       // adding the markers to the map layers
       globalMap.addLayer(this.layerMarkers);
-      document.getElementById('home').style.display = 'none';
-
+      document.getElementById("home").style.display = "none";
     } catch (e) {
       console.log(e);
     }
@@ -344,8 +383,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.reportData = [];
       // this.districtMarkers = [];
       this.blockMarkers = [];
-      this.schoolCount = '';
-      this.studentCount = '';
+      this.schoolCount = "";
+      this.studentCount = "";
 
       this.districtId = undefined;
       this.blockId = undefined;
@@ -363,41 +402,76 @@ export class SemViewComponent implements OnInit, OnDestroy {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_block_sem_data({ sem: this.semester }).subscribe(res => {
-        this.data = res
-        let options = {
-          mapZoom: this.commonService.zoomLevel,
-          centerLat: this.lat,
-          centerLng: this.lng,
-        }
-        if (this.data['sortedData'].length > 0) {
-          let result = this.data['sortedData']
-          this.blockMarkers = [];
-          this.blockMarkers = result;
-          let colors = this.commonService.getRelativeColors(this.blockMarkers, { value: 'semester_performance', report: 'reports' });
-          if (this.blockMarkers.length !== 0) {
-            for (let i = 0; i < this.blockMarkers.length; i++) {
-              var color = this.commonService.color(this.blockMarkers[i], 'semester_performance');
-              var markerIcon = this.commonService.initMarkers(this.blockMarkers[i].lat, this.blockMarkers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(this.blockMarkers[i], { value: 'semester_performance', report: 'reports' }, colors), 3.5, 1, 1, this.levelWise);
-              this.generateToolTip(markerIcon, this.blockMarkers[i], this.levelWise);
+      this.myData = this.service
+        .all_block_sem_data({ sem: this.semester })
+        .subscribe(
+          (res) => {
+            this.data = res;
+            let options = {
+              mapZoom: this.commonService.zoomLevel,
+              centerLat: this.lat,
+              centerLng: this.lng,
+            };
+            if (this.data["sortedData"].length > 0) {
+              let result = this.data["sortedData"];
+              this.blockMarkers = [];
+              this.blockMarkers = result;
+              let colors = this.commonService.getRelativeColors(
+                this.blockMarkers,
+                { value: "semester_performance", report: "reports" }
+              );
+              if (this.blockMarkers.length !== 0) {
+                for (let i = 0; i < this.blockMarkers.length; i++) {
+                  var color = this.commonService.color(
+                    this.blockMarkers[i],
+                    "semester_performance"
+                  );
+                  var markerIcon = this.commonService.initMarkers(
+                    this.blockMarkers[i].lat,
+                    this.blockMarkers[i].lng,
+                    this.selected == "absolute"
+                      ? color
+                      : this.commonService.relativeColorGredient(
+                          this.blockMarkers[i],
+                          { value: "semester_performance", report: "reports" },
+                          colors
+                        ),
+                    3.5,
+                    1,
+                    1,
+                    this.levelWise
+                  );
+                  this.generateToolTip(
+                    markerIcon,
+                    this.blockMarkers[i],
+                    this.levelWise
+                  );
+                }
+                this.commonService.restrictZoom(globalMap);
+                globalMap.setMaxBounds([
+                  [options.centerLat - 4.5, options.centerLng - 6],
+                  [options.centerLat + 3.5, options.centerLng + 6],
+                ]);
+                globalMap.setView(
+                  new L.LatLng(options.centerLat, options.centerLng),
+                  this.commonService.zoomLevel
+                );
+
+                this.schoolCount = this.data["totalValues"].totalSchools;
+                this.studentCount = this.data["totalValues"].totalStudents;
+
+                this.commonService.loaderAndErr(this.data);
+                this.changeDetection.markForCheck();
+              }
             }
-            this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
-
-            this.schoolCount = this.data['totalValues'].totalSchools;
-            this.studentCount = this.data['totalValues'].totalStudents;
-
+          },
+          (err) => {
+            this.data = [];
             this.commonService.loaderAndErr(this.data);
-            this.changeDetection.markForCheck();
           }
-        }
-      }, err => {
-        this.data = [];
-        this.commonService.loaderAndErr(this.data);
-      });
+        );
       globalMap.addLayer(this.layerMarkers);
-      document.getElementById('home').style.display = 'block';
+      document.getElementById("home").style.display = "block";
     } catch (e) {
       console.log(e);
     }
@@ -420,8 +494,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.blockMarkers = [];
       this.clusterMarkers = [];
       this.reportData = [];
-      this.schoolCount = '';
-      this.studentCount = '';
+      this.schoolCount = "";
+      this.studentCount = "";
 
       this.districtId = undefined;
       this.blockId = undefined;
@@ -441,42 +515,77 @@ export class SemViewComponent implements OnInit, OnDestroy {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_cluster_sem_data({ sem: this.semester }).subscribe(res => {
-        this.data = res
-        let options = {
-          mapZoom: this.commonService.zoomLevel,
-          centerLat: this.lat,
-          centerLng: this.lng,
-        }
-        if (this.data['sortedData'].length > 0) {
-          let result = this.data['sortedData']
-          this.clusterMarkers = [];
+      this.myData = this.service
+        .all_cluster_sem_data({ sem: this.semester })
+        .subscribe(
+          (res) => {
+            this.data = res;
+            let options = {
+              mapZoom: this.commonService.zoomLevel,
+              centerLat: this.lat,
+              centerLng: this.lng,
+            };
+            if (this.data["sortedData"].length > 0) {
+              let result = this.data["sortedData"];
+              this.clusterMarkers = [];
 
-          this.clusterMarkers = result;
-          let colors = this.commonService.getRelativeColors(this.clusterMarkers, { value: 'semester_performance', report: 'reports' });
-          if (this.clusterMarkers.length !== 0) {
-            for (let i = 0; i < this.clusterMarkers.length; i++) {
-              var color = this.commonService.color(this.clusterMarkers[i], 'semester_performance');
-              var markerIcon = this.commonService.initMarkers(this.clusterMarkers[i].lat, this.clusterMarkers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(this.clusterMarkers[i], { value: 'semester_performance', report: 'reports' }, colors), 1, 0.01, 0.5, this.levelWise);
-              this.generateToolTip(markerIcon, this.clusterMarkers[i], this.levelWise);
+              this.clusterMarkers = result;
+              let colors = this.commonService.getRelativeColors(
+                this.clusterMarkers,
+                { value: "semester_performance", report: "reports" }
+              );
+              if (this.clusterMarkers.length !== 0) {
+                for (let i = 0; i < this.clusterMarkers.length; i++) {
+                  var color = this.commonService.color(
+                    this.clusterMarkers[i],
+                    "semester_performance"
+                  );
+                  var markerIcon = this.commonService.initMarkers(
+                    this.clusterMarkers[i].lat,
+                    this.clusterMarkers[i].lng,
+                    this.selected == "absolute"
+                      ? color
+                      : this.commonService.relativeColorGredient(
+                          this.clusterMarkers[i],
+                          { value: "semester_performance", report: "reports" },
+                          colors
+                        ),
+                    1,
+                    0.01,
+                    0.5,
+                    this.levelWise
+                  );
+                  this.generateToolTip(
+                    markerIcon,
+                    this.clusterMarkers[i],
+                    this.levelWise
+                  );
+                }
+                this.commonService.restrictZoom(globalMap);
+                globalMap.setMaxBounds([
+                  [options.centerLat - 4.5, options.centerLng - 6],
+                  [options.centerLat + 3.5, options.centerLng + 6],
+                ]);
+                globalMap.setView(
+                  new L.LatLng(options.centerLat, options.centerLng),
+                  this.commonService.zoomLevel
+                );
+
+                this.schoolCount = this.data["totalValues"].totalSchools;
+                this.studentCount = this.data["totalValues"].totalStudents;
+
+                this.commonService.loaderAndErr(this.data);
+                this.changeDetection.markForCheck();
+              }
             }
-            this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
-
-            this.schoolCount = this.data['totalValues'].totalSchools;
-            this.studentCount = this.data['totalValues'].totalStudents;
-
+          },
+          (err) => {
+            this.data = [];
             this.commonService.loaderAndErr(this.data);
-            this.changeDetection.markForCheck();
           }
-        }
-      }, err => {
-        this.data = [];
-        this.commonService.loaderAndErr(this.data);
-      });
+        );
       globalMap.addLayer(this.layerMarkers);
-      document.getElementById('home').style.display = 'block';
+      document.getElementById("home").style.display = "block";
     } catch (e) {
       console.log(e);
     }
@@ -501,8 +610,8 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.clusterMarkers = [];
       this.schoolMarkers = [];
       this.reportData = [];
-      this.schoolCount = '';
-      this.studentCount = '';
+      this.schoolCount = "";
+      this.studentCount = "";
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -517,46 +626,80 @@ export class SemViewComponent implements OnInit, OnDestroy {
       if (this.myData) {
         this.myData.unsubscribe();
       }
-      this.myData = this.service.all_school_sem_data({ sem: this.semester }).subscribe(res => {
-        this.data = res
-        let options = {
-          mapZoom: this.commonService.zoomLevel,
-          centerLat: this.lat,
-          centerLng: this.lng,
-        }
-        this.schoolMarkers = [];
-        if (this.data['sortedData'].length > 0) {
-          let result = this.data['sortedData']
+      this.myData = this.service
+        .all_school_sem_data({ sem: this.semester })
+        .subscribe(
+          (res) => {
+            this.data = res;
+            let options = {
+              mapZoom: this.commonService.zoomLevel,
+              centerLat: this.lat,
+              centerLng: this.lng,
+            };
+            this.schoolMarkers = [];
+            if (this.data["sortedData"].length > 0) {
+              let result = this.data["sortedData"];
 
-          this.schoolMarkers = result;
-          let colors = this.commonService.getRelativeColors(this.schoolMarkers, { value: 'semester_performance', report: 'reports' });
-          if (this.schoolMarkers.length !== 0) {
-            for (let i = 0; i < this.schoolMarkers.length; i++) {
-              var color = this.commonService.color(this.schoolMarkers[i], 'semester_performance');
-              var markerIcon = this.commonService.initMarkers(this.schoolMarkers[i].lat, this.schoolMarkers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(this.schoolMarkers[i], { value: 'semester_performance', report: 'reports' }, colors), 0, 0, 0.3, this.levelWise);
-              this.generateToolTip(markerIcon, this.schoolMarkers[i], this.levelWise);
+              this.schoolMarkers = result;
+              let colors = this.commonService.getRelativeColors(
+                this.schoolMarkers,
+                { value: "semester_performance", report: "reports" }
+              );
+              if (this.schoolMarkers.length !== 0) {
+                for (let i = 0; i < this.schoolMarkers.length; i++) {
+                  var color = this.commonService.color(
+                    this.schoolMarkers[i],
+                    "semester_performance"
+                  );
+                  var markerIcon = this.commonService.initMarkers(
+                    this.schoolMarkers[i].lat,
+                    this.schoolMarkers[i].lng,
+                    this.selected == "absolute"
+                      ? color
+                      : this.commonService.relativeColorGredient(
+                          this.schoolMarkers[i],
+                          { value: "semester_performance", report: "reports" },
+                          colors
+                        ),
+                    0,
+                    0,
+                    0.3,
+                    this.levelWise
+                  );
+                  this.generateToolTip(
+                    markerIcon,
+                    this.schoolMarkers[i],
+                    this.levelWise
+                  );
+                }
+
+                globalMap.doubleClickZoom.enable();
+                globalMap.scrollWheelZoom.enable();
+                globalMap.setMaxBounds([
+                  [options.centerLat - 4.5, options.centerLng - 6],
+                  [options.centerLat + 3.5, options.centerLng + 6],
+                ]);
+                globalMap.setView(
+                  new L.LatLng(options.centerLat, options.centerLng),
+                  this.commonService.zoomLevel
+                );
+
+                this.schoolCount = this.data["totalValues"].totalSchools;
+                this.studentCount = this.data["totalValues"].totalStudents;
+
+                this.commonService.loaderAndErr(this.data);
+                this.changeDetection.markForCheck();
+              }
             }
-
-            globalMap.doubleClickZoom.enable();
-            globalMap.scrollWheelZoom.enable();
-            globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
-            globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), this.commonService.zoomLevel);
-
-
-            this.schoolCount = this.data['totalValues'].totalSchools;
-            this.studentCount = this.data['totalValues'].totalStudents;
-
+          },
+          (err) => {
+            this.data = [];
             this.commonService.loaderAndErr(this.data);
-            this.changeDetection.markForCheck();
           }
-        }
-      }, err => {
-        this.data = [];
-        this.commonService.loaderAndErr(this.data);
-      });
+        );
 
       globalMap.addLayer(this.layerMarkers);
-      document.getElementById('home').style.display = 'block';
+      document.getElementById("home").style.display = "block";
     } catch (e) {
       console.log(e);
     }
@@ -571,7 +714,7 @@ export class SemViewComponent implements OnInit, OnDestroy {
   }
   // to load all the blocks for selected district for state data on the map
   onDistrictSelect(districtId) {
-    // to clear the existing data on the map layer  
+    // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.commonService.errMsg();
@@ -582,54 +725,71 @@ export class SemViewComponent implements OnInit, OnDestroy {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.block_wise_sem_data(districtId, { sem: this.semester }).subscribe(res => {
-      this.data = res;
+    this.myData = this.service
+      .block_wise_sem_data(districtId, { sem: this.semester })
+      .subscribe(
+        (res) => {
+          this.data = res;
 
-      this.blockMarkers = this.data['sortedData'];
-      // to show and hide the dropdowns
-      this.blockHidden = false;
-      this.clusterHidden = true;
+          this.blockMarkers = this.data["sortedData"];
+          // to show and hide the dropdowns
+          this.blockHidden = false;
+          this.clusterHidden = true;
 
-      // set hierarchy values
-      this.districtHierarchy = {
-        distId: this.data['sortedData'][0].district_id,
-        districtName: this.data['sortedData'][0].district_name
-      }
+          // set hierarchy values
+          this.districtHierarchy = {
+            distId: this.data["sortedData"][0].district_id,
+            districtName: this.data["sortedData"][0].district_name,
+          };
 
-      this.districtId = districtId;
+          this.districtId = districtId;
 
-      // these are for showing the hierarchy names based on selection
-      this.skul = false;
-      this.dist = true;
-      this.blok = false;
-      this.clust = false;
+          // these are for showing the hierarchy names based on selection
+          this.skul = false;
+          this.dist = true;
+          this.blok = false;
+          this.clust = false;
 
-      // options to set for markers in the map
-      let options = {
-        radius: 3.5,
-        fillOpacity: 1,
-        strokeWeight: 0.01,
-        mapZoom: this.commonService.zoomLevel + 1,
-        centerLat: this.data['sortedData'][0].lat,
-        centerLng: this.data['sortedData'][0].lng,
-        level: 'block'
-      }
-      this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
-      this.genericFun(this.data, options, this.fileName);
-      // sort the blockname alphabetically
-      this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
-    }, err => {
-      this.blockHidden = true;
-      this.clusterHidden = true;
-      this.districtMarkers = [];
-      this.data = [];
-      this.commonService.loaderAndErr(this.data);
-    });
+          // options to set for markers in the map
+          let options = {
+            radius: 3.5,
+            fillOpacity: 1,
+            strokeWeight: 0.01,
+            mapZoom: this.commonService.zoomLevel + 1,
+            centerLat: this.data["sortedData"][0].lat,
+            centerLng: this.data["sortedData"][0].lng,
+            level: "block",
+          };
+          this.commonService.restrictZoom(globalMap);
+          globalMap.setMaxBounds([
+            [options.centerLat - 1.5, options.centerLng - 3],
+            [options.centerLat + 1.5, options.centerLng + 2],
+          ]);
+          globalMap.setView(
+            new L.LatLng(options.centerLat, options.centerLng),
+            options.mapZoom
+          );
+          this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
+          this.genericFun(this.data, options, this.fileName);
+          // sort the blockname alphabetically
+          this.blockMarkers.sort((a, b) =>
+            a.block_name > b.block_name
+              ? 1
+              : b.block_name > a.block_name
+              ? -1
+              : 0
+          );
+        },
+        (err) => {
+          this.blockHidden = true;
+          this.clusterHidden = true;
+          this.districtMarkers = [];
+          this.data = [];
+          this.commonService.loaderAndErr(this.data);
+        }
+      );
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
+    document.getElementById("home").style.display = "block";
   }
 
   blockSelect(event, blockId) {
@@ -665,62 +825,81 @@ export class SemViewComponent implements OnInit, OnDestroy {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.cluster_wise_sem_data(this.districtHierarchy.distId, blockId, { sem: this.semester }).subscribe(res => {
-      this.data = res;
-      this.clusterMarkers = this.data['sortedData'];
-      var myBlocks = [];
-      // to show and hide the dropdowns
-      this.blockHidden = false;
-      this.clusterHidden = false;
+    this.myData = this.service
+      .cluster_wise_sem_data(this.districtHierarchy.distId, blockId, {
+        sem: this.semester,
+      })
+      .subscribe(
+        (res) => {
+          this.data = res;
+          this.clusterMarkers = this.data["sortedData"];
+          var myBlocks = [];
+          // to show and hide the dropdowns
+          this.blockHidden = false;
+          this.clusterHidden = false;
 
-      this.blockMarkers.forEach(element => {
-        if (element.district_id === this.districtHierarchy.distId) {
-          myBlocks.push(element);
+          this.blockMarkers.forEach((element) => {
+            if (element.district_id === this.districtHierarchy.distId) {
+              myBlocks.push(element);
+            }
+          });
+          this.blockMarkers = myBlocks;
+
+          // set hierarchy values
+          this.blockHierarchy = {
+            distId: this.data["sortedData"][0].district_id,
+            districtName: this.data["sortedData"][0].district_name,
+            blockId: this.data["sortedData"][0].block_id,
+            blockName: this.data["sortedData"][0].block_name,
+          };
+          this.districtId = this.data["sortedData"][0].district_id;
+          this.blockId = blockId;
+
+          // these are for showing the hierarchy names based on selection
+          this.skul = false;
+          this.dist = false;
+          this.blok = true;
+          this.clust = false;
+
+          // options to set for markers in the map
+          let options = {
+            radius: 3.5,
+            fillOpacity: 1,
+            strokeWeight: 0.01,
+            mapZoom: this.commonService.zoomLevel + 3,
+            centerLat: this.data["sortedData"][0].lat,
+            centerLng: this.data["sortedData"][0].lng,
+            level: "cluster",
+          };
+          this.commonService.restrictZoom(globalMap);
+          globalMap.setMaxBounds([
+            [options.centerLat - 1.5, options.centerLng - 3],
+            [options.centerLat + 1.5, options.centerLng + 2],
+          ]);
+          globalMap.setView(
+            new L.LatLng(options.centerLat, options.centerLng),
+            options.mapZoom
+          );
+          this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
+          this.genericFun(this.data, options, this.fileName);
+          // sort the clusterName alphabetically
+          this.clusterMarkers.sort((a, b) =>
+            a.cluster_name > b.cluster_name
+              ? 1
+              : b.cluster_name > a.cluster_name
+              ? -1
+              : 0
+          );
+        },
+        (err) => {
+          this.districtMarkers = [];
+          this.blockMarkers = [];
+          this.data = [];
+          this.commonService.loaderAndErr(this.data);
         }
-      });
-      this.blockMarkers = myBlocks;
-
-      // set hierarchy values
-      this.blockHierarchy = {
-        distId: this.data['sortedData'][0].district_id,
-        districtName: this.data['sortedData'][0].district_name,
-        blockId: this.data['sortedData'][0].block_id,
-        blockName: this.data['sortedData'][0].block_name
-      }
-      this.districtId = this.data['sortedData'][0].district_id;
-      this.blockId = blockId;
-
-      // these are for showing the hierarchy names based on selection
-      this.skul = false;
-      this.dist = false;
-      this.blok = true;
-      this.clust = false;
-
-      // options to set for markers in the map
-      let options = {
-        radius: 3.5,
-        fillOpacity: 1,
-        strokeWeight: 0.01,
-        mapZoom: this.commonService.zoomLevel + 3,
-        centerLat: this.data['sortedData'][0].lat,
-        centerLng: this.data['sortedData'][0].lng,
-        level: 'cluster'
-      }
-      this.commonService.restrictZoom(globalMap);
-      globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-      globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-      this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
-      this.genericFun(this.data, options, this.fileName);
-      // sort the clusterName alphabetically
-      this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
-    }, err => {
-      this.districtMarkers = [];
-      this.blockMarkers = [];
-      this.data = [];
-      this.commonService.loaderAndErr(this.data);
-    });
+      );
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
+    document.getElementById("home").style.display = "block";
   }
 
   clusterSelect(event, clusterId) {
@@ -754,101 +933,142 @@ export class SemViewComponent implements OnInit, OnDestroy {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.all_block_sem_data({ sem: this.semester }).subscribe(result => {
-      this.myData = this.service.school_wise_sem_data(this.blockHierarchy.distId, this.blockHierarchy.blockId, clusterId, { sem: this.semester }).subscribe(res => {
-        this.data = res;
-        this.schoolMarkers = this.data['sortedData'];
+    this.myData = this.service
+      .all_block_sem_data({ sem: this.semester })
+      .subscribe(
+        (result) => {
+          this.myData = this.service
+            .school_wise_sem_data(
+              this.blockHierarchy.distId,
+              this.blockHierarchy.blockId,
+              clusterId,
+              { sem: this.semester }
+            )
+            .subscribe(
+              (res) => {
+                this.data = res;
+                this.schoolMarkers = this.data["sortedData"];
 
-        this.blockHidden = false;
-        this.clusterHidden = false;
+                this.blockHidden = false;
+                this.clusterHidden = false;
 
-        var markers = result['sortedData'];
-        var myBlocks = [];
-        markers.forEach(element => {
-          if (element.district_id === this.blockHierarchy.distId) {
-            myBlocks.push(element);
-          }
-        });
-        this.blockMarkers = myBlocks;
+                var markers = result["sortedData"];
+                var myBlocks = [];
+                markers.forEach((element) => {
+                  if (element.district_id === this.blockHierarchy.distId) {
+                    myBlocks.push(element);
+                  }
+                });
+                this.blockMarkers = myBlocks;
 
-        var myCluster = [];
-        this.clusterMarkers.forEach(element => {
-          if (element.block_id === this.blockHierarchy.blockId) {
-            myCluster.push(element);
-          }
-        });
-        this.clusterMarkers = myCluster;
+                var myCluster = [];
+                this.clusterMarkers.forEach((element) => {
+                  if (element.block_id === this.blockHierarchy.blockId) {
+                    myCluster.push(element);
+                  }
+                });
+                this.clusterMarkers = myCluster;
 
-        // set hierarchy values
-        this.clusterHierarchy = {
-          distId: this.data['sortedData'][0].district_id,
-          districtName: this.data['sortedData'][0].district_name,
-          blockId: this.data['sortedData'][0].block_id,
-          blockName: this.data['sortedData'][0].block_name,
-          clusterId: this.data['sortedData'][0].cluster_id,
-          clusterName: this.data['sortedData'][0].cluster_name,
+                // set hierarchy values
+                this.clusterHierarchy = {
+                  distId: this.data["sortedData"][0].district_id,
+                  districtName: this.data["sortedData"][0].district_name,
+                  blockId: this.data["sortedData"][0].block_id,
+                  blockName: this.data["sortedData"][0].block_name,
+                  clusterId: this.data["sortedData"][0].cluster_id,
+                  clusterName: this.data["sortedData"][0].cluster_name,
+                };
+
+                this.districtHierarchy = {
+                  distId: this.data["sortedData"][0].district_id,
+                };
+
+                this.districtId = this.data["sortedData"][0].district_id;
+                this.blockId = this.data["sortedData"][0].block_id;
+                this.clusterId = clusterId;
+
+                // these are for showing the hierarchy names based on selection
+                this.skul = false;
+                this.dist = false;
+                this.blok = false;
+                this.clust = true;
+
+                // options to set for markers in the map
+                let options = {
+                  radius: 3.5,
+                  fillOpacity: 1,
+                  strokeWeight: 0.01,
+                  mapZoom: this.commonService.zoomLevel + 5,
+                  centerLat: this.data["sortedData"][0].lat,
+                  centerLng: this.data["sortedData"][0].lng,
+                  level: "school",
+                };
+                globalMap.doubleClickZoom.enable();
+                globalMap.scrollWheelZoom.enable();
+                globalMap.setMaxBounds([
+                  [options.centerLat - 1.5, options.centerLng - 3],
+                  [options.centerLat + 1.5, options.centerLng + 2],
+                ]);
+                globalMap.setView(
+                  new L.LatLng(options.centerLat, options.centerLng),
+                  options.mapZoom
+                );
+                this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
+                this.genericFun(this.data, options, this.fileName);
+              },
+              (err) => {
+                this.blockHidden = true;
+                this.clusterHidden = true;
+                this.districtMarkers = [];
+                this.blockMarkers = [];
+                this.clusterMarkers = [];
+                this.data = [];
+                this.commonService.loaderAndErr(this.data);
+              }
+            );
+        },
+        (err) => {
+          this.data = [];
+          this.commonService.loaderAndErr(this.data);
         }
-
-        this.districtHierarchy = {
-          distId: this.data['sortedData'][0].district_id
-        }
-
-        this.districtId = this.data['sortedData'][0].district_id;
-        this.blockId = this.data['sortedData'][0].block_id;
-        this.clusterId = clusterId;
-
-        // these are for showing the hierarchy names based on selection
-        this.skul = false;
-        this.dist = false;
-        this.blok = false;
-        this.clust = true;
-
-        // options to set for markers in the map
-        let options = {
-          radius: 3.5,
-          fillOpacity: 1,
-          strokeWeight: 0.01,
-          mapZoom: this.commonService.zoomLevel + 5,
-          centerLat: this.data['sortedData'][0].lat,
-          centerLng: this.data['sortedData'][0].lng,
-          level: "school"
-        }
-        globalMap.doubleClickZoom.enable();
-        globalMap.scrollWheelZoom.enable();
-        globalMap.setMaxBounds([[options.centerLat - 1.5, options.centerLng - 3], [options.centerLat + 1.5, options.centerLng + 2]]);
-        globalMap.setView(new L.LatLng(options.centerLat, options.centerLng), options.mapZoom);
-        this.fileName = `${this.reportName}_${this.semester}nd_sem_${options.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
-        this.genericFun(this.data, options, this.fileName);
-      }, err => {
-        this.blockHidden = true;
-        this.clusterHidden = true;
-        this.districtMarkers = [];
-        this.blockMarkers = [];
-        this.clusterMarkers = [];
-        this.data = [];
-        this.commonService.loaderAndErr(this.data);
-      });
-    }, err => {
-      this.data = [];
-      this.commonService.loaderAndErr(this.data);
-    });
+      );
     globalMap.addLayer(this.layerMarkers);
-    document.getElementById('home').style.display = 'block';
+    document.getElementById("home").style.display = "block";
   }
 
   // common function for all the data to show in the map
   genericFun(data, options, fileName) {
     this.reportData = [];
-    this.schoolCount = '';
-    this.studentCount = '';
+    this.schoolCount = "";
+    this.studentCount = "";
 
-    if (data['sortedData'].length > 0) {
-      this.markers = data['sortedData']
-      let colors = this.commonService.getRelativeColors(this.markers, { value: 'semester_performance', report: 'reports' });
+    if (data["sortedData"].length > 0) {
+      this.markers = data["sortedData"];
+      let colors = this.commonService.getRelativeColors(this.markers, {
+        value: "semester_performance",
+        report: "reports",
+      });
       // attach values to markers
       for (var i = 0; i < this.markers.length; i++) {
-        var color = this.commonService.color(this.markers[i], 'semester_performance');
-        var markerIcon = this.commonService.initMarkers(this.markers[i].lat, this.markers[i].lng, this.selected == 'absolute' ? color : this.commonService.relativeColorGredient(this.markers[i], { value: 'semester_performance', report: 'reports' }, colors), options.radius, options.strokeWeight, 1, options.level);
+        var color = this.commonService.color(
+          this.markers[i],
+          "semester_performance"
+        );
+        var markerIcon = this.commonService.initMarkers(
+          this.markers[i].lat,
+          this.markers[i].lng,
+          this.selected == "absolute"
+            ? color
+            : this.commonService.relativeColorGredient(
+                this.markers[i],
+                { value: "semester_performance", report: "reports" },
+                colors
+              ),
+          options.radius,
+          options.strokeWeight,
+          1,
+          options.level
+        );
 
         // data to show on the tooltip for the desired levels
         if (options.level) {
@@ -860,22 +1080,22 @@ export class SemViewComponent implements OnInit, OnDestroy {
       this.commonService.loaderAndErr(this.data);
       this.changeDetection.markForCheck();
     }
-    this.schoolCount = this.data['totalValues'].totalSchools;
-    this.studentCount = this.data['totalValues'].totalStudents;
+    this.schoolCount = this.data["totalValues"].totalSchools;
+    this.studentCount = this.data["totalValues"].totalStudents;
   }
 
   popups(markerIcon, markers, level) {
     for (var i = 0; i < this.markers.length; i++) {
-      markerIcon.on('mouseover', function (e) {
+      markerIcon.on("mouseover", function (e) {
         this.openPopup();
       });
-      markerIcon.on('mouseout', function (e) {
+      markerIcon.on("mouseout", function (e) {
         this.closePopup();
       });
 
       this.layerMarkers.addLayer(markerIcon);
       if (level != "school") {
-        markerIcon.on('click', this.onClick_Marker, this)
+        markerIcon.on("click", this.onClick_Marker, this);
       }
       markerIcon.myJsonData = markers;
     }
@@ -886,12 +1106,12 @@ export class SemViewComponent implements OnInit, OnDestroy {
     this.popups(markerIcon, markers, levelWise);
     var details = {};
     var orgObject = {};
-    Object.keys(markers).forEach(key => {
+    Object.keys(markers).forEach((key) => {
       if (key !== "lat") {
         details[key] = markers[key];
       }
     });
-    Object.keys(details).forEach(key => {
+    Object.keys(details).forEach((key) => {
       if (key !== "lng") {
         orgObject[key] = details[key];
       }
@@ -899,15 +1119,37 @@ export class SemViewComponent implements OnInit, OnDestroy {
 
     this.reportData.push(orgObject);
 
-    var yourData = this.commonService.getInfoFrom(orgObject, "semester_performance", levelWise, "std-attd", undefined, undefined).join(" <br>");
-    yourData = [yourData.slice(0, yourData.search("Grade")), '<br>', yourData.slice(yourData.search("Grade"))].join('');
-    yourData = [yourData.slice(0, yourData.search("Number")), '<br>', yourData.slice(yourData.search("Number"))].join('')
-    yourData = [yourData.slice(0, yourData.search("% ")), yourData.slice(yourData.search("% "))].join('');
-    const popup = R.responsivePopup({ hasTip: false, autoPan: false, offset: [15, 20] }).setContent(
-      yourData);
+    var yourData = this.commonService
+      .getInfoFrom(
+        orgObject,
+        "semester_performance",
+        levelWise,
+        "std-attd",
+        undefined,
+        undefined
+      )
+      .join(" <br>");
+    yourData = [
+      yourData.slice(0, yourData.search("Grade")),
+      "<br>",
+      yourData.slice(yourData.search("Grade")),
+    ].join("");
+    yourData = [
+      yourData.slice(0, yourData.search("Number")),
+      "<br>",
+      yourData.slice(yourData.search("Number")),
+    ].join("");
+    yourData = [
+      yourData.slice(0, yourData.search("% ")),
+      yourData.slice(yourData.search("% ")),
+    ].join("");
+    const popup = R.responsivePopup({
+      hasTip: false,
+      autoPan: false,
+      offset: [15, 20],
+    }).setContent(yourData);
     markerIcon.addTo(globalMap).bindPopup(popup);
   }
-
 
   //Showing tooltips on markers on mouse hover...
   onMouseOver(m, infowindow) {
@@ -925,29 +1167,29 @@ export class SemViewComponent implements OnInit, OnDestroy {
   // drilldown/ click functionality on markers
   onClick_Marker(event) {
     var eventType = event.type;
-    this.btnId = 'marker';
+    this.btnId = "marker";
     var date = new Date();
     this.trackInteract(date, this.btnId, eventType);
 
     var data = event.target.myJsonData;
     if (data.district_id && !data.block_id && !data.cluster_id) {
       this.stateLevel = 1;
-      this.onDistrictSelect(data.district_id)
+      this.onDistrictSelect(data.district_id);
     }
     if (data.district_id && data.block_id && !data.cluster_id) {
       this.stateLevel = 1;
       this.districtHierarchy = {
-        distId: data.district_id
-      }
-      this.onBlockSelect(data.block_id)
+        distId: data.district_id,
+      };
+      this.onBlockSelect(data.block_id);
     }
     if (data.district_id && data.block_id && data.cluster_id) {
       this.stateLevel = 1;
       this.blockHierarchy = {
         distId: data.district_id,
-        blockId: data.block_id
-      }
-      this.onClusterSelect(data.cluster_id)
+        blockId: data.block_id,
+      };
+      this.onClusterSelect(data.cluster_id);
     }
   }
 
@@ -957,12 +1199,18 @@ export class SemViewComponent implements OnInit, OnDestroy {
     // this.btnId = event.target.id;
     // var date = new Date();
     // this.trackInteract(date, this.btnId, eventType);
-    this.reportData.forEach(element => {
+    this.reportData.forEach((element) => {
       if (element.number_of_students != undefined) {
-        element['number_of_students'] = element.number_of_students.replace(/\,/g, '');
+        element["number_of_students"] = element.number_of_students.replace(
+          /\,/g,
+          ""
+        );
       }
       if (element.number_of_schools != undefined) {
-        element['number_of_schools'] = element.number_of_schools.replace(/\,/g, '');
+        element["number_of_schools"] = element.number_of_schools.replace(
+          /\,/g,
+          ""
+        );
       }
     });
     this.commonService.download(this.fileName, this.reportData);
@@ -985,22 +1233,20 @@ export class SemViewComponent implements OnInit, OnDestroy {
     let data: any = {};
 
     if (this.dist) {
-      data.level = 'district';
+      data.level = "district";
       data.value = this.districtHierarchy.distId;
     } else if (this.blok) {
-      data.level = 'block';
+      data.level = "block";
       data.value = this.blockHierarchy.blockId;
     } else if (this.clust) {
-      data.level = 'cluster';
+      data.level = "cluster";
       data.value = this.clusterHierarchy.clusterId;
     } else {
-      data.level = 'state';
-      data.value = null
+      data.level = "state";
+      data.value = null;
     }
 
-    sessionStorage.setItem('health-card-info', JSON.stringify(data));
-    this._router.navigate(['/healthCard']);
+    sessionStorage.setItem("health-card-info", JSON.stringify(data));
+    this._router.navigate(["/progressCard"]);
   }
-
-
 }

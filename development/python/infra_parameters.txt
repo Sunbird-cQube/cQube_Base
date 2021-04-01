@@ -57,5 +57,17 @@ case when HaveLibrary =TRUE then 1 else 0 end as library from flowfile''',
 "update_infra_score_master":"select update_infra_score();",
 "update_infra_new_score":"select insert_infra_agg();",
 "infra_sum_of_dup":"select sum(num_of_times) from flowfile",
-"update_infra_new_score_pre_qry":'''Drop view if exists insert_infra_agg_view cascade;'''
+"update_infra_new_score_pre_qry":'''Drop view if exists insert_infra_agg_view cascade;''',
+"infra_district_pre_func":""" select infra_district_mgt_reports('water','toilet');""",
+"infra_block_pre_func":"""select infra_block_mgt_reports('water','toilet');""",
+"infra_cluster_pre_func":"""select infra_cluster_mgt_reports('water','toilet');""",
+"infra_school_pre_func":"""select infra_school_mgt_reports('water','toilet');""",
+"infra_district_map_mgt_select_query ":"""select * from infra_district_map_mgt_view;""",
+"infra_district_table_mgt_select_query":""" select * from infra_district_table_mgt_view;""",
+"infra_block_map_mgt_select_query":"""select * from infra_block_map_mgt_view;""",
+"infra_block_table_mgt_select_query":"""select * from infra_block_table_mgt_view;""",
+"infra_cluster_map_mgt_select_query":""" select * from infra_cluster_map_mgt_view;""",
+"infra_cluster_table_mgt_select_query":"""select * from infra_cluster_table_mgt_view;""",
+"infra_school_map_mgt_select_query":"""select * from infra_school_map_mgt_view;""",
+"infra_school_table_mgt_select_query ":"""select * from infra_school_table_mgt_view;"""
 }

@@ -10,21 +10,49 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         var grade = req.body.data.grade;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
+        var academic_year = req.body.data.year;
+        var month = req.body.data.month;
+        var management = req.body.data.management;
+        var category = req.body.data.category;
         var fileName;
         var clusterData = {}
 
-        if (period == '') {
-            if (grade) {
-                fileName = `${report}/all/cluster/${grade}.json`;
+        if (management != 'overall' && category == 'overall') {
+            if (report == 'pat') {
+                if (grade) {
+                    if (period != 'select_month') {
+                        fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/cluster/${grade}.json`;
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/cluster/${grade}.json`;
+                    }
+                } else {
+                    if (period != 'select_month') {
+                        fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/cluster.json`;
+                    } else {
+                        fileName = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/cluster.json`;
+                    }
+                }
             } else {
-                fileName = `${report}/all/${report}_cluster.json`;
+                if (grade) {
+                    fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/cluster/${grade}.json`;
+                } else {
+                    fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/cluster.json`;
+                }
             }
         } else {
             if (report == 'pat') {
                 if (grade) {
-                    fileName = `${report}/${period}/cluster/${grade}.json`;
+                    if (period != 'select_month') {
+                        fileName = `${report}/${period}/cluster/${grade}.json`;
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/cluster/${grade}.json`;
+                    }
                 } else {
-                    fileName = `${report}/${period}/${report}_cluster.json`;
+                    if (period != 'select_month') {
+                        fileName = `${report}/${period}/${report}_cluster.json`;
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/cluster/cluster.json`;
+                    }
                 }
             } else {
                 if (grade) {
@@ -38,7 +66,8 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         clusterData = await s3File.readS3File(fileName);
         var mydata = clusterData.data;
         logger.info('---PAT cluster wise api response sent---');
-        res.status(200).send({ data: mydata, footer: clusterData.AllClustersFooter });
+        // , footer: clusterData.AllClustersFooter
+        res.status(200).send({ data: mydata });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -51,13 +80,29 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         var period = req.body.data.period;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
+        var academic_year = req.body.data.year;
+        var month = req.body.data.month;
+        var management = req.body.data.management;
+        var category = req.body.data.category;
         var fileName;
 
-        if (period == '') {
-            fileName = `${report}/all/${report}_cluster.json`;
+        if (management != 'overall' && category == 'overall') {
+            if (report == 'pat') {
+                if (period != 'select_month') {
+                    fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/cluster.json`;
+                } else {
+                    fileName = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/cluster.json`;
+                }
+            } else {
+                fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/cluster.json`;
+            }
         } else {
             if (report == 'pat') {
-                fileName = `${report}/${period}/${report}_cluster.json`;
+                if (period != 'select_month') {
+                    fileName = `${report}/${period}/${report}_cluster.json`;
+                } else {
+                    fileName = `${report}/${academic_year}/${month}/cluster/cluster.json`;
+                }
             } else {
                 fileName = `${report}/${period}/${semester}/${report}_cluster.json`;
             }
@@ -70,10 +115,21 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
 
         let filterData = clusterData.data.filter(obj => {
             return (obj.Details.district_id == distId && obj.Details.block_id == blockId)
+        });
+        var grades = [];
+        filterData.map(item => {
+            Object.keys(item.Grades).map(grade => {
+                grades.push(grade);
+            })
+        });
+        var uniqueGrades = [];
+        [...new Set(grades)].map(grade => {
+            uniqueGrades.push({ grade: grade });
         })
         let mydata = filterData;
         logger.info('---PAT clusterperBlock api response sent---');
-        res.status(200).send({ data: mydata, footer: clusterData.footer[`${blockId}`] });
+        // , footer: clusterData.footer[`${blockId}`] 
+        res.status(200).send({ data: mydata, grades: uniqueGrades });
 
 
     } catch (e) {

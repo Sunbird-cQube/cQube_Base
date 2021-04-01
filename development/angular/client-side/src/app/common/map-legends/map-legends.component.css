@@ -1,0 +1,56 @@
+.legends{
+    width: 42%;
+    height: 5vh;
+    font-size: 11px;
+    margin:0.4vh;
+    padding-top: 0.7vh;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+#legend{
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+@media screen and (min-width: 2560px) {
+   .legends{
+    width: 42%;
+    height: 5vh;
+    font-size: 24px !important;
+    margin:0.9vh !important;
+    padding-top: 1vh !important;
+    text-align: center;
+    border-radius: 15px !important;
+    font-weight: bold;
+}
+
+#legend{
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+}
+
+@media screen and (min-width: 1920px) {
+   .legends{
+        width: 42%;
+        height: 5vh;
+        font-size: 20px;
+        margin:0.7vh;
+        padding-top: 0.8vh;
+        text-align: center;
+        border-radius: 10px;
+        font-weight: bold;
+    }
+    
+    #legend{
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+    }
+}

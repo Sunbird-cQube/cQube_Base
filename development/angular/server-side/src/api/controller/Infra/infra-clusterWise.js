@@ -4,10 +4,18 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allClusterWise', auth.authController, async (req, res) => {
+router.post('/allClusterWise', auth.authController, async(req, res) => {
     try {
         logger.info('---Infra all cluster wise api ---');
-        let fileName = `infra/infra_cluster_table.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `infra/school_management_category/overall_category/${management}/infra_cluster_table.json`;
+        } else {
+            fileName = `infra/infra_cluster_table.json`
+        }
         var data = await s3File.readS3File(fileName);
 
         logger.info('---Infra all cluster wise response sent---');
@@ -19,11 +27,19 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
     }
 });
 
-router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
+router.post('/clusterWise/:distId/:blockId', auth.authController, async(req, res) => {
     try {
         logger.info('---Infra cluster per block api ---');
         var blockId = req.params.blockId;
-        let fileName = `infra/infra_cluster_table.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `infra/school_management_category/overall_category/${management}/infra_cluster_table.json`;
+        } else {
+            fileName = `infra/infra_cluster_table.json`
+        }
         var clusterData = await s3File.readS3File(fileName);
 
         let clusterFilterData = clusterData.filter(obj => {

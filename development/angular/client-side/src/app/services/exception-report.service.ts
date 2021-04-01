@@ -48,15 +48,15 @@ export class ExceptionReportService {
   }
 
   //missing school data api
-  school_invalid() {
+  school_invalid(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.get(`${this.baseUrl}/school_invalid/school_invalid_data`);
+    return this.http.post(`${this.baseUrl}/school_invalid/school_invalid_data`, data);
   }
 
 
-  semExceptionMetaData() {
+  semExceptionMetaData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/sem/metadata`, {});
+    return this.http.post(`${this.baseUrl}/patExcetpion/getSemesters`, data);
   }
 
   patExceptionDistWise(data) {
@@ -134,7 +134,7 @@ export class ExceptionReportService {
 
   gradeMetaData(data) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/patExcetpion/grades`, { data });
+    return this.http.post(`${this.baseUrl}/patExcetpion/grades`, data);
   }
 
 

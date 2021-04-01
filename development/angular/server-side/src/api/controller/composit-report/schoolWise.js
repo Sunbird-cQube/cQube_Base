@@ -6,7 +6,15 @@ const s3File = require('../../lib/reads3File');
 router.post('/schoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('---composite report all school wise api ---');
-        let fileName = `composite/comp_school.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `composite/school_management_category/overall_category/${management}/comp_school.json`
+        }else{
+            fileName = `composite/comp_school.json`
+        }
         var data = await s3File.readS3File(fileName);
 
         logger.info('---composite report all school wise response sent---');
@@ -24,7 +32,15 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         var distId = req.params.distId;
         var blockId = req.params.blockId;
         var clusterId = req.params.clusterId;
-        let fileName = `composite/comp_school.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `composite/school_management_category/overall_category/${management}/comp_school.json`
+        }else{
+            fileName = `composite/comp_school.json`
+        }
         var schoolData = await s3File.readS3File(fileName);
 
         let schoolFilterData = schoolData.filter(obj => {

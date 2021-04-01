@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/auth.guard';
 import { MissingDataComponent } from './missing-data/missing-data.component';
-import { SemesterExceptionComponent } from './semester-exception/semester-exception.component';
+import { SemesterExceptionComponent } from './sat-exception/semester-exception.component';
 import { FormsModule } from '@angular/forms';
 import { PATExceptionComponent } from './pat-exception/pat-exception.component';
 import { StudentAttendanceExceptionComponent } from './student-attendance-exception/student-attendance-exception.component';
