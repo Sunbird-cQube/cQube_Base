@@ -110,6 +110,11 @@ drop view if exists semester_grade_cluster_last7 cascade;
 drop view if exists semester_grade_school_last7 cascade;
 
 
+drop view if exists composite_mgt_district;
+drop view if exists composite_mgt_block;
+drop view if exists composite_mgt_cluster;
+drop view if exists composite_mgt_school;
+
 /* Create infra tables */
 
 CREATE OR REPLACE FUNCTION create_infra_table()
@@ -19376,7 +19381,7 @@ on conflict on constraint composite_config_pkey do nothing;
 
 insert into composite_config(template,status,category,select_query,table_join) values('diksha',true,'district_mgt','dik.Total_content_plays_textbook,
 	dik.Total_content_plays_course,dik.Total_content_plays_all',
-		'inner join (select district_id,sum(textbook) as Total_content_plays_textbook,
+		'left join (select district_id,sum(textbook) as Total_content_plays_textbook,
 sum(course) as Total_content_plays_course,sum(textbook+course)as Total_content_plays_all from 
 (select district_id,(case when lower(collection_type)=''textbook'' then sum(total_count) else 0 end)as textbook,
 	(case when lower(collection_type)=''course'' then sum(total_count) else 0 end)as course
@@ -19425,7 +19430,7 @@ insert into composite_config(template,status,category,select_query,table_join) v
 on stat.block_id=pat.block_id and stat.school_management_type=pat.school_management_type')
 on conflict on constraint composite_config_pkey do nothing;
 
-insert into composite_config(template,status,category,select_query,table_join) values('sat',true,'block_mgt','sat.Semester_exam_performance',
+insert into composite_config(template,status,category,select_query,table_join) values('semester',true,'block_mgt','sat.Semester_exam_performance',
 		'left join (select block_id,block_performance as Semester_exam_performance,school_management_type from semester_exam_block_mgmt_all where school_management_type is not null) as sat 
 on stat.block_id=sat.block_id and stat.school_management_type=sat.school_management_type')
 on conflict on constraint composite_config_pkey do nothing;
@@ -19464,7 +19469,7 @@ insert into composite_config(template,status,category,select_query,table_join) v
 on stat.cluster_id=pat.cluster_id and stat.school_management_type=pat.school_management_type')
 on conflict on constraint composite_config_pkey do nothing;
 
-insert into composite_config(template,status,category,select_query,table_join) values('sat',true,'cluster_mgt','sat.semester_exam_performance',
+insert into composite_config(template,status,category,select_query,table_join) values('semester',true,'cluster_mgt','sat.semester_exam_performance',
 		'left join (select cluster_id,cluster_performance as semester_exam_performance,school_management_type from semester_exam_cluster_mgmt_all where school_management_type is not null) as sat 
 on stat.cluster_id=sat.cluster_id and stat.school_management_type=sat.school_management_type')
 on conflict on constraint composite_config_pkey do nothing;
@@ -19503,7 +19508,7 @@ insert into composite_config(template,status,category,select_query,table_join) v
 on stat.school_id=pat.school_id and stat.school_management_type=pat.school_management_type')
 on conflict on constraint composite_config_pkey do nothing;
 
-insert into composite_config(template,status,category,select_query,table_join) values('sat',true,'school_mgt','sat.Semester_exam_performance',
+insert into composite_config(template,status,category,select_query,table_join) values('semester',true,'school_mgt','sat.Semester_exam_performance',
 		'left join (select school_id,school_performance as semester_exam_performance,school_management_type from semester_exam_school_mgmt_all where school_management_type is not null) as sat 
 on stat.school_id=sat.school_id and stat.school_management_type=sat.school_management_type')
 on conflict on constraint composite_config_pkey do nothing;
