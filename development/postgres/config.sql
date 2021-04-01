@@ -703,8 +703,6 @@ select ''[
           "infra_score": "[&1].infra_score.value",
           "average_value": "[&1].average.value",
           "average_percent": "[&1].average.percent",
-          "school_management_type": "[&1].school_management_type",
-          "school_category": "[&1].school_category",
 '||infra_table_value_cols||','||infra_table_percent_cols||'         
         }
       }
@@ -727,8 +725,6 @@ as select ''
           "infra_score": "[&1].infra_score.value",
           "average_value": "[&1].average.value",
           "average_percent": "[&1].average.percent",
-          "school_management_type": "[&1].school_management_type",
-          "school_category": "[&1].school_category",
 '||infra_table_value_cols||','||infra_table_percent_cols||'
         }
       }
@@ -753,8 +749,6 @@ as select ''
           "infra_score": "[&1].infra_score.value",
           "average_value": "[&1].average.value",
           "average_percent": "[&1].average.percent",
-          "school_management_type": "[&1].school_management_type",
-          "school_category": "[&1].school_category",
 '||infra_table_value_cols||','||infra_table_percent_cols||'
         }
       }
@@ -781,8 +775,6 @@ as select ''
           "infra_score": "[&1].infra_score.value",
           "average_value": "[&1].average.value",
           "average_percent": "[&1].average.percent",
-          "school_management_type": "[&1].school_management_type",
-          "school_category": "[&1].school_category",
 '||infra_table_value_cols||','||infra_table_percent_cols||'        }
       }
     }
@@ -802,8 +794,6 @@ select ''
               "district_longitude": "data.[&1].details.longitude",
               "district_name": "data.[&1].details.district_name",
               "infra_score": "data.[&1].details.infrastructure_score",
-              "school_management_type": "[&1].school_management_type",
-              "school_category": "[&1].school_category",
 			'||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
               
               "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
@@ -836,8 +826,6 @@ as select ''
         "infra_score": "data.[&1].details.infrastructure_score",
         "average_value": "data.[&1].details.average_value",
         "average_percent": "data.[&1].details.average_percent",
-        "school_management_type": "[&1].school_management_type",
-        "school_category": "[&1].school_category",
               '||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
         "total_schools": "data.[&1].total_schools",
         "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
@@ -895,8 +883,6 @@ as select ''
         "infra_score": "data.[&1].details.infrastructure_score",
         "average_value": "data.[&1].details.average_value",
         "average_percent": "data.[&1].details.average_percent",
-        "school_management_type": "[&1].school_management_type",
-        "school_category": "[&1].school_category",
 '||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
         "total_schools": "data.[&1].total_schools",
         "@total_schools_data_received": "data.[&1].details.total_schools_data_received",
@@ -964,8 +950,6 @@ as select ''
 				"infra_score": "data.[&1].details.infrastructure_score",
 				"average_value": "data.[&1].details.average_value",
 				"average_percent": "data.[&1].details.average_percent",
-                "school_management_type": "[&1].school_management_type",
-                "school_category": "[&1].school_category",
 '||infra_map_percent_cols||','||composite_inframap_1_cols||','||composite_inframap_2_cols||',
 				"total_schools": "data.[&1].total_schools",
 				"@total_schools_data_received": "data.[&1].details.total_schools_data_received",
