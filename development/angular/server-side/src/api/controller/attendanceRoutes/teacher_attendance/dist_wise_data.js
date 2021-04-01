@@ -34,7 +34,7 @@ router.post('/distWise', auth.authController, async function(req, res) {
             if (timePeriod != null) {
                 fileName = `teacher_attendance/${timePeriod}/district.json`;
             } else {
-                fileName = `teacher_attendance/district_attendance_opt_json_${year}_${month}.json`;
+                fileName = `teacher_attendance/district_${year}_${month}.json`;
             }
         }
 
