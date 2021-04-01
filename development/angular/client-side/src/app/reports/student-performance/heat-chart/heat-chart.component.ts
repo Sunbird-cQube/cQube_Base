@@ -625,7 +625,7 @@ export class HeatChartComponent implements OnInit {
     this.levelWiseFilter();
   }
   selectedGrade() {
-    if (!this.month) {
+    if (!this.month && this.month === '') {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -657,7 +657,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedSubject() {
-    if (!this.month) {
+    if (!this.month && this.month === '') {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_${this.subject}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -666,7 +666,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedExamDate() {
-    if (!this.month) {
+    if (!this.month && this.month === '') {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_${this.examDate}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -675,7 +675,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedViewBy() {
-    if (!this.month) {
+    if (!this.month && this.month === '') {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_${this.viewBy}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -684,157 +684,178 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedDistrict(districtId) {
-    this.currentPage = 1;
-    this.level = "block";
-    this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_district_${districtId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
-    this.block = undefined;
-    this.cluster = undefined;
-    this.blockHidden = false;
-    this.clusterHidden = true;
-    document.getElementById("home").style.display = "block";
-    this.commonService.errMsg();
-    this.reportData = [];
+    if (!this.month && this.month === '') {
+      alert("Please select month!");
+      this.dist = false;
+      this.district = '';
+      $('#district').val('');
+    } else {
+      this.currentPage = 1;
+      this.level = "block";
+      this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_district_${districtId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
+      this.block = undefined;
+      this.cluster = undefined;
+      this.blockHidden = false;
+      this.clusterHidden = true;
+      document.getElementById("home").style.display = "block";
+      this.commonService.errMsg();
+      this.reportData = [];
 
-    let a = {
-      report: "pat",
-      year: this.year,
-      month: this.month,
-      grade: this.grade == "all" ? "" : this.grade,
-      subject_name: this.subject == "all" ? "" : this.subject,
-      exam_date: this.examDate == "all" ? "" : this.examDate,
-      viewBy: this.viewBy == "indicator" ? "indicator" : this.viewBy,
-      districtId: districtId,
-      management: this.management,
-      category: this.category,
-    };
+      let a = {
+        report: "pat",
+        year: this.year,
+        month: this.month,
+        grade: this.grade == "all" ? "" : this.grade,
+        subject_name: this.subject == "all" ? "" : this.subject,
+        exam_date: this.examDate == "all" ? "" : this.examDate,
+        viewBy: this.viewBy == "indicator" ? "indicator" : this.viewBy,
+        districtId: districtId,
+        management: this.management,
+        category: this.category,
+      };
 
-    this.service.PATHeatMapDistData(a).subscribe(
-      (response) => {
-        this.genericFunction(response);
-        var dist = this.districtNames.find((a) => a.district_id == districtId);
-        this.districtHierarchy = {
-          districtName: dist.district_name,
-          distId: dist.district_id,
-        };
-        this.skul = false;
-        this.dist = true;
-        this.blok = false;
-        this.clust = false;
-        this.commonService.loaderAndErr(this.reportData);
-      },
-      (err) => {
-        this.reportData = [];
-        this.commonService.loaderAndErr(this.reportData);
-        if (this.chart && this.chart.axes) {
-          this.chart.destroy();
+      this.service.PATHeatMapDistData(a).subscribe(
+        (response) => {
+          this.genericFunction(response);
+          var dist = this.districtNames.find((a) => a.district_id == districtId);
+          this.districtHierarchy = {
+            districtName: dist.district_name,
+            distId: dist.district_id,
+          };
+          this.skul = false;
+          this.dist = true;
+          this.blok = false;
+          this.clust = false;
+          this.commonService.loaderAndErr(this.reportData);
+        },
+        (err) => {
+          this.reportData = [];
+          this.commonService.loaderAndErr(this.reportData);
+          if (this.chart && this.chart.axes) {
+            this.chart.destroy();
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   selectedBlock(blockId) {
-    this.currentPage = 1;
-    this.level = "cluster";
-    this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_block_${blockId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
-    this.cluster = undefined;
-    this.blockHidden = false;
-    this.clusterHidden = false;
-    document.getElementById("home").style.display = "block";
-    this.commonService.errMsg();
-    this.reportData = [];
+    if (!this.month && this.month === '') {
+      alert("Please select month!");
+      this.blok = false;
+      this.block = '';
+      $('#block').val('');
+    } else {
+      this.currentPage = 1;
+      this.level = "cluster";
+      this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_block_${blockId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
+      this.cluster = undefined;
+      this.blockHidden = false;
+      this.clusterHidden = false;
+      document.getElementById("home").style.display = "block";
+      this.commonService.errMsg();
+      this.reportData = [];
 
-    let a = {
-      report: "pat",
-      year: this.year,
-      month: this.month,
-      grade: this.grade == "all" ? "" : this.grade,
-      subject_name: this.subject == "all" ? "" : this.subject,
-      exam_date: this.examDate == "all" ? "" : this.examDate,
-      viewBy: this.viewBy == "indicator" ? "indicator" : this.viewBy,
-      districtId: this.district,
-      blockId: blockId,
-      management: this.management,
-      category: this.category,
-    };
+      let a = {
+        report: "pat",
+        year: this.year,
+        month: this.month,
+        grade: this.grade == "all" ? "" : this.grade,
+        subject_name: this.subject == "all" ? "" : this.subject,
+        exam_date: this.examDate == "all" ? "" : this.examDate,
+        viewBy: this.viewBy == "indicator" ? "indicator" : this.viewBy,
+        districtId: this.district,
+        blockId: blockId,
+        management: this.management,
+        category: this.category,
+      };
 
-    this.service.PATHeatMapBlockData(a).subscribe(
-      (response) => {
-        this.genericFunction(response);
-        var block = this.blockNames.find((a) => a.block_id == blockId);
+      this.service.PATHeatMapBlockData(a).subscribe(
+        (response) => {
+          this.genericFunction(response);
+          var block = this.blockNames.find((a) => a.block_id == blockId);
 
-        this.blockHierarchy = {
-          districtName: block.district_name,
-          distId: block.district_id,
-          blockName: block.block_name,
-          blockId: block.block_id,
-        };
+          this.blockHierarchy = {
+            districtName: block.district_name,
+            distId: block.district_id,
+            blockName: block.block_name,
+            blockId: block.block_id,
+          };
 
-        this.skul = false;
-        this.dist = false;
-        this.blok = true;
-        this.clust = false;
-        this.commonService.loaderAndErr(this.reportData);
-      },
-      (err) => {
-        this.reportData = [];
-        this.commonService.loaderAndErr(this.reportData);
-        if (this.chart && this.chart.axes) {
-          this.chart.destroy();
+          this.skul = false;
+          this.dist = false;
+          this.blok = true;
+          this.clust = false;
+          this.commonService.loaderAndErr(this.reportData);
+        },
+        (err) => {
+          this.reportData = [];
+          this.commonService.loaderAndErr(this.reportData);
+          if (this.chart && this.chart.axes) {
+            this.chart.destroy();
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   selectedCluster(clusterId) {
-    this.currentPage = 1;
-    this.level = "school";
-    this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_cluster_${clusterId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
-    document.getElementById("home").style.display = "block";
-    this.commonService.errMsg();
-    this.reportData = [];
+    if (!this.month && this.month === '') {
+      alert("Please select month!");
+      this.clust = false;
+      this.cluster = '';
+      $('#cluster').val('');
+    } else {
+      this.currentPage = 1;
+      this.level = "school";
+      this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_cluster_${clusterId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
+      document.getElementById("home").style.display = "block";
+      this.commonService.errMsg();
+      this.reportData = [];
 
-    let a = {
-      report: "pat",
-      year: this.year,
-      month: this.month,
-      grade: this.grade == "all" ? "" : this.grade,
-      subject_name: this.subject == "all" ? "" : this.subject,
-      exam_date: this.examDate == "all" ? "" : this.examDate,
-      viewBy: this.viewBy == "indicator" ? "indicator" : this.viewBy,
-      districtId: this.district,
-      blockId: this.block,
-      clusterId: clusterId,
-      management: this.management,
-      category: this.category,
-    };
+      let a = {
+        report: "pat",
+        year: this.year,
+        month: this.month,
+        grade: this.grade == "all" ? "" : this.grade,
+        subject_name: this.subject == "all" ? "" : this.subject,
+        exam_date: this.examDate == "all" ? "" : this.examDate,
+        viewBy: this.viewBy == "indicator" ? "indicator" : this.viewBy,
+        districtId: this.district,
+        blockId: this.block,
+        clusterId: clusterId,
+        management: this.management,
+        category: this.category,
+      };
 
-    this.service.PATHeatMapClusterData(a).subscribe(
-      (response) => {
-        this.genericFunction(response);
-        var cluster = this.clusterNames.find((a) => a.cluster_id == clusterId);
-        this.clusterHierarchy = {
-          districtName: cluster.district_name,
-          distId: cluster.district_id,
-          blockName: cluster.block_name,
-          blockId: cluster.block_id,
-          clusterId: cluster.cluster_id,
-          clusterName: cluster.cluster_name,
-        };
-        this.skul = false;
-        this.dist = false;
-        this.blok = false;
-        this.clust = true;
+      this.service.PATHeatMapClusterData(a).subscribe(
+        (response) => {
+          this.genericFunction(response);
+          var cluster = this.clusterNames.find((a) => a.cluster_id == clusterId);
+          this.clusterHierarchy = {
+            districtName: cluster.district_name,
+            distId: cluster.district_id,
+            blockName: cluster.block_name,
+            blockId: cluster.block_id,
+            clusterId: cluster.cluster_id,
+            clusterName: cluster.cluster_name,
+          };
+          this.skul = false;
+          this.dist = false;
+          this.blok = false;
+          this.clust = true;
 
-        this.commonService.loaderAndErr(this.reportData);
-      },
-      (err) => {
-        this.reportData = [];
-        this.commonService.loaderAndErr(this.reportData);
-        if (this.chart && this.chart.axes) {
-          this.chart.destroy();
+          this.commonService.loaderAndErr(this.reportData);
+        },
+        (err) => {
+          this.reportData = [];
+          this.commonService.loaderAndErr(this.reportData);
+          if (this.chart && this.chart.axes) {
+            this.chart.destroy();
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   xlab = [];

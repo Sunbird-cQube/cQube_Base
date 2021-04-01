@@ -501,6 +501,11 @@ export class StudentAttendanceExceptionComponent implements OnInit {
   }
 
   blockWise(event) {
+    if (this.period === "select_month" && !this.month && this.month === '') {
+      alert("Please select month!");
+      return;
+    }
+
     this.commonAtStateLevel();
     this.levelWise = "Block";
     if (this.months.length > 0) {
@@ -606,6 +611,10 @@ export class StudentAttendanceExceptionComponent implements OnInit {
   }
 
   clusterWise(event) {
+    if (this.period === "select_month" && !this.month && this.month === '') {
+      alert("Please select month!");
+      return;
+    }
     this.commonAtStateLevel();
     this.levelWise = "Cluster";
     if (this.months.length > 0) {
@@ -732,6 +741,10 @@ export class StudentAttendanceExceptionComponent implements OnInit {
   }
 
   schoolWise(event) {
+    if (this.period === "select_month" && !this.month && this.month === '') {
+      alert("Please select month!");
+      return;
+    }
     this.commonAtStateLevel();
     this.levelWise = "school";
     if (this.months.length > 0) {
@@ -959,6 +972,13 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
   blockData = [];
   myDistData(data) {
+    if (this.period === "select_month" && !this.month && this.month === '') {
+      alert("Please select month!");
+      this.dist = false;
+      this.myDistrict = '';
+      $('#choose_dist').val('');
+      return;
+    }
     this.levelWise = "Block";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -1121,6 +1141,13 @@ export class StudentAttendanceExceptionComponent implements OnInit {
 
   clusterData = [];
   myBlockData(data) {
+    if (this.period === "select_month" && !this.month && this.month === '') {
+      alert("Please select month!");
+      this.blok = false;
+      this.myBlock = '';
+      $('#choose_block').val('');
+      return;
+    }
     this.levelWise = "Cluster";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -1307,6 +1334,13 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     this.myClusterData(data);
   }
   myClusterData(data) {
+    if (this.period === "select_month" && !this.month && this.month === '') {
+      alert("Please select month!");
+      this.cluster = false;
+      this.myCluster = '';
+      $('#choose_cluster').val('');
+      return;
+    }
     this.levelWise = "school";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
