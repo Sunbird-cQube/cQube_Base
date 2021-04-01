@@ -19513,11 +19513,25 @@ insert into composite_config(template,status,category,select_query,table_join) v
 on stat.school_id=sat.school_id and stat.school_management_type=sat.school_management_type')
 on conflict on constraint composite_config_pkey do nothing;
 
+/* updating semester composite to sat report */
+
+update composite_config set select_query='sat.Semester_exam_performance',table_join='left join (select district_id,district_performance as Semester_exam_performance from semester_exam_district_all) as sat 
+on stat.district_id=sat.district_id' where template='semester' and category='district'; 
+
+update composite_config set select_query='sat.Semester_exam_performance',table_join='left join (select block_id,block_performance as Semester_exam_performance from semester_exam_block_all) as sat 
+on stat.block_id=sat.block_id' where template='semester' and category='block'; 
+
+update composite_config set select_query='sat.Semester_exam_performance',table_join='left join (select cluster_id,cluster_performance as semester_exam_performance from semester_exam_cluster_all) as sat 
+on stat.cluster_id=sat.cluster_id' where template='semester' and category='cluster'; 
+
+update composite_config set select_query='sat.Semester_exam_performance',table_join='left join (select school_id,school_performance as semester_exam_performance from semester_exam_school_all) as sat 
+on stat.school_id=sat.school_id' where template='semester' and category='school'; 
+
 insert into composite_config(template,status,category,table_join) values('udise',true,'school_mgt','left join udise_school_mgt_score
 on stat.school_id=udise_school_mgt_score.udise_school_id and stat.school_management_type=udise_school_mgt_score.school_management_type')
 on conflict on constraint composite_config_pkey do nothing;
 
-	update composite_config as uds set select_query= stg.select_query from 
+update composite_config as uds set select_query= stg.select_query from 
 (select string_agg(lower(column_name),',')||',infrastructure_score' as select_query from udise_config where type='indice' and status=true)as stg
 where uds.template='udise';
 
