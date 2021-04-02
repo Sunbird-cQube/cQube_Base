@@ -532,6 +532,10 @@ export class CrcReportComponent implements OnInit {
   }
 
   distWise() {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      return;
+    }
     this.reportData = [];
     this.fileName = `${this.reportName}_${this.period}_allDistricts_${this.commonService.dateAndTime}`;
     if (JSON.parse(localStorage.getItem("resData")) !== null) {
@@ -546,6 +550,10 @@ export class CrcReportComponent implements OnInit {
   }
 
   blockWise() {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      return;
+    }
     this.reportData = [];
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName("dwnld");
@@ -578,6 +586,10 @@ export class CrcReportComponent implements OnInit {
   }
 
   clusterWise() {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      return;
+    }
     this.reportData = [];
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName("dwnld");
@@ -610,6 +622,10 @@ export class CrcReportComponent implements OnInit {
   }
 
   schoolWise() {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      return;
+    }
     this.reportData = [];
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName("dwnld");
@@ -642,6 +658,10 @@ export class CrcReportComponent implements OnInit {
   }
 
   myDistData(data, fromParam = false) {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      return;
+    }
     this.scatterChart.destroy();
     this.modes = [];
     this.downloadType = "";
@@ -781,6 +801,10 @@ export class CrcReportComponent implements OnInit {
   }
 
   myBlockData(data: any, fromParam = false) {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      return;
+    }
     this.scatterChart.destroy();
     this.modes = [];
     this.downloadType = "";
@@ -929,6 +953,10 @@ export class CrcReportComponent implements OnInit {
   }
 
   myClusterData(data: any, fromParam = false) {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      return;
+    }
     this.scatterChart.destroy();
     this.modes = [];
     this.downloadType = "";
