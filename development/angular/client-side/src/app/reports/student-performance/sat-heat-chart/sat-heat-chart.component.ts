@@ -6,6 +6,7 @@ import { AppServiceComponent } from '../../../app.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PatReportService } from '../../../services/pat-report.service';
+declare const $;
 
 @Component({
   selector: 'app-sat-heat-chart',
@@ -546,7 +547,7 @@ export class SatHeatChartComponent implements OnInit {
     this.levelWiseFilter();
   }
   selectedGrade() {
-    if (!this.month && this.month === '') {
+    if (!this.month || this.month === '') {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -578,7 +579,7 @@ export class SatHeatChartComponent implements OnInit {
   }
 
   selectedSubject() {
-    if (!this.month && this.month === '') {
+    if (!this.month || this.month === '') {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_${this.subject}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -587,7 +588,7 @@ export class SatHeatChartComponent implements OnInit {
   }
 
   selectedExamDate() {
-    if (!this.month && this.month === '') {
+    if (!this.month || this.month === '') {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_${this.examDate}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -596,7 +597,7 @@ export class SatHeatChartComponent implements OnInit {
   }
 
   selectedViewBy() {
-    if (!this.month && this.month === '') {
+    if (!this.month || this.month === '') {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_${this.viewBy}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -605,7 +606,7 @@ export class SatHeatChartComponent implements OnInit {
   }
 
   selectedDistrict(districtId) {
-    if (!this.month && this.month === '') {
+    if (!this.month || this.month === '') {
       alert("Please select month!");
       this.dist = false;
       this.district = '';
@@ -658,7 +659,7 @@ export class SatHeatChartComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
-    if (!this.month && this.month === '') {
+    if (!this.month || this.month === '') {
       alert("Please select month!");
       this.blok = false;
       this.block = '';
@@ -715,7 +716,7 @@ export class SatHeatChartComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
-    if (!this.month && this.month === '') {
+    if (!this.month || this.month === '') {
       alert("Please select month!");
       this.clust = false;
       this.cluster = '';

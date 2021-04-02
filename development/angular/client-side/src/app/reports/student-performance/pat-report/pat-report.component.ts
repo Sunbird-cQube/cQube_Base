@@ -11,6 +11,7 @@ import { Router } from "@angular/router";
 import * as L from "leaflet";
 import * as R from "leaflet-responsive-popup";
 import { AppServiceComponent, globalMap } from "../../../app.service";
+declare const $;
 
 @Component({
   selector: "app-pat-report",
@@ -592,7 +593,7 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the blocks for state data on the map
   blockWise() {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month || this.month === '') {
       alert("Please select month!");
       return;
     }
@@ -819,7 +820,7 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the clusters for state data on the map
   clusterWise() {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month || this.month === '') {
       alert("Please select month!");
       return;
     }
@@ -1042,7 +1043,7 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the schools for state data on the map
   schoolWise() {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month || this.month === '') {
       alert("Please select month!");
       return;
     }
@@ -1263,7 +1264,7 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the blocks for selected district for state data on the map
   onDistrictSelect(districtId) {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month || this.month === '') {
       alert("Please select month!");
       this.dist = false;
       this.districtId = '';
@@ -1376,7 +1377,7 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the clusters for selected block for state data on the map
   onBlockSelect(blockId) {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month || this.month === '') {
       alert("Please select month!");
       this.blok = false;
       this.blockId = '';
@@ -1500,7 +1501,7 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the schools for selected cluster for state data on the map
   onClusterSelect(clusterId) {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month || this.month === '') {
       alert("Please select month!");
       this.clust = false;
       this.clusterId = '';

@@ -13,6 +13,7 @@ import * as R from "leaflet-responsive-popup";
 import { KeycloakSecurityService } from "../../../keycloak-security.service";
 import { AppServiceComponent, globalMap } from "../../../app.service";
 // import {MapLegendsComponent} from '../../../common/map-legends/map-legends.component';
+declare const $;
 
 @Component({
   selector: "app-student-attendance",
@@ -666,7 +667,7 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   blockWise(event) {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month) {
       alert("Please select month!");
       return;
     }
@@ -780,7 +781,7 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   clusterWise(event) {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month) {
       alert("Please select month!");
       return;
     }
@@ -915,7 +916,7 @@ export class StudengtAttendanceComponent implements OnInit {
   }
 
   schoolWise(event) {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month || this.month === '') {
       alert("Please select month!");
       return;
     }
@@ -1162,7 +1163,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   blockData = [];
   myDistData(data) {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month || this.month === '') {
       alert("Please select month!");
       this.dist = false;
       this.myDistrict = '';
@@ -1341,7 +1342,7 @@ export class StudengtAttendanceComponent implements OnInit {
 
   clusterData = [];
   myBlockData(data) {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month || this.month === '') {
       alert("Please select month!");
       this.blok = false;
       this.myBlock = '';
@@ -1543,7 +1544,7 @@ export class StudengtAttendanceComponent implements OnInit {
     this.myClusterData(data);
   }
   myClusterData(data) {
-    if (this.period === "select_month" && !this.month && this.month === '') {
+    if (this.period === "select_month" && !this.month || this.month === '') {
       alert("Please select month!");
       this.cluster = false;
       this.myCluster = '';

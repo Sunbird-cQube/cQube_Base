@@ -6,6 +6,7 @@ import { AppServiceComponent } from "../../../app.service";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { PatReportService } from "../../../services/pat-report.service";
+declare const $;
 
 @Component({
   selector: "app-heat-chart",
@@ -175,8 +176,12 @@ export class HeatChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.state = this.commonService.state;
-    this.managementName = this.management = JSON.parse(localStorage.getItem("management")).id;
-    this.managementName = this.commonService.changeingStringCases(this.managementName.replace(/_/g, " "));
+    this.managementName = this.management = JSON.parse(
+      localStorage.getItem("management")
+    ).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     this.category = JSON.parse(localStorage.getItem("category")).id;
     document.getElementById("homeBtn").style.display = "block";
     document.getElementById("backBtn").style.display = "none";
@@ -625,7 +630,7 @@ export class HeatChartComponent implements OnInit {
     this.levelWiseFilter();
   }
   selectedGrade() {
-    if (!this.month && this.month === '') {
+    if (!this.month && this.month === "") {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -657,7 +662,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedSubject() {
-    if (!this.month && this.month === '') {
+    if (!this.month && this.month === "") {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_${this.subject}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -666,7 +671,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedExamDate() {
-    if (!this.month && this.month === '') {
+    if (!this.month && this.month === "") {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_${this.examDate}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -675,7 +680,7 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedViewBy() {
-    if (!this.month && this.month === '') {
+    if (!this.month && this.month === "") {
       alert("Please select month!");
     } else {
       this.fileName = `${this.reportName}_${this.grade}_${this.viewBy}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -684,11 +689,11 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedDistrict(districtId) {
-    if (!this.month && this.month === '') {
+    if (!this.month && this.month === "") {
       alert("Please select month!");
       this.dist = false;
-      this.district = '';
-      $('#district').val('');
+      this.district = "";
+      $("#district").val("");
     } else {
       this.currentPage = 1;
       this.level = "block";
@@ -717,7 +722,9 @@ export class HeatChartComponent implements OnInit {
       this.service.PATHeatMapDistData(a).subscribe(
         (response) => {
           this.genericFunction(response);
-          var dist = this.districtNames.find((a) => a.district_id == districtId);
+          var dist = this.districtNames.find(
+            (a) => a.district_id == districtId
+          );
           this.districtHierarchy = {
             districtName: dist.district_name,
             distId: dist.district_id,
@@ -740,11 +747,11 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
-    if (!this.month && this.month === '') {
+    if (!this.month && this.month === "") {
       alert("Please select month!");
       this.blok = false;
-      this.block = '';
-      $('#block').val('');
+      this.block = "";
+      $("#block").val("");
     } else {
       this.currentPage = 1;
       this.level = "cluster";
@@ -800,11 +807,11 @@ export class HeatChartComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
-    if (!this.month && this.month === '') {
+    if (!this.month && this.month === "") {
       alert("Please select month!");
       this.clust = false;
-      this.cluster = '';
-      $('#cluster').val('');
+      this.cluster = "";
+      $("#cluster").val("");
     } else {
       this.currentPage = 1;
       this.level = "school";
@@ -831,7 +838,9 @@ export class HeatChartComponent implements OnInit {
       this.service.PATHeatMapClusterData(a).subscribe(
         (response) => {
           this.genericFunction(response);
-          var cluster = this.clusterNames.find((a) => a.cluster_id == clusterId);
+          var cluster = this.clusterNames.find(
+            (a) => a.cluster_id == clusterId
+          );
           this.clusterHierarchy = {
             districtName: cluster.district_name,
             distId: cluster.district_id,
@@ -947,7 +956,11 @@ export class HeatChartComponent implements OnInit {
   // to download the csv report
   downloadReport() {
     var position = this.reportName.length;
-    this.fileName = [this.fileName.slice(0, position), `_${this.management}`, this.fileName.slice(position)].join('');
+    this.fileName = [
+      this.fileName.slice(0, position),
+      `_${this.management}`,
+      this.fileName.slice(position),
+    ].join("");
     this.commonService.download(this.fileName, this.reportData);
   }
 }
