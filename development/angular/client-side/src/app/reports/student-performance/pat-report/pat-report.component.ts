@@ -11,6 +11,7 @@ import { Router } from "@angular/router";
 import * as L from "leaflet";
 import * as R from "leaflet-responsive-popup";
 import { AppServiceComponent, globalMap } from "../../../app.service";
+declare const $;
 
 @Component({
   selector: "app-pat-report",
@@ -318,8 +319,8 @@ export class PATReportComponent implements OnInit {
       .subscribe(
         (res) => {
           this.data = res["data"];
-          this.blockMarkers = this.allBlocks = this.data;
-
+         this.allBlocks = this.blockMarkers =  this.data;
+         
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
           }
@@ -592,6 +593,11 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the blocks for state data on the map
   blockWise() {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      return;
+    }
+
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
@@ -814,6 +820,11 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the clusters for state data on the map
   clusterWise() {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      return;
+    }
+
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
@@ -1032,6 +1043,11 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the schools for state data on the map
   schoolWise() {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      return;
+    }
+
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
@@ -1248,6 +1264,14 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the blocks for selected district for state data on the map
   onDistrictSelect(districtId) {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      this.dist = false;
+      this.districtId = '';
+      $('#choose_dist').val('');
+      return;
+    }
+
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -1265,10 +1289,9 @@ export class PATReportComponent implements OnInit {
     }_${this.subject ? this.subject : ""}_${
       this.level
     }s_of_district_${districtId}_${this.commonService.dateAndTime}`;
-    var myData = this.distFilter.find(
-      (a) => a.Details.district_id == districtId
-    );
-    
+   
+    this.allBlocks = [];
+    this.allClusters = [];
     // api call to get the blockwise data for selected district
     if (this.myData) {
       this.myData.unsubscribe();
@@ -1284,6 +1307,7 @@ export class PATReportComponent implements OnInit {
           this.data = res["data"];
           this.allGrades = res['grades'];
           this.allBlocks = this.blockMarkers = this.data;
+          
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
           }
@@ -1331,14 +1355,6 @@ export class PATReportComponent implements OnInit {
             globalMap,
             options.mapZoom
           );
-          // sort the blockname alphabetically
-          this.blockMarkers.sort((a, b) =>
-            a.Details.block_name > b.Details.block_name
-              ? 1
-              : b.Details.block_name > a.Details.block_name
-              ? -1
-              : 0
-          );
         },
         (err) => {
           this.data = [];
@@ -1361,6 +1377,14 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the clusters for selected block for state data on the map
   onBlockSelect(blockId) {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      this.blok = false;
+      this.blockId = '';
+      $('#choose_block').val('');
+      return;
+    }
+
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -1378,7 +1402,7 @@ export class PATReportComponent implements OnInit {
     }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${
       this.commonService.dateAndTime
     }`;
-   
+   this.allClusters = [];
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -1450,13 +1474,12 @@ export class PATReportComponent implements OnInit {
             options.mapZoom
           );
           // sort the clusterName alphabetically
-          this.clusterMarkers.sort((a, b) =>
+          this.allClusters.sort((a, b) =>
             a.Details.cluster_name > b.Details.cluster_name
               ? 1
-              : b.Details.cluster_name > a.Details.cluster_name
-              ? -1
-              : 0
+              : -1
           );
+          this.changeDetection.detectChanges();
         },
         (err) => {
           this.data = [];
@@ -1478,6 +1501,13 @@ export class PATReportComponent implements OnInit {
   }
   // to load all the schools for selected cluster for state data on the map
   onClusterSelect(clusterId) {
+    if (this.period === "select_month" && !this.month || this.month === '') {
+      alert("Please select month!");
+      this.clust = false;
+      this.clusterId = '';
+      $('#choose_cluster').val('');
+      return;
+    }
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
@@ -1529,14 +1559,7 @@ export class PATReportComponent implements OnInit {
                   }
                 });
                 this.blockMarkers = myBlocks;
-                this.blockMarkers.sort((a, b) =>
-                  a.Details.block_name > b.Details.block_name
-                    ? 1
-                    : b.Details.block_name > a.Details.block_name
-                    ? -1
-                    : 0
-                );
-
+               
                 var myCluster = [];
                 this.clusterMarkers.forEach((element) => {
                   if (
