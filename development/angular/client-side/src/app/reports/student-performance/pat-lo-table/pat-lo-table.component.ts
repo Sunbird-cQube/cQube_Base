@@ -304,26 +304,54 @@ export class PATLOTableComponent implements OnInit {
   }
 
   selectedGrade() {
+    if (!this.month && this.month === '') {
+      alert("Please select month!");
+      return;
+    }
+
     this.fileName = `${this.reportName}_${this.grade}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.levelWiseFilter();
   }
 
   selectedSubject() {
+    if (!this.month && this.month === '') {
+      alert("Please select month!");
+      return;
+    }
+
     this.fileName = `${this.reportName}_${this.grade}_${this.subject}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.levelWiseFilter();
   }
 
   selectedExamDate() {
+    if (!this.month && this.month === '') {
+      alert("Please select month!");
+      return;
+    }
+
     this.fileName = `${this.reportName}_${this.grade}_${this.examDate}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.levelWiseFilter();
   }
 
   selectedViewBy() {
+    if (!this.month && this.month === '') {
+      alert("Please select month!");
+      return;
+    }
+
     this.fileName = `${this.reportName}_${this.grade}_${this.viewBy}_allDistricts_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
     this.levelWiseFilter();
   }
 
   selectedDistrict(districtId) {
+    if (!this.month && this.month === '') {
+      alert("Please select month!");
+      this.district = '';
+      this.dist = false;
+      $('#district').val('');
+      return;
+    }
+
     this.resetTable();
     this.level = "block";
     this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_district_${districtId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -373,6 +401,14 @@ export class PATLOTableComponent implements OnInit {
   }
 
   selectedBlock(blockId) {
+    if (!this.month && this.month === '') {
+      alert("Please select month!");
+      this.block = '';
+      this.blok = false;
+      $('#block').val('');
+      return;
+    }
+
     this.resetTable();
     this.level = "cluster";
     this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_block_${blockId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;
@@ -428,6 +464,14 @@ export class PATLOTableComponent implements OnInit {
   }
 
   selectedCluster(clusterId) {
+    if (!this.month && this.month === '') {
+      alert("Please select month!");
+      this.cluster = '';
+      this.clust = false;
+      $('#cluster').val('');
+      return;
+    }
+
     this.resetTable();
     this.level = "school";
     this.fileName = `${this.reportName}_${this.grade}_${this.level}s_of_cluster_${clusterId}_${this.month}_${this.year}_${this.commonService.dateAndTime}`;

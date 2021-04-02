@@ -11,6 +11,7 @@ import { Router } from "@angular/router";
 import * as L from "leaflet";
 import * as R from "leaflet-responsive-popup";
 import { AppServiceComponent, globalMap } from "../../../app.service";
+declare const $;
 
 @Component({
   selector: "app-sat-report",
@@ -119,7 +120,7 @@ export class SatReportComponent implements OnInit {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
     private readonly _router: Router
-  ) {}
+  ) { }
 
   selected = "absolute";
 
@@ -137,10 +138,10 @@ export class SatReportComponent implements OnInit {
       this.width > 3820
         ? this.commonService.mapCenterLatlng.zoomLevel + 2
         : this.width < 3820 && this.width >= 2500
-        ? this.commonService.mapCenterLatlng.zoomLevel + 1
-        : this.width < 2500 && this.width > 1920
-        ? this.commonService.mapCenterLatlng.zoomLevel + 1
-        : this.commonService.mapCenterLatlng.zoomLevel;
+          ? this.commonService.mapCenterLatlng.zoomLevel + 1
+          : this.width < 2500 && this.width > 1920
+            ? this.commonService.mapCenterLatlng.zoomLevel + 1
+            : this.commonService.mapCenterLatlng.zoomLevel;
     this.levelWiseFilter();
     this.changeDetection.detectChanges();
   }
@@ -151,13 +152,7 @@ export class SatReportComponent implements OnInit {
   }
   getMarkerRadius(rad1, rad2, rad3, rad4) {
     let radius =
-      this.width > 3820
-        ? rad1
-        : this.width > 2500 && this.width < 3820
-        ? rad2
-        : this.width < 2500 && this.width > 1920
-        ? rad3
-        : rad4;
+      this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
     return radius;
   }
 
@@ -178,11 +173,9 @@ export class SatReportComponent implements OnInit {
       this.managementName.replace(/_/g, " ")
     );
 
-    this.fileName = `${this.reportName}_${this.period}_${
-      this.grade ? this.grade : "allGrades"
-    }_${this.subject ? this.subject : ""}_allDistricts_${
-      this.commonService.dateAndTime
-    }`;
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+      }_${this.subject ? this.subject : ""}_allDistricts_${this.commonService.dateAndTime
+      }`;
 
     if (params) {
       if (params.timePeriod == "overall") {
@@ -238,7 +231,6 @@ export class SatReportComponent implements OnInit {
       this.getSemesters();
     }
   }
-
   getSemesters() {
     this.service.semMetaData({ period: this.period }).subscribe((res) => {
       this.semesters = res["data"];
@@ -258,12 +250,14 @@ export class SatReportComponent implements OnInit {
       this.semester = this.semesters[this.semesters.length - 1].id;
 
       this.service
-        .PATDistWiseData({...{
-          grade: this.grade,
-          period: this.period,
-          report: "sat",
-          sem: this.semester,
-        }, ...{ management: this.management, category: this.category}})
+        .PATDistWiseData({
+          ...{
+            grade: this.grade,
+            period: this.period,
+            report: "sat",
+            sem: this.semester,
+          }, ...{ management: this.management, category: this.category }
+        })
         .subscribe((res) => {
           this.data = res["data"];
           this.allDistricts = this.districtMarkers = this.data;
@@ -271,8 +265,8 @@ export class SatReportComponent implements OnInit {
             a.Details.district_name > b.Details.district_name
               ? 1
               : b.Details.district_name > a.Details.district_name
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
           if (!this.districtMarkers[0]["Subjects"]) {
             this.distFilter = this.districtMarkers;
@@ -289,14 +283,16 @@ export class SatReportComponent implements OnInit {
 
   getBlocks(level, distId, blockId?: any): void {
     this.service
-      .PATBlocksPerDistData(distId, {...{
-        period: this.period,
-        report: "sat",
-        sem: this.semester,
-      }, ...{ management: this.management, category: this.category}})
+      .PATBlocksPerDistData(distId, {
+        ...{
+          period: this.period,
+          report: "sat",
+          sem: this.semester,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe((res) => {
         this.data = res["data"];
-        this.allBlocks =  this.blockMarkers = this.data;
+        this.allBlocks = this.blockMarkers = this.data;
 
         if (!this.blockMarkers[0]["Subjects"]) {
           this.blockFilter = this.blockMarkers;
@@ -309,14 +305,16 @@ export class SatReportComponent implements OnInit {
 
   getClusters(distId, blockId, clusterId): void {
     this.service
-      .PATClustersPerBlockData(distId, blockId, {...{
-        period: this.period,
-        report: "sat",
-        sem: this.semester,
-      }, ...{ management: this.management, category: this.category}})
+      .PATClustersPerBlockData(distId, blockId, {
+        ...{
+          period: this.period,
+          report: "sat",
+          sem: this.semester,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe((res) => {
         this.data = res["data"];
-       this.allClusters = this.clusterMarkers = this.data;
+        this.allClusters = this.clusterMarkers = this.data;
 
         if (!this.clusterMarkers[0]["Subjects"]) {
           this.clusterFilter = this.clusterMarkers;
@@ -337,9 +335,8 @@ export class SatReportComponent implements OnInit {
   }
 
   onGradeSelect(data) {
-    this.fileName = `${this.reportName}_${this.period}_${this.grade}_${
-      this.subject ? this.subject : ""
-    }_all${this.level}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject ? this.subject : ""
+      }_all${this.level}_${this.commonService.dateAndTime}`;
     this.grade = data;
     this.subjectHidden = false;
     this.subject = "";
@@ -378,11 +375,9 @@ export class SatReportComponent implements OnInit {
 
   linkClick() {
     document.getElementById("home").style.display = "none";
-    this.fileName = `${this.reportName}_${this.period}_${
-      this.grade ? this.grade : "allGrades"
-    }_${this.subject ? this.subject : ""}_allDistricts_${
-      this.commonService.dateAndTime
-    }`;
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+      }_${this.subject ? this.subject : ""}_allDistricts_${this.commonService.dateAndTime
+      }`;
     this.grade = undefined;
     this.subject = undefined;
     this.subjectHidden = true;
@@ -433,12 +428,14 @@ export class SatReportComponent implements OnInit {
               this.myData.unsubscribe();
             }
             this.myData = this.service
-              .PATDistWiseData({...{
-                grade: this.grade,
-                period: this.period,
-                report: "sat",
-                sem: this.semester,
-              }, ...{ management: this.management, category: this.category}})
+              .PATDistWiseData({
+                ...{
+                  grade: this.grade,
+                  period: this.period,
+                  report: "sat",
+                  sem: this.semester,
+                }, ...{ management: this.management, category: this.category }
+              })
               .subscribe(
                 (res) => {
                   this.myDistData = res;
@@ -484,8 +481,8 @@ export class SatReportComponent implements OnInit {
                     a.Details.district_name > b.Details.district_name
                       ? 1
                       : b.Details.district_name > a.Details.district_name
-                      ? -1
-                      : 0
+                        ? -1
+                        : 0
                   );
                   this.changeDetection.detectChanges();
                 },
@@ -535,11 +532,9 @@ export class SatReportComponent implements OnInit {
       this.districtId = undefined;
       this.blockId = undefined;
       this.level = "block_wise";
-      this.fileName = `${this.reportName}_${this.period}_${
-        this.grade ? this.grade : "allGrades"
-      }_${this.subject ? this.subject : ""}_allBlocks_${
-        this.commonService.dateAndTime
-      }`;
+      this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+        }_${this.subject ? this.subject : ""}_allBlocks_${this.commonService.dateAndTime
+        }`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -571,12 +566,14 @@ export class SatReportComponent implements OnInit {
               this.myData.unsubscribe();
             }
             this.myData = this.service
-              .PATBlockWiseData({...{
-                grade: this.grade,
-                period: this.period,
-                report: "sat",
-                sem: this.semester,
-              }, ...{ management: this.management, category: this.category}})
+              .PATBlockWiseData({
+                ...{
+                  grade: this.grade,
+                  period: this.period,
+                  report: "sat",
+                  sem: this.semester,
+                }, ...{ management: this.management, category: this.category }
+              })
               .subscribe(
                 (res) => {
                   this.myBlockData = res["data"];
@@ -605,12 +602,12 @@ export class SatReportComponent implements OnInit {
                     if (this.grade && !this.subject) {
                       this.blockMarkers.sort((a, b) =>
                         a.Subjects["Grade Performance"] >
-                        b.Subjects["Grade Performance"]
+                          b.Subjects["Grade Performance"]
                           ? 1
                           : b.Subjects["Grade Performance"] >
                             a.Subjects["Grade Performance"]
-                          ? -1
-                          : 0
+                            ? -1
+                            : 0
                       );
                     } else if (this.grade && this.subject) {
                       let filterData = this.blockMarkers.filter((obj) => {
@@ -619,20 +616,20 @@ export class SatReportComponent implements OnInit {
                       this.blockMarkers = filterData;
                       this.blockMarkers.sort((a, b) =>
                         Number(a.Subjects[`${this.subject}`]) >
-                        Number(b.Subjects[`${this.subject}`])
+                          Number(b.Subjects[`${this.subject}`])
                           ? 1
                           : Number(b.Subjects[`${this.subject}`]) >
                             Number(a.Subjects[`${this.subject}`])
-                          ? -1
-                          : 0
+                            ? -1
+                            : 0
                       );
                     } else {
                       this.blockMarkers.sort((a, b) =>
                         a.Details["Performance"] > b.Details["Performance"]
                           ? 1
                           : b.Details["Performance"] > a.Details["Performance"]
-                          ? -1
-                          : 0
+                            ? -1
+                            : 0
                       );
                     }
 
@@ -640,13 +637,13 @@ export class SatReportComponent implements OnInit {
                       this.blockMarkers.length == 1
                         ? ["red"]
                         : this.commonService
-                            .exceptionColor()
-                            .generateGradient(
-                              "#FF0000",
-                              "#00FF00",
-                              this.blockMarkers.length,
-                              "rgb"
-                            );
+                          .exceptionColor()
+                          .generateGradient(
+                            "#FF0000",
+                            "#00FF00",
+                            this.blockMarkers.length,
+                            "rgb"
+                          );
                     for (let i = 0; i < this.blockMarkers.length; i++) {
                       var color;
                       if (!this.grade && !this.subject) {
@@ -756,11 +753,9 @@ export class SatReportComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = "cluster_wise";
-      this.fileName = `${this.reportName}_${this.period}_${
-        this.grade ? this.grade : "allGrades"
-      }_${this.subject ? this.subject : ""}_allClusters_${
-        this.commonService.dateAndTime
-      }`;
+      this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+        }_${this.subject ? this.subject : ""}_allClusters_${this.commonService.dateAndTime
+        }`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -792,12 +787,14 @@ export class SatReportComponent implements OnInit {
               this.myData.unsubscribe();
             }
             this.myData = this.service
-              .PATClusterWiseData({...{
-                grade: this.grade,
-                period: this.period,
-                report: "sat",
-                sem: this.semester,
-              }, ...{ management: this.management, category: this.category}})
+              .PATClusterWiseData({
+                ...{
+                  grade: this.grade,
+                  period: this.period,
+                  report: "sat",
+                  sem: this.semester,
+                }, ...{ management: this.management, category: this.category }
+              })
               .subscribe(
                 (res) => {
                   this.data = res["data"];
@@ -824,12 +821,12 @@ export class SatReportComponent implements OnInit {
                     if (this.grade && !this.subject) {
                       this.clusterMarkers.sort((a, b) =>
                         a.Subjects["Grade Performance"] >
-                        b.Subjects["Grade Performance"]
+                          b.Subjects["Grade Performance"]
                           ? 1
                           : b.Subjects["Grade Performance"] >
                             a.Subjects["Grade Performance"]
-                          ? -1
-                          : 0
+                            ? -1
+                            : 0
                       );
                     } else if (this.grade && this.subject) {
                       let filterData = this.clusterMarkers.filter((obj) => {
@@ -838,33 +835,33 @@ export class SatReportComponent implements OnInit {
                       this.clusterMarkers = filterData;
                       this.clusterMarkers.sort((a, b) =>
                         Number(a.Subjects[`${this.subject}`]) >
-                        Number(b.Subjects[`${this.subject}`])
+                          Number(b.Subjects[`${this.subject}`])
                           ? 1
                           : Number(b.Subjects[`${this.subject}`]) >
                             Number(a.Subjects[`${this.subject}`])
-                          ? -1
-                          : 0
+                            ? -1
+                            : 0
                       );
                     } else {
                       this.clusterMarkers.sort((a, b) =>
                         a.Details["Performance"] > b.Details["Performance"]
                           ? 1
                           : b.Details["Performance"] > a.Details["Performance"]
-                          ? -1
-                          : 0
+                            ? -1
+                            : 0
                       );
                     }
                     this.colors =
                       this.clusterMarkers.length == 1
                         ? ["red"]
                         : this.commonService
-                            .exceptionColor()
-                            .generateGradient(
-                              "#FF0000",
-                              "#00FF00",
-                              this.clusterMarkers.length,
-                              "rgb"
-                            );
+                          .exceptionColor()
+                          .generateGradient(
+                            "#FF0000",
+                            "#00FF00",
+                            this.clusterMarkers.length,
+                            "rgb"
+                          );
                     for (let i = 0; i < this.clusterMarkers.length; i++) {
                       var color = this.commonService.color(
                         this.clusterMarkers[i].Details,
@@ -972,11 +969,9 @@ export class SatReportComponent implements OnInit {
       this.blockId = undefined;
       this.clusterId = undefined;
       this.level = "school_wise";
-      this.fileName = `${this.reportName}_${this.period}_${
-        this.grade ? this.grade : "allGrades"
-      }_${this.subject ? this.subject : ""}_allSchools_${
-        this.commonService.dateAndTime
-      }`;
+      this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+        }_${this.subject ? this.subject : ""}_allSchools_${this.commonService.dateAndTime
+        }`;
 
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -1008,12 +1003,14 @@ export class SatReportComponent implements OnInit {
               this.myData.unsubscribe();
             }
             this.myData = this.service
-              .PATSchoolWiseData({...{
-                grade: this.grade,
-                period: this.period,
-                report: "sat",
-                sem: this.semester,
-              }, ...{ management: this.management, category: this.category}})
+              .PATSchoolWiseData({
+                ...{
+                  grade: this.grade,
+                  period: this.period,
+                  report: "sat",
+                  sem: this.semester,
+                }, ...{ management: this.management, category: this.category }
+              })
               .subscribe(
                 (res) => {
                   this.data = res["data"];
@@ -1037,12 +1034,12 @@ export class SatReportComponent implements OnInit {
                     if (this.grade && !this.subject) {
                       this.schoolMarkers.sort((a, b) =>
                         a.Subjects["Grade Performance"] >
-                        b.Subjects["Grade Performance"]
+                          b.Subjects["Grade Performance"]
                           ? 1
                           : b.Subjects["Grade Performance"] >
                             a.Subjects["Grade Performance"]
-                          ? -1
-                          : 0
+                            ? -1
+                            : 0
                       );
                     } else if (this.grade && this.subject) {
                       let filterData = this.schoolMarkers.filter((obj) => {
@@ -1051,33 +1048,33 @@ export class SatReportComponent implements OnInit {
                       this.schoolMarkers = filterData;
                       this.schoolMarkers.sort((a, b) =>
                         Number(a.Subjects[`${this.subject}`]) >
-                        Number(b.Subjects[`${this.subject}`])
+                          Number(b.Subjects[`${this.subject}`])
                           ? 1
                           : Number(b.Subjects[`${this.subject}`]) >
                             Number(a.Subjects[`${this.subject}`])
-                          ? -1
-                          : 0
+                            ? -1
+                            : 0
                       );
                     } else {
                       this.schoolMarkers.sort((a, b) =>
                         a.Details["Performance"] > b.Details["Performance"]
                           ? 1
                           : b.Details["Performance"] > a.Details["Performance"]
-                          ? -1
-                          : 0
+                            ? -1
+                            : 0
                       );
                     }
                     this.colors =
                       this.schoolMarkers.length == 1
                         ? ["red"]
                         : this.commonService
-                            .exceptionColor()
-                            .generateGradient(
-                              "#FF0000",
-                              "#00FF00",
-                              this.schoolMarkers.length,
-                              "rgb"
-                            );
+                          .exceptionColor()
+                          .generateGradient(
+                            "#FF0000",
+                            "#00FF00",
+                            this.schoolMarkers.length,
+                            "rgb"
+                          );
                     for (let i = 0; i < this.schoolMarkers.length; i++) {
                       var color = this.commonService.color(
                         this.schoolMarkers[i].Details,
@@ -1183,25 +1180,25 @@ export class SatReportComponent implements OnInit {
     this.blockId = undefined;
     this.reportData = [];
     this.level = "block";
-    this.fileName = `${this.reportName}_${this.period}_${
-      this.grade ? this.grade : "allGrades"
-    }_${this.subject ? this.subject : ""}_${
-      this.level
-    }s_of_district_${districtId}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+      }_${this.subject ? this.subject : ""}_${this.level
+      }s_of_district_${districtId}_${this.commonService.dateAndTime}`;
     var myData = this.distFilter.find(
       (a) => a.Details.district_id == districtId
     );
-    
+
     // api call to get the blockwise data for selected district
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .PATBlocksPerDistData(districtId, {...{
-        period: this.period,
-        report: "sat",
-        sem: this.semester,
-      }, ...{ management: this.management, category: this.category}})
+      .PATBlocksPerDistData(districtId, {
+        ...{
+          period: this.period,
+          report: "sat",
+          sem: this.semester,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe(
         (res) => {
           this.data = res["data"];
@@ -1238,7 +1235,7 @@ export class SatReportComponent implements OnInit {
             centerLng: this.data[0].Details.longitude,
             level: "block",
           };
-          this.data.forEach((element) => {});
+          this.data.forEach((element) => { });
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([
@@ -1258,8 +1255,8 @@ export class SatReportComponent implements OnInit {
             a.Details.block_name > b.Details.block_name
               ? 1
               : b.Details.block_name > a.Details.block_name
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
         },
         (err) => {
@@ -1294,27 +1291,27 @@ export class SatReportComponent implements OnInit {
     this.clusterId = undefined;
     this.reportData = [];
     this.level = "cluster";
-    this.fileName = `${this.reportName}_${this.period}_${
-      this.grade ? this.grade : "allGrades"
-    }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${
-      this.commonService.dateAndTime
-    }`;
-    
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+      }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime
+      }`;
+
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .PATClustersPerBlockData(this.districtHierarchy.distId, blockId, {...{
-        period: this.period,
-        report: "sat",
-        sem: this.semester,
-      }, ...{ management: this.management, category: this.category}})
+      .PATClustersPerBlockData(this.districtHierarchy.distId, blockId, {
+        ...{
+          period: this.period,
+          report: "sat",
+          sem: this.semester,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe(
         (res) => {
           this.data = res["data"];
           this.allGrades = res['grades'];
-          
+
           this.allClusters = this.clusterMarkers = this.data;
           if (!this.clusterMarkers[0]["Subjects"]) {
             this.clusterFilter = this.clusterMarkers;
@@ -1376,8 +1373,8 @@ export class SatReportComponent implements OnInit {
             a.Details.cluster_name > b.Details.cluster_name
               ? 1
               : b.Details.cluster_name > a.Details.cluster_name
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
         },
         (err) => {
@@ -1413,18 +1410,20 @@ export class SatReportComponent implements OnInit {
     var myData = this.clusterFilter.find(
       (a) => a.Details.cluster_id == clusterId
     );
-  
+
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .PATBlockWiseData({...{
-        grade: this.grade,
-        period: this.period,
-        report: "sat",
-        sem: this.semester,
-      }, ...{ management: this.management, category: this.category}})
+      .PATBlockWiseData({
+        ...{
+          grade: this.grade,
+          period: this.period,
+          report: "sat",
+          sem: this.semester,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe(
         (result: any) => {
           this.myData = this.service
@@ -1432,13 +1431,13 @@ export class SatReportComponent implements OnInit {
               this.blockHierarchy.distId,
               this.blockHierarchy.blockId,
               clusterId,
-              {...{ period: this.period, report: "sat", sem: this.semester }, ...{ management: this.management, category: this.category}}
+              { ...{ period: this.period, report: "sat", sem: this.semester }, ...{ management: this.management, category: this.category } }
             )
             .subscribe(
               (res) => {
                 this.data = res["data"];
                 this.allGrades = res['grades'];
-                
+
                 this.schoolMarkers = this.data;
                 var markers = result["data"];
                 var myBlocks = [];
@@ -1454,8 +1453,8 @@ export class SatReportComponent implements OnInit {
                   a.Details.block_name > b.Details.block_name
                     ? 1
                     : b.Details.block_name > a.Details.block_name
-                    ? -1
-                    : 0
+                      ? -1
+                      : 0
                 );
 
                 var myCluster = [];
@@ -1506,11 +1505,9 @@ export class SatReportComponent implements OnInit {
                   level: "school",
                 };
                 this.level = options.level;
-                this.fileName = `${this.reportName}_${this.period}_${
-                  this.grade ? this.grade : "allGrades"
-                }_${this.subject ? this.subject : ""}_${
-                  this.level
-                }s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
+                this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+                  }_${this.subject ? this.subject : ""}_${this.level
+                  }s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
 
                 globalMap.doubleClickZoom.enable();
                 globalMap.scrollWheelZoom.enable();
@@ -1564,19 +1561,19 @@ export class SatReportComponent implements OnInit {
           this.markers = filterData;
           this.markers.sort((a, b) =>
             a.Grades[`${this.grade}`]["Grade Performance"] >
-            b.Grades[`${this.grade}`]["Grade Performance"]
+              b.Grades[`${this.grade}`]["Grade Performance"]
               ? 1
               : b.Grades[`${this.grade}`]["Grade Performance"] >
                 a.Grades[`${this.grade}`]["Grade Performance"]
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
           if (this.markers[0]) {
             this.allSubjects = Object.keys(
               this.markers[0].Grades[`${this.grade}`]
             );
             this.allSubjects.pop();
-          }else{
+          } else {
             this.commonService.loaderAndErr(this.markers)
           }
         } else if (this.grade && this.subject) {
@@ -1591,20 +1588,20 @@ export class SatReportComponent implements OnInit {
           this.markers = filterData;
           this.markers.sort((a, b) =>
             a.Grades[`${this.grade}`][`${this.subject}`] >
-            b.Grades[`${this.grade}`][`${this.subject}`]
+              b.Grades[`${this.grade}`][`${this.subject}`]
               ? 1
               : b.Grades[`${this.grade}`][`${this.subject}`] >
                 a.Grades[`${this.grade}`][`${this.subject}`]
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
         } else {
           this.markers.sort((a, b) =>
             a.Details["Performance"] > b.Details["Performance"]
               ? 1
               : b.Details["Performance"] > a.Details["Performance"]
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
         }
         for (let i = 0; i < this.markers.length; i++) {
@@ -1634,26 +1631,26 @@ export class SatReportComponent implements OnInit {
               ? 1
               : b.Subjects["Grade Performance"] >
                 a.Subjects["Grade Performance"]
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
         } else if (this.grade && this.subject) {
           this.markers.sort((a, b) =>
             Number(a.Subjects[`${this.subject}`]) >
-            Number(b.Subjects[`${this.subject}`])
+              Number(b.Subjects[`${this.subject}`])
               ? 1
               : Number(b.Subjects[`${this.subject}`]) >
                 Number(a.Subjects[`${this.subject}`])
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
         } else {
           this.markers.sort((a, b) =>
             a.Details["Performance"] > b.Details["Performance"]
               ? 1
               : b.Details["Performance"] > a.Details["Performance"]
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
         }
         for (let i = 0; i < this.markers.length; i++) {
@@ -1684,13 +1681,13 @@ export class SatReportComponent implements OnInit {
               ? "Grade Performance"
               : this.grade
             : this.grade && this.subject
-            ? this.subject
-            : "Performance",
+              ? this.subject
+              : "Performance",
           selected: this.grade
             ? "G"
             : this.grade && this.subject
-            ? "GS"
-            : "all",
+              ? "GS"
+              : "all",
           report: "reports",
         });
       }
@@ -1702,24 +1699,24 @@ export class SatReportComponent implements OnInit {
           this.selected == "absolute"
             ? colors[i]
             : this.commonService.relativeColorGredient(
-                this.markers[i],
-                {
-                  value: this.grade
-                    ? this.markers[i].Subjects
-                      ? "Grade Performance"
-                      : this.grade
-                    : this.grade && this.subject
+              this.markers[i],
+              {
+                value: this.grade
+                  ? this.markers[i].Subjects
+                    ? "Grade Performance"
+                    : this.grade
+                  : this.grade && this.subject
                     ? this.subject
                     : "Performance",
-                  selected: this.grade
-                    ? "G"
-                    : this.grade && this.subject
+                selected: this.grade
+                  ? "G"
+                  : this.grade && this.subject
                     ? "GS"
                     : "all",
-                  report: "reports",
-                },
-                this.colors
-              ),
+                report: "reports",
+              },
+              this.colors
+            ),
           options.radius,
           options.strokeWeight,
           1,
@@ -1919,11 +1916,11 @@ export class SatReportComponent implements OnInit {
       offset: [15, 20],
     }).setContent(
       "<b><u>Details</u></b>" +
-        "<br>" +
-        yourData1 +
-        "<br><br><b><u>Semester Exam Score (%)</u></b>" +
-        "<br>" +
-        yourData
+      "<br>" +
+      yourData1 +
+      "<br><br><b><u>Semester Exam Score (%)</u></b>" +
+      "<br>" +
+      yourData
     );
     markerIcon.addTo(globalMap).bindPopup(popup);
   }
