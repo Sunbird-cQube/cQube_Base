@@ -19849,7 +19849,7 @@ file:${filename} Error during jolt transformation of "${query_type}" query.</val
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>pat_replace_char_\</name>
+                            <name>sat_replace_char_\</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -20971,7 +20971,7 @@ file: ${filename} Error while getting null values</value>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>pat_replace_char_"{</name>
+                            <name>sat_replace_char_"{</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -23235,7 +23235,7 @@ ${query_type:startsWith('sat_meta_last7')} )} )}</value>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>pat_replace_char_]"</name>
+                            <name>sat_replace_char_]"</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -25245,7 +25245,7 @@ file: ${filename} null values are not found.</value>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>pat_replace_char_"{</name>
+                            <name>sat_replace_char_"{</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -31210,7 +31210,7 @@ file: ${filename} null values are found.</value>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>pat_replace_char_}"</name>
+                            <name>sat_replace_char_}"</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -31893,7 +31893,7 @@ file: ${filename} null values are found.</value>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>pat_replace_char_"[</name>
+                            <name>sat_replace_char_"[</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -34027,7 +34027,7 @@ ${filename:startsWith('semester_exam_subject_details')}
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>pat_replace_char_]"</name>
+                            <name>sat_replace_char_]"</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -34621,7 +34621,7 @@ ${filename:startsWith('semester_exam_subject_details'):ifElse(#{semester_exam_su
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>pat_replace_char_}"</name>
+                            <name>sat_replace_char_}"</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -35500,7 +35500,7 @@ ${filename:startsWith('semester_exam_subject_details'):ifElse(#{sat_semester_exa
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>pat_replace_char_\</name>
+                            <name>sat_replace_char_\</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -38444,7 +38444,7 @@ file: ${filename} null values count updated to log summary db.</value>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>pat_replace_char_"[</name>
+                            <name>sat_replace_char_"[</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -38539,5 +38539,5 @@ file: ${filename} null values are not found.</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/02/2021 11:56:26 IST</timestamp>
+    <timestamp>04/02/2021 12:06:55 IST</timestamp>
 </template>
