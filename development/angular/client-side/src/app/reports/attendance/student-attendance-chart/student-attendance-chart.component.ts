@@ -27,6 +27,11 @@ export class StudentAttendanceChartComponent implements OnInit {
   years = [];
   selectedYear = '';
   selectedDistricts = [];
+
+  managementName;
+  management;
+  category;
+
   data:any = [];
   currentData = [];
   xAxisLabels = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
@@ -44,6 +49,11 @@ export class StudentAttendanceChartComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.state = this.commonService.state;
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     this.service.getYears().subscribe(res=>{
       this.years = Object.keys(res);
       this.selectedYear = this.years[this.years.length-1];
@@ -86,7 +96,7 @@ export class StudentAttendanceChartComponent implements OnInit {
   }
   getStateData(){
     this.level = 'State';
-    this.service.getStateData({year: this.selectedYear}).subscribe(res=>{
+    this.service.getStateData({...{year: this.selectedYear}, ...{ management: this.management, category: this.category }}).subscribe(res=>{
       this.data = res['data'];
       var data = [];
       this.counts = [];
@@ -109,7 +119,7 @@ export class StudentAttendanceChartComponent implements OnInit {
   getDistrictData(){
     this.districtList = [];
     this.districtData = [];
-    this.service.getDistrictData({year:this.selectedYear}).subscribe((res:any)=>{
+    this.service.getDistrictData({...{year: this.selectedYear}, ...{ management: this.management, category: this.category }}).subscribe((res:any)=>{
       this.districtData = res['data'];
       this.districtData.map(item=>{
         this.districtList.push({id:item.districtId, name: item.districtName});
@@ -129,7 +139,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.blockList = [];
     this.blockData = [];
     if(this.selectedDistricts.length == 1){
-      this.service.getBlockData({year:this.selectedYear, districtId: this.selectedDistricts[0]}).subscribe((res:any)=>{
+      this.service.getBlockData({...{year:this.selectedYear, districtId: this.selectedDistricts[0]}, ...{ management: this.management, category: this.category }}).subscribe((res:any)=>{
         this.blockData = res['data'];
         this.blockData.map(item=>{
           this.blockList.push({id:item.blockId, name: item.blockName});
@@ -153,7 +163,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.clusterList = [];
     this.clusterData = [];
     if(this.selectedBlock.length == 1){
-    this.service.getClusterData({year:this.selectedYear, blockId: this.selectedBlock[0]}).subscribe((res:any)=>{
+    this.service.getClusterData({...{year:this.selectedYear, blockId: this.selectedBlock[0]}, ...{ management: this.management, category: this.category }}).subscribe((res:any)=>{
       this.clusterData = res['data'];
       this.clusterData.map(item=>{
         this.clusterList.push({id:item.clusterId, name: item.clusterName});
@@ -176,7 +186,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.schoolList = [];
     this.schoolData = [];
     if(this.selectedCluster.length == 1){
-    this.service.getSchoolData({year:this.selectedYear, clusterId: this.selectedCluster[0]}).subscribe((res:any)=>{
+    this.service.getSchoolData({...{year:this.selectedYear, clusterId: this.selectedCluster[0]}, ...{ management: this.management, category: this.category }}).subscribe((res:any)=>{
       this.schoolData = res['data'];
       this.schoolData.map(item=>{
         this.schoolList.push({id:item.schoolId, name: item.schoolName});
