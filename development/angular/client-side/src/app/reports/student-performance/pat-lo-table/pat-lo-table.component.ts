@@ -269,7 +269,7 @@ export class PATLOTableComponent implements OnInit {
         bLengthChange: false,
         bInfo: false,
         bPaginate: false,
-        scrollY: "58vh",
+        scrollY: "57vh",
         scrollX: true,
         scrollCollapse: true,
         searching: false,
