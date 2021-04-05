@@ -16,6 +16,7 @@ export class LineChartComponent implements OnInit, OnChanges {
   @Input() xAxisTitle;
   @Input() yAxisTitle;
   @Input() counts = [];
+  @Input() managementName;
   constructor(private changeDetection: ChangeDetectorRef) { }
 
   ngOnInit(): void {
