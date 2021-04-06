@@ -10603,31 +10603,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>66ca2d51-6e86-3279-0000-000000000000</id>
-                            <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
-<id>e5c9abee-6c9b-3dd4-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>check_empty_file</selectedRelationships>
-                            <source>
-<groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
-<id>75a6cd6e-7649-3c74-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>67cb2d53-e2ca-38a9-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
@@ -10896,7 +10871,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>5be93b76-0a75-39c7-0000-000000000000</groupId>
-<id>75a6cd6e-7649-3c74-0000-000000000000</id>
+<id>e5c9abee-6c9b-3dd4-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -16616,12 +16591,6 @@ ${filename:startsWith('school_management'):ifElse('log_summary/static/log_summar
         </value>
     </entry>
     <entry>
-        <key>check_if_null</key>
-        <value>
-            <name>check_if_null</name>
-        </value>
-    </entry>
-    <entry>
         <key>not_null</key>
         <value>
             <name>not_null</name>
@@ -16642,15 +16611,11 @@ ${filename:startsWith('school_management'):ifElse('log_summary/static/log_summar
     </entry>
     <entry>
         <key>include-zero-record-flowfiles</key>
-        <value>true</value>
+        <value>false</value>
     </entry>
     <entry>
         <key>cache-schema</key>
         <value>true</value>
-    </entry>
-    <entry>
-        <key>check_if_null</key>
-        <value>#{static_school_check_if_null}</value>
     </entry>
     <entry>
         <key>not_null</key>
@@ -16664,10 +16629,6 @@ ${filename:startsWith('school_management'):ifElse('log_summary/static/log_summar
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>validate_null_values_school</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>check_if_null</name>
-                            </relationships>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>failure</name>
@@ -22654,68 +22615,6 @@ file: ${filename} columns did not match.</value>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
                         <processors>
-                            <id>75a6cd6e-7649-3c74-0000-000000000000</id>
-                            <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
-                            <position>
-<x>-14280.0</x>
-<y>3768.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.12.1</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>Routing Strategy</key>
-        <value>
-            <name>Routing Strategy</name>
-        </value>
-    </entry>
-    <entry>
-        <key>check_empty_file</key>
-        <value>
-            <name>check_empty_file</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>Routing Strategy</key>
-        <value>Route to Property name</value>
-    </entry>
-    <entry>
-        <key>check_empty_file</key>
-        <value>${record.count:gt(0)}</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>RouteOnAttribute</name>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>check_empty_file</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>unmatched</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
-                        </processors>
-                        <processors>
                             <id>7655ea91-1c5a-3c91-0000-000000000000</id>
                             <parentGroupId>5be93b76-0a75-39c7-0000-000000000000</parentGroupId>
                             <position>
@@ -23165,7 +23064,7 @@ file: ${filename} columns did not match.</value>
     </entry>
     <entry>
         <key>include-zero-record-flowfiles</key>
-        <value>true</value>
+        <value>false</value>
     </entry>
     <entry>
         <key>cache-schema</key>
@@ -29983,5 +29882,5 @@ ${filename:startsWith('school_management_master'):ifElse(#{static_school_managem
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/01/2021 17:25:53 IST</timestamp>
+    <timestamp>04/06/2021 18:49:51 IST</timestamp>
 </template>
