@@ -1,8 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from '../../../services/diksha-report.service';
 import { Router } from '@angular/router';
-import { ExportToCsv } from 'export-to-csv';
 import { AppServiceComponent } from 'src/app/app.service';
 declare const $;
 
@@ -315,9 +314,19 @@ export class DikshaTableComponent implements OnInit {
       $('input.column_filter').on('keyup click', function () {
         filterColumn($(this).parents('tr').attr('data-column'));
       });
+      // table.on('page.dt', function() {
+      //   $('html, body').animate({
+      //     scrollTop: $(".dataTables_wrapper").offset().top
+      //    }, 'slow');
+      // });
+      $('#table').on( 'page.dt', function () {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 300);
+      } );
     });
     function filterGlobal() {
-      $('#example').DataTable().search(
+      $('#table').DataTable().search(
         $('#global_filter').val(),
         $('#global_regex').prop('checked'),
         $('#global_smart').prop('checked')
@@ -325,7 +334,7 @@ export class DikshaTableComponent implements OnInit {
     }
 
     function filterColumn(i) {
-      $('#example').DataTable().column(i).search(
+      $('#table').DataTable().column(i).search(
         $('#col' + i + '_filter').val(),
         $('#col' + i + '_regex').prop('checked'),
         $('#col' + i + '_smart').prop('checked')
