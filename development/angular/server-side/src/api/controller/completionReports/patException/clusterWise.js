@@ -20,7 +20,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster/${grade}.json`
+                fileName = `exception_list/${report}/school_management_category/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/cluster/${grade}.json`
             } else {
                 fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/cluster.json`
             }
@@ -71,7 +71,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster/${grade}.json`
+                fileName = `exception_list/${report}/school_management_category/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/cluster/${grade}.json`
             } else {
                 fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/cluster.json`
             }

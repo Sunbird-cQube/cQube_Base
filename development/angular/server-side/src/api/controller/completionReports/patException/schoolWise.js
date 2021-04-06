@@ -20,7 +20,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/school/${grade}.json`
+                fileName = `exception_list/${report}/school_management_category/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/school/${grade}.json`
             } else {
                 fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/${report == 'sat_exception' || report == 'pat_exception' ? 'school' : 'schools'}.json`;
             }
@@ -32,7 +32,6 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
             }
         }
         var schoolData = await s3File.readS3File(fileName);
-        console.log(schoolData);
         var Subjects = [];
         var sortedData;
         if (schoolData) {
@@ -72,7 +71,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
 
         if (management != 'overall' && category == 'overall') {
             if (grade && grade != 'all') {
-                fileName = `exception_list/${report}/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/school/${grade}.json`
+                fileName = `exception_list/${report}/school_management_category/grade/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/school/${grade}.json`
             } else {
                 fileName = `exception_list/${report}/school_management_category/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/overall_category/${management}/${report == 'sat_exception' || report == 'pat_exception' ? 'school' : 'schools'}.json`;
             }
@@ -83,7 +82,6 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/school.json`
             }
         }
-        
         var schoolData = await s3File.readS3File(fileName);
         let distId = req.params.distId;
         let blockId = req.params.blockId;
