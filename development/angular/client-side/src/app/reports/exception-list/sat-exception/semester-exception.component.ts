@@ -419,7 +419,7 @@ export class SemesterExceptionComponent implements OnInit {
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
             this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
             this.genericFun(this.data, options, this.fileName);
-            // this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
@@ -497,7 +497,7 @@ export class SemesterExceptionComponent implements OnInit {
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
             this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
             this.genericFun(this.data, options, this.fileName);
-            // this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
