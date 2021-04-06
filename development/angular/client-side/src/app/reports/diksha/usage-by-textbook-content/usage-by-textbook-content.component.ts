@@ -46,6 +46,12 @@ export class UsageByTextbookContentComponent implements OnInit {
     document.getElementById('backBtn').style.display = "none";
     document.getElementById('homeBtn').style.display = "Block";
     this.collectionWise();
+    this.onResize();
+  }
+
+  height = window.innerHeight;
+  onResize() {
+    this.height = window.innerHeight;
   }
 
   loaderAndErr() {

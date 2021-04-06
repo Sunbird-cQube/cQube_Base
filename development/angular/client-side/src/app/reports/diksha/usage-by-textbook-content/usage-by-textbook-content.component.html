@@ -1,5 +1,5 @@
 <div class="container-fluid" style="padding-top:15px !important;">
-    <div class="row">
+    <div class="row" (window:resize)="onResize()">
         <div class="col-lg-8 col-md-8 col-sm-12">
             <div *ngIf='all'>
                 <p id="dist_level">
@@ -70,9 +70,8 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-12 dataTableCustom">
-            <table #DataTable id="table" class="display nowrap" width="100%"
-                style="font-size: 12px; text-align: center; ">
+        <div class="col-sm-12 dataTableCustom" [ngStyle]="{fontSize: height > 1760 ? '34px' : height > 1180 && height < 1760 ? '25px' : height > 667 && height < 1180 ? '14px' : '11px'}">
+            <table #DataTable id="table" class="display nowrap" width="100%" style="text-align: center;">
             </table>
         </div>
     </div>

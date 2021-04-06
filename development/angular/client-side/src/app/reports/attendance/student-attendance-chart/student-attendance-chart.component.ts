@@ -65,6 +65,7 @@ export class StudentAttendanceChartComponent implements OnInit {
 
   onResize() {
     this.height = window.innerHeight;
+    console.log(this.height)
   }
   districtData = [];
   onSelectYear(){
