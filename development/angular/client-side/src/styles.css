@@ -227,6 +227,10 @@ leaflet-right {
     white-space: nowrap;
 }
 
+table.dataTable.nowrap td {
+    white-space: unset !important; 
+}
+
 
 /*//////////////////////////////////////////////////////////////////*/
 

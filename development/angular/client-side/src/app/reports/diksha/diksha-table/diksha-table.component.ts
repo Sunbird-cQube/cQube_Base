@@ -298,8 +298,8 @@ export class DikshaTableComponent implements OnInit {
       var table = $(`#table`).DataTable({
         "order": [[my_columns.length - 5, "desc"]],
         destroy: true, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: "60vh", scrollX: true,
-        scrollCollapse: true, paging: false, searching: true,
+        bPaginate: false, scrollY: "57vh", scrollX: true,
+        scrollCollapse: true, searching: true, paging: true, pageLength: 500,
         fixedColumns: {
           leftColumns: 1
         },

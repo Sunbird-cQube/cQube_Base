@@ -8,7 +8,14 @@ router.post('/blockWise', auth.authController, async(req, res) => {
         logger.info('---Trends dist wise api ---');
         var year = req.body.year;
         var districtId = req.body.districtId;
-        let fileName = `attendance/trend_line_chart/block/${districtId}_${year}.json`;
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+        if (management != 'overall' && category == 'overall') {
+            fileName = `attendance/trend_line_chart/school_management_category/overall_category/overall/${management}/block/${districtId}_${year}.json`;
+        }else{
+            fileName = `attendance/trend_line_chart/block/${districtId}_${year}.json`;
+        }
         var blockData = await s3File.readS3File(fileName);
         var keys = Object.keys(blockData);
         var mydata = [];

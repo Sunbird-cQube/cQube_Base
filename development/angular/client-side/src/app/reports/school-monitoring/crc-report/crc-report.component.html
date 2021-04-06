@@ -80,10 +80,18 @@
             </p>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-12" style="margin-top: 5px;">
+            <a class="float-right" href="javascript: void(0)" id="crcHealthcard" (click)="goToHealthCard()"
+                        style="font-weight: bold;right: 15px; bottom: 10px; position: absolute; text-decoration: underline;">Access
+                        Progress
+                        Card</a>
+        </div>
+    </div>
     <div class="row" style="height: 72vh;">
         <div class="col-sm-6">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <span class="chooseLevel">X-Axis: &nbsp;</span> <select id="x-axis" [(ngModel)]="xAxis" name="xAxis"
                         (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
@@ -93,8 +101,8 @@
                             {{xaxis.value}}
                         </option>
                     </select>
-                    <!-- </div>
-                <div class="col-sm-4"> -->
+                </div>
+                <div class="col-sm-6">
                     <span class="chooseLevel">Y-Axis: &nbsp;</span> <select id="y-axis" [(ngModel)]="yAxis" name="yAxis"
                         (change)="selectAxis()">
                         <option [value]="yAxis" disabled selected="selected">choose
@@ -103,13 +111,7 @@
                         <option *ngFor="let yaxis of yAxisFilter" [(ngValue)]="yaxis.key">
                             {{yaxis.value}}
                         </option>
-                    </select>
-                    <!-- </div>
-                <div class="col-sm-4"> -->
-                    <a class="float-right" href="javascript: void(0)" id="crcHealthcard" (click)="goToHealthCard()"
-                        style="font-weight: bold;right: 15px; bottom: 10px; position: absolute; text-decoration: underline;">Access
-                        Health
-                        Card</a>
+                    </select>                   
                 </div>
             </div>
 

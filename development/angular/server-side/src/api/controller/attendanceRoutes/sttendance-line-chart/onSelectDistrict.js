@@ -9,7 +9,14 @@ router.post('/stateWise', auth.authController, async(req, res) => {
     try {
         logger.info('---Trends state wise api ---');
         var year = req.body.year;
-        let fileName = `attendance/trend_line_chart/state_${year}.json`;
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+        if (management != 'overall' && category == 'overall') {
+            fileName = `attendance/trend_line_chart/school_management_category/overall_category/overall/${management}/state_${year}.json`;
+        }else{
+            fileName = `attendance/trend_line_chart/state_${year}.json`;
+        }
         var stateData = await s3File.readS3File(fileName);
         var mydata = [];
 
@@ -128,7 +135,15 @@ router.post('/distWise', auth.authController, async(req, res) => {
     try {
         logger.info('---Trends dist wise api ---');
         var year = req.body.year;
-        let fileName = `attendance/trend_line_chart/district/district_${year}.json`;
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+        if (management != 'overall' && category == 'overall') {
+            fileName = `attendance/trend_line_chart/school_management_category/overall_category/overall/${management}/district/district_${year}.json`;
+        }else{
+            fileName = `attendance/trend_line_chart/district/district_${year}.json`;
+        }
+    
         var districtData = await s3File.readS3File(fileName);
         var keys = Object.keys(districtData);
         var mydata = [];
