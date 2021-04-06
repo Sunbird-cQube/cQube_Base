@@ -40,12 +40,16 @@ export class DikshaTableComponent implements OnInit {
   ) {
     this.allCollections = [{ id: "course", name: "Course" }]
   }
-
+  height = window.innerHeight;
+  onResize() {
+    this.height = window.innerHeight;
+  }
   ngOnInit(): void {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.collectionWise();
+    this.onResize();
   }
 
 
@@ -314,17 +318,15 @@ export class DikshaTableComponent implements OnInit {
       $('input.column_filter').on('keyup click', function () {
         filterColumn($(this).parents('tr').attr('data-column'));
       });
-      // table.on('page.dt', function() {
-      //   $('html, body').animate({
-      //     scrollTop: $(".dataTables_wrapper").offset().top
-      //    }, 'slow');
-      // });
-      $('#table').on( 'page.dt', function () {
-        $('html, body').animate({
-            scrollTop: 0
+      
+      $(document).ready(function() {
+        
+        $('#table').on( 'page.dt', function () 
+        {
+          $('.dataTables_scrollBody').scrollTop(0);
+        });
         }, 300);
-      } );
-    });
+      });
     function filterGlobal() {
       $('#table').DataTable().search(
         $('#global_filter').val(),
