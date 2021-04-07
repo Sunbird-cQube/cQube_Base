@@ -83,51 +83,14 @@
     }
   }
 
-  table.dataTable.nowrap td,table.dataTable.nowrap th{
-    white-space: nowrap !important; 
-  }
-  table.dataTable.nowrap{
-    margin: 0px auto !important;
-    float: left !important;
-  }
-  .dataTables_scroll
-{
-    overflow:auto !important;
-}
-
-
-  @media only screen and (min-width: 2560px) {
-    table.dataTable.nowrap td,table.dataTable.nowrap th{
-      white-space: nowrap !important; 
-    }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead table th {
-        font-size: 1.4rem !important;
-    }
+  @media only screen and (min-width: 2520px) {
     .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
-        max-height: 70vh !important;
-    }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table {
-        font-size: 1.4rem !important;
-    }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table tbody td {
-        padding: 14px 10px !important;
+        height: 74vh !important;
     }
 }
 
-@media only screen and (min-width: 3840px) {
-  table.dataTable.nowrap td,table.dataTable.nowrap th{
-    white-space: nowrap !important; 
-  }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead table th {
-        font-size: 1.7rem !important;
-    }
+@media only screen and (min-width: 3800px) {
     .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
-        max-height: 70vh !important;
-    }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table {
-        font-size: 1.7rem !important;
-    }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table tbody td {
-        padding: 18px 12px !important;
+        height: 80vh !important;
     }
 }
