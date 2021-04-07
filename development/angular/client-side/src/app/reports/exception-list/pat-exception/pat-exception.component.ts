@@ -219,7 +219,9 @@ export class PATExceptionComponent implements OnInit {
           this.markers = this.districtMarkers = this.data['data'];
           this.allSubjects = [];
           if (this.grade != 'all') {
-            this.allSubjects = this.data['subjects'];
+            this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
           }
           // options to set for markers in the map
           let options = {
@@ -314,7 +316,9 @@ export class PATExceptionComponent implements OnInit {
             this.markers = this.blockMarkers = result;
             this.allSubjects = [];
             if (this.grade != 'all') {
-              this.allSubjects = this.data['subjects'];
+              this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
@@ -397,7 +401,9 @@ export class PATExceptionComponent implements OnInit {
             this.markers = this.clusterMarkers = result;
             this.allSubjects = [];
             if (this.grade != 'all') {
-              this.allSubjects = this.data['subjects'];
+              this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
@@ -474,7 +480,9 @@ export class PATExceptionComponent implements OnInit {
             this.markers = this.schoolMarkers = result;
             this.allSubjects = [];
             if (this.grade != 'all') {
-              this.allSubjects = this.data['subjects'];
+              this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
             }
             globalMap.doubleClickZoom.enable();
             globalMap.scrollWheelZoom.enable();
@@ -524,7 +532,9 @@ export class PATExceptionComponent implements OnInit {
       this.markers = this.blockMarkers = this.data['data'];
       this.allSubjects = [];
       if (this.grade != 'all') {
-        this.allSubjects = this.data['subjects'];
+        this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
       }
       // set hierarchy values
       this.districtHierarchy = {
@@ -588,7 +598,9 @@ export class PATExceptionComponent implements OnInit {
       this.markers = this.clusterMarkers = this.data['data'];
       this.allSubjects = [];
       if (this.grade != 'all') {
-        this.allSubjects = this.data['subjects'];
+        this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
       }
       var myBlocks = [];
       this.blockMarkers.forEach(element => {
@@ -660,7 +672,9 @@ export class PATExceptionComponent implements OnInit {
         this.markers = this.schoolMarkers = this.data['data'];
         this.allSubjects = [];
         if (this.grade != 'all') {
-          this.allSubjects = this.data['subjects'];
+          this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
         }
         var markers = result['data'];
         var myBlocks = [];
@@ -737,7 +751,11 @@ export class PATExceptionComponent implements OnInit {
     this.reportData = [];
     if (data['data'].length > 0) {
       this.markers = [];
-      this.markers = data['data']
+      this.markers = data['data'];
+      var updatedMarkers = this.markers.filter(a=>{
+        return a.total_schools_with_missing_data && a.total_schools_with_missing_data != 0;
+      });
+      this.markers = updatedMarkers;
       this.schoolCount = 0;
       // generate color gradient
       this.colors = this.commonService.getRelativeColors(this.markers, { value: 'percentage_schools_with_missing_data', report: 'exception' });
