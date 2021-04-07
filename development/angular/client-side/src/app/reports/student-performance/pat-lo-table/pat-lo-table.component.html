@@ -42,7 +42,7 @@
         <div class="col-sm-3">
             <div class="row">
                 <div class="col-sm-7">
-                    <p id="errMsg"
+                    <p id="errMsg" class="note"
                         style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
@@ -134,10 +134,22 @@
         </div>
     </div>
     <div class="row" id="initTable" style="display: block;">
-        <div class="col-sm-12 dataTableCustom" style="margin-top: 2%;" [ngStyle]="{fontSize: height > 1760 ? '34px' : height > 1180 && height < 1760 ? '25px' : height > 667 && height < 1180 ? '14px' : '11px'}">
+        <div class="col-sm-12 dataTableCustom" [ngStyle]="{fontSize: height > 1760 ? '34px' : height > 1180 && height < 1760 ? '25px' : height > 667 && height < 1180 ? '14px' : '12px'}">
             <table #dataTable id="LOtable" class="display responsive cell-border"
                 style="text-align: center;">
             </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="search-container">
+                Search: <input type="search" id="search-inp" (input)="updateFilter($event)"
+                    (keydown)="preventBackspace($event)" />
+            </div>
+            <div *ngIf="reportData.length > 0" style="position: relative; bottom: 0px; float: right; margin: 0px auto;">
+                <ngb-pagination *ngIf="showPagination" [collectionSize]="reportData.length" [maxSize]="10"
+                    [(page)]="currentPage" [pageSize]="pageSize" (pageChange)="onChangePage()"></ngb-pagination>
+            </div>
         </div>
     </div>
 </div>

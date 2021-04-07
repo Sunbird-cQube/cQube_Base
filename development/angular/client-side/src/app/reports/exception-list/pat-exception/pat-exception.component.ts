@@ -403,7 +403,7 @@ export class PATExceptionComponent implements OnInit {
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
             this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
             this.genericFun(this.data, options, this.fileName);
-            this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            // this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
           }
@@ -481,7 +481,7 @@ export class PATExceptionComponent implements OnInit {
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
             this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
             this.genericFun(this.data, options, this.fileName);
-            this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+            // this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
             this.commonService.loaderAndErr(this.data);
             this.changeDetection.markForCheck();
@@ -738,11 +738,12 @@ export class PATExceptionComponent implements OnInit {
     if (data['data'].length > 0) {
       this.markers = [];
       this.markers = data['data']
-
+      this.schoolCount = 0;
       // generate color gradient
       this.colors = this.commonService.getRelativeColors(this.markers, { value: 'percentage_schools_with_missing_data', report: 'exception' });
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
+        this.schoolCount = this.schoolCount + parseInt(this.markers[i].total_schools_with_missing_data);
         this.getLatLng(options.level, this.markers[i]);
         var markerIcon = this.commonService.initMarkers(this.latitude, this.longitude, this.commonService.relativeColorGredient(this.markers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, this.colors), options.radius, options.strokeWeight, options.weight, options.level);
         if (markerIcon)
@@ -753,7 +754,7 @@ export class PATExceptionComponent implements OnInit {
       this.commonService.loaderAndErr(this.data);
       this.changeDetection.markForCheck();
     }
-    this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    this.schoolCount = this.schoolCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
   }
 
 
