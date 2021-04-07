@@ -906,9 +906,29 @@ table.dataTable.nowrap td {
     }
 }
 
+.page-item.active .page-link{
+    background-color: whitesmoke !important;
+    color: black !important;
+    font-size: 12px;
+}
+.page-link{
+    color: black !important;
+    font-size: 12px;
+}
+
 @media only screen and (min-width: 2560px) {
     .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
         max-height: 68vh !important;
+    }
+
+    .page-item.active .page-link{
+        background-color: whitesmoke !important;
+        color: black !important;
+        font-size: 23px;
+    }
+    .page-link{
+        color: black !important;
+        font-size: 23px;
     }
   
 }
@@ -917,5 +937,13 @@ table.dataTable.nowrap td {
         .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
         max-height: 72vh !important;
     }
-   
+    .page-item.active .page-link{
+        background-color: whitesmoke !important;
+        color: black !important;
+        font-size: 30px;
+    }
+    .page-link{
+        color: black !important;
+        font-size: 30px;
+    }
 }

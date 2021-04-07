@@ -67,6 +67,15 @@ export class PATLOTableComponent implements OnInit {
   management;
   category;
 
+  //For pagination.....
+  pageSize = 500;
+  currentPage = 1;
+  filteredData = []
+  showPagination = false;
+  validTransactions: any;
+  table: any;
+  updatedTable:any = [];
+
   constructor(
     public http: HttpClient,
     public service: PatReportService,
@@ -133,6 +142,16 @@ export class PATLOTableComponent implements OnInit {
   height = window.innerHeight;
   onResize() {
     this.height = window.innerHeight;
+  }
+
+  onChangePage(){
+    document.getElementById('spinner').style.display = 'block';
+    this.pageChange();
+  }
+
+  pageChange(){
+    this.filteredData = this.reportData.slice(((this.currentPage - 1) * this.pageSize), ((this.currentPage - 1) * this.pageSize + this.pageSize));
+    this.createTable(this.filteredData);
   }
 
   fetchFilters(metaData) {
@@ -208,7 +227,7 @@ export class PATLOTableComponent implements OnInit {
     this.myData = this.service.patLOTableDistData(a).subscribe(
       (response) => {
         this.resetTable();
-        this.reportData = response["tableData"];
+        this.updatedTable = this.reportData = response["tableData"];
         var districtNames = response["districtDetails"];
         this.districtNames = districtNames.sort((a, b) =>
           a.district_name > b.district_name
@@ -217,7 +236,7 @@ export class PATLOTableComponent implements OnInit {
             ? -1
             : 0
         );
-        this.createTable(this.reportData);
+        this.onChangePage();
         this.commonService.loaderAndErr(this.reportData);
       },
       (err) => {
@@ -226,6 +245,7 @@ export class PATLOTableComponent implements OnInit {
     );
   };
 
+  columns =[];
   createTable(dataSet) {
     var my_columns = [];
     $.each(dataSet[0], function (key, value) {
@@ -234,6 +254,8 @@ export class PATLOTableComponent implements OnInit {
       my_item["value"] = value;
       my_columns.push(my_item);
     });
+
+    this.columns = my_columns;
 
     $(document).ready(function () {
       var headers = "<thead><tr>";
@@ -270,24 +292,37 @@ export class PATLOTableComponent implements OnInit {
       $(`#LOtable`).empty();
       $(`#LOtable`).append(headers);
       $(`#LOtable`).append(body);
-      $(`#LOtable`).DataTable({
-        destroy: false,
-        bLengthChange: false,
-        bInfo: false,
-        bPaginate: false,
-        scrollY: "57vh",
-        scrollX: true,
-        scrollCollapse: true,
-        searching: false,
-        paging: true, 
-        pageLength: 500,
-        fixedColumns: {
-          leftColumns: 1,
-        },
-        columnDefs: [{ targets: 0, type: "date-dd-mm-yyyy" }],
-        order: [[0, "asc"]],
+      var obj =
+        {
+          destroy: true,
+          bLengthChange: false,
+          bInfo: false,
+          bPaginate: false,
+          scrollY: "62vh",
+          scrollX: true,
+          scrollCollapse: true,
+          searching: false,
+          paging: false, 
+          fixedColumns: {
+            leftColumns: 1,
+          },
+        }
+        if(dataSet.length > 0){
+          obj['order'] = [[0, "asc"]];
+          obj['columnDefs'] = [{ targets: 0, type: "date-dd-mm-yyyy" }];
+        }
+      
+      $(`#LOtable`).DataTable(obj);
+      $(document).ready(function() {
+        
+        $('#LOtable').on( 'page.dt', function () 
+        {
+          $('.dataTables_scrollBody').scrollTop(0);
+        });
+        }, 300);
+        document.getElementById('spinner').style.display = 'none';
       });
-    });
+      this.showPagination = true;
   }
 
   selectedYear() {
@@ -383,13 +418,13 @@ export class PATLOTableComponent implements OnInit {
 
     this.service.patLOTableBlockData(a).subscribe(
       (response) => {
-        this.reportData = response["tableData"];
+        this.updatedTable = this.reportData = response["tableData"];
         var blockNames = response["blockDetails"];
         this.blockNames = blockNames.sort((a, b) =>
           a.block_name > b.block_name ? 1 : b.block_name > a.block_name ? -1 : 0
         );
 
-        this.createTable(this.reportData);
+        this.onChangePage();
         var dist = this.districtNames.find((a) => a.district_id == districtId);
         this.districtHierarchy = {
           districtName: dist.district_name,
@@ -440,7 +475,7 @@ export class PATLOTableComponent implements OnInit {
 
     this.service.patLOTableClusterData(a).subscribe(
       (response) => {
-        this.reportData = response["tableData"];
+        this.updatedTable = this.reportData = response["tableData"];
         var clusterNames = response["clusterDetails"];
         this.clusterNames = clusterNames.sort((a, b) =>
           a.cluster_name > b.cluster_name
@@ -449,7 +484,7 @@ export class PATLOTableComponent implements OnInit {
             ? -1
             : 0
         );
-        this.createTable(this.reportData);
+        this.onChangePage();
         var block = this.blockNames.find((a) => a.block_id == blockId);
         this.blockHierarchy = {
           districtName: block.district_name,
@@ -501,8 +536,8 @@ export class PATLOTableComponent implements OnInit {
 
     this.service.patLOTableSchoolData(a).subscribe(
       (response) => {
-        this.reportData = response["tableData"];
-        this.createTable(this.reportData);
+        this.updatedTable = this.reportData = response["tableData"];
+        this.onChangePage();
         var cluster = this.clusterNames.find((a) => a.cluster_id == clusterId);
         this.clusterHierarchy = {
           districtName: cluster.district_name,
@@ -565,5 +600,53 @@ export class PATLOTableComponent implements OnInit {
     var position = this.reportName.length;
     this.fileName = [this.fileName.slice(0, position), `_${this.management}`, this.fileName.slice(position)].join('');
     this.commonService.download(this.fileName, this.reportData);
+  }
+
+  updateFilter(event: any) {
+    var val = event.target.value.toLowerCase();
+    
+    // filter our data
+    let ref = this;
+    let temp:any = [];
+
+    if (val) {
+      temp = this.updatedTable.filter(function (d: any) {
+        let found = false;
+  
+        for (let i = 0; i < ref.columns.length; i++) {
+          let value = d[ref.columns[i].data]; 
+          if (typeof value === 'number') {
+            value = value.toString()
+          }
+
+          if (value.toLowerCase().indexOf(val) !== -1) {
+            found = true;
+            break;
+          }
+        }
+        return found;
+      });
+    } else {
+      document.getElementById('spinner').style.display = 'block';
+      temp = this.updatedTable;
+    }
+        
+    // update the rows
+    this.reportData = temp;
+    this.pageChange();
+  }
+
+  preventBackspace(e) {
+    var evt = e || window.event;
+    if (evt) {
+        var keyCode = evt.charCode || evt.keyCode;
+        if (keyCode === 8) {
+            if (evt.preventDefault) {
+                evt.preventDefault();
+            } else {
+                evt.returnValue = false;
+            }
+        }
+    }
   }
 }
