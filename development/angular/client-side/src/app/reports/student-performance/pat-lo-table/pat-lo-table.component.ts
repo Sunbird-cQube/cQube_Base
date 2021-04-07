@@ -127,6 +127,12 @@ export class PATLOTableComponent implements OnInit {
     this.state = this.commonService.state;
     document.getElementById("homeBtn").style.display = "block";
     document.getElementById("backBtn").style.display = "none";
+    this.onResize();
+  }
+
+  height = window.innerHeight;
+  onResize() {
+    this.height = window.innerHeight;
   }
 
   fetchFilters(metaData) {
