@@ -38,18 +38,26 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
             if (grade && grade != 'all') {
                 schoolData['data'].map(item => {
                     if (item.subjects) {
-                        Object.keys(item.subjects[0]).map(key => {
-                            Subjects.push(key);
+                        item.subjects.map(subj => {
+                            Object.keys(subj).map(key => {
+                                Subjects.push(key);
+                            })
                         })
                     }
                 });
                 Subjects = [...new Set(Subjects)];
             }
-            var filteredData = filter.data(schoolData['data'], grade, subject, start);
-            sortedData = filteredData.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1);
+            var filteredData = filter.data(schoolData['data'], grade, subject, start, Subjects);
+            if (filteredData.length > 0) {
+                sortedData = filteredData.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1);
+                res.status(200).send({ data: sortedData, footer: schoolData.allSchoolsFooter.total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
+            } else {
+                res.status(403).json({ errMsg: "Data not found" });
+            }
+        } else {
+            res.status(403).json({ errMsg: "Data not found" });
         }
         logger.info('--- pat exception school wise api response sent---');
-        res.status(200).send({ data: sortedData, footer: schoolData.allSchoolsFooter.total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -97,18 +105,26 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
             if (grade && grade != 'all') {
                 filterData.map(item => {
                     if (item.subjects) {
-                        Object.keys(item.subjects[0]).map(key => {
-                            Subjects.push(key);
+                        item.subjects.map(subj => {
+                            Object.keys(subj).map(key => {
+                                Subjects.push(key);
+                            })
                         })
                     }
                 });
                 Subjects = [...new Set(Subjects)];
             }
-            var filteredData = filter.data(filterData, grade, subject, start);
-            sortedData = filteredData.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1);
+            var filteredData = filter.data(filterData, grade, subject, start, Subjects);
+            if (filteredData.length > 0) {
+                sortedData = filteredData.sort((a, b) => (a.school_name) > (b.school_name) ? 1 : -1);
+                res.status(200).send({ data: sortedData, footer: schoolData.footer[`${clusterId}`].total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
+            } else {
+                res.status(403).json({ errMsg: "Data not found" });
+            }
+        } else {
+            res.status(403).json({ errMsg: "Data not found" });
         }
         logger.info('--- pat exception schoolPerCluster api response sent---');
-        res.status(200).send({ data: sortedData, footer: schoolData.footer[`${clusterId}`].total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
     } catch (e) {
         logger.error(e);
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

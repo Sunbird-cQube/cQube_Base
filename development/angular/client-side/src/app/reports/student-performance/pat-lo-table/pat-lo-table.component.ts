@@ -562,11 +562,15 @@ export class PATLOTableComponent implements OnInit {
 
   //resetting table
   resetTable() {
-    if (this.reportData.length > 0) {
+    if ($.fn.DataTable.isDataTable("#LOtable")) {
       this.reportData = [];
-      $(`#LOtable`).empty();
       $("#LOtable").DataTable().destroy();
+      $("#LOtable").empty();
     }
+    //   this.reportData = [];
+    //   $(`#LOtable`).empty();
+    //   $("#LOtable").DataTable().destroy();
+    // }
   }
   //level wise filter
   levelWiseFilter() {

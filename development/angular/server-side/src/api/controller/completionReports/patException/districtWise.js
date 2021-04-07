@@ -36,16 +36,24 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
         if (districtData) {
             if (grade && grade != 'all') {
                 districtData['data'].map(item => {
-                    Object.keys(item.subjects[0]).map(key => {
-                        Subjects.push(key);
+                    item.subjects.map(subj => {
+                        Object.keys(subj).map(key => {
+                            Subjects.push(key);
+                        })
                     })
                 });
                 Subjects = [...new Set(Subjects)];
             }
-            var filteredData = filter.data(districtData['data'], grade, subject, start);
-            sortedData = filteredData.sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1);
-            logger.info('--- pat exception district api response sent ---');
-            res.status(200).send({ data: sortedData, footer: districtData.allDistrictsFooter.total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
+            var filteredData = filter.data(districtData['data'], grade, subject, start, Subjects);
+            if (filteredData.length > 0) {
+                sortedData = filteredData.sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1);
+                logger.info('--- pat exception district api response sent ---');
+                res.status(200).send({ data: sortedData, footer: districtData.allDistrictsFooter.total_schools_with_missing_data, subjects: grade && grade != 'all' ? Subjects : [] });
+
+            } else {
+                logger.info('--- pat exception district api response sent ---');
+                res.status(403).json({ errMsg: "Data not found" });
+            }
         } else {
             logger.info('--- pat exception district api response sent ---');
             res.status(403).json({ errMsg: "Data not found" });
