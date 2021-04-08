@@ -27,6 +27,11 @@ export class StudentAttendanceChartComponent implements OnInit {
   years = [];
   selectedYear = '';
   selectedDistricts = [];
+
+  managementName;
+  management;
+  category;
+
   data:any = [];
   currentData = [];
   xAxisLabels = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
@@ -44,6 +49,11 @@ export class StudentAttendanceChartComponent implements OnInit {
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.state = this.commonService.state;
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
     this.service.getYears().subscribe(res=>{
       this.years = Object.keys(res);
       this.selectedYear = this.years[this.years.length-1];
@@ -55,6 +65,7 @@ export class StudentAttendanceChartComponent implements OnInit {
 
   onResize() {
     this.height = window.innerHeight;
+    console.log(this.height)
   }
   districtData = [];
   onSelectYear(){
@@ -86,19 +97,21 @@ export class StudentAttendanceChartComponent implements OnInit {
   }
   getStateData(){
     this.level = 'State';
-    this.service.getStateData({year: this.selectedYear}).subscribe(res=>{
+    this.service.getStateData({...{year: this.selectedYear}, ...{ management: this.management, category: this.category }}).subscribe(res=>{
       this.data = res['data'];
       var data = [];
       this.counts = [];
+      var counts = [];
       this.currentData = [];
       this.data.map(item=>{
         item.attendance.map(i=>{
           data.push(i.attendance);
-          this.counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
-        })
+          counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount, index: 0});
+        });
+        this.counts.push(counts);
         this.currentData.push({data: data, name: this.state, color: '#00FF00'});
         this.commonService.loaderAndErr(this.currentData);
-      })
+      });
       this.getDistrictData();
     },err=>{
       this.data = [];
@@ -109,7 +122,7 @@ export class StudentAttendanceChartComponent implements OnInit {
   getDistrictData(){
     this.districtList = [];
     this.districtData = [];
-    this.service.getDistrictData({year:this.selectedYear}).subscribe((res:any)=>{
+    this.service.getDistrictData({...{year: this.selectedYear}, ...{ management: this.management, category: this.category }}).subscribe((res:any)=>{
       this.districtData = res['data'];
       this.districtData.map(item=>{
         this.districtList.push({id:item.districtId, name: item.districtName});
@@ -129,7 +142,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.blockList = [];
     this.blockData = [];
     if(this.selectedDistricts.length == 1){
-      this.service.getBlockData({year:this.selectedYear, districtId: this.selectedDistricts[0]}).subscribe((res:any)=>{
+      this.service.getBlockData({...{year:this.selectedYear, districtId: this.selectedDistricts[0]}, ...{ management: this.management, category: this.category }}).subscribe((res:any)=>{
         this.blockData = res['data'];
         this.blockData.map(item=>{
           this.blockList.push({id:item.blockId, name: item.blockName});
@@ -153,7 +166,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.clusterList = [];
     this.clusterData = [];
     if(this.selectedBlock.length == 1){
-    this.service.getClusterData({year:this.selectedYear, blockId: this.selectedBlock[0]}).subscribe((res:any)=>{
+    this.service.getClusterData({...{year:this.selectedYear, blockId: this.selectedBlock[0]}, ...{ management: this.management, category: this.category }}).subscribe((res:any)=>{
       this.clusterData = res['data'];
       this.clusterData.map(item=>{
         this.clusterList.push({id:item.clusterId, name: item.clusterName});
@@ -176,7 +189,7 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.schoolList = [];
     this.schoolData = [];
     if(this.selectedCluster.length == 1){
-    this.service.getSchoolData({year:this.selectedYear, clusterId: this.selectedCluster[0]}).subscribe((res:any)=>{
+    this.service.getSchoolData({...{year:this.selectedYear, clusterId: this.selectedCluster[0]}, ...{ management: this.management, category: this.category }}).subscribe((res:any)=>{
       this.schoolData = res['data'];
       this.schoolData.map(item=>{
         this.schoolList.push({id:item.schoolId, name: item.schoolName});
@@ -265,16 +278,12 @@ export class StudentAttendanceChartComponent implements OnInit {
       })
     });
     if(this.selectedDistricts.length > 0){
-      // var myColors = [];
-      // var latestColors = [];
       for(let i=0; i<this.selectedDistricts.length; i++){
           if(i <= 9){
             this.currentColors.push(this.colors[i]);
             this.dataWithColors.push({id: [names[i].id],name: [names[i].name], color: this.colors[i]});
-            // myColors = [];
           }
         }
-        // this.currentColors = latestColors.concat(myColors);
       if(this.selectedDistricts.length == 1){
         this.getBlockData();
       }
@@ -306,17 +315,12 @@ export class StudentAttendanceChartComponent implements OnInit {
       })
     });
     if(this.selectedBlock.length > 0){
-      // var myColors = [];
-      // var latestColors = [];
       for(let i=0; i<this.selectedBlock.length; i++){
           if(i <= 9){
             this.currentColors.push(this.colors[i]);
             this.dataWithColors.push({id: [names[i].id],name: [names[i].name], color: this.colors[i]});
-            // myColors = [];
           }
-        }
-        // this.currentColors = latestColors.concat(myColors);
-      
+        }      
       if(this.selectedBlock.length == 1){
         this.getClusterData();
       }
@@ -345,16 +349,12 @@ export class StudentAttendanceChartComponent implements OnInit {
       })
     });
     if(this.selectedCluster.length > 0){
-      // var myColors = [];
-      // var latestColors = [];
       for(let i=0; i<this.selectedCluster.length; i++){
           if(i <= 9){
             this.currentColors.push(this.colors[i]);
             this.dataWithColors.push({id: [names[i].id],name: [names[i].name], color: this.colors[i]});
-            // myColors = [];
           }
         }
-        // this.currentColors = latestColors.concat(myColors);
       if(this.selectedCluster.length == 1){
         this.getSchoolData();
       }
@@ -383,16 +383,12 @@ export class StudentAttendanceChartComponent implements OnInit {
       })
     });
     if(this.selectedSchool.length > 0){
-      // var myColors = [];
-      // var latestColors = [];
       for(let i=0; i<this.selectedSchool.length; i++){
           if(i <= 9){
             this.currentColors.push(this.colors[i]);
             this.dataWithColors.push({id: [names[i].id],name: [names[i].name], color: this.colors[i]});
-            // myColors = [];
           }
         }
-        // this.currentColors = latestColors.concat(myColors);
       this.getCurrentSchoolData();
       document.getElementById('home').style.display = 'block';
       this.changeDetection.detectChanges();
@@ -411,19 +407,21 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.counts = [];
     this.level = 'District';
     if(this.districtData.length > 0){
-    this.dataWithColors.map((item, i)=>{
+    this.dataWithColors.map((item, index)=>{
+      var counts = [];
       this.districtData.map(element=>{
         item.id.map(id=>{
           if(id == element.districtId){
             var data = [];
             element.attendance.map(i=>{
               data.push(i.attendance);
-              this.counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
+              counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
             })
-            this.currentData.push({data: data, name: element.districtName, color: this.currentColors[i]});
+            this.currentData.push({data: data, name: element.districtName, color: this.currentColors[index], index: index});
          }
         })
       })
+      this.counts.push(counts);
     });
   }
     setTimeout(() => {
@@ -438,19 +436,21 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.counts = [];
     this.level = 'Block';
     if(this.blockData.length > 0){
-    this.dataWithColors.map((item, i)=>{
+    this.dataWithColors.map((item, index)=>{
+      var counts = [];
       this.blockData.map(element=>{
         item.id.map(id=>{
           if(id == element.blockId){
             var data = [];
             element.attendance.map(i=>{
               data.push(i.attendance);
-              this.counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
+              counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
             })
-            this.currentData.push({data: data, name: element.blockName, color: this.currentColors[i]});
+            this.currentData.push({data: data, name: element.blockName, color: this.currentColors[index], index: index});
          }
         })
       })
+      this.counts.push(counts);
     });
   }
     setTimeout(() => {
@@ -465,19 +465,21 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.counts = [];
     this.level = 'Cluster';
     if(this.clusterData.length > 0){
-    this.dataWithColors.map((item, i)=>{
+    this.dataWithColors.map((item, index)=>{
+      var counts = [];
       this.clusterData.map(element=>{
         item.id.map(id=>{
           if(id == element.clusterId){
             var data = [];
             element.attendance.map(i=>{
               data.push(i.attendance);
-              this.counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
+              counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
             })
-            this.currentData.push({data: data, name: element.clusterName, color: this.currentColors[i]});
+            this.currentData.push({data: data, name: element.clusterName, color: this.currentColors[index], index: index});
          }
         })
       })
+      this.counts.push(counts);
     });
   }
     setTimeout(() => {
@@ -492,19 +494,21 @@ export class StudentAttendanceChartComponent implements OnInit {
     this.counts = [];
     this.level = 'School';
     if(this.schoolData.length > 0){
-    this.dataWithColors.map((item, i)=>{
+    this.dataWithColors.map((item, index)=>{
+      var counts = [];
       this.schoolData.map(element=>{
         item.id.map(id=>{
           if(id == element.schoolId){
             var data = [];
             element.attendance.map(i=>{
               data.push(i.attendance);
-              this.counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
+              counts.push({studentCount: i.studentCount, schoolCount: i.schoolCount});
             })
-            this.currentData.push({data: data, name: element.schoolName, color: this.currentColors[i]});
+            this.currentData.push({data: data, name: element.schoolName, color: this.currentColors[index], index: index});
          }
         })
-      })
+      });
+      this.counts.push(counts);
     });
   }
     setTimeout(() => {

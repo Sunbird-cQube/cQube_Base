@@ -227,6 +227,10 @@ leaflet-right {
     white-space: nowrap;
 }
 
+table.dataTable.nowrap td {
+    white-space: unset !important; 
+}
+
 
 /*//////////////////////////////////////////////////////////////////*/
 
@@ -902,32 +906,44 @@ leaflet-right {
     }
 }
 
+.page-item.active .page-link{
+    background-color: whitesmoke !important;
+    color: black !important;
+    font-size: 12px;
+}
+.page-link{
+    color: black !important;
+    font-size: 12px;
+}
+
 @media only screen and (min-width: 2560px) {
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead table th {
-        font-size: 1.4rem !important;
-    }
     .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
-        max-height: 70vh !important;
+        max-height: 68vh !important;
     }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table {
-        font-size: 1.4rem !important;
+
+    .page-item.active .page-link{
+        background-color: whitesmoke !important;
+        color: black !important;
+        font-size: 23px;
     }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table tbody td {
-        padding: 14px 10px !important;
+    .page-link{
+        color: black !important;
+        font-size: 23px;
     }
+  
 }
 
 @media only screen and (min-width: 3840px) {
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead table th {
-        font-size: 1.7rem !important;
+        .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
+        max-height: 72vh !important;
     }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
-        max-height: 70vh !important;
+    .page-item.active .page-link{
+        background-color: whitesmoke !important;
+        color: black !important;
+        font-size: 30px;
     }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table {
-        font-size: 1.7rem !important;
-    }
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table tbody td {
-        padding: 18px 12px !important;
+    .page-link{
+        color: black !important;
+        font-size: 30px;
     }
 }

@@ -4,7 +4,7 @@
   }
 
   .search-container {
-    float: right; margin-top: -5px;
+    float: left; margin-top: 5px;
   }
 
   #dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
@@ -17,6 +17,9 @@
  }
   
   @media only screen and (min-width: 2560px) {
+    table thead tr th{
+      font-size: 22px !important;
+    }
     #dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
         font-size: 2.5rem !important;
     }
@@ -50,6 +53,9 @@
   }
   
   @media only screen and (min-width: 3840px) {
+    table thead tr th{
+      font-size: 30px !important;
+    }
     #dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
         font-size: 3.3rem !important;
     }
@@ -76,3 +82,15 @@
       font-size: 2rem;
     }
   }
+
+  @media only screen and (min-width: 2520px) {
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
+        height: 74vh !important;
+    }
+}
+
+@media only screen and (min-width: 3800px) {
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
+        height: 80vh !important;
+    }
+}

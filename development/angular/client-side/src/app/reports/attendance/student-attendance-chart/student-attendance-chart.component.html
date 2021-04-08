@@ -13,7 +13,7 @@
         <div class="col-lg-5 col-md-12 col-sm-12">
             <div class="row">
                 <div class="col-sm-7">
-                    <p id="errMsg"></p>
+                    <p id="errMsg" class="note"></p>
                 </div>
                 <div class="col-sm-5">
                     <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="onHomeClick(false)"></em>
@@ -31,22 +31,25 @@
                 </option>
             </select>
             <div>
-                <app-multi-select #multiSelect1 style="float: left;width: auto; margin-right: 10px;" [list]="districtList" [text]="'District'" [width1]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'"
-                    [width2]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'" (shareCheckedList)="shareCheckedList($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
+                <app-multi-select #multiSelect1 style="float: left;width: auto; margin-right: 10px;" [list]="districtList" [text]="'District'" [width1]="height > 1780 ? '350px !important': height > 1180 && height < 1780 ? '300px': height > 667 && height < 1180 ? '200px':'130px'"
+                    [width2]="height > 1780 ? '350px !important': height > 1180 && height < 1780 ? '300px': height > 667 && height < 1180 ? '220px':'130px'" (shareCheckedList)="shareCheckedList($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
                 </app-multi-select>
             </div>
             <div *ngIf="blockData.length > 0 && selectedDistricts.length == 1">
-                <app-multi-select #multiSelect2 style="float: left;width: auto; margin-right: 10px;" [list]="blockList" [text]="'Block'" [width1]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'" [width2]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'"
+                <app-multi-select #multiSelect2 style="float: left;width: auto; margin-right: 10px;" [list]="blockList" [text]="'Block'" [width1]="height > 1780 ? '350px !important': height > 1180 && height < 1780 ? '300px': height > 667 && height < 1180 ? '200px':'130px'"
+                    [width2]="height > 1780 ? '350px !important': height > 1180 && height < 1780 ? '300px': height > 667 && height < 1180 ? '220px':'130px'"
                     (shareCheckedList)="shareCheckedList1($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
                 </app-multi-select>
             </div>
             <div *ngIf="clusterData.length > 0 && selectedBlock.length == 1">
-                <app-multi-select #multiSelect3 style="float: left;width: auto; margin-right: 10px;" [list]="clusterList" [text]="'Cluster'" [width1]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'"
-                    [width2]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'" (shareCheckedList)="shareCheckedList2($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
+                <app-multi-select #multiSelect3 style="float: left;width: auto; margin-right: 10px;" [list]="clusterList" [text]="'Cluster'" [width1]="height > 1780 ? '450px !important': height > 1180 && height < 1780 ? '400px': height > 667 && height < 1180 ? '270px':'220px'"
+                    [width2]="height > 1780 ? '450px !important': height > 1180 && height < 1780 ? '400px': height > 667 && height < 1180 ? '270px':'220px'" 
+                    (shareCheckedList)="shareCheckedList2($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
                 </app-multi-select>
             </div>
             <div *ngIf="schoolData.length > 0 && selectedCluster.length == 1">
-                <app-multi-select #multiSelect4 style="float: left;width: auto; margin-right: 10px;" [list]="schoolList" [text]="'School'" [width1]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'" [width2]="height > 1760 ? '300px': height > 1180 && height < 1760 ? '250px': height > 667 && height < 1180 ? '200px':'150px'"
+                <app-multi-select #multiSelect4 style="float: left;width: auto; margin-right: 10px;" [list]="schoolList" [text]="'School'" [width1]="height > 1780 ? '450px !important': height > 1180 && height < 1780 ? '400px': height > 667 && height < 1180 ? '270px':'220px'"
+                    [width2]="height > 1780 ? '450px !important': height > 1180 && height < 1780 ? '400px': height > 667 && height < 1180 ? '270px':'220px'"
                     (shareCheckedList)="shareCheckedList3($event)" from="trendChart">
                 </app-multi-select>
             </div>
@@ -59,7 +62,8 @@
     <hr>
     <div class="row" style="margin-top: 1%;">
         <div [ngClass]="dataWithColors.length > 0 ? 'col-lg-10 col-md-10 col-sm-12' : 'col-lg-12 col-md-12 col-sm-12'">
-            <app-line-chart *ngIf="currentData.length > 0" [selectedYear]="selectedYear" [data]="data" [xAxisLabels]="xAxisLabels" [lineData]="currentData" [level]="level" [xAxisTitle]="'Months'" [yAxisTitle]="'Attendance'" [counts]="counts">
+            <app-line-chart *ngIf="currentData.length > 0" [selectedYear]="selectedYear" [data]="data" [xAxisLabels]="xAxisLabels" [lineData]="currentData" [level]="level" [xAxisTitle]="'Months'"
+                 [yAxisTitle]="'Attendance'" [counts]="counts" [managementName]='managementName'>
             </app-line-chart>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-12" *ngIf="dataWithColors.length > 0">

@@ -1,5 +1,5 @@
 <div class="container-fluid" style="padding-top:15px !important;">
-    <div class="row">
+    <div class="row" (window:resize)="onResize()">
         <div class="col-lg-8 col-md-8 col-sm-12">
             <div *ngIf='all'>
                 <p id="dist_level">
@@ -17,7 +17,7 @@
         <div class="col-lg-4 col-md-4 col-sm-12">
             <div class="row">
                 <div class="col-sm-3">
-                    <p id="errMsg"
+                    <p id="errMsg" class="note"
                         style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
@@ -47,33 +47,42 @@
 
     <div class="row" style="margin-top: 5px;">
         <div class="col-sm-12">
-            <select id="time_range" class="select-control"
-                [(ngModel)]="timePeriod" name="timePeriod" (change)="timeRange(timePeriod)">
+            <select id="time_range" class="select-control" [(ngModel)]="timePeriod" name="timePeriod"
+                (change)="timeRange(timePeriod)">
                 <option [value]="timePeriod" disabled selected="selected">Choose Time Range
                 </option>
                 <option *ngFor="let time of timeDetails" [(ngValue)]="time.timeRange" style=" font-size: 11px;">
                     {{time.name}}
                 </option>
             </select>
-            <select id="choose_dist" class="select-control"
-                [(ngModel)]="districtId" (change)="districtWise(districtId)">
+            <select id="choose_dist" class="select-control" [(ngModel)]="districtId"
+                (change)="districtWise(districtId)">
                 <option [value]="districtId" disabled selected="selected">Choose a District</option>
                 <option *ngFor="let dist of districtsDetails" [(ngValue)]="dist.district_id" style=" font-size: 11px;">
                     {{dist.district_name}}
                 </option>
             </select>
-          <div class="search-container">
-            Search:  <input type="search" id="search-inp"/>
-          </div>
+            <div class="search-container">
+                Search: <input type="search" id="search-inp" (input)="updateFilter($event)"
+                    (keydown)="preventBackspace($event)" />
+            </div>
         </div>
     </div>
     <hr>
 
     <div class="row">
-        <div class="col-sm-12 dataTableCustom">
-            <table #DataTable id="table" class="display nowrap" width="100%"
-                style="font-size: 12px; text-align: center; ">
+        <div class="col-sm-12 dataTableCustom"
+            [ngStyle]="{fontSize: height > 1760 ? '34px' : height > 1180 && height < 1760 ? '25px' : height > 667 && height < 1180 ? '14px' : '11px'}">
+            <table #DataTable id="table" class="display nowrap" width="100%" style="text-align: center;">
             </table>
+        </div>
+    </div>
+    <div *ngIf="reportData.length > 0" class="row">
+        <div class="col-md-12">
+            <div style="position: relative; bottom: 0px; float: right; margin: 0px auto;">
+                <ngb-pagination *ngIf="showPagination" [collectionSize]="result.length" [maxSize]="10"
+                    [(page)]="currentPage" [pageSize]="pageSize" (pageChange)="onChangePage()"></ngb-pagination>
+            </div>
         </div>
     </div>
 </div>
