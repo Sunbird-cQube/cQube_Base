@@ -260,7 +260,7 @@ export class SemesterExceptionComponent implements OnInit {
           // sort the districtname alphabetically
           this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
         }, err => {
-          this.data = [];
+          this.data = this.districtMarkers = [];
           this.commonService.loaderAndErr(this.data);
         });
       }, error => {
@@ -345,7 +345,7 @@ export class SemesterExceptionComponent implements OnInit {
             this.changeDetection.markForCheck();
           }
         }, err => {
-          this.data = [];
+          this.data = this.districtMarkers = [];
           this.commonService.loaderAndErr(this.data);
         });
       }, error => {
@@ -430,7 +430,7 @@ export class SemesterExceptionComponent implements OnInit {
             this.changeDetection.markForCheck();
           }
         }, err => {
-          this.data = [];
+          this.data = this.districtMarkers = [];
           this.commonService.loaderAndErr(this.data);
         });
       }, error => {
@@ -512,7 +512,7 @@ export class SemesterExceptionComponent implements OnInit {
             // }
           }
         }, err => {
-          this.data = [];
+          this.data = this.districtMarkers = [];
           this.commonService.loaderAndErr(this.data);
         });
       }, error => {
@@ -537,6 +537,7 @@ export class SemesterExceptionComponent implements OnInit {
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = true;
+    this.reportData = [];
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -586,7 +587,7 @@ export class SemesterExceptionComponent implements OnInit {
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }, err => {
-      this.data = [];
+      this.data = this.blockMarkers = [];
       this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
@@ -604,6 +605,7 @@ export class SemesterExceptionComponent implements OnInit {
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = false;
+    this.reportData = [];
 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
@@ -662,7 +664,7 @@ export class SemesterExceptionComponent implements OnInit {
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }, err => {
-      this.data = [];
+      this.data = this.clusterMarkers = [];
       this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
@@ -678,6 +680,8 @@ export class SemesterExceptionComponent implements OnInit {
     this.schoolCount = '';
     this.blockHidden = false;
     this.clusterHidden = false;
+    this.reportData = [];
+
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
