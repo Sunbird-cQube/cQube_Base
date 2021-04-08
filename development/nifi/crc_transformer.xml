@@ -11707,31 +11707,6 @@ VALUES
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>94ebf9a3-b4d0-3a70-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>3ff95882-a4c1-37bb-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>c5947b0e-6ca4-30de-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>95547ba5-9ae2-3afc-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -11760,13 +11735,17 @@ VALUES
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>2056.0</x>
+<y>-712.0</y>
+                            </bends>
                             <destination>
 <groupId>fd59c3d0-9a71-35f2-0000-000000000000</groupId>
-<id>c5947b0e-6ca4-30de-0000-000000000000</id>
+<id>3ff95882-a4c1-37bb-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
+                            <labelIndex>0</labelIndex>
                             <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                             <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -24976,100 +24955,6 @@ ${filename:startsWith('inspection_master'):ifElse(#{crc_inspection_temp_trans_qr
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
                         <processors>
-                            <id>c5947b0e-6ca4-30de-0000-000000000000</id>
-                            <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
-                            <position>
-<x>1904.0</x>
-<y>-752.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.12.1</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>record-reader</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
-            <name>record-reader</name>
-        </value>
-    </entry>
-    <entry>
-        <key>record-writer</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
-            <name>record-writer</name>
-        </value>
-    </entry>
-    <entry>
-        <key>replacement-value-strategy</key>
-        <value>
-            <name>replacement-value-strategy</name>
-        </value>
-    </entry>
-    <entry>
-        <key>/data_from_date</key>
-        <value>
-            <name>/data_from_date</name>
-        </value>
-    </entry>
-    <entry>
-        <key>/data_upto_date</key>
-        <value>
-            <name>/data_upto_date</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>record-reader</key>
-        <value>0d0aa52a-0559-3000-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>record-writer</key>
-        <value>14c3e78f-0583-3998-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>replacement-value-strategy</key>
-        <value>literal-value</value>
-    </entry>
-    <entry>
-        <key>/data_from_date</key>
-        <value>${field.value:format('yyyy-MM-dd','IST')}</value>
-    </entry>
-    <entry>
-        <key>/data_upto_date</key>
-        <value>${field.value:format('yyyy-MM-dd','IST')}</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>crc_convert_to_ist</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>failure</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.UpdateRecord</type>
-                        </processors>
-                        <processors>
                             <id>c622b31b-3a90-3db1-0000-000000000000</id>
                             <parentGroupId>fd59c3d0-9a71-35f2-0000-000000000000</parentGroupId>
                             <position>
@@ -28852,5 +28737,5 @@ file:${filename} process_end_time updated to log summary table</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/08/2021 18:15:22 IST</timestamp>
+    <timestamp>04/08/2021 21:32:52 IST</timestamp>
 </template>
