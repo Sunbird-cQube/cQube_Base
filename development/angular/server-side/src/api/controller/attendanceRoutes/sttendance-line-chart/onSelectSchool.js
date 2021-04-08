@@ -8,7 +8,14 @@ router.post('/schoolWise', auth.authController, async(req, res) => {
         logger.info('---Trends dist wise api ---');
         var year = req.body.year;
         var clusterId = req.body.clusterId;
-        let fileName = `attendance/trend_line_chart/school/${clusterId}_${year}.json`;
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+        if (management != 'overall' && category == 'overall') {
+            fileName = `attendance/trend_line_chart/school_management_category/overall_category/overall/${management}/school/${clusterId}_${year}.json`;
+        }else{
+            fileName = `attendance/trend_line_chart/school/${clusterId}_${year}.json`;
+        }
         var schoolData = await s3File.readS3File(fileName);
         var keys = Object.keys(schoolData);
         var mydata = [];

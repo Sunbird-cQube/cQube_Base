@@ -235,7 +235,9 @@ export class SemesterExceptionComponent implements OnInit {
           this.markers = this.districtMarkers = this.data['data'];
           this.allSubjects = [];
           if (this.grade != 'all') {
-            this.allSubjects = this.data['subjects'];
+            this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
           }
           // options to set for markers in the map
           let options = {
@@ -258,7 +260,7 @@ export class SemesterExceptionComponent implements OnInit {
           // sort the districtname alphabetically
           this.districtMarkers.sort((a, b) => (a.district_name > b.district_name) ? 1 : ((b.district_name > a.district_name) ? -1 : 0));
         }, err => {
-          this.data = [];
+          this.data = this.districtMarkers = [];
           this.commonService.loaderAndErr(this.data);
         });
       }, error => {
@@ -330,7 +332,9 @@ export class SemesterExceptionComponent implements OnInit {
             this.markers = this.blockMarkers = result;
             this.allSubjects = [];
             if (this.grade != 'all') {
-              this.allSubjects = this.data['subjects'];
+              this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
@@ -341,7 +345,7 @@ export class SemesterExceptionComponent implements OnInit {
             this.changeDetection.markForCheck();
           }
         }, err => {
-          this.data = [];
+          this.data = this.districtMarkers = [];
           this.commonService.loaderAndErr(this.data);
         });
       }, error => {
@@ -413,7 +417,9 @@ export class SemesterExceptionComponent implements OnInit {
             this.markers = this.clusterMarkers = result;
             this.allSubjects = [];
             if (this.grade != 'all') {
-              this.allSubjects = this.data['subjects'];
+              this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
@@ -424,7 +430,7 @@ export class SemesterExceptionComponent implements OnInit {
             this.changeDetection.markForCheck();
           }
         }, err => {
-          this.data = [];
+          this.data = this.districtMarkers = [];
           this.commonService.loaderAndErr(this.data);
         });
       }, error => {
@@ -490,7 +496,9 @@ export class SemesterExceptionComponent implements OnInit {
             this.markers = this.schoolMarkers = result;
             this.allSubjects = [];
             if (this.grade != 'all') {
-              this.allSubjects = this.data['subjects'];
+              this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
             }
             globalMap.doubleClickZoom.enable();
             globalMap.scrollWheelZoom.enable();
@@ -504,7 +512,7 @@ export class SemesterExceptionComponent implements OnInit {
             // }
           }
         }, err => {
-          this.data = [];
+          this.data = this.districtMarkers = [];
           this.commonService.loaderAndErr(this.data);
         });
       }, error => {
@@ -529,6 +537,7 @@ export class SemesterExceptionComponent implements OnInit {
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = true;
+    this.reportData = [];
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -540,7 +549,9 @@ export class SemesterExceptionComponent implements OnInit {
       this.markers = this.blockMarkers = this.data['data'];
       this.allSubjects = [];
       if (this.grade != 'all') {
-        this.allSubjects = this.data['subjects'];
+        this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
       }
       // set hierarchy values
       this.districtHierarchy = {
@@ -576,7 +587,7 @@ export class SemesterExceptionComponent implements OnInit {
       // sort the blockname alphabetically
       this.blockMarkers.sort((a, b) => (a.block_name > b.block_name) ? 1 : ((b.block_name > a.block_name) ? -1 : 0));
     }, err => {
-      this.data = [];
+      this.data = this.blockMarkers = [];
       this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
@@ -594,6 +605,7 @@ export class SemesterExceptionComponent implements OnInit {
     // to show and hide the dropdowns
     this.blockHidden = false;
     this.clusterHidden = false;
+    this.reportData = [];
 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
@@ -604,7 +616,9 @@ export class SemesterExceptionComponent implements OnInit {
       this.markers = this.clusterMarkers = this.data['data'];
       this.allSubjects = [];
       if (this.grade != 'all') {
-        this.allSubjects = this.data['subjects'];
+        this.allSubjects = this.data['subjects'].filter(a=>{
+          return a != 'grade';
+        });
       }
       var myBlocks = [];
       this.blockMarkers.forEach(element => {
@@ -650,7 +664,7 @@ export class SemesterExceptionComponent implements OnInit {
       // sort the clusterName alphabetically
       this.clusterMarkers.sort((a, b) => (a.cluster_name > b.cluster_name) ? 1 : ((b.cluster_name > a.cluster_name) ? -1 : 0));
     }, err => {
-      this.data = [];
+      this.data = this.clusterMarkers = [];
       this.commonService.loaderAndErr(this.data);
     });
     globalMap.addLayer(this.layerMarkers);
@@ -666,6 +680,8 @@ export class SemesterExceptionComponent implements OnInit {
     this.schoolCount = '';
     this.blockHidden = false;
     this.clusterHidden = false;
+    this.reportData = [];
+
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
@@ -676,7 +692,9 @@ export class SemesterExceptionComponent implements OnInit {
         this.markers = this.schoolMarkers = this.data['data'];
         this.allSubjects = [];
         if (this.grade != 'all') {
-          this.allSubjects = this.data['subjects'];
+          this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
         }
         var markers = result['data'];
         var myBlocks = [];
@@ -754,11 +772,16 @@ export class SemesterExceptionComponent implements OnInit {
     if (data['data'].length > 0) {
       this.markers = [];
       this.markers = data['data']
-
+      var updatedMarkers = this.markers.filter(a=>{
+        return a.total_schools_with_missing_data && a.total_schools_with_missing_data != 0;
+      });
+      this.markers = updatedMarkers;
+      this.schoolCount = 0;
       // generate color gradient
       this.colors = this.commonService.getRelativeColors(this.markers, { value: 'percentage_schools_with_missing_data', report: 'exception' });
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
+        this.schoolCount = this.schoolCount + parseInt(this.markers[i].total_schools_with_missing_data);
         this.getLatLng(options.level, this.markers[i]);
         var markerIcon = this.commonService.initMarkers(this.latitude, this.longitude, this.commonService.relativeColorGredient(this.markers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, this.colors), options.radius, options.strokeWeight, options.weight, options.level);
         if (markerIcon)
@@ -769,7 +792,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.commonService.loaderAndErr(this.data);
       this.changeDetection.markForCheck();
     }
-    this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    this.schoolCount = this.schoolCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
   }
 
 

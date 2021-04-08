@@ -68,6 +68,9 @@ router.post('/dikshaTimeRangeTableData', auth.authController, async (req, res) =
         if (req.body.collectionType && distId && timePeriod) {
             fileName = `diksha/table_reports/${collectionType}/${timePeriod}/${distId}.json`;
             tableData = await s3File.readS3File(fileName);
+        }else if (req.body.collectionType && distId && !timePeriod) {
+            fileName = `diksha/table_reports/${collectionType}/${distId}.json`;
+            tableData = await s3File.readS3File(fileName);
         } else if (!timePeriod) {
             fileName = `diksha/table_reports/${collectionType}/All.json`;
             tableData = await s3File.readS3File(fileName);
