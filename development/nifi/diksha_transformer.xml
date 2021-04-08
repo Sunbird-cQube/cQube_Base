@@ -18970,7 +18970,7 @@ VALUES
     </entry>
     <entry>
         <key>include-zero-record-flowfiles</key>
-        <value>true</value>
+        <value>false</value>
     </entry>
     <entry>
         <key>cache-schema</key>
@@ -26218,6 +26218,30 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>026bba5c-ddc9-32a5-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>34367b17-1e5f-3675-0000-000000000000</id>
+<type>FUNNEL</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>8b6feefa-6581-3d32-0000-000000000000</id>
+<type>FUNNEL</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>03f99d59-bc51-3970-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -26565,31 +26589,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
 <id>5f9279c1-081c-31d4-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>0f525017-6b0f-3e35-0000-000000000000</id>
-                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>3546bf7b-ffd7-3c4b-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>invalid</selectedRelationships>
-                            <source>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>92c6eb41-3603-37a8-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -27578,9 +27577,13 @@ WHERE ff_uuid = '${source.uuid}';</value>
 <x>-9480.0</x>
 <y>-896.0</y>
                             </bends>
+                            <bends>
+<x>-9856.0</x>
+<y>-376.0</y>
+                            </bends>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>c03af33c-e72a-3520-0000-000000000000</id>
+<id>ca78c796-6773-33dd-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -28014,6 +28017,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>5cb5f7df-3b43-39d3-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>36c7fb5d-5500-3b8b-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>e939150d-8ce3-327f-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>5d973dd3-050d-3233-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -28097,8 +28125,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-9240.0</x>
-<y>-816.0</y>
+<x>-9168.0</x>
+<y>-720.0</y>
                             </bends>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
@@ -28414,30 +28442,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>6b642f1c-7a39-3f6d-0000-000000000000</id>
-                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>92c6eb41-3603-37a8-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <source>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>8b6feefa-6581-3d32-0000-000000000000</id>
-<type>FUNNEL</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>6e507a74-850a-32c2-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -28573,7 +28577,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>36c7fb5d-5500-3b8b-0000-000000000000</id>
+<id>e939150d-8ce3-327f-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -28778,6 +28782,35 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
 <id>8a6d23a3-8f14-3867-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>7c6f2766-b87b-34a6-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <bends>
+<x>-7984.0</x>
+<y>-2184.0</y>
+                            </bends>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>96b98450-fc0c-3e89-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>retry</selectedRelationships>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>e939150d-8ce3-327f-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -29137,6 +29170,31 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
 <id>686e51f4-6e0c-36c5-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>8b8dae3d-a1de-3756-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>96b98450-fc0c-3e89-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
+<id>e939150d-8ce3-327f-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -29607,35 +29665,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>a2989777-7ade-31a5-0000-000000000000</id>
-                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>-7920.0</x>
-<y>-232.0</y>
-                            </bends>
-                            <destination>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>4309d5dd-b418-3d24-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>0</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>invalid</selectedRelationships>
-                            <source>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>92c6eb41-3603-37a8-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>a36fd6a2-356c-3ac0-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -29975,39 +30004,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>b753bc51-20cd-32bf-0000-000000000000</id>
-                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>-7560.0</x>
-<y>-328.0</y>
-                            </bends>
-                            <bends>
-<x>-7296.0</x>
-<y>-336.0</y>
-                            </bends>
-                            <destination>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>34367b17-1e5f-3675-0000-000000000000</id>
-<type>FUNNEL</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>0</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>valid</selectedRelationships>
-                            <source>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>92c6eb41-3603-37a8-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>b7c050be-4b81-3117-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -30318,35 +30314,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
 <id>816595a6-7021-3a32-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>c58841ec-03bf-3e65-0000-000000000000</id>
-                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>-8600.0</x>
-<y>16.0</y>
-                            </bends>
-                            <destination>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>f562ed41-329a-3a16-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>0</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>invalid</selectedRelationships>
-                            <source>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>92c6eb41-3603-37a8-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -30681,8 +30648,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-9176.0</x>
-<y>-40.0</y>
+<x>-9024.0</x>
+<y>-8.0</y>
                             </bends>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
@@ -40111,8 +40078,8 @@ ${query_type:startsWith('diksha_tpd_r2_raw_overall'):ifElse('diksha_raw_data/tpd
                             <id>563d45b0-e8fe-3042-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
-<x>-8976.0</x>
-<y>-584.0</y>
+<x>-8928.0</x>
+<y>-568.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -43810,110 +43777,6 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse(#{diksha_tpd_scho
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
-                        </processors>
-                        <processors>
-                            <id>92c6eb41-3603-37a8-0000-000000000000</id>
-                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
-                            <position>
-<x>-8392.0</x>
-<y>-384.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.12.1</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>validate-csv-schema</key>
-        <value>
-            <name>validate-csv-schema</name>
-        </value>
-    </entry>
-    <entry>
-        <key>validate-csv-header</key>
-        <value>
-            <name>validate-csv-header</name>
-        </value>
-    </entry>
-    <entry>
-        <key>validate-csv-delimiter</key>
-        <value>
-            <name>validate-csv-delimiter</name>
-        </value>
-    </entry>
-    <entry>
-        <key>validate-csv-quote</key>
-        <value>
-            <name>validate-csv-quote</name>
-        </value>
-    </entry>
-    <entry>
-        <key>validate-csv-eol</key>
-        <value>
-            <name>validate-csv-eol</name>
-        </value>
-    </entry>
-    <entry>
-        <key>validate-csv-strategy</key>
-        <value>
-            <name>validate-csv-strategy</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>validate-csv-schema</key>
-        <value>${diksha_columns:equals('true'):ifElse(#{diksha_data_summary_all_datatype_validation},
-${diksha_columns:equals('false'):ifElse(#{diksha_data_summary_less_datatype_validation},'None')}
-)}</value>
-    </entry>
-    <entry>
-        <key>validate-csv-header</key>
-        <value>true</value>
-    </entry>
-    <entry>
-        <key>validate-csv-delimiter</key>
-        <value>,</value>
-    </entry>
-    <entry>
-        <key>validate-csv-quote</key>
-        <value>"</value>
-    </entry>
-    <entry>
-        <key>validate-csv-eol</key>
-        <value>\n</value>
-    </entry>
-    <entry>
-        <key>validate-csv-strategy</key>
-        <value>Line by line validation</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>data_type_check_diksha</name>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>invalid</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>valid</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.ValidateCsv</type>
                         </processors>
                         <processors>
                             <id>933f2a21-29f7-3ced-0000-000000000000</id>
@@ -47753,7 +47616,7 @@ ${query_type:startsWith('diksha_tpd_school_wise'):ifElse('/time_range','/type')}
     </entry>
     <entry>
         <key>include-zero-record-flowfiles</key>
-        <value>true</value>
+        <value>false</value>
     </entry>
     <entry>
         <key>cache-schema</key>
@@ -48968,7 +48831,7 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
     </entry>
     <entry>
         <key>record-writer</key>
-        <value>a2e84e9f-d0c5-3f8f-0000-000000000000</value>
+        <value>fe25f19b-2124-30c9-0000-000000000000</value>
     </entry>
     <entry>
         <key>replacement-value-strategy</key>
@@ -49322,6 +49185,240 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
+                        </processors>
+                        <processors>
+                            <id>e939150d-8ce3-327f-0000-000000000000</id>
+                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
+                            <position>
+<x>-8520.0</x>
+<y>-2384.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>put-db-record-record-reader</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
+            <name>put-db-record-record-reader</name>
+        </value>
+    </entry>
+    <entry>
+        <key>db-type</key>
+        <value>
+            <name>db-type</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-statement-type</key>
+        <value>
+            <name>put-db-record-statement-type</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-dcbp-service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.dbcp.DBCPService</identifiesControllerService>
+            <name>put-db-record-dcbp-service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-catalog-name</key>
+        <value>
+            <name>put-db-record-catalog-name</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-schema-name</key>
+        <value>
+            <name>put-db-record-schema-name</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-table-name</key>
+        <value>
+            <name>put-db-record-table-name</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-translate-field-names</key>
+        <value>
+            <name>put-db-record-translate-field-names</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-unmatched-field-behavior</key>
+        <value>
+            <name>put-db-record-unmatched-field-behavior</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-unmatched-column-behavior</key>
+        <value>
+            <name>put-db-record-unmatched-column-behavior</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-update-keys</key>
+        <value>
+            <name>put-db-record-update-keys</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-field-containing-sql</key>
+        <value>
+            <name>put-db-record-field-containing-sql</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-allow-multiple-statements</key>
+        <value>
+            <name>put-db-record-allow-multiple-statements</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-quoted-identifiers</key>
+        <value>
+            <name>put-db-record-quoted-identifiers</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-quoted-table-identifiers</key>
+        <value>
+            <name>put-db-record-quoted-table-identifiers</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-query-timeout</key>
+        <value>
+            <name>put-db-record-query-timeout</name>
+        </value>
+    </entry>
+    <entry>
+        <key>rollback-on-failure</key>
+        <value>
+            <name>rollback-on-failure</name>
+        </value>
+    </entry>
+    <entry>
+        <key>table-schema-cache-size</key>
+        <value>
+            <name>table-schema-cache-size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>put-db-record-max-batch-size</key>
+        <value>
+            <name>put-db-record-max-batch-size</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>put-db-record-record-reader</key>
+        <value>4feb88e7-14c2-3a4e-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>db-type</key>
+        <value>Generic</value>
+    </entry>
+    <entry>
+        <key>put-db-record-statement-type</key>
+        <value>INSERT</value>
+    </entry>
+    <entry>
+        <key>put-db-record-dcbp-service</key>
+        <value>ea8600ba-3d4a-3f65-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>put-db-record-catalog-name</key>
+    </entry>
+    <entry>
+        <key>put-db-record-schema-name</key>
+    </entry>
+    <entry>
+        <key>put-db-record-table-name</key>
+        <value>diksha_tpd_mapping_temp</value>
+    </entry>
+    <entry>
+        <key>put-db-record-translate-field-names</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>put-db-record-unmatched-field-behavior</key>
+        <value>Ignore Unmatched Fields</value>
+    </entry>
+    <entry>
+        <key>put-db-record-unmatched-column-behavior</key>
+        <value>Fail on Unmatched Columns</value>
+    </entry>
+    <entry>
+        <key>put-db-record-update-keys</key>
+    </entry>
+    <entry>
+        <key>put-db-record-field-containing-sql</key>
+    </entry>
+    <entry>
+        <key>put-db-record-allow-multiple-statements</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>put-db-record-quoted-identifiers</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>put-db-record-quoted-table-identifiers</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>put-db-record-query-timeout</key>
+        <value>0 seconds</value>
+    </entry>
+    <entry>
+        <key>rollback-on-failure</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>table-schema-cache-size</key>
+        <value>100</value>
+    </entry>
+    <entry>
+        <key>put-db-record-max-batch-size</key>
+        <value>0</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>PutDatabaseRecord</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>failure</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>retry</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
                         <processors>
                             <id>e9d3bd4c-e022-32fb-0000-000000000000</id>
@@ -50481,5 +50578,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/24/2021 20:16:30 IST</timestamp>
+    <timestamp>04/08/2021 11:53:56 IST</timestamp>
 </template>
