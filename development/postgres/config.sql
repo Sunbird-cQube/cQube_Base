@@ -4948,7 +4948,7 @@ coalesce(round(cast(cast(spd.total_visits as float)/cast(spd.total_schools as fl
 COALESCE(1-round(spd.schools_0 ::numeric / spd.total_schools::numeric, 1), 0::numeric) AS state_level_score
  from 
 ((select count(distinct school_id) as total_schools,district_id,district_name,
-    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1)) as no_of_schools_per_crc 
+    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),0),1) as no_of_schools_per_crc 
     from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
     group by district_id,district_name) s left join 
 (select district_id as dist_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
@@ -10921,7 +10921,7 @@ spd.academic_year
 	((select distinct month,case when month in (6,7,8,9,10,11,12) then (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year from crc_visits_frequency) as a  
 cross join
 (select count(distinct school_id) as total_schools,district_id,district_name,
-    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1)) as no_of_schools_per_crc 
+    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),0),1) as no_of_schools_per_crc 
     from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null
     group by district_id,district_name) b ) s left join 
 (select district_id as dist_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
@@ -11098,7 +11098,7 @@ and month in(select substring(monthyear,6) as month from (select max(concat(year
 (select s.district_id,s.district_name,s.total_schools,s.no_of_schools_per_crc,s.school_management_type,
 t.total_visits,t.schools_1_2,t.schools_3_5,t.schools_6_10,t.schools_10,t.schools_0 from
 (select count(distinct school_id) as total_schools,district_id,district_name,
-    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1)) as no_of_schools_per_crc,school_management_type 
+    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),0),1) as no_of_schools_per_crc,school_management_type 
     from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null and school_management_type is not null
     group by district_id,district_name,school_management_type) s left join 
 (select district_id as dist_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
@@ -11378,7 +11378,7 @@ spd.school_management_type
 (select s.district_id,s.district_name,s.total_schools,s.no_of_schools_per_crc,s.school_management_type,
 t.total_visits,t.schools_1_2,t.schools_3_5,t.schools_6_10,t.schools_10,t.schools_0 from
 (select count(distinct school_id) as total_schools,district_id,district_name,
-    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),1)) as no_of_schools_per_crc,school_management_type 
+    round(nullif(cast(cast(count(distinct school_id) as float)/nullif(cast(count(distinct cluster_id) as float),0) as numeric),0),1) as no_of_schools_per_crc,school_management_type 
     from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and district_name is not null and school_management_type is not null
     group by district_id,district_name,school_management_type) s left join 
 (select district_id as dist_id, sum(school_count) as total_visits,sum(schools_0)as schools_0,sum(schools_1_2) as schools_1_2,
