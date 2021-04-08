@@ -235,7 +235,9 @@ export class SemesterExceptionComponent implements OnInit {
           this.markers = this.districtMarkers = this.data['data'];
           this.allSubjects = [];
           if (this.grade != 'all') {
-            this.allSubjects = this.data['subjects'];
+            this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
           }
           // options to set for markers in the map
           let options = {
@@ -330,7 +332,9 @@ export class SemesterExceptionComponent implements OnInit {
             this.markers = this.blockMarkers = result;
             this.allSubjects = [];
             if (this.grade != 'all') {
-              this.allSubjects = this.data['subjects'];
+              this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
@@ -413,7 +417,9 @@ export class SemesterExceptionComponent implements OnInit {
             this.markers = this.clusterMarkers = result;
             this.allSubjects = [];
             if (this.grade != 'all') {
-              this.allSubjects = this.data['subjects'];
+              this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
             }
             this.commonService.restrictZoom(globalMap);
             globalMap.setMaxBounds([[options.centerLat - 4.5, options.centerLng - 6], [options.centerLat + 3.5, options.centerLng + 6]]);
@@ -490,7 +496,9 @@ export class SemesterExceptionComponent implements OnInit {
             this.markers = this.schoolMarkers = result;
             this.allSubjects = [];
             if (this.grade != 'all') {
-              this.allSubjects = this.data['subjects'];
+              this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
             }
             globalMap.doubleClickZoom.enable();
             globalMap.scrollWheelZoom.enable();
@@ -540,7 +548,9 @@ export class SemesterExceptionComponent implements OnInit {
       this.markers = this.blockMarkers = this.data['data'];
       this.allSubjects = [];
       if (this.grade != 'all') {
-        this.allSubjects = this.data['subjects'];
+        this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
       }
       // set hierarchy values
       this.districtHierarchy = {
@@ -604,7 +614,9 @@ export class SemesterExceptionComponent implements OnInit {
       this.markers = this.clusterMarkers = this.data['data'];
       this.allSubjects = [];
       if (this.grade != 'all') {
-        this.allSubjects = this.data['subjects'];
+        this.allSubjects = this.data['subjects'].filter(a=>{
+          return a != 'grade';
+        });
       }
       var myBlocks = [];
       this.blockMarkers.forEach(element => {
@@ -676,7 +688,9 @@ export class SemesterExceptionComponent implements OnInit {
         this.markers = this.schoolMarkers = this.data['data'];
         this.allSubjects = [];
         if (this.grade != 'all') {
-          this.allSubjects = this.data['subjects'];
+          this.allSubjects = this.data['subjects'].filter(a=>{
+            return a != 'grade';
+          });
         }
         var markers = result['data'];
         var myBlocks = [];
@@ -754,11 +768,16 @@ export class SemesterExceptionComponent implements OnInit {
     if (data['data'].length > 0) {
       this.markers = [];
       this.markers = data['data']
-
+      var updatedMarkers = this.markers.filter(a=>{
+        return a.total_schools_with_missing_data && a.total_schools_with_missing_data != 0;
+      });
+      this.markers = updatedMarkers;
+      this.schoolCount = 0;
       // generate color gradient
       this.colors = this.commonService.getRelativeColors(this.markers, { value: 'percentage_schools_with_missing_data', report: 'exception' });
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
+        this.schoolCount = this.schoolCount + parseInt(this.markers[i].total_schools_with_missing_data);
         this.getLatLng(options.level, this.markers[i]);
         var markerIcon = this.commonService.initMarkers(this.latitude, this.longitude, this.commonService.relativeColorGredient(this.markers[i], { value: 'percentage_schools_with_missing_data', report: 'exception' }, this.colors), options.radius, options.strokeWeight, options.weight, options.level);
         if (markerIcon)
@@ -769,7 +788,7 @@ export class SemesterExceptionComponent implements OnInit {
       this.commonService.loaderAndErr(this.data);
       this.changeDetection.markForCheck();
     }
-    this.schoolCount = this.data['footer'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    this.schoolCount = this.schoolCount.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
   }
 
 
