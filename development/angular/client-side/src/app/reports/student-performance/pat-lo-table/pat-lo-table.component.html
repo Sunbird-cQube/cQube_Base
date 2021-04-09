@@ -134,7 +134,8 @@
         </div>
     </div>
     <div class="row" id="initTable" style="display: block;">
-        <div class="col-sm-12 dataTableCustom" [ngStyle]="{fontSize: height > 1760 ? '34px' : height > 1180 && height < 1760 ? '25px' : height > 667 && height < 1180 ? '14px' : '12px'}">
+        <div class="col-sm-12 dataTableCustom"
+            [ngStyle]="{fontSize: height > 1760 ? '34px' : height > 1180 && height < 1760 ? '25px' : height > 667 && height < 1180 ? '14px' : '12px'}">
             <table #dataTable id="LOtable" class="display responsive cell-border"
                 style="text-align: center; width: 100%; border: 1px solid gray;">
             </table>
@@ -143,8 +144,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="search-container">
-                Search: <input type="search" id="search-inp" (input)="updateFilter($event)"
-                    (keydown)="preventBackspace($event)" />
+                Search: <input type="search" id="search-inp" (input)="updateFilter($event)" />
             </div>
             <div *ngIf="reportData.length > 0" style="position: relative; bottom: 0px; float: right; margin: 0px auto;">
                 <ngb-pagination *ngIf="showPagination" [collectionSize]="reportData.length" [maxSize]="10"

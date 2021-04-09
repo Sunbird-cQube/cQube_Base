@@ -33,6 +33,7 @@
     "group-array": "^1.0.0",
     "hammerjs": "^2.0.8",
     "highcharts": "^8.2.2",
+    "http-parser-js": "^0.5.3",
     "jquery": "^3.5.1",
     "jw-angular-pagination": "^1.2.0",
     "keycloak-js": "^10.0.2",

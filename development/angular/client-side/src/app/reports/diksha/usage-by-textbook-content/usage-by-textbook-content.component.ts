@@ -266,16 +266,7 @@ export class UsageByTextbookContentComponent implements OnInit {
 
   columns;
   tableCreation(dataSet) {
-    var my_columns = [];
-    $.each(dataSet[0], function (key, value) {
-      var my_item = {};
-      my_item['data'] = key;
-      my_item['value'] = value;
-      // if (value != 'All' && value != '') {
-      my_columns.push(my_item);
-      // }
-    });
-    this.columns = my_columns;
+    var my_columns = this.columns = this.commonService.getColumns(dataSet);
 
     $(document).ready(function () {
       var headers = '<thead><tr>'
@@ -341,6 +332,7 @@ export class UsageByTextbookContentComponent implements OnInit {
 
 
   updateFilter(event: any) {
+    this.columns = this.commonService.getColumns(this.updatedTable);
     var val = event.target.value.toLowerCase();
     
     // filter our data
@@ -372,19 +364,5 @@ export class UsageByTextbookContentComponent implements OnInit {
     // update the rows
     this.result = temp;
     this.pageChange();
-  }
-
-  preventBackspace(e) {
-    var evt = e || window.event;
-    if (evt) {
-        var keyCode = evt.charCode || evt.keyCode;
-        if (keyCode === 8) {
-            if (evt.preventDefault) {
-                evt.preventDefault();
-            } else {
-                evt.returnValue = false;
-            }
-        }
-    }
   }
 }
