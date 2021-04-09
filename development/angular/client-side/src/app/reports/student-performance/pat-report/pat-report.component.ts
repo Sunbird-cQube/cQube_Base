@@ -718,7 +718,12 @@ export class PATReportComponent implements OnInit {
                             this.blockMarkers.length,
                             "rgb"
                           );
+                    this.schoolCount = 0;
+                    this.studentCount = 0;
+
                     for (let i = 0; i < this.blockMarkers.length; i++) {
+                      this.schoolCount = this.schoolCount + this.blockMarkers[i].Details['total_schools'];
+                      this.studentCount = this.studentCount + this.blockMarkers[i].Details['students_count'];
                       var color;
                       if (!this.grade && !this.subject) {
                         color = this.commonService.color(
@@ -773,13 +778,13 @@ export class PATReportComponent implements OnInit {
 
                     //schoolCount
                     // this.schoolCount = res['footer'].total_schools;
-                    // if (this.schoolCount != null) {
-                    //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
+                    if (this.schoolCount != null) {
+                      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
                     // this.studentCount = res['footer'].students_count;
-                    // if (this.studentCount != null) {
-                    //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
+                    if (this.studentCount != null) {
+                      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
 
                     this.commonService.loaderAndErr(this.data);
                     this.changeDetection.detectChanges();
@@ -941,7 +946,12 @@ export class PATReportComponent implements OnInit {
                             this.clusterMarkers.length,
                             "rgb"
                           );
+                    this.schoolCount = 0;
+                    this.studentCount = 0;
+
                     for (let i = 0; i < this.clusterMarkers.length; i++) {
+                      this.schoolCount = this.schoolCount + this.clusterMarkers[i].Details['total_schools'];
+                      this.studentCount = this.studentCount + this.clusterMarkers[i].Details['students_count'];
                       var color = this.commonService.color(
                         this.clusterMarkers[i].Details,
                         "Performance"
@@ -981,13 +991,13 @@ export class PATReportComponent implements OnInit {
 
                     //schoolCount
                     // this.schoolCount = res['footer'].total_schools;
-                    // if (this.schoolCount != null) {
-                    //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
+                    if (this.schoolCount != null) {
+                      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
                     // this.studentCount = res['footer'].students_count;
-                    // if (this.studentCount != null) {
-                    //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
+                    if (this.studentCount != null) {
+                      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
 
                     this.commonService.restrictZoom(globalMap);
                     globalMap.setMaxBounds([
@@ -1159,7 +1169,13 @@ export class PATReportComponent implements OnInit {
                             this.schoolMarkers.length,
                             "rgb"
                           );
+
+                    this.schoolCount = 0;
+                    this.studentCount = 0;
+
                     for (let i = 0; i < this.schoolMarkers.length; i++) {
+                      this.schoolCount = this.schoolCount + this.clusterMarkers[i].Details['total_schools'];
+                      this.studentCount = this.studentCount + this.clusterMarkers[i].Details['students_count'];
                       var color = this.commonService.color(
                         this.schoolMarkers[i].Details,
                         "Performance"
@@ -1213,13 +1229,13 @@ export class PATReportComponent implements OnInit {
 
                     //schoolCount
                     // this.schoolCount = res['footer'].total_schools;
-                    // if (this.schoolCount != null) {
-                    //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
+                    if (this.schoolCount != null) {
+                      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
                     // this.studentCount = res['footer'].students_count;
-                    // if (this.studentCount != null) {
-                    //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
+                    if (this.studentCount != null) {
+                      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
                     this.commonService.loaderAndErr(this.data);
                     this.changeDetection.detectChanges();
                   }
@@ -1777,8 +1793,14 @@ export class PATReportComponent implements OnInit {
           report: "reports",
         });
       }
+
+      this.schoolCount = 0;
+      this.studentCount = 0;
+
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
+        this.schoolCount = this.schoolCount + this.markers[i].Details['total_schools'];
+        this.studentCount = this.studentCount + this.markers[i].Details['students_count'];
         var markerIcon = this.commonService.initMarkers(
           this.markers[i].Details.latitude,
           this.markers[i].Details.longitude,
@@ -1826,13 +1848,13 @@ export class PATReportComponent implements OnInit {
     }
     //schoolCount
     // this.schoolCount = data['footer'].total_schools;
-    // if (this.schoolCount != null) {
-    //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    // }
+    if (this.schoolCount != null) {
+      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
     // this.studentCount = data['footer'].students_count;
-    // if (this.studentCount != null) {
-    //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    // }
+    if (this.studentCount != null) {
+      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {
@@ -1849,19 +1871,19 @@ export class PATReportComponent implements OnInit {
         details[key] = markers.Details[key];
       }
     });
+    // Object.keys(details).forEach((key) => {
+    //   if (key !== "students_count") {
+    //     data1[key] = details[key];
+    //   }
+    // });
+    // Object.keys(data1).forEach((key) => {
+    //   if (key !== "total_schools") {
+    //     data2[key] = data1[key];
+    //   }
+    // });
     Object.keys(details).forEach((key) => {
-      if (key !== "students_count") {
-        data1[key] = details[key];
-      }
-    });
-    Object.keys(data1).forEach((key) => {
-      if (key !== "total_schools") {
-        data2[key] = data1[key];
-      }
-    });
-    Object.keys(data2).forEach((key) => {
       if (key !== lng) {
-        orgObject[key] = data2[key];
+        orgObject[key] = details[key];
       }
     });
     if (level != "school") {
@@ -2104,20 +2126,20 @@ export class PATReportComponent implements OnInit {
         details[key] = markers.Details[key];
       }
     });
+    // Object.keys(details).forEach((key) => {
+    //   if (key !== "students_count") {
+    //     data1[key] = details[key];
+    //   }
+    // });
+    // Object.keys(data1).forEach((key) => {
+    //   if (key !== "total_schools") {
+    //     data2[key] = data1[key];
+    //   }
+    // });
     Object.keys(details).forEach((key) => {
-      if (key !== "students_count") {
-        data1[key] = details[key];
-      }
-    });
-    Object.keys(data1).forEach((key) => {
-      if (key !== "total_schools") {
-        data2[key] = data1[key];
-      }
-    });
-    Object.keys(data2).forEach((key) => {
       var str = key.charAt(0).toUpperCase() + key.substr(1).toLowerCase();
       if (key !== "longitude") {
-        orgObject[`${str}`] = data2[key];
+        orgObject[`${str}`] = details[key];
       }
     });
     var ordered = {};

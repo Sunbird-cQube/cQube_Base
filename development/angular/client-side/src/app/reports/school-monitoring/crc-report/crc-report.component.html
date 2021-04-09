@@ -164,7 +164,7 @@
                     </option>
                 </select>
 
-                <!-- <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="myCluster" name="myCluster"
+                <select [hidden]="clusterHidden" id="choose_cluster" [(ngModel)]="myCluster" name="myCluster"
                     (change)="myClusterData(myCluster)">
                     <option [value]="myCluster" disabled selected="selected">Choose a Cluster
                     </option>
@@ -172,7 +172,7 @@
                         [ngStyle]="{'color': cluster.clusterName !== 'NO NAME FOUND'? 'white' : '#ff3333'}">
                         {{cluster.clusterName}}
                     </option>
-                </select> -->
+                </select>
             </div>
             <p class="note" style="margin-top: 15px;">
                 <strong> NOTE:</strong> The table provides information about the various metrics (calculated from the
