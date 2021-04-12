@@ -318,8 +318,12 @@ export class PATReportComponent implements OnInit {
       .subscribe(
         (res) => {
           this.data = res["data"];
-          this.allBlocks = this.blockMarkers = this.data;
-
+          this.blockMarkers = this.data;
+          this.allBlocks = this.data.sort((a, b) =>
+            a.Details.block_name > b.Details.block_name
+              ? 1 : b.Details.block_name > a.Details.block_name ? -1 : 0
+          );
+          this.changeDetection.detectChanges();
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
           }
@@ -443,9 +447,6 @@ export class PATReportComponent implements OnInit {
   linkClick() {
     document.getElementById("home").style.display = "none";
     this.yearMonth = true;
-    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
-      }_${this.subject ? this.subject : ""}_allDistricts_${this.commonService.dateAndTime
-      }`;
     this.grade = undefined;
     this.subject = undefined;
     this.subjectHidden = true;
@@ -455,6 +456,9 @@ export class PATReportComponent implements OnInit {
       month: null,
       year: null,
     };
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+      }_${this.subject ? this.subject : ""}_allDistricts_${this.commonService.dateAndTime
+      }`;
     this.onResize(event);
     this.changeDetection.detectChanges();
   }
@@ -1294,7 +1298,7 @@ export class PATReportComponent implements OnInit {
       }_${this.subject ? this.subject : ""}_${this.level
       }s_of_district_${districtId}_${this.commonService.dateAndTime}`;
 
-    this.allBlocks = [];
+    this.data = this.allBlocks = [];
     this.allClusters = [];
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -1308,9 +1312,9 @@ export class PATReportComponent implements OnInit {
       })
       .subscribe(
         (res) => {
-          this.data = res["data"];
+         this.allBlocks = this.data = res["data"];
           this.allGrades = res['grades'];
-          this.allBlocks = this.blockMarkers = this.data;
+          this.blockMarkers = this.data;
 
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
@@ -1343,7 +1347,6 @@ export class PATReportComponent implements OnInit {
             centerLng: this.data[0].Details.longitude,
             level: "block",
           };
-          this.data.forEach((element) => { });
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([
@@ -1404,7 +1407,7 @@ export class PATReportComponent implements OnInit {
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
       }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime
       }`;
-    this.allClusters = [];
+    this.data = this.allClusters = [];
     if (this.myData) {
       this.myData.unsubscribe();
     }

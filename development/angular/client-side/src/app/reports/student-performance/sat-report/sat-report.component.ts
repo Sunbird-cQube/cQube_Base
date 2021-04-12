@@ -375,6 +375,7 @@ export class SatReportComponent implements OnInit {
 
   linkClick() {
     document.getElementById("home").style.display = "none";
+    this.period = 'all';
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
       }_${this.subject ? this.subject : ""}_allDistricts_${this.commonService.dateAndTime
       }`;

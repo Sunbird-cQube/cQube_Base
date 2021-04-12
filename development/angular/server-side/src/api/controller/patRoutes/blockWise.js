@@ -123,12 +123,8 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
             uniqueGrades.push({ grade: grade });
         })
         uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
-        let mydata = filterData.sort((a, b) =>
-            a.Details.block_name > b.Details.block_name
-                ? 1 : b.Details.block_name > a.Details.block_name ? -1 : 0
-        );
+        let mydata = filterData;
         logger.info('--- block per dist PAT api response sent---');
-        // , footer: blockData.footer[`${distId}`]
         res.status(200).send({ data: mydata, grades: uniqueGrades });
 
     } catch (e) {

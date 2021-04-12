@@ -143,9 +143,9 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="search-container">
+            <!-- <div class="search-container">
                 Search: <input type="search" id="search-inp" (input)="updateFilter($event)" />
-            </div>
+            </div> -->
             <div *ngIf="reportData.length > 0" style="position: relative; bottom: 0px; float: right; margin: 0px auto;">
                 <ngb-pagination *ngIf="showPagination" [collectionSize]="reportData.length" [maxSize]="10"
                     [(page)]="currentPage" [pageSize]="pageSize" (pageChange)="onChangePage()"></ngb-pagination>
