@@ -512,15 +512,14 @@ export class SatHeatChartComponent implements OnInit {
 
       }
 
-      // <br> <b>Total Schools: ${totalSchools}</b>
-      // <br> <b>Total Students: ${totalStudents}</b>
 
       obj += `<br> <b>Grade: ${grade}</b>
         <br> <b>Subject: ${subject}</b>
         <br> <b>Exam Date: ${exam_date}</b>
         <br> ${grades != "all" ? viewBy == 'indicator' ? `<b>Indicator: ${indicator}` : `<b>QuestionId: ${indicator}</b>` : ''}
-       
-        <br> <b>Students Attended: ${studentAttended}</b>
+        <br> <b>Total Schools: ${totalSchools.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}</b>
+        <br> <b>Total Students: ${totalStudents.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}</b>
+        <br> <b>Students Attended: ${studentAttended.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}</b>
         <br> ${marks !== null ? `<b>Marks: ${marks}` : ''}</b>
         <br> ${point.value !== null ? `<b>Marks Percentage: ${point.value}` + '%' : ''}</b>`
       return obj

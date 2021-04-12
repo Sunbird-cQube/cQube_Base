@@ -586,8 +586,6 @@ export class HeatChartComponent implements OnInit {
         obj = `<b>SchoolName: ${name}</b>`;
       }
 
-      // <br> <b>Total Schools: ${totalSchools}</b>
-      // <br> <b>Total Students: ${totalStudents}</b>
 
       obj += `<br> <b>Grade: ${grade}</b>
         <br> <b>Subject: ${subject}</b>
@@ -599,8 +597,9 @@ export class HeatChartComponent implements OnInit {
               : `<b>QuestionId: ${indicator}</b>`
             : ""
         }
-       
-        <br> <b>Students Attended: ${studentAttended}</b>
+        <br> <b>Total Schools: ${totalSchools.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}</b>
+        <br> <b>Total Students: ${totalStudents.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}</b>
+        <br> <b>Students Attended: ${studentAttended.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}</b>
         <br> ${marks !== null ? `<b>Marks: ${marks}` : ""}</b>
         <br> ${
           point.value !== null

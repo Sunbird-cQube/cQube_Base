@@ -267,15 +267,8 @@ export class DikshaTableComponent implements OnInit {
 
   columns;
   tableCreation(dataSet) {
-    var my_columns = [];
-    $.each(dataSet[0], function (key, value) {
-      var my_item = {};
-      my_item['data'] = key;
-      my_item['value'] = value;
-      // if (value != 'All' && value != '') {
-      my_columns.push(my_item);
-      // }
-    });
+    var my_columns = this.commonService.getColumns(dataSet);
+    
     this.columns = my_columns;
 
     $(document).ready(function () {
@@ -341,8 +334,8 @@ export class DikshaTableComponent implements OnInit {
   }
 
   updateFilter(event: any) {
+    this.columns = this.commonService.getColumns(this.updatedTable);
     var val = event.target.value.toLowerCase();
-    
     // filter our data
     let ref = this;
     let temp:any = [];
@@ -372,19 +365,5 @@ export class DikshaTableComponent implements OnInit {
     // update the rows
     this.result = temp;
     this.pageChange();
-  }
-
-  preventBackspace(e) {
-    var evt = e || window.event;
-    if (evt) {
-        var keyCode = evt.charCode || evt.keyCode;
-        if (keyCode === 8) {
-            if (evt.preventDefault) {
-                evt.preventDefault();
-            } else {
-                evt.returnValue = false;
-            }
-        }
-    }
   }
 }
