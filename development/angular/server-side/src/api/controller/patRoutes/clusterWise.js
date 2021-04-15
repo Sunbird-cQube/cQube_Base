@@ -67,7 +67,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         var mydata = clusterData.data;
         logger.info('---PAT cluster wise api response sent---');
         // , footer: clusterData.AllClustersFooter
-        res.status(200).send({ data: mydata });
+        res.status(200).send({ data: mydata, footer: clusterData['AllClustersFooter'] });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -129,7 +129,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         let mydata = filterData;
         logger.info('---PAT clusterperBlock api response sent---');
         // , footer: clusterData.footer[`${blockId}`] 
-        res.status(200).send({ data: mydata, grades: uniqueGrades });
+        res.status(200).send({ data: mydata, grades: uniqueGrades, footer: clusterData['footer'][blockId] });
 
 
     } catch (e) {
