@@ -66,7 +66,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         var mydata = blockData.data;
         logger.info('--- blocks PAT api response sent---');
         // , footer: blockData.AllBlocksFooter
-        res.status(200).send({ data: mydata });
+        res.status(200).send({ data: mydata, footer: blockData['AllBlocksFooter'] });
 
     } catch (e) {
         logger.error(`Error :: ${e}`);
@@ -125,7 +125,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
         let mydata = filterData;
         logger.info('--- block per dist PAT api response sent---');
-        res.status(200).send({ data: mydata, grades: uniqueGrades });
+        res.status(200).send({ data: mydata, grades: uniqueGrades, footer: blockData['footer'][distId] });
 
     } catch (e) {
         logger.error(e);
