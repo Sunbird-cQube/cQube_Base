@@ -1924,7 +1924,6 @@ export class PATReportComponent implements OnInit {
         .toString()
         .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-    5;
     var yourData1;
     if (this.grade) {
       yourData1 = this.commonService
