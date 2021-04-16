@@ -66,7 +66,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         var mydata = schoolData.data;
         logger.info('---PAT school wise api response sent---');
         // , footer: schoolData.AllSchoolsFooter
-        res.status(200).send({ data: mydata });
+        res.status(200).send({ data: mydata, footer: schoolData['AllSchoolsFooter'] });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -128,7 +128,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         let mydata = filterData;
         logger.info('---PAT schoolPerCluster api response sent---');
         // , footer: schoolData.footer[`${clusterId}`]
-        res.status(200).send({ data: mydata, grades: uniqueGrades });
+        res.status(200).send({ data: mydata, grades: uniqueGrades, footer: schoolData['footer'][clusterId] });
 
 
     } catch (e) {
