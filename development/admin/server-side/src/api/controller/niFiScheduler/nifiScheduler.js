@@ -102,15 +102,15 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
         if (day != "*") {
             timePeriod = "weekly";
             schedulerTime = `${mins} ${hours} * * ${day}`;
-            stopTime = `${mins} ${timeToStop} * * ${day}`;
+            stopTime = `${mins} ${timeToStop} * * *`;
         } else if (date != "*" && month == "*") {
             timePeriod = "monthly";
             schedulerTime = `${mins} ${hours} ${date} * *`;
-            stopTime = `${mins} ${timeToStop} ${date} * *`;
+            stopTime = `${mins} ${timeToStop} * * *`;
         } else if (date != "*" && month != "*") {
             timePeriod = "yearly";
             schedulerTime = `${mins} ${hours} ${date} ${month} *`;
-            stopTime = `${mins} ${timeToStop} ${date} ${month} *`;
+            stopTime = `${mins} ${timeToStop} * * *`;
         } else {
             timePeriod = "daily";
             schedulerTime = `${mins} ${hours} * * *`;
@@ -344,15 +344,15 @@ router.post('/scheduleNiFiProcessor/:id/:name', async (req, res) => {
         if (day != "*") {
             timePeriod = "weekly";
             schedulerTime = `${mins} ${hours} * * ${day}`;
-            stopTime = `${mins} ${timeToStop} * * ${day}`;
+            stopTime = `${mins} ${timeToStop} * * *`;
         } else if (date != "*" && month == "*") {
             timePeriod = "monthly";
             schedulerTime = `${mins} ${hours} ${date} * *`;
-            stopTime = `${mins} ${timeToStop} ${date} * *`;
+            stopTime = `${mins} ${timeToStop} * * *`;
         } else if (date != "*" && month != "*") {
             timePeriod = "yearly";
             schedulerTime = `${mins} ${hours} ${date} ${month} *`;
-            stopTime = `${mins} ${timeToStop} ${date} ${month} *`;
+            stopTime = `${mins} ${timeToStop} * * *`;
         } else {
             timePeriod = "daily";
             schedulerTime = `${mins} ${hours} * * *`;
