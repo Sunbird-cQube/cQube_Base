@@ -8,6 +8,7 @@ import * as L from 'leaflet';
 import { ExportToCsv } from 'export-to-csv';
 
 export var globalMap;
+declare const $;
 
 @Injectable({
     providedIn: 'root'
@@ -547,47 +548,7 @@ export class AppServiceComponent {
         70: '#a6d96a',
         80: '#66bd63',
         90: '#1a9850',
-        100: '#006837',
-        // 22: '#e72f00',
-        // 24: '#e53400',
-        // 26: '#e23900',
-        // 28: '#e03e00',
-        // 30: '#dd4400',
-        // 32: '#da4900',
-        // 34: '#d84e00',
-        // 36: '#d55300',
-        // 38: '#d35800',
-        // 40: '#d05e00',
-        // 42: '#cd6300',
-        // 44: '#cb6800',
-        // 46: '#c86d00',
-        // 48: '#c67200',
-        // 50: '#c37800',
-        // 52: '#c07d00',
-        // 54: '#be8200',
-        // 56: '#bb8700',
-        // 58: '#b88d00',
-        // 60: '#b69200',
-        // 62: '#b39700',
-        // 64: '#b19c00',
-        // 66: '#aea100',
-        // 68: '#aba700',
-        // 70: '#a9ac00',
-        // 72: '#a6b100',
-        // 74: '#a4b600',
-        // 76: '#a1bb00',
-        // 78: '#9ec100',
-        // 80: '#9cc600',
-        // 82: '#99cb00',
-        // 84: '#97d000',
-        // 86: '#94d500',
-        // 88: '#91db00',
-        // 90: '#8fe000',
-        // 92: '#8ce500',
-        // 94: '#89ea00',
-        // 96: '#87ef00',
-        // 98: '#84f500',
-        // 100: '#00FF00',
+        100: '#006837'
     }
     //color gredient generation....
     public exceptionColor() {
@@ -654,6 +615,17 @@ export class AppServiceComponent {
         };
     }
 
+    //Get table columns
+    getColumns(dataSet){
+        var my_columns = [];
+        $.each(dataSet[0], function (key, value) {
+          var my_item = {};
+          my_item['data'] = key;
+          my_item['value'] = value;
+          my_columns.push(my_item);
+        });
+        return my_columns;
+      }
 
 //management category metadata
   management_category_metaData(){
