@@ -29,6 +29,7 @@ export class PATReportComponent implements OnInit {
   // to assign the count of below values to show in the UI footer
   public studentCount: any;
   public schoolCount: any;
+  public studentAttended: any;
   public dateRange: any = "";
 
   // to hide and show the hierarchy details
@@ -318,8 +319,12 @@ export class PATReportComponent implements OnInit {
       .subscribe(
         (res) => {
           this.data = res["data"];
-          this.allBlocks = this.blockMarkers = this.data;
-
+          this.blockMarkers = this.data;
+          this.allBlocks = this.data.sort((a, b) =>
+            a.Details.block_name > b.Details.block_name
+              ? 1 : b.Details.block_name > a.Details.block_name ? -1 : 0
+          );
+          this.changeDetection.detectChanges();
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
           }
@@ -443,9 +448,6 @@ export class PATReportComponent implements OnInit {
   linkClick() {
     document.getElementById("home").style.display = "none";
     this.yearMonth = true;
-    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
-      }_${this.subject ? this.subject : ""}_allDistricts_${this.commonService.dateAndTime
-      }`;
     this.grade = undefined;
     this.subject = undefined;
     this.subjectHidden = true;
@@ -455,6 +457,9 @@ export class PATReportComponent implements OnInit {
       month: null,
       year: null,
     };
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+      }_${this.subject ? this.subject : ""}_allDistricts_${this.commonService.dateAndTime
+      }`;
     this.onResize(event);
     this.changeDetection.detectChanges();
   }
@@ -718,12 +723,12 @@ export class PATReportComponent implements OnInit {
                             this.blockMarkers.length,
                             "rgb"
                           );
-                    this.schoolCount = 0;
-                    this.studentCount = 0;
+                    // this.schoolCount = 0;
+                    // this.studentCount = 0;
 
                     for (let i = 0; i < this.blockMarkers.length; i++) {
-                      this.schoolCount = this.schoolCount + this.blockMarkers[i].Details['total_schools'];
-                      this.studentCount = this.studentCount + this.blockMarkers[i].Details['students_count'];
+                      // this.schoolCount = this.schoolCount + this.blockMarkers[i].Details['total_schools'];
+                      // this.studentCount = this.studentCount + this.blockMarkers[i].Details['students_count'];
                       var color;
                       if (!this.grade && !this.subject) {
                         color = this.commonService.color(
@@ -777,13 +782,17 @@ export class PATReportComponent implements OnInit {
                     );
 
                     //schoolCount
-                    // this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'].total_schools;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    // this.studentCount = res['footer'].students_count;
+                    this.studentCount = res['footer'].total_students;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+                    this.studentAttended = res['footer'].students_attended;
+                    if (this.studentAttended != null) {
+                      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
 
                     this.commonService.loaderAndErr(this.data);
@@ -946,12 +955,12 @@ export class PATReportComponent implements OnInit {
                             this.clusterMarkers.length,
                             "rgb"
                           );
-                    this.schoolCount = 0;
-                    this.studentCount = 0;
+                    // this.schoolCount = 0;
+                    // this.studentCount = 0;
 
                     for (let i = 0; i < this.clusterMarkers.length; i++) {
-                      this.schoolCount = this.schoolCount + this.clusterMarkers[i].Details['total_schools'];
-                      this.studentCount = this.studentCount + this.clusterMarkers[i].Details['students_count'];
+                      // this.schoolCount = this.schoolCount + this.clusterMarkers[i].Details['total_schools'];
+                      // this.studentCount = this.studentCount + this.clusterMarkers[i].Details['students_count'];
                       var color = this.commonService.color(
                         this.clusterMarkers[i].Details,
                         "Performance"
@@ -990,13 +999,17 @@ export class PATReportComponent implements OnInit {
                     }
 
                     //schoolCount
-                    // this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'].total_schools;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    // this.studentCount = res['footer'].students_count;
+                    this.studentCount = res['footer'].total_students;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+                    this.studentAttended = res['footer'].students_attended;
+                    if (this.studentAttended != null) {
+                      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
 
                     this.commonService.restrictZoom(globalMap);
@@ -1170,12 +1183,12 @@ export class PATReportComponent implements OnInit {
                             "rgb"
                           );
 
-                    this.schoolCount = 0;
-                    this.studentCount = 0;
+                    // this.schoolCount = 0;
+                    // this.studentCount = 0;
 
                     for (let i = 0; i < this.schoolMarkers.length; i++) {
-                      this.schoolCount = this.schoolCount + this.clusterMarkers[i].Details['total_schools'];
-                      this.studentCount = this.studentCount + this.clusterMarkers[i].Details['students_count'];
+                      // this.schoolCount = this.schoolCount + this.clusterMarkers[i].Details['total_schools'];
+                      // this.studentCount = this.studentCount + this.clusterMarkers[i].Details['students_count'];
                       var color = this.commonService.color(
                         this.schoolMarkers[i].Details,
                         "Performance"
@@ -1228,14 +1241,19 @@ export class PATReportComponent implements OnInit {
                     );
 
                     //schoolCount
-                    // this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'].total_schools;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    // this.studentCount = res['footer'].students_count;
+                    this.studentCount = res['footer'].total_students;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
+                    this.studentAttended = res['footer'].students_attended;
+                    if (this.studentAttended != null) {
+                      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+
                     this.commonService.loaderAndErr(this.data);
                     this.changeDetection.detectChanges();
                   }
@@ -1294,7 +1312,7 @@ export class PATReportComponent implements OnInit {
       }_${this.subject ? this.subject : ""}_${this.level
       }s_of_district_${districtId}_${this.commonService.dateAndTime}`;
 
-    this.allBlocks = [];
+    this.data = this.allBlocks = [];
     this.allClusters = [];
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -1308,9 +1326,9 @@ export class PATReportComponent implements OnInit {
       })
       .subscribe(
         (res) => {
-          this.data = res["data"];
+          this.allBlocks = this.data = res["data"];
           this.allGrades = res['grades'];
-          this.allBlocks = this.blockMarkers = this.data;
+          this.blockMarkers = this.data;
 
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
@@ -1343,7 +1361,6 @@ export class PATReportComponent implements OnInit {
             centerLng: this.data[0].Details.longitude,
             level: "block",
           };
-          this.data.forEach((element) => { });
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([
@@ -1404,7 +1421,7 @@ export class PATReportComponent implements OnInit {
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
       }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime
       }`;
-    this.allClusters = [];
+    this.data = this.allClusters = [];
     if (this.myData) {
       this.myData.unsubscribe();
     }
@@ -1794,13 +1811,13 @@ export class PATReportComponent implements OnInit {
         });
       }
 
-      this.schoolCount = 0;
-      this.studentCount = 0;
+      // this.schoolCount = 0;
+      // this.studentCount = 0;
 
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
-        this.schoolCount = this.schoolCount + this.markers[i].Details['total_schools'];
-        this.studentCount = this.studentCount + this.markers[i].Details['students_count'];
+        // this.schoolCount = this.schoolCount + this.markers[i].Details['total_schools'];
+        // this.studentCount = this.studentCount + this.markers[i].Details['students_count'];
         var markerIcon = this.commonService.initMarkers(
           this.markers[i].Details.latitude,
           this.markers[i].Details.longitude,
@@ -1847,13 +1864,17 @@ export class PATReportComponent implements OnInit {
       this.changeDetection.detectChanges();
     }
     //schoolCount
-    // this.schoolCount = data['footer'].total_schools;
+    this.schoolCount = data['footer'].total_schools;
     if (this.schoolCount != null) {
       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-    // this.studentCount = data['footer'].students_count;
+    this.studentCount = data['footer'].total_students;
     if (this.studentCount != null) {
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
+    this.studentAttended = data['footer'].students_attended;
+    if (this.studentAttended != null) {
+      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
   }
 
@@ -1871,16 +1892,16 @@ export class PATReportComponent implements OnInit {
         details[key] = markers.Details[key];
       }
     });
-    // Object.keys(details).forEach((key) => {
-    //   if (key !== "students_count") {
-    //     data1[key] = details[key];
-    //   }
-    // });
-    // Object.keys(data1).forEach((key) => {
-    //   if (key !== "total_schools") {
-    //     data2[key] = data1[key];
-    //   }
-    // });
+    Object.keys(details).forEach((key) => {
+      if (key !== "total_students") {
+        data1[key] = details[key];
+      }
+    });
+    Object.keys(data1).forEach((key) => {
+      if (key !== "total_schools") {
+        data2[key] = data1[key];
+      }
+    });
     Object.keys(details).forEach((key) => {
       if (key !== lng) {
         orgObject[key] = details[key];
@@ -1893,12 +1914,16 @@ export class PATReportComponent implements OnInit {
           .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       }
     }
-    if (orgObject["total_schools"] != null) {
-      orgObject["students_count"] = orgObject["students_count"]
+    if (orgObject["total_students"] != null) {
+      orgObject["total_students"] = orgObject["total_students"]
         .toString()
         .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-    5;
+    if (orgObject["students_attended"] != null) {
+      orgObject["students_attended"] = orgObject["students_attended"]
+        .toString()
+        .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
     var yourData1;
     if (this.grade) {
       yourData1 = this.commonService

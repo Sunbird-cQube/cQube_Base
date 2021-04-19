@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/distWise', auth.authController, async(req, res) => {
+router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT dist wise api ---');
         var period = req.body.data.period;
@@ -17,7 +17,7 @@ router.post('/distWise', auth.authController, async(req, res) => {
         let fileName;
 
         var districtData = {}
-            // if (management != 'overall' && category != 'overall') {
+        // if (management != 'overall' && category != 'overall') {
 
         // } else if (management == 'overall' && category != 'overall') {
 
@@ -87,14 +87,14 @@ router.post('/distWise', auth.authController, async(req, res) => {
         var mydata = districtData.data;
         logger.info('--- PAT dist wise api response sent ---');
         // , footer: districtData.AllDistrictsFooter
-        res.status(200).send({ data: mydata });
+        res.status(200).send({ data: mydata, footer: districtData['AllDistrictsFooter'] });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 });
 
-router.post('/grades', async(req, res, next) => {
+router.post('/grades', async (req, res, next) => {
     try {
         logger.info('---grades metadata api ---');
         var fileName;
@@ -121,7 +121,7 @@ router.post('/grades', async(req, res, next) => {
     }
 })
 
-router.post('/getSemesters', async(req, res, next) => {
+router.post('/getSemesters', async (req, res, next) => {
     try {
         logger.info('---semester metadata api ---');
         var fileName;

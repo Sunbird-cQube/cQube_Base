@@ -32,9 +32,9 @@ router.post('/', auth.authController, async (req, res) => {
                         Key: `telemetry/telemetry_view/telemetry_views_${year}_${month}_${date}_${hour}.csv`,
                         Body: csv.replace(/,/g, '|')
                     };
-                    const_data['s3'].upload(params1, function (err, result) {
-                        if (err) {
-                            res.status(500)({ errMsg: "Internal error" });
+                    const_data['s3'].upload(params1, function (err1, result) {
+                        if (err1) {
+                            res.status(500).json({ errMsg: "Internal error" });
                         } else {
                             logger.info('--- upload new file successful---');
                             res.status(200).json({ msg: "Successfully uploaded file" });
@@ -44,7 +44,7 @@ router.post('/', auth.authController, async (req, res) => {
             } else {
                 const_data['s3'].getSignedUrl('getObject', params, (error, response) => {
 
-                    jsonexport(req.body.telemetryData, { includeHeaders: false }, function (error, csv) {
+                    jsonexport(req.body.telemetryData, { includeHeaders: false }, function (error1, csv) {
                         var service = new S3Append(config.appendConfig, `telemetry/telemetry_view/telemetry_views_${year}_${month}_${date}_${hour}.csv`, format.csv);
 
                         service.append(`\r${csv.replace(/,/g, '|')}`);
@@ -54,8 +54,8 @@ router.post('/', auth.authController, async (req, res) => {
                                 logger.info('--- appende new data successful---');
                                 res.status(200).json({ msg: "new data appended" });
                             })
-                            .catch(function (err) {
-                                res.status(500)({ errMsg: "Internal error" });
+                            .catch(function (err1) {
+                                res.status(500).json({ errMsg: "Internal error" });
                             });
                     });
                 });
@@ -91,9 +91,9 @@ router.post('/sar', auth.authController, async (req, res) => {
                         Key: `telemetry/telemetry_${year}_${month}_${date}_${hour}.csv`,
                         Body: csv.replace(/,/g, '|')
                     };
-                    const_data['s3'].upload(params1, function (err, result) {
-                        if (err) {
-                            res.status(500)({ errMsg: "Internal error" });
+                    const_data['s3'].upload(params1, function (err1, result) {
+                        if (err1) {
+                            res.status(500).json({ errMsg: "Internal error" });
                         } else {
                             logger.info('--- upload new file successful---');
                             res.status(200).json({ msg: "Successfully uploaded file" });
@@ -103,7 +103,7 @@ router.post('/sar', auth.authController, async (req, res) => {
             } else {
                 const_data['s3'].getSignedUrl('getObject', params, (error, response) => {
 
-                    jsonexport(req.body.telemetryData, { includeHeaders: false }, function (error, csv) {
+                    jsonexport(req.body.telemetryData, { includeHeaders: false }, function (error1, csv) {
                         var service = new S3Append(config.appendConfig, `telemetry/telemetry_${year}_${month}_${date}_${hour}.csv`, format.csv);
 
                         service.append(`\r${csv.replace(/,/g, '|')}`);
@@ -113,8 +113,8 @@ router.post('/sar', auth.authController, async (req, res) => {
                                 logger.info('--- appende new data successful---');
                                 res.status(200).json({ msg: "new data appended" });
                             })
-                            .catch(function (err) {
-                                res.status(500)({ errMsg: "Internal error" });
+                            .catch(function (err1) {
+                                res.status(500).json({ errMsg: "Internal error" });
                             });
                     });
                 });
