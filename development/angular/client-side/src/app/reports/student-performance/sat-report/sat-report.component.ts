@@ -1214,6 +1214,7 @@ export class SatReportComponent implements OnInit {
           period: this.period,
           report: "sat",
           sem: this.semester,
+          grade: this.grade, subject: this.subject
         }, ...{ management: this.management, category: this.category }
       })
       .subscribe(
@@ -1322,6 +1323,7 @@ export class SatReportComponent implements OnInit {
           period: this.period,
           report: "sat",
           sem: this.semester,
+          grade: this.grade, subject: this.subject
         }, ...{ management: this.management, category: this.category }
       })
       .subscribe(
@@ -1448,7 +1450,7 @@ export class SatReportComponent implements OnInit {
               this.blockHierarchy.distId,
               this.blockHierarchy.blockId,
               clusterId,
-              { ...{ period: this.period, report: "sat", sem: this.semester }, ...{ management: this.management, category: this.category } }
+              { ...{ period: this.period, report: "sat", sem: this.semester, grade: this.grade, subject: this.subject }, ...{ management: this.management, category: this.category } }
             )
             .subscribe(
               (res) => {
