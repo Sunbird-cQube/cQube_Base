@@ -83,14 +83,20 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         var month = req.body.data.month;
         var management = req.body.data.management;
         var category = req.body.data.category;
+        var grad = req.body.data.grade;
+        var subject = req.body.data.subject;
         var fileName;
+        let footerFile;
+        var footerData = {}
 
         if (management != 'overall' && category == 'overall') {
             if (report == 'pat') {
                 if (period != 'select_month') {
                     fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/school.json`;
+                    footerFile = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/cluster/grade_subject_footer.json`;
                 } else {
                     fileName = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/school.json`;
+                    footerFile = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/cluster/grade_subject_footer.json`;
                 }
             } else {
                 fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/school.json`;
@@ -99,8 +105,10 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
             if (report == 'pat') {
                 if (period != 'select_month') {
                     fileName = `${report}/${period}/${report}_school.json`;
+                    footerFile = `${report}/${period}/cluster/grade_subject_footer.json`;
                 } else {
                     fileName = `${report}/${academic_year}/${month}/school/school.json`;
+                    footerFile = `${report}/${academic_year}/${month}/cluster/grade_subject_footer.json`;
                 }
             } else {
                 fileName = `${report}/${period}/${semester}/${report}_school.json`;
@@ -112,23 +120,32 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         let filterData = schoolData.data.filter(obj => {
             return (obj.Details.cluster_id == clusterId)
         })
-        
+
         var grades = [];
         filterData.map(item => {
             Object.keys(item.Grades).map(grade => {
                 grades.push(grade);
             })
         });
-        
+
         var uniqueGrades = [];
         [...new Set(grades)].map(grade => {
             uniqueGrades.push({ grade: grade });
         })
         uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
         let mydata = filterData;
+        var footer;
+        if (grad)
+            footerData = await s3File.readS3File(footerFile);
+        if (grad && !subject) {
+            footer = footerData[clusterId][grad];
+        } else if (grad && subject) {
+            footer = footerData[clusterId][grad].subject[subject];
+        } else {
+            footer = schoolData['footer'][clusterId]
+        }
         logger.info('---PAT schoolPerCluster api response sent---');
-        // , footer: schoolData.footer[`${clusterId}`]
-        res.status(200).send({ data: mydata, grades: uniqueGrades, footer: schoolData['footer'][clusterId] });
+        res.status(200).send({ data: mydata, grades: uniqueGrades, footer: footer });
 
 
     } catch (e) {
