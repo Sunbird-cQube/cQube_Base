@@ -15,7 +15,6 @@ router.post('/distWise', auth.authController, async (req, res) => {
         var management = req.body.data.management;
         var category = req.body.data.category;
         let fileName;
-
         var districtData = {}
         // if (management != 'overall' && category != 'overall') {
 
@@ -23,19 +22,19 @@ router.post('/distWise', auth.authController, async (req, res) => {
 
         // } else
         if (management != 'overall' && category == 'overall') {
-            if (period == 'select_month') {
-                if (grade) {
-                    fileName = `${report}/school_management_category/overall/overall_category/${management}/district/${grade}.json`
-                } else {
-                    fileName = `${report}/school_management_category/overall/overall_category/${management}/district.json`;
-                }
-            } else {
+            // if (period == 'select_month') {
+            //     if (grade) {
+            //         fileName = `${report}/school_management_category/overall/overall_category/${management}/district/${grade}.json`
+            //     } else {
+            //         fileName = `${report}/school_management_category/overall/overall_category/${management}/district.json`;
+            //     }
+            // } else {
                 if (report == 'pat') {
                     if (grade) {
                         if (period != 'select_month') {
                             fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/district/${grade}.json`;
                         } else {
-                            fileName = `${report}/${academic_year}/${month}/district/${grade}.json`;
+                            fileName = `${report}/school_management_category/overall/overall_category/${academic_year}/${month}/district/${grade}.json`;
                         }
                     } else {
                         if (period != 'select_month') {
@@ -51,15 +50,15 @@ router.post('/distWise', auth.authController, async (req, res) => {
                         fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/district.json`;
                     }
                 }
-            }
+            // }
         } else {
-            if (period == 'select_month') {
-                if (grade) {
-                    fileName = `${report}/all/district/${grade}.json`
-                } else {
-                    fileName = `${report}/all/${report}_district.json`
-                }
-            } else {
+            // if (period == 'select_month') {
+            //     if (grade) {
+            //         fileName = `${report}/all/district/${grade}.json`
+            //     } else {
+            //         fileName = `${report}/all/${report}_district.json`
+            //     }
+            // } else {
                 if (report == 'pat') {
                     if (grade) {
                         if (period != 'select_month') {
@@ -81,12 +80,12 @@ router.post('/distWise', auth.authController, async (req, res) => {
                         fileName = `${report}/${period}/${semester}/${report}_district.json`;
                     }
                 }
-            }
+            // }
         }
+
         districtData = await s3File.readS3File(fileName);
         var mydata = districtData.data;
         logger.info('--- PAT dist wise api response sent ---');
-        // , footer: districtData.AllDistrictsFooter
         res.status(200).send({ data: mydata, footer: districtData['AllDistrictsFooter'] });
     } catch (e) {
         logger.error(`Error :: ${e}`)
