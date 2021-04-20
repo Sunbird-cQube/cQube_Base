@@ -22,68 +22,53 @@ router.post('/distWise', auth.authController, async (req, res) => {
 
         // } else
         if (management != 'overall' && category == 'overall') {
-            // if (period == 'select_month') {
-            //     if (grade) {
-            //         fileName = `${report}/school_management_category/overall/overall_category/${management}/district/${grade}.json`
-            //     } else {
-            //         fileName = `${report}/school_management_category/overall/overall_category/${management}/district.json`;
-            //     }
-            // } else {
-                if (report == 'pat') {
-                    if (grade) {
-                        if (period != 'select_month') {
-                            fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/district/${grade}.json`;
-                        } else {
-                            fileName = `${report}/school_management_category/overall/overall_category/${academic_year}/${month}/district/${grade}.json`;
-                        }
+            if (report == 'pat') {
+                if (grade) {
+                    if (period != 'select_month') {
+                        fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/district/${grade}.json`;
                     } else {
-                        if (period != 'select_month') {
-                            fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/district.json`;
-                        } else {
-                            fileName = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/district.json`;
-                        }
+                        fileName = `${report}/school_management_category/overall/overall_category/${academic_year}/${month}/district/${grade}.json`;
                     }
                 } else {
-                    if (grade) {
-                        fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/district/${grade}.json`;
+                    if (period != 'select_month') {
+                        fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/district.json`;
                     } else {
-                        fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/district.json`;
+                        fileName = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/district.json`;
                     }
                 }
-            // }
+            } else {
+                if (grade) {
+                    fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/district/${grade}.json`;
+                } else {
+                    fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/district.json`;
+                }
+            }
         } else {
-            // if (period == 'select_month') {
-            //     if (grade) {
-            //         fileName = `${report}/all/district/${grade}.json`
-            //     } else {
-            //         fileName = `${report}/all/${report}_district.json`
-            //     }
-            // } else {
-                if (report == 'pat') {
-                    if (grade) {
-                        if (period != 'select_month') {
-                            fileName = `${report}/${period}/district/${grade}.json`;
-                        } else {
-                            fileName = `${report}/${academic_year}/${month}/district/${grade}.json`;
-                        }
+            if (report == 'pat') {
+                if (grade) {
+                    if (period != 'select_month') {
+                        fileName = `${report}/${period}/district/${grade}.json`;
                     } else {
-                        if (period != 'select_month') {
-                            fileName = `${report}/${period}/${report}_district.json`;
-                        } else {
-                            fileName = `${report}/${academic_year}/${month}/district/district.json`;
-                        }
+                        fileName = `${report}/${academic_year}/${month}/district/${grade}.json`;
                     }
                 } else {
-                    if (grade) {
-                        fileName = `${report}/${period}/district/${semester}/${grade}.json`;
+                    if (period != 'select_month') {
+                        fileName = `${report}/${period}/${report}_district.json`;
                     } else {
-                        fileName = `${report}/${period}/${semester}/${report}_district.json`;
+                        fileName = `${report}/${academic_year}/${month}/district/district.json`;
                     }
                 }
-            // }
+            } else {
+                if (grade) {
+                    fileName = `${report}/${period}/district/${semester}/${grade}.json`;
+                } else {
+                    fileName = `${report}/${period}/${semester}/${report}_district.json`;
+                }
+            }
         }
 
         districtData = await s3File.readS3File(fileName);
+        // console.log(districtData.data[0]);
         var mydata = districtData.data;
         logger.info('--- PAT dist wise api response sent ---');
         res.status(200).send({ data: mydata, footer: districtData['AllDistrictsFooter'] });
