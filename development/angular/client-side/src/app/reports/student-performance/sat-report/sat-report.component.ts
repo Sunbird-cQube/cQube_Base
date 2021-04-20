@@ -601,38 +601,74 @@ export class SatReportComponent implements OnInit {
                     }
 
                     this.schoolCount = 0;
-                    if (this.grade && !this.subject) {
-                      this.blockMarkers.sort((a, b) =>
-                        a.Subjects["Grade Performance"] >
-                          b.Subjects["Grade Performance"]
-                          ? 1
-                          : b.Subjects["Grade Performance"] >
-                            a.Subjects["Grade Performance"]
-                            ? -1
-                            : 0
-                      );
-                    } else if (this.grade && this.subject) {
-                      let filterData = this.blockMarkers.filter((obj) => {
-                        return Object.keys(obj.Subjects).includes(this.subject);
-                      });
-                      this.blockMarkers = filterData;
-                      this.blockMarkers.sort((a, b) =>
-                        Number(a.Subjects[`${this.subject}`]) >
-                          Number(b.Subjects[`${this.subject}`])
-                          ? 1
-                          : Number(b.Subjects[`${this.subject}`]) >
-                            Number(a.Subjects[`${this.subject}`])
-                            ? -1
-                            : 0
-                      );
+                    if (this.period != 'all') {
+                      if (this.grade && !this.subject) {
+                        this.blockMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"]['percentage'] >
+                            b.Subjects["Grade Performance"]['percentage']
+                            ? 1
+                            : b.Subjects["Grade Performance"]['percentage'] >
+                              a.Subjects["Grade Performance"]['percentage']
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.blockMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.blockMarkers = filterData;
+                        this.blockMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]['percentage']) >
+                            Number(b.Subjects[`${this.subject}`]['percentage'])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]['percentage']) >
+                              Number(a.Subjects[`${this.subject}`]['percentage'])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.blockMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     } else {
-                      this.blockMarkers.sort((a, b) =>
-                        a.Details["Performance"] > b.Details["Performance"]
-                          ? 1
-                          : b.Details["Performance"] > a.Details["Performance"]
-                            ? -1
-                            : 0
-                      );
+                      if (this.grade && !this.subject) {
+                        this.blockMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"] >
+                            b.Subjects["Grade Performance"]
+                            ? 1
+                            : b.Subjects["Grade Performance"] >
+                              a.Subjects["Grade Performance"]
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.blockMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.blockMarkers = filterData;
+                        this.blockMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]) >
+                            Number(b.Subjects[`${this.subject}`])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]) >
+                              Number(a.Subjects[`${this.subject}`])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.blockMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     }
 
                     this.colors =
@@ -646,12 +682,32 @@ export class SatReportComponent implements OnInit {
                             this.blockMarkers.length,
                             "rgb"
                           );
-                    // this.schoolCount = 0;
-                    // this.studentCount = 0;
 
                     for (let i = 0; i < this.blockMarkers.length; i++) {
-                      // this.schoolCount = this.schoolCount + this.blockMarkers[i].Details['total_schools'];
-                      // this.studentCount = this.studentCount + this.blockMarkers[i].Details['students_count'];
+                      if (this.period != 'all') {
+                        if (this.grade && !this.subject) {
+                          this.blockMarkers[i].Details['total_students'] = this.blockMarkers[i].Subjects['Grade Performance']['total_students'];
+                          this.blockMarkers[i].Details['students_attended'] = this.blockMarkers[i].Subjects['Grade Performance']['students_attended'];
+                          this.blockMarkers[i].Details['total_schools'] = this.blockMarkers[i].Subjects['Grade Performance']['total_schools'];
+                        }
+                        if (this.grade && this.subject) {
+                          this.blockMarkers[i].Details['total_students'] = this.blockMarkers[i].Subjects[`${this.subject}`]['total_students'];
+                          this.blockMarkers[i].Details['students_attended'] = this.blockMarkers[i].Subjects[`${this.subject}`]['students_attended'];
+                          this.blockMarkers[i].Details['total_schools'] = this.blockMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                        }
+                        if (this.grade) {
+                          this.blockMarkers[i].Subjects['Grade Performance'] = this.blockMarkers[i].Subjects['Grade Performance']['percentage']
+                          this.allSubjects.map(sub => {
+                            this.blockMarkers[i].Subjects[`${sub}`] = this.blockMarkers[i].Subjects[`${sub}`]['percentage']
+                          })
+                        } else if (!this.grade && !this.subject) {
+                          this.allGrades.map(grade => {
+                            var myGrade = grade.grade;
+                            if (this.blockMarkers[i]['Grade Wise Performance'][`${myGrade}`])
+                              this.blockMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.blockMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
+                          })
+                        }
+                      }
                       var color;
                       if (!this.grade && !this.subject) {
                         color = this.commonService.color(
@@ -659,16 +715,24 @@ export class SatReportComponent implements OnInit {
                           "Performance"
                         );
                       } else if (this.grade && !this.subject) {
-                        color = this.commonService.color(
-                          this.blockMarkers[i].Subjects,
-                          "Grade Performance"
-                        );
+                        if (this.period != 'all') {
+                          color = this.commonService.color(
+                            this.blockMarkers[i].Subjects['Grade Performance'],
+                            "percentage"
+                          );
+                        } else {
+                          color = this.commonService.color(
+                            this.blockMarkers[i].Subjects,
+                            "Grade Performance"
+                          );
+                        }
                       } else if (this.grade && this.subject) {
                         color = this.commonService.color(
                           this.blockMarkers[i].Subjects,
                           this.subject
                         );
                       }
+
                       var markerIcon = this.commonService.initMarkers(
                         this.blockMarkers[i].Details.latitude,
                         this.blockMarkers[i].Details.longitude,
@@ -712,6 +776,11 @@ export class SatReportComponent implements OnInit {
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
+                    this.studentAttended = res['footer'].students_attended;
+                    if (this.studentAttended != null) {
+                      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+
                     this.commonService.loaderAndErr(this.data);
                   }
                 },
@@ -825,38 +894,74 @@ export class SatReportComponent implements OnInit {
                       this.clusterFilter = this.clusterMarkers;
                     }
                     this.schoolCount = 0;
-                    if (this.grade && !this.subject) {
-                      this.clusterMarkers.sort((a, b) =>
-                        a.Subjects["Grade Performance"] >
-                          b.Subjects["Grade Performance"]
-                          ? 1
-                          : b.Subjects["Grade Performance"] >
-                            a.Subjects["Grade Performance"]
-                            ? -1
-                            : 0
-                      );
-                    } else if (this.grade && this.subject) {
-                      let filterData = this.clusterMarkers.filter((obj) => {
-                        return Object.keys(obj.Subjects).includes(this.subject);
-                      });
-                      this.clusterMarkers = filterData;
-                      this.clusterMarkers.sort((a, b) =>
-                        Number(a.Subjects[`${this.subject}`]) >
-                          Number(b.Subjects[`${this.subject}`])
-                          ? 1
-                          : Number(b.Subjects[`${this.subject}`]) >
-                            Number(a.Subjects[`${this.subject}`])
-                            ? -1
-                            : 0
-                      );
+                    if (this.period != 'all') {
+                      if (this.grade && !this.subject) {
+                        this.clusterMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"]['percentage'] >
+                            b.Subjects["Grade Performance"]['percentage']
+                            ? 1
+                            : b.Subjects["Grade Performance"]['percentage'] >
+                              a.Subjects["Grade Performance"]['percentage']
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.clusterMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.clusterMarkers = filterData;
+                        this.clusterMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]['percentage']) >
+                            Number(b.Subjects[`${this.subject}`]['percentage'])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]['percentage']) >
+                              Number(a.Subjects[`${this.subject}`]['percentage'])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.clusterMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     } else {
-                      this.clusterMarkers.sort((a, b) =>
-                        a.Details["Performance"] > b.Details["Performance"]
-                          ? 1
-                          : b.Details["Performance"] > a.Details["Performance"]
-                            ? -1
-                            : 0
-                      );
+                      if (this.grade && !this.subject) {
+                        this.clusterMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"] >
+                            b.Subjects["Grade Performance"]
+                            ? 1
+                            : b.Subjects["Grade Performance"] >
+                              a.Subjects["Grade Performance"]
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.clusterMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.clusterMarkers = filterData;
+                        this.clusterMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]) >
+                            Number(b.Subjects[`${this.subject}`])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]) >
+                              Number(a.Subjects[`${this.subject}`])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.clusterMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     }
                     this.colors =
                       this.clusterMarkers.length == 1
@@ -873,17 +978,46 @@ export class SatReportComponent implements OnInit {
                     // this.studentCount = 0;
 
                     for (let i = 0; i < this.clusterMarkers.length; i++) {
-                      // this.schoolCount = this.schoolCount + this.clusterMarkers[i].Details['total_schools'];
-                      // this.studentCount = this.studentCount + this.clusterMarkers[i].Details['students_count'];
-                      var color = this.commonService.color(
-                        this.clusterMarkers[i].Details,
-                        "Performance"
-                      );
+                      if (this.grade && !this.subject) {
+                        this.clusterMarkers[i].Details['total_students'] = this.clusterMarkers[i].Subjects['Grade Performance']['total_students'];
+                        this.clusterMarkers[i].Details['students_attended'] = this.clusterMarkers[i].Subjects['Grade Performance']['students_attended'];
+                        this.clusterMarkers[i].Details['total_schools'] = this.clusterMarkers[i].Subjects['Grade Performance']['total_schools'];
+                      }
+                      if (this.grade && this.subject) {
+                        this.clusterMarkers[i].Details['total_students'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['total_students'];
+                        this.clusterMarkers[i].Details['students_attended'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['students_attended'];
+                        this.clusterMarkers[i].Details['total_schools'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                      }
                       if (this.grade) {
+                        this.clusterMarkers[i].Subjects['Grade Performance'] = this.clusterMarkers[i].Subjects['Grade Performance']['percentage']
+                        this.allSubjects.map(sub => {
+                          this.clusterMarkers[i].Subjects[`${sub}`] = this.clusterMarkers[i].Subjects[`${sub}`]['percentage']
+                        })
+                      } else if (!this.grade && !this.subject) {
+                        this.allGrades.map(grade => {
+                          var myGrade = grade.grade;
+                          if (this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`])
+                            this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
+                        })
+                      }
+                      var color;
+                      if (!this.grade && !this.subject) {
                         color = this.commonService.color(
-                          this.clusterMarkers[i].Subjects,
-                          "Grade Performance"
+                          this.clusterMarkers[i].Details,
+                          "Performance"
                         );
+                      } else if (this.grade && !this.subject) {
+                        if (this.period != 'all') {
+                          color = this.commonService.color(
+                            this.clusterMarkers[i].Subjects['Grade Performance'],
+                            "percentage"
+                          );
+                        } else {
+                          color = this.commonService.color(
+                            this.clusterMarkers[i].Subjects,
+                            "Grade Performance"
+                          );
+                        }
                       } else if (this.grade && this.subject) {
                         color = this.commonService.color(
                           this.clusterMarkers[i].Subjects,
@@ -913,13 +1047,17 @@ export class SatReportComponent implements OnInit {
                     }
 
                     //schoolCount
-                    // this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'].total_schools;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    // this.studentCount = res['footer'].total_students;
+                    this.studentCount = res['footer'].total_students;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+                    this.studentAttended = res['footer'].students_attended;
+                    if (this.studentAttended != null) {
+                      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
 
                     this.commonService.restrictZoom(globalMap);
@@ -1043,38 +1181,74 @@ export class SatReportComponent implements OnInit {
                     let result = this.data;
                     this.schoolCount = 0;
                     this.schoolMarkers = result;
-                    if (this.grade && !this.subject) {
-                      this.schoolMarkers.sort((a, b) =>
-                        a.Subjects["Grade Performance"] >
-                          b.Subjects["Grade Performance"]
-                          ? 1
-                          : b.Subjects["Grade Performance"] >
-                            a.Subjects["Grade Performance"]
-                            ? -1
-                            : 0
-                      );
-                    } else if (this.grade && this.subject) {
-                      let filterData = this.schoolMarkers.filter((obj) => {
-                        return Object.keys(obj.Subjects).includes(this.subject);
-                      });
-                      this.schoolMarkers = filterData;
-                      this.schoolMarkers.sort((a, b) =>
-                        Number(a.Subjects[`${this.subject}`]) >
-                          Number(b.Subjects[`${this.subject}`])
-                          ? 1
-                          : Number(b.Subjects[`${this.subject}`]) >
-                            Number(a.Subjects[`${this.subject}`])
-                            ? -1
-                            : 0
-                      );
+                    if (this.period != 'all') {
+                      if (this.grade && !this.subject) {
+                        this.schoolMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"]['percentage'] >
+                            b.Subjects["Grade Performance"]['percentage']
+                            ? 1
+                            : b.Subjects["Grade Performance"]['percentage'] >
+                              a.Subjects["Grade Performance"]['percentage']
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.schoolMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.schoolMarkers = filterData;
+                        this.schoolMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]['percentage']) >
+                            Number(b.Subjects[`${this.subject}`]['percentage'])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]['percentage']) >
+                              Number(a.Subjects[`${this.subject}`]['percentage'])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.schoolMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     } else {
-                      this.schoolMarkers.sort((a, b) =>
-                        a.Details["Performance"] > b.Details["Performance"]
-                          ? 1
-                          : b.Details["Performance"] > a.Details["Performance"]
-                            ? -1
-                            : 0
-                      );
+                      if (this.grade && !this.subject) {
+                        this.schoolMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"] >
+                            b.Subjects["Grade Performance"]
+                            ? 1
+                            : b.Subjects["Grade Performance"] >
+                              a.Subjects["Grade Performance"]
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.schoolMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.schoolMarkers = filterData;
+                        this.schoolMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]) >
+                            Number(b.Subjects[`${this.subject}`])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]) >
+                              Number(a.Subjects[`${this.subject}`])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.schoolMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     }
                     this.colors =
                       this.schoolMarkers.length == 1
@@ -1091,17 +1265,46 @@ export class SatReportComponent implements OnInit {
                     // this.studentCount = 0;
 
                     for (let i = 0; i < this.schoolMarkers.length; i++) {
-                      // this.schoolCount = this.schoolCount + this.schoolMarkers[i].Details['total_schools'];
-                      // this.studentCount = this.studentCount + this.schoolMarkers[i].Details['students_count'];
-                      var color = this.commonService.color(
-                        this.schoolMarkers[i].Details,
-                        "Performance"
-                      );
+                      if (this.grade && !this.subject) {
+                        this.schoolMarkers[i].Details['total_students'] = this.schoolMarkers[i].Subjects['Grade Performance']['total_students'];
+                        this.schoolMarkers[i].Details['students_attended'] = this.schoolMarkers[i].Subjects['Grade Performance']['students_attended'];
+                        this.schoolMarkers[i].Details['total_schools'] = this.schoolMarkers[i].Subjects['Grade Performance']['total_schools'];
+                      }
+                      if (this.grade && this.subject) {
+                        this.schoolMarkers[i].Details['total_students'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['total_students'];
+                        this.schoolMarkers[i].Details['students_attended'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['students_attended'];
+                        this.schoolMarkers[i].Details['total_schools'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                      }
                       if (this.grade) {
+                        this.schoolMarkers[i].Subjects['Grade Performance'] = this.schoolMarkers[i].Subjects['Grade Performance']['percentage']
+                        this.allSubjects.map(sub => {
+                          this.schoolMarkers[i].Subjects[`${sub}`] = this.schoolMarkers[i].Subjects[`${sub}`]['percentage']
+                        })
+                      } else if (!this.grade && !this.subject) {
+                        this.allGrades.map(grade => {
+                          var myGrade = grade.grade;
+                          if (this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`])
+                            this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
+                        })
+                      }
+                      var color;
+                      if (!this.grade && !this.subject) {
                         color = this.commonService.color(
-                          this.schoolMarkers[i].Subjects,
-                          "Grade Performance"
+                          this.schoolMarkers[i].Details,
+                          "Performance"
                         );
+                      } else if (this.grade && !this.subject) {
+                        if (this.period != 'all') {
+                          color = this.commonService.color(
+                            this.schoolMarkers[i].Subjects['Grade Performance'],
+                            "percentage"
+                          );
+                        } else {
+                          color = this.commonService.color(
+                            this.schoolMarkers[i].Subjects,
+                            "Grade Performance"
+                          );
+                        }
                       } else if (this.grade && this.subject) {
                         color = this.commonService.color(
                           this.schoolMarkers[i].Subjects,
@@ -1152,6 +1355,11 @@ export class SatReportComponent implements OnInit {
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
+                    this.studentAttended = res['footer'].students_attended;
+                    if (this.studentAttended != null) {
+                      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+
                     this.commonService.loaderAndErr(this.data);
                   }
                 },
@@ -1253,7 +1461,6 @@ export class SatReportComponent implements OnInit {
             centerLng: this.data[0].Details.longitude,
             level: "block",
           };
-          this.data.forEach((element) => { });
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([
@@ -1341,7 +1548,7 @@ export class SatReportComponent implements OnInit {
               myBlocks.push(element);
             }
           });
-          this.blockMarkers = myBlocks;
+         this.allBlocks = this.blockMarkers = myBlocks;
 
           // set hierarchy values
           this.blockHierarchy = {
@@ -1467,7 +1674,7 @@ export class SatReportComponent implements OnInit {
                     myBlocks.push(element);
                   }
                 });
-                this.blockMarkers = myBlocks;
+               this.allBlocks = this.blockMarkers = myBlocks;
                 this.blockMarkers.sort((a, b) =>
                   a.Details.block_name > b.Details.block_name
                     ? 1
@@ -1484,7 +1691,7 @@ export class SatReportComponent implements OnInit {
                     myCluster.push(element);
                   }
                 });
-                this.clusterMarkers = myCluster;
+               this.allClusters = this.clusterMarkers = myCluster;
 
                 // set hierarchy values
                 this.clusterHierarchy = {
@@ -1587,14 +1794,10 @@ export class SatReportComponent implements OnInit {
                 ? -1
                 : 0
           );
-          if (this.markers[0]) {
-            this.allSubjects = Object.keys(
-              this.markers[0].Grades[`${this.grade}`]
-            );
-            this.allSubjects.pop();
-          } else {
-            this.commonService.loaderAndErr(this.markers)
-          }
+          this.allSubjects = Object.keys(
+            this.markers[0].Grades[`${this.grade}`]
+          );
+          this.allSubjects.pop();
         } else if (this.grade && this.subject) {
           let filterGrade = this.markers.filter((obj) => {
             return Object.keys(obj.Grades).includes(this.grade);
@@ -1644,33 +1847,64 @@ export class SatReportComponent implements OnInit {
         }
       } else {
         colors = [];
-        if (this.grade && !this.subject) {
-          this.markers.sort((a, b) =>
-            a.Subjects["Grade Performance"] > b.Subjects["Grade Performance"]
-              ? 1
-              : b.Subjects["Grade Performance"] >
-                a.Subjects["Grade Performance"]
-                ? -1
-                : 0
-          );
-        } else if (this.grade && this.subject) {
-          this.markers.sort((a, b) =>
-            Number(a.Subjects[`${this.subject}`]) >
-              Number(b.Subjects[`${this.subject}`])
-              ? 1
-              : Number(b.Subjects[`${this.subject}`]) >
-                Number(a.Subjects[`${this.subject}`])
-                ? -1
-                : 0
-          );
+        if (this.period !== 'all') {
+          if (this.grade && !this.subject) {
+            this.markers.sort((a, b) =>
+              a.Subjects["Grade Performance"]['percentage'] > b.Subjects["Grade Performance"]['percentage']
+                ? 1
+                : b.Subjects["Grade Performance"]['percentage'] >
+                  a.Subjects["Grade Performance"]['percentage']
+                  ? -1
+                  : 0
+            );
+          } else if (this.grade && this.subject) {
+            this.markers.sort((a, b) =>
+              Number(a.Subjects[`${this.subject}`]['percentage']) >
+                Number(b.Subjects[`${this.subject}`]['percentage'])
+                ? 1
+                : Number(b.Subjects[`${this.subject}`]['percentage']) >
+                  Number(a.Subjects[`${this.subject}`]['percentage'])
+                  ? -1
+                  : 0
+            );
+          } else {
+            this.markers.sort((a, b) =>
+              a.Details["Performance"] > b.Details["Performance"]
+                ? 1
+                : b.Details["Performance"] > a.Details["Performance"]
+                  ? -1
+                  : 0
+            );
+          }
         } else {
-          this.markers.sort((a, b) =>
-            a.Details["Performance"] > b.Details["Performance"]
-              ? 1
-              : b.Details["Performance"] > a.Details["Performance"]
-                ? -1
-                : 0
-          );
+          if (this.grade && !this.subject) {
+            this.markers.sort((a, b) =>
+              a.Subjects["Grade Performance"] > b.Subjects["Grade Performance"]
+                ? 1
+                : b.Subjects["Grade Performance"] >
+                  a.Subjects["Grade Performance"]
+                  ? -1
+                  : 0
+            );
+          } else if (this.grade && this.subject) {
+            this.markers.sort((a, b) =>
+              Number(a.Subjects[`${this.subject}`]) >
+                Number(b.Subjects[`${this.subject}`])
+                ? 1
+                : Number(b.Subjects[`${this.subject}`]) >
+                  Number(a.Subjects[`${this.subject}`])
+                  ? -1
+                  : 0
+            );
+          } else {
+            this.markers.sort((a, b) =>
+              a.Details["Performance"] > b.Details["Performance"]
+                ? 1
+                : b.Details["Performance"] > a.Details["Performance"]
+                  ? -1
+                  : 0
+            );
+          }
         }
         for (let i = 0; i < this.markers.length; i++) {
           if (!this.grade && !this.subject) {
@@ -1679,14 +1913,21 @@ export class SatReportComponent implements OnInit {
               "Performance"
             );
           } else if (this.grade && !this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Subjects,
-              "Grade Performance"
-            );
+            if (this.period != 'all') {
+              color = this.commonService.color(
+                this.markers[i].Subjects['Grade Performance'],
+                "percentage"
+              );
+            } else {
+              color = this.commonService.color(
+                this.markers[i].Subjects,
+                "Grade Performance"
+              );
+            }
           } else if (this.grade && this.subject) {
             color = this.commonService.color(
-              this.markers[i].Subjects,
-              this.subject
+              this.markers[i].Subjects[`${this.subject}`],
+              "percentage"
             );
           }
           colors.push(color);
@@ -1694,28 +1935,68 @@ export class SatReportComponent implements OnInit {
       }
 
       if (this.selected != "absolute") {
-        this.colors = this.commonService.getRelativeColors(this.markers, {
-          value: this.grade
-            ? this.markers[0].Subjects
-              ? "Grade Performance"
-              : this.grade
-            : this.grade && this.subject
-              ? this.subject
-              : "Performance",
-          selected: this.grade
-            ? "G"
-            : this.grade && this.subject
-              ? "GS"
-              : "all",
-          report: "reports",
-        });
+        if (this.period != 'all') {
+          this.colors = this.commonService.getRelativeColors(this.markers, {
+            value: this.grade
+              ? this.markers[0].Subjects['Grade Performance']
+                ? "percentage"
+                : this.grade
+              : this.grade && this.subject
+                ? this.subject
+                : "Performance",
+            selected: this.grade
+              ? "G"
+              : this.grade && this.subject
+                ? "GS"
+                : "all",
+            report: "reports",
+          });
+        } else {
+          this.colors = this.commonService.getRelativeColors(this.markers, {
+            value: this.grade
+              ? this.markers[0].Subjects
+                ? "Grade Performance"
+                : this.grade
+              : this.grade && this.subject
+                ? this.subject
+                : "Performance",
+            selected: this.grade
+              ? "G"
+              : this.grade && this.subject
+                ? "GS"
+                : "all",
+            report: "reports",
+          });
+        }
       }
-      // this.schoolCount = 0;
-      // this.studentCount = 0;
+
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
-        // this.schoolCount = this.schoolCount + this.markers[i].Details['total_schools'];
-        // this.studentCount = this.studentCount + this.markers[i].Details['students_count'];
+        if (this.period != 'all') {
+          if (this.grade && !this.subject) {
+            this.markers[i].Details['total_students'] = this.markers[i].Subjects['Grade Performance']['total_students'];
+            this.markers[i].Details['students_attended'] = this.markers[i].Subjects['Grade Performance']['students_attended'];
+            this.markers[i].Details['total_schools'] = this.markers[i].Subjects['Grade Performance']['total_schools'];
+          }
+          if (this.grade && this.subject) {
+            this.markers[i].Details['total_students'] = this.markers[i].Subjects[`${this.subject}`]['total_students'];
+            this.markers[i].Details['students_attended'] = this.markers[i].Subjects[`${this.subject}`]['students_attended'];
+            this.markers[i].Details['total_schools'] = this.markers[i].Subjects[`${this.subject}`]['total_schools'];
+          }
+          if (this.grade) {
+            this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
+            this.allSubjects.map(sub => {
+              this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+            })
+          } else if (!this.grade && !this.subject) {
+            this.allGrades.map(grade => {
+              var myGrade = grade.grade;
+              if (this.markers[i]['Grade Wise Performance'][`${myGrade}`])
+                this.markers[i]['Grade Wise Performance'][`${myGrade}`] = this.markers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
+            })
+          }
+        }
+
         var markerIcon = this.commonService.initMarkers(
           this.markers[i].Details.latitude,
           this.markers[i].Details.longitude,
@@ -1759,8 +2040,8 @@ export class SatReportComponent implements OnInit {
         this.getDownloadableData(this.markers[i], options.level);
       }
       this.commonService.loaderAndErr(this.data);
+      this.changeDetection.detectChanges();
     }
-
     //schoolCount
     this.schoolCount = data['footer'].total_schools;
     if (this.schoolCount != null) {
@@ -1783,6 +2064,7 @@ export class SatReportComponent implements OnInit {
     var orgObject = {};
     var data1 = {};
     var data2 = {};
+    var data3 = {}
     // student_count, total_schools
 
     Object.keys(markers.Details).forEach((key) => {
@@ -1790,37 +2072,48 @@ export class SatReportComponent implements OnInit {
         details[key] = markers.Details[key];
       }
     });
-    Object.keys(details).forEach((key) => {
-      if (key !== "total_students") {
-        data1[key] = details[key];
-      }
-    });
-    Object.keys(data1).forEach((key) => {
-      if (key !== "total_schools") {
-        data2[key] = data1[key];
-      }
-    });
-    Object.keys(details).forEach((key) => {
+    if (this.period == 'all') {
+      Object.keys(details).forEach((key) => {
+        if (key !== "total_students") {
+          data1[key] = details[key];
+        }
+      });
+      Object.keys(data1).forEach((key) => {
+        if (key !== "total_schools") {
+          data2[key] = data1[key];
+        }
+      });
+      Object.keys(data2).forEach((key) => {
+        if (key !== "students_attended") {
+          data3[key] = data2[key];
+        }
+      });
+    } else {
+      data3 = details;
+    }
+    Object.keys(data3).forEach((key) => {
       if (key !== lng) {
-        orgObject[key] = details[key];
+        orgObject[key] = data3[key];
       }
     });
-    if (level != "school") {
-      if (orgObject["total_schools"] != null) {
-        orgObject["total_schools"] = orgObject["total_schools"]
+    if (this.period != 'all') {
+      if (level != "school") {
+        if (orgObject["total_schools"] != null) {
+          orgObject["total_schools"] = orgObject["total_schools"]
+            .toString()
+            .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        }
+      }
+      if (orgObject["total_students"] != null) {
+        orgObject["total_students"] = orgObject["total_students"]
           .toString()
           .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       }
-    }
-    if (orgObject["total_students"] != null) {
-      orgObject["total_students"] = orgObject["total_students"]
-        .toString()
-        .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
-    if (orgObject["students_attended"] != null) {
-      orgObject["students_attended"] = orgObject["students_attended"]
-        .toString()
-        .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      if (orgObject["students_attended"] != null) {
+        orgObject["students_attended"] = orgObject["students_attended"]
+          .toString()
+          .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
     }
     var yourData1;
     if (this.grade) {
@@ -1950,7 +2243,7 @@ export class SatReportComponent implements OnInit {
       "<b><u>Details</u></b>" +
       "<br>" +
       yourData1 +
-      "<br><br><b><u>Semester Exam Score (%)</u></b>" +
+      "<br><br><b><u>Periodic Exam Score (%)</u></b>" +
       "<br>" +
       yourData
     );

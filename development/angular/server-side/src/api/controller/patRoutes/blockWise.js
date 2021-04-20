@@ -63,9 +63,9 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
             }
         }
         blockData = await s3File.readS3File(fileName);
+        // console.log(blockData)
         var mydata = blockData.data;
         logger.info('--- blocks PAT api response sent---');
-        // , footer: blockData.AllBlocksFooter
         res.status(200).send({ data: mydata, footer: blockData['AllBlocksFooter'] });
 
     } catch (e) {
