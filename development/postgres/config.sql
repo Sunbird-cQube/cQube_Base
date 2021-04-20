@@ -3357,6 +3357,7 @@ group by a.school_id,b.assessment_year)as b
 on d.school_id=tot_stud.school_id;
 /*----------------------------------------------------------- PAT grade subject wise*/
 
+
 /* district - grade */
 
 create or replace view periodic_grade_district_last30 as
@@ -3366,7 +3367,7 @@ from
 	periodic_exam_district_last30)as a
 left join
 (select academic_year,district_id,grade,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
@@ -3406,8 +3407,6 @@ on b.district_id=tot_stud.district_id and b.grade=tot_stud.grade;
 
 
 /*--- block - grade*/
-
-
 create or replace view periodic_grade_block_last30 as
 select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
@@ -3415,7 +3414,7 @@ from
 	periodic_exam_block_last30)as a
 left join
 (select academic_year,block_id,grade,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
@@ -3455,7 +3454,6 @@ on b.block_id=tot_stud.block_id and b.grade=tot_stud.grade;
 
 /*--- cluster - grade*/
 
-
 create or replace view periodic_grade_cluster_last30 as
 select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
@@ -3463,7 +3461,7 @@ from
 	periodic_exam_cluster_last30)as a
 left join
 (select academic_year,cluster_id,grade,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
@@ -3510,7 +3508,7 @@ from
 	district_id,initcap(district_name)as district_name,school_latitude,school_longitude,school_performance from periodic_exam_school_last30)as a
 left join
 (select academic_year,school_id,grade,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) 
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) 
 order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
@@ -3817,7 +3815,7 @@ district_longitude,district_performance from
 	periodic_exam_district_last7)as a
 left join
 (select academic_year,district_id,grade,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
@@ -3856,9 +3854,7 @@ join
  group by district_id,grade) tot_stud
 on b.district_id=tot_stud.district_id and b.grade=tot_stud.grade;
 
-
 /*--- block - grade*/
-
 
 create or replace view periodic_grade_block_last7 as
 select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
@@ -3867,7 +3863,7 @@ from
 	periodic_exam_block_last7)as a
 left join
 (select academic_year,block_id,grade,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
@@ -3915,7 +3911,7 @@ from
 	periodic_exam_cluster_last7)as a
 left join
 (select academic_year,cluster_id,grade,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
@@ -3962,7 +3958,7 @@ from
 	district_id,initcap(district_name)as district_name,school_latitude,school_longitude,school_performance from periodic_exam_school_last7)as a
 left join
 (select academic_year,school_id,grade,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) 
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) 
 order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
@@ -3996,7 +3992,6 @@ join
  (select sum(students_count) as total_students,sge.school_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
  group by sge.school_id,grade) tot_stud
 on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade;
-
 
 /*Composite reports */
 
@@ -11222,7 +11217,7 @@ from
 (select academic_year,month,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance from periodic_exam_district_year_month)as a
 left join
 (select academic_year,district_id,grade,month,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
@@ -11268,7 +11263,7 @@ from
 	district_id,initcap(district_name)as district_name,block_latitude,block_longitude,block_performance from periodic_exam_block_year_month)as a
 left join
 (select academic_year,block_id,grade,month,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
@@ -11313,7 +11308,7 @@ from
 	district_id,initcap(district_name)as district_name,cluster_latitude,cluster_longitude,cluster_performance from periodic_exam_cluster_year_month)as a
 left join
 (select academic_year,cluster_id,grade,month,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
@@ -11359,7 +11354,7 @@ from
 	district_id,initcap(district_name)as district_name,school_latitude,school_longitude,school_performance from periodic_exam_school_year_month)as a
 left join
 (select academic_year,school_id,grade,trim(month) as month,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
@@ -11393,6 +11388,7 @@ on b.school_id=c.school_id and b.grade=c.grade and b.academic_year=c.academic_ye
 left join
  school_grade_enrolment_school tot_stud
 on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade ;
+
 
 
 /* CRC month and year queries */
@@ -13341,7 +13337,7 @@ from
 	periodic_exam_district_mgmt_last30)as a
 left join
 (select academic_year,district_id,grade,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,school_management_type,
@@ -13391,7 +13387,7 @@ from
 	periodic_exam_block_mgmt_last30)as a
 left join
 (select academic_year,block_id,grade,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,school_management_type,
@@ -13441,7 +13437,7 @@ from
 	periodic_exam_cluster_mgmt_last30)as a
 left join
 (select academic_year,cluster_id,grade,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,school_management_type,
@@ -13489,7 +13485,7 @@ from
 	district_id,initcap(district_name)as district_name,school_latitude,school_longitude,school_performance,school_management_type from periodic_exam_school_mgmt_last30)as a
 left join
 (select academic_year,school_id,grade,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,school_management_type,
@@ -13527,6 +13523,7 @@ on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade and b.school_manage
 
 /*----------------------------------------------------------- PAT grade subject wise*/
 
+
 /* district - grade */
 
 create or replace view periodic_grade_district_mgmt_last7 as
@@ -13536,7 +13533,7 @@ from
 	periodic_exam_district_mgmt_last7)as a
 left join
 (select academic_year,district_id,grade,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,school_management_type,
@@ -13586,7 +13583,7 @@ from
 	periodic_exam_block_mgmt_last7)as a
 left join
 (select academic_year,block_id,grade,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,school_management_type,
@@ -13636,7 +13633,7 @@ from
 	periodic_exam_cluster_mgmt_last7)as a
 left join
 (select academic_year,cluster_id,grade,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,school_management_type,
@@ -13686,7 +13683,7 @@ from
 	district_id,initcap(district_name)as district_name,school_latitude,school_longitude,school_performance,school_management_type from periodic_exam_school_mgmt_last7)as a
 left join
 (select academic_year,school_id,grade,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,school_management_type,
@@ -13721,6 +13718,8 @@ join
  (select sum(students_count) as total_students,sge.school_id,school_management_type,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
  group by sge.school_id,grade,school_management_type) tot_stud
 on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade and b.school_management_type=tot_stud.school_management_type;
+
+
 /* PAT grade subject wise -Year and Month*/
 
 /* district - grade */
@@ -13731,7 +13730,7 @@ from
 	district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance,school_management_type from periodic_exam_district_mgmt_year_month)as a
 left join
 (select academic_year,district_id,grade,month,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,school_management_type,
@@ -13778,7 +13777,7 @@ from
 	district_id,initcap(district_name)as district_name,block_latitude,block_longitude,block_performance,school_management_type from periodic_exam_block_mgmt_year_month)as a
 left join
 (select academic_year,block_id,grade,month,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,school_management_type,
@@ -13824,7 +13823,7 @@ from
 	district_id,initcap(district_name)as district_name,cluster_latitude,cluster_longitude,cluster_performance,school_management_type from periodic_exam_cluster_mgmt_year_month)as a
 left join
 (select academic_year,cluster_id,grade,month,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,school_management_type,
@@ -13870,7 +13869,7 @@ from
 	district_id,initcap(district_name)as district_name,school_latitude,school_longitude,school_performance,school_management_type from periodic_exam_school_mgmt_year_month)as a
 left join
 (select academic_year,school_id,grade,trim(month) as month,school_management_type,
-json_agg(json_build_object(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools)) order by subject_name) as subjects
+json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,school_management_type,
@@ -13906,7 +13905,6 @@ on b.school_id=c.school_id and b.grade=c.grade and b.academic_year=c.academic_ye
 left join
  school_grade_enrolment_school_mgmt tot_stud
 on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade  and b.school_management_type=tot_stud.school_management_type;
-
 /* udise management */
 
 
