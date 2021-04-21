@@ -715,17 +715,10 @@ export class SatReportComponent implements OnInit {
                           "Performance"
                         );
                       } else if (this.grade && !this.subject) {
-                        if (this.period != 'all') {
-                          color = this.commonService.color(
-                            this.blockMarkers[i].Subjects['Grade Performance'],
-                            "percentage"
-                          );
-                        } else {
-                          color = this.commonService.color(
-                            this.blockMarkers[i].Subjects,
-                            "Grade Performance"
-                          );
-                        }
+                        color = this.commonService.color(
+                          this.blockMarkers[i].Subjects,
+                          "Grade Performance"
+                        );
                       } else if (this.grade && this.subject) {
                         color = this.commonService.color(
                           this.blockMarkers[i].Subjects,
@@ -1007,17 +1000,10 @@ export class SatReportComponent implements OnInit {
                           "Performance"
                         );
                       } else if (this.grade && !this.subject) {
-                        if (this.period != 'all') {
-                          color = this.commonService.color(
-                            this.clusterMarkers[i].Subjects['Grade Performance'],
-                            "percentage"
-                          );
-                        } else {
-                          color = this.commonService.color(
-                            this.clusterMarkers[i].Subjects,
-                            "Grade Performance"
-                          );
-                        }
+                        color = this.commonService.color(
+                          this.clusterMarkers[i].Subjects,
+                          "Grade Performance"
+                        );
                       } else if (this.grade && this.subject) {
                         color = this.commonService.color(
                           this.clusterMarkers[i].Subjects,
@@ -1294,17 +1280,10 @@ export class SatReportComponent implements OnInit {
                           "Performance"
                         );
                       } else if (this.grade && !this.subject) {
-                        if (this.period != 'all') {
-                          color = this.commonService.color(
-                            this.schoolMarkers[i].Subjects['Grade Performance'],
-                            "percentage"
-                          );
-                        } else {
-                          color = this.commonService.color(
-                            this.schoolMarkers[i].Subjects,
-                            "Grade Performance"
-                          );
-                        }
+                        color = this.commonService.color(
+                          this.schoolMarkers[i].Subjects,
+                          "Grade Performance"
+                        );
                       } else if (this.grade && this.subject) {
                         color = this.commonService.color(
                           this.schoolMarkers[i].Subjects,
@@ -1548,7 +1527,7 @@ export class SatReportComponent implements OnInit {
               myBlocks.push(element);
             }
           });
-         this.allBlocks = this.blockMarkers = myBlocks;
+          this.allBlocks = this.blockMarkers = myBlocks;
 
           // set hierarchy values
           this.blockHierarchy = {
@@ -1674,7 +1653,7 @@ export class SatReportComponent implements OnInit {
                     myBlocks.push(element);
                   }
                 });
-               this.allBlocks = this.blockMarkers = myBlocks;
+                this.allBlocks = this.blockMarkers = myBlocks;
                 this.blockMarkers.sort((a, b) =>
                   a.Details.block_name > b.Details.block_name
                     ? 1
@@ -1691,7 +1670,7 @@ export class SatReportComponent implements OnInit {
                     myCluster.push(element);
                   }
                 });
-               this.allClusters = this.clusterMarkers = myCluster;
+                this.allClusters = this.clusterMarkers = myCluster;
 
                 // set hierarchy values
                 this.clusterHierarchy = {

@@ -8,6 +8,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
         logger.info('---PAT dist wise api ---');
         var period = req.body.data.period;
         var grade = req.body.data.grade;
+        var subject = req.body.data.subject;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
         var academic_year = req.body.data.year;
@@ -15,7 +16,9 @@ router.post('/distWise', auth.authController, async (req, res) => {
         var management = req.body.data.management;
         var category = req.body.data.category;
         let fileName;
-        var districtData = {}
+        var districtData = {};
+        var footerFile;
+        var footerData = {}
         // if (management != 'overall' && category != 'overall') {
 
         // } else if (management == 'overall' && category != 'overall') {
@@ -29,6 +32,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
                     } else {
                         fileName = `${report}/school_management_category/overall/overall_category/${academic_year}/${month}/district/${grade}.json`;
                     }
+
                 } else {
                     if (period != 'select_month') {
                         fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/district.json`;
@@ -48,9 +52,16 @@ router.post('/distWise', auth.authController, async (req, res) => {
                 if (grade) {
                     if (period != 'select_month') {
                         fileName = `${report}/${period}/district/${grade}.json`;
+                        if (subject) {
+                            footerFile = `pat/${period == 'all' ? 'overall' : period}/all_subjects_footer.json`
+                        }
                     } else {
                         fileName = `${report}/${academic_year}/${month}/district/${grade}.json`;
+                        if (subject) {
+                            footerFile = `pat/${academic_year}/${month}/all_subjects_footer.json`
+                        }
                     }
+
                 } else {
                     if (period != 'select_month') {
                         fileName = `${report}/${period}/${report}_district.json`;
@@ -61,23 +72,35 @@ router.post('/distWise', auth.authController, async (req, res) => {
             } else {
                 if (grade) {
                     fileName = `${report}/${period}/district/${semester}/${grade}.json`;
+                    if (subject) {
+                        footerFile = `sat/${period}/${semester}/all_subjects_footer.json`;
+                    }
                 } else {
                     fileName = `${report}/${period}/${semester}/${report}_district.json`;
                 }
             }
         }
-
+        var footer;
         districtData = await s3File.readS3File(fileName);
-        // console.log(districtData.data[0]);
+        if (subject)
+            footerData = await s3File.readS3File(footerFile);
+        if (grade && !subject || !grade && !subject) {
+            footer = districtData['AllDistrictsFooter'];
+        } else {
+            footerData.map(foot => {
+                footer = foot.subjects[`${subject}`]
+            })
+        }
         var mydata = districtData.data;
         logger.info('--- PAT dist wise api response sent ---');
-        res.status(200).send({ data: mydata, footer: districtData['AllDistrictsFooter'] });
+        res.status(200).send({ data: mydata, footer: footer });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
     }
 });
 
+// ',
 router.post('/grades', async (req, res, next) => {
     try {
         logger.info('---grades metadata api ---');
