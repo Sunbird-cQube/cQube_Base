@@ -8,6 +8,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         logger.info('---PAT cluster wise api ---');
         var period = req.body.data.period;
         var grade = req.body.data.grade;
+        var subject = req.body.data.subject;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
         var academic_year = req.body.data.year;
@@ -16,6 +17,8 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         var category = req.body.data.category;
         var fileName;
         var clusterData = {}
+        var footerFile;
+        var footerData = {}
 
         if (management != 'overall' && category == 'overall') {
             if (report == 'pat') {
@@ -44,8 +47,14 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 if (grade) {
                     if (period != 'select_month') {
                         fileName = `${report}/${period}/cluster/${grade}.json`;
+                        if (subject) {
+                            footerFile = `pat/${period == 'all' ? 'overall' : period}/all_subjects_footer.json`
+                        }
                     } else {
                         fileName = `${report}/${academic_year}/${month}/cluster/${grade}.json`;
+                        if (subject) {
+                            footerFile = `pat/${academic_year}/${month}/all_subjects_footer.json`
+                        }
                     }
                 } else {
                     if (period != 'select_month') {
@@ -57,6 +66,9 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
             } else {
                 if (grade) {
                     fileName = `${report}/${period}/cluster/${semester}/${grade}.json`;
+                    if (subject) {
+                        footerFile = `sat/${period}/${semester}/all_subjects_footer.json`;
+                    }
                 } else {
                     fileName = `${report}/${period}/${semester}/${report}_cluster.json`;
                 }
@@ -64,10 +76,20 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         }
 
         clusterData = await s3File.readS3File(fileName);
+        var footer;
+        if (subject)
+            footerData = await s3File.readS3File(footerFile);
+        if (grade && !subject || !grade && !subject) {
+            footer = clusterData['AllClustersFooter'];
+        } else {
+            footerData.map(foot => {
+                footer = foot.subjects[`${subject}`]
+            })
+        }
         var mydata = clusterData.data;
         logger.info('---PAT cluster wise api response sent---');
         // , footer: clusterData.AllClustersFooter
-        res.status(200).send({ data: mydata, footer: clusterData['AllClustersFooter'] });
+        res.status(200).send({ data: mydata, footer: footer });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -88,7 +110,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         var subject = req.body.data.subject;
         var fileName;
         let footerFile;
-        var footerData = { }
+        var footerData = {}
 
         if (management != 'overall' && category == 'overall') {
             if (report == 'pat') {
@@ -137,7 +159,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
         let mydata = filterData;
         var footer;
-        if(grad)
+        if (grad)
             footerData = await s3File.readS3File(footerFile);
         if (grad && !subject) {
             footer = footerData[blockId][grad];

@@ -8,6 +8,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         logger.info('--- all blocks PAT api ---');
         var period = req.body.data.period;
         var grade = req.body.data.grade;
+        var subject = req.body.data.subject;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
         var academic_year = req.body.data.year;
@@ -16,6 +17,8 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         var category = req.body.data.category;
         var fileName;
         var blockData = {}
+        var footerFile;
+        var footerData = {}
 
         if (management != 'overall' && category == 'overall') {
             if (report == 'pat') {
@@ -44,8 +47,14 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                 if (grade) {
                     if (period != 'select_month') {
                         fileName = `${report}/${period}/block/${grade}.json`;
+                        if (subject) {
+                            footerFile = `pat/${period == 'all' ? 'overall' : period}/all_subjects_footer.json`
+                        }
                     } else {
                         fileName = `${report}/${academic_year}/${month}/block/${grade}.json`;
+                        if (subject) {
+                            footerFile = `pat/${academic_year}/${month}/all_subjects_footer.json`
+                        }
                     }
                 } else {
                     if (period != 'select_month') {
@@ -57,16 +66,29 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
             } else {
                 if (grade) {
                     fileName = `${report}/${period}/block/${semester}/${grade}.json`;
+                    if (subject) {
+                        footerFile = `sat/${period}/${semester}/all_subjects_footer.json`;
+                    }
                 } else {
                     fileName = `${report}/${period}/${semester}/${report}_block.json`;
                 }
             }
         }
+        
         blockData = await s3File.readS3File(fileName);
-        // console.log(blockData)
+        var footer;
+        if (subject)
+            footerData = await s3File.readS3File(footerFile);
+        if (grade && !subject || !grade && !subject) {
+            footer = blockData['AllBlocksFooter'];
+        } else {
+            footerData.map(foot => {
+                footer = foot.subjects[`${subject}`]
+            })
+        }
         var mydata = blockData.data;
         logger.info('--- blocks PAT api response sent---');
-        res.status(200).send({ data: mydata, footer: blockData['AllBlocksFooter'] });
+        res.status(200).send({ data: mydata, footer: footer });
 
     } catch (e) {
         logger.error(`Error :: ${e}`);
@@ -77,7 +99,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         logger.info('--- block wise PAT api ---');
-        var footerData = { }
+        var footerData = {}
         var period = req.body.data.period;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
@@ -135,7 +157,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
         let mydata = filterData;
         var footer;
-        if(grad)
+        if (grad)
             footerData = await s3File.readS3File(footerFile);
         if (grad && !subject) {
             footer = footerData[distId][grad];

@@ -278,7 +278,7 @@ export class PATReportComponent implements OnInit {
   getDistricts(level): void {
     this.service
       .PATDistWiseData({
-        ...{ grade: this.grade, period: this.period, report: "pat" },
+        ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
         ...this.month_year,
         ...{ management: this.management, category: this.category },
       })
@@ -509,7 +509,7 @@ export class PATReportComponent implements OnInit {
             this.myData = this.service
               .PATDistWiseData({
                 ...{
-                  ...{ grade: this.grade, period: this.period, report: "pat" },
+                  ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                   ...this.month_year,
                   ...{ management: this.management, category: this.category },
                 },
@@ -650,7 +650,7 @@ export class PATReportComponent implements OnInit {
             }
             this.myData = this.service
               .PATBlockWiseData({
-                ...{ grade: this.grade, period: this.period, report: "pat" },
+                ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                 ...this.month_year,
                 ...{ management: this.management, category: this.category },
               })
@@ -778,7 +778,8 @@ export class PATReportComponent implements OnInit {
                         if (this.grade) {
                           this.blockMarkers[i].Subjects['Grade Performance'] = this.blockMarkers[i].Subjects['Grade Performance']['percentage']
                           this.allSubjects.map(sub => {
-                            this.blockMarkers[i].Subjects[`${sub}`] = this.blockMarkers[i].Subjects[`${sub}`]['percentage']
+                            if (this.blockMarkers[i].Subjects[`${sub}`])
+                              this.blockMarkers[i].Subjects[`${sub}`] = this.blockMarkers[i].Subjects[`${sub}`]['percentage']
                           })
                         } else if (!this.grade && !this.subject) {
                           this.allGrades.map(grade => {
@@ -795,17 +796,10 @@ export class PATReportComponent implements OnInit {
                           "Performance"
                         );
                       } else if (this.grade && !this.subject) {
-                        if (this.period != 'all') {
-                          color = this.commonService.color(
-                            this.blockMarkers[i].Subjects['Grade Performance'],
-                            "percentage"
-                          );
-                        } else {
-                          color = this.commonService.color(
-                            this.blockMarkers[i].Subjects,
-                            "Grade Performance"
-                          );
-                        }
+                        color = this.commonService.color(
+                          this.blockMarkers[i].Subjects,
+                          "Grade Performance"
+                        );
                       } else if (this.grade && this.subject) {
                         color = this.commonService.color(
                           this.blockMarkers[i].Subjects,
@@ -951,7 +945,7 @@ export class PATReportComponent implements OnInit {
             }
             this.myData = this.service
               .PATClusterWiseData({
-                ...{ grade: this.grade, period: this.period, report: "pat" },
+                ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                 ...this.month_year,
                 ...{ management: this.management, category: this.category },
               })
@@ -1073,7 +1067,8 @@ export class PATReportComponent implements OnInit {
                       if (this.grade) {
                         this.clusterMarkers[i].Subjects['Grade Performance'] = this.clusterMarkers[i].Subjects['Grade Performance']['percentage']
                         this.allSubjects.map(sub => {
-                          this.clusterMarkers[i].Subjects[`${sub}`] = this.clusterMarkers[i].Subjects[`${sub}`]['percentage']
+                          if (this.clusterMarkers[i].Subjects[`${sub}`])
+                            this.clusterMarkers[i].Subjects[`${sub}`] = this.clusterMarkers[i].Subjects[`${sub}`]['percentage']
                         })
                       } else if (!this.grade && !this.subject) {
                         this.allGrades.map(grade => {
@@ -1089,17 +1084,10 @@ export class PATReportComponent implements OnInit {
                           "Performance"
                         );
                       } else if (this.grade && !this.subject) {
-                        if (this.period != 'all') {
-                          color = this.commonService.color(
-                            this.clusterMarkers[i].Subjects['Grade Performance'],
-                            "percentage"
-                          );
-                        } else {
-                          color = this.commonService.color(
-                            this.clusterMarkers[i].Subjects,
-                            "Grade Performance"
-                          );
-                        }
+                        color = this.commonService.color(
+                          this.clusterMarkers[i].Subjects,
+                          "Grade Performance"
+                        );
                       } else if (this.grade && this.subject) {
                         color = this.commonService.color(
                           this.clusterMarkers[i].Subjects,
@@ -1244,7 +1232,7 @@ export class PATReportComponent implements OnInit {
             }
             this.myData = this.service
               .PATSchoolWiseData({
-                ...{ grade: this.grade, period: this.period, report: "pat" },
+                ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                 ...this.month_year,
                 ...{ management: this.management, category: this.category },
               })
@@ -1364,7 +1352,8 @@ export class PATReportComponent implements OnInit {
                       if (this.grade) {
                         this.schoolMarkers[i].Subjects['Grade Performance'] = this.schoolMarkers[i].Subjects['Grade Performance']['percentage']
                         this.allSubjects.map(sub => {
-                          this.schoolMarkers[i].Subjects[`${sub}`] = this.schoolMarkers[i].Subjects[`${sub}`]['percentage']
+                          if (this.schoolMarkers[i].Subjects[`${sub}`])
+                            this.schoolMarkers[i].Subjects[`${sub}`] = this.schoolMarkers[i].Subjects[`${sub}`]['percentage']
                         })
                       } else if (!this.grade && !this.subject) {
                         this.allGrades.map(grade => {
@@ -1380,17 +1369,10 @@ export class PATReportComponent implements OnInit {
                           "Performance"
                         );
                       } else if (this.grade && !this.subject) {
-                        if (this.period != 'all') {
-                          color = this.commonService.color(
-                            this.schoolMarkers[i].Subjects['Grade Performance'],
-                            "percentage"
-                          );
-                        } else {
-                          color = this.commonService.color(
-                            this.schoolMarkers[i].Subjects,
-                            "Grade Performance"
-                          );
-                        }
+                        color = this.commonService.color(
+                          this.schoolMarkers[i].Subjects,
+                          "Grade Performance"
+                        );
                       } else if (this.grade && this.subject) {
                         color = this.commonService.color(
                           this.schoolMarkers[i].Subjects,
@@ -1739,7 +1721,7 @@ export class PATReportComponent implements OnInit {
     }
     this.myData = this.service
       .PATBlockWiseData({
-        ...{ grade: this.grade, period: this.period, report: "pat" },
+        ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
         ...this.month_year,
         ...{ management: this.management, category: this.category },
       })
@@ -2076,7 +2058,8 @@ export class PATReportComponent implements OnInit {
           if (this.grade) {
             this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
             this.allSubjects.map(sub => {
-              this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+              if (this.markers[i].Subjects[`${sub}`])
+                this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
             })
           } else if (!this.grade && !this.subject) {
             this.allGrades.map(grade => {

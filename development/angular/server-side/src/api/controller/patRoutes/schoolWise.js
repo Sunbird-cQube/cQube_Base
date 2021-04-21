@@ -8,6 +8,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         logger.info('---PAT school wise api ---');
         var period = req.body.data.period;
         var grade = req.body.data.grade;
+        var subject = req.body.data.subject;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
         var academic_year = req.body.data.year;
@@ -16,6 +17,9 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         var category = req.body.data.category;
         var fileName;
         var schoolData = {}
+        var footerFile;
+        var footerData = {}
+
 
         if (management != 'overall' && category == 'overall') {
             if (report == 'pat') {
@@ -44,8 +48,14 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 if (grade) {
                     if (period != 'select_month') {
                         fileName = `${report}/${period}/school/${grade}.json`;
+                        if (subject) {
+                            footerFile = `pat/${period == 'all' ? 'overall' : period}/all_subjects_footer.json`
+                        }
                     } else {
                         fileName = `${report}/${academic_year}/${month}/school/${grade}.json`;
+                        if (subject) {
+                            footerFile = `pat/${academic_year}/${month}/all_subjects_footer.json`
+                        }
                     }
                 } else {
                     if (period != 'select_month') {
@@ -57,16 +67,29 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
             } else {
                 if (grade) {
                     fileName = `${report}/${period}/school/${semester}/${grade}.json`;
+                    if (subject) {
+                        footerFile = `sat/${period}/${semester}/all_subjects_footer.json`;
+                    }
                 } else {
                     fileName = `${report}/${period}/${semester}/${report}_school.json`;
                 }
             }
         }
         schoolData = await s3File.readS3File(fileName);
+        var footer;
+        if (subject)
+            footerData = await s3File.readS3File(footerFile);
+        if (grade && !subject || !grade && !subject) {
+            footer = schoolData['AllSchoolsFooter'];
+        } else {
+            footerData.map(foot => {
+                footer = foot.subjects[`${subject}`]
+            })
+        }
         var mydata = schoolData.data;
         logger.info('---PAT school wise api response sent---');
         // , footer: schoolData.AllSchoolsFooter
-        res.status(200).send({ data: mydata, footer: schoolData['AllSchoolsFooter'] });
+        res.status(200).send({ data: mydata, footer: footer });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
