@@ -2801,10 +2801,9 @@ group by district_id,academic_year)as b
 on a.academic_year=b.academic_year and a.district_id=b.district_id)as c
 left join 
 (
-select academic_year,district_id,jsonb_agg(subject_wise_performance)as subject_wise_performance from
+select academic_year,district_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance from
 (select academic_year,district_id,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
-
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from 
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
@@ -2816,7 +2815,6 @@ district_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
 from periodic_exam_school_result group by academic_year,grade,
 district_id order by grade desc,subject_name))as b
-
 group by academic_year,district_id,grade)as d
 group by academic_year,district_id
 )as d on c.academic_year=d.academic_year and c.district_id=d.district_id)as d
@@ -2856,9 +2854,9 @@ group by block_id,academic_year)as b
 on a.academic_year=b.academic_year and a.block_id=b.block_id)as c
 left join 
 (
-select academic_year,block_id,jsonb_agg(subject_wise_performance)as subject_wise_performance from
+select academic_year,block_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance from
 (select academic_year,block_id,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
@@ -2909,9 +2907,9 @@ group by cluster_id,academic_year)as b
 on a.academic_year=b.academic_year and a.cluster_id=b.cluster_id)as c
 left join 
 (
-select academic_year,cluster_id,jsonb_agg(subject_wise_performance)as subject_wise_performance from
+select academic_year,cluster_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance from
 (select academic_year,cluster_id,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
@@ -2962,9 +2960,9 @@ group by school_id,academic_year)as b
 on a.academic_year=b.academic_year and a.school_id=b.school_id)as c
 left join 
 (
-select academic_year,school_id,jsonb_agg(subject_wise_performance)as subject_wise_performance from
+select academic_year,school_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance from
 (select academic_year,school_id,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
@@ -7583,9 +7581,9 @@ group by district_id,academic_year,semester)as b
 on a.academic_year=b.academic_year and a.district_id=b.district_id and a.semester=b.semester)as c
 left join 
 (
-select academic_year,district_id,semester,jsonb_agg(subject_wise_performance)as subject_wise_performance from
+select academic_year,district_id,semester,json_object_agg(grade,subject_wise_performance)as subject_wise_performance from
 (select academic_year,district_id,semester,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from
 
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,semester,
@@ -7636,9 +7634,9 @@ group by block_id,academic_year,semester)as b
 on a.academic_year=b.academic_year and a.block_id=b.block_id and a.semester=b.semester)as c
 left join 
 (
-select academic_year,semester,block_id,jsonb_agg(subject_wise_performance)as subject_wise_performance from
+select academic_year,semester,block_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance from
 (select academic_year,block_id,semester,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,semester,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage
@@ -7690,9 +7688,9 @@ group by cluster_id,academic_year,semester)as b
 on a.academic_year=b.academic_year and a.cluster_id=b.cluster_id and a.semester=b.semester)as c
 left join 
 (
-select academic_year,cluster_id,jsonb_agg(subject_wise_performance)as subject_wise_performance,semester from
+select academic_year,cluster_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance,semester from
 (select academic_year,cluster_id,semester,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,semester,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage
@@ -7743,9 +7741,9 @@ group by school_id,academic_year,semester)as b
 on a.academic_year=b.academic_year and a.school_id=b.school_id and a.semester=b.semester)as c
 left join 
 (
-select academic_year,semester,school_id,jsonb_agg(subject_wise_performance)as subject_wise_performance from
+select academic_year,semester,school_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance from
 (select academic_year,school_id,semester,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage
@@ -7771,6 +7769,7 @@ left join (select exam_id,assessment_year,semester from semester_exam_mst) as b 
 left join school_hierarchy_details as c on a.school_id=c.school_id
 group by a.school_id,b.assessment_year,semester )as b
  on d.academic_year=b.academic_year and d.school_id=b.school_id and d.semester=b.semester;
+
 
 
 /*----------------------------------------------------------- sat grade subject wise*/
@@ -9411,9 +9410,9 @@ group by district_id,academic_year,semester,school_management_type)as b
 on a.academic_year=b.academic_year and a.district_id=b.district_id and a.semester=b.semester and a.school_management_type=b.school_management_type)as c
 left join 
 (
-select academic_year,district_id,semester,jsonb_agg(subject_wise_performance)as subject_wise_performance,school_management_type from
+select academic_year,district_id,semester,json_object_agg(grade,subject_wise_performance)as subject_wise_performance,school_management_type from
 (select academic_year,district_id,semester,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance,school_management_type from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance,school_management_type from
 
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,semester,
@@ -9464,9 +9463,9 @@ group by block_id,academic_year,semester,school_management_type)as b
 on a.academic_year=b.academic_year and a.block_id=b.block_id and a.semester=b.semester and a.school_management_type=b.school_management_type)as c
 left join 
 (
-select academic_year,semester,block_id,jsonb_agg(subject_wise_performance)as subject_wise_performance,school_management_type from
+select academic_year,semester,block_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance,school_management_type from
 (select academic_year,block_id,semester,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance,school_management_type from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance,school_management_type from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,semester,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,school_management_type
@@ -9518,9 +9517,9 @@ group by cluster_id,academic_year,semester,school_management_type)as b
 on a.academic_year=b.academic_year and a.cluster_id=b.cluster_id and a.semester=b.semester and a.school_management_type=b.school_management_type)as c
 left join 
 (
-select academic_year,cluster_id,jsonb_agg(subject_wise_performance)as subject_wise_performance,semester,school_management_type from
+select academic_year,cluster_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance,semester,school_management_type from
 (select academic_year,cluster_id,semester,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance,school_management_type from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance,school_management_type from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,semester,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
@@ -9571,9 +9570,9 @@ group by school_id,academic_year,semester,school_management_type)as b
 on a.academic_year=b.academic_year and a.school_id=b.school_id and a.semester=b.semester and a.school_management_type=b.school_management_type)as c
 left join 
 (
-select academic_year,semester,school_id,jsonb_agg(subject_wise_performance)as subject_wise_performance,school_management_type from
+select academic_year,semester,school_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance,school_management_type from
 (select academic_year,school_id,semester,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance,school_management_type from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance,school_management_type from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
@@ -13030,10 +13029,10 @@ group by district_id,academic_year,school_management_type)as b
 on a.academic_year=b.academic_year and a.district_id=b.district_id and a.school_management_type=b.school_management_type)as c
 left join 
 (
-select academic_year,district_id,jsonb_agg(subject_wise_performance)as subject_wise_performance,
+select academic_year,district_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance,
 school_management_type from
 (select academic_year,district_id,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance,
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance,
 school_management_type from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,school_management_type,
@@ -13085,10 +13084,10 @@ group by block_id,academic_year,school_management_type)as b
 on a.academic_year=b.academic_year and a.block_id=b.block_id and a.school_management_type=b.school_management_type)as c
 left join 
 (
-select academic_year,block_id,jsonb_agg(subject_wise_performance)as subject_wise_performance,
+select academic_year,block_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance,
 school_management_type from
 (select academic_year,block_id,school_management_type,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,school_management_type,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
@@ -13139,10 +13138,10 @@ group by cluster_id,academic_year,school_management_type)as b
 on a.academic_year=b.academic_year and a.cluster_id=b.cluster_id and a.school_management_type=b.school_management_type)as c
 left join 
 (
-select academic_year,cluster_id,jsonb_agg(subject_wise_performance)as subject_wise_performance,
+select academic_year,cluster_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance,
 school_management_type from
 (select academic_year,cluster_id,school_management_type,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,school_management_type,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage
@@ -13194,9 +13193,9 @@ group by school_id,academic_year,school_management_type)as b
 on a.academic_year=b.academic_year and a.school_id=b.school_id and a.school_management_type=b.school_management_type )as c
 left join 
 (
-select academic_year,school_id,jsonb_agg(subject_wise_performance)as subject_wise_performance,school_management_type from
+select academic_year,school_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance,school_management_type from
 (select academic_year,school_id,
-json_build_object(grade,json_object_agg(subject_name,percentage  order by subject_name))::jsonb as subject_wise_performance,school_management_type from
+grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance,school_management_type from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,school_management_type
