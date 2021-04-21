@@ -157,7 +157,6 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
             uniqueGrades.push({ grade: grade });
         })
         uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
-        let mydata = filterData;
         var footer;
         if (grad)
             footerData = await s3File.readS3File(footerFile);
@@ -168,9 +167,38 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         } else {
             footer = clusterData['footer'][blockId]
         }
-
+        var mydata = [];
+        var allSubjects = [];
+        if (period != 'all' && grad) {
+            filterData.map( obj => {
+                obj['Subjects'] = obj.Grades[`${grad}`]
+                delete obj['Grade Wise Performance'];
+                mydata.push(obj);
+                var subjects = Object.keys(obj['Subjects']);
+                var index = subjects.indexOf('Grade Performance');
+                subjects.splice(index, 1);
+                subjects.map(sub=>{
+                    allSubjects.push(sub);
+                })
+            })
+        }else if (period == 'all' && grad) {
+            filterData.map(obj => {
+                obj['Subjects'] = obj.Grades[`${grad}`]
+                delete obj['Grade Wise Performance'];
+                mydata.push(obj);
+                var subjects = Object.keys(obj.Subjects);
+                var index = subjects.indexOf('Grade Performance');
+                subjects.splice(index, 1);
+                subjects.map(sub => {
+                    allSubjects.push(sub);
+                })
+            })
+        } else {
+            mydata = filterData;
+        }
+        var Subjects = [...new Set(allSubjects)];
         logger.info('---PAT clusterperBlock api response sent---');
-        res.status(200).send({ data: mydata, grades: uniqueGrades, footer: footer });
+        res.status(200).send({ data: mydata, subjects: Subjects, grades: uniqueGrades, footer: footer });
 
 
     } catch (e) {

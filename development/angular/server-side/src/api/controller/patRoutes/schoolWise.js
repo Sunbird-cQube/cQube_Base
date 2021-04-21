@@ -98,6 +98,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
+
         logger.info('---PAT schoolPerCluster api ---');
         var period = req.body.data.period;
         var report = req.body.data.report;
@@ -156,7 +157,6 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
             uniqueGrades.push({ grade: grade });
         })
         uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
-        let mydata = filterData;
         var footer;
         if (grad)
             footerData = await s3File.readS3File(footerFile);
@@ -167,8 +167,38 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
         } else {
             footer = schoolData['footer'][clusterId]
         }
+        var mydata = [];
+        var allSubjects = [];
+        if (period != 'all' && grad) {
+            filterData.map(obj => {
+                obj['Subjects'] = obj.Grades[`${grad}`]
+                delete obj['Grade Wise Performance'];
+                mydata.push(obj);
+                var subjects = Object.keys(obj['Subjects']);
+                var index = subjects.indexOf('Grade Performance');
+                subjects.splice(index, 1);
+                subjects.map(sub => {
+                    allSubjects.push(sub);
+                })
+            })
+        } else if (period == 'all' && grad) {
+            filterData.map(obj => {
+                obj['Subjects'] = obj.Grades[`${grad}`]
+                delete obj['Grade Wise Performance'];
+                mydata.push(obj);
+                var subjects = Object.keys(obj.Subjects);
+                var index = subjects.indexOf('Grade Performance');
+                subjects.splice(index, 1);
+                subjects.map(sub => {
+                    allSubjects.push(sub);
+                })
+            })
+        } else {
+            mydata = filterData;
+        }
+        var Subjects = [...new Set(allSubjects)];
         logger.info('---PAT schoolPerCluster api response sent---');
-        res.status(200).send({ data: mydata, grades: uniqueGrades, footer: footer });
+        res.status(200).send({ data: mydata, subjects: Subjects, grades: uniqueGrades, footer: footer });
 
 
     } catch (e) {
