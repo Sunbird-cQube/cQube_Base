@@ -143,8 +143,8 @@ export class SatReportComponent implements OnInit {
           : this.width < 2500 && this.width > 1920
             ? this.commonService.mapCenterLatlng.zoomLevel + 1
             : this.commonService.mapCenterLatlng.zoomLevel;
-    this.levelWiseFilter();
     this.changeDetection.detectChanges();
+    this.levelWiseFilter();
   }
   setZoomLevel(lat, lng, globalMap, zoomLevel) {
     globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
@@ -153,7 +153,13 @@ export class SatReportComponent implements OnInit {
   }
   getMarkerRadius(rad1, rad2, rad3, rad4) {
     let radius =
-      this.width > 3820 ? rad1 : this.width > 2500 && this.width < 3820 ? rad2 : this.width < 2500 && this.width > 1920 ? rad3 : rad4;
+      this.width > 3820
+        ? rad1
+        : this.width > 2500 && this.width < 3820
+          ? rad2
+          : this.width < 2500 && this.width > 1920
+            ? rad3
+            : rad4;
     return radius;
   }
 
@@ -326,7 +332,9 @@ export class SatReportComponent implements OnInit {
   }
 
   onPeriodSelect() {
-    // this.getSemesters();
+    this.grade = undefined;
+    this.subject = undefined;
+    this.subjectHidden = true;
     this.service.semMetaData({ period: this.period }).subscribe((res) => {
       this.semesters = res["data"];
       if (this.semesters.length > 0)
@@ -433,6 +441,7 @@ export class SatReportComponent implements OnInit {
               .PATDistWiseData({
                 ...{
                   grade: this.grade,
+                  subject: this.subject,
                   period: this.period,
                   report: "sat",
                   sem: this.semester,
@@ -471,7 +480,7 @@ export class SatReportComponent implements OnInit {
                     [options.centerLat - 4.5, options.centerLng - 6],
                     [options.centerLat + 3.5, options.centerLng + 6],
                   ]);
-
+                  this.changeDetection.detectChanges();
                   this.genericFun(this.myDistData, options, this.fileName);
                   this.setZoomLevel(
                     options.centerLat,
@@ -480,9 +489,9 @@ export class SatReportComponent implements OnInit {
                     options.mapZoom
                   );
                   this.allDistricts.sort((a, b) =>
-                    a.Details.district_name > b.Details.district_name
+                    a.Details["district_name"] > b.Details["district_name"]
                       ? 1
-                      : b.Details.district_name > a.Details.district_name
+                      : b.Details["district_name"] > a.Details["district_name"]
                         ? -1
                         : 0
                   );
@@ -511,6 +520,7 @@ export class SatReportComponent implements OnInit {
   blockClick() {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.blockWise();
     } else {
@@ -571,6 +581,7 @@ export class SatReportComponent implements OnInit {
               .PATBlockWiseData({
                 ...{
                   grade: this.grade,
+                  subject: this.subject,
                   period: this.period,
                   report: "sat",
                   sem: this.semester,
@@ -760,20 +771,18 @@ export class SatReportComponent implements OnInit {
                       options.mapZoom
                     );
 
-                    //schoolCount
-                    this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentCount = res['footer'].total_students;
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentAttended = res['footer'].students_attended;
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-
                     this.commonService.loaderAndErr(this.data);
                   }
                 },
@@ -798,6 +807,7 @@ export class SatReportComponent implements OnInit {
   clusterClick() {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.clusterWise();
     } else {
@@ -859,6 +869,7 @@ export class SatReportComponent implements OnInit {
               .PATClusterWiseData({
                 ...{
                   grade: this.grade,
+                  subject: this.subject,
                   period: this.period,
                   report: "sat",
                   sem: this.semester,
@@ -1033,15 +1044,15 @@ export class SatReportComponent implements OnInit {
                     }
 
                     //schoolCount
-                    this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentCount = res['footer'].total_students;
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentAttended = res['footer'].students_attended;
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
@@ -1081,6 +1092,7 @@ export class SatReportComponent implements OnInit {
   schoolClick() {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.schoolWise();
     } else {
@@ -1142,6 +1154,7 @@ export class SatReportComponent implements OnInit {
               .PATSchoolWiseData({
                 ...{
                   grade: this.grade,
+                  subject: this.subject,
                   period: this.period,
                   report: "sat",
                   sem: this.semester,
@@ -1325,16 +1338,16 @@ export class SatReportComponent implements OnInit {
                       options.mapZoom
                     );
 
-                    //schoolCount
-                    this.schoolCount = res['footer'].total_schools;
+                    ///schoolCount
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentCount = res['footer'].total_students;
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentAttended = res['footer'].students_attended;
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
@@ -1408,6 +1421,8 @@ export class SatReportComponent implements OnInit {
         (res) => {
           this.data = res["data"];
           this.allGrades = res['grades'];
+          if (this.grade)
+            this.allSubjects = res['subjects'];
           this.allBlocks = this.blockMarkers = this.data;
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
@@ -1516,7 +1531,8 @@ export class SatReportComponent implements OnInit {
         (res) => {
           this.data = res["data"];
           this.allGrades = res['grades'];
-
+          if (this.grade)
+            this.allSubjects = res['subjects'];
           this.allClusters = this.clusterMarkers = this.data;
           if (!this.clusterMarkers[0]["Subjects"]) {
             this.clusterFilter = this.clusterMarkers;
@@ -1642,6 +1658,8 @@ export class SatReportComponent implements OnInit {
               (res) => {
                 this.data = res["data"];
                 this.allGrades = res['grades'];
+                if (this.grade)
+                  this.allSubjects = res['subjects'];
 
                 this.schoolMarkers = this.data;
                 var markers = result["data"];
@@ -1759,44 +1777,7 @@ export class SatReportComponent implements OnInit {
         this.level == "school"
       ) {
         colors = [];
-        if (this.grade && !this.subject) {
-          let filterData = this.markers.filter((obj) => {
-            return Object.keys(obj.Grades).includes(this.grade);
-          });
-          this.markers = filterData;
-          this.markers.sort((a, b) =>
-            a.Grades[`${this.grade}`]["Grade Performance"] >
-              b.Grades[`${this.grade}`]["Grade Performance"]
-              ? 1
-              : b.Grades[`${this.grade}`]["Grade Performance"] >
-                a.Grades[`${this.grade}`]["Grade Performance"]
-                ? -1
-                : 0
-          );
-          this.allSubjects = Object.keys(
-            this.markers[0].Grades[`${this.grade}`]
-          );
-          this.allSubjects.pop();
-        } else if (this.grade && this.subject) {
-          let filterGrade = this.markers.filter((obj) => {
-            return Object.keys(obj.Grades).includes(this.grade);
-          });
-          let filterData = filterGrade.filter((obj) => {
-            return Object.keys(obj.Grades[`${this.grade}`]).includes(
-              this.subject
-            );
-          });
-          this.markers = filterData;
-          this.markers.sort((a, b) =>
-            a.Grades[`${this.grade}`][`${this.subject}`] >
-              b.Grades[`${this.grade}`][`${this.subject}`]
-              ? 1
-              : b.Grades[`${this.grade}`][`${this.subject}`] >
-                a.Grades[`${this.grade}`][`${this.subject}`]
-                ? -1
-                : 0
-          );
-        } else {
+        if (!this.grade && !this.subject) {
           this.markers.sort((a, b) =>
             a.Details["Performance"] > b.Details["Performance"]
               ? 1
@@ -1805,25 +1786,7 @@ export class SatReportComponent implements OnInit {
                 : 0
           );
         }
-        for (let i = 0; i < this.markers.length; i++) {
-          if (!this.grade && !this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Details,
-              "Performance"
-            );
-          } else if (this.grade && !this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Grades[`${this.grade}`],
-              "Grade Performance"
-            );
-          } else if (this.grade && this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Grades[`${this.grade}`],
-              this.subject
-            );
-          }
-          colors.push(color);
-        }
+
       } else {
         colors = [];
         if (this.period !== 'all') {
@@ -1885,32 +1848,41 @@ export class SatReportComponent implements OnInit {
             );
           }
         }
-        for (let i = 0; i < this.markers.length; i++) {
-          if (!this.grade && !this.subject) {
+
+      }
+      for (let i = 0; i < this.markers.length; i++) {
+        if (!this.grade && !this.subject) {
+          color = this.commonService.color(
+            this.markers[i].Details,
+            "Performance"
+          );
+        } else if (this.grade && !this.subject) {
+          if (this.period != 'all') {
             color = this.commonService.color(
-              this.markers[i].Details,
-              "Performance"
+              this.markers[i].Subjects['Grade Performance'],
+              "percentage"
             );
-          } else if (this.grade && !this.subject) {
-            if (this.period != 'all') {
-              color = this.commonService.color(
-                this.markers[i].Subjects['Grade Performance'],
-                "percentage"
-              );
-            } else {
-              color = this.commonService.color(
-                this.markers[i].Subjects,
-                "Grade Performance"
-              );
-            }
-          } else if (this.grade && this.subject) {
+          } else {
+            color = this.commonService.color(
+              this.markers[i].Subjects,
+              "Grade Performance"
+            );
+
+          }
+        } else if (this.grade && this.subject) {
+          if (this.period != 'all') {
             color = this.commonService.color(
               this.markers[i].Subjects[`${this.subject}`],
               "percentage"
             );
+          } else {
+            color = this.commonService.color(
+              this.markers[i].Subjects,
+              `${this.subject}`
+            );
           }
-          colors.push(color);
         }
+        colors.push(color);
       }
 
       if (this.selected != "absolute") {
@@ -1963,10 +1935,19 @@ export class SatReportComponent implements OnInit {
             this.markers[i].Details['total_schools'] = this.markers[i].Subjects[`${this.subject}`]['total_schools'];
           }
           if (this.grade) {
-            this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
-            this.allSubjects.map(sub => {
-              this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
-            })
+            if (this.level != 'block' && this.level != 'cluster' && this.level != 'school') {
+              this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
+              this.allSubjects.map(sub => {
+                if (this.markers[i].Subjects[`${sub}`])
+                  this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+              })
+            } else {
+              this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
+              this.allSubjects.map(sub => {
+                if (this.markers[i].Subjects[`${sub}`])
+                  this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+              })
+            }
           } else if (!this.grade && !this.subject) {
             this.allGrades.map(grade => {
               var myGrade = grade.grade;
@@ -2022,15 +2003,15 @@ export class SatReportComponent implements OnInit {
       this.changeDetection.detectChanges();
     }
     //schoolCount
-    this.schoolCount = data['footer'].total_schools;
+    this.schoolCount = data['footer'] ? data['footer'].total_schools : null;
     if (this.schoolCount != null) {
       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-    this.studentCount = data['footer'].total_students;
+    this.studentCount = data['footer'] ? data['footer'].total_students : null;
     if (this.studentCount != null) {
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-    this.studentAttended = data['footer'].students_attended;
+    this.studentAttended = data['footer'] ? data['footer'].students_attended : null;
     if (this.studentAttended != null) {
       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
@@ -2121,9 +2102,16 @@ export class SatReportComponent implements OnInit {
     var yourData;
     var ordered;
     var mylevel;
-    if (level == "district") {
-      mylevel = level;
-    } else if (level == "block_wise") {
+    if (this.period != 'all') {
+      if (level == "district" || level == 'block' || level == 'cluster' || level == 'school') {
+        mylevel = level;
+      }
+    } else {
+      if (level == "district") {
+        mylevel = level;
+      }
+    }
+    if (level == "block_wise") {
       mylevel = level;
     } else if (level == "cluster_wise") {
       mylevel = level;

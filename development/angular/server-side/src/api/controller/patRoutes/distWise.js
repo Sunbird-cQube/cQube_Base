@@ -29,8 +29,14 @@ router.post('/distWise', auth.authController, async (req, res) => {
                 if (grade) {
                     if (period != 'select_month') {
                         fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/district/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/all_subjects_footer.json`
+                        }
                     } else {
                         fileName = `${report}/school_management_category/overall/overall_category/${academic_year}/${month}/district/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/all_subjects_footer.json`
+                        }
                     }
 
                 } else {
@@ -43,6 +49,9 @@ router.post('/distWise', auth.authController, async (req, res) => {
             } else {
                 if (grade) {
                     fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/district/${grade}.json`;
+                    if (subject) {
+                        footerFile = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/all_subjects_footer.json`
+                    }
                 } else {
                     fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/district.json`;
                 }
@@ -53,12 +62,12 @@ router.post('/distWise', auth.authController, async (req, res) => {
                     if (period != 'select_month') {
                         fileName = `${report}/${period}/district/${grade}.json`;
                         if (subject) {
-                            footerFile = `pat/${period == 'all' ? 'overall' : period}/all_subjects_footer.json`
+                            footerFile = `${report}/${period == 'all' ? 'overall' : period}/all_subjects_footer.json`
                         }
                     } else {
                         fileName = `${report}/${academic_year}/${month}/district/${grade}.json`;
                         if (subject) {
-                            footerFile = `pat/${academic_year}/${month}/all_subjects_footer.json`
+                            footerFile = `${report}/${academic_year}/${month}/all_subjects_footer.json`
                         }
                     }
 
@@ -73,7 +82,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
                 if (grade) {
                     fileName = `${report}/${period}/district/${semester}/${grade}.json`;
                     if (subject) {
-                        footerFile = `sat/${period}/${semester}/all_subjects_footer.json`;
+                        footerFile = `${report}/${period}/${semester}/all_subjects_footer.json`;
                     }
                 } else {
                     fileName = `${report}/${period}/${semester}/${report}_district.json`;
@@ -82,14 +91,16 @@ router.post('/distWise', auth.authController, async (req, res) => {
         }
         var footer;
         districtData = await s3File.readS3File(fileName);
-        if (subject)
-            footerData = await s3File.readS3File(footerFile);
-        if (grade && !subject || !grade && !subject) {
-            footer = districtData['AllDistrictsFooter'];
-        } else {
-            footerData.map(foot => {
-                footer = foot.subjects[`${subject}`]
-            })
+        if (period != 'all') {
+            if (subject)
+                footerData = await s3File.readS3File(footerFile);
+            if (grade && !subject || !grade && !subject) {
+                footer = districtData['AllDistrictsFooter'];
+            } else {
+                footerData.map(foot => {
+                    footer = foot.subjects[`${subject}`]
+                })
+            }
         }
         var mydata = districtData.data;
         logger.info('--- PAT dist wise api response sent ---');

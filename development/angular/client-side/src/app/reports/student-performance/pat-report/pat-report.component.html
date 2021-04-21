@@ -96,7 +96,7 @@
             <button class="btn btn-secondary" id="schoolbtn" (click)="schoolClick()">&nbsp;<strong>Schools</strong>
             </button>
 
-            <select [hidden]="" id="grades" [(ngModel)]="grade" (change)="onGradeSelect(grade)">
+            <select id="grades" [(ngModel)]="grade" (change)="onGradeSelect(grade)">
                 <option [value]="grade" disabled selected="selected">Choose Grade</option>
                 <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="grade.grade">
                     {{grade.grade}}

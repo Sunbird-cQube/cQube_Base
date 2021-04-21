@@ -25,8 +25,14 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 if (grade) {
                     if (period != 'select_month') {
                         fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/cluster/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/all_subjects_footer.json`
+                        }
                     } else {
                         fileName = `${report}/${academic_year}/${month}/cluster/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/all_subjects_footer.json`
+                        }
                     }
                 } else {
                     if (period != 'select_month') {
@@ -48,12 +54,12 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                     if (period != 'select_month') {
                         fileName = `${report}/${period}/cluster/${grade}.json`;
                         if (subject) {
-                            footerFile = `pat/${period == 'all' ? 'overall' : period}/all_subjects_footer.json`
+                            footerFile = `${report}/${period == 'all' ? 'overall' : period}/all_subjects_footer.json`
                         }
                     } else {
                         fileName = `${report}/${academic_year}/${month}/cluster/${grade}.json`;
                         if (subject) {
-                            footerFile = `pat/${academic_year}/${month}/all_subjects_footer.json`
+                            footerFile = `${report}/${academic_year}/${month}/all_subjects_footer.json`
                         }
                     }
                 } else {
@@ -67,7 +73,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 if (grade) {
                     fileName = `${report}/${period}/cluster/${semester}/${grade}.json`;
                     if (subject) {
-                        footerFile = `sat/${period}/${semester}/all_subjects_footer.json`;
+                        footerFile = `${report}/${period}/${semester}/all_subjects_footer.json`;
                     }
                 } else {
                     fileName = `${report}/${period}/${semester}/${report}_cluster.json`;
@@ -77,14 +83,16 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
 
         clusterData = await s3File.readS3File(fileName);
         var footer;
-        if (subject)
-            footerData = await s3File.readS3File(footerFile);
-        if (grade && !subject || !grade && !subject) {
-            footer = clusterData['AllClustersFooter'];
-        } else {
-            footerData.map(foot => {
-                footer = foot.subjects[`${subject}`]
-            })
+        if (period != 'all') {
+            if (subject)
+                footerData = await s3File.readS3File(footerFile);
+            if (grade && !subject || !grade && !subject) {
+                footer = clusterData['AllClustersFooter'];
+            } else {
+                footerData.map(foot => {
+                    footer = foot.subjects[`${subject}`]
+                })
+            }
         }
         var mydata = clusterData.data;
         logger.info('---PAT cluster wise api response sent---');
@@ -123,6 +131,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                 }
             } else {
                 fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/cluster.json`;
+                footerFile = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/block/grade_subject_footer.json`;
             }
         } else {
             if (report == 'pat') {
@@ -158,40 +167,47 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         })
         uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
         var footer;
-        if (grad)
-            footerData = await s3File.readS3File(footerFile);
-        if (grad && !subject) {
-            footer = footerData[blockId][grad];
-        } else if (grad && subject) {
-            footer = footerData[blockId][grad].subject[subject];
-        } else {
-            footer = clusterData['footer'][blockId]
+        if (period != 'all') {
+            if (grad)
+                footerData = await s3File.readS3File(footerFile);
+            if (grad && !subject) {
+                footer = footerData[blockId][grad];
+            } else if (grad && subject) {
+                footer = footerData[blockId][grad].subject[subject];
+            } else {
+                if (clusterData['footer'])
+                    footer = clusterData['footer'][blockId]
+            }
         }
         var mydata = [];
         var allSubjects = [];
         if (period != 'all' && grad) {
-            filterData.map( obj => {
-                obj['Subjects'] = obj.Grades[`${grad}`]
-                delete obj['Grade Wise Performance'];
-                mydata.push(obj);
-                var subjects = Object.keys(obj['Subjects']);
-                var index = subjects.indexOf('Grade Performance');
-                subjects.splice(index, 1);
-                subjects.map(sub=>{
-                    allSubjects.push(sub);
-                })
-            })
-        }else if (period == 'all' && grad) {
             filterData.map(obj => {
-                obj['Subjects'] = obj.Grades[`${grad}`]
-                delete obj['Grade Wise Performance'];
-                mydata.push(obj);
-                var subjects = Object.keys(obj.Subjects);
-                var index = subjects.indexOf('Grade Performance');
-                subjects.splice(index, 1);
-                subjects.map(sub => {
-                    allSubjects.push(sub);
-                })
+                if (obj.Grades[`${grad}`]) {
+                    obj['Subjects'] = obj.Grades[`${grad}`]
+                    delete obj['Grade Wise Performance'];
+                    mydata.push(obj);
+                    var subjects = Object.keys(obj['Subjects']);
+                    var index = subjects.indexOf('Grade Performance');
+                    subjects.splice(index, 1);
+                    subjects.map(sub => {
+                        allSubjects.push(sub);
+                    })
+                }
+            })
+        } else if (period == 'all' && grad) {
+            filterData.map(obj => {
+                if (obj.Grades[`${grad}`]) {
+                    obj['Subjects'] = obj.Grades[`${grad}`]
+                    delete obj['Grade Wise Performance'];
+                    mydata.push(obj);
+                    var subjects = Object.keys(obj.Subjects);
+                    var index = subjects.indexOf('Grade Performance');
+                    subjects.splice(index, 1);
+                    subjects.map(sub => {
+                        allSubjects.push(sub);
+                    })
+                }
             })
         } else {
             mydata = filterData;
