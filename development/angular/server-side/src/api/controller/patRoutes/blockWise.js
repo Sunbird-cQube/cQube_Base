@@ -74,7 +74,6 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                 }
             }
         }
-        
         blockData = await s3File.readS3File(fileName);
         var footer;
         if (subject)
@@ -145,17 +144,23 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
             return (obj.Details.district_id == distId)
         })
         var grades = [];
+        
         filterData.map(item => {
-            Object.keys(item.Grades).map(grade => {
-                grades.push(grade);
-            })
+            // if (period !== 'all') {
+                Object.keys(item.Grades).map(grade => {
+                    grades.push(grade);
+                })
+            // }else{
+            //     item.Grades.map(grade=>{
+            //         grades.push(Object.keys(grade)[0]);
+            //     })
+            // }
         });
         var uniqueGrades = [];
         [...new Set(grades)].map(grade => {
             uniqueGrades.push({ grade: grade });
         })
         uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
-        let mydata = filterData;
         var footer;
         if (grad)
             footerData = await s3File.readS3File(footerFile);
@@ -166,8 +171,38 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         } else {
             footer = blockData['footer'][distId]
         }
+        var mydata = [];
+        var allSubjects = [];
+        if (period != 'all' && grad) {
+            filterData.map( obj => {
+                obj['Subjects'] = obj.Grades[`${grad}`]
+                delete obj['Grade Wise Performance'];
+                mydata.push(obj);
+                var subjects = Object.keys(obj['Subjects']);
+                var index = subjects.indexOf('Grade Performance');
+                subjects.splice(index, 1);
+                subjects.map(sub=>{
+                    allSubjects.push(sub);
+                })
+            })
+        }else if (period == 'all' && grad) {
+            filterData.map(obj => {
+                obj['Subjects'] = obj.Grades[`${grad}`]
+                delete obj['Grade Wise Performance'];
+                mydata.push(obj);
+                var subjects = Object.keys(obj.Subjects);
+                var index = subjects.indexOf('Grade Performance');
+                subjects.splice(index, 1);
+                subjects.map(sub => {
+                    allSubjects.push(sub);
+                })
+            })
+        }  else {
+            mydata = filterData;
+        }
+        var Subjects = [...new Set(allSubjects)];
         logger.info('--- block per dist PAT api response sent---');
-        res.status(200).send({ data: mydata, grades: uniqueGrades, footer: footer });
+        res.status(200).send({ data: mydata, subjects: Subjects,  grades: uniqueGrades, footer: footer });
 
     } catch (e) {
         logger.error(e);
