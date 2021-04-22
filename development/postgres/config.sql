@@ -3397,7 +3397,7 @@ left join
 join (select grade,district_id,count(distinct student_uid) as students_attended,count(distinct school_id) as total_schools from (
 select concat('Grade ',studying_class) as grade,cast (right(exam_code,4)as integer) as year,pert.school_id,district_id,student_uid 
 from periodic_exam_result_trans pert  join school_hierarchy_details shd on pert.school_id=shd.school_id
-where school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
+where pert.school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')) as a
 group by district_id,grade) as c
 on b.district_id=c.district_id and b.grade=c.grade
@@ -3438,7 +3438,7 @@ join
 (select grade,district_id,count(distinct student_uid) as students_attended,count(distinct school_id) as total_schools from (
 select concat('Grade ',studying_class) as grade,
 cast (right(exam_code,4)as integer) as year,pert.school_id,district_id,student_uid from periodic_exam_result_trans pert  join school_hierarchy_details shd on pert.school_id=shd.school_id
-where school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
+where pert.school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')) as a
 group by district_id,grade) as c
 on b.district_id=c.district_id and b.grade=c.grade 
@@ -3491,7 +3491,7 @@ left join
 join (select grade,block_id,count(distinct student_uid) as students_attended,count(distinct school_id) as total_schools from (
 select concat('Grade ',studying_class) as grade,cast (right(exam_code,4)as integer) as year,pert.school_id,block_id,student_uid 
 from periodic_exam_result_trans pert  join school_hierarchy_details shd on pert.school_id=shd.school_id
-where school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
+where pert.school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')) as a
 group by block_id,grade) as c
 on b.block_id=c.block_id and b.grade=c.grade
@@ -3532,7 +3532,7 @@ join
 (select grade,block_id,count(distinct student_uid) as students_attended,count(distinct school_id) as total_schools from (
 select concat('Grade ',studying_class) as grade,
 cast (right(exam_code,4)as integer) as year,pert.school_id,block_id,student_uid from periodic_exam_result_trans pert  join school_hierarchy_details shd on pert.school_id=shd.school_id
-where school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
+where pert.school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')) as a
 group by block_id,grade) as c
 on b.block_id=c.block_id and b.grade=c.grade 
@@ -3586,7 +3586,7 @@ left join
 join (select grade,cluster_id,count(distinct student_uid) as students_attended,count(distinct school_id) as total_schools from (
 select concat('Grade ',studying_class) as grade,cast (right(exam_code,4)as integer) as year,pert.school_id,cluster_id,student_uid 
 from periodic_exam_result_trans pert  join school_hierarchy_details shd on pert.school_id=shd.school_id
-where school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
+where pert.school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')) as a
 group by cluster_id,grade) as c
 on b.cluster_id=c.cluster_id and b.grade=c.grade
@@ -3627,7 +3627,7 @@ join
 (select grade,cluster_id,count(distinct student_uid) as students_attended,count(distinct school_id) as total_schools from (
 select concat('Grade ',studying_class) as grade,
 cast (right(exam_code,4)as integer) as year,pert.school_id,cluster_id,student_uid from periodic_exam_result_trans pert  join school_hierarchy_details shd on pert.school_id=shd.school_id
-where school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
+where pert.school_id in (select school_id from periodic_exam_school_result where exam_code in (select exam_code from pat_date_range where date_range='last30days'))
 and exam_code in (select exam_code from pat_date_range where date_range='last30days')) as a
 group by cluster_id,grade) as c
 on b.cluster_id=c.cluster_id and b.grade=c.grade 
