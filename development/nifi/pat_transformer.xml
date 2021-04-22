@@ -18237,7 +18237,23 @@ REFRESH MATERIALIZED VIEW school_grade_enrolment_school;
 REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt;
 REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt;
 REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt;</value>
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt_last30;</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -21016,7 +21032,7 @@ or(${query_type:startsWith('pat_management_exam_district_last'):or(${query_type:
     </entry>
     <entry>
         <key>pat_management_exam_year_month</key>
-        <value>${query_type:startsWith('pat_management_exam_school_year_month'):or(${query_type:startsWith('pat_management_exam_cluster_year_month'):or(${query_type:startsWith('pat_management_exam_block_year_month'):or(${query_type:startsWith('pat_management_exam_school_year_month')})})})}</value>
+        <value>${query_type:startsWith('pat_management_exam_district_year_month'):or(${query_type:startsWith('pat_management_exam_cluster_year_month'):or(${query_type:startsWith('pat_management_exam_block_year_month'):or(${query_type:startsWith('pat_management_exam_school_year_month')})})})}</value>
     </entry>
     <entry>
         <key>pat_management_grade_subject_footer_time_range</key>
@@ -29161,7 +29177,7 @@ same id data validation of file:${filename} error while same id mirror data</val
     </entry>
     <entry>
         <key>pat_management_exam_year_month</key>
-        <value>${query_type:startsWith('pat_management_exam_school_year_month'):or(${query_type:startsWith('pat_management_exam_cluster_year_month'):or(${query_type:startsWith('pat_management_exam_block_year_month'):or(${query_type:startsWith('pat_management_exam_school_year_month')})})})}</value>
+        <value>${query_type:startsWith('pat_management_exam_district_year_month'):or(${query_type:startsWith('pat_management_exam_cluster_year_month'):or(${query_type:startsWith('pat_management_exam_block_year_month'):or(${query_type:startsWith('pat_management_exam_school_year_month')})})})}</value>
     </entry>
     <entry>
         <key>pat_management_grade_subject_footer_year_month</key>
@@ -40224,5 +40240,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/22/2021 09:17:35 IST</timestamp>
+    <timestamp>04/22/2021 21:04:58 IST</timestamp>
 </template>
