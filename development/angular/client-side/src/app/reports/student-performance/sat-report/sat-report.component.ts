@@ -1379,6 +1379,7 @@ export class SatReportComponent implements OnInit {
   ondistLinkClick(districtId) {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.onDistrictSelect(districtId);
     } else {
@@ -1492,6 +1493,7 @@ export class SatReportComponent implements OnInit {
   onblockLinkClick(blockId) {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.onBlockSelect(blockId);
     } else {
@@ -1612,6 +1614,7 @@ export class SatReportComponent implements OnInit {
   onclusterLinkClick(clusterId) {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.onClusterSelect(clusterId);
     } else {
