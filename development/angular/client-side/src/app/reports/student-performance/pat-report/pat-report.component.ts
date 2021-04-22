@@ -272,6 +272,9 @@ export class PATReportComponent implements OnInit {
       } else {
         this.onResize(event);
       }
+    }, err=>{
+      this.getMonthYear = [];
+        this.commonService.loaderAndErr(this.getMonthYear);
     });
   }
 
@@ -1944,41 +1947,67 @@ export class PATReportComponent implements OnInit {
         }
 
       }
+      if(this.grade && this.subject){
+        var filtererSubData =  this.markers.filter(item=>{
+          return item.Subjects[`${this.subject}`];
+        })
+        this.markers = filtererSubData;
+      }
       for (let i = 0; i < this.markers.length; i++) {
+        if (this.period != 'all') {
+          if (this.grade && !this.subject) {
+            this.markers[i].Details['total_students'] = this.markers[i].Subjects['Grade Performance']['total_students'];
+            this.markers[i].Details['students_attended'] = this.markers[i].Subjects['Grade Performance']['students_attended'];
+            this.markers[i].Details['total_schools'] = this.markers[i].Subjects['Grade Performance']['total_schools'];
+          }
+          if (this.grade && this.subject) {
+            if(this.markers[i].Subjects[`${this.subject}`]){
+            this.markers[i].Details['total_students'] = this.markers[i].Subjects[`${this.subject}`]['total_students'];
+            this.markers[i].Details['students_attended'] = this.markers[i].Subjects[`${this.subject}`]['students_attended'];
+            this.markers[i].Details['total_schools'] = this.markers[i].Subjects[`${this.subject}`]['total_schools'];
+          }
+          }
+          if (this.grade) {
+            if (this.level != 'block' && this.level != 'cluster' && this.level != 'school') {
+              this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
+              this.allSubjects.map(sub => {
+                if (this.markers[i].Subjects[`${sub}`])
+                  this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+              })
+            } else {
+              this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
+              this.allSubjects.map(sub => {
+                if (this.markers[i].Subjects[`${sub}`])
+                  this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+              })
+            }
+          } else if (!this.grade && !this.subject) {
+            this.allGrades.map(grade => {
+              var myGrade = grade.grade;
+              if (this.markers[i]['Grade Wise Performance'][`${myGrade}`])
+                this.markers[i]['Grade Wise Performance'][`${myGrade}`] = this.markers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
+            })
+          }
+        }
         if (!this.grade && !this.subject) {
           color = this.commonService.color(
             this.markers[i].Details,
             "Performance"
           );
         } else if (this.grade && !this.subject) {
-          if (this.period != 'all') {
-            color = this.commonService.color(
-              this.markers[i].Subjects['Grade Performance'],
-              "percentage"
-            );
-          } else {
             color = this.commonService.color(
               this.markers[i].Subjects,
               "Grade Performance"
             );
-
-          }
         } else if (this.grade && this.subject) {
-          if (this.period != 'all') {
-            color = this.commonService.color(
-              this.markers[i].Subjects[`${this.subject}`],
-              "percentage"
-            );
-          } else {
             color = this.commonService.color(
               this.markers[i].Subjects,
               `${this.subject}`
             );
-          }
         }
         colors.push(color);
       }
-
+      
       if (this.selected != "absolute") {
         if (this.period != 'all') {
           this.colors = this.commonService.getRelativeColors(this.markers, {
@@ -2017,40 +2046,6 @@ export class PATReportComponent implements OnInit {
 
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
-        if (this.period != 'all') {
-          if (this.grade && !this.subject) {
-            this.markers[i].Details['total_students'] = this.markers[i].Subjects['Grade Performance']['total_students'];
-            this.markers[i].Details['students_attended'] = this.markers[i].Subjects['Grade Performance']['students_attended'];
-            this.markers[i].Details['total_schools'] = this.markers[i].Subjects['Grade Performance']['total_schools'];
-          }
-          if (this.grade && this.subject) {
-            this.markers[i].Details['total_students'] = this.markers[i].Subjects[`${this.subject}`]['total_students'];
-            this.markers[i].Details['students_attended'] = this.markers[i].Subjects[`${this.subject}`]['students_attended'];
-            this.markers[i].Details['total_schools'] = this.markers[i].Subjects[`${this.subject}`]['total_schools'];
-          }
-          if (this.grade) {
-            if (this.level != 'block' && this.level != 'cluster' && this.level != 'school') {
-              this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
-              this.allSubjects.map(sub => {
-                if (this.markers[i].Subjects[`${sub}`])
-                  this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
-              })
-            } else {
-              this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
-              this.allSubjects.map(sub => {
-                if (this.markers[i].Subjects[`${sub}`])
-                  this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
-              })
-            }
-          } else if (!this.grade && !this.subject) {
-            this.allGrades.map(grade => {
-              var myGrade = grade.grade;
-              if (this.markers[i]['Grade Wise Performance'][`${myGrade}`])
-                this.markers[i]['Grade Wise Performance'][`${myGrade}`] = this.markers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
-            })
-          }
-        }
-
         var markerIcon = this.commonService.initMarkers(
           this.markers[i].Details.latitude,
           this.markers[i].Details.longitude,
