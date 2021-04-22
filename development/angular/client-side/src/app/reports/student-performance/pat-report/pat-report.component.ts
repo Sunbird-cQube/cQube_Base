@@ -574,6 +574,7 @@ export class PATReportComponent implements OnInit {
                   this.changeDetection.detectChanges();
                 },
                 (err) => {
+                  this.allDistricts = [];
                   this.data = [];
                   this.commonService.loaderAndErr(this.data);
                 }
