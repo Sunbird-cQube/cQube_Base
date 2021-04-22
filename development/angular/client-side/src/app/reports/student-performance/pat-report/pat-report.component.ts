@@ -2010,23 +2010,7 @@ export class PATReportComponent implements OnInit {
       }
       
       if (this.selected != "absolute") {
-        if (this.period != 'all') {
-          this.colors = this.commonService.getRelativeColors(this.markers, {
-            value: this.grade
-              ? this.markers[0].Subjects['Grade Performance']
-                ? "percentage"
-                : this.grade
-              : this.grade && this.subject
-                ? this.subject
-                : "Performance",
-            selected: this.grade
-              ? "G"
-              : this.grade && this.subject
-                ? "GS"
-                : "all",
-            report: "reports",
-          });
-        } else {
+        console.log(this.markers[0])
           this.colors = this.commonService.getRelativeColors(this.markers, {
             value: this.grade
               ? this.markers[0].Subjects
@@ -2043,7 +2027,6 @@ export class PATReportComponent implements OnInit {
             report: "reports",
           });
         }
-      }
 
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
