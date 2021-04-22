@@ -145,6 +145,9 @@ export class SemesterExceptionComponent implements OnInit {
       if (this.semesters.length > 0)
         this.semester = this.semesters[this.semesters.length - 1].id;
       this.onResize();
+    }, err=>{
+      this.semesters = [];
+          this.commonService.loaderAndErr(this.semesters);
     });
   }
 
