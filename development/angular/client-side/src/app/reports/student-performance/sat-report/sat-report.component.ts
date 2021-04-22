@@ -398,6 +398,7 @@ export class SatReportComponent implements OnInit {
   // to load all the districts for state data on the map
   districtWise() {
     try {
+      this.commonService.errMsg();
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
@@ -408,7 +409,6 @@ export class SatReportComponent implements OnInit {
         this.subject = undefined;
       }
       this.reportData = [];
-      this.commonService.errMsg();
       this.level = "district";
       // these are for showing the hierarchy names based on selection
       this.skul = true;
@@ -530,10 +530,10 @@ export class SatReportComponent implements OnInit {
   // to load all the blocks for state data on the map
   blockWise() {
     try {
+      this.commonService.errMsg();
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.commonService.errMsg();
       if (this.level != "block_wise") {
         this.subjectHidden = true;
         this.grade = undefined;
@@ -783,6 +783,7 @@ export class SatReportComponent implements OnInit {
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
+                    this.changeDetection.detectChanges();
                     this.commonService.loaderAndErr(this.data);
                   }
                 },
@@ -817,10 +818,10 @@ export class SatReportComponent implements OnInit {
   // to load all the clusters for state data on the map
   clusterWise() {
     try {
+      this.commonService.errMsg();
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.commonService.errMsg();
       if (this.level != "cluster_wise") {
         this.subjectHidden = true;
         this.grade = undefined;
@@ -1043,6 +1044,18 @@ export class SatReportComponent implements OnInit {
                       );
                     }
 
+                    this.commonService.restrictZoom(globalMap);
+                    globalMap.setMaxBounds([
+                      [options.centerLat - 4.5, options.centerLng - 6],
+                      [options.centerLat + 3.5, options.centerLng + 6],
+                    ]);
+                    this.setZoomLevel(
+                      options.centerLat,
+                      options.centerLng,
+                      globalMap,
+                      options.mapZoom
+                    );
+
                     //schoolCount
                     this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
@@ -1056,18 +1069,7 @@ export class SatReportComponent implements OnInit {
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-
-                    this.commonService.restrictZoom(globalMap);
-                    globalMap.setMaxBounds([
-                      [options.centerLat - 4.5, options.centerLng - 6],
-                      [options.centerLat + 3.5, options.centerLng + 6],
-                    ]);
-                    this.setZoomLevel(
-                      options.centerLat,
-                      options.centerLng,
-                      globalMap,
-                      options.mapZoom
-                    );
+                    this.changeDetection.detectChanges();
                     this.commonService.loaderAndErr(this.data);
                   }
                 },
@@ -1102,10 +1104,10 @@ export class SatReportComponent implements OnInit {
   // to load all the schools for state data on the map
   schoolWise() {
     try {
+      this.commonService.errMsg();
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.layerMarkers.clearLayers();
-      this.commonService.errMsg();
       if (this.level != "school_wise") {
         this.subjectHidden = true;
         this.grade = undefined;
@@ -1351,7 +1353,7 @@ export class SatReportComponent implements OnInit {
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-
+                    this.changeDetection.detectChanges();
                     this.commonService.loaderAndErr(this.data);
                   }
                 },
@@ -1385,10 +1387,10 @@ export class SatReportComponent implements OnInit {
   }
   // to load all the blocks for selected district for state data on the map
   onDistrictSelect(districtId) {
+    this.commonService.errMsg();
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.commonService.errMsg();
     if (this.level != "block") {
       this.subjectHidden = true;
       this.grade = undefined;
@@ -1498,10 +1500,10 @@ export class SatReportComponent implements OnInit {
   }
   // to load all the clusters for selected block for state data on the map
   onBlockSelect(blockId) {
+    this.commonService.errMsg();
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.commonService.errMsg();
     if (this.level != "cluster") {
       this.subjectHidden = true;
       this.grade = undefined;
@@ -1618,10 +1620,10 @@ export class SatReportComponent implements OnInit {
   }
   // to load all the schools for selected cluster for state data on the map
   onClusterSelect(clusterId) {
+    this.commonService.errMsg();
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.commonService.errMsg();
     this.level = "school";
     if (this.level != "school") {
       this.subjectHidden = true;

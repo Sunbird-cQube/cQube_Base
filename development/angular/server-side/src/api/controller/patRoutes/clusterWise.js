@@ -144,7 +144,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                 }
             } else {
                 fileName = `${report}/${period}/${semester}/${report}_cluster.json`;
-                footerFile = `${report}/${period}/block/grade_subject_footer.json`;
+                footerFile = `${report}/${period}/block/${semester}/grade_subject_footer.json`;
             }
         }
         var clusterData = await s3File.readS3File(fileName);
@@ -171,9 +171,11 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
             if (grad)
                 footerData = await s3File.readS3File(footerFile);
             if (grad && !subject) {
-                footer = footerData[blockId][grad];
+                if (footerData)
+                    footer = footerData[blockId][grad];
             } else if (grad && subject) {
-                footer = footerData[blockId][grad].subject[subject];
+                if (footerData)
+                    footer = footerData[blockId][grad].subject[subject];
             } else {
                 if (clusterData['footer'])
                     footer = clusterData['footer'][blockId]

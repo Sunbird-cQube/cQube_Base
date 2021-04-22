@@ -143,7 +143,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                 }
             } else {
                 fileName = `${report}/${period}/${semester}/${report}_block.json`;
-                footerFile = `${report}/${period}/district/grade_subject_footer.json`;
+                footerFile = `${report}/${period}/district/${semester}/grade_subject_footer.json`;
             }
         }
         var blockData = await s3File.readS3File(fileName);
@@ -168,11 +168,12 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         if (period != 'all') {
             if (grad)
                 footerData = await s3File.readS3File(footerFile);
-
             if (grad && !subject) {
-                footer = footerData[distId][grad];
+                if (footerData)
+                    footer = footerData[distId][grad];
             } else if (grad && subject) {
-                footer = footerData[distId][grad].subject[subject];
+                if (footerData)
+                    footer = footerData[distId][grad].subject[subject];
             } else {
                 if (blockData['footer'])
                     footer = blockData['footer'][distId]
