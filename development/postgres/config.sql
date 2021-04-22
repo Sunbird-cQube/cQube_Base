@@ -11150,7 +11150,7 @@ group by c.school_id,b.assessment_year,semester ,school_management_type)as b
  on d.academic_year=b.academic_year and d.school_id=b.school_id and d.semester=b.semester and d.school_management_type=b.school_management_type
    left join
  (select sum(students_count) as total_students,school_management_type,sge.school_id from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
- where school_id in (select school_id from semester_exam_school_result where exam_code in 
+ where sge.school_id in (select school_id from semester_exam_school_result where exam_code in 
  (select exam_code from sat_date_range where date_range='last7days')) group by sge.school_id,school_management_type) tot_stud
 on d.school_id=tot_stud.school_id and d.school_management_type=tot_stud.school_management_type where d.school_management_type is not null; 
 
