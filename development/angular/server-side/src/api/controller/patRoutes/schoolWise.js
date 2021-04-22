@@ -8,6 +8,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         logger.info('---PAT school wise api ---');
         var period = req.body.data.period;
         var grade = req.body.data.grade;
+        var subject = req.body.data.subject;
         var report = req.body.data.report;
         var semester = req.body.data.sem;
         var academic_year = req.body.data.year;
@@ -16,14 +17,23 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         var category = req.body.data.category;
         var fileName;
         var schoolData = {}
+        var footerFile;
+        var footerData = {}
+
 
         if (management != 'overall' && category == 'overall') {
             if (report == 'pat') {
                 if (grade) {
                     if (period != 'select_month') {
                         fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/school/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/all_subjects_footer.json`
+                        }
                     } else {
                         fileName = `${report}/${academic_year}/${month}/school/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/all_subjects_footer.json`
+                        }
                     }
                 } else {
                     if (period != 'select_month') {
@@ -44,8 +54,14 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 if (grade) {
                     if (period != 'select_month') {
                         fileName = `${report}/${period}/school/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/${period == 'all' ? 'overall' : period}/all_subjects_footer.json`
+                        }
                     } else {
                         fileName = `${report}/${academic_year}/${month}/school/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/${academic_year}/${month}/all_subjects_footer.json`
+                        }
                     }
                 } else {
                     if (period != 'select_month') {
@@ -57,16 +73,31 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
             } else {
                 if (grade) {
                     fileName = `${report}/${period}/school/${semester}/${grade}.json`;
+                    if (subject) {
+                        footerFile = `${report}/${period}/${semester}/all_subjects_footer.json`;
+                    }
                 } else {
                     fileName = `${report}/${period}/${semester}/${report}_school.json`;
                 }
             }
         }
         schoolData = await s3File.readS3File(fileName);
+        var footer;
+        if (period != 'all') {
+            if (subject)
+                footerData = await s3File.readS3File(footerFile);
+            if (grade && !subject || !grade && !subject) {
+                footer = schoolData['AllSchoolsFooter'];
+            } else {
+                footerData.map(foot => {
+                    footer = foot.subjects[`${subject}`]
+                })
+            }
+        }
         var mydata = schoolData.data;
         logger.info('---PAT school wise api response sent---');
         // , footer: schoolData.AllSchoolsFooter
-        res.status(200).send({ data: mydata, footer: schoolData['AllSchoolsFooter'] });
+        res.status(200).send({ data: mydata, footer: footer });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
@@ -75,6 +106,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
 
 router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
+
         logger.info('---PAT schoolPerCluster api ---');
         var period = req.body.data.period;
         var report = req.body.data.report;
@@ -100,6 +132,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 }
             } else {
                 fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/school.json`;
+                footerFile = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/cluster/grade_subject_footer.json`;
             }
         } else {
             if (report == 'pat') {
@@ -112,6 +145,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 }
             } else {
                 fileName = `${report}/${period}/${semester}/${report}_school.json`;
+                footerFile = `${report}/${period}/cluster/${semester}/grade_subject_footer.json`;
             }
         }
         var schoolData = await s3File.readS3File(fileName);
@@ -133,19 +167,57 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
             uniqueGrades.push({ grade: grade });
         })
         uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
-        let mydata = filterData;
         var footer;
-        if (grad)
-            footerData = await s3File.readS3File(footerFile);
-        if (grad && !subject) {
-            footer = footerData[clusterId][grad];
-        } else if (grad && subject) {
-            footer = footerData[clusterId][grad].subject[subject];
-        } else {
-            footer = schoolData['footer'][clusterId]
+        if (period != 'all') {
+            if (grad)
+                footerData = await s3File.readS3File(footerFile);
+            if (grad && !subject) {
+                if (footerData)
+                    footer = footerData[clusterId][grad];
+            } else if (grad && subject) {
+                if (footerData)
+                    footer = footerData[clusterId][grad].subject[subject];
+            } else {
+                if (schoolData['footer'])
+                    footer = schoolData['footer'][clusterId]
+            }
         }
+        var mydata = [];
+        var allSubjects = [];
+        if (period != 'all' && grad) {
+            filterData.map(obj => {
+                if (obj.Grades[`${grad}`]) {
+                    obj['Subjects'] = obj.Grades[`${grad}`]
+                    delete obj['Grade Wise Performance'];
+                    mydata.push(obj);
+                    var subjects = Object.keys(obj['Subjects']);
+                    var index = subjects.indexOf('Grade Performance');
+                    subjects.splice(index, 1);
+                    subjects.map(sub => {
+                        allSubjects.push(sub);
+                    })
+                }
+            })
+        } else if (period == 'all' && grad) {
+            filterData.map(obj => {
+                if (obj.Grades[`${grad}`]) {
+                    obj['Subjects'] = obj.Grades[`${grad}`]
+                    delete obj['Grade Wise Performance'];
+                    mydata.push(obj);
+                    var subjects = Object.keys(obj.Subjects);
+                    var index = subjects.indexOf('Grade Performance');
+                    subjects.splice(index, 1);
+                    subjects.map(sub => {
+                        allSubjects.push(sub);
+                    })
+                }
+            })
+        } else {
+            mydata = filterData;
+        }
+        var Subjects = [...new Set(allSubjects)];
         logger.info('---PAT schoolPerCluster api response sent---');
-        res.status(200).send({ data: mydata, grades: uniqueGrades, footer: footer });
+        res.status(200).send({ data: mydata, subjects: Subjects, grades: uniqueGrades, footer: footer });
 
 
     } catch (e) {

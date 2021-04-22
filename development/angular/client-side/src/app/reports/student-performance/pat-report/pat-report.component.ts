@@ -278,7 +278,7 @@ export class PATReportComponent implements OnInit {
   getDistricts(level): void {
     this.service
       .PATDistWiseData({
-        ...{ grade: this.grade, period: this.period, report: "pat" },
+        ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
         ...this.month_year,
         ...{ management: this.management, category: this.category },
       })
@@ -364,13 +364,16 @@ export class PATReportComponent implements OnInit {
   }
 
   showYearMonth() {
+    this.grade = undefined;
+    this.subject = undefined;
+    this.subjectHidden = true;
     document.getElementById("home").style.display = "block";
     this.yearMonth = false;
+    this.month = this.months[this.months.length - 1];
     this.month_year = {
       month: this.month.trim(),
       year: this.year,
     };
-    // this.period = null;
     this.levelWiseFilter();
   }
 
@@ -379,6 +382,7 @@ export class PATReportComponent implements OnInit {
       month: this.month.trim(),
       year: this.year,
     };
+    this.grade = undefined;
     this.levelWiseFilter();
   }
 
@@ -393,6 +397,9 @@ export class PATReportComponent implements OnInit {
   }
 
   onPeriodSelect() {
+    this.grade = undefined;
+    this.subject = undefined;
+    this.subjectHidden = true;
     if (this.period != "overall") {
       document.getElementById("home").style.display = "block";
     } else {
@@ -508,7 +515,7 @@ export class PATReportComponent implements OnInit {
             this.myData = this.service
               .PATDistWiseData({
                 ...{
-                  ...{ grade: this.grade, period: this.period, report: "pat" },
+                  ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                   ...this.month_year,
                   ...{ management: this.management, category: this.category },
                 },
@@ -586,6 +593,7 @@ export class PATReportComponent implements OnInit {
   blockClick() {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.blockWise();
     } else {
@@ -649,7 +657,7 @@ export class PATReportComponent implements OnInit {
             }
             this.myData = this.service
               .PATBlockWiseData({
-                ...{ grade: this.grade, period: this.period, report: "pat" },
+                ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                 ...this.month_year,
                 ...{ management: this.management, category: this.category },
               })
@@ -777,7 +785,14 @@ export class PATReportComponent implements OnInit {
                         if (this.grade) {
                           this.blockMarkers[i].Subjects['Grade Performance'] = this.blockMarkers[i].Subjects['Grade Performance']['percentage']
                           this.allSubjects.map(sub => {
-                            this.blockMarkers[i].Subjects[`${sub}`] = this.blockMarkers[i].Subjects[`${sub}`]['percentage']
+                            if (this.blockMarkers[i].Subjects[`${sub}`])
+                              this.blockMarkers[i].Subjects[`${sub}`] = this.blockMarkers[i].Subjects[`${sub}`]['percentage']
+                          })
+                        } else if (!this.grade && !this.subject) {
+                          this.allGrades.map(grade => {
+                            var myGrade = grade.grade;
+                            if (this.blockMarkers[i]['Grade Wise Performance'][`${myGrade}`])
+                              this.blockMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.blockMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
                           })
                         }
                       }
@@ -798,6 +813,7 @@ export class PATReportComponent implements OnInit {
                           this.subject
                         );
                       }
+
                       var markerIcon = this.commonService.initMarkers(
                         this.blockMarkers[i].Details.latitude,
                         this.blockMarkers[i].Details.longitude,
@@ -834,15 +850,15 @@ export class PATReportComponent implements OnInit {
                     );
 
                     //schoolCount
-                    this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentCount = res['footer'].total_students;
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentAttended = res['footer'].students_attended;
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
@@ -872,6 +888,7 @@ export class PATReportComponent implements OnInit {
   clusterClick() {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.clusterWise();
     } else {
@@ -936,7 +953,7 @@ export class PATReportComponent implements OnInit {
             }
             this.myData = this.service
               .PATClusterWiseData({
-                ...{ grade: this.grade, period: this.period, report: "pat" },
+                ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                 ...this.month_year,
                 ...{ management: this.management, category: this.category },
               })
@@ -1058,14 +1075,23 @@ export class PATReportComponent implements OnInit {
                       if (this.grade) {
                         this.clusterMarkers[i].Subjects['Grade Performance'] = this.clusterMarkers[i].Subjects['Grade Performance']['percentage']
                         this.allSubjects.map(sub => {
-                          this.clusterMarkers[i].Subjects[`${sub}`] = this.clusterMarkers[i].Subjects[`${sub}`]['percentage']
+                          if (this.clusterMarkers[i].Subjects[`${sub}`])
+                            this.clusterMarkers[i].Subjects[`${sub}`] = this.clusterMarkers[i].Subjects[`${sub}`]['percentage']
+                        })
+                      } else if (!this.grade && !this.subject) {
+                        this.allGrades.map(grade => {
+                          var myGrade = grade.grade;
+                          if (this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`])
+                            this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
                         })
                       }
-                      var color = this.commonService.color(
-                        this.clusterMarkers[i].Details,
-                        "Performance"
-                      );
-                      if (this.grade) {
+                      var color;
+                      if (!this.grade && !this.subject) {
+                        color = this.commonService.color(
+                          this.clusterMarkers[i].Details,
+                          "Performance"
+                        );
+                      } else if (this.grade && !this.subject) {
                         color = this.commonService.color(
                           this.clusterMarkers[i].Subjects,
                           "Grade Performance"
@@ -1099,15 +1125,15 @@ export class PATReportComponent implements OnInit {
                     }
 
                     //schoolCount
-                    this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentCount = res['footer'].total_students;
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentAttended = res['footer'].students_attended;
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
@@ -1150,6 +1176,7 @@ export class PATReportComponent implements OnInit {
   schoolClick() {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.schoolWise();
     } else {
@@ -1214,7 +1241,7 @@ export class PATReportComponent implements OnInit {
             }
             this.myData = this.service
               .PATSchoolWiseData({
-                ...{ grade: this.grade, period: this.period, report: "pat" },
+                ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                 ...this.month_year,
                 ...{ management: this.management, category: this.category },
               })
@@ -1334,14 +1361,23 @@ export class PATReportComponent implements OnInit {
                       if (this.grade) {
                         this.schoolMarkers[i].Subjects['Grade Performance'] = this.schoolMarkers[i].Subjects['Grade Performance']['percentage']
                         this.allSubjects.map(sub => {
-                          this.schoolMarkers[i].Subjects[`${sub}`] = this.schoolMarkers[i].Subjects[`${sub}`]['percentage']
+                          if (this.schoolMarkers[i].Subjects[`${sub}`])
+                            this.schoolMarkers[i].Subjects[`${sub}`] = this.schoolMarkers[i].Subjects[`${sub}`]['percentage']
+                        })
+                      } else if (!this.grade && !this.subject) {
+                        this.allGrades.map(grade => {
+                          var myGrade = grade.grade;
+                          if (this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`])
+                            this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
                         })
                       }
-                      var color = this.commonService.color(
-                        this.schoolMarkers[i].Details,
-                        "Performance"
-                      );
-                      if (this.grade) {
+                      var color;
+                      if (!this.grade && !this.subject) {
+                        color = this.commonService.color(
+                          this.schoolMarkers[i].Details,
+                          "Performance"
+                        );
+                      } else if (this.grade && !this.subject) {
                         color = this.commonService.color(
                           this.schoolMarkers[i].Subjects,
                           "Grade Performance"
@@ -1389,15 +1425,15 @@ export class PATReportComponent implements OnInit {
                     );
 
                     //schoolCount
-                    this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentCount = res['footer'].total_students;
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentAttended = res['footer'].students_attended;
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
@@ -1428,6 +1464,7 @@ export class PATReportComponent implements OnInit {
   ondistLinkClick(districtId) {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.onDistrictSelect(districtId);
     } else {
@@ -1477,6 +1514,8 @@ export class PATReportComponent implements OnInit {
           this.allBlocks = this.data = res["data"];
           this.allGrades = res['grades'];
           this.blockMarkers = this.data;
+          if (this.grade)
+            this.allSubjects = res['subjects'];
 
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
@@ -1538,6 +1577,7 @@ export class PATReportComponent implements OnInit {
   onblockLinkClick(blockId) {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.onBlockSelect(blockId);
     } else {
@@ -1584,6 +1624,9 @@ export class PATReportComponent implements OnInit {
           this.data = res["data"];
           this.allGrades = res['grades'];
           this.allClusters = this.clusterMarkers = this.data;
+          if (this.grade)
+            this.allSubjects = res['subjects'];
+
           if (!this.clusterMarkers[0]["Subjects"]) {
             this.clusterFilter = this.clusterMarkers;
           }
@@ -1593,7 +1636,7 @@ export class PATReportComponent implements OnInit {
               myBlocks.push(element);
             }
           });
-          this.blockMarkers = myBlocks;
+          this.allBlocks = this.blockMarkers = myBlocks;
 
           // set hierarchy values
           this.blockHierarchy = {
@@ -1660,6 +1703,7 @@ export class PATReportComponent implements OnInit {
   onclusterLinkClick(clusterId) {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.onClusterSelect(clusterId);
     } else {
@@ -1694,7 +1738,7 @@ export class PATReportComponent implements OnInit {
     }
     this.myData = this.service
       .PATBlockWiseData({
-        ...{ grade: this.grade, period: this.period, report: "pat" },
+        ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
         ...this.month_year,
         ...{ management: this.management, category: this.category },
       })
@@ -1714,6 +1758,8 @@ export class PATReportComponent implements OnInit {
             .subscribe(
               (res) => {
                 this.data = res["data"];
+                if (this.grade)
+                  this.allSubjects = res['subjects'];
                 this.allGrades = res['grades'];
                 this.schoolMarkers = this.data;
                 var markers = result["data"];
@@ -1725,7 +1771,7 @@ export class PATReportComponent implements OnInit {
                     myBlocks.push(element);
                   }
                 });
-                this.blockMarkers = myBlocks;
+                this.allBlocks = this.blockMarkers = myBlocks;
 
                 var myCluster = [];
                 this.clusterMarkers.forEach((element) => {
@@ -1735,7 +1781,7 @@ export class PATReportComponent implements OnInit {
                     myCluster.push(element);
                   }
                 });
-                this.clusterMarkers = myCluster;
+                this.allClusters = this.clusterMarkers = myCluster;
 
                 // set hierarchy values
                 this.clusterHierarchy = {
@@ -1825,44 +1871,7 @@ export class PATReportComponent implements OnInit {
         this.level == "school"
       ) {
         colors = [];
-        if (this.grade && !this.subject) {
-          let filterData = this.markers.filter((obj) => {
-            return Object.keys(obj.Grades).includes(this.grade);
-          });
-          this.markers = filterData;
-          this.markers.sort((a, b) =>
-            a.Grades[`${this.grade}`]["Grade Performance"] >
-              b.Grades[`${this.grade}`]["Grade Performance"]
-              ? 1
-              : b.Grades[`${this.grade}`]["Grade Performance"] >
-                a.Grades[`${this.grade}`]["Grade Performance"]
-                ? -1
-                : 0
-          );
-          this.allSubjects = Object.keys(
-            this.markers[0].Grades[`${this.grade}`]
-          );
-          this.allSubjects.pop();
-        } else if (this.grade && this.subject) {
-          let filterGrade = this.markers.filter((obj) => {
-            return Object.keys(obj.Grades).includes(this.grade);
-          });
-          let filterData = filterGrade.filter((obj) => {
-            return Object.keys(obj.Grades[`${this.grade}`]).includes(
-              this.subject
-            );
-          });
-          this.markers = filterData;
-          this.markers.sort((a, b) =>
-            a.Grades[`${this.grade}`][`${this.subject}`] >
-              b.Grades[`${this.grade}`][`${this.subject}`]
-              ? 1
-              : b.Grades[`${this.grade}`][`${this.subject}`] >
-                a.Grades[`${this.grade}`][`${this.subject}`]
-                ? -1
-                : 0
-          );
-        } else {
+        if (!this.grade && !this.subject) {
           this.markers.sort((a, b) =>
             a.Details["Performance"] > b.Details["Performance"]
               ? 1
@@ -1871,25 +1880,7 @@ export class PATReportComponent implements OnInit {
                 : 0
           );
         }
-        for (let i = 0; i < this.markers.length; i++) {
-          if (!this.grade && !this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Details,
-              "Performance"
-            );
-          } else if (this.grade && !this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Grades[`${this.grade}`],
-              "Grade Performance"
-            );
-          } else if (this.grade && this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Grades[`${this.grade}`],
-              this.subject
-            );
-          }
-          colors.push(color);
-        }
+
       } else {
         colors = [];
         if (this.period !== 'all') {
@@ -1951,44 +1942,41 @@ export class PATReportComponent implements OnInit {
             );
           }
         }
-        for (let i = 0; i < this.markers.length; i++) {
+
+      }
+      for (let i = 0; i < this.markers.length; i++) {
+        if (!this.grade && !this.subject) {
+          color = this.commonService.color(
+            this.markers[i].Details,
+            "Performance"
+          );
+        } else if (this.grade && !this.subject) {
           if (this.period != 'all') {
-            if (!this.grade && !this.subject) {
-              color = this.commonService.color(
-                this.markers[i].Details,
-                "Performance"
-              );
-            } else if (this.grade && !this.subject) {
-              color = this.commonService.color(
-                this.markers[i].Subjects['Grade Performance'],
-                "percentage"
-              );
-            } else if (this.grade && this.subject) {
-              color = this.commonService.color(
-                this.markers[i].Subjects[`${this.subject}`],
-                "percentage"
-              );
-            }
+            color = this.commonService.color(
+              this.markers[i].Subjects['Grade Performance'],
+              "percentage"
+            );
           } else {
-            if (!this.grade && !this.subject) {
-              color = this.commonService.color(
-                this.markers[i].Details,
-                "Performance"
-              );
-            } else if (this.grade && !this.subject) {
-              color = this.commonService.color(
-                this.markers[i].Subjects,
-                "Grade Performance"
-              );
-            } else if (this.grade && this.subject) {
-              color = this.commonService.color(
-                this.markers[i].Subjects,
-                this.subject
-              );
-            }
+            color = this.commonService.color(
+              this.markers[i].Subjects,
+              "Grade Performance"
+            );
+
           }
-          colors.push(color);
+        } else if (this.grade && this.subject) {
+          if (this.period != 'all') {
+            color = this.commonService.color(
+              this.markers[i].Subjects[`${this.subject}`],
+              "percentage"
+            );
+          } else {
+            color = this.commonService.color(
+              this.markers[i].Subjects,
+              `${this.subject}`
+            );
+          }
         }
+        colors.push(color);
       }
 
       if (this.selected != "absolute") {
@@ -2041,9 +2029,24 @@ export class PATReportComponent implements OnInit {
             this.markers[i].Details['total_schools'] = this.markers[i].Subjects[`${this.subject}`]['total_schools'];
           }
           if (this.grade) {
-            this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
-            this.allSubjects.map(sub => {
-              this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+            if (this.level != 'block' && this.level != 'cluster' && this.level != 'school') {
+              this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
+              this.allSubjects.map(sub => {
+                if (this.markers[i].Subjects[`${sub}`])
+                  this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+              })
+            } else {
+              this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
+              this.allSubjects.map(sub => {
+                if (this.markers[i].Subjects[`${sub}`])
+                  this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+              })
+            }
+          } else if (!this.grade && !this.subject) {
+            this.allGrades.map(grade => {
+              var myGrade = grade.grade;
+              if (this.markers[i]['Grade Wise Performance'][`${myGrade}`])
+                this.markers[i]['Grade Wise Performance'][`${myGrade}`] = this.markers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
             })
           }
         }
@@ -2094,15 +2097,15 @@ export class PATReportComponent implements OnInit {
       this.changeDetection.detectChanges();
     }
     //schoolCount
-    this.schoolCount = data['footer'].total_schools;
+    this.schoolCount = data['footer'] ? data['footer'].total_schools : null;
     if (this.schoolCount != null) {
       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-    this.studentCount = data['footer'].total_students;
+    this.studentCount = data['footer'] ? data['footer'].total_students : null;
     if (this.studentCount != null) {
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-    this.studentAttended = data['footer'].students_attended;
+    this.studentAttended = data['footer'] ? data['footer'].students_attended : null;
     if (this.studentAttended != null) {
       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
@@ -2115,6 +2118,7 @@ export class PATReportComponent implements OnInit {
     var orgObject = {};
     var data1 = {};
     var data2 = {};
+    var data3 = {}
     // student_count, total_schools
 
     Object.keys(markers.Details).forEach((key) => {
@@ -2122,37 +2126,48 @@ export class PATReportComponent implements OnInit {
         details[key] = markers.Details[key];
       }
     });
-    Object.keys(details).forEach((key) => {
-      if (key !== "total_students") {
-        data1[key] = details[key];
-      }
-    });
-    Object.keys(data1).forEach((key) => {
-      if (key !== "total_schools") {
-        data2[key] = data1[key];
-      }
-    });
-    Object.keys(details).forEach((key) => {
+    if (this.period == 'all') {
+      Object.keys(details).forEach((key) => {
+        if (key !== "total_students") {
+          data1[key] = details[key];
+        }
+      });
+      Object.keys(data1).forEach((key) => {
+        if (key !== "total_schools") {
+          data2[key] = data1[key];
+        }
+      });
+      Object.keys(data2).forEach((key) => {
+        if (key !== "students_attended") {
+          data3[key] = data2[key];
+        }
+      });
+    } else {
+      data3 = details;
+    }
+    Object.keys(data3).forEach((key) => {
       if (key !== lng) {
-        orgObject[key] = details[key];
+        orgObject[key] = data3[key];
       }
     });
-    if (level != "school") {
-      if (orgObject["total_schools"] != null) {
-        orgObject["total_schools"] = orgObject["total_schools"]
+    if (this.period != 'all') {
+      if (level != "school") {
+        if (orgObject["total_schools"] != null) {
+          orgObject["total_schools"] = orgObject["total_schools"]
+            .toString()
+            .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        }
+      }
+      if (orgObject["total_students"] != null) {
+        orgObject["total_students"] = orgObject["total_students"]
           .toString()
           .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       }
-    }
-    if (orgObject["total_students"] != null) {
-      orgObject["total_students"] = orgObject["total_students"]
-        .toString()
-        .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
-    if (orgObject["students_attended"] != null) {
-      orgObject["students_attended"] = orgObject["students_attended"]
-        .toString()
-        .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      if (orgObject["students_attended"] != null) {
+        orgObject["students_attended"] = orgObject["students_attended"]
+          .toString()
+          .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
     }
     var yourData1;
     if (this.grade) {
@@ -2181,9 +2196,16 @@ export class PATReportComponent implements OnInit {
     var yourData;
     var ordered;
     var mylevel;
-    if (level == "district") {
-      mylevel = level;
-    } else if (level == "block_wise") {
+    if (this.period != 'all') {
+      if (level == "district" || level == 'block' || level == 'cluster' || level == 'school') {
+        mylevel = level;
+      }
+    } else {
+      if (level == "district") {
+        mylevel = level;
+      }
+    }
+    if (level == "block_wise") {
       mylevel = level;
     } else if (level == "cluster_wise") {
       mylevel = level;
