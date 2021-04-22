@@ -81,7 +81,7 @@
             <button class="btn btn-secondary" id="schoolbtn" (click)="schoolClick()">&nbsp;<strong>Schools</strong>
             </button>
 
-            <select [hidden]="" id="grades" [(ngModel)]="grade" (change)="onGradeSelect(grade)">
+            <select id="grades" [(ngModel)]="grade" (change)="onGradeSelect(grade)">
                 <option [value]="grade" disabled selected="selected">Choose Grade</option>
                 <option *ngFor="let grade of allGrades, let i =index" [(ngValue)]="grade.grade">
                     {{grade.grade}}
@@ -163,15 +163,18 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4">
-            <span id="nm" class="note" style="text-align: center;">Management Type: {{managementName}}</span>
+        <div class="col-sm-2">
+            <span id="name" class="note" style="text-align: center;">Management Type: {{managementName}}</span>
         </div>
-        <!-- <div class="col-sm-4">
+        <div class="col-sm-2" *ngIf="period != 'all'">
             <span id="schools" style="text-align: center;">Number of Schools: {{schoolCount}}</span>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-2" *ngIf="period != 'all'">
             <span id="students" style="text-align: center;">Number of Students: {{studentCount}}</span>
-        </div> -->
+        </div>
+        <div class="col-sm-3" *ngIf="period != 'all'">
+            <span id="studentsAttended" style="text-align: center;">Number of Students Attended: {{studentAttended}}</span>
+        </div>
     </div>
 </div>
 <div id="spinner">

@@ -25,17 +25,17 @@
     url: https://archive.apache.org/dist/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.tar.gz
     dest: ~/nifi
     mode: "0644"
-  tags: [ install, update ]
+  tags: install
 
 - name: Check if nifi is present in destination
   stat: path={{ base_dir }}/cqube/nifi/nifi
   register: status
-  tags: [ install, update ]
+  tags: install
 
 - name: stop nifi if its running
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
   when: status.stat.exists == true
-  tags: [ install, update ]
+  tags: install
 
 - name: remove nifi directory if present
   become: yes
@@ -43,28 +43,28 @@
   ignore_errors: yes
   args:
     warn: false
-  tags: [ install, update ]
+  tags: install
 
 - name: Extract NiFi in the same folder
   unarchive:
     src: ~/nifi/nifi-{{ nifi_version }}-bin.tar.gz
     dest: "{{ base_dir }}/cqube/nifi"
-  tags: [ install, update ]
+  tags: install
 
 - name: Rename the extracted folder
   shell: mv {{ base_dir }}/cqube/nifi/nifi-* {{ base_dir }}/cqube/nifi/nifi
-  tags: [ install, update ]
+  tags: install
 
 - name: Creates directory
   file: path={{ base_dir }}/cqube/nifi/nifi/jars state=directory
-  tags: [ install, update ]
+  tags: install
 
 - name: Download Jar file
   get_url:
     url: https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.10/postgresql-42.2.10.jar
     dest: "{{ base_dir }}/cqube/nifi/nifi/jars"
     mode: "0644"
-  tags: [ install, update ]
+  tags: install
 #1.12 end
 
 - name: Creating nifi_queries directory
@@ -116,14 +116,14 @@
     dest: "{{ base_dir }}/cqube/nifi/nifi/conf/nifi.properties"
     regexp: 'nifi.web.http.host='
     replace: 'nifi.web.http.host=0.0.0.0'
-  tags: [ install, update ]
+  tags: install
 
 - name: configure the webserver in nifi.properties file
   replace:
     dest: "{{ base_dir }}/cqube/nifi/nifi/conf/nifi.properties"
     regexp: 'nifi.web.http.port=8080'
     replace: 'nifi.web.http.port={{ nifi_port }}'
-  tags: [ install, update ]
+  tags: install
 #constant
 - name: Increase nifi memory
   lineinfile:
@@ -137,7 +137,7 @@
         path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
         block: |
                java.arg.8=-Duser.timezone=Asia/Kolkata
-  tags: [ install, update ]
+  tags: install
 #constant
 - name: Increase nifi memory
   lineinfile:
@@ -152,25 +152,25 @@
   file:
     path: "{{ base_dir }}/cqube/nifi/nifi/conf/flow.xml.gz"
     state: absent
-#  tags: update
+  tags: update
 #1.12
 - name: start NiFi
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
-  tags: [ install, update ]
+  tags: install
 
 - pause:
     minutes: 3
     prompt: "nifi is starting, kindly do not press any key"
-  tags: [ install, update ]
+  tags: install
 #1.12 end
 - name: Restart NiFi
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh restart"
-#  tags: update
+  tags: update
 
 - pause:
     minutes: 3
     prompt: "nifi is restarting, kindly do not press any key"
-#  tags: update
+  tags: update
 
 - name: checking for nifi port, waiting until it starts... 
   wait_for:

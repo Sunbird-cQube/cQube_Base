@@ -29,6 +29,7 @@ export class PATReportComponent implements OnInit {
   // to assign the count of below values to show in the UI footer
   public studentCount: any;
   public schoolCount: any;
+  public studentAttended: any;
   public dateRange: any = "";
 
   // to hide and show the hierarchy details
@@ -271,13 +272,16 @@ export class PATReportComponent implements OnInit {
       } else {
         this.onResize(event);
       }
+    }, err=>{
+      this.getMonthYear = [];
+        this.commonService.loaderAndErr(this.getMonthYear);
     });
   }
 
   getDistricts(level): void {
     this.service
       .PATDistWiseData({
-        ...{ grade: this.grade, period: this.period, report: "pat" },
+        ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
         ...this.month_year,
         ...{ management: this.management, category: this.category },
       })
@@ -318,8 +322,12 @@ export class PATReportComponent implements OnInit {
       .subscribe(
         (res) => {
           this.data = res["data"];
-          this.allBlocks = this.blockMarkers = this.data;
-
+          this.blockMarkers = this.data;
+          this.allBlocks = this.data.sort((a, b) =>
+            a.Details.block_name > b.Details.block_name
+              ? 1 : b.Details.block_name > a.Details.block_name ? -1 : 0
+          );
+          this.changeDetection.detectChanges();
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
           }
@@ -359,13 +367,16 @@ export class PATReportComponent implements OnInit {
   }
 
   showYearMonth() {
+    this.grade = undefined;
+    this.subject = undefined;
+    this.subjectHidden = true;
     document.getElementById("home").style.display = "block";
     this.yearMonth = false;
+    this.month = this.months[this.months.length - 1];
     this.month_year = {
       month: this.month.trim(),
       year: this.year,
     };
-    // this.period = null;
     this.levelWiseFilter();
   }
 
@@ -374,6 +385,7 @@ export class PATReportComponent implements OnInit {
       month: this.month.trim(),
       year: this.year,
     };
+    this.grade = undefined;
     this.levelWiseFilter();
   }
 
@@ -388,6 +400,9 @@ export class PATReportComponent implements OnInit {
   }
 
   onPeriodSelect() {
+    this.grade = undefined;
+    this.subject = undefined;
+    this.subjectHidden = true;
     if (this.period != "overall") {
       document.getElementById("home").style.display = "block";
     } else {
@@ -443,9 +458,6 @@ export class PATReportComponent implements OnInit {
   linkClick() {
     document.getElementById("home").style.display = "none";
     this.yearMonth = true;
-    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
-      }_${this.subject ? this.subject : ""}_allDistricts_${this.commonService.dateAndTime
-      }`;
     this.grade = undefined;
     this.subject = undefined;
     this.subjectHidden = true;
@@ -455,6 +467,9 @@ export class PATReportComponent implements OnInit {
       month: null,
       year: null,
     };
+    this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
+      }_${this.subject ? this.subject : ""}_allDistricts_${this.commonService.dateAndTime
+      }`;
     this.onResize(event);
     this.changeDetection.detectChanges();
   }
@@ -503,7 +518,7 @@ export class PATReportComponent implements OnInit {
             this.myData = this.service
               .PATDistWiseData({
                 ...{
-                  ...{ grade: this.grade, period: this.period, report: "pat" },
+                  ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                   ...this.month_year,
                   ...{ management: this.management, category: this.category },
                 },
@@ -559,6 +574,7 @@ export class PATReportComponent implements OnInit {
                   this.changeDetection.detectChanges();
                 },
                 (err) => {
+                  this.allDistricts = [];
                   this.data = [];
                   this.commonService.loaderAndErr(this.data);
                 }
@@ -581,6 +597,7 @@ export class PATReportComponent implements OnInit {
   blockClick() {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.blockWise();
     } else {
@@ -644,7 +661,7 @@ export class PATReportComponent implements OnInit {
             }
             this.myData = this.service
               .PATBlockWiseData({
-                ...{ grade: this.grade, period: this.period, report: "pat" },
+                ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                 ...this.month_year,
                 ...{ management: this.management, category: this.category },
               })
@@ -673,38 +690,74 @@ export class PATReportComponent implements OnInit {
                     }
 
                     this.schoolCount = 0;
-                    if (this.grade && !this.subject) {
-                      this.blockMarkers.sort((a, b) =>
-                        a.Subjects["Grade Performance"] >
-                          b.Subjects["Grade Performance"]
-                          ? 1
-                          : b.Subjects["Grade Performance"] >
-                            a.Subjects["Grade Performance"]
-                            ? -1
-                            : 0
-                      );
-                    } else if (this.grade && this.subject) {
-                      let filterData = this.blockMarkers.filter((obj) => {
-                        return Object.keys(obj.Subjects).includes(this.subject);
-                      });
-                      this.blockMarkers = filterData;
-                      this.blockMarkers.sort((a, b) =>
-                        Number(a.Subjects[`${this.subject}`]) >
-                          Number(b.Subjects[`${this.subject}`])
-                          ? 1
-                          : Number(b.Subjects[`${this.subject}`]) >
-                            Number(a.Subjects[`${this.subject}`])
-                            ? -1
-                            : 0
-                      );
+                    if (this.period != 'all') {
+                      if (this.grade && !this.subject) {
+                        this.blockMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"]['percentage'] >
+                            b.Subjects["Grade Performance"]['percentage']
+                            ? 1
+                            : b.Subjects["Grade Performance"]['percentage'] >
+                              a.Subjects["Grade Performance"]['percentage']
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.blockMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.blockMarkers = filterData;
+                        this.blockMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]['percentage']) >
+                            Number(b.Subjects[`${this.subject}`]['percentage'])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]['percentage']) >
+                              Number(a.Subjects[`${this.subject}`]['percentage'])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.blockMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     } else {
-                      this.blockMarkers.sort((a, b) =>
-                        a.Details["Performance"] > b.Details["Performance"]
-                          ? 1
-                          : b.Details["Performance"] > a.Details["Performance"]
-                            ? -1
-                            : 0
-                      );
+                      if (this.grade && !this.subject) {
+                        this.blockMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"] >
+                            b.Subjects["Grade Performance"]
+                            ? 1
+                            : b.Subjects["Grade Performance"] >
+                              a.Subjects["Grade Performance"]
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.blockMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.blockMarkers = filterData;
+                        this.blockMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]) >
+                            Number(b.Subjects[`${this.subject}`])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]) >
+                              Number(a.Subjects[`${this.subject}`])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.blockMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     }
 
                     this.colors =
@@ -718,7 +771,35 @@ export class PATReportComponent implements OnInit {
                             this.blockMarkers.length,
                             "rgb"
                           );
+                    // this.schoolCount = 0;
+                    // this.studentCount = 0;
+
                     for (let i = 0; i < this.blockMarkers.length; i++) {
+                      if (this.period != 'all') {
+                        if (this.grade && !this.subject) {
+                          this.blockMarkers[i].Details['total_students'] = this.blockMarkers[i].Subjects['Grade Performance']['total_students'];
+                          this.blockMarkers[i].Details['students_attended'] = this.blockMarkers[i].Subjects['Grade Performance']['students_attended'];
+                          this.blockMarkers[i].Details['total_schools'] = this.blockMarkers[i].Subjects['Grade Performance']['total_schools'];
+                        }
+                        if (this.grade && this.subject) {
+                          this.blockMarkers[i].Details['total_students'] = this.blockMarkers[i].Subjects[`${this.subject}`]['total_students'];
+                          this.blockMarkers[i].Details['students_attended'] = this.blockMarkers[i].Subjects[`${this.subject}`]['students_attended'];
+                          this.blockMarkers[i].Details['total_schools'] = this.blockMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                        }
+                        if (this.grade) {
+                          this.blockMarkers[i].Subjects['Grade Performance'] = this.blockMarkers[i].Subjects['Grade Performance']['percentage']
+                          this.allSubjects.map(sub => {
+                            if (this.blockMarkers[i].Subjects[`${sub}`])
+                              this.blockMarkers[i].Subjects[`${sub}`] = this.blockMarkers[i].Subjects[`${sub}`]['percentage']
+                          })
+                        } else if (!this.grade && !this.subject) {
+                          this.allGrades.map(grade => {
+                            var myGrade = grade.grade;
+                            if (this.blockMarkers[i]['Grade Wise Performance'][`${myGrade}`])
+                              this.blockMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.blockMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
+                          })
+                        }
+                      }
                       var color;
                       if (!this.grade && !this.subject) {
                         color = this.commonService.color(
@@ -736,6 +817,7 @@ export class PATReportComponent implements OnInit {
                           this.subject
                         );
                       }
+
                       var markerIcon = this.commonService.initMarkers(
                         this.blockMarkers[i].Details.latitude,
                         this.blockMarkers[i].Details.longitude,
@@ -772,14 +854,18 @@ export class PATReportComponent implements OnInit {
                     );
 
                     //schoolCount
-                    // this.schoolCount = res['footer'].total_schools;
-                    // if (this.schoolCount != null) {
-                    //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
-                    // this.studentCount = res['footer'].students_count;
-                    // if (this.studentCount != null) {
-                    //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
+                    if (this.schoolCount != null) {
+                      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
+                    if (this.studentCount != null) {
+                      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
+                    if (this.studentAttended != null) {
+                      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
 
                     this.commonService.loaderAndErr(this.data);
                     this.changeDetection.detectChanges();
@@ -806,6 +892,7 @@ export class PATReportComponent implements OnInit {
   clusterClick() {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.clusterWise();
     } else {
@@ -870,7 +957,7 @@ export class PATReportComponent implements OnInit {
             }
             this.myData = this.service
               .PATClusterWiseData({
-                ...{ grade: this.grade, period: this.period, report: "pat" },
+                ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                 ...this.month_year,
                 ...{ management: this.management, category: this.category },
               })
@@ -897,38 +984,74 @@ export class PATReportComponent implements OnInit {
                       this.clusterFilter = this.clusterMarkers;
                     }
                     this.schoolCount = 0;
-                    if (this.grade && !this.subject) {
-                      this.clusterMarkers.sort((a, b) =>
-                        a.Subjects["Grade Performance"] >
-                          b.Subjects["Grade Performance"]
-                          ? 1
-                          : b.Subjects["Grade Performance"] >
-                            a.Subjects["Grade Performance"]
-                            ? -1
-                            : 0
-                      );
-                    } else if (this.grade && this.subject) {
-                      let filterData = this.clusterMarkers.filter((obj) => {
-                        return Object.keys(obj.Subjects).includes(this.subject);
-                      });
-                      this.clusterMarkers = filterData;
-                      this.clusterMarkers.sort((a, b) =>
-                        Number(a.Subjects[`${this.subject}`]) >
-                          Number(b.Subjects[`${this.subject}`])
-                          ? 1
-                          : Number(b.Subjects[`${this.subject}`]) >
-                            Number(a.Subjects[`${this.subject}`])
-                            ? -1
-                            : 0
-                      );
+                    if (this.period != 'all') {
+                      if (this.grade && !this.subject) {
+                        this.clusterMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"]['percentage'] >
+                            b.Subjects["Grade Performance"]['percentage']
+                            ? 1
+                            : b.Subjects["Grade Performance"]['percentage'] >
+                              a.Subjects["Grade Performance"]['percentage']
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.clusterMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.clusterMarkers = filterData;
+                        this.clusterMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]['percentage']) >
+                            Number(b.Subjects[`${this.subject}`]['percentage'])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]['percentage']) >
+                              Number(a.Subjects[`${this.subject}`]['percentage'])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.clusterMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     } else {
-                      this.clusterMarkers.sort((a, b) =>
-                        a.Details["Performance"] > b.Details["Performance"]
-                          ? 1
-                          : b.Details["Performance"] > a.Details["Performance"]
-                            ? -1
-                            : 0
-                      );
+                      if (this.grade && !this.subject) {
+                        this.clusterMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"] >
+                            b.Subjects["Grade Performance"]
+                            ? 1
+                            : b.Subjects["Grade Performance"] >
+                              a.Subjects["Grade Performance"]
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.clusterMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.clusterMarkers = filterData;
+                        this.clusterMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]) >
+                            Number(b.Subjects[`${this.subject}`])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]) >
+                              Number(a.Subjects[`${this.subject}`])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.clusterMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     }
                     this.colors =
                       this.clusterMarkers.length == 1
@@ -941,12 +1064,38 @@ export class PATReportComponent implements OnInit {
                             this.clusterMarkers.length,
                             "rgb"
                           );
+
                     for (let i = 0; i < this.clusterMarkers.length; i++) {
-                      var color = this.commonService.color(
-                        this.clusterMarkers[i].Details,
-                        "Performance"
-                      );
+                      if (this.grade && !this.subject) {
+                        this.clusterMarkers[i].Details['total_students'] = this.clusterMarkers[i].Subjects['Grade Performance']['total_students'];
+                        this.clusterMarkers[i].Details['students_attended'] = this.clusterMarkers[i].Subjects['Grade Performance']['students_attended'];
+                        this.clusterMarkers[i].Details['total_schools'] = this.clusterMarkers[i].Subjects['Grade Performance']['total_schools'];
+                      }
+                      if (this.grade && this.subject) {
+                        this.clusterMarkers[i].Details['total_students'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['total_students'];
+                        this.clusterMarkers[i].Details['students_attended'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['students_attended'];
+                        this.clusterMarkers[i].Details['total_schools'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                      }
                       if (this.grade) {
+                        this.clusterMarkers[i].Subjects['Grade Performance'] = this.clusterMarkers[i].Subjects['Grade Performance']['percentage']
+                        this.allSubjects.map(sub => {
+                          if (this.clusterMarkers[i].Subjects[`${sub}`])
+                            this.clusterMarkers[i].Subjects[`${sub}`] = this.clusterMarkers[i].Subjects[`${sub}`]['percentage']
+                        })
+                      } else if (!this.grade && !this.subject) {
+                        this.allGrades.map(grade => {
+                          var myGrade = grade.grade;
+                          if (this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`])
+                            this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
+                        })
+                      }
+                      var color;
+                      if (!this.grade && !this.subject) {
+                        color = this.commonService.color(
+                          this.clusterMarkers[i].Details,
+                          "Performance"
+                        );
+                      } else if (this.grade && !this.subject) {
                         color = this.commonService.color(
                           this.clusterMarkers[i].Subjects,
                           "Grade Performance"
@@ -980,14 +1129,18 @@ export class PATReportComponent implements OnInit {
                     }
 
                     //schoolCount
-                    // this.schoolCount = res['footer'].total_schools;
-                    // if (this.schoolCount != null) {
-                    //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
-                    // this.studentCount = res['footer'].students_count;
-                    // if (this.studentCount != null) {
-                    //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
+                    if (this.schoolCount != null) {
+                      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
+                    if (this.studentCount != null) {
+                      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
+                    if (this.studentAttended != null) {
+                      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
 
                     this.commonService.restrictZoom(globalMap);
                     globalMap.setMaxBounds([
@@ -1027,6 +1180,7 @@ export class PATReportComponent implements OnInit {
   schoolClick() {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.schoolWise();
     } else {
@@ -1091,7 +1245,7 @@ export class PATReportComponent implements OnInit {
             }
             this.myData = this.service
               .PATSchoolWiseData({
-                ...{ grade: this.grade, period: this.period, report: "pat" },
+                ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
                 ...this.month_year,
                 ...{ management: this.management, category: this.category },
               })
@@ -1115,38 +1269,75 @@ export class PATReportComponent implements OnInit {
                     let result = this.data;
                     this.schoolCount = 0;
                     this.schoolMarkers = result;
-                    if (this.grade && !this.subject) {
-                      this.schoolMarkers.sort((a, b) =>
-                        a.Subjects["Grade Performance"] >
-                          b.Subjects["Grade Performance"]
-                          ? 1
-                          : b.Subjects["Grade Performance"] >
-                            a.Subjects["Grade Performance"]
-                            ? -1
-                            : 0
-                      );
-                    } else if (this.grade && this.subject) {
-                      let filterData = this.schoolMarkers.filter((obj) => {
-                        return Object.keys(obj.Subjects).includes(this.subject);
-                      });
-                      this.schoolMarkers = filterData;
-                      this.schoolMarkers.sort((a, b) =>
-                        Number(a.Subjects[`${this.subject}`]) >
-                          Number(b.Subjects[`${this.subject}`])
-                          ? 1
-                          : Number(b.Subjects[`${this.subject}`]) >
-                            Number(a.Subjects[`${this.subject}`])
-                            ? -1
-                            : 0
-                      );
+
+                    if (this.period != 'all') {
+                      if (this.grade && !this.subject) {
+                        this.schoolMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"]['percentage'] >
+                            b.Subjects["Grade Performance"]['percentage']
+                            ? 1
+                            : b.Subjects["Grade Performance"]['percentage'] >
+                              a.Subjects["Grade Performance"]['percentage']
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.schoolMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.schoolMarkers = filterData;
+                        this.schoolMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]['percentage']) >
+                            Number(b.Subjects[`${this.subject}`]['percentage'])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]['percentage']) >
+                              Number(a.Subjects[`${this.subject}`]['percentage'])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.schoolMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     } else {
-                      this.schoolMarkers.sort((a, b) =>
-                        a.Details["Performance"] > b.Details["Performance"]
-                          ? 1
-                          : b.Details["Performance"] > a.Details["Performance"]
-                            ? -1
-                            : 0
-                      );
+                      if (this.grade && !this.subject) {
+                        this.schoolMarkers.sort((a, b) =>
+                          a.Subjects["Grade Performance"] >
+                            b.Subjects["Grade Performance"]
+                            ? 1
+                            : b.Subjects["Grade Performance"] >
+                              a.Subjects["Grade Performance"]
+                              ? -1
+                              : 0
+                        );
+                      } else if (this.grade && this.subject) {
+                        let filterData = this.schoolMarkers.filter((obj) => {
+                          return Object.keys(obj.Subjects).includes(this.subject);
+                        });
+                        this.schoolMarkers = filterData;
+                        this.schoolMarkers.sort((a, b) =>
+                          Number(a.Subjects[`${this.subject}`]) >
+                            Number(b.Subjects[`${this.subject}`])
+                            ? 1
+                            : Number(b.Subjects[`${this.subject}`]) >
+                              Number(a.Subjects[`${this.subject}`])
+                              ? -1
+                              : 0
+                        );
+                      } else {
+                        this.schoolMarkers.sort((a, b) =>
+                          a.Details["Performance"] > b.Details["Performance"]
+                            ? 1
+                            : b.Details["Performance"] > a.Details["Performance"]
+                              ? -1
+                              : 0
+                        );
+                      }
                     }
                     this.colors =
                       this.schoolMarkers.length == 1
@@ -1159,12 +1350,38 @@ export class PATReportComponent implements OnInit {
                             this.schoolMarkers.length,
                             "rgb"
                           );
+
                     for (let i = 0; i < this.schoolMarkers.length; i++) {
-                      var color = this.commonService.color(
-                        this.schoolMarkers[i].Details,
-                        "Performance"
-                      );
+                      if (this.grade && !this.subject) {
+                        this.schoolMarkers[i].Details['total_students'] = this.schoolMarkers[i].Subjects['Grade Performance']['total_students'];
+                        this.schoolMarkers[i].Details['students_attended'] = this.schoolMarkers[i].Subjects['Grade Performance']['students_attended'];
+                        this.schoolMarkers[i].Details['total_schools'] = this.schoolMarkers[i].Subjects['Grade Performance']['total_schools'];
+                      }
+                      if (this.grade && this.subject) {
+                        this.schoolMarkers[i].Details['total_students'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['total_students'];
+                        this.schoolMarkers[i].Details['students_attended'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['students_attended'];
+                        this.schoolMarkers[i].Details['total_schools'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                      }
                       if (this.grade) {
+                        this.schoolMarkers[i].Subjects['Grade Performance'] = this.schoolMarkers[i].Subjects['Grade Performance']['percentage']
+                        this.allSubjects.map(sub => {
+                          if (this.schoolMarkers[i].Subjects[`${sub}`])
+                            this.schoolMarkers[i].Subjects[`${sub}`] = this.schoolMarkers[i].Subjects[`${sub}`]['percentage']
+                        })
+                      } else if (!this.grade && !this.subject) {
+                        this.allGrades.map(grade => {
+                          var myGrade = grade.grade;
+                          if (this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`])
+                            this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
+                        })
+                      }
+                      var color;
+                      if (!this.grade && !this.subject) {
+                        color = this.commonService.color(
+                          this.schoolMarkers[i].Details,
+                          "Performance"
+                        );
+                      } else if (this.grade && !this.subject) {
                         color = this.commonService.color(
                           this.schoolMarkers[i].Subjects,
                           "Grade Performance"
@@ -1212,14 +1429,19 @@ export class PATReportComponent implements OnInit {
                     );
 
                     //schoolCount
-                    // this.schoolCount = res['footer'].total_schools;
-                    // if (this.schoolCount != null) {
-                    //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
-                    // this.studentCount = res['footer'].students_count;
-                    // if (this.studentCount != null) {
-                    //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                    // }
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
+                    if (this.schoolCount != null) {
+                      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
+                    if (this.studentCount != null) {
+                      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
+                    if (this.studentAttended != null) {
+                      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                    }
+
                     this.commonService.loaderAndErr(this.data);
                     this.changeDetection.detectChanges();
                   }
@@ -1246,6 +1468,7 @@ export class PATReportComponent implements OnInit {
   ondistLinkClick(districtId) {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.onDistrictSelect(districtId);
     } else {
@@ -1278,7 +1501,7 @@ export class PATReportComponent implements OnInit {
       }_${this.subject ? this.subject : ""}_${this.level
       }s_of_district_${districtId}_${this.commonService.dateAndTime}`;
 
-    this.allBlocks = [];
+    this.data = this.allBlocks = [];
     this.allClusters = [];
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -1286,15 +1509,17 @@ export class PATReportComponent implements OnInit {
     }
     this.myData = this.service
       .PATBlocksPerDistData(districtId, {
-        ...{ period: this.period, report: "pat" },
+        ...{ period: this.period, report: "pat", grade: this.grade, subject: this.subject },
         ...this.month_year,
         ...{ management: this.management, category: this.category },
       })
       .subscribe(
         (res) => {
-          this.data = res["data"];
+          this.allBlocks = this.data = res["data"];
           this.allGrades = res['grades'];
-          this.allBlocks = this.blockMarkers = this.data;
+          this.blockMarkers = this.data;
+          if (this.grade)
+            this.allSubjects = res['subjects'];
 
           if (!this.blockMarkers[0]["Subjects"]) {
             this.blockFilter = this.blockMarkers;
@@ -1327,7 +1552,6 @@ export class PATReportComponent implements OnInit {
             centerLng: this.data[0].Details.longitude,
             level: "block",
           };
-          this.data.forEach((element) => { });
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([
@@ -1357,6 +1581,7 @@ export class PATReportComponent implements OnInit {
   onblockLinkClick(blockId) {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.onBlockSelect(blockId);
     } else {
@@ -1388,13 +1613,13 @@ export class PATReportComponent implements OnInit {
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
       }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime
       }`;
-    this.allClusters = [];
+    this.data = this.allClusters = [];
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service
       .PATClustersPerBlockData(this.districtHierarchy.distId, blockId, {
-        ...{ period: this.period, report: "pat" },
+        ...{ period: this.period, report: "pat", grade: this.grade, subject: this.subject },
         ...this.month_year,
         ...{ management: this.management, category: this.category },
       })
@@ -1403,6 +1628,9 @@ export class PATReportComponent implements OnInit {
           this.data = res["data"];
           this.allGrades = res['grades'];
           this.allClusters = this.clusterMarkers = this.data;
+          if (this.grade)
+            this.allSubjects = res['subjects'];
+
           if (!this.clusterMarkers[0]["Subjects"]) {
             this.clusterFilter = this.clusterMarkers;
           }
@@ -1412,7 +1640,7 @@ export class PATReportComponent implements OnInit {
               myBlocks.push(element);
             }
           });
-          this.blockMarkers = myBlocks;
+          this.allBlocks = this.blockMarkers = myBlocks;
 
           // set hierarchy values
           this.blockHierarchy = {
@@ -1479,6 +1707,7 @@ export class PATReportComponent implements OnInit {
   onclusterLinkClick(clusterId) {
     if (this.grade) {
       this.grade = undefined;
+      this.subject = undefined;
       this.subjectHidden = true;
       this.onClusterSelect(clusterId);
     } else {
@@ -1513,7 +1742,7 @@ export class PATReportComponent implements OnInit {
     }
     this.myData = this.service
       .PATBlockWiseData({
-        ...{ grade: this.grade, period: this.period, report: "pat" },
+        ...{ grade: this.grade, subject: this.subject, period: this.period, report: "pat" },
         ...this.month_year,
         ...{ management: this.management, category: this.category },
       })
@@ -1525,7 +1754,7 @@ export class PATReportComponent implements OnInit {
               this.blockHierarchy.blockId,
               clusterId,
               {
-                ...{ period: this.period, report: "pat" },
+                ...{ period: this.period, report: "pat", grade: this.grade, subject: this.subject },
                 ...this.month_year,
                 ...{ management: this.management, category: this.category },
               }
@@ -1533,6 +1762,8 @@ export class PATReportComponent implements OnInit {
             .subscribe(
               (res) => {
                 this.data = res["data"];
+                if (this.grade)
+                  this.allSubjects = res['subjects'];
                 this.allGrades = res['grades'];
                 this.schoolMarkers = this.data;
                 var markers = result["data"];
@@ -1544,7 +1775,7 @@ export class PATReportComponent implements OnInit {
                     myBlocks.push(element);
                   }
                 });
-                this.blockMarkers = myBlocks;
+                this.allBlocks = this.blockMarkers = myBlocks;
 
                 var myCluster = [];
                 this.clusterMarkers.forEach((element) => {
@@ -1554,7 +1785,7 @@ export class PATReportComponent implements OnInit {
                     myCluster.push(element);
                   }
                 });
-                this.clusterMarkers = myCluster;
+                this.allClusters = this.clusterMarkers = myCluster;
 
                 // set hierarchy values
                 this.clusterHierarchy = {
@@ -1644,44 +1875,7 @@ export class PATReportComponent implements OnInit {
         this.level == "school"
       ) {
         colors = [];
-        if (this.grade && !this.subject) {
-          let filterData = this.markers.filter((obj) => {
-            return Object.keys(obj.Grades).includes(this.grade);
-          });
-          this.markers = filterData;
-          this.markers.sort((a, b) =>
-            a.Grades[`${this.grade}`]["Grade Performance"] >
-              b.Grades[`${this.grade}`]["Grade Performance"]
-              ? 1
-              : b.Grades[`${this.grade}`]["Grade Performance"] >
-                a.Grades[`${this.grade}`]["Grade Performance"]
-                ? -1
-                : 0
-          );
-          this.allSubjects = Object.keys(
-            this.markers[0].Grades[`${this.grade}`]
-          );
-          this.allSubjects.pop();
-        } else if (this.grade && this.subject) {
-          let filterGrade = this.markers.filter((obj) => {
-            return Object.keys(obj.Grades).includes(this.grade);
-          });
-          let filterData = filterGrade.filter((obj) => {
-            return Object.keys(obj.Grades[`${this.grade}`]).includes(
-              this.subject
-            );
-          });
-          this.markers = filterData;
-          this.markers.sort((a, b) =>
-            a.Grades[`${this.grade}`][`${this.subject}`] >
-              b.Grades[`${this.grade}`][`${this.subject}`]
-              ? 1
-              : b.Grades[`${this.grade}`][`${this.subject}`] >
-                a.Grades[`${this.grade}`][`${this.subject}`]
-                ? -1
-                : 0
-          );
-        } else {
+        if (!this.grade && !this.subject) {
           this.markers.sort((a, b) =>
             a.Details["Performance"] > b.Details["Performance"]
               ? 1
@@ -1690,93 +1884,149 @@ export class PATReportComponent implements OnInit {
                 : 0
           );
         }
-        for (let i = 0; i < this.markers.length; i++) {
-          if (!this.grade && !this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Details,
-              "Performance"
-            );
-          } else if (this.grade && !this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Grades[`${this.grade}`],
-              "Grade Performance"
-            );
-          } else if (this.grade && this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Grades[`${this.grade}`],
-              this.subject
-            );
-          }
-          colors.push(color);
-        }
+
       } else {
         colors = [];
-        if (this.grade && !this.subject) {
-          this.markers.sort((a, b) =>
-            a.Subjects["Grade Performance"] > b.Subjects["Grade Performance"]
-              ? 1
-              : b.Subjects["Grade Performance"] >
-                a.Subjects["Grade Performance"]
-                ? -1
-                : 0
-          );
-        } else if (this.grade && this.subject) {
-          this.markers.sort((a, b) =>
-            Number(a.Subjects[`${this.subject}`]) >
-              Number(b.Subjects[`${this.subject}`])
-              ? 1
-              : Number(b.Subjects[`${this.subject}`]) >
-                Number(a.Subjects[`${this.subject}`])
-                ? -1
-                : 0
-          );
-        } else {
-          this.markers.sort((a, b) =>
-            a.Details["Performance"] > b.Details["Performance"]
-              ? 1
-              : b.Details["Performance"] > a.Details["Performance"]
-                ? -1
-                : 0
-          );
-        }
-        for (let i = 0; i < this.markers.length; i++) {
-          if (!this.grade && !this.subject) {
-            color = this.commonService.color(
-              this.markers[i].Details,
-              "Performance"
+        if (this.period !== 'all') {
+          if (this.grade && !this.subject) {
+            this.markers.sort((a, b) =>
+              a.Subjects["Grade Performance"]['percentage'] > b.Subjects["Grade Performance"]['percentage']
+                ? 1
+                : b.Subjects["Grade Performance"]['percentage'] >
+                  a.Subjects["Grade Performance"]['percentage']
+                  ? -1
+                  : 0
             );
-          } else if (this.grade && !this.subject) {
+          } else if (this.grade && this.subject) {
+            this.markers.sort((a, b) =>
+              Number(a.Subjects[`${this.subject}`]['percentage']) >
+                Number(b.Subjects[`${this.subject}`]['percentage'])
+                ? 1
+                : Number(b.Subjects[`${this.subject}`]['percentage']) >
+                  Number(a.Subjects[`${this.subject}`]['percentage'])
+                  ? -1
+                  : 0
+            );
+          } else {
+            this.markers.sort((a, b) =>
+              a.Details["Performance"] > b.Details["Performance"]
+                ? 1
+                : b.Details["Performance"] > a.Details["Performance"]
+                  ? -1
+                  : 0
+            );
+          }
+        } else {
+          if (this.grade && !this.subject) {
+            this.markers.sort((a, b) =>
+              a.Subjects["Grade Performance"] > b.Subjects["Grade Performance"]
+                ? 1
+                : b.Subjects["Grade Performance"] >
+                  a.Subjects["Grade Performance"]
+                  ? -1
+                  : 0
+            );
+          } else if (this.grade && this.subject) {
+            this.markers.sort((a, b) =>
+              Number(a.Subjects[`${this.subject}`]) >
+                Number(b.Subjects[`${this.subject}`])
+                ? 1
+                : Number(b.Subjects[`${this.subject}`]) >
+                  Number(a.Subjects[`${this.subject}`])
+                  ? -1
+                  : 0
+            );
+          } else {
+            this.markers.sort((a, b) =>
+              a.Details["Performance"] > b.Details["Performance"]
+                ? 1
+                : b.Details["Performance"] > a.Details["Performance"]
+                  ? -1
+                  : 0
+            );
+          }
+        }
+
+      }
+      if(this.grade && this.subject){
+        var filtererSubData =  this.markers.filter(item=>{
+          return item.Subjects[`${this.subject}`];
+        })
+        this.markers = filtererSubData;
+      }
+      for (let i = 0; i < this.markers.length; i++) {
+        if (this.period != 'all') {
+          if (this.grade && !this.subject) {
+            this.markers[i].Details['total_students'] = this.markers[i].Subjects['Grade Performance']['total_students'];
+            this.markers[i].Details['students_attended'] = this.markers[i].Subjects['Grade Performance']['students_attended'];
+            this.markers[i].Details['total_schools'] = this.markers[i].Subjects['Grade Performance']['total_schools'];
+          }
+          if (this.grade && this.subject) {
+            if(this.markers[i].Subjects[`${this.subject}`]){
+            this.markers[i].Details['total_students'] = this.markers[i].Subjects[`${this.subject}`]['total_students'];
+            this.markers[i].Details['students_attended'] = this.markers[i].Subjects[`${this.subject}`]['students_attended'];
+            this.markers[i].Details['total_schools'] = this.markers[i].Subjects[`${this.subject}`]['total_schools'];
+          }
+          }
+          if (this.grade) {
+            if (this.level != 'block' && this.level != 'cluster' && this.level != 'school') {
+              this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
+              this.allSubjects.map(sub => {
+                if (this.markers[i].Subjects[`${sub}`])
+                  this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+              })
+            } else {
+              this.markers[i].Subjects['Grade Performance'] = this.markers[i].Subjects['Grade Performance']['percentage']
+              this.allSubjects.map(sub => {
+                if (this.markers[i].Subjects[`${sub}`])
+                  this.markers[i].Subjects[`${sub}`] = this.markers[i].Subjects[`${sub}`]['percentage']
+              })
+            }
+          } else if (!this.grade && !this.subject) {
+            this.allGrades.map(grade => {
+              var myGrade = grade.grade;
+              if (this.markers[i]['Grade Wise Performance'][`${myGrade}`])
+                this.markers[i]['Grade Wise Performance'][`${myGrade}`] = this.markers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
+            })
+          }
+        }
+        if (!this.grade && !this.subject) {
+          color = this.commonService.color(
+            this.markers[i].Details,
+            "Performance"
+          );
+        } else if (this.grade && !this.subject) {
             color = this.commonService.color(
               this.markers[i].Subjects,
               "Grade Performance"
             );
-          } else if (this.grade && this.subject) {
+        } else if (this.grade && this.subject) {
             color = this.commonService.color(
               this.markers[i].Subjects,
-              this.subject
+              `${this.subject}`
             );
-          }
-          colors.push(color);
         }
+        colors.push(color);
       }
-
+      
       if (this.selected != "absolute") {
-        this.colors = this.commonService.getRelativeColors(this.markers, {
-          value: this.grade
-            ? this.markers[0].Subjects
-              ? "Grade Performance"
-              : this.grade
-            : this.grade && this.subject
-              ? this.subject
-              : "Performance",
-          selected: this.grade
-            ? "G"
-            : this.grade && this.subject
-              ? "GS"
-              : "all",
-          report: "reports",
-        });
-      }
+          this.colors = this.commonService.getRelativeColors(this.markers, {
+            value: this.grade
+              ? this.markers[0].Subjects
+                ? "Grade Performance"
+                : this.grade
+              : this.grade && this.subject
+                ? this.subject
+                : "Performance",
+            selected: this.grade
+              ? "G"
+              : this.grade && this.subject
+                ? "GS"
+                : "all",
+            report: "reports",
+          });
+        }
+
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
         var markerIcon = this.commonService.initMarkers(
@@ -1825,14 +2075,18 @@ export class PATReportComponent implements OnInit {
       this.changeDetection.detectChanges();
     }
     //schoolCount
-    // this.schoolCount = data['footer'].total_schools;
-    // if (this.schoolCount != null) {
-    //   this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    // }
-    // this.studentCount = data['footer'].students_count;
-    // if (this.studentCount != null) {
-    //   this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    // }
+    this.schoolCount = data['footer'] ? data['footer'].total_schools : null;
+    if (this.schoolCount != null) {
+      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
+    this.studentCount = data['footer'] ? data['footer'].total_students : null;
+    if (this.studentCount != null) {
+      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
+    this.studentAttended = data['footer'] ? data['footer'].students_attended : null;
+    if (this.studentAttended != null) {
+      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+    }
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {
@@ -1842,6 +2096,7 @@ export class PATReportComponent implements OnInit {
     var orgObject = {};
     var data1 = {};
     var data2 = {};
+    var data3 = {}
     // student_count, total_schools
 
     Object.keys(markers.Details).forEach((key) => {
@@ -1849,34 +2104,49 @@ export class PATReportComponent implements OnInit {
         details[key] = markers.Details[key];
       }
     });
-    Object.keys(details).forEach((key) => {
-      if (key !== "students_count") {
-        data1[key] = details[key];
-      }
-    });
-    Object.keys(data1).forEach((key) => {
-      if (key !== "total_schools") {
-        data2[key] = data1[key];
-      }
-    });
-    Object.keys(data2).forEach((key) => {
+    if (this.period == 'all') {
+      Object.keys(details).forEach((key) => {
+        if (key !== "total_students") {
+          data1[key] = details[key];
+        }
+      });
+      Object.keys(data1).forEach((key) => {
+        if (key !== "total_schools") {
+          data2[key] = data1[key];
+        }
+      });
+      Object.keys(data2).forEach((key) => {
+        if (key !== "students_attended") {
+          data3[key] = data2[key];
+        }
+      });
+    } else {
+      data3 = details;
+    }
+    Object.keys(data3).forEach((key) => {
       if (key !== lng) {
-        orgObject[key] = data2[key];
+        orgObject[key] = data3[key];
       }
     });
-    if (level != "school") {
-      if (orgObject["total_schools"] != null) {
-        orgObject["total_schools"] = orgObject["total_schools"]
+    if (this.period != 'all') {
+      if (level != "school") {
+        if (orgObject["total_schools"] != null) {
+          orgObject["total_schools"] = orgObject["total_schools"]
+            .toString()
+            .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+        }
+      }
+      if (orgObject["total_students"] != null) {
+        orgObject["total_students"] = orgObject["total_students"]
+          .toString()
+          .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
+      if (orgObject["students_attended"] != null) {
+        orgObject["students_attended"] = orgObject["students_attended"]
           .toString()
           .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       }
     }
-    if (orgObject["total_schools"] != null) {
-      orgObject["students_count"] = orgObject["students_count"]
-        .toString()
-        .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
-    5;
     var yourData1;
     if (this.grade) {
       yourData1 = this.commonService
@@ -1904,9 +2174,16 @@ export class PATReportComponent implements OnInit {
     var yourData;
     var ordered;
     var mylevel;
-    if (level == "district") {
-      mylevel = level;
-    } else if (level == "block_wise") {
+    if (this.period != 'all') {
+      if (level == "district" || level == 'block' || level == 'cluster' || level == 'school') {
+        mylevel = level;
+      }
+    } else {
+      if (level == "district") {
+        mylevel = level;
+      }
+    }
+    if (level == "block_wise") {
       mylevel = level;
     } else if (level == "cluster_wise") {
       mylevel = level;
@@ -2104,20 +2381,20 @@ export class PATReportComponent implements OnInit {
         details[key] = markers.Details[key];
       }
     });
+    // Object.keys(details).forEach((key) => {
+    //   if (key !== "students_count") {
+    //     data1[key] = details[key];
+    //   }
+    // });
+    // Object.keys(data1).forEach((key) => {
+    //   if (key !== "total_schools") {
+    //     data2[key] = data1[key];
+    //   }
+    // });
     Object.keys(details).forEach((key) => {
-      if (key !== "students_count") {
-        data1[key] = details[key];
-      }
-    });
-    Object.keys(data1).forEach((key) => {
-      if (key !== "total_schools") {
-        data2[key] = data1[key];
-      }
-    });
-    Object.keys(data2).forEach((key) => {
       var str = key.charAt(0).toUpperCase() + key.substr(1).toLowerCase();
       if (key !== "longitude") {
-        orgObject[`${str}`] = data2[key];
+        orgObject[`${str}`] = details[key];
       }
     });
     var ordered = {};

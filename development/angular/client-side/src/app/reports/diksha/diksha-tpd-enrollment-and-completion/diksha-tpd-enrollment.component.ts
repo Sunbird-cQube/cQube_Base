@@ -50,7 +50,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   public timePeriod = 'overall';
   public hierName: any;
   public all: boolean = false;
-  public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" }, { id: "overall", name: "Overall" }];
+  public timeDetails: any = [{ id: "overall", name: "Overall" }, { id: "last_30_days", name: "Last 30 Days" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_day", name: "Last Day" }];
   public districtsDetails: any = '';
   public myChart: Chart;
   public showAllChart: boolean = false;

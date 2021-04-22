@@ -721,6 +721,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     this.blockId = undefined;
     this.reportData = [];
     this.level = "block";
+    this.blockMarkers = [];
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -766,7 +767,6 @@ export class InfraMapVisualisationComponent implements OnInit {
           [options.centerLat - 1.5, options.centerLng - 3],
           [options.centerLat + 1.5, options.centerLng + 2],
         ]);
-        this.changeDetection.detectChanges();
         
         this.genericFun(res, options, this.fileName);
         this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
@@ -778,6 +778,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             ? -1
             : 0
         );
+        this.changeDetection.detectChanges();
       },
       (err) => {
         this.data = [];
@@ -858,7 +859,6 @@ export class InfraMapVisualisationComponent implements OnInit {
             [options.centerLat - 1.5, options.centerLng - 3],
             [options.centerLat + 1.5, options.centerLng + 2],
           ]);
-          this.changeDetection.detectChanges();
          
           this.genericFun(res, options, this.fileName);
           this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
@@ -870,6 +870,7 @@ export class InfraMapVisualisationComponent implements OnInit {
               ? -1
               : 0
           );
+          this.changeDetection.detectChanges();
         },
         (err) => {
           this.data = [];
