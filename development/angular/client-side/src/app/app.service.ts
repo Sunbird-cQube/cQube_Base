@@ -234,7 +234,8 @@ export class AppServiceComponent {
         var stringLine;
         var selected = '';
         for (var key in object) {
-            if (object[key] && typeof object[key] != 'number' && object[key].includes('%')) {
+            // console.log(object[key])
+            if (object[key] && typeof object[key] != 'number' && typeof object[key] == 'string' && object[key].includes('%')) {
                 var split = object[key].split("% ");
                 object[`${key}`] = parseFloat(split[0].replace(` `, '')).toFixed(1) + ' % ' + split[1];
             }
