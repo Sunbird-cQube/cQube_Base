@@ -1920,7 +1920,6 @@ export class SatReportComponent implements OnInit {
       }
 
       if (this.selected != "absolute") {
-        console.log(this.markers[0])
           this.colors = this.commonService.getRelativeColors(this.markers, {
             value: this.grade
               ? this.markers[0].Subjects
