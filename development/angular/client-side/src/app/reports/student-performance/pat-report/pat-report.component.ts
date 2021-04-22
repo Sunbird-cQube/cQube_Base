@@ -364,6 +364,9 @@ export class PATReportComponent implements OnInit {
   }
 
   showYearMonth() {
+    this.grade = undefined;
+    this.subject = undefined;
+    this.subjectHidden = true;
     document.getElementById("home").style.display = "block";
     this.yearMonth = false;
     this.month = this.months[this.months.length - 1];
@@ -394,6 +397,9 @@ export class PATReportComponent implements OnInit {
   }
 
   onPeriodSelect() {
+    this.grade = undefined;
+    this.subject = undefined;
+    this.subjectHidden = true;
     if (this.period != "overall") {
       document.getElementById("home").style.display = "block";
     } else {
@@ -844,15 +850,15 @@ export class PATReportComponent implements OnInit {
                     );
 
                     //schoolCount
-                    this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentCount = res['footer'].total_students;
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentAttended = res['footer'].students_attended;
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
@@ -1119,15 +1125,15 @@ export class PATReportComponent implements OnInit {
                     }
 
                     //schoolCount
-                    this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentCount = res['footer'].total_students;
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentAttended = res['footer'].students_attended;
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
@@ -1419,15 +1425,15 @@ export class PATReportComponent implements OnInit {
                     );
 
                     //schoolCount
-                    this.schoolCount = res['footer'].total_schools;
+                    this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
                       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentCount = res['footer'].total_students;
+                    this.studentCount = res['footer'] ? res['footer'].total_students : null;
                     if (this.studentCount != null) {
                       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
-                    this.studentAttended = res['footer'].students_attended;
+                    this.studentAttended = res['footer'] ? res['footer'].students_attended : null;
                     if (this.studentAttended != null) {
                       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                     }
@@ -2091,15 +2097,15 @@ export class PATReportComponent implements OnInit {
       this.changeDetection.detectChanges();
     }
     //schoolCount
-    this.schoolCount = data['footer'].total_schools;
+    this.schoolCount = data['footer'] ? data['footer'].total_schools : null;
     if (this.schoolCount != null) {
       this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-    this.studentCount = data['footer'].total_students;
+    this.studentCount = data['footer'] ? data['footer'].total_students : null;
     if (this.studentCount != null) {
       this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
-    this.studentAttended = data['footer'].students_attended;
+    this.studentAttended = data['footer'] ? data['footer'].students_attended : null;
     if (this.studentAttended != null) {
       this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     }
