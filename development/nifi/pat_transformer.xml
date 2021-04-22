@@ -1801,6 +1801,7 @@
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name></name>
                             <selectedRelationships>pat_grade_subject_footer_time_range</selectedRelationships>
+                            <selectedRelationships>pat_grade_subject_footer_year_month</selectedRelationships>
                             <source>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>c5ba42ba-7c6f-3eac-0000-000000000000</id>
@@ -8912,7 +8913,7 @@
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>pat_wait_file_success_input</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>INPUT_PORT</type>
                         </inputPorts>
                         <inputPorts>
@@ -8926,7 +8927,7 @@
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>pat_input</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>INPUT_PORT</type>
                         </inputPorts>
                         <labels>
@@ -9368,7 +9369,7 @@ all category vs management</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>pat_split_wait</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <outputPorts>
@@ -9382,7 +9383,7 @@ all category vs management</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>pat_split_file_success</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <outputPorts>
@@ -9396,7 +9397,7 @@ all category vs management</label>
                             <comments></comments>
                             <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
                             <name>pat_split_file_failure</name>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <type>OUTPUT_PORT</type>
                         </outputPorts>
                         <processors>
@@ -9511,7 +9512,7 @@ all category vs management</label>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -9663,7 +9664,7 @@ all category vs management</label>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -9759,7 +9760,7 @@ all category vs management</label>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -9888,7 +9889,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -9982,7 +9983,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -10123,7 +10124,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -10249,7 +10250,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -10307,7 +10308,7 @@ where ff_uuid= '${zip_identifier}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -10376,7 +10377,7 @@ file: ${filename} null values are found.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -10483,7 +10484,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{periodic_exam_su
 <autoTerminate>false</autoTerminate>
 <name>valid</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ValidateCsv</type>
                         </processors>
@@ -10595,7 +10596,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{periodic_exam_su
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -10664,7 +10665,7 @@ same id data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -10733,7 +10734,7 @@ same id data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -10795,7 +10796,7 @@ same id data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -10921,7 +10922,7 @@ same id data validation of file:${filename} started</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -11113,7 +11114,7 @@ same id data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
                         </processors>
@@ -11225,7 +11226,7 @@ same id data validation of file:${filename} started</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -11351,7 +11352,7 @@ same id data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -11420,7 +11421,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -11532,7 +11533,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -11942,7 +11943,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -12020,7 +12021,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -12089,7 +12090,7 @@ file: ${filename} null values are found.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -12151,7 +12152,7 @@ file: ${filename} null values are found.</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -12385,7 +12386,7 @@ file: ${filename} null values are found.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -12890,7 +12891,7 @@ ${query_type:startsWith('pat_subject_footer_school_year_month'):ifElse('pat/${pa
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -12992,7 +12993,7 @@ ${query_type:startsWith('pat_subject_footer_school_year_month'):ifElse('pat/${pa
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -13184,7 +13185,7 @@ ${query_type:startsWith('pat_subject_footer_school_year_month'):ifElse('pat/${pa
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
                         </processors>
@@ -13310,7 +13311,7 @@ ${query_type:startsWith('pat_subject_footer_school_year_month'):ifElse('pat/${pa
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -13422,7 +13423,7 @@ ${query_type:startsWith('pat_subject_footer_school_year_month'):ifElse('pat/${pa
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -13571,7 +13572,7 @@ ${query_type:startsWith('pat_subject_footer_school_year_month'):ifElse('pat/${pa
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -13649,7 +13650,7 @@ ${query_type:startsWith('pat_subject_footer_school_year_month'):ifElse('pat/${pa
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -13765,7 +13766,7 @@ ${query_type:startsWith('pat_subject_footer_school_year_month'):ifElse('pat/${pa
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -13843,7 +13844,7 @@ ${query_type:startsWith('pat_subject_footer_school_year_month'):ifElse('pat/${pa
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -13945,7 +13946,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_filter_same_
 <autoTerminate>false</autoTerminate>
 <name>pat_filter_same_records</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -14054,7 +14055,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_filter_same_
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.FetchFile</type>
                         </processors>
@@ -14140,7 +14141,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_filter_same_
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -14218,7 +14219,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_filter_same_
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -14317,7 +14318,7 @@ ${query_type:startsWith('pat_exception_grade'):ifElse('/grade','None')}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -14386,7 +14387,7 @@ Mirror data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -14462,7 +14463,7 @@ Mirror data validation of file:${filename} started</value>
 <autoTerminate>false</autoTerminate>
 <name>yes_dup</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -14548,7 +14549,7 @@ Mirror data validation of file:${filename} started</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -14617,7 +14618,7 @@ file: ${filename} data types validation started.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -14683,7 +14684,7 @@ file: ${filename} data types validation started.</value>
 <autoTerminate>false</autoTerminate>
 <name>split</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitJson</type>
                         </processors>
@@ -14752,7 +14753,7 @@ same id data validation of file:${filename}, same id records not found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -14821,7 +14822,7 @@ file: ${filename} null values validation started.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -14897,7 +14898,7 @@ file: ${filename} null values validation started.</value>
 <autoTerminate>false</autoTerminate>
 <name>yes_dup</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -15027,7 +15028,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -15176,7 +15177,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -15302,7 +15303,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -15414,7 +15415,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -15500,7 +15501,7 @@ ${query_type:startsWith('pat_management_learning_outcome_p3_cluster'):ifElse('/b
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -15602,7 +15603,7 @@ ${query_type:startsWith('pat_management_learning_outcome_p3_cluster'):ifElse('/b
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -15728,7 +15729,7 @@ ${query_type:startsWith('pat_management_learning_outcome_p3_cluster'):ifElse('/b
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -15848,7 +15849,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{periodic_exam_su
 <autoTerminate>true</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -15917,7 +15918,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -16015,7 +16016,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>sum_of_dup</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -16167,7 +16168,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -16233,7 +16234,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>split</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitJson</type>
                         </processors>
@@ -16311,7 +16312,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -16547,7 +16548,7 @@ ${query_type:startsWith('pat_learning_outcome_p3_cluster')}
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -16615,7 +16616,7 @@ ${query_type:startsWith('pat_learning_outcome_p3_cluster')}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -16684,7 +16685,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -16770,7 +16771,7 @@ ${query_type:startsWith('pat_learning_outcome_p3_cluster'):ifElse('/block_id','N
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -16866,7 +16867,7 @@ ${query_type:startsWith('pat_learning_outcome_p3_cluster'):ifElse('/block_id','N
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
@@ -16935,7 +16936,7 @@ file: ${filename} null values count updated to log summary db.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -17051,7 +17052,7 @@ file: ${filename} null values count updated to log summary db.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -17153,7 +17154,7 @@ file: ${filename} null values count updated to log summary db.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -17247,7 +17248,7 @@ file: ${filename} null values count updated to log summary db.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -17316,7 +17317,7 @@ file: ${filename} columns did not match.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -17428,7 +17429,7 @@ file: ${filename} columns did not match.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -17862,7 +17863,7 @@ ${query_type:startsWith('pat_exception_management_grade_school_last_30_days'):if
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -17931,7 +17932,7 @@ same id data validation of file:${filename}, same id records found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -18057,7 +18058,7 @@ same id data validation of file:${filename}, same id records found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -18126,7 +18127,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -18387,7 +18388,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_check_same_r
 <autoTerminate>false</autoTerminate>
 <name>pat_check_same_records</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -18456,7 +18457,7 @@ same id data validation of file:${filename} error while checking same id data</v
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -18584,7 +18585,7 @@ where ff_uuid= '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -19019,7 +19020,7 @@ ${query_type:startsWith('pat_management_learning_outcome_p3_cluster'):ifElse('pa
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -19130,7 +19131,7 @@ or(${query_type:startsWith('pat_management_grade_district_last'):or(${query_type
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -19224,7 +19225,7 @@ or(${query_type:startsWith('pat_management_grade_district_last'):or(${query_type
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -19286,7 +19287,7 @@ or(${query_type:startsWith('pat_management_grade_district_last'):or(${query_type
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -19355,7 +19356,7 @@ file: ${filename} processed records updated to log db</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -19413,7 +19414,7 @@ file: ${filename} processed records updated to log db</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -19525,7 +19526,7 @@ ${query_type:startsWith('pat_management_subject_footer_school'):ifElse(#{pat_sub
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -19764,7 +19765,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_periodic_exa
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -19866,7 +19867,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{periodic_exam_su
 <autoTerminate>true</autoTerminate>
 <name>original</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -20018,7 +20019,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{periodic_exam_su
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -20080,7 +20081,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{periodic_exam_su
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -20298,7 +20299,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -20410,7 +20411,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -20563,7 +20564,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -20675,7 +20676,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.CountText</type>
                         </processors>
@@ -20909,7 +20910,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -21092,7 +21093,7 @@ or(${query_type:startsWith('pat_management_grade_district_last'):or(${query_type
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -21218,7 +21219,7 @@ or(${query_type:startsWith('pat_management_grade_district_last'):or(${query_type
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -21284,7 +21285,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -21346,7 +21347,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -21590,7 +21591,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse('subject_id,grade'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -21659,7 +21660,7 @@ file: ${filename} null values are not found.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -21728,7 +21729,7 @@ file:${filename} successfully stored "${query_type}" output into s3 output bucke
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -21840,7 +21841,7 @@ file:${filename} successfully stored "${query_type}" output into s3 output bucke
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -21902,7 +21903,7 @@ file:${filename} successfully stored "${query_type}" output into s3 output bucke
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -21960,7 +21961,7 @@ file:${filename} successfully stored "${query_type}" output into s3 output bucke
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -22029,7 +22030,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -22141,7 +22142,7 @@ Mirror data validation of file:${filename} completed and deleted the mirror data
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -22204,7 +22205,7 @@ ${filename:startsWith('periodic_exam_subject_details')})}</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -22330,7 +22331,7 @@ ${filename:startsWith('periodic_exam_subject_details')})}</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -22399,7 +22400,7 @@ same id data validation of file:${filename}, Error while filtering same id data.
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -22461,7 +22462,7 @@ same id data validation of file:${filename}, Error while filtering same id data.
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -22539,7 +22540,7 @@ same id data validation of file:${filename}, Error while filtering same id data.
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -22617,7 +22618,7 @@ same id data validation of file:${filename}, Error while filtering same id data.
 <autoTerminate>false</autoTerminate>
 <name>splits</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitRecord</type>
                         </processors>
@@ -22686,7 +22687,7 @@ Mirror data validation of file:${filename}.Error while selecting unique data</va
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -22835,7 +22836,7 @@ Mirror data validation of file:${filename}.Error while selecting unique data</va
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -22897,7 +22898,7 @@ Mirror data validation of file:${filename}.Error while selecting unique data</va
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -22965,7 +22966,7 @@ Mirror data validation of file:${filename}.Error while selecting unique data</va
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -23067,7 +23068,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_filter_same_
 <autoTerminate>false</autoTerminate>
 <name>pat_filter_same_id_records</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -23155,7 +23156,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_filter_same_
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -23278,7 +23279,7 @@ ${query_type:startsWith('pat_exam_school_by_year_month')})})})}</value>
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -23347,7 +23348,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -23459,7 +23460,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -23561,7 +23562,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -23637,7 +23638,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
 <autoTerminate>false</autoTerminate>
 <name>yes_dup</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -23740,7 +23741,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_select_colum
 <autoTerminate>false</autoTerminate>
 <name>pat_select_columns</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -23852,7 +23853,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_select_colum
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -23927,7 +23928,7 @@ executesql.query.fetchtime =${executesql.query.fetchtime}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -24039,7 +24040,7 @@ executesql.query.fetchtime =${executesql.query.fetchtime}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.CountText</type>
                         </processors>
@@ -24168,7 +24169,7 @@ where ff_uuid= '${files_uuid}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -24320,7 +24321,7 @@ where ff_uuid= '${files_uuid}'
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -24411,7 +24412,7 @@ ${filename:startsWith('periodic_exam_subject_details')})}</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -24480,7 +24481,7 @@ file:${filename} Error during partition_by_level of "${query_type}" file.</value
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -24606,7 +24607,7 @@ file:${filename} Error during partition_by_level of "${query_type}" file.</value
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -24664,7 +24665,7 @@ file:${filename} Error during partition_by_level of "${query_type}" file.</value
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -24733,7 +24734,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -24835,7 +24836,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -24929,7 +24930,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -25075,7 +25076,7 @@ ${query_type:startsWith('pat_learning_outcome_p3_cluster')}
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -25144,7 +25145,7 @@ Mirror data validation of file:${filename}, Error while checking the mirror data
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -25270,7 +25271,7 @@ Mirror data validation of file:${filename}, Error while checking the mirror data
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -25339,7 +25340,7 @@ file:${filename} aggregations started.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -25451,7 +25452,7 @@ ${query_type:startsWith('pat_management_subject_footer_school'):ifElse(#{pat_sub
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -25513,7 +25514,7 @@ ${query_type:startsWith('pat_management_subject_footer_school'):ifElse(#{pat_sub
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -25575,7 +25576,7 @@ ${query_type:startsWith('pat_management_subject_footer_school'):ifElse(#{pat_sub
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -25594,7 +25595,7 @@ ${query_type:startsWith('pat_management_subject_footer_school'):ifElse(#{pat_sub
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>Database Connection Pooling Service</key>
@@ -25727,7 +25728,7 @@ ${query_type:startsWith('pat_management_subject_footer_school'):ifElse(#{pat_sub
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -25782,6 +25783,12 @@ ${query_type:startsWith('pat_management_subject_footer_school'):ifElse(#{pat_sub
         <key>pat_grade_subject_footer_time_range</key>
         <value>
             <name>pat_grade_subject_footer_time_range</name>
+        </value>
+    </entry>
+    <entry>
+        <key>pat_grade_subject_footer_year_month</key>
+        <value>
+            <name>pat_grade_subject_footer_year_month</name>
         </value>
     </entry>
     <entry>
@@ -25863,6 +25870,12 @@ ${query_type:startsWith('pat_management_subject_footer_school'):ifElse(#{pat_sub
 :or(${query_type:startsWith('pat_subject_footer_block_last')}):or(${query_type:startsWith('pat_subject_footer_block_all')})
 :or(${query_type:startsWith('pat_subject_footer_cluster_last')}):or(${query_type:startsWith('pat_subject_footer_cluster_all')})
 :or(${query_type:startsWith('pat_subject_footer_school_last')}):or(${query_type:startsWith('pat_subject_footer_school_all')})}</value>
+    </entry>
+    <entry>
+        <key>pat_grade_subject_footer_year_month</key>
+        <value>${query_type:startsWith('pat_subject_footer_district_year_month'):or(${query_type:startsWith('pat_subject_footer_block_year_month')})
+:or(${query_type:startsWith('pat_subject_footer_cluster_year_month')}):or(${query_type:startsWith('pat_subject_footer_school_year_month')})
+}</value>
     </entry>
     <entry>
         <key>pat_heat_all</key>
@@ -25965,6 +25978,10 @@ ${query_type:startsWith('pat_meta_last7')}
                             </relationships>
                             <relationships>
 <autoTerminate>false</autoTerminate>
+<name>pat_grade_subject_footer_year_month</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
 <name>pat_heat_all</name>
                             </relationships>
                             <relationships>
@@ -25999,7 +26016,7 @@ ${query_type:startsWith('pat_meta_last7')}
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -26233,7 +26250,7 @@ ${query_type:startsWith('pat_meta_last7')}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -26311,7 +26328,7 @@ ${query_type:startsWith('pat_meta_last7')}
 <autoTerminate>false</autoTerminate>
 <name>splits</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.SplitRecord</type>
                         </processors>
@@ -26413,7 +26430,7 @@ ${query_type:startsWith('pat_exception_management_school_last_30_days')}
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -26482,7 +26499,7 @@ Mirror data validation of file:${filename}.Error while selecting unique data</va
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -26612,7 +26629,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_update_null_
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -26696,7 +26713,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_update_null_
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -26804,7 +26821,7 @@ ${query_type:startsWith('pat_exception_management_grade_school'):ifElse(#{pat_ex
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -26956,7 +26973,7 @@ ${query_type:startsWith('pat_exception_management_grade_school'):ifElse(#{pat_ex
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -27044,7 +27061,7 @@ ${query_type:startsWith('pat_exception_management_grade_school'):ifElse(#{pat_ex
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PartitionRecord</type>
                         </processors>
@@ -27283,7 +27300,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_periodic_exa
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
                         </processors>
@@ -27352,7 +27369,7 @@ file: ${filename} process end time updated to log db</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -27421,7 +27438,7 @@ file: ${filename} Error while getting null values</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -27490,7 +27507,7 @@ file:${filename} Error during jolt transformation of "${query_type}" query.</val
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -27602,7 +27619,7 @@ file:${filename} Error during jolt transformation of "${query_type}" query.</val
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -27660,7 +27677,7 @@ file:${filename} Error during jolt transformation of "${query_type}" query.</val
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -27786,7 +27803,7 @@ file:${filename} Error during jolt transformation of "${query_type}" query.</val
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -28234,7 +28251,7 @@ ${query_type:startsWith('pat_management_subject_footer_district_last_7_days'):if
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.aws.s3.PutS3Object</type>
                         </processors>
@@ -28303,7 +28320,7 @@ same id data validation of file:${filename}, same id records found </value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -28455,7 +28472,7 @@ same id data validation of file:${filename}, same id records found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExecuteSQLRecord</type>
                         </processors>
@@ -28567,7 +28584,7 @@ same id data validation of file:${filename}, same id records found </value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -28636,7 +28653,7 @@ same id data validation of file:${filename} error while same id mirror data</val
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -28730,7 +28747,7 @@ same id data validation of file:${filename} error while same id mirror data</val
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -28856,7 +28873,7 @@ same id data validation of file:${filename} error while same id mirror data</val
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -28940,7 +28957,7 @@ same id data validation of file:${filename} error while same id mirror data</val
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
@@ -29066,7 +29083,7 @@ same id data validation of file:${filename} error while same id mirror data</val
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -29209,7 +29226,7 @@ ${query_type:startsWith('pat_management_learning_outcome_p3_cluster')})}</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -29324,7 +29341,7 @@ ${query_type:startsWith('pat_management_learning_outcome_p3_cluster')})}</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -29450,7 +29467,7 @@ ${query_type:startsWith('pat_subject_footer_school'):ifElse(#{pat_subject_footer
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.JoltTransformJSON</type>
                         </processors>
@@ -29516,7 +29533,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 <autoTerminate>false</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -29665,7 +29682,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 <autoTerminate>false</autoTerminate>
 <name>wait</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
                         </processors>
@@ -29777,7 +29794,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -29835,7 +29852,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -29937,7 +29954,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -30053,7 +30070,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogAttribute</type>
                         </processors>
@@ -30129,7 +30146,7 @@ ${filename:startsWith('periodic_exam_subject_details')}
 <autoTerminate>false</autoTerminate>
 <name>yes_dup</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -30231,7 +30248,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_check_same_i
 <autoTerminate>false</autoTerminate>
 <name>pat_check_same_id_records</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -30343,7 +30360,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_check_same_i
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -30412,7 +30429,7 @@ Mirror data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -30470,7 +30487,7 @@ Mirror data validation of file:${filename} started</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.UpdateCounter</type>
                         </processors>
@@ -30582,7 +30599,7 @@ Mirror data validation of file:${filename} started</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
                         </processors>
@@ -30651,7 +30668,7 @@ Mirror data validation of file:${filename}.Error while checking mirror data</val
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -30753,7 +30770,7 @@ Mirror data validation of file:${filename}.Error while checking mirror data</val
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Notify</type>
                         </processors>
@@ -30822,7 +30839,7 @@ file: ${filename}  validations started.</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
@@ -30884,7 +30901,7 @@ file: ${filename}  validations started.</value>
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
@@ -31014,7 +31031,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -31145,7 +31162,7 @@ WHERE ff_uuid = '${files_uuid}'</value>
 <autoTerminate>false</autoTerminate>
 <name>success</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
                         </processors>
@@ -31247,7 +31264,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_select_colum
 <autoTerminate>false</autoTerminate>
 <name>pat_select_columns</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.QueryRecord</type>
                         </processors>
@@ -31439,7 +31456,7 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{pat_select_colum
 <autoTerminate>true</autoTerminate>
 <name>unmatched</name>
                             </relationships>
-                            <state>RUNNING</state>
+                            <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ExtractText</type>
                         </processors>
@@ -40207,5 +40224,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/21/2021 13:07:07 IST</timestamp>
+    <timestamp>04/22/2021 09:17:35 IST</timestamp>
 </template>
