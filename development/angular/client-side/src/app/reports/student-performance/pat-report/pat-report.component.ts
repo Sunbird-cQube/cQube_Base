@@ -306,8 +306,7 @@ export class PATReportComponent implements OnInit {
           this.changeDetection.detectChanges();
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
         }
       );
   }
@@ -335,8 +334,7 @@ export class PATReportComponent implements OnInit {
           if (blockId) this.onblockLinkClick(blockId);
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
         }
       );
   }
@@ -360,8 +358,7 @@ export class PATReportComponent implements OnInit {
           this.onclusterLinkClick(clusterId);
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
         }
       );
   }
@@ -575,14 +572,12 @@ export class PATReportComponent implements OnInit {
                 },
                 (err) => {
                   this.allDistricts = [];
-                  this.data = [];
-                  this.commonService.loaderAndErr(this.data);
+                  this.errorHandling();
                 }
               );
           },
           (error) => {
-            this.data = [];
-            this.commonService.loaderAndErr(this.data);
+            this.errorHandling();
           }
         );
 
@@ -871,14 +866,12 @@ export class PATReportComponent implements OnInit {
                   }
                 },
                 (err) => {
-                  this.data = [];
-                  this.commonService.loaderAndErr(this.data);
+                  this.errorHandling();
                 }
               );
           },
           (error) => {
-            this.data = [];
-            this.commonService.loaderAndErr(this.data);
+            this.errorHandling();
           }
         );
       globalMap.addLayer(this.layerMarkers);
@@ -1161,14 +1154,12 @@ export class PATReportComponent implements OnInit {
                   }
                 },
                 (err) => {
-                  this.data = [];
-                  this.commonService.loaderAndErr(this.data);
+                  this.errorHandling();
                 }
               );
           },
           (error) => {
-            this.data = [];
-            this.commonService.loaderAndErr(this.data);
+            this.errorHandling();
           }
         );
       globalMap.addLayer(this.layerMarkers);
@@ -1450,14 +1441,12 @@ export class PATReportComponent implements OnInit {
                   }
                 },
                 (err) => {
-                  this.data = [];
-                  this.commonService.loaderAndErr(this.data);
+                  this.errorHandling();
                 }
               );
           },
           (error) => {
-            this.data = [];
-            this.commonService.loaderAndErr(this.data);
+            this.errorHandling();
           }
         );
 
@@ -1572,8 +1561,7 @@ export class PATReportComponent implements OnInit {
           );
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
           document.getElementById("spinner").style.display = "none";
         }
       );
@@ -1699,8 +1687,7 @@ export class PATReportComponent implements OnInit {
           this.changeDetection.detectChanges();
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
         }
       );
     globalMap.addLayer(this.layerMarkers);
@@ -1853,14 +1840,12 @@ export class PATReportComponent implements OnInit {
                 );
               },
               (err) => {
-                this.data = [];
-                this.commonService.loaderAndErr(this.data);
+                this.errorHandling();
               }
             );
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
         }
       );
     globalMap.addLayer(this.layerMarkers);
@@ -2449,6 +2434,15 @@ export class PATReportComponent implements OnInit {
 
     var myobj = Object.assign(orgObject, ordered);
     this.reportData.push(myobj);
+  }
+
+  errorHandling(){
+    this.schoolCount = undefined;
+    this.studentAttended = undefined;
+    this.studentCount = undefined;
+    this.changeDetection.detectChanges();
+    this.data = [];
+    this.commonService.loaderAndErr(this.data);
   }
 
   goToHealthCard(): void {
