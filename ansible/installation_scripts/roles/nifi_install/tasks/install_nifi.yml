@@ -152,7 +152,7 @@
   file:
     path: "{{ base_dir }}/cqube/nifi/nifi/conf/flow.xml.gz"
     state: absent
-#  tags: update
+  tags: update
 #1.12
 - name: start NiFi
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
