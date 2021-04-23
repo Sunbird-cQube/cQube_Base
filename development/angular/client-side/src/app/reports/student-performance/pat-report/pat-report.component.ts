@@ -306,8 +306,7 @@ export class PATReportComponent implements OnInit {
           this.changeDetection.detectChanges();
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
         }
       );
   }
@@ -335,8 +334,7 @@ export class PATReportComponent implements OnInit {
           if (blockId) this.onblockLinkClick(blockId);
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
         }
       );
   }
@@ -360,8 +358,7 @@ export class PATReportComponent implements OnInit {
           this.onclusterLinkClick(clusterId);
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
         }
       );
   }
@@ -575,14 +572,12 @@ export class PATReportComponent implements OnInit {
                 },
                 (err) => {
                   this.allDistricts = [];
-                  this.data = [];
-                  this.commonService.loaderAndErr(this.data);
+                  this.errorHandling();
                 }
               );
           },
           (error) => {
-            this.data = [];
-            this.commonService.loaderAndErr(this.data);
+            this.errorHandling();
           }
         );
 
@@ -683,7 +678,6 @@ export class PATReportComponent implements OnInit {
 
                   if (this.data.length > 0) {
                     let result = this.data;
-                    // this.blockMarkers = [];
                     this.blockMarkers = result;
                     if (!this.blockMarkers[0]["Subjects"]) {
                       this.blockFilter = this.blockMarkers;
@@ -872,14 +866,12 @@ export class PATReportComponent implements OnInit {
                   }
                 },
                 (err) => {
-                  this.data = [];
-                  this.commonService.loaderAndErr(this.data);
+                  this.errorHandling();
                 }
               );
           },
           (error) => {
-            this.data = [];
-            this.commonService.loaderAndErr(this.data);
+            this.errorHandling();
           }
         );
       globalMap.addLayer(this.layerMarkers);
@@ -1066,6 +1058,7 @@ export class PATReportComponent implements OnInit {
                           );
 
                     for (let i = 0; i < this.clusterMarkers.length; i++) {
+                      if (this.period != 'all') {
                       if (this.grade && !this.subject) {
                         this.clusterMarkers[i].Details['total_students'] = this.clusterMarkers[i].Subjects['Grade Performance']['total_students'];
                         this.clusterMarkers[i].Details['students_attended'] = this.clusterMarkers[i].Subjects['Grade Performance']['students_attended'];
@@ -1088,6 +1081,7 @@ export class PATReportComponent implements OnInit {
                           if (this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`])
                             this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.clusterMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
                         })
+                      }
                       }
                       var color;
                       if (!this.grade && !this.subject) {
@@ -1160,14 +1154,12 @@ export class PATReportComponent implements OnInit {
                   }
                 },
                 (err) => {
-                  this.data = [];
-                  this.commonService.loaderAndErr(this.data);
+                  this.errorHandling();
                 }
               );
           },
           (error) => {
-            this.data = [];
-            this.commonService.loaderAndErr(this.data);
+            this.errorHandling();
           }
         );
       globalMap.addLayer(this.layerMarkers);
@@ -1352,6 +1344,7 @@ export class PATReportComponent implements OnInit {
                           );
 
                     for (let i = 0; i < this.schoolMarkers.length; i++) {
+                      if (this.period != 'all') {
                       if (this.grade && !this.subject) {
                         this.schoolMarkers[i].Details['total_students'] = this.schoolMarkers[i].Subjects['Grade Performance']['total_students'];
                         this.schoolMarkers[i].Details['students_attended'] = this.schoolMarkers[i].Subjects['Grade Performance']['students_attended'];
@@ -1374,6 +1367,7 @@ export class PATReportComponent implements OnInit {
                           if (this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`])
                             this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`] = this.schoolMarkers[i]['Grade Wise Performance'][`${myGrade}`]['percentage'];
                         })
+                      }
                       }
                       var color;
                       if (!this.grade && !this.subject) {
@@ -1447,14 +1441,12 @@ export class PATReportComponent implements OnInit {
                   }
                 },
                 (err) => {
-                  this.data = [];
-                  this.commonService.loaderAndErr(this.data);
+                  this.errorHandling();
                 }
               );
           },
           (error) => {
-            this.data = [];
-            this.commonService.loaderAndErr(this.data);
+            this.errorHandling();
           }
         );
 
@@ -1515,9 +1507,9 @@ export class PATReportComponent implements OnInit {
       })
       .subscribe(
         (res) => {
-          this.allBlocks = this.data = res["data"];
+          this.data = res["data"];
           this.allGrades = res['grades'];
-          this.blockMarkers = this.data;
+          this.allBlocks = this.blockMarkers = this.data;
           if (this.grade)
             this.allSubjects = res['subjects'];
 
@@ -1569,8 +1561,7 @@ export class PATReportComponent implements OnInit {
           );
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
           document.getElementById("spinner").style.display = "none";
         }
       );
@@ -1696,8 +1687,7 @@ export class PATReportComponent implements OnInit {
           this.changeDetection.detectChanges();
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
         }
       );
     globalMap.addLayer(this.layerMarkers);
@@ -1733,9 +1723,6 @@ export class PATReportComponent implements OnInit {
       this.grade = undefined;
       this.subject = undefined;
     }
-    var myData = this.clusterFilter.find(
-      (a) => a.Details.cluster_id == clusterId
-    );
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();
@@ -1762,13 +1749,13 @@ export class PATReportComponent implements OnInit {
             .subscribe(
               (res) => {
                 this.data = res["data"];
+                this.allGrades = res['grades'];
                 if (this.grade)
                   this.allSubjects = res['subjects'];
-                this.allGrades = res['grades'];
+
                 this.schoolMarkers = this.data;
-                var markers = result["data"];
                 var myBlocks = [];
-                markers.forEach((element) => {
+                this.blockMarkers.forEach((element) => {
                   if (
                     element.Details.district_id === this.blockHierarchy.distId
                   ) {
@@ -1776,6 +1763,13 @@ export class PATReportComponent implements OnInit {
                   }
                 });
                 this.allBlocks = this.blockMarkers = myBlocks;
+                this.blockMarkers.sort((a, b) =>
+                  a.Details.block_name > b.Details.block_name
+                    ? 1
+                    : b.Details.block_name > a.Details.block_name
+                      ? -1
+                      : 0
+                );
 
                 var myCluster = [];
                 this.clusterMarkers.forEach((element) => {
@@ -1846,14 +1840,12 @@ export class PATReportComponent implements OnInit {
                 );
               },
               (err) => {
-                this.data = [];
-                this.commonService.loaderAndErr(this.data);
+                this.errorHandling();
               }
             );
         },
         (err) => {
-          this.data = [];
-          this.commonService.loaderAndErr(this.data);
+          this.errorHandling();
         }
       );
     globalMap.addLayer(this.layerMarkers);
@@ -2442,6 +2434,15 @@ export class PATReportComponent implements OnInit {
 
     var myobj = Object.assign(orgObject, ordered);
     this.reportData.push(myobj);
+  }
+
+  errorHandling(){
+    this.schoolCount = undefined;
+    this.studentAttended = undefined;
+    this.studentCount = undefined;
+    this.changeDetection.detectChanges();
+    this.data = [];
+    this.commonService.loaderAndErr(this.data);
   }
 
   goToHealthCard(): void {

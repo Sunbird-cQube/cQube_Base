@@ -44,6 +44,9 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
             } else {
                 if (grade) {
                     fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/cluster/${grade}.json`;
+                    if (subject) {
+                        footerFile = `${report}/school_management_category/${period}/${semester}/overall_category/${management}/all_subjects_footer.json`;
+                    }
                 } else {
                     fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/cluster.json`;
                 }
@@ -80,9 +83,9 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 }
             }
         }
-
         clusterData = await s3File.readS3File(fileName);
         var footer;
+
         if (period != 'all') {
             if (subject)
                 footerData = await s3File.readS3File(footerFile);
@@ -171,10 +174,10 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
             if (grad)
                 footerData = await s3File.readS3File(footerFile);
             if (grad && !subject) {
-                if (footerData)
+                if (footerData && footerData[blockId])
                     footer = footerData[blockId][grad];
             } else if (grad && subject) {
-                if (footerData)
+                if (footerData && footerData[blockId])
                     footer = footerData[blockId][grad].subject[subject];
             } else {
                 if (clusterData['footer'])
