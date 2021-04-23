@@ -44,6 +44,9 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
             } else {
                 if (grade) {
                     fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/block/${grade}.json`;
+                    if (subject) {
+                        footerFile = `${report}/school_management_category/${period}/${semester}/overall_category/${management}/all_subjects_footer.json`;
+                    }
                 } else {
                     fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/block.json`;
                 }
