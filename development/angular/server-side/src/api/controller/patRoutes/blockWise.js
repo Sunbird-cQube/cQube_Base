@@ -169,10 +169,10 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
             if (grad)
                 footerData = await s3File.readS3File(footerFile);
             if (grad && !subject) {
-                if (footerData)
+                if (footerData && footerData[distId])
                     footer = footerData[distId][grad];
             } else if (grad && subject) {
-                if (footerData)
+                if (footerData && footerData[distId])
                     footer = footerData[distId][grad].subject[subject];
             } else {
                 if (blockData['footer'])

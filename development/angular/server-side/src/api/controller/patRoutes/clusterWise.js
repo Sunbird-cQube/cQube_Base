@@ -171,10 +171,10 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
             if (grad)
                 footerData = await s3File.readS3File(footerFile);
             if (grad && !subject) {
-                if (footerData)
+                if (footerData && footerData[blockId])
                     footer = footerData[blockId][grad];
             } else if (grad && subject) {
-                if (footerData)
+                if (footerData  && footerData[blockId])
                     footer = footerData[blockId][grad].subject[subject];
             } else {
                 if (clusterData['footer'])
