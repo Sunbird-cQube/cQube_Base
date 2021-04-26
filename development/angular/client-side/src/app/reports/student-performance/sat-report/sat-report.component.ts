@@ -614,75 +614,12 @@ export class SatReportComponent implements OnInit {
                     }
 
                     this.schoolCount = 0;
-                    if (this.period != 'all') {
-                      if (this.grade && !this.subject) {
-                        this.blockMarkers.sort((a, b) =>
-                          a.Subjects["Grade Performance"]['percentage'] >
-                            b.Subjects["Grade Performance"]['percentage']
-                            ? 1
-                            : b.Subjects["Grade Performance"]['percentage'] >
-                              a.Subjects["Grade Performance"]['percentage']
-                              ? -1
-                              : 0
-                        );
-                      } else if (this.grade && this.subject) {
-                        let filterData = this.blockMarkers.filter((obj) => {
-                          return Object.keys(obj.Subjects).includes(this.subject);
-                        });
-                        this.blockMarkers = filterData;
-                        this.blockMarkers.sort((a, b) =>
-                          Number(a.Subjects[`${this.subject}`]['percentage']) >
-                            Number(b.Subjects[`${this.subject}`]['percentage'])
-                            ? 1
-                            : Number(b.Subjects[`${this.subject}`]['percentage']) >
-                              Number(a.Subjects[`${this.subject}`]['percentage'])
-                              ? -1
-                              : 0
-                        );
-                      } else {
-                        this.blockMarkers.sort((a, b) =>
-                          a.Details["Performance"] > b.Details["Performance"]
-                            ? 1
-                            : b.Details["Performance"] > a.Details["Performance"]
-                              ? -1
-                              : 0
-                        );
-                      }
-                    } else {
-                      if (this.grade && !this.subject) {
-                        this.blockMarkers.sort((a, b) =>
-                          a.Subjects["Grade Performance"] >
-                            b.Subjects["Grade Performance"]
-                            ? 1
-                            : b.Subjects["Grade Performance"] >
-                              a.Subjects["Grade Performance"]
-                              ? -1
-                              : 0
-                        );
-                      } else if (this.grade && this.subject) {
-                        let filterData = this.blockMarkers.filter((obj) => {
-                          return Object.keys(obj.Subjects).includes(this.subject);
-                        });
-                        this.blockMarkers = filterData;
-                        this.blockMarkers.sort((a, b) =>
-                          Number(a.Subjects[`${this.subject}`]) >
-                            Number(b.Subjects[`${this.subject}`])
-                            ? 1
-                            : Number(b.Subjects[`${this.subject}`]) >
-                              Number(a.Subjects[`${this.subject}`])
-                              ? -1
-                              : 0
-                        );
-                      } else {
-                        this.blockMarkers.sort((a, b) =>
-                          a.Details["Performance"] > b.Details["Performance"]
-                            ? 1
-                            : b.Details["Performance"] > a.Details["Performance"]
-                              ? -1
-                              : 0
-                        );
-                      }
-                    }
+                    if (this.grade && this.subject) {
+                      let filterData = this.blockMarkers.filter((obj) => {
+                        return Object.keys(obj.Subjects).includes(this.subject);
+                      });
+                      this.blockFilter = filterData;
+                  }
 
                     this.colors =
                       this.blockMarkers.length == 1
@@ -900,75 +837,12 @@ export class SatReportComponent implements OnInit {
                       this.clusterFilter = this.clusterMarkers;
                     }
                     this.schoolCount = 0;
-                    if (this.period != 'all') {
-                      if (this.grade && !this.subject) {
-                        this.clusterMarkers.sort((a, b) =>
-                          a.Subjects["Grade Performance"]['percentage'] >
-                            b.Subjects["Grade Performance"]['percentage']
-                            ? 1
-                            : b.Subjects["Grade Performance"]['percentage'] >
-                              a.Subjects["Grade Performance"]['percentage']
-                              ? -1
-                              : 0
-                        );
-                      } else if (this.grade && this.subject) {
-                        let filterData = this.clusterMarkers.filter((obj) => {
-                          return Object.keys(obj.Subjects).includes(this.subject);
-                        });
-                        this.clusterMarkers = filterData;
-                        this.clusterMarkers.sort((a, b) =>
-                          Number(a.Subjects[`${this.subject}`]['percentage']) >
-                            Number(b.Subjects[`${this.subject}`]['percentage'])
-                            ? 1
-                            : Number(b.Subjects[`${this.subject}`]['percentage']) >
-                              Number(a.Subjects[`${this.subject}`]['percentage'])
-                              ? -1
-                              : 0
-                        );
-                      } else {
-                        this.clusterMarkers.sort((a, b) =>
-                          a.Details["Performance"] > b.Details["Performance"]
-                            ? 1
-                            : b.Details["Performance"] > a.Details["Performance"]
-                              ? -1
-                              : 0
-                        );
-                      }
-                    } else {
-                      if (this.grade && !this.subject) {
-                        this.clusterMarkers.sort((a, b) =>
-                          a.Subjects["Grade Performance"] >
-                            b.Subjects["Grade Performance"]
-                            ? 1
-                            : b.Subjects["Grade Performance"] >
-                              a.Subjects["Grade Performance"]
-                              ? -1
-                              : 0
-                        );
-                      } else if (this.grade && this.subject) {
-                        let filterData = this.clusterMarkers.filter((obj) => {
-                          return Object.keys(obj.Subjects).includes(this.subject);
-                        });
-                        this.clusterMarkers = filterData;
-                        this.clusterMarkers.sort((a, b) =>
-                          Number(a.Subjects[`${this.subject}`]) >
-                            Number(b.Subjects[`${this.subject}`])
-                            ? 1
-                            : Number(b.Subjects[`${this.subject}`]) >
-                              Number(a.Subjects[`${this.subject}`])
-                              ? -1
-                              : 0
-                        );
-                      } else {
-                        this.clusterMarkers.sort((a, b) =>
-                          a.Details["Performance"] > b.Details["Performance"]
-                            ? 1
-                            : b.Details["Performance"] > a.Details["Performance"]
-                              ? -1
-                              : 0
-                        );
-                      }
-                    }
+                    if (this.grade && this.subject) {
+                      let filterData = this.clusterMarkers.filter((obj) => {
+                        return Object.keys(obj.Subjects).includes(this.subject);
+                      });
+                      this.clusterMarkers = filterData;
+                  }
                     this.colors =
                       this.clusterMarkers.length == 1
                         ? ["red"]
@@ -1184,74 +1058,11 @@ export class SatReportComponent implements OnInit {
                     let result = this.data;
                     this.schoolCount = 0;
                     this.schoolMarkers = result;
-                    if (this.period != 'all') {
-                      if (this.grade && !this.subject) {
-                        this.schoolMarkers.sort((a, b) =>
-                          a.Subjects["Grade Performance"]['percentage'] >
-                            b.Subjects["Grade Performance"]['percentage']
-                            ? 1
-                            : b.Subjects["Grade Performance"]['percentage'] >
-                              a.Subjects["Grade Performance"]['percentage']
-                              ? -1
-                              : 0
-                        );
-                      } else if (this.grade && this.subject) {
-                        let filterData = this.schoolMarkers.filter((obj) => {
-                          return Object.keys(obj.Subjects).includes(this.subject);
-                        });
-                        this.schoolMarkers = filterData;
-                        this.schoolMarkers.sort((a, b) =>
-                          Number(a.Subjects[`${this.subject}`]['percentage']) >
-                            Number(b.Subjects[`${this.subject}`]['percentage'])
-                            ? 1
-                            : Number(b.Subjects[`${this.subject}`]['percentage']) >
-                              Number(a.Subjects[`${this.subject}`]['percentage'])
-                              ? -1
-                              : 0
-                        );
-                      } else {
-                        this.schoolMarkers.sort((a, b) =>
-                          a.Details["Performance"] > b.Details["Performance"]
-                            ? 1
-                            : b.Details["Performance"] > a.Details["Performance"]
-                              ? -1
-                              : 0
-                        );
-                      }
-                    } else {
-                      if (this.grade && !this.subject) {
-                        this.schoolMarkers.sort((a, b) =>
-                          a.Subjects["Grade Performance"] >
-                            b.Subjects["Grade Performance"]
-                            ? 1
-                            : b.Subjects["Grade Performance"] >
-                              a.Subjects["Grade Performance"]
-                              ? -1
-                              : 0
-                        );
-                      } else if (this.grade && this.subject) {
-                        let filterData = this.schoolMarkers.filter((obj) => {
-                          return Object.keys(obj.Subjects).includes(this.subject);
-                        });
-                        this.schoolMarkers = filterData;
-                        this.schoolMarkers.sort((a, b) =>
-                          Number(a.Subjects[`${this.subject}`]) >
-                            Number(b.Subjects[`${this.subject}`])
-                            ? 1
-                            : Number(b.Subjects[`${this.subject}`]) >
-                              Number(a.Subjects[`${this.subject}`])
-                              ? -1
-                              : 0
-                        );
-                      } else {
-                        this.schoolMarkers.sort((a, b) =>
-                          a.Details["Performance"] > b.Details["Performance"]
-                            ? 1
-                            : b.Details["Performance"] > a.Details["Performance"]
-                              ? -1
-                              : 0
-                        );
-                      }
+                    if (this.grade && this.subject) {
+                      let filterData = this.schoolMarkers.filter((obj) => {
+                        return Object.keys(obj.Subjects).includes(this.subject);
+                      });
+                      this.schoolMarkers = filterData;
                     }
                     this.colors =
                       this.schoolMarkers.length == 1
@@ -1550,7 +1361,13 @@ export class SatReportComponent implements OnInit {
             }
           });
           this.allBlocks = this.blockMarkers = myBlocks;
-
+          this.allBlocks.sort((a, b) =>
+          a.Details.block_name > b.Details.block_name
+            ? 1
+            : b.Details.block_name > a.Details.block_name
+              ? -1
+              : 0
+          );
           // set hierarchy values
           this.blockHierarchy = {
             distId: this.data[0].Details.district_id,
@@ -1677,7 +1494,7 @@ export class SatReportComponent implements OnInit {
                   }
                 });
                 this.allBlocks = this.blockMarkers = myBlocks;
-                this.blockMarkers.sort((a, b) =>
+                this.allBlocks.sort((a, b) =>
                   a.Details.block_name > b.Details.block_name
                     ? 1
                     : b.Details.block_name > a.Details.block_name
@@ -1694,6 +1511,13 @@ export class SatReportComponent implements OnInit {
                   }
                 });
                 this.allClusters = this.clusterMarkers = myCluster;
+                this.allClusters.sort((a, b) =>
+                a.Details.cluster_name > b.Details.cluster_name
+                  ? 1
+                  : b.Details.cluster_name > a.Details.cluster_name
+                    ? -1
+                    : 0
+                );
 
                 // set hierarchy values
                 this.clusterHierarchy = {
@@ -1772,86 +1596,9 @@ export class SatReportComponent implements OnInit {
     var myData = data["data"];
     var color;
     var colors = [];
+    this.allSubjects.sort();
     if (myData.length > 0) {
       this.markers = myData;
-      if (
-        this.level == "block" ||
-        this.level == "cluster" ||
-        this.level == "school"
-      ) {
-        colors = [];
-        if (!this.grade && !this.subject) {
-          this.markers.sort((a, b) =>
-            a.Details["Performance"] > b.Details["Performance"]
-              ? 1
-              : b.Details["Performance"] > a.Details["Performance"]
-                ? -1
-                : 0
-          );
-        }
-
-      } else {
-        colors = [];
-        if (this.period !== 'all') {
-          if (this.grade && !this.subject) {
-            this.markers.sort((a, b) =>
-              a.Subjects["Grade Performance"]['percentage'] > b.Subjects["Grade Performance"]['percentage']
-                ? 1
-                : b.Subjects["Grade Performance"]['percentage'] >
-                  a.Subjects["Grade Performance"]['percentage']
-                  ? -1
-                  : 0
-            );
-          } else if (this.grade && this.subject) {
-            this.markers.sort((a, b) =>
-              Number(a.Subjects[`${this.subject}`]['percentage']) >
-                Number(b.Subjects[`${this.subject}`]['percentage'])
-                ? 1
-                : Number(b.Subjects[`${this.subject}`]['percentage']) >
-                  Number(a.Subjects[`${this.subject}`]['percentage'])
-                  ? -1
-                  : 0
-            );
-          } else {
-            this.markers.sort((a, b) =>
-              a.Details["Performance"] > b.Details["Performance"]
-                ? 1
-                : b.Details["Performance"] > a.Details["Performance"]
-                  ? -1
-                  : 0
-            );
-          }
-        } else {
-          if (this.grade && !this.subject) {
-            this.markers.sort((a, b) =>
-              a.Subjects["Grade Performance"] > b.Subjects["Grade Performance"]
-                ? 1
-                : b.Subjects["Grade Performance"] >
-                  a.Subjects["Grade Performance"]
-                  ? -1
-                  : 0
-            );
-          } else if (this.grade && this.subject) {
-            this.markers.sort((a, b) =>
-              Number(a.Subjects[`${this.subject}`]) >
-                Number(b.Subjects[`${this.subject}`])
-                ? 1
-                : Number(b.Subjects[`${this.subject}`]) >
-                  Number(a.Subjects[`${this.subject}`])
-                  ? -1
-                  : 0
-            );
-          } else {
-            this.markers.sort((a, b) =>
-              a.Details["Performance"] > b.Details["Performance"]
-                ? 1
-                : b.Details["Performance"] > a.Details["Performance"]
-                  ? -1
-                  : 0
-            );
-          }
-        }
-      }
       if(this.grade && this.subject){
         var filtererSubData =  this.markers.filter(item=>{
           return item.Subjects[`${this.subject}`];
@@ -2138,9 +1885,15 @@ export class SatReportComponent implements OnInit {
       }
     } else {
       if (this.grade && !this.subject) {
+        ordered = {};
+        Object.keys(markers["Subjects"])
+          .sort()
+          .forEach(function (key) {
+            ordered[key] = markers["Subjects"][key];
+          });
         yourData = this.commonService
           .getInfoFrom(
-            markers.Grades[`${this.grade}`],
+            ordered,
             "Performance",
             level,
             "patReport",
@@ -2149,9 +1902,15 @@ export class SatReportComponent implements OnInit {
           )
           .join(" <br>");
       } else if (this.grade && this.subject) {
+        ordered = {};
+        Object.keys(markers["Subjects"])
+          .sort()
+          .forEach(function (key) {
+            ordered[key] = markers["Subjects"][key];
+          });
         yourData = this.commonService
           .getInfoFrom(
-            markers.Grades[`${this.grade}`],
+            ordered,
             "Performance",
             level,
             "patReport",

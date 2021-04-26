@@ -1,5 +1,5 @@
 <div class="container-fluid" style="padding-top:15px !important;">
-    <div class="row" (window:resize)="onResize($event)">
+    <div class="row" (window:resize)="commonService.onResize(levelWise);onResize($event)">
         <div class="col-lg-7 col-md-12 col-sm-12">
             <div *ngIf='skul'>
                 <p id="dist">
