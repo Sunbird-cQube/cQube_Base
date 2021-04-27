@@ -6024,6 +6024,7 @@ updated_on  TIMESTAMP without time zone
 
 alter table school_hierarchy_details add column if not exists school_management_type varchar(100);
 alter table school_hierarchy_details add column if not exists school_category varchar(100);
+alter table school_hierarchy_details add column if not exists total_students bigint;
 
 alter table crc_inspection_temp add column IF NOT EXISTS visit_date date;
 
@@ -6083,4 +6084,6 @@ alter table student_attendance_exception_agg add column if not exists school_cat
 
 alter table teacher_attendance_exception_agg add column if not exists school_management_type varchar(100);
 alter table teacher_attendance_exception_agg add column if not exists school_category varchar(100);
+
+
 
