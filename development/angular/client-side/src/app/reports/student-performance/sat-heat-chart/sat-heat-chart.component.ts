@@ -294,6 +294,16 @@ export class SatHeatChartComponent implements OnInit {
     let scrollBarX
     let scrollBarY
     let xAxis, yAxis, dataLabels, tooltipStyle;
+    
+    var yAxisLabel;
+    if (this.grade != "all") {
+      yAxisLabel = yLabel.map(a => {
+        var res = a.split("/");
+        return res[res.length - 1].substring(0, 30)
+      })
+    } else {
+      yAxisLabel = [];
+    }
 
     if (this.screenWidth <= 1920) {
       xAxis = {
@@ -403,7 +413,7 @@ export class SatHeatChartComponent implements OnInit {
         },
       }],
       yAxis: {
-        categories: yLabel,
+        categories: yAxisLabel,
         labels: {
           style: {
             color: 'black',
@@ -839,4 +849,29 @@ export class SatHeatChartComponent implements OnInit {
     this.fileName = [this.fileName.slice(0, position), `_${this.management}`, this.fileName.slice(position)].join('');
     this.commonService.download(this.fileName, this.reportData);
   }
+
+  public legendColors: any = [
+    "#f71000",
+    "#ea2a00",
+    "#dd4400",
+    "#d05e00",
+    "#c37800",
+    "#b69200",
+    "#a9ac00",
+    "#9cc600",
+    "#8fe000",
+    "#7fff00",
+  ];
+  public values = [
+    "0-10",
+    "11-20",
+    "21-30",
+    "31-40",
+    "41-50",
+    "51-60",
+    "61-70",
+    "71-80",
+    "81-90",
+    "91-100",
+  ];
 }

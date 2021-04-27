@@ -137,7 +137,7 @@
             <div style="float: left; width: 9%; margin-left: 1%;">
                 <h5 id="legend" style="margin-left: 20%;">Legend</h5>
                 <div *ngFor="let value of values; let i = index">
-                    <span class="legends" style="float: left;" [ngStyle]="{color: i> 2 ?'black': 'white'}"
+                    <span class="legends" style="float: left;" [ngStyle]="{color: i> 1 ?'black': 'white'}"
                         [style.background-color]="legendColors[i]">
                         {{values[i]}} </span>
                 </div>
@@ -173,7 +173,8 @@
             <span id="students" style="text-align: center;">Number of Students: {{studentCount}}</span>
         </div>
         <div class="col-sm-3" *ngIf="period != 'all'">
-            <span id="studentsAttended" style="text-align: center;">Number of Students Attended: {{studentAttended}}</span>
+            <span id="studentsAttended" style="text-align: center;">Number of Students Attended:
+                {{studentAttended}}</span>
         </div>
     </div>
 </div>
