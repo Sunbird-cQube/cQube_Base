@@ -2,16 +2,17 @@
 sch_mgmt_id as school_management_type_id,sch_category_id as school_category_id,
 state_cd as stateid,district_cd as districtid,block_cd_1 as blockid,cluster_cd as clusterid,latitude,longitude from flowfile""",
 "static_same_record_filter_school_state":"""select schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,StateId,districtid,blockid,clusterid,latitude,longitude from(select schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,StateId,districtid,blockid,clusterid,latitude,longitude,row_number() over (partition by  schoolid,school,lowclass,highclass,schmgt,schcat,schoolmedium,StateId,districtid,blockid,clusterid,latitude,longitude) as rn from flowfile)sq where rn=1""",
-"static_save_school_hierarchy":"""insert into school_hierarchy_details as a (school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,created_on,updated_on,year)
-select s.school_id,m.school_name,s.cluster_id,c.cluster_name,s.block_id,b.block_name,s.district_id,d.district_name,s.created_on,s.updated_on,extract(year from now()) 
+"static_save_school_hierarchy":"""insert into school_hierarchy_details as a (school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,total_students,created_on,updated_on)
+select s.school_id,m.school_name,s.cluster_id,c.cluster_name,s.block_id,b.block_name,s.district_id,d.district_name,coalesce(e.total_students,0) as total_students,s.created_on,s.updated_on 
 from school_geo_master as s
 left join school_master as m on m.school_id=s.school_id
 left join cluster_mst as c on s.cluster_id=c.cluster_id
 left join block_mst as b on s.block_id=b.block_id
 left join district_mst as d on s.district_id=d.district_id
+left join (select school_id,sum(students_count) as total_students from school_grade_enrolment  group by school_id) as e on s.school_id=e.school_id
 on conflict(school_id)
 do update set school_id=excluded.school_id,school_name=excluded.school_name,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,block_id=excluded.block_id,
-district_id=excluded.district_id,district_name=excluded.district_name,created_on=excluded.created_on,updated_on=now(),year=extract(year from now())""",
+district_id=excluded.district_id,district_name=excluded.district_name,total_students=excluded.total_students,created_on=excluded.created_on,updated_on=now()""",
 "static_same_id_filter_school_category_state":"""SELECT school_category_id,school_category from 
 (SELECT school_category_id,school_category,count(*)
 over (partition by school_category_id) as rn from FLOWFILE) sq Where rn =1""",
