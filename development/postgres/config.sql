@@ -2918,138 +2918,6 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS school_grade_enrolment_school_mgmt AS
      WITH DATA ;
 
 
-/*   SAT materialized views */
-
-/* last 30 days */
-
-/* district - grade */
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_district_last30 AS
-(select sum(students_count) as total_students,district_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
- group by district_id,grade)
-     WITH DATA ;
-
-/*--- block - grade*/
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_block_last30 AS
-(select sum(students_count) as total_students,block_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
- group by block_id,grade)
-     WITH DATA ;
-
-/*--- cluster - grade*/
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_cluster_last30 AS
-(select sum(students_count) as total_students,cluster_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
- group by cluster_id,grade)
-     WITH DATA ;
-
-/*--- school - grade*/
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_school_last30 AS
- (select sum(students_count) as total_students,sge.school_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days')) 
-	 group by sge.school_id,grade)
-     WITH DATA ;
-
-/* management views */
-
-/* district */
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_district_mgmt_last30 AS
-(select sum(students_count) as total_students,school_management_type,district_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
- group by district_id,grade,school_management_type)
-     WITH DATA ;
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_block_mgmt_last30 AS
-(select sum(students_count) as total_students,school_management_type,block_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
- group by block_id,grade,school_management_type)
-     WITH DATA ;
-
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_cluster_mgmt_last30 AS
-(select sum(students_count) as total_students,school_management_type,cluster_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
- group by cluster_id,grade,school_management_type)
-     WITH DATA ;
-
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_school_mgmt_last30 AS
-(select sum(students_count) as total_students,school_management_type,sge.school_id,concat('Grade ',grade) as grade from school_grade_enrolment sge 
- join school_hierarchy_details shd on sge.school_id=shd.school_id 
- where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days')) 
- group by sge.school_id,grade,school_management_type)
-     WITH DATA ;
-
-/* last 7 days */
-
-/* district - grade */
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_district_last7 AS
-(select sum(students_count) as total_students,district_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
- group by district_id,grade)
-     WITH DATA ;
-
-/*--- block - grade*/
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_block_last7 AS
-(select sum(students_count) as total_students,block_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
- group by block_id,grade)
-     WITH DATA ;
-
-/*--- cluster - grade*/
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_cluster_last7 AS
-(select sum(students_count) as total_students,cluster_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
- group by cluster_id,grade)
-     WITH DATA ;
-
-/*--- school - grade*/
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_school_last7 AS
- (select sum(students_count) as total_students,sge.school_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days')) 
-	 group by sge.school_id,grade)
-     WITH DATA ;
-
-/* management views */
-
-/* district */
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_district_mgmt_last7 AS
-(select sum(students_count) as total_students,school_management_type,district_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
- group by district_id,grade,school_management_type)
-     WITH DATA ;
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_block_mgmt_last7 AS
-(select sum(students_count) as total_students,school_management_type,block_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
- group by block_id,grade,school_management_type)
-     WITH DATA ;
-
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_cluster_mgmt_last7 AS
-(select sum(students_count) as total_students,school_management_type,cluster_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
-where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
- group by cluster_id,grade,school_management_type)
-     WITH DATA ;
-
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_school_mgmt_last7 AS
-(select sum(students_count) as total_students,school_management_type,sge.school_id,concat('Grade ',grade) as grade from school_grade_enrolment sge 
- join school_hierarchy_details shd on sge.school_id=shd.school_id 
- where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
- group by sge.school_id,grade,school_management_type)
-     WITH DATA ;
-
 /*------------------------Over all--------------------------------------------------------------------------------------------------------*/
 
 /* periodic exam district*/
@@ -7880,6 +7748,138 @@ union
 (select exam_code,'last7days' as date_range from semester_exam_mst where exam_date between 
 (select ((now()::Date)-INTERVAL '7 DAY')::Date) and (select now()::DATE) );
 
+
+/*   SAT materialized views */
+
+/* last 30 days */
+
+/* district - grade */
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_district_last30 AS
+(select sum(students_count) as total_students,district_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
+ group by district_id,grade)
+     WITH DATA ;
+
+/*--- block - grade*/
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_block_last30 AS
+(select sum(students_count) as total_students,block_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
+ group by block_id,grade)
+     WITH DATA ;
+
+/*--- cluster - grade*/
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_cluster_last30 AS
+(select sum(students_count) as total_students,cluster_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
+ group by cluster_id,grade)
+     WITH DATA ;
+
+/*--- school - grade*/
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_school_last30 AS
+ (select sum(students_count) as total_students,sge.school_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days')) 
+	 group by sge.school_id,grade)
+     WITH DATA ;
+
+/* management views */
+
+/* district */
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_district_mgmt_last30 AS
+(select sum(students_count) as total_students,school_management_type,district_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
+ group by district_id,grade,school_management_type)
+     WITH DATA ;
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_block_mgmt_last30 AS
+(select sum(students_count) as total_students,school_management_type,block_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
+ group by block_id,grade,school_management_type)
+     WITH DATA ;
+
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_cluster_mgmt_last30 AS
+(select sum(students_count) as total_students,school_management_type,cluster_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
+ group by cluster_id,grade,school_management_type)
+     WITH DATA ;
+
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_school_mgmt_last30 AS
+(select sum(students_count) as total_students,school_management_type,sge.school_id,concat('Grade ',grade) as grade from school_grade_enrolment sge 
+ join school_hierarchy_details shd on sge.school_id=shd.school_id 
+ where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days')) 
+ group by sge.school_id,grade,school_management_type)
+     WITH DATA ;
+
+/* last 7 days */
+
+/* district - grade */
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_district_last7 AS
+(select sum(students_count) as total_students,district_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
+ group by district_id,grade)
+     WITH DATA ;
+
+/*--- block - grade*/
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_block_last7 AS
+(select sum(students_count) as total_students,block_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
+ group by block_id,grade)
+     WITH DATA ;
+
+/*--- cluster - grade*/
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_cluster_last7 AS
+(select sum(students_count) as total_students,cluster_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
+ group by cluster_id,grade)
+     WITH DATA ;
+
+/*--- school - grade*/
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_school_last7 AS
+ (select sum(students_count) as total_students,sge.school_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days')) 
+	 group by sge.school_id,grade)
+     WITH DATA ;
+
+/* management views */
+
+/* district */
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_district_mgmt_last7 AS
+(select sum(students_count) as total_students,school_management_type,district_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
+ group by district_id,grade,school_management_type)
+     WITH DATA ;
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_block_mgmt_last7 AS
+(select sum(students_count) as total_students,school_management_type,block_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
+ group by block_id,grade,school_management_type)
+     WITH DATA ;
+
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_cluster_mgmt_last7 AS
+(select sum(students_count) as total_students,school_management_type,cluster_id,concat('Grade ',grade) as grade from school_grade_enrolment sge join school_hierarchy_details shd on sge.school_id=shd.school_id 
+where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last7days'))
+ group by cluster_id,grade,school_management_type)
+     WITH DATA ;
+
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS sat_school_grade_enrolment_school_mgmt_last7 AS
+(select sum(students_count) as total_students,school_management_type,sge.school_id,concat('Grade ',grade) as grade from school_grade_enrolment sge 
+ join school_hierarchy_details shd on sge.school_id=shd.school_id 
+ where sge.school_id in (select school_id from semester_exam_school_result where exam_code in  (select exam_code from sat_date_range where date_range='last30days'))
+ group by sge.school_id,grade,school_management_type)
+     WITH DATA ;
 /*------------------------Over all-------------------------------------------------*/
 
 /* semester exam district*/
