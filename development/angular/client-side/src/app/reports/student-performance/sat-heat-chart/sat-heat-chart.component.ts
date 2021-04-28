@@ -851,16 +851,16 @@ export class SatHeatChartComponent implements OnInit {
   }
 
   public legendColors: any = [
-    "#f71000",
-    "#ea2a00",
-    "#dd4400",
-    "#d05e00",
-    "#c37800",
-    "#b69200",
-    "#a9ac00",
-    "#9cc600",
-    "#8fe000",
-    "#7fff00",
+    "#a50026",
+    "#d73027",
+    "#f46d43",
+    "#fdae61",
+    "#fee08b",
+    "#d9ef8b",
+    "#a6d96a",
+    "#66bd63",
+    "#1a9850",
+    "#006837",
   ];
   public values = [
     "0-10",
