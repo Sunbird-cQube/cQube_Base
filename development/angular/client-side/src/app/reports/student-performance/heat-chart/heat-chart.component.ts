@@ -198,9 +198,9 @@ export class HeatChartComponent implements OnInit {
     );
     let tooltipData = this.toolTipData
       ? this.toolTipData.slice(
-          this.pageSize * this.xLabel.length * (this.currentPage - 1),
-          this.pageSize * this.xLabel.length * this.currentPage
-        )
+        this.pageSize * this.xLabel.length * (this.currentPage - 1),
+        this.pageSize * this.xLabel.length * this.currentPage
+      )
       : [];
 
     data = data.map((record) => {
@@ -357,6 +357,16 @@ export class HeatChartComponent implements OnInit {
     let scrollBarY;
     let xAxis, yAxis, dataLabels, tooltipStyle;
 
+    var yAxisLabel;
+    if (this.grade != "all") {
+      yAxisLabel = yLabel.map(a => {
+        var res = a.split("/");
+        return res[res.length - 1].substring(0, 30)
+      })
+    } else {
+      yAxisLabel = [];
+    }
+
     if (this.screenWidth <= 1920) {
       xAxis = {
         fontSize: "12px",
@@ -416,10 +426,10 @@ export class HeatChartComponent implements OnInit {
       this.height > 800
         ? 16
         : this.height > 650 && this.height < 800
-        ? 12
-        : this.height < 500
-        ? 8
-        : 12;
+          ? 12
+          : this.height < 500
+            ? 8
+            : 12;
     if (yLabel1.length <= scrollLimit) {
       scrollBarY = false;
     } else {
@@ -474,7 +484,7 @@ export class HeatChartComponent implements OnInit {
         },
       ],
       yAxis: {
-        categories: yLabel,
+        categories: yAxisLabel,
         labels: {
           style: {
             color: "black",
@@ -590,21 +600,19 @@ export class HeatChartComponent implements OnInit {
       obj += `<br> <b>Grade: ${grade}</b>
         <br> <b>Subject: ${subject}</b>
         <br> <b>Exam Date: ${exam_date}</b>
-        <br> ${
-          grades != "all"
-            ? viewBy == "indicator"
-              ? `<b>Indicator: ${indicator}`
-              : `<b>QuestionId: ${indicator}</b>`
-            : ""
+        <br> ${grades != "all"
+          ? viewBy == "indicator"
+            ? `<b>Indicator: ${indicator}`
+            : `<b>QuestionId: ${indicator}</b>`
+          : ""
         }
         <br> <b>Total Schools: ${totalSchools.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}</b>
         <br> <b>Total Students: ${totalStudents.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}</b>
         <br> <b>Students Attended: ${studentAttended.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}</b>
         <br> ${marks !== null ? `<b>Marks: ${marks}` : ""}</b>
-        <br> ${
-          point.value !== null
-            ? `<b>Marks Percentage: ${point.value}` + "%"
-            : ""
+        <br> ${point.value !== null
+          ? `<b>Marks Percentage: ${point.value}` + "%"
+          : ""
         }</b>`;
       return obj;
     }
@@ -895,8 +903,8 @@ export class HeatChartComponent implements OnInit {
         a.district_name > b.district_name
           ? 1
           : b.district_name > a.district_name
-          ? -1
-          : 0
+            ? -1
+            : 0
       );
     }
     if (response["blockDetails"]) {
@@ -911,8 +919,8 @@ export class HeatChartComponent implements OnInit {
         a.cluster_name > b.cluster_name
           ? 1
           : b.cluster_name > a.cluster_name
-          ? -1
-          : 0
+            ? -1
+            : 0
       );
     }
     if (this.xLabel.length <= 30) {
@@ -962,4 +970,29 @@ export class HeatChartComponent implements OnInit {
     ].join("");
     this.commonService.download(this.fileName, this.reportData);
   }
+
+  public legendColors: any = [
+    "#a50026",
+    "#d73027",
+    "#f46d43",
+    "#fdae61",
+    "#fee08b",
+    "#d9ef8b",
+    "#a6d96a",
+    "#66bd63",
+    "#1a9850",
+    "#006837",
+  ];
+  public values = [
+    "0-10",
+    "11-20",
+    "21-30",
+    "31-40",
+    "41-50",
+    "51-60",
+    "61-70",
+    "71-80",
+    "81-90",
+    "91-100",
+  ];
 }

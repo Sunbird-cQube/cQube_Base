@@ -74,7 +74,7 @@ export class PATLOTableComponent implements OnInit {
   showPagination = false;
   validTransactions: any;
   table: any;
-  updatedTable:any = [];
+  updatedTable: any = [];
 
   constructor(
     public http: HttpClient,
@@ -144,12 +144,12 @@ export class PATLOTableComponent implements OnInit {
     this.height = window.innerHeight;
   }
 
-  onChangePage(){
+  onChangePage() {
     document.getElementById('spinner').style.display = 'block';
     this.pageChange();
   }
 
-  pageChange(){
+  pageChange() {
     this.filteredData = this.reportData.slice(((this.currentPage - 1) * this.pageSize), ((this.currentPage - 1) * this.pageSize + this.pageSize));
     this.createTable(this.filteredData);
   }
@@ -233,8 +233,8 @@ export class PATLOTableComponent implements OnInit {
           a.district_name > b.district_name
             ? 1
             : b.district_name > a.district_name
-            ? -1
-            : 0
+              ? -1
+              : 0
         );
         this.onChangePage();
         this.commonService.loaderAndErr(this.reportData);
@@ -245,7 +245,7 @@ export class PATLOTableComponent implements OnInit {
     );
   };
 
-  columns =[];
+  columns = [];
   createTable(dataSet) {
     var my_columns = this.columns = this.commonService.getColumns(dataSet);
     $(document).ready(function () {
@@ -284,36 +284,43 @@ export class PATLOTableComponent implements OnInit {
       $(`#LOtable`).append(headers);
       $(`#LOtable`).append(body);
       var obj =
-        {
-          destroy: true,
-          bLengthChange: false,
-          bInfo: false,
-          bPaginate: false,
-          scrollY: "62vh",
-          scrollX: true,
-          scrollCollapse: true,
-          searching: false,
-          paging: false, 
-          fixedColumns: {
-            leftColumns: 1,
-          },
-        }
-        if(dataSet.length > 0){
-          obj['order'] = [[0, "asc"]];
-          obj['columnDefs'] = [{ targets: 0, type: "date-dd-mm-yyyy" }];
-        }
+      {
+        destroy: true,
+        bLengthChange: false,
+        bInfo: false,
+        bPaginate: false,
+        scrollY: "62vh",
+        scrollX: true,
+        scrollCollapse: true,
+        searching: false,
+        paging: false,
+        fixedColumns: {
+          leftColumns: 1,
+        },
+      }
+      if (dataSet.length > 0) {
+        obj['order'] = [[0, "asc"]];
+        obj['columnDefs'] = [{ targets: 0, type: "date-dd-mm-yyyy" }];
+      }
+
+      var table = $(`#LOtable`).DataTable(obj);
+      // $('#LOtable').on('mousemove', 'tr', function (e) {
+      //   var rowData = table.row(this).data().join("\n")
+      //   $("#tooltip").text(rowData).animate({ left: e.pageX, top: e.pageY }, 1)
+      //   if (!$("#tooltip").is(':visible')) $("#tooltip").show()
+      // })
+      // $('#LOtable').on('mouseleave', function (e) {
+      //   $("#tooltip").hide()
+      // })
       
-      $(`#LOtable`).DataTable(obj);
-      $(document).ready(function() {
-        
-        $('#LOtable').on( 'page.dt', function () 
-        {
+      $(document).ready(function () {
+        $('#LOtable').on('page.dt', function () {
           $('.dataTables_scrollBody').scrollTop(0);
         });
-        }, 300);
-        document.getElementById('spinner').style.display = 'none';
-      });
-      this.showPagination = true;
+      }, 300);
+      document.getElementById('spinner').style.display = 'none';
+    });
+    this.showPagination = true;
   }
 
   selectedYear() {
@@ -472,8 +479,8 @@ export class PATLOTableComponent implements OnInit {
           a.cluster_name > b.cluster_name
             ? 1
             : b.cluster_name > a.cluster_name
-            ? -1
-            : 0
+              ? -1
+              : 0
         );
         this.onChangePage();
         var block = this.blockNames.find((a) => a.block_id == blockId);
@@ -559,7 +566,7 @@ export class PATLOTableComponent implements OnInit {
       $("#LOtable").empty();
     }
   }
-  
+
   //level wise filter
   levelWiseFilter() {
     document.getElementById("initTable").style.display = "block";
@@ -597,17 +604,17 @@ export class PATLOTableComponent implements OnInit {
   updateFilter(event: any) {
     this.columns = this.commonService.getColumns(this.updatedTable);
     var val = event.target.value.toLowerCase();
-    
+
     // filter our data
     let ref = this;
-    let temp:any = [];
+    let temp: any = [];
 
     if (val) {
       temp = this.updatedTable.filter(function (d: any) {
         let found = false;
-  
+
         for (let i = 0; i < ref.columns.length; i++) {
-          let value = d[ref.columns[i].data]; 
+          let value = d[ref.columns[i].data];
           if (typeof value === 'number') {
             value = value.toString()
           }
@@ -623,7 +630,7 @@ export class PATLOTableComponent implements OnInit {
       document.getElementById('spinner').style.display = 'block';
       temp = this.updatedTable;
     }
-        
+
     // update the rows
     this.reportData = temp;
     this.pageChange();
