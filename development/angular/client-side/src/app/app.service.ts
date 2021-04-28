@@ -373,6 +373,22 @@ export class AppServiceComponent {
         return setColor;
     }
 
+    //generate table colors
+    public tableCellColor(data) {
+        var keys = Object.keys(this.colors);
+        var setColor = '';
+        for (let i = 0; i < keys.length; i++) {
+            if (data <= parseInt(keys[i])) {
+                setColor = this.colors[keys[i]];
+                break;
+            } else if (data > parseInt(keys[i]) && data <= parseInt(keys[i + 1])) {
+                setColor = this.colors[keys[i + 1]];
+                break;
+            }
+        }
+        return setColor;
+    }
+
     // color gredient based on intervals
     colorGredient(data, filter) {
         var keys = Object.keys(this.colors);
