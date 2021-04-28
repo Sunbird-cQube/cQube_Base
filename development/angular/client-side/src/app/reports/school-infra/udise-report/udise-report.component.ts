@@ -117,10 +117,10 @@ export class UdiseReportComponent implements OnInit {
       this.width > 3820
         ? this.commonService.mapCenterLatlng.zoomLevel + 2
         : this.width < 3820 && this.width >= 2500
-        ? this.commonService.mapCenterLatlng.zoomLevel + 1
-        : this.width < 2500 && this.width > 1920
-        ? this.commonService.mapCenterLatlng.zoomLevel + 1
-        : this.commonService.mapCenterLatlng.zoomLevel;
+          ? this.commonService.mapCenterLatlng.zoomLevel + 1
+          : this.width < 2500 && this.width > 1920
+            ? this.commonService.mapCenterLatlng.zoomLevel + 1
+            : this.commonService.mapCenterLatlng.zoomLevel;
     this.changeDetection.detectChanges();
     this.levelWiseFilter();
   }
@@ -134,10 +134,10 @@ export class UdiseReportComponent implements OnInit {
       this.width > 3820
         ? rad1
         : this.width > 2500 && this.width < 3820
-        ? rad2
-        : this.width < 2500 && this.width > 1920
-        ? rad3
-        : rad4;
+          ? rad2
+          : this.width < 2500 && this.width > 1920
+            ? rad3
+            : rad4;
     return radius;
   }
 
@@ -302,8 +302,8 @@ export class UdiseReportComponent implements OnInit {
           a.details.District_Name > b.details.District_Name
             ? 1
             : b.details.District_Name > a.details.District_Name
-            ? -1
-            : 0
+              ? -1
+              : 0
         );
       } else {
         if (this.myData) {
@@ -333,8 +333,8 @@ export class UdiseReportComponent implements OnInit {
               `${a[this.indiceData]}` > `${b[this.indiceData]}`
                 ? 1
                 : `${b[this.indiceData]}` > `${a[this.indiceData]}`
-                ? -1
-                : 0
+                  ? -1
+                  : 0
             );
             this.genericFun(this.myDistData, options, this.fileName);
             this.setZoomLevel(
@@ -349,8 +349,8 @@ export class UdiseReportComponent implements OnInit {
               a.details.District_Name > b.details.District_Name
                 ? 1
                 : b.details.District_Name > a.details.District_Name
-                ? -1
-                : 0
+                  ? -1
+                  : 0
             );
             this.changeDetection.detectChanges();
           },
@@ -800,10 +800,10 @@ export class UdiseReportComponent implements OnInit {
           a.details.Block_Name > b.details.Block_Name
             ? 1
             : b.details.Block_Name > a.details.Block_Name
-            ? -1
-            : 0
+              ? -1
+              : 0
         );
-        },
+      },
       (err) => {
         this.data = [];
         this.loaderAndErr();
@@ -890,8 +890,8 @@ export class UdiseReportComponent implements OnInit {
             a.details.Cluster_Name > b.details.Cluster_Name
               ? 1
               : b.details.Cluster_Name > a.details.Cluster_Name
-              ? -1
-              : 0
+                ? -1
+                : 0
           )
         },
         (err) => {
@@ -1253,14 +1253,14 @@ export class UdiseReportComponent implements OnInit {
       offset: [15, 20],
     }).setContent(
       "<b><u>Details</u></b>" +
-        "<br>" +
-        yourData1 +
-        "<br><br><b><u>Rank</u></b>" +
-        "<br>" +
-        yourData2 +
-        "<br><br><b><u>All Indices (%)</u></b>" +
-        "<br>" +
-        yourData
+      "<br>" +
+      yourData1 +
+      "<br><br><b><u>Rank</u></b>" +
+      "<br>" +
+      yourData2 +
+      "<br><br><b><u>All Indices (%)</u></b>" +
+      "<br>" +
+      yourData
     );
     markerIcon.addTo(globalMap).bindPopup(popup);
   }
@@ -1302,7 +1302,7 @@ export class UdiseReportComponent implements OnInit {
     var popupFood = [];
     var stringLine;
     for (var key in object) {
-      if(key == 'School_Management_Type' || key == 'School_Category'){
+      if (key == 'School_Management_Type' || key == 'School_Category') {
         object[`${key}`] = this.commonService.changeingStringCases(object[key].replace(/_/g, ' '));
       }
       if (object.hasOwnProperty(key)) {

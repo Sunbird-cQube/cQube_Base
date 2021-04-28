@@ -112,7 +112,7 @@ export class StudengtAttendanceComponent implements OnInit {
     private changeDetection: ChangeDetectorRef,
     public commonService: AppServiceComponent,
     private readonly _router: Router
-  ) {}
+  ) { }
   levelForZoom = "District";
 
   height = window.innerHeight;
@@ -123,8 +123,8 @@ export class StudengtAttendanceComponent implements OnInit {
   managementName;
   management;
   category;
-  public allMonths:any = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
-  
+  public allMonths: any = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
+
   ngOnInit() {
     this.state = this.commonService.state;
     this.lat = this.commonService.mapCenterLatlng.lat;
@@ -157,7 +157,7 @@ export class StudengtAttendanceComponent implements OnInit {
           };
           this.months.push(obj);
         });
-        this.months.sort((a,b)=> {
+        this.months.sort((a, b) => {
           return this.allMonths.indexOf(a) - this.allMonths.indexOf(b);
         });
         this.month = this.months[this.months.length - 1].id;
@@ -557,14 +557,11 @@ export class StudengtAttendanceComponent implements OnInit {
   async districtWise() {
     this.commonAtStateLevel();
     this.levelWise = "District";
-    this.commonService.latitude = this.lat = this.commonService.mapCenterLatlng.lat;
-    this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allDistricts_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -612,15 +609,14 @@ export class StudengtAttendanceComponent implements OnInit {
                   this.selected == "absolute"
                     ? color
                     : this.commonService.relativeColorGredient(
-                        sorted[i],
-                        { value: "attendance", report: "reports" },
-                        colors
-                      ),
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
                   0.01,
                   1,
                   this.levelWise
                 );
-                // markerIcon.setRadius(this.commonService.getMarkerRadius(18, 14, 10, 6));
                 this.generateToolTip(
                   markerIcon,
                   this.markers[i],
@@ -677,9 +673,8 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allBlocks_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -728,10 +723,10 @@ export class StudengtAttendanceComponent implements OnInit {
                   this.selected == "absolute"
                     ? color
                     : this.commonService.relativeColorGredient(
-                        sorted[i],
-                        { value: "attendance", report: "reports" },
-                        colors
-                      ),
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
                   0.01,
                   1,
                   this.levelWise
@@ -791,9 +786,8 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allClusters_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -857,10 +851,10 @@ export class StudengtAttendanceComponent implements OnInit {
                   this.selected == "absolute"
                     ? color
                     : this.commonService.relativeColorGredient(
-                        sorted[i],
-                        { value: "attendance", report: "reports" },
-                        colors
-                      ),
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
                   0.01,
                   0.5,
                   this.levelWise
@@ -926,9 +920,8 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allSchools_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -971,10 +964,10 @@ export class StudengtAttendanceComponent implements OnInit {
                   this.selected == "absolute"
                     ? color
                     : this.commonService.relativeColorGredient(
-                        sorted[i],
-                        { value: "attendance", report: "reports" },
-                        colors
-                      ),
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
                   0,
                   0.3,
                   this.levelWise
@@ -1040,8 +1033,8 @@ export class StudengtAttendanceComponent implements OnInit {
     this.title = "";
     this.titleName = "";
     this.clustName = "";
-    this.lat = this.commonService.mapCenterLatlng.lat;
-    this.lng = this.commonService.mapCenterLatlng.lng;
+    this.commonService.latitude = this.lat = this.commonService.mapCenterLatlng.lat;
+    this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;
     globalMap.setMaxBounds([
       [this.lat - 4.5, this.lng - 6],
       [this.lat + 3.5, this.lng + 6],
@@ -1192,11 +1185,9 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${
-          this.levelWise
-        }s_of_district_${data}_${month.name.trim()}_${this.year}_${
-          this.commonService.dateAndTime
-        }`;
+        this.fileName = `${this.reportName}_${this.levelWise
+          }s_of_district_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime
+          }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_district_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -1234,7 +1225,7 @@ export class StudengtAttendanceComponent implements OnInit {
               if (object.length == 0) previous.push(current);
               return previous;
             },
-            []);
+              []);
             this.mylatlngData = uniqueData;
             this.commonService.latitude = this.lat = Number(
               this.mylatlngData[0]["lat"]
@@ -1273,10 +1264,10 @@ export class StudengtAttendanceComponent implements OnInit {
                 this.selected == "absolute"
                   ? color
                   : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
+                    sorted[i],
+                    { value: "attendance", report: "reports" },
+                    colors
+                  ),
                 0.01,
                 1,
                 this.levelWise
@@ -1367,11 +1358,9 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${
-          this.levelWise
-        }s_of_block_${data}_${month.name.trim()}_${this.year}_${
-          this.commonService.dateAndTime
-        }`;
+        this.fileName = `${this.reportName}_${this.levelWise
+          }s_of_block_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime
+          }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_block_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -1428,7 +1417,7 @@ export class StudengtAttendanceComponent implements OnInit {
               if (object.length == 0) previous.push(current);
               return previous;
             },
-            []);
+              []);
             this.mylatlngData = uniqueData;
             this.commonService.latitude = this.lat = Number(
               this.mylatlngData[0]["lat"]
@@ -1476,10 +1465,10 @@ export class StudengtAttendanceComponent implements OnInit {
                 this.selected == "absolute"
                   ? color
                   : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
+                    sorted[i],
+                    { value: "attendance", report: "reports" },
+                    colors
+                  ),
                 0.01,
                 1,
                 this.levelWise
@@ -1571,11 +1560,9 @@ export class StudengtAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${
-          this.levelWise
-        }s_of_cluster_${data}_${month.name.trim()}_${this.year}_${
-          this.commonService.dateAndTime
-        }`;
+        this.fileName = `${this.reportName}_${this.levelWise
+          }s_of_cluster_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime
+          }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_cluster_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -1668,7 +1655,7 @@ export class StudengtAttendanceComponent implements OnInit {
               if (object.length == 0) previous.push(current);
               return previous;
             },
-            []);
+              []);
             this.mylatlngData = uniqueData;
             this.commonService.latitude = this.lat = Number(
               this.mylatlngData[0]["lat"]
@@ -1701,10 +1688,10 @@ export class StudengtAttendanceComponent implements OnInit {
                 this.selected == "absolute"
                   ? color
                   : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
+                    sorted[i],
+                    { value: "attendance", report: "reports" },
+                    colors
+                  ),
                 0.1,
                 1,
                 this.levelWise
@@ -1845,7 +1832,7 @@ export class StudengtAttendanceComponent implements OnInit {
         hour: ("0" + this.edate.getHours()).slice(-2),
       };
       this.service.telemetrySar(dateObj).subscribe(
-        (res) => {},
+        (res) => { },
         (err) => {
           this.dateRange = "";
           this.changeDetection.detectChanges();

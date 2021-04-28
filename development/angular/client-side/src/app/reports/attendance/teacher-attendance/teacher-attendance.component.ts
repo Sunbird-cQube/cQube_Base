@@ -104,45 +104,19 @@ export class TeacherAttendanceComponent implements OnInit {
     private changeDetection: ChangeDetectorRef,
     public commonService: AppServiceComponent,
     private readonly _router: Router
-  ) {}
+  ) { }
 
   getColor(data) {
     this.selected = data;
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
   width = window.innerWidth;
   heigth = window.innerHeight;
   onResize(event) {
-    this.width = window.innerWidth;
     this.heigth = window.innerHeight;
-    this.commonService.zoomLevel =
-      this.width > 3820
-        ? this.commonService.mapCenterLatlng.zoomLevel + 2
-        : this.width < 3820 && this.width >= 2500
-        ? this.commonService.mapCenterLatlng.zoomLevel + 1
-        : this.width < 2500 && this.width > 1920
-        ? this.commonService.mapCenterLatlng.zoomLevel + 1
-        : this.commonService.mapCenterLatlng.zoomLevel;
-    this.changeDetection.detectChanges();
-    this.levelWiseFilter();
   }
-  setZoomLevel(lat, lng, globalMap, zoomLevel) {
-    globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
-    globalMap.options.minZoom = this.commonService.zoomLevel;
-    this.changeDetection.detectChanges();
-  }
-  getMarkerRadius(rad1, rad2, rad3, rad4) {
-    let radius =
-      this.width > 3820
-        ? rad1
-        : this.width > 2500 && this.width < 3820
-        ? rad2
-        : this.width < 2500 && this.width > 1920
-        ? rad3
-        : rad4;
-    return radius;
-  }
+
   managementName;
   management;
   category;
@@ -153,10 +127,6 @@ export class TeacherAttendanceComponent implements OnInit {
     this.lng = this.commonService.mapCenterLatlng.lng;
     this.changeDetection.detectChanges();
     this.commonService.initMap("mapContainer", [[this.lat, this.lng]]);
-    globalMap.setMaxBounds([
-      [this.lat - 4.5, this.lng - 6],
-      [this.lat + 3.5, this.lng + 6],
-    ]);
     document.getElementById("homeBtn").style.display = "block";
     document.getElementById("backBtn").style.display = "none";
     this.skul = true;
@@ -211,7 +181,7 @@ export class TeacherAttendanceComponent implements OnInit {
 
             this.getDistricts();
           } else {
-            this.onResize(event);
+            this.levelWiseFilter();
           }
         }
       },
@@ -240,7 +210,7 @@ export class TeacherAttendanceComponent implements OnInit {
     this.timePeriod = {
       period: null,
     };
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
   onPeriodSelect() {
@@ -257,7 +227,7 @@ export class TeacherAttendanceComponent implements OnInit {
       month: null,
       year: null,
     };
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
   getDistricts(): void {
@@ -501,7 +471,7 @@ export class TeacherAttendanceComponent implements OnInit {
       month: this.month,
       year: this.year,
     };
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
   levelWiseFilter() {
@@ -567,12 +537,12 @@ export class TeacherAttendanceComponent implements OnInit {
 
   async districtWise() {
     this.commonAtStateLevel();
+    this.levelWise = "District";
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allDistricts_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -614,17 +584,16 @@ export class TeacherAttendanceComponent implements OnInit {
                   id: this.markers[i]["district_id"],
                   name: this.markers[i]["district_name"],
                 });
-                var markerIcon = this.commonService.initMarkers(
+                var markerIcon = this.commonService.initMarkers1(
                   this.markers[i].lat,
                   this.markers[i].lng,
                   this.selected == "absolute"
                     ? color
                     : this.commonService.relativeColorGredient(
-                        sorted[i],
-                        { value: "attendance", report: "reports" },
-                        colors
-                      ),
-                  this.getMarkerRadius(14, 10, 8, 5),
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
                   0.01,
                   1,
                   this.levelWise
@@ -649,12 +618,7 @@ export class TeacherAttendanceComponent implements OnInit {
               [this.lat - 4.5, this.lng - 6],
               [this.lat + 3.5, this.lng + 6],
             ]);
-            this.setZoomLevel(
-              this.lat,
-              this.lng,
-              globalMap,
-              this.commonService.zoomLevel
-            );
+            this.commonService.onResize(this.levelWise);
             this.schoolCount = this.schoolCount
               .toString()
               .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -691,9 +655,8 @@ export class TeacherAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allBlocks_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -736,17 +699,16 @@ export class TeacherAttendanceComponent implements OnInit {
                   name: this.markers[i]["block_name"],
                   distId: this.markers[i]["dist"],
                 });
-                var markerIcon = this.commonService.initMarkers(
+                var markerIcon = this.commonService.initMarkers1(
                   this.markers[i].lat,
                   this.markers[i].lng,
                   this.selected == "absolute"
                     ? color
                     : this.commonService.relativeColorGredient(
-                        sorted[i],
-                        { value: "attendance", report: "reports" },
-                        colors
-                      ),
-                  this.getMarkerRadius(12, 8, 6, 3.5),
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
                   0.01,
                   1,
                   this.levelWise
@@ -769,12 +731,7 @@ export class TeacherAttendanceComponent implements OnInit {
                 [this.lat - 4.5, this.lng - 6],
                 [this.lat + 3.5, this.lng + 6],
               ]);
-              this.setZoomLevel(
-                this.lat,
-                this.lng,
-                globalMap,
-                this.commonService.zoomLevel
-              );
+              this.commonService.onResize(this.levelWise);
               this.schoolCount = this.schoolCount
                 .toString()
                 .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -812,9 +769,8 @@ export class TeacherAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allClusters_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -872,17 +828,16 @@ export class TeacherAttendanceComponent implements OnInit {
                   name: this.markers[i]["block_name"],
                   distId: this.markers[i]["district_id"],
                 });
-                var markerIcon = this.commonService.initMarkers(
+                var markerIcon = this.commonService.initMarkers1(
                   this.markers[i].lat,
                   this.markers[i].lng,
                   this.selected == "absolute"
                     ? color
                     : this.commonService.relativeColorGredient(
-                        sorted[i],
-                        { value: "attendance", report: "reports" },
-                        colors
-                      ),
-                  this.getMarkerRadius(2.5, 2, 1.5, 1),
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
                   0.01,
                   0.5,
                   this.levelWise
@@ -910,12 +865,7 @@ export class TeacherAttendanceComponent implements OnInit {
                 [this.lat - 4.5, this.lng - 6],
                 [this.lat + 3.5, this.lng + 6],
               ]);
-              this.setZoomLevel(
-                this.lat,
-                this.lng,
-                globalMap,
-                this.commonService.zoomLevel
-              );
+              this.commonService.onResize(this.levelWise);
               this.schoolCount = this.schoolCount
                 .toString()
                 .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -951,13 +901,12 @@ export class TeacherAttendanceComponent implements OnInit {
     }
 
     this.commonAtStateLevel();
-    this.levelWise = "school";
+    this.levelWise = "School";
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allSchools_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -994,17 +943,16 @@ export class TeacherAttendanceComponent implements OnInit {
                   "attendance"
                 );
                 this.districtsIds.push(sorted[i]["district_id"]);
-                var markerIcon = this.commonService.initMarkers(
+                var markerIcon = this.commonService.initMarkers1(
                   this.markers[i].lat,
                   this.markers[i].lng,
                   this.selected == "absolute"
                     ? color
                     : this.commonService.relativeColorGredient(
-                        sorted[i],
-                        { value: "attendance", report: "reports" },
-                        colors
-                      ),
-                  this.getMarkerRadius(1.5, 1.2, 1, 0),
+                      sorted[i],
+                      { value: "attendance", report: "reports" },
+                      colors
+                    ),
                   0,
                   0.3,
                   this.levelWise
@@ -1024,12 +972,7 @@ export class TeacherAttendanceComponent implements OnInit {
                 [this.lat - 4.5, this.lng - 6],
                 [this.lat + 3.5, this.lng + 6],
               ]);
-              this.setZoomLevel(
-                this.lat,
-                this.lng,
-                globalMap,
-                this.commonService.zoomLevel
-              );
+              this.commonService.onResize(this.levelWise);
               this.schoolCount = this.markers.length
                 .toString()
                 .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -1077,8 +1020,8 @@ export class TeacherAttendanceComponent implements OnInit {
     this.title = "";
     this.titleName = "";
     this.clustName = "";
-    this.lat = this.commonService.mapCenterLatlng.lat;
-    this.lng = this.commonService.mapCenterLatlng.lng;
+    this.commonService.latitude = this.lat = this.commonService.mapCenterLatlng.lat;
+    this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;
     globalMap.setMaxBounds([
       [this.lat - 4.5, this.lng - 6],
       [this.lat + 3.5, this.lng + 6],
@@ -1207,7 +1150,7 @@ export class TeacherAttendanceComponent implements OnInit {
       $('#choose_dist').val('');
       return;
     }
-    this.levelWise = "Block";
+    this.levelWise = "blockPerDistrict";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -1228,11 +1171,9 @@ export class TeacherAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${
-          this.levelWise
-        }s_of_district_${data}_${month.name.trim()}_${this.year}_${
-          this.commonService.dateAndTime
-        }`;
+        this.fileName = `${this.reportName}_${this.levelWise
+          }s_of_district_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime
+          }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_district_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -1270,10 +1211,14 @@ export class TeacherAttendanceComponent implements OnInit {
               if (object.length == 0) previous.push(current);
               return previous;
             },
-            []);
+              []);
             this.mylatlngData = uniqueData;
-            this.lat = Number(this.mylatlngData[0]["lat"]);
-            this.lng = Number(this.mylatlngData[0]["lng"]);
+            this.commonService.latitude = this.lat = Number(
+              this.mylatlngData[0]["lat"]
+            );
+            this.commonService.longitude = this.lng = Number(
+              this.mylatlngData[0]["lng"]
+            );
 
             var blokName = [];
 
@@ -1299,17 +1244,16 @@ export class TeacherAttendanceComponent implements OnInit {
                 id: this.markers[i]["block_id"],
                 name: this.markers[i]["block_name"],
               });
-              var markerIcon = this.commonService.initMarkers(
+              var markerIcon = this.commonService.initMarkers1(
                 this.markers[i].lat,
                 this.markers[i].lng,
                 this.selected == "absolute"
                   ? color
                   : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
-                this.getMarkerRadius(14, 10, 8, 4),
+                    sorted[i],
+                    { value: "attendance", report: "reports" },
+                    colors
+                  ),
                 0.01,
                 1,
                 this.levelWise
@@ -1332,12 +1276,7 @@ export class TeacherAttendanceComponent implements OnInit {
               [this.lat - 1.5, this.lng - 3],
               [this.lat + 1.5, this.lng + 2],
             ]);
-            this.setZoomLevel(
-              this.lat,
-              this.lng,
-              globalMap,
-              this.commonService.zoomLevel + 1
-            );
+            this.commonService.onResize(this.levelWise);
             this.schoolCount = this.schoolCount
               .toString()
               .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -1390,7 +1329,7 @@ export class TeacherAttendanceComponent implements OnInit {
       return;
     }
 
-    this.levelWise = "Cluster";
+    this.levelWise = "clusterPerBlock";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -1407,11 +1346,9 @@ export class TeacherAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${
-          this.levelWise
-        }s_of_block_${data}_${month.name.trim()}_${this.year}_${
-          this.commonService.dateAndTime
-        }`;
+        this.fileName = `${this.reportName}_${this.levelWise
+          }s_of_block_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime
+          }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_block_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -1468,10 +1405,14 @@ export class TeacherAttendanceComponent implements OnInit {
               if (object.length == 0) previous.push(current);
               return previous;
             },
-            []);
+              []);
             this.mylatlngData = uniqueData;
-            this.lat = Number(this.mylatlngData[0]["lat"]);
-            this.lng = Number(this.mylatlngData[0]["lng"]);
+            this.commonService.latitude = this.lat = Number(
+              this.mylatlngData[0]["lat"]
+            );
+            this.commonService.longitude = this.lng = Number(
+              this.mylatlngData[0]["lng"]
+            );
             var clustNames = [];
 
             var sorted = this.mylatlngData.sort((a, b) =>
@@ -1506,17 +1447,16 @@ export class TeacherAttendanceComponent implements OnInit {
                   blockId: sorted[i]["block_id"],
                 });
               }
-              var markerIcon = this.commonService.initMarkers(
+              var markerIcon = this.commonService.initMarkers1(
                 this.markers[i].lat,
                 this.markers[i].lng,
                 this.selected == "absolute"
                   ? color
                   : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
-                this.getMarkerRadius(14, 10, 8, 4),
+                    sorted[i],
+                    { value: "attendance", report: "reports" },
+                    colors
+                  ),
                 0.01,
                 1,
                 this.levelWise
@@ -1540,12 +1480,7 @@ export class TeacherAttendanceComponent implements OnInit {
               [this.lat - 1.5, this.lng - 3],
               [this.lat + 1.5, this.lng + 2],
             ]);
-            this.setZoomLevel(
-              this.lat,
-              this.lng,
-              globalMap,
-              this.commonService.zoomLevel + 3
-            );
+            this.commonService.onResize(this.levelWise);
             this.schoolCount = this.schoolCount
               .toString()
               .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -1596,7 +1531,7 @@ export class TeacherAttendanceComponent implements OnInit {
       return;
     }
 
-    this.levelWise = "school";
+    this.levelWise = "schoolPerCluster";
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
     this.markers = [];
@@ -1616,11 +1551,9 @@ export class TeacherAttendanceComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${
-          this.levelWise
-        }s_of_cluster_${data}_${month.name.trim()}_${this.year}_${
-          this.commonService.dateAndTime
-        }`;
+        this.fileName = `${this.reportName}_${this.levelWise
+          }s_of_cluster_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime
+          }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_cluster_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -1713,10 +1646,14 @@ export class TeacherAttendanceComponent implements OnInit {
               if (object.length == 0) previous.push(current);
               return previous;
             },
-            []);
+              []);
             this.mylatlngData = uniqueData;
-            this.lat = Number(this.mylatlngData[0]["lat"]);
-            this.lng = Number(this.mylatlngData[0]["lng"]);
+            this.commonService.latitude = this.lat = Number(
+              this.mylatlngData[0]["lat"]
+            );
+            this.commonService.longitude = this.lng = Number(
+              this.mylatlngData[0]["lng"]
+            );
 
             var sorted = this.mylatlngData.sort((a, b) =>
               parseInt(a.attendance) > parseInt(b.attendance) ? 1 : -1
@@ -1736,17 +1673,16 @@ export class TeacherAttendanceComponent implements OnInit {
                 this.markers[i],
                 "attendance"
               );
-              var markerIcon = this.commonService.initMarkers(
+              var markerIcon = this.commonService.initMarkers1(
                 this.markers[i].lat,
                 this.markers[i].lng,
                 this.selected == "absolute"
                   ? color
                   : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
-                this.getMarkerRadius(14, 10, 8, 4),
+                    sorted[i],
+                    { value: "attendance", report: "reports" },
+                    colors
+                  ),
                 0.1,
                 1,
                 this.levelWise
@@ -1765,12 +1701,7 @@ export class TeacherAttendanceComponent implements OnInit {
               [this.lat - 1.5, this.lng - 3],
               [this.lat + 1.5, this.lng + 2],
             ]);
-            this.setZoomLevel(
-              this.lat,
-              this.lng,
-              globalMap,
-              this.commonService.zoomLevel + 5
-            );
+            this.commonService.onResize(this.levelWise);
             this.schoolCount = this.markers.length
               .toString()
               .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -1797,7 +1728,7 @@ export class TeacherAttendanceComponent implements OnInit {
     document.getElementById("home").style.display = "block";
   }
 
-  popups(markerIcon, markers, onClick_Marker, layerMarkers, levelWise) {
+  popups(markerIcon, markers, onClick_Marker, layerMarkers) {
     markerIcon.on("mouseover", function (e) {
       this.openPopup();
     });
@@ -1806,10 +1737,10 @@ export class TeacherAttendanceComponent implements OnInit {
     });
 
     layerMarkers.addLayer(markerIcon);
-    if (levelWise != "school") {
-      markerIcon.on("click", onClick_Marker, this);
-    } else {
+    if (this.levelWise === "schoolPerCluster" || this.levelWise === "School") {
       markerIcon.on("click", this.onClickSchool, this);
+    } else {
+      markerIcon.on("click", onClick_Marker, this);
     }
     markerIcon.myJsonData = markers;
   }
@@ -1822,7 +1753,7 @@ export class TeacherAttendanceComponent implements OnInit {
     layerMarkers,
     levelWise
   ) {
-    this.popups(markerIcon, markers, onClick_Marker, layerMarkers, levelWise);
+    this.popups(markerIcon, markers, onClick_Marker, layerMarkers);
     var details = {};
     var orgObject = {};
     Object.keys(markers).forEach((key) => {
@@ -1894,7 +1825,7 @@ export class TeacherAttendanceComponent implements OnInit {
         hour: ("0" + this.edate.getHours()).slice(-2),
       };
       this.service.telemetrySar(dateObj).subscribe(
-        (res) => {},
+        (res) => { },
         (err) => {
           this.dateRange = "";
           this.teacherCount = "";
@@ -1968,4 +1899,5 @@ export class TeacherAttendanceComponent implements OnInit {
     "81-90",
     "91-100",
   ];
+
 }

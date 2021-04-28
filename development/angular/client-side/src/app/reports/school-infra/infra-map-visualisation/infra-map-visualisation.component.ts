@@ -94,7 +94,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     public router: Router,
     private changeDetection: ChangeDetectorRef,
     private readonly _router: Router
-  ) {}
+  ) { }
 
   selected = "absolute";
 
@@ -116,10 +116,10 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.width > 3820
         ? this.commonService.mapCenterLatlng.zoomLevel + 2
         : this.width < 3820 && this.width >= 2500
-        ? this.commonService.mapCenterLatlng.zoomLevel + 1
-        : this.width < 2500 && this.width > 1920
-        ? this.commonService.mapCenterLatlng.zoomLevel + 1
-        : this.commonService.mapCenterLatlng.zoomLevel;
+          ? this.commonService.mapCenterLatlng.zoomLevel + 1
+          : this.width < 2500 && this.width > 1920
+            ? this.commonService.mapCenterLatlng.zoomLevel + 1
+            : this.commonService.mapCenterLatlng.zoomLevel;
     this.changeDetection.detectChanges();
     this.levelWiseFilter();
   }
@@ -133,10 +133,10 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.width > 3820
         ? rad1
         : this.width > 2500 && this.width < 3820
-        ? rad2
-        : this.width < 2500 && this.width > 1920
-        ? rad3
-        : rad4;
+          ? rad2
+          : this.width < 2500 && this.width > 1920
+            ? rad3
+            : rad4;
     return radius;
   }
 
@@ -270,17 +270,17 @@ export class InfraMapVisualisationComponent implements OnInit {
           [options.centerLat + 3.5, options.centerLng + 6],
         ]);
         this.changeDetection.detectChanges();
-        
+
         this.genericFun(this.myDistData, options, this.fileName);
         this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         // sort the districtname alphabetically
         this.districtMarkers.sort((a, b) =>
-              a.details.district_name > b.details.district_name
-                ? 1
-                : b.details.district_name > a.details.district_name
-                ? -1
-                : 0
-            );
+          a.details.district_name > b.details.district_name
+            ? 1
+            : b.details.district_name > a.details.district_name
+              ? -1
+              : 0
+        );
       } else {
         if (this.myData) {
           this.myData.unsubscribe();
@@ -311,13 +311,13 @@ export class InfraMapVisualisationComponent implements OnInit {
               [options.centerLat + 3.5, options.centerLng + 6],
             ]);
             this.changeDetection.detectChanges();
-            
+
             this.data.sort((a, b) =>
               `${a[this.infraData]}` > `${b[this.infraData]}`
                 ? 1
                 : `${b[this.infraData]}` > `${a[this.infraData]}`
-                ? -1
-                : 0
+                  ? -1
+                  : 0
             );
             this.genericFun(this.myDistData, options, this.fileName);
             this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
@@ -327,8 +327,8 @@ export class InfraMapVisualisationComponent implements OnInit {
               a.details.district_name > b.details.district_name
                 ? 1
                 : b.details.district_name > a.details.district_name
-                ? -1
-                : 0
+                  ? -1
+                  : 0
             );
             this.changeDetection.detectChanges();
           },
@@ -767,7 +767,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           [options.centerLat - 1.5, options.centerLng - 3],
           [options.centerLat + 1.5, options.centerLng + 2],
         ]);
-        
+
         this.genericFun(res, options, this.fileName);
         this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
         // sort the blockname alphabetically
@@ -775,8 +775,8 @@ export class InfraMapVisualisationComponent implements OnInit {
           a.details.block_name > b.details.block_name
             ? 1
             : b.details.block_name > a.details.block_name
-            ? -1
-            : 0
+              ? -1
+              : 0
         );
         this.changeDetection.detectChanges();
       },
@@ -859,7 +859,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             [options.centerLat - 1.5, options.centerLng - 3],
             [options.centerLat + 1.5, options.centerLng + 2],
           ]);
-         
+
           this.genericFun(res, options, this.fileName);
           this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
           // sort the clusterName alphabetically
@@ -867,8 +867,8 @@ export class InfraMapVisualisationComponent implements OnInit {
             a.details.cluster_name > b.details.cluster_name
               ? 1
               : b.details.cluster_name > a.details.cluster_name
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
           this.changeDetection.detectChanges();
         },
@@ -921,8 +921,8 @@ export class InfraMapVisualisationComponent implements OnInit {
                 a.details.block_name > b.details.block_name
                   ? 1
                   : b.details.block_name > a.details.block_name
-                  ? -1
-                  : 0
+                    ? -1
+                    : 0
               );
 
               var myCluster = [];
@@ -978,7 +978,7 @@ export class InfraMapVisualisationComponent implements OnInit {
                 [options.centerLat + 1.5, options.centerLng + 2],
               ]);
               this.changeDetection.detectChanges();
-              
+
               this.level = options.level;
               this.genericFun(res, options, this.fileName);
               this.setZoomLevel(options.centerLat, options.centerLng, globalMap, options.mapZoom);
@@ -1172,11 +1172,11 @@ export class InfraMapVisualisationComponent implements OnInit {
       offset: [15, 20],
     }).setContent(
       "<b><u>Details</u></b>" +
-        "<br>" +
-        yourData1 +
-        "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
-        "<br>" +
-        yourData
+      "<br>" +
+      yourData1 +
+      "<br><br><b><u>School Infrastructure Metrics (% of schools)</u></b>" +
+      "<br>" +
+      yourData
     );
     markerIcon.addTo(globalMap).bindPopup(popup);
   }

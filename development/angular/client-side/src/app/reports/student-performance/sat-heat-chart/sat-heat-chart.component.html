@@ -145,8 +145,17 @@
         <div class="col-md-12" id="container" [ngStyle]="{width: width,height: height > 776 ? '74vh' : '68vh'}">
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row" *ngIf="chart">
+        <div class="col-sm-9">
+            <h5 id="legend" style="float: left; margin-top: 10px;">Legend:&nbsp; &nbsp; </h5>
+            <div *ngFor="let value of values; let i = index" style="float: left; margin-top: 5px;">
+                <span class="legends" style="padding: 8px 15px 10px 15px;"
+                    [ngStyle]="{color: i> 2 ?'black': 'white', width: height > 1200 ? '9%' : '7%'}"
+                    [style.background-color]="legendColors[i]">
+                    {{values[i]}} </span>
+            </div>
+        </div>
+        <div class="col-sm-3">
             <div style="position: relative; bottom: 0px; float: right; right: 0px;">
                 <ngb-pagination [collectionSize]="yLabel.length" [maxSize]="10" [(page)]="currentPage"
                     [pageSize]="pageSize" (pageChange)="onChangePage()"></ngb-pagination>
