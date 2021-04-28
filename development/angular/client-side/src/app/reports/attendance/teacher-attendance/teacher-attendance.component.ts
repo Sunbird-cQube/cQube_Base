@@ -901,7 +901,7 @@ export class TeacherAttendanceComponent implements OnInit {
     }
 
     this.commonAtStateLevel();
-    this.levelWise = "school";
+    this.levelWise = "School";
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
@@ -1877,22 +1877,27 @@ export class TeacherAttendanceComponent implements OnInit {
 
   public legendColors: any = [
     "#a50026",
-    // "#d73027",
+    "#d73027",
+    "#f46d43",
     "#fdae61",
-    // "#fdae61",
+    "#fee08b",
     "#d9ef8b",
-    // "#d9ef8b",
+    "#a6d96a",
     "#66bd63",
-    // "#66bd63",
-    // "#1a9850",
+    "#1a9850",
     "#006837",
   ];
   public values = [
-    "0--20",
-    "21--40",
-    "41--60",
-    "61--80",
-    "81--100",
+    "0-10",
+    "11-20",
+    "21-30",
+    "31-40",
+    "41-50",
+    "51-60",
+    "61-70",
+    "71-80",
+    "81-90",
+    "91-100",
   ];
 
 }

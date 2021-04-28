@@ -540,15 +540,15 @@ export class AppServiceComponent {
     }
 
     public colors = {
-        20: '#a50026',
-        // 20: '#d73027',
-        // 30: '#f46d43',
+        10: '#a50026',
+        20: '#d73027',
+        30: '#f46d43',
         40: '#fdae61',
-        // 50: '#fee08b',
+        50: '#fee08b',
         60: '#d9ef8b',
-        // 70: '#a6d96a',
+        70: '#a6d96a',
         80: '#66bd63',
-        // 90: '#1a9850',
+        90: '#1a9850',
         100: '#006837'
     }
     //color gredient generation....
