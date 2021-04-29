@@ -364,7 +364,7 @@ export class HeatChartComponent implements OnInit {
         return res[res.length - 1].substring(0, 30)
       })
     } else {
-      yAxisLabel = [];
+      yAxisLabel = yLabel;
     }
 
     if (this.screenWidth <= 1920) {
