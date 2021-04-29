@@ -247,6 +247,7 @@ export class PATLOTableComponent implements OnInit {
 
   columns = [];
   createTable(dataSet) {
+    var level = this.level.charAt(0).toUpperCase() + this.level.substr(1);
     var my_columns = this.columns = this.commonService.getColumns(dataSet);
     $(document).ready(function () {
       var headers = "<thead><tr>";
@@ -299,7 +300,7 @@ export class PATLOTableComponent implements OnInit {
         body += "<tr>";
         columns.forEach((column, i2) => {
           if (i2 > 3 && column.value) {
-            body += `<td data-toggle="tooltip" data-placement="bottom" style='background-color: ${tableCellColor(column.value)}' title='District Name: ${column.data} &#010;  Date: ${columns[0].value} \n  Grade: ${columns[1].value} &#xa; Subject: ${columns[2].value}'>${column.value}</td>`;
+            body += `<td data-toggle="tooltip" data-html="true" data-placement="bottom" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value} <br> Subject: ${columns[2].value}'>${column.value}</td>`;
           }
           else {
             body += `<td>${column.value}</td>`;
@@ -335,16 +336,24 @@ export class PATLOTableComponent implements OnInit {
 
       this.table = $(`#LOtable`).DataTable(obj);
       $(function () {
-        $("[data-toggle='tooltip']").tooltip()
+        $('[data-toggle="tooltip"]').tooltip().on('inserted.bs.tooltip', function () {
+          $("body div.tooltip-inner").css({
+            "min-width": "200px",
+            "max-width": "400px auto",
+            "padding": "5%",
+            "text-align": "left",
+            "border-radius": "20px",
+            "background-color": "black",
+            "color": "white",
+            "font-family": "Arial",
+            "font-size": "11px",
+            "border": "1px solid gray"
+          });
+        });
+        $('[data-toggle="tooltip"]').click(function () {
+          $('[data-toggle="tooltip"]').tooltip("hide");
+        });
       });
-      // $('#LOtable').on('mousemove', 'tr', function (e) {
-      //   var rowData = table.row(this).data().join(", ")
-      //   $("#tooltip").text(rowData).animate({ left: e.pageX, top: e.pageY }, 1)
-      //   if (!$("#tooltip").is(':visible')) $("#tooltip").show()
-      // })
-      // $('#LOtable').on('mouseleave', function (e) {
-      //   $("#tooltip").hide()
-      // })
 
       $(document).ready(function () {
         $('#LOtable').on('page.dt', function () {
