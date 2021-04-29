@@ -13041,8 +13041,8 @@ where ff_uuid='${ff_uuid:trim()}' and files_emitted=total_files;</value>
         <value>false</value>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>5 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -14355,8 +14355,8 @@ File url = ${invokehttp.request.url}</value>
         <key>proxy-user-password</key>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>5 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>60 sec</yieldDuration>
                             </config>
@@ -23636,8 +23636,8 @@ ${filename:startsWith('diksha_tpd_mapping')})})}</value>
         <value>false</value>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
+<runDurationMillis>2000</runDurationMillis>
+<schedulingPeriod>5 secs</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -28017,31 +28017,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>5cb5f7df-3b43-39d3-0000-000000000000</id>
-                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>36c7fb5d-5500-3b8b-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>failure</selectedRelationships>
-                            <source>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>e939150d-8ce3-327f-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>5d973dd3-050d-3233-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -28577,7 +28552,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>e939150d-8ce3-327f-0000-000000000000</id>
+<id>36c7fb5d-5500-3b8b-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -28782,35 +28757,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
 <id>8a6d23a3-8f14-3867-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>7c6f2766-b87b-34a6-0000-000000000000</id>
-                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>-7984.0</x>
-<y>-2184.0</y>
-                            </bends>
-                            <destination>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>96b98450-fc0c-3e89-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>retry</selectedRelationships>
-                            <source>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>e939150d-8ce3-327f-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -29170,31 +29116,6 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <source>
 <groupId>c08d7760-2510-3979-0000-000000000000</groupId>
 <id>686e51f4-6e0c-36c5-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>8b8dae3d-a1de-3756-0000-000000000000</id>
-                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>96b98450-fc0c-3e89-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>c08d7760-2510-3979-0000-000000000000</groupId>
-<id>e939150d-8ce3-327f-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -49187,240 +49108,6 @@ ${RouteOnAttribute.Route:startsWith('unmatched'):ifElse('log_summary/log_summary
                             <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
                         </processors>
                         <processors>
-                            <id>e939150d-8ce3-327f-0000-000000000000</id>
-                            <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
-                            <position>
-<x>-8520.0</x>
-<y>-2384.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.12.1</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>put-db-record-record-reader</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
-            <name>put-db-record-record-reader</name>
-        </value>
-    </entry>
-    <entry>
-        <key>db-type</key>
-        <value>
-            <name>db-type</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-statement-type</key>
-        <value>
-            <name>put-db-record-statement-type</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-dcbp-service</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.dbcp.DBCPService</identifiesControllerService>
-            <name>put-db-record-dcbp-service</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-catalog-name</key>
-        <value>
-            <name>put-db-record-catalog-name</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-schema-name</key>
-        <value>
-            <name>put-db-record-schema-name</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-table-name</key>
-        <value>
-            <name>put-db-record-table-name</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-translate-field-names</key>
-        <value>
-            <name>put-db-record-translate-field-names</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-unmatched-field-behavior</key>
-        <value>
-            <name>put-db-record-unmatched-field-behavior</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-unmatched-column-behavior</key>
-        <value>
-            <name>put-db-record-unmatched-column-behavior</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-update-keys</key>
-        <value>
-            <name>put-db-record-update-keys</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-field-containing-sql</key>
-        <value>
-            <name>put-db-record-field-containing-sql</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-allow-multiple-statements</key>
-        <value>
-            <name>put-db-record-allow-multiple-statements</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-quoted-identifiers</key>
-        <value>
-            <name>put-db-record-quoted-identifiers</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-quoted-table-identifiers</key>
-        <value>
-            <name>put-db-record-quoted-table-identifiers</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-query-timeout</key>
-        <value>
-            <name>put-db-record-query-timeout</name>
-        </value>
-    </entry>
-    <entry>
-        <key>rollback-on-failure</key>
-        <value>
-            <name>rollback-on-failure</name>
-        </value>
-    </entry>
-    <entry>
-        <key>table-schema-cache-size</key>
-        <value>
-            <name>table-schema-cache-size</name>
-        </value>
-    </entry>
-    <entry>
-        <key>put-db-record-max-batch-size</key>
-        <value>
-            <name>put-db-record-max-batch-size</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>put-db-record-record-reader</key>
-        <value>4feb88e7-14c2-3a4e-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>db-type</key>
-        <value>Generic</value>
-    </entry>
-    <entry>
-        <key>put-db-record-statement-type</key>
-        <value>INSERT</value>
-    </entry>
-    <entry>
-        <key>put-db-record-dcbp-service</key>
-        <value>ea8600ba-3d4a-3f65-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>put-db-record-catalog-name</key>
-    </entry>
-    <entry>
-        <key>put-db-record-schema-name</key>
-    </entry>
-    <entry>
-        <key>put-db-record-table-name</key>
-        <value>diksha_tpd_mapping_temp</value>
-    </entry>
-    <entry>
-        <key>put-db-record-translate-field-names</key>
-        <value>true</value>
-    </entry>
-    <entry>
-        <key>put-db-record-unmatched-field-behavior</key>
-        <value>Ignore Unmatched Fields</value>
-    </entry>
-    <entry>
-        <key>put-db-record-unmatched-column-behavior</key>
-        <value>Fail on Unmatched Columns</value>
-    </entry>
-    <entry>
-        <key>put-db-record-update-keys</key>
-    </entry>
-    <entry>
-        <key>put-db-record-field-containing-sql</key>
-    </entry>
-    <entry>
-        <key>put-db-record-allow-multiple-statements</key>
-        <value>false</value>
-    </entry>
-    <entry>
-        <key>put-db-record-quoted-identifiers</key>
-        <value>false</value>
-    </entry>
-    <entry>
-        <key>put-db-record-quoted-table-identifiers</key>
-        <value>false</value>
-    </entry>
-    <entry>
-        <key>put-db-record-query-timeout</key>
-        <value>0 seconds</value>
-    </entry>
-    <entry>
-        <key>rollback-on-failure</key>
-        <value>false</value>
-    </entry>
-    <entry>
-        <key>table-schema-cache-size</key>
-        <value>100</value>
-    </entry>
-    <entry>
-        <key>put-db-record-max-batch-size</key>
-        <value>0</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>0 sec</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>PutDatabaseRecord</name>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>failure</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>retry</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.PutDatabaseRecord</type>
-                        </processors>
-                        <processors>
                             <id>e9d3bd4c-e022-32fb-0000-000000000000</id>
                             <parentGroupId>c08d7760-2510-3979-0000-000000000000</parentGroupId>
                             <position>
@@ -50578,5 +50265,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/08/2021 11:53:56 IST</timestamp>
+    <timestamp>04/29/2021 10:22:46 IST</timestamp>
 </template>
