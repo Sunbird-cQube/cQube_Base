@@ -269,11 +269,41 @@ export class PATLOTableComponent implements OnInit {
         });
         newArr.push(temp);
       });
-
-      newArr.forEach((columns) => {
+      function tableCellColor(data) {
+        var colors = {
+          1: '#a50026',
+          2: '#d73027',
+          3: '#f46d43',
+          4: '#fdae61',
+          5: '#fee08b',
+          6: '#d9ef8b',
+          7: '#a6d96a',
+          8: '#66bd63',
+          9: '#1a9850',
+          10: '#006837'
+        }
+        var keys = Object.keys(colors);
+        var setColor = '';
+        for (let i = 0; i < keys.length; i++) {
+          if (data <= parseInt(keys[i])) {
+            setColor = colors[keys[i]];
+            break;
+          } else if (data > parseInt(keys[i]) && data <= parseInt(keys[i + 1])) {
+            setColor = colors[keys[i + 1]];
+            break;
+          }
+        }
+        return setColor;
+      }
+      newArr.forEach((columns, i1) => {
         body += "<tr>";
-        columns.forEach((column) => {
-          body += `<td>${column.value}</td>`;
+        columns.forEach((column, i2) => {
+          if (i2 > 3 && column.value) {
+            body += `<td data-toggle="tooltip" data-placement="bottom" style='background-color: ${tableCellColor(column.value)}' title='District Name: ${column.data} &#010;  Date: ${columns[0].value} \n  Grade: ${columns[1].value} &#xa; Subject: ${columns[2].value}'>${column.value}</td>`;
+          }
+          else {
+            body += `<td>${column.value}</td>`;
+          }
         });
         body += "</tr>";
       });
@@ -289,7 +319,7 @@ export class PATLOTableComponent implements OnInit {
         bLengthChange: false,
         bInfo: false,
         bPaginate: false,
-        scrollY: "62vh",
+        scrollY: "60vh",
         scrollX: true,
         scrollCollapse: true,
         searching: false,
@@ -303,16 +333,19 @@ export class PATLOTableComponent implements OnInit {
         obj['columnDefs'] = [{ targets: 0, type: "date-dd-mm-yyyy" }];
       }
 
-      var table = $(`#LOtable`).DataTable(obj);
+      this.table = $(`#LOtable`).DataTable(obj);
+      $(function () {
+        $("[data-toggle='tooltip']").tooltip()
+      });
       // $('#LOtable').on('mousemove', 'tr', function (e) {
-      //   var rowData = table.row(this).data().join("\n")
+      //   var rowData = table.row(this).data().join(", ")
       //   $("#tooltip").text(rowData).animate({ left: e.pageX, top: e.pageY }, 1)
       //   if (!$("#tooltip").is(':visible')) $("#tooltip").show()
       // })
       // $('#LOtable').on('mouseleave', function (e) {
       //   $("#tooltip").hide()
       // })
-      
+
       $(document).ready(function () {
         $('#LOtable').on('page.dt', function () {
           $('.dataTables_scrollBody').scrollTop(0);
@@ -635,4 +668,29 @@ export class PATLOTableComponent implements OnInit {
     this.reportData = temp;
     this.pageChange();
   }
+
+  public legendColors: any = [
+    "#a50026",
+    "#d73027",
+    "#f46d43",
+    "#fdae61",
+    "#fee08b",
+    "#d9ef8b",
+    "#a6d96a",
+    "#66bd63",
+    "#1a9850",
+    "#006837",
+  ];
+  public values = [
+    "0-10",
+    "11-20",
+    "21-30",
+    "31-40",
+    "41-50",
+    "51-60",
+    "61-70",
+    "71-80",
+    "81-90",
+    "91-100",
+  ];
 }

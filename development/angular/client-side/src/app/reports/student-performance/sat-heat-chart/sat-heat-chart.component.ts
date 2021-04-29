@@ -102,7 +102,7 @@ export class SatHeatChartComponent implements OnInit {
     public router: Router
   ) {
     this.screenWidth = window.innerWidth;
-    service.PATHeatMapMetaData({report: 'sat'}).subscribe(res => {
+    service.PATHeatMapMetaData({ report: 'sat' }).subscribe(res => {
       this.metaData = res['data'];
       for (let i = 0; i < this.metaData.length; i++) {
         this.years.push(this.metaData[i]['academic_year']);
@@ -294,7 +294,7 @@ export class SatHeatChartComponent implements OnInit {
     let scrollBarX
     let scrollBarY
     let xAxis, yAxis, dataLabels, tooltipStyle;
-    
+
     var yAxisLabel;
     if (this.grade != "all") {
       yAxisLabel = yLabel.map(a => {
@@ -302,7 +302,7 @@ export class SatHeatChartComponent implements OnInit {
         return res[res.length - 1].substring(0, 30)
       })
     } else {
-      yAxisLabel = [];
+      yAxisLabel = yLabel;
     }
 
     if (this.screenWidth <= 1920) {
@@ -423,7 +423,7 @@ export class SatHeatChartComponent implements OnInit {
             fontFamily: 'Arial'
           },
           align: "right",
-          formatter: function(this) {
+          formatter: function (this) {
             return this.value !== this.pos ? `${this.value}` : '';
           }
         },

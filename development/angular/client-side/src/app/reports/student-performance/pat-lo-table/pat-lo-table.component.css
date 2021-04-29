@@ -94,13 +94,3 @@
         height: 80vh !important;
     }
 }
-
-#tooltip {
-  position: absolute;
-  z-index: 1001;
-  display: none;
-  border: 2px solid #ebebeb;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: #fff;
-}

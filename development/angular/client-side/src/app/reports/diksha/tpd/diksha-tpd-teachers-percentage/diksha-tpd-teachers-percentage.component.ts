@@ -127,7 +127,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   resetToInitPage() {
-    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.commonService.dateAndTime}`;
     this.skul = true;
     this.dist = false;
     this.blok = false;
@@ -150,7 +150,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   commonFunc = () => {
-    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.commonService.dateAndTime}`;
     this.commonService.errMsg();
     this.level = 'district';
     this.reportData = [];
@@ -368,7 +368,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
             fontFamily: 'Arial'
           },
           align: "right",
-          formatter: function(this) {
+          formatter: function (this) {
             return this.value !== this.pos ? `${this.value}` : '';
           }
         },
@@ -461,7 +461,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
   selectedDistrict(districtId) {
     this.level = 'block';
-    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
     this.block = undefined;
     this.cluster = undefined;
     this.blockHidden = false;
@@ -502,7 +502,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
   selectedBlock(blockId) {
     this.level = 'cluster';
-    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
     this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -546,7 +546,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
   selectedCluster(clusterId) {
     this.level = 'school';
-    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
     this.reportData = [];
@@ -648,4 +648,29 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   downloadReport() {
     this.commonService.download(this.fileName, this.reportData);
   }
+
+  public legendColors: any = [
+    "#a50026",
+    "#d73027",
+    "#f46d43",
+    "#fdae61",
+    "#fee08b",
+    "#d9ef8b",
+    "#a6d96a",
+    "#66bd63",
+    "#1a9850",
+    "#006837",
+  ];
+  public values = [
+    "0-10",
+    "11-20",
+    "21-30",
+    "31-40",
+    "41-50",
+    "51-60",
+    "61-70",
+    "71-80",
+    "81-90",
+    "91-100",
+  ];
 }
