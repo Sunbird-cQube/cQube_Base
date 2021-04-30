@@ -18230,92 +18230,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
     </entry>
     <entry>
         <key>SQL select query</key>
-        <value>REFRESH MATERIALIZED VIEW school_grade_enrolment_district;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_district_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_district_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt_last30;
-
-REFRESH MATERIALIZED VIEW stud_count_school_last30;
-REFRESH MATERIALIZED VIEW stud_count_school_grade_last30;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_block_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_school_last30;
-
-REFRESH MATERIALIZED VIEW stud_count_school_last7;
-REFRESH MATERIALIZED VIEW stud_count_school_grade_last7;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_block_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_school_last7;
-
-REFRESH MATERIALIZED VIEW stud_count_school_mgmt_last30;
-REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_last30;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_last30;
-
-
-REFRESH MATERIALIZED VIEW stud_count_school_mgmt_last7;
-REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_last7;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_last7;
-
-
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_all;
-REFRESH MATERIALIZED VIEW periodic_exam_block_all;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_all;
-REFRESH MATERIALIZED VIEW periodic_exam_school_all;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_all;
-REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_all;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_all;
-REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_all;
-
-
-REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_year_month;
-REFRESH MATERIALIZED VIEW stud_count_school_mgmt_year_month;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_year_month;
-
-REFRESH MATERIALIZED VIEW stud_count_school_grade_year_month;
-REFRESH MATERIALIZED VIEW stud_count_school_year_month;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_block_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_school_year_month;</value>
+        <value>#{pat_mv_queries}</value>
     </entry>
     <entry>
         <key>sql-post-query</key>
@@ -40302,5 +40217,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/27/2021 18:02:28 IST</timestamp>
+    <timestamp>04/29/2021 17:23:18 IST</timestamp>
 </template>
