@@ -256,7 +256,11 @@ export class PATLOTableComponent implements OnInit {
         var col = column.data.replace(/_/g, " ").replace(/\w\S*/g, (txt) => {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
-        headers += `<th>${col}</th>`;
+        if (i > 3) {
+          headers += `<th><div class="rank" style="transform: rotate(-90deg); min-height : 70px;">${col}</div></th>`;
+        } else {
+          headers += `<th>${col}</th>`;
+        }
       });
 
       let newArr = [];
@@ -296,14 +300,31 @@ export class PATLOTableComponent implements OnInit {
         }
         return setColor;
       }
+      function toTitleCase(phrase) {
+        var key = phrase
+          .toLowerCase()
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        return key;
+      }
       newArr.forEach((columns, i1) => {
         body += "<tr>";
         columns.forEach((column, i2) => {
           if (i2 > 3 && column.value) {
-            body += `<td data-toggle="tooltip" data-html="true" data-placement="bottom" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value} <br> Subject: ${columns[2].value}'>${column.value}</td>`;
+            body += `<td data-toggle="tooltip" data-html="true" data-placement="bottom" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
           }
           else {
-            body += `<td>${column.value}</td>`;
+            if (column.data == 'indicator') {
+              body += `<td style="min-width: 170px">${column.value.substring(0, 30)}</td>`;
+            } else {
+              if (column.data == 'date') {
+                var date = column.value.split("-");
+                body += `<td>${date[0] + '-' + date[1]}</td>`;
+              } else {
+                body += `<td>${column.value}</td>`;
+              }
+            }
           }
         });
         body += "</tr>";
@@ -320,14 +341,15 @@ export class PATLOTableComponent implements OnInit {
         bLengthChange: false,
         bInfo: false,
         bPaginate: false,
-        scrollY: "60vh",
+        scrollY: "54vh",
         scrollX: true,
         scrollCollapse: true,
         searching: false,
         paging: false,
         fixedColumns: {
-          leftColumns: 1,
-        },
+          leftColumns: 2,
+          heightMatch: "auto"
+        }
       }
       if (dataSet.length > 0) {
         obj['order'] = [[0, "asc"]];
@@ -354,6 +376,9 @@ export class PATLOTableComponent implements OnInit {
           $('[data-toggle="tooltip"]').tooltip("hide");
         });
       });
+
+
+      new $.fn.dataTable.FixedColumns(this.table);
 
       $(document).ready(function () {
         $('#LOtable').on('page.dt', function () {
