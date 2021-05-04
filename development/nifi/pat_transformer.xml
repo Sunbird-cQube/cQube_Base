@@ -756,7 +756,7 @@
 <id>aa74433c-d4d6-3314-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
-                            <zIndex>0</zIndex>
+                            <zIndex>6</zIndex>
                         </connections>
                         <connections>
                             <id>15a2e8e9-0d31-3974-0000-000000000000</id>
@@ -1485,6 +1485,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>30faaf95-a176-357b-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>80dd6ebb-dbf2-3e71-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>85252cfb-26f8-37db-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>32641616-a5e1-379a-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -2077,8 +2102,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>5256.0</x>
-<y>2312.0</y>
+<x>5280.0</x>
+<y>2256.0</y>
                             </bends>
                             <destination>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
@@ -4708,6 +4733,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>a23456de-eadb-3d14-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>80dd6ebb-dbf2-3e71-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>c4f08d52-11a3-3150-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>a299709b-b51f-39a5-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -5325,8 +5375,8 @@
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-6864.0</x>
-<y>1008.0</y>
+<x>-6880.0</x>
+<y>1048.0</y>
                             </bends>
                             <destination>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
@@ -5556,31 +5606,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>c148fb29-0605-3ba9-0000-000000000000</id>
-                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>80dd6ebb-dbf2-3e71-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>0</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>failure</selectedRelationships>
-                            <source>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>85252cfb-26f8-37db-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>c185a44e-406d-3ee3-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -5707,31 +5732,6 @@
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>32bdcd19-7a9a-3769-0000-000000000000</id>
 <type>FUNNEL</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>c3e55a39-b0a9-39dc-0000-000000000000</id>
-                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>80dd6ebb-dbf2-3e71-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>0</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>failure</selectedRelationships>
-                            <source>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>c4f08d52-11a3-3150-0000-000000000000</id>
-<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -7163,6 +7163,31 @@
                             <source>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>a648ba54-e72c-370c-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>ffd9c203-f036-3c06-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>14f60fed-362f-3d20-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>failure</selectedRelationships>
+                            <source>
+<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
+<id>69bdd44d-49a5-3e41-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -8931,6 +8956,23 @@
                             <type>INPUT_PORT</type>
                         </inputPorts>
                         <labels>
+                            <id>0a107443-150b-3d2c-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>-6064.0</x>
+<y>896.0</y>
+                            </position>
+                            <height>64.0</height>
+                            <label>2</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>24074e38-784f-3728-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
@@ -8996,6 +9038,23 @@
                             <width>984.0</width>
                         </labels>
                         <labels>
+                            <id>30e42f02-56a7-3e19-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>-6960.0</x>
+<y>1280.0</y>
+                            </position>
+                            <height>64.0</height>
+                            <label>4</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>32695670-5d7f-3fd5-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
@@ -9038,6 +9097,23 @@ all category vs management</label>
 </entry>
                             </style>
                             <width>976.0</width>
+                        </labels>
+                        <labels>
+                            <id>479fc17e-e199-3cc4-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>-6256.0</x>
+<y>1152.0</y>
+                            </position>
+                            <height>64.0</height>
+                            <label>5</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
                         </labels>
                         <labels>
                             <id>5999f364-4a1d-3576-0000-000000000000</id>
@@ -9145,6 +9221,23 @@ all category vs management</label>
 </entry>
                             </style>
                             <width>448.0</width>
+                        </labels>
+                        <labels>
+                            <id>888d9394-4f0f-3c3e-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>-7256.0</x>
+<y>648.0</y>
+                            </position>
+                            <height>64.0</height>
+                            <label>1</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
                         </labels>
                         <labels>
                             <id>a1378301-e81d-3db5-0000-000000000000</id>
@@ -9275,6 +9368,23 @@ all category vs management</label>
                             <width>272.0</width>
                         </labels>
                         <labels>
+                            <id>d2ecac0b-20df-3529-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>-4768.0</x>
+<y>1176.0</y>
+                            </position>
+                            <height>64.0</height>
+                            <label>6</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
+                        </labels>
+                        <labels>
                             <id>d5ec8672-fff5-3c0f-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
@@ -9315,6 +9425,23 @@ all category vs management</label>
 </entry>
                             </style>
                             <width>448.0</width>
+                        </labels>
+                        <labels>
+                            <id>dfba969e-78e9-3070-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>-6624.0</x>
+<y>976.0</y>
+                            </position>
+                            <height>64.0</height>
+                            <label>3</label>
+                            <style>
+<entry>
+    <key>font-size</key>
+    <value>24px</value>
+</entry>
+                            </style>
+                            <width>64.0</width>
                         </labels>
                         <labels>
                             <id>f43fef63-0f4a-31d8-0000-000000000000</id>
@@ -10599,6 +10726,75 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{periodic_exam_su
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.ReplaceText</type>
+                        </processors>
+                        <processors>
+                            <id>14f60fed-362f-3d20-0000-000000000000</id>
+                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
+                            <position>
+<x>4904.0</x>
+<y>352.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>log-level</key>
+        <value>
+            <name>log-level</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>
+            <name>log-prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>
+            <name>log-message</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>log-level</key>
+        <value>error</value>
+    </entry>
+    <entry>
+        <key>log-prefix</key>
+        <value>---------AGGREGATIONS-----------</value>
+    </entry>
+    <entry>
+        <key>log-message</key>
+        <value>File: ${filename},Error while  Refreshing Materilized views query.
+Error: ${executesql.error.message}</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>pat_log_msg_error_mv_views</name>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.LogMessage</type>
                         </processors>
                         <processors>
                             <id>154338cd-640e-3097-0000-000000000000</id>
@@ -14557,8 +14753,8 @@ Mirror data validation of file:${filename} started</value>
                             <id>459de32b-36e7-3aee-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>-6688.0</x>
-<y>872.0</y>
+<x>-6808.0</x>
+<y>808.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -14761,8 +14957,8 @@ same id data validation of file:${filename}, same id records not found </value>
                             <id>4cd599c1-437f-3e99-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>-6920.0</x>
-<y>720.0</y>
+<x>-6960.0</x>
+<y>600.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -16704,7 +16900,7 @@ Mirror data validation of file:${filename}, Mirror data found </value>
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>record-reader</key>
@@ -18272,7 +18468,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>pat_refrest_MV</name>
                             <relationships>
-<autoTerminate>true</autoTerminate>
+<autoTerminate>false</autoTerminate>
 <name>failure</name>
                             </relationships>
                             <relationships>
@@ -20020,8 +20216,8 @@ ${filename:startsWith('periodic_exam_subject_details'):ifElse(#{periodic_exam_su
                             <id>7f130ccc-764e-3a55-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>8184.0</x>
-<y>-1528.0</y>
+<x>8200.0</x>
+<y>-1608.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -23916,7 +24112,7 @@ executesql.query.fetchtime =${executesql.query.fetchtime}
 <yieldDuration>1 sec</yieldDuration>
                             </config>
                             <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>LogMessage</name>
+                            <name>pat_log_msg_success</name>
                             <relationships>
 <autoTerminate>true</autoTerminate>
 <name>success</name>
@@ -24837,7 +25033,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
                             <id>b0da31d5-6273-3d2e-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>992.0</x>
+<x>1000.0</x>
 <y>1232.0</y>
                             </position>
                             <bundle>
@@ -40217,5 +40413,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>04/29/2021 17:23:18 IST</timestamp>
+    <timestamp>05/04/2021 18:06:53 IST</timestamp>
 </template>
