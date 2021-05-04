@@ -6085,5 +6085,4 @@ alter table student_attendance_exception_agg add column if not exists school_cat
 alter table teacher_attendance_exception_agg add column if not exists school_management_type varchar(100);
 alter table teacher_attendance_exception_agg add column if not exists school_category varchar(100);
 
-
-
+alter table sat_null_col add column  IF NOT EXISTS count_null_semester int;
