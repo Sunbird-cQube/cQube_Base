@@ -18,6 +18,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
 
   public category: String[] = [];
   public chartData: Number[] = [];
+  public completion: Number[] = [];
   public xAxisLabel: String = "Enrollment";
   public yAxisLabel: String;
   public reportName: String = "enrollment_completion";
@@ -214,6 +215,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     }
     this.result.data.forEach(element => {
       this.chartData.push(Number(element[`${this.type}`]));
+      this.completion.push(Number(element[`completion`]));
     });
     this.footer = (this.chartData.reduce((a, b) => Number(a) + Number(b), 0)).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
