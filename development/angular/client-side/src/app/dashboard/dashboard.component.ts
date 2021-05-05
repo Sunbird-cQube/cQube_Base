@@ -103,18 +103,18 @@ export class DashboardComponent implements OnInit {
     this.changeDataSourceStatus();
   }
 
-  getDefault(){
-    this.service.getDefault().subscribe(res=>{
+  getDefault() {
+    this.service.getDefault().subscribe(res => {
       this.managementType = res[0]['name'];
       this.categoryType = res[1]['name'];
       this.setDefault();
     });
   }
 
-  setDefault(){
-    if(!localStorage.getItem('management') && !localStorage.getItem('category')){
-      this.management  = this.managementType;
-      this.category  = this.categoryType;
+  setDefault() {
+    if (!localStorage.getItem('management') && !localStorage.getItem('category')) {
+      this.management = this.managementType;
+      this.category = this.categoryType;
       let obj = {
         id: this.management,
         value: this.service.changeingStringCases(this.management.replace(/_/g, ' '))
@@ -125,7 +125,12 @@ export class DashboardComponent implements OnInit {
         value: this.service.changeingStringCases(this.category.replace(/_/g, ' '))
       }
       localStorage.setItem("category", JSON.stringify(obj));
-    }else{
+    } else {
+      if (this.managementType) {
+        if (this.managements.length <= 0) {
+          this.managements.push({ id: this.managementType, value: this.service.changeingStringCases(this.managementType.replace(/_/g, ' ')) })
+        }
+      }
       this.management = JSON.parse(localStorage.getItem('management')).id;
       this.category = JSON.parse(localStorage.getItem('category')).id;
     }
@@ -182,8 +187,20 @@ export class DashboardComponent implements OnInit {
       this.categories = res["mydata"].category;
       this.categories.unshift({ id: "overall", value: "Overall" });
       document.getElementById("spinner").style.display = "none";
-    }, err=>{
-      this.managements.unshift(JSON.parse(localStorage.getItem('management')));
+    }, err => {
+      let isThere = false;
+      this.managements.map(item => {
+        if (item.id != JSON.parse(localStorage.getItem('management')).id) {
+          isThere = true;
+          return isThere;
+        }
+      });
+      if (isThere) {
+        this.managements.unshift(JSON.parse(localStorage.getItem('management')));
+      }
+      if (JSON.parse(localStorage.getItem('management')).value != 'Overall') {
+        this.managements.unshift({ id: "overall", value: "Overall" });
+      }
       document.getElementById("spinner").style.display = "none";
     });
     this.getDefault();
