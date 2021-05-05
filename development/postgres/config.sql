@@ -88,6 +88,7 @@ drop view if exists composite_mgt_block;
 drop view if exists composite_mgt_cluster;
 drop view if exists composite_mgt_school;
 
+/*
 drop view if exists semester_exam_district_all cascade;
 drop view if exists semester_exam_block_all cascade;
 drop view if exists semester_exam_cluster_all cascade;
@@ -148,7 +149,7 @@ drop view if exists semester_grade_district_mgmt_last7 cascade;
 drop view if exists semester_grade_block_mgmt_last7 cascade;
 drop view if exists semester_grade_cluster_mgmt_last7 cascade;
 drop view if exists semester_grade_school_mgmt_last7 cascade;
-/*
+
 drop view if exists periodic_exam_school_all cascade;
 drop view if exists periodic_exam_cluster_all cascade;
 drop view if exists periodic_exam_block_all cascade;
@@ -275,6 +276,39 @@ drop materialized view if exists periodic_exam_school_mgmt_year_month cascade;
 drop materialized view if exists periodic_exam_cluster_mgmt_year_month cascade;
 drop materialized view if exists periodic_exam_block_mgmt_year_month cascade;
 drop materialized view if exists periodic_exam_district_mgmt_year_month cascade;
+
+drop materialized view  if exists semester_exam_district_all cascade;
+drop materialized view  if exists semester_exam_block_all cascade;
+drop materialized view  if exists semester_exam_cluster_all cascade;
+drop materialized view  if exists semester_exam_school_all cascade;
+
+drop materialized view  if exists semester_exam_district_last30 cascade;
+drop materialized view  if exists semester_exam_block_last30 cascade;
+drop materialized view  if exists semester_exam_cluster_last30 cascade;
+drop materialized view  if exists semester_exam_school_last30 cascade;
+
+drop materialized view  if exists semester_exam_district_last7 cascade;
+drop materialized view  if exists semester_exam_block_last7 cascade;
+drop materialized view  if exists semester_exam_cluster_last7 cascade;
+drop materialized view  if exists semester_exam_school_last7 cascade;
+
+drop materialized view  if exists semester_exam_district_mgmt_all cascade;
+drop materialized view  if exists semester_exam_block_mgmt_all cascade;
+drop materialized view  if exists semester_exam_cluster_mgmt_all cascade;
+drop materialized view  if exists semester_exam_school_mgmt_all cascade;
+
+drop materialized view  if exists semester_exam_district_mgmt_last30 cascade;
+drop materialized view  if exists semester_exam_block_mgmt_last30 cascade;
+drop materialized view  if exists semester_exam_cluster_mgmt_last30 cascade;
+drop materialized view  if exists semester_exam_school_mgmt_last30 cascade;
+
+drop materialized view  if exists semester_exam_district_mgmt_last7 cascade;
+drop materialized view  if exists semester_exam_block_mgmt_last7 cascade;
+drop materialized view  if exists semester_exam_cluster_mgmt_last7 cascade;
+drop materialized view  if exists semester_exam_school_mgmt_last7 cascade;
+
+drop table if exists student_att_count cascade;
+drop table if exists student_att_grade_count cascade;
 
 drop view if exists composite_mgt_district;
 drop view if exists composite_mgt_block;
