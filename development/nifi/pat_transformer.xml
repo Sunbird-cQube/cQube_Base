@@ -18398,6 +18398,7 @@ file: ${filename} duplicate count updated to log summary db.</value>
     </entry>
     <entry>
         <key>sql-pre-query</key>
+        <value>#{pat_mv_pre_query}</value>
     </entry>
     <entry>
         <key>SQL select query</key>
@@ -40304,5 +40305,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/05/2021 11:22:45 IST</timestamp>
+    <timestamp>05/05/2021 16:31:47 IST</timestamp>
 </template>
