@@ -256,11 +256,11 @@ export class PATLOTableComponent implements OnInit {
         var col = column.data.replace(/_/g, " ").replace(/\w\S*/g, (txt) => {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
-        if (i > 3) {
-          headers += `<th><div class="rank" style="transform: rotate(-90deg); min-height : 70px;">${col}</div></th>`;
-        } else {
-          headers += `<th>${col}</th>`;
-        }
+        // if (i > 3) {
+          headers += `<th><div class="rank" style="transform: rotate(-90deg); min-height : ${innerHeight < 1000 ? '70px' : '100px'};">${col}</div></th>`;
+        // } else {
+        //   headers += `<th>${col}</th>`;
+        // }
       });
 
       let newArr = [];
@@ -312,7 +312,7 @@ export class PATLOTableComponent implements OnInit {
         body += "<tr>";
         columns.forEach((column, i2) => {
           if (i2 > 3 && column.value) {
-            body += `<td data-toggle="tooltip" data-html="true" data-placement="bottom" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
+            body += `<td data-toggle="tooltip" data-html="true" data-placement="bottom" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length -1 ]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
           }
           else {
             if (column.data == 'indicator') {
@@ -320,7 +320,9 @@ export class PATLOTableComponent implements OnInit {
             } else {
               if (column.data == 'date') {
                 var date = column.value.split("-");
-                body += `<td>${date[0] + '-' + date[1]}</td>`;
+                body += `<td>${date[0]}</td>`;
+              } else if (column.data == 'grade') {
+                body += `<td>${column.value[column.value.length -1 ]}</td>`;
               } else {
                 body += `<td>${column.value}</td>`;
               }
@@ -378,7 +380,7 @@ export class PATLOTableComponent implements OnInit {
       });
 
 
-      new $.fn.dataTable.FixedColumns(this.table);
+      // new $.fn.dataTable.FixedColumns(this.table);
 
       $(document).ready(function () {
         $('#LOtable').on('page.dt', function () {

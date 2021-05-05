@@ -83,7 +83,7 @@
     }
   }
 
-  @media only screen and (min-width: 2520px) {
+  /* @media only screen and (min-width: 2520px) {
     .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
         height: 74vh !important;
     }
@@ -93,6 +93,14 @@
     .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
         height: 80vh !important;
     }
+} */
+
+.sorting{
+  color: green !important;
+}
+
+table.dataTable th, table.dataTable td {
+  box-sizing: content-box;
 }
 
 .tooltip-inner {
