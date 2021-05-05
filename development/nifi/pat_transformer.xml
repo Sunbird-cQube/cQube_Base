@@ -994,7 +994,7 @@
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <destination>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>dcd16d6a-a7a4-3d31-0000-000000000000</id>
+<id>862b3b5c-d2a0-3354-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
@@ -2038,31 +2038,6 @@
                             <source>
 <groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
 <id>ca277bfd-8e24-3f8d-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
-                            <id>499ddb57-f44f-32e4-0000-000000000000</id>
-                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <destination>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>862b3b5c-d2a0-3354-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>success</selectedRelationships>
-                            <source>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>dcd16d6a-a7a4-3d31-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
@@ -6995,8 +6970,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-4528.0</x>
-<y>1832.0</y>
+<x>-4520.0</x>
+<y>1824.0</y>
                             </bends>
                             <bends>
 <x>-4490.0439453125</x>
@@ -9119,7 +9094,7 @@ all category vs management</label>
                             <id>5999f364-4a1d-3576-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>4232.0</x>
+<x>4264.0</x>
 <y>6304.0</y>
                             </position>
                             <height>64.0</height>
@@ -20873,8 +20848,8 @@ file:${filename},Error while executing "${query_type}" query.</value>
                             <id>862b3b5c-d2a0-3354-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>-5152.0</x>
-<y>1736.0</y>
+<x>-5144.0</x>
+<y>1600.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -21081,7 +21056,7 @@ file:${filename},Error while executing "${query_type}" query.</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
+<schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -22737,7 +22712,7 @@ same id data validation of file:${filename}, Error while filtering same id data.
                             <id>9f8c2c1b-0314-3d94-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>-5168.0</x>
+<x>-5144.0</x>
 <y>1368.0</y>
                             </position>
                             <bundle>
@@ -24931,8 +24906,8 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
                             <id>afcf8d0c-6692-3d79-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
-<x>-5152.0</x>
-<y>1944.0</y>
+<x>-5144.0</x>
+<y>1808.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -25011,7 +24986,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
     </entry>
 </properties>
 <runDurationMillis>2000</runDurationMillis>
-<schedulingPeriod>5 secs</schedulingPeriod>
+<schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
                             </config>
@@ -29065,90 +29040,6 @@ same id data validation of file:${filename} error while same id mirror data</val
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.PutSQL</type>
-                        </processors>
-                        <processors>
-                            <id>dcd16d6a-a7a4-3d31-0000-000000000000</id>
-                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
-                            <position>
-<x>-5152.0</x>
-<y>1544.0</y>
-                            </position>
-                            <bundle>
-<artifact>nifi-standard-nar</artifact>
-<group>org.apache.nifi</group>
-<version>1.12.1</version>
-                            </bundle>
-                            <config>
-<bulletinLevel>WARN</bulletinLevel>
-<comments></comments>
-<concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
-<descriptors>
-    <entry>
-        <key>record-reader</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.serialization.RecordReaderFactory</identifiesControllerService>
-            <name>record-reader</name>
-        </value>
-    </entry>
-    <entry>
-        <key>record-writer</key>
-        <value>
-            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
-            <name>record-writer</name>
-        </value>
-    </entry>
-    <entry>
-        <key>replacement-value-strategy</key>
-        <value>
-            <name>replacement-value-strategy</name>
-        </value>
-    </entry>
-    <entry>
-        <key>/ff_uuid</key>
-        <value>
-            <name>/ff_uuid</name>
-        </value>
-    </entry>
-</descriptors>
-<executionNode>ALL</executionNode>
-<lossTolerant>false</lossTolerant>
-<penaltyDuration>30 sec</penaltyDuration>
-<properties>
-    <entry>
-        <key>record-reader</key>
-        <value>bd347858-3f83-326b-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>record-writer</key>
-        <value>09a08df4-b335-3c15-0000-000000000000</value>
-    </entry>
-    <entry>
-        <key>replacement-value-strategy</key>
-        <value>literal-value</value>
-    </entry>
-    <entry>
-        <key>/ff_uuid</key>
-        <value>${files_uuid}</value>
-    </entry>
-</properties>
-<runDurationMillis>0</runDurationMillis>
-<schedulingPeriod>1 sec</schedulingPeriod>
-<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-<yieldDuration>1 sec</yieldDuration>
-                            </config>
-                            <executionNodeRestricted>false</executionNodeRestricted>
-                            <name>UpdateRecord</name>
-                            <relationships>
-<autoTerminate>true</autoTerminate>
-<name>failure</name>
-                            </relationships>
-                            <relationships>
-<autoTerminate>false</autoTerminate>
-<name>success</name>
-                            </relationships>
-                            <state>STOPPED</state>
-                            <style/>
-                            <type>org.apache.nifi.processors.standard.UpdateRecord</type>
                         </processors>
                         <processors>
                             <id>dd88e54b-b5e4-36bd-0000-000000000000</id>
@@ -40413,5 +40304,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/04/2021 18:06:53 IST</timestamp>
+    <timestamp>05/05/2021 11:22:45 IST</timestamp>
 </template>
