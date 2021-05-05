@@ -712,9 +712,14 @@ export class PATReportComponent implements OnInit {
                           this.blockMarkers[i].Details['total_schools'] = this.blockMarkers[i].Subjects['Grade Performance']['total_schools'];
                         }
                         if (this.grade && this.subject) {
-                          this.blockMarkers[i].Details['total_students'] = this.blockMarkers[i].Subjects[`${this.subject}`]['total_students'];
-                          this.blockMarkers[i].Details['students_attended'] = this.blockMarkers[i].Subjects[`${this.subject}`]['students_attended'];
-                          this.blockMarkers[i].Details['total_schools'] = this.blockMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                          if (this.blockMarkers[i].Subjects[`${this.subject}`]) {
+                            this.blockMarkers[i].Details['total_students'] = this.blockMarkers[i].Subjects[`${this.subject}`]['total_students'];
+                            this.blockMarkers[i].Details['students_attended'] = this.blockMarkers[i].Subjects[`${this.subject}`]['students_attended'];
+                            this.blockMarkers[i].Details['total_schools'] = this.blockMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                          } else {
+                            let index = this.blockMarkers.indexOf(this.blockMarkers[i]);
+                            this.blockMarkers.splice(index, 1);
+                          }
                         }
                         if (this.grade) {
                           this.blockMarkers[i].Subjects['Grade Performance'] = this.blockMarkers[i].Subjects['Grade Performance']['percentage']
@@ -938,9 +943,14 @@ export class PATReportComponent implements OnInit {
                           this.clusterMarkers[i].Details['total_schools'] = this.clusterMarkers[i].Subjects['Grade Performance']['total_schools'];
                         }
                         if (this.grade && this.subject) {
-                          this.clusterMarkers[i].Details['total_students'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['total_students'];
-                          this.clusterMarkers[i].Details['students_attended'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['students_attended'];
-                          this.clusterMarkers[i].Details['total_schools'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                          if (this.clusterMarkers[i].Subjects[`${this.subject}`]) {
+                            this.clusterMarkers[i].Details['total_students'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['total_students'];
+                            this.clusterMarkers[i].Details['students_attended'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['students_attended'];
+                            this.clusterMarkers[i].Details['total_schools'] = this.clusterMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                          } else {
+                            let index = this.clusterMarkers.indexOf(this.clusterMarkers[i]);
+                            this.clusterMarkers.splice(index, 1);
+                          }
                         }
                         if (this.grade) {
                           this.clusterMarkers[i].Subjects['Grade Performance'] = this.clusterMarkers[i].Subjects['Grade Performance']['percentage']
@@ -1161,9 +1171,15 @@ export class PATReportComponent implements OnInit {
                           this.schoolMarkers[i].Details['total_schools'] = this.schoolMarkers[i].Subjects['Grade Performance']['total_schools'];
                         }
                         if (this.grade && this.subject) {
-                          this.schoolMarkers[i].Details['total_students'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['total_students'];
-                          this.schoolMarkers[i].Details['students_attended'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['students_attended'];
-                          this.schoolMarkers[i].Details['total_schools'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                          if (this.schoolMarkers[i].Subjects[`${this.subject}`]) {
+                            this.schoolMarkers[i].Details['total_students'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['total_students'];
+                            this.schoolMarkers[i].Details['students_attended'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['students_attended'];
+                            this.schoolMarkers[i].Details['total_schools'] = this.schoolMarkers[i].Subjects[`${this.subject}`]['total_schools'];
+                          }
+                          else {
+                            let index = this.schoolMarkers.indexOf(this.blockMarkers[i]);
+                            this.schoolMarkers.splice(index, 1);
+                          }
                         }
                         if (this.grade) {
                           this.schoolMarkers[i].Subjects['Grade Performance'] = this.schoolMarkers[i].Subjects['Grade Performance']['percentage']
@@ -1703,6 +1719,9 @@ export class PATReportComponent implements OnInit {
               this.markers[i].Details['total_students'] = this.markers[i].Subjects[`${this.subject}`]['total_students'];
               this.markers[i].Details['students_attended'] = this.markers[i].Subjects[`${this.subject}`]['students_attended'];
               this.markers[i].Details['total_schools'] = this.markers[i].Subjects[`${this.subject}`]['total_schools'];
+            } else {
+              let index = this.markers.indexOf(this.markers[i]);
+              this.markers.splice(index, 1);
             }
           }
           if (this.grade) {
