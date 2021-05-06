@@ -130,7 +130,7 @@
 
         </div>
         <div class="col-lg-10" id="r1">
-            <app-bar-chart *ngIf="chartData.length > 0" [category]="category" [data]="chartData"
+            <app-bar-chart *ngIf="chartData.length > 0" [category]="category" [data]="chartData" [xData] = "completion"
                 [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [reportName]="report" [level]="level" [type]="type">
             </app-bar-chart>
             <div *ngIf="chartData.length === 0" style="position: absolute; left: 40%; top: 120px;color: red;">

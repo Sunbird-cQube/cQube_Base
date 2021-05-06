@@ -11,6 +11,7 @@ export class BarChartComponent implements OnInit {
   chartOptions;
   @Input() public category: String[];
   @Input() public data: Number[];
+  @Input() public xData: Number[];
   @Input() public xAxisLabel: String;
   @Input() public yAxisLabel: String;
   @Input() public reportName: String;
@@ -33,6 +34,7 @@ export class BarChartComponent implements OnInit {
   }
 
   createBarChart() {
+    var xData = this.xData;
     var name = this.reportName;
     var level = this.level;
     var type = this.type;
@@ -140,13 +142,13 @@ export class BarChartComponent implements OnInit {
           backgroundColor: "white"
         },
         formatter: function () {
-          return '<b>' + getPointCategoryName(this.point, name, level, type) + '</b>';
+          return '<b>' + getPointCategoryName(this.point, name, xData, level, type) + '</b>';
         }
       }
     }
     this.Highcharts.chart("container", this.chartOptions);
 
-    function getPointCategoryName(point, reportName, level, type) {
+    function getPointCategoryName(point, reportName, xData, level, type) {
       var obj = '';
       if (reportName == "course") {
         let percentage = ((point.y / point.series.yData.reduce((a, b) => a + b, 0)) * 100).toFixed(2);
@@ -169,9 +171,11 @@ export class BarChartComponent implements OnInit {
       }
       if (reportName == "enroll/comp") {
         obj = `<b>${level.charAt(0).toUpperCase() + level.substr(1).toLowerCase()} Name:</b> ${point.category}
-        <br> ${point.y !== null ? `<b>${type.charAt(0).toUpperCase() + type.substr(1).toLowerCase()}:</b> ${point.y.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : ''}`
+        <br> ${point.y !== null ? `<b>${type.charAt(0).toUpperCase() + type.substr(1).toLowerCase()}:</b> ${point.y.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : ''}
+        <br> ${type != `completion` && xData[point.index] ? `<b>Completion: </b>${xData[point.index].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : '' }`
         return obj;
       }
     }
   }
 }
+

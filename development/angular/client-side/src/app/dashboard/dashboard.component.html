@@ -1049,6 +1049,124 @@
         </div>
     </div>
     <div class="row" style="padding: 20px;">
+        <div class="col-sm-6" style="padding:  0% 25px 0px 25px">
+            <div class="headings">Attendance</div>
+            <div class="row outer12">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);"
+                        id="sar" [routerLink]="!nifi_attendance ? ['/coming-soon'] :['/attendance/student-attendance']"
+                        (click)="fetchTelemetry($event,'sar')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="sarTooltip">
+                                    </app-info>
+                                </div>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #eb7637;">
+                                            <img class="ic-equalizer1" src="../../assets/student-4.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Student </p>
+                                        <p class="card-title">Attendance</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="sarViews;else other_content" id="views">views: {{sarViews}}
+                                    </p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);"
+                        id="tar" [routerLink]="['/attendance/teacher-attendance']"
+                        (click)="fetchTelemetry($event,'tar')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="tarTooltip">
+                                    </app-info>
+                                </div>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #eb7637;">
+                                            <img class="ic-equalizer1" src="../../assets/teacher.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Teacher </p>
+                                        <p class="card-title">Attendance</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="tarViews;else other_content" id="views">views: {{tarViews}}
+                                    </p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 25px 0px 25px">
+            <div class="headings">Telemetry Data</div>
+            <div class="row outer12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card card-stats" style="background: linear-gradient(135deg, #6B76DB 0%, #9E9EF4 100%);"
+                        id="telemData" [routerLink]="!nifi_telemetry ? ['/coming-soon'] :['/telemetry']"
+                        (click)="fetchTelemetry($event,'telemData')">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div id="tooltip">
+                                    <app-info [tooltipText]="telemDataTooltip"></app-info>
+                                </div>
+                                <div class="col-3 col-md-2">
+                                    <div class="icon-big text-center icon-warning">
+                                        <div class="iconDiv" style="background-color: #6341af;">
+                                            <img class="ic-equalizer1" src="../../assets/Group 10.svg" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9 col-md-10">
+                                    <div class="numbers" style="font-size: 13px; text-align: center;">
+                                        <p class="card-category">Telemetry </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="views">
+                                    <p *ngIf="telemDataViews;else other_content" id="views">views: {{telemDataViews}}
+                                    </p>
+                                    <ng-template #other_content>
+                                        <p id="errViews">views: 0 {{timePeriod}}</p>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 20px;">
         <div class="col-lg-9 col-md-12 col-sm-12" style="padding:  0px 25px 0px 25px">
             <div class="headings">Exception List</div>
             <div class="row outer12">
@@ -1232,124 +1350,6 @@
                             <div class="row">
                                 <div class="views">
                                     <p *ngIf="tarExpViews;else other_content" id="views">views: {{tarExpViews}}
-                                    </p>
-                                    <ng-template #other_content>
-                                        <p id="errViews">views: 0 {{timePeriod}}</p>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row" style="padding: 20px;">
-        <div class="col-sm-6" style="padding:  0% 25px 0px 25px">
-            <div class="headings">Attendance</div>
-            <div class="row outer12">
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);"
-                        id="sar" [routerLink]="!nifi_attendance ? ['/coming-soon'] :['/attendance/student-attendance']"
-                        (click)="fetchTelemetry($event,'sar')">
-                        <div class="card-body ">
-                            <div class="row">
-                                <div id="tooltip">
-                                    <app-info [tooltipText]="sarTooltip">
-                                    </app-info>
-                                </div>
-                                <div class="col-3 col-md-2">
-                                    <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv" style="background-color: #eb7637;">
-                                            <img class="ic-equalizer1" src="../../assets/student-4.svg" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-9 col-md-10">
-                                    <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">Student </p>
-                                        <p class="card-title">Attendance</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="views">
-                                    <p *ngIf="sarViews;else other_content" id="views">views: {{sarViews}}
-                                    </p>
-                                    <ng-template #other_content>
-                                        <p id="errViews">views: 0 {{timePeriod}}</p>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);"
-                        id="tar" [routerLink]="['/attendance/teacher-attendance']"
-                        (click)="fetchTelemetry($event,'tar')">
-                        <div class="card-body ">
-                            <div class="row">
-                                <div id="tooltip">
-                                    <app-info [tooltipText]="tarTooltip">
-                                    </app-info>
-                                </div>
-                                <div class="col-3 col-md-2">
-                                    <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv" style="background-color: #eb7637;">
-                                            <img class="ic-equalizer1" src="../../assets/teacher.png" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-9 col-md-10">
-                                    <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">Teacher </p>
-                                        <p class="card-title">Attendance</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="views">
-                                    <p *ngIf="tarViews;else other_content" id="views">views: {{tarViews}}
-                                    </p>
-                                    <ng-template #other_content>
-                                        <p id="errViews">views: 0 {{timePeriod}}</p>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-6" style="padding:  0% 25px 0px 25px">
-            <div class="headings">Telemetry Data</div>
-            <div class="row outer12">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card card-stats" style="background: linear-gradient(135deg, #6B76DB 0%, #9E9EF4 100%);"
-                        id="telemData" [routerLink]="!nifi_telemetry ? ['/coming-soon'] :['/telemetry']"
-                        (click)="fetchTelemetry($event,'telemData')">
-                        <div class="card-body ">
-                            <div class="row">
-                                <div id="tooltip">
-                                    <app-info [tooltipText]="telemDataTooltip"></app-info>
-                                </div>
-                                <div class="col-3 col-md-2">
-                                    <div class="icon-big text-center icon-warning">
-                                        <div class="iconDiv" style="background-color: #6341af;">
-                                            <img class="ic-equalizer1" src="../../assets/Group 10.svg" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-9 col-md-10">
-                                    <div class="numbers" style="font-size: 13px; text-align: center;">
-                                        <p class="card-category">Telemetry </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="views">
-                                    <p *ngIf="telemDataViews;else other_content" id="views">views: {{telemDataViews}}
                                     </p>
                                     <ng-template #other_content>
                                         <p id="errViews">views: 0 {{timePeriod}}</p>
