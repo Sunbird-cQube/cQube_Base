@@ -136,7 +136,7 @@ export class PATLOTableComponent implements OnInit {
     this.state = this.commonService.state;
     document.getElementById("homeBtn").style.display = "block";
     document.getElementById("backBtn").style.display = "none";
-    this.onResize();
+    // this.onResize();
   }
 
   height = window.innerHeight;
@@ -256,11 +256,15 @@ export class PATLOTableComponent implements OnInit {
         var col = column.data.replace(/_/g, " ").replace(/\w\S*/g, (txt) => {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
-        // if (i > 3) {
-          headers += `<th><div class="rank" style="transform: rotate(-90deg); min-height : ${innerHeight < 1000 ? '70px' : '100px'};">${col}</div></th>`;
-        // } else {
-        //   headers += `<th>${col}</th>`;
-        // }
+        if (i > 3) {
+          headers += `<th class="rank"><div style="transform: rotate(270deg);">${col}</div></th>`;
+        } else {
+          if (col == 'Indicator') {
+            headers += `<th class="indicator">${col}</th>`;
+          } else {
+            headers += `<th>${col}</th>`;
+          }
+        }
       });
 
       let newArr = [];
@@ -312,17 +316,17 @@ export class PATLOTableComponent implements OnInit {
         body += "<tr>";
         columns.forEach((column, i2) => {
           if (i2 > 3 && column.value) {
-            body += `<td data-toggle="tooltip" data-html="true" data-placement="bottom" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length -1 ]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
+            body += `<td class="numberData" data-toggle="tooltip" data-html="true" data-placement="bottom" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length - 1]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
           }
           else {
             if (column.data == 'indicator') {
-              body += `<td style="min-width: 170px">${column.value.substring(0, 30)}</td>`;
+              body += `<td class="indicator" style="min-width: 170px">${column.value.substring(0, 30)}</td>`;
             } else {
               if (column.data == 'date') {
                 var date = column.value.split("-");
                 body += `<td>${date[0]}</td>`;
               } else if (column.data == 'grade') {
-                body += `<td>${column.value[column.value.length -1 ]}</td>`;
+                body += `<td>${column.value[column.value.length - 1]}</td>`;
               } else {
                 body += `<td>${column.value}</td>`;
               }
@@ -340,18 +344,12 @@ export class PATLOTableComponent implements OnInit {
       var obj =
       {
         destroy: true,
-        bLengthChange: false,
         bInfo: false,
         bPaginate: false,
         scrollY: "54vh",
         scrollX: true,
         scrollCollapse: true,
-        searching: false,
-        paging: false,
-        fixedColumns: {
-          leftColumns: 2,
-          heightMatch: "auto"
-        }
+        searching: false
       }
       if (dataSet.length > 0) {
         obj['order'] = [[0, "asc"]];
