@@ -17,9 +17,9 @@
  }
   
   @media only screen and (min-width: 2560px) {
-    table thead tr th{
+    /* table thead tr th{
       font-size: 22px !important;
-    }
+    } */
     #dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
         font-size: 2.5rem !important;
     }
@@ -53,9 +53,9 @@
   }
   
   @media only screen and (min-width: 3840px) {
-    table thead tr th{
+    /* table thead tr th{
       font-size: 30px !important;
-    }
+    } */
     #dist, #block:not(.select-control), #cluster:not(.select-control), #school:not(.select-control) {
         font-size: 3.3rem !important;
     }
@@ -83,27 +83,101 @@
     }
   }
 
-  /* @media only screen and (min-width: 2520px) {
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
-        height: 74vh !important;
+  @media only screen and (min-width: 2560px) {
+    .customDataTable .dataTables_wrapper .dataTables_scrollBody {
+        max-height: 60vh !important;
+        font-size: 22px !important;
+    }
+
+    .customDataTable .dataTables_wrapper .dataTables_scrollHead{
+        font-size: 22px !important;
+    }
+
+    .customDataTable .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .sorting{
+        height: 170px !important;
+    }
+    .customDataTable .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .indicator{
+        min-width: 250px !important;
+    }
+    .customDataTable .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr th{
+        min-width: 50px !important;
+    }
+    .customDataTable .dataTables_wrapper .dataTables_scrollBody .indicator{
+        min-width: 250px !important;
+    }
+    .page-item.active .page-link{
+        background-color: whitesmoke !important;
+        color: black !important;
+        font-size: 23px;
+    }
+    .page-link{
+        color: black !important;
+        font-size: 23px;
+    }
+
+    .customDataTable .dataTables_wrapper .dataTables_scrollHead table thead .sorting{
+        background-size: 30px 30px !important;
+    }
+  
+}
+
+@media only screen and (min-width: 3840px) {
+        .customDataTable .dataTables_wrapper .dataTables_scrollBody {
+        max-height: 64vh !important;
+        font-size: 30px !important;
+    }
+    .customDataTable .dataTables_wrapper .dataTables_scrollHead{
+        font-size: 30px !important;
+    }
+
+    .customDataTable .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .sorting{
+        height: 250px !important;
+    }
+    .customDataTable .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .indicator{
+        width: 350px;
+    }
+    .customDataTable .dataTables_wrapper .dataTables_scrollBody .indicator{
+        min-width: 350px !important;
+    }
+    .page-item.active .page-link{
+        background-color: whitesmoke !important;
+        color: black !important;
+        font-size: 30px;
+    }
+    .page-link{
+        color: black !important;
+        font-size: 30px;
+    }
+    .customDataTable .dataTables_wrapper .dataTables_scrollHead table thead .sorting{
+        background-size: 40px 40px !important;
     }
 }
 
-@media only screen and (min-width: 3800px) {
-    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
-        height: 80vh !important;
-    }
-} */
-
-.sorting{
-  color: green !important;
+.customDataTable .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .sorting{
+    height: 70px;
+    padding-left: -10px;
+}
+.customDataTable .dataTables_wrapper .dataTables_scrollBody {
+  font-size: 11px;
 }
 
-table.dataTable th, table.dataTable td {
-  box-sizing: content-box;
+.customDataTable .dataTables_wrapper .dataTables_scrollHead{
+  font-size: 11px;
 }
 
-.tooltip-inner {
-  white-space:pre;
-  max-width:none;
+
+.customDataTable .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .indicator{
+    width: 170px;
+}
+
+.customDataTable .dataTables_wrapper .dataTables_scrollBody .indicator{
+    min-width: 170px;
+}
+
+.customDataTable .dataTables_wrapper .dataTables_scrollHead table thead .sorting{
+    background-size: 20px 20px;
+}
+
+.customDataTable .dataTables_wrapper .dataTables_scrollBody table tbody tr th, .customDataTable .dataTables_wrapper .dataTables_scrollBody table table.dataTable tbody tr td {
+    padding: 0px 0px !important;
 }
