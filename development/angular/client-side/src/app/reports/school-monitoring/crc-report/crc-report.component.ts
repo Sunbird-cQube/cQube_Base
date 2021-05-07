@@ -153,7 +153,7 @@ export class CrcReportComponent implements OnInit {
 
   myData;
   state: string;
-  public allMonths:any = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
+  public allMonths: any = ['June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April', 'May'];
   constructor(
     public http: HttpClient,
     public service: CrcReportService,
@@ -196,7 +196,7 @@ export class CrcReportComponent implements OnInit {
           this.months = item["month"];
         }
       });
-      this.months.sort((a,b)=> {
+      this.months.sort((a, b) => {
         return this.allMonths.indexOf(a) - this.allMonths.indexOf(b);
       });
       this.month = this.months[this.months.length - 1];
@@ -258,8 +258,8 @@ export class CrcReportComponent implements OnInit {
           a.districtName > b.districtName
             ? 1
             : b.districtName > a.districtName
-            ? -1
-            : 0
+              ? -1
+              : 0
         );
 
         if (level === "district") {
@@ -270,10 +270,12 @@ export class CrcReportComponent implements OnInit {
 
   getBlocks(level, distId, blockId?: any): void {
     this.service
-      .crcBlockWiseData(distId, {...{
-        ...{ timePeriod: this.period },
-        ...this.month_year,
-      }, ...{ management: this.management, category: this.category }})
+      .crcBlockWiseData(distId, {
+        ...{
+          ...{ timePeriod: this.period },
+          ...this.month_year,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe((result: any) => {
         this.crcBlocksNames = result;
         this.reportData = this.crcBlocksNames = this.crcBlocksNames.visits;
@@ -298,10 +300,12 @@ export class CrcReportComponent implements OnInit {
 
   getClusters(distId, blockId, clusterId): void {
     this.service
-      .crcClusterWiseData(distId, blockId, {...{
-        ...{ timePeriod: this.period },
-        ...this.month_year,
-      }, ...{ management: this.management, category: this.category }})
+      .crcClusterWiseData(distId, blockId, {
+        ...{
+          ...{ timePeriod: this.period },
+          ...this.month_year,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe((result: any) => {
         this.crcClusterNames = result.visits;
         this.reportData = this.crcClusterNames;
@@ -324,8 +328,8 @@ export class CrcReportComponent implements OnInit {
           a.clusterName > b.clusterName
             ? 1
             : b.clusterName > a.clusterName
-            ? -1
-            : 0
+              ? -1
+              : 0
         );
 
         this.myClusterData(clusterId, true);
@@ -399,7 +403,7 @@ export class CrcReportComponent implements OnInit {
     this.changeDetection.detectChanges();
     this.reportData = [];
     this.tableHead = "District Name";
-    this.fileName = `${this.reportName}_${this.period}_allDistricts_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_allDistricts_${this.commonService.dateAndTime}`;
     this.blockHidden = true;
     this.clusterHidden = true;
     this.crcDistrictsNames = [];
@@ -459,8 +463,8 @@ export class CrcReportComponent implements OnInit {
               a.districtName > b.districtName
                 ? 1
                 : b.districtName > a.districtName
-                ? -1
-                : 0
+                  ? -1
+                  : 0
             );
 
             this.countVisitedAndNotVisited(a);
@@ -483,10 +487,10 @@ export class CrcReportComponent implements OnInit {
                 this.height > 1760
                   ? "64vh"
                   : this.height > 1180 && this.height < 1760
-                  ? "54vh"
-                  : this.height > 667 && this.height < 1180
-                  ? "44vh"
-                  : "35vh",
+                    ? "54vh"
+                    : this.height > 667 && this.height < 1180
+                      ? "44vh"
+                      : "35vh",
               scrollX: true,
               scrollCollapse: true,
               paging: false,
@@ -537,7 +541,7 @@ export class CrcReportComponent implements OnInit {
       return;
     }
     this.reportData = [];
-    this.fileName = `${this.reportName}_${this.period}_allDistricts_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_allDistricts_${this.commonService.dateAndTime}`;
     if (JSON.parse(localStorage.getItem("resData")) !== null) {
       this.chartData = [];
       this.result = JSON.parse(localStorage.getItem("resData"));
@@ -558,15 +562,17 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName("dwnld");
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_${this.period}_allBlocks_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_allBlocks_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .crcAllBlockWiseData({...{
-        ...{ timePeriod: this.period },
-        ...this.month_year,
-      }, ...{ management: this.management, category: this.category }})
+      .crcAllBlockWiseData({
+        ...{
+          ...{ timePeriod: this.period },
+          ...this.month_year,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe(
         (res) => {
           this.reportData = res["visits"];
@@ -594,15 +600,17 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName("dwnld");
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_${this.period}_allClusters_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_allClusters_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .crcAllClusterWiseData({...{
-        ...{ timePeriod: this.period },
-        ...this.month_year,
-      }, ...{ management: this.management, category: this.category }})
+      .crcAllClusterWiseData({
+        ...{
+          ...{ timePeriod: this.period },
+          ...this.month_year,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe(
         (res) => {
           this.reportData = res["visits"];
@@ -630,15 +638,17 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     var element1: any = document.getElementsByClassName("dwnld");
     // element1[0].disabled = true;
-    this.fileName = `${this.reportName}_${this.period}_allSchools_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_allSchools_${this.commonService.dateAndTime}`;
     if (this.myData) {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .crcAllSchoolWiseData({...{
-        ...{ timePeriod: this.period },
-        ...this.month_year,
-      }, ...{ management: this.management, category: this.category }})
+      .crcAllSchoolWiseData({
+        ...{
+          ...{ timePeriod: this.period },
+          ...this.month_year,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe(
         (res) => {
           this.reportData = res["visits"];
@@ -667,7 +677,7 @@ export class CrcReportComponent implements OnInit {
     this.downloadType = "";
     this.blockHidden = false;
     this.clusterHidden = true;
-    this.fileName = `${this.reportName}_${this.period}_blocks_of_district_${data}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_blocks_of_district_${data}_${this.commonService.dateAndTime}`;
     this.myBlock = "";
     this.crcBlocksNames = [];
     this.visitedSchools = 0;
@@ -693,10 +703,12 @@ export class CrcReportComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .crcBlockWiseData(data, {...{
-        ...{ timePeriod: this.period },
-        ...this.month_year,
-      }, ...{ management: this.management, category: this.category }})
+      .crcBlockWiseData(data, {
+        ...{
+          ...{ timePeriod: this.period },
+          ...this.month_year,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe(
         (result: any) => {
           if (!fromParam) {
@@ -747,10 +759,10 @@ export class CrcReportComponent implements OnInit {
                 this.height > 1760
                   ? "64vh"
                   : this.height > 1180 && this.height < 1760
-                  ? "54vh"
-                  : this.height > 667 && this.height < 1180
-                  ? "44vh"
-                  : "35vh",
+                    ? "54vh"
+                    : this.height > 667 && this.height < 1180
+                      ? "44vh"
+                      : "35vh",
               scrollX: true,
               scrollCollapse: true,
               paging: false,
@@ -810,7 +822,7 @@ export class CrcReportComponent implements OnInit {
     this.downloadType = "";
     this.clusterHidden = false;
     this.blockHidden = false;
-    this.fileName = `${this.reportName}_${this.period}_clusters_of_block_${data}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_clusters_of_block_${data}_${this.commonService.dateAndTime}`;
     this.myCluster = "";
     this.crcClusterNames = [];
     this.visitedSchools = 0;
@@ -839,10 +851,12 @@ export class CrcReportComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .crcClusterWiseData(localStorage.getItem("distId"), data, {...{
-        ...{ timePeriod: this.period },
-        ...this.month_year,
-      }, ...{ management: this.management, category: this.category }})
+      .crcClusterWiseData(localStorage.getItem("distId"), data, {
+        ...{
+          ...{ timePeriod: this.period },
+          ...this.month_year,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe(
         (result: any) => {
           if (!fromParam) {
@@ -874,8 +888,8 @@ export class CrcReportComponent implements OnInit {
             a.clusterName > b.clusterName
               ? 1
               : b.clusterName > a.clusterName
-              ? -1
-              : 0
+                ? -1
+                : 0
           );
           this.countVisitedAndNotVisited(a);
 
@@ -899,10 +913,10 @@ export class CrcReportComponent implements OnInit {
               this.height > 1760
                 ? "64vh"
                 : this.height > 1180 && this.height < 1760
-                ? "54vh"
-                : this.height > 667 && this.height < 1180
-                ? "44vh"
-                : "35vh",
+                  ? "54vh"
+                  : this.height > 667 && this.height < 1180
+                    ? "44vh"
+                    : "35vh",
             scrollX: true,
             scrollCollapse: true,
             paging: false,
@@ -964,7 +978,7 @@ export class CrcReportComponent implements OnInit {
     this.commonService.errMsg();
     this.schoolCount = 0;
     this.visitCount = 0;
-    this.fileName = `${this.reportName}_${this.period}_schools_of_cluster_${data}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_schools_of_cluster_${data}_${this.commonService.dateAndTime}`;
     this.crcSchoolNames = [];
     this.visitedSchools = 0;
     this.notVisitedSchools = 0;
@@ -993,10 +1007,12 @@ export class CrcReportComponent implements OnInit {
       this.myData.unsubscribe();
     }
     this.myData = this.service
-      .crcSchoolWiseData(distId, blockId, data, {...{
-        ...{ timePeriod: this.period },
-        ...this.month_year,
-      }, ...{ management: this.management, category: this.category }})
+      .crcSchoolWiseData(distId, blockId, data, {
+        ...{
+          ...{ timePeriod: this.period },
+          ...this.month_year,
+        }, ...{ management: this.management, category: this.category }
+      })
       .subscribe(
         async (result: any) => {
           if (!fromParam) {
@@ -1015,7 +1031,7 @@ export class CrcReportComponent implements OnInit {
           for (var i = 0; i < this.crcSchoolNames.length; i++) {
             if (
               typeof parseInt(this.crcSchoolNames[i].totalSchools) ===
-                "number" &&
+              "number" &&
               typeof parseInt(this.crcSchoolNames[i].totalVisits) === "number"
             ) {
               this.schoolCount =
@@ -1053,10 +1069,10 @@ export class CrcReportComponent implements OnInit {
               this.height > 1760
                 ? "64vh"
                 : this.height > 1180 && this.height < 1760
-                ? "54vh"
-                : this.height > 667 && this.height < 1180
-                ? "44vh"
-                : "35vh",
+                  ? "54vh"
+                  : this.height > 667 && this.height < 1180
+                    ? "44vh"
+                    : "35vh",
             scrollX: true,
             scrollCollapse: true,
             paging: false,
@@ -1125,10 +1141,10 @@ export class CrcReportComponent implements OnInit {
       this.height > 1760
         ? "67vh"
         : this.height > 1180 && this.height < 1760
-        ? "60vh"
-        : this.height > 667 && this.height < 1180
-        ? "52vh"
-        : "46vh"
+          ? "60vh"
+          : this.height > 667 && this.height < 1180
+            ? "52vh"
+            : "46vh"
     );
     this.scatterChart = new Chart("myChart", {
       type: "scatter",
@@ -1144,18 +1160,18 @@ export class CrcReportComponent implements OnInit {
               this.height > 1760
                 ? 16
                 : this.height > 1180 && this.height < 1760
-                ? 10
-                : this.height > 667 && this.height < 1180
-                ? 8
-                : 5,
+                  ? 10
+                  : this.height > 667 && this.height < 1180
+                    ? 8
+                    : 5,
             pointHoverRadius:
               this.height > 1760
                 ? 18
                 : this.height > 1180 && this.height < 1760
-                ? 12
-                : this.height > 667 && this.height < 1180
-                ? 9
-                : 6,
+                  ? 12
+                  : this.height > 667 && this.height < 1180
+                    ? 9
+                    : 6,
           },
         ],
       },
@@ -1171,26 +1187,26 @@ export class CrcReportComponent implements OnInit {
             this.height > 1760
               ? 30
               : this.height > 1180 && this.height < 1760
-              ? 20
-              : this.height > 667 && this.height < 1180
-              ? 10
-              : 7,
+                ? 20
+                : this.height > 667 && this.height < 1180
+                  ? 10
+                  : 7,
           yPadding:
             this.height > 1760
               ? 30
               : this.height > 1180 && this.height < 1760
-              ? 20
-              : this.height > 667 && this.height < 1180
-              ? 10
-              : 7,
+                ? 20
+                : this.height > 667 && this.height < 1180
+                  ? 10
+                  : 7,
           bodyFontSize:
             this.height > 1760
               ? 32
               : this.height > 1180 && this.height < 1760
-              ? 22
-              : this.height > 667 && this.height < 1180
-              ? 12
-              : 10,
+                ? 22
+                : this.height > 667 && this.height < 1180
+                  ? 12
+                  : 10,
           displayColors: false,
           custom: function (tooltip) {
             if (!tooltip) return;
@@ -1221,10 +1237,10 @@ export class CrcReportComponent implements OnInit {
                   this.height > 1760
                     ? 30
                     : this.height > 1180 && this.height < 1760
-                    ? 23
-                    : this.height > 667 && this.height < 1180
-                    ? 13
-                    : 10,
+                      ? 23
+                      : this.height > 667 && this.height < 1180
+                        ? 13
+                        : 10,
               },
               scaleLabel: {
                 fontColor: "black",
@@ -1234,10 +1250,10 @@ export class CrcReportComponent implements OnInit {
                   this.height > 1760
                     ? 32
                     : this.height > 1180 && this.height < 1760
-                    ? 22
-                    : this.height > 667 && this.height < 1180
-                    ? 12
-                    : 10,
+                      ? 22
+                      : this.height > 667 && this.height < 1180
+                        ? 12
+                        : 10,
               },
             },
           ],
@@ -1253,10 +1269,10 @@ export class CrcReportComponent implements OnInit {
                   this.height > 1760
                     ? 30
                     : this.height > 1180 && this.height < 1760
-                    ? 23
-                    : this.height > 667 && this.height < 1180
-                    ? 13
-                    : 10,
+                      ? 23
+                      : this.height > 667 && this.height < 1180
+                        ? 13
+                        : 10,
               },
               scaleLabel: {
                 fontColor: "black",
@@ -1266,10 +1282,10 @@ export class CrcReportComponent implements OnInit {
                   this.height > 1760
                     ? 32
                     : this.height > 1180 && this.height < 1760
-                    ? 22
-                    : this.height > 667 && this.height < 1180
-                    ? 12
-                    : 10,
+                      ? 22
+                      : this.height > 667 && this.height < 1180
+                        ? 12
+                        : 10,
               },
             },
           ],

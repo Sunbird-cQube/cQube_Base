@@ -105,7 +105,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     private changeDetection: ChangeDetectorRef,
     public commonService: AppServiceComponent,
     private readonly _router: Router
-  ) {}
+  ) { }
 
   width = window.innerWidth;
   heigth = window.innerHeight;
@@ -116,10 +116,10 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       this.width > 3820
         ? this.commonService.mapCenterLatlng.zoomLevel + 2
         : this.width < 3820 && this.width >= 2500
-        ? this.commonService.mapCenterLatlng.zoomLevel + 1
-        : this.width < 2500 && this.width > 1920
-        ? this.commonService.mapCenterLatlng.zoomLevel + 1
-        : this.commonService.mapCenterLatlng.zoomLevel;
+          ? this.commonService.mapCenterLatlng.zoomLevel + 1
+          : this.width < 2500 && this.width > 1920
+            ? this.commonService.mapCenterLatlng.zoomLevel + 1
+            : this.commonService.mapCenterLatlng.zoomLevel;
     this.changeDetection.detectChanges();
     this.levelWiseFilter();
   }
@@ -133,10 +133,10 @@ export class StudentAttendanceExceptionComponent implements OnInit {
       this.width > 3820
         ? rad1
         : this.width > 2500 && this.width < 3820
-        ? rad2
-        : this.width < 2500 && this.width > 1920
-        ? rad3
-        : rad4;
+          ? rad2
+          : this.width < 2500 && this.width > 1920
+            ? rad3
+            : rad4;
     return radius;
   }
 
@@ -402,9 +402,8 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allDistricts_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allDistricts_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -512,9 +511,8 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allBlocks_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allBlocks_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -621,9 +619,8 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allClusters_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allClusters_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -751,9 +748,8 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${
-          this.year
-        }_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_allSchools_${month.name.trim()}_${this.year
+          }_${this.commonService.dateAndTime}`;
       } else {
         this.fileName = `${this.reportName}_allSchools_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -1001,11 +997,9 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${
-          this.levelWise
-        }s_of_district_${data}_${month.name.trim()}_${this.year}_${
-          this.commonService.dateAndTime
-        }`;
+        this.fileName = `${this.reportName}_${this.levelWise
+          }s_of_district_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime
+          }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_district_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -1039,7 +1033,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
               if (object.length == 0) previous.push(current);
               return previous;
             },
-            []);
+              []);
             this.mylatlngData = uniqueData;
             this.lat = Number(this.mylatlngData[0]["lat"]);
             this.lng = Number(this.mylatlngData[0]["lng"]);
@@ -1166,11 +1160,9 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${
-          this.levelWise
-        }s_of_block_${data}_${month.name.trim()}_${this.year}_${
-          this.commonService.dateAndTime
-        }`;
+        this.fileName = `${this.reportName}_${this.levelWise
+          }s_of_block_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime
+          }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_block_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -1223,7 +1215,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
               if (object.length == 0) previous.push(current);
               return previous;
             },
-            []);
+              []);
             this.mylatlngData = uniqueData;
             this.lat = Number(this.mylatlngData[0]["lat"]);
             this.lng = Number(this.mylatlngData[0]["lng"]);
@@ -1362,11 +1354,9 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     if (this.months.length > 0) {
       var month = this.months.find((a) => a.id === this.month);
       if (this.month_year.month) {
-        this.fileName = `${this.reportName}_${
-          this.levelWise
-        }s_of_cluster_${data}_${month.name.trim()}_${this.year}_${
-          this.commonService.dateAndTime
-        }`;
+        this.fileName = `${this.reportName}_${this.levelWise
+          }s_of_cluster_${data}_${month.name.trim()}_${this.year}_${this.commonService.dateAndTime
+          }`;
       } else {
         this.fileName = `${this.reportName}_${this.levelWise}s_of_cluster_${data}_${this.period}_${this.commonService.dateAndTime}`;
       }
@@ -1455,7 +1445,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
               if (object.length == 0) previous.push(current);
               return previous;
             },
-            []);
+              []);
             this.mylatlngData = uniqueData;
             this.lat = Number(this.mylatlngData[0]["lat"]);
             this.lng = Number(this.mylatlngData[0]["lng"]);
@@ -1588,7 +1578,7 @@ export class StudentAttendanceExceptionComponent implements OnInit {
     markerIcon.addTo(globalMap).bindPopup(popup);
   }
 
-  getTelemetryData(data, event, level) {}
+  getTelemetryData(data, event, level) { }
 
   goToHealthCard(): void {
     let data: any = {};
