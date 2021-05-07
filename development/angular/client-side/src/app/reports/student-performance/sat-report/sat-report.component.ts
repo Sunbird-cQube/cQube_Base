@@ -83,7 +83,7 @@ export class SatReportComponent implements OnInit {
   public myBlockData: any = [];
   public myClusterData: any = [];
   public mySchoolData: any = [];
-  public level = "district";
+  public level = "District";
 
   allGrades = [];
   allSubjects = [];
@@ -127,40 +127,14 @@ export class SatReportComponent implements OnInit {
 
   getColor(data) {
     this.selected = data;
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
   width = window.innerWidth;
   heigth = window.innerHeight;
-  onResize(event) {
+  onResize() {
     this.width = window.innerWidth;
     this.heigth = window.innerHeight;
-    this.commonService.zoomLevel =
-      this.width > 3820
-        ? this.commonService.mapCenterLatlng.zoomLevel + 2
-        : this.width < 3820 && this.width >= 2500
-          ? this.commonService.mapCenterLatlng.zoomLevel + 1
-          : this.width < 2500 && this.width > 1920
-            ? this.commonService.mapCenterLatlng.zoomLevel + 1
-            : this.commonService.mapCenterLatlng.zoomLevel;
-    this.changeDetection.detectChanges();
-    this.levelWiseFilter();
-  }
-  setZoomLevel(lat, lng, globalMap, zoomLevel) {
-    globalMap.setView(new L.LatLng(lat, lng), zoomLevel);
-    globalMap.options.minZoom = this.commonService.zoomLevel;
-    this.changeDetection.detectChanges();
-  }
-  getMarkerRadius(rad1, rad2, rad3, rad4) {
-    let radius =
-      this.width > 3820
-        ? rad1
-        : this.width > 2500 && this.width < 3820
-          ? rad2
-          : this.width < 2500 && this.width > 1920
-            ? rad3
-            : rad4;
-    return radius;
   }
 
   ngOnInit() {
@@ -193,14 +167,14 @@ export class SatReportComponent implements OnInit {
 
     if (params && params.level) {
       let data = params.data;
-      if (params.level === "district") {
+      if (params.level === "District") {
         this.districtHierarchy = {
           distId: data.id,
         };
 
         this.districtId = data.id;
         this.getDistricts(params.level);
-      } else if (params.level === "block") {
+      } else if (params.level === "Block") {
         this.districtHierarchy = {
           distId: data.districtId,
         };
@@ -213,7 +187,7 @@ export class SatReportComponent implements OnInit {
         this.districtId = data.districtId;
         this.blockId = data.id;
         this.getDistricts(params.level);
-      } else if (params.level === "cluster") {
+      } else if (params.level === "Cluster") {
         this.districtHierarchy = {
           distId: data.districtId,
         };
@@ -243,7 +217,7 @@ export class SatReportComponent implements OnInit {
       this.semesters = res["data"];
       if (this.semesters.length > 0)
         this.semester = this.semesters[this.semesters.length - 1].id;
-      this.onResize(event);
+      this.levelWiseFilter();
     }, err => {
       this.semesters = [];
       this.commonService.loaderAndErr(this.semesters);
@@ -251,7 +225,7 @@ export class SatReportComponent implements OnInit {
   }
 
   semSelect() {
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
   getDistricts(level): void {
@@ -282,7 +256,7 @@ export class SatReportComponent implements OnInit {
             this.distFilter = this.districtMarkers;
           }
 
-          if (level === "district") {
+          if (level === "District") {
             this.ondistLinkClick(this.districtId);
           } else {
             this.getBlocks(level, this.districtId, this.blockId);
@@ -308,7 +282,7 @@ export class SatReportComponent implements OnInit {
           this.blockFilter = this.blockMarkers;
         }
 
-        if (level === "block") this.onblockLinkClick(blockId);
+        if (level === "Block") this.onblockLinkClick(blockId);
         else this.getClusters(this.districtId, this.blockId, this.clusterId);
       });
   }
@@ -342,7 +316,7 @@ export class SatReportComponent implements OnInit {
       this.semesters = res["data"];
       if (this.semesters.length > 0)
         this.semester = this.semesters[this.semesters.length - 1].id;
-      this.onResize(event);
+      this.levelWiseFilter();
     });
   }
 
@@ -352,35 +326,35 @@ export class SatReportComponent implements OnInit {
     this.grade = data;
     this.subjectHidden = false;
     this.subject = "";
-    this.onResize(event);
+    this.levelWiseFilter();
   }
   onSubjectSelect(data) {
     this.fileName = `${this.reportName}_${this.period}_${this.grade}_${this.subject}_all${this.level}_${this.commonService.dateAndTime}`;
     this.subject = data;
-    this.onResize(event);
+    this.levelWiseFilter();
   }
 
   levelWiseFilter() {
-    if (this.level == "district") {
+    if (this.level == "District") {
       this.districtWise();
     }
-    if (this.level == "block_wise") {
+    if (this.level == "Block") {
       this.blockWise();
     }
-    if (this.level == "cluster_wise") {
+    if (this.level == "Cluster") {
       this.clusterWise();
     }
-    if (this.level == "school_wise") {
+    if (this.level == "School") {
       this.schoolWise();
     }
 
-    if (this.level == "block") {
+    if (this.level == "blockPerDistrict") {
       this.onDistrictSelect(this.districtId);
     }
-    if (this.level == "cluster") {
+    if (this.level == "clusterPerBlock") {
       this.onBlockSelect(this.blockId);
     }
-    if (this.level == "school") {
+    if (this.level == "schoolPerCluster") {
       this.onClusterSelect(this.clusterId);
     }
   }
@@ -394,8 +368,8 @@ export class SatReportComponent implements OnInit {
     this.grade = undefined;
     this.subject = undefined;
     this.subjectHidden = true;
-    this.level = "district";
-    this.onResize(event);
+    this.level = "District";
+    this.levelWiseFilter();
   }
 
   // to load all the districts for state data on the map
@@ -404,15 +378,17 @@ export class SatReportComponent implements OnInit {
       this.commonService.errMsg();
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
+      this.commonService.latitude = this.lat = this.commonService.mapCenterLatlng.lat;
+      this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
-      if (this.level != "district") {
+      if (this.level != "District") {
         this.subjectHidden = true;
         this.grade = undefined;
         this.subject = undefined;
       }
       this.reportData = [];
-      this.level = "district";
+      this.level = "District";
       // these are for showing the hierarchy names based on selection
       this.skul = true;
       this.dist = false;
@@ -469,13 +445,12 @@ export class SatReportComponent implements OnInit {
 
                   // options to set for markers in the map
                   let options = {
-                    radius: this.getMarkerRadius(14, 10, 8, 5),
                     fillOpacity: 1,
                     strokeWeight: 0.01,
                     mapZoom: this.commonService.zoomLevel,
                     centerLat: this.lat,
                     centerLng: this.lng,
-                    level: "district",
+                    level: "District",
                   };
 
                   this.commonService.restrictZoom(globalMap);
@@ -485,12 +460,7 @@ export class SatReportComponent implements OnInit {
                   ]);
                   this.changeDetection.detectChanges();
                   this.genericFun(this.myDistData, options, this.fileName);
-                  this.setZoomLevel(
-                    options.centerLat,
-                    options.centerLng,
-                    globalMap,
-                    options.mapZoom
-                  );
+                  this.commonService.onResize(this.level);
                   this.allDistricts.sort((a, b) =>
                     a.Details["district_name"] > b.Details["district_name"]
                       ? 1
@@ -535,8 +505,10 @@ export class SatReportComponent implements OnInit {
       this.commonService.errMsg();
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
+      this.commonService.latitude = this.lat = this.commonService.mapCenterLatlng.lat;
+      this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;
       this.layerMarkers.clearLayers();
-      if (this.level != "block_wise") {
+      if (this.level != "Block") {
         this.subjectHidden = true;
         this.grade = undefined;
         this.subject = undefined;
@@ -545,7 +517,7 @@ export class SatReportComponent implements OnInit {
       this.reportData = [];
       this.districtId = undefined;
       this.blockId = undefined;
-      this.level = "block_wise";
+      this.level = "Block";
       this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
         }_${this.subject ? this.subject : ""}_allBlocks_${this.commonService.dateAndTime
         }`;
@@ -602,7 +574,7 @@ export class SatReportComponent implements OnInit {
                     mapZoom: this.commonService.zoomLevel,
                     centerLat: this.lat,
                     centerLng: this.lng,
-                    level: "block_wise",
+                    level: "Block",
                   };
 
                   if (this.data.length > 0) {
@@ -682,11 +654,10 @@ export class SatReportComponent implements OnInit {
                         );
                       }
 
-                      var markerIcon = this.commonService.initMarkers(
+                      var markerIcon = this.commonService.initMarkers1(
                         this.blockMarkers[i].Details.latitude,
                         this.blockMarkers[i].Details.longitude,
                         this.selected == "absolute" ? color : this.colors[i],
-                        this.getMarkerRadius(12, 8, 6, 3.5),
                         0.01,
                         1,
                         options.level
@@ -709,12 +680,7 @@ export class SatReportComponent implements OnInit {
                       [options.centerLat - 4.5, options.centerLng - 6],
                       [options.centerLat + 3.5, options.centerLng + 6],
                     ]);
-                    this.setZoomLevel(
-                      options.centerLat,
-                      options.centerLng,
-                      globalMap,
-                      options.mapZoom
-                    );
+                    this.commonService.onResize(this.level);
 
                     this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
                     if (this.schoolCount != null) {
@@ -764,8 +730,10 @@ export class SatReportComponent implements OnInit {
       this.commonService.errMsg();
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
+      this.commonService.latitude = this.lat = this.commonService.mapCenterLatlng.lat;
+      this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;
       this.layerMarkers.clearLayers();
-      if (this.level != "cluster_wise") {
+      if (this.level != "Cluster") {
         this.subjectHidden = true;
         this.grade = undefined;
         this.subject = undefined;
@@ -775,7 +743,7 @@ export class SatReportComponent implements OnInit {
       this.districtId = undefined;
       this.blockId = undefined;
       this.clusterId = undefined;
-      this.level = "cluster_wise";
+      this.level = "Cluster";
       this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
         }_${this.subject ? this.subject : ""}_allClusters_${this.commonService.dateAndTime
         }`;
@@ -831,7 +799,7 @@ export class SatReportComponent implements OnInit {
                     mapZoom: this.commonService.zoomLevel,
                     centerLat: this.lat,
                     centerLng: this.lng,
-                    level: "cluster_wise",
+                    level: "Cluster",
                   };
 
                   if (this.data.length > 0) {
@@ -910,11 +878,10 @@ export class SatReportComponent implements OnInit {
                           this.subject
                         );
                       }
-                      var markerIcon = this.commonService.initMarkers(
+                      var markerIcon = this.commonService.initMarkers1(
                         this.clusterMarkers[i].Details.latitude,
                         this.clusterMarkers[i].Details.longitude,
                         this.selected == "absolute" ? color : this.colors[i],
-                        this.getMarkerRadius(2.5, 2, 1.5, 1),
                         0.01,
                         0.5,
                         options.level
@@ -937,12 +904,7 @@ export class SatReportComponent implements OnInit {
                       [options.centerLat - 4.5, options.centerLng - 6],
                       [options.centerLat + 3.5, options.centerLng + 6],
                     ]);
-                    this.setZoomLevel(
-                      options.centerLat,
-                      options.centerLng,
-                      globalMap,
-                      options.mapZoom
-                    );
+                    this.commonService.onResize(this.level);
 
                     //schoolCount
                     this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
@@ -993,8 +955,10 @@ export class SatReportComponent implements OnInit {
       this.commonService.errMsg();
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
+      this.commonService.latitude = this.lat = this.commonService.mapCenterLatlng.lat;
+      this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;
       this.layerMarkers.clearLayers();
-      if (this.level != "school_wise") {
+      if (this.level != "School") {
         this.subjectHidden = true;
         this.grade = undefined;
         this.subject = undefined;
@@ -1004,7 +968,7 @@ export class SatReportComponent implements OnInit {
       this.districtId = undefined;
       this.blockId = undefined;
       this.clusterId = undefined;
-      this.level = "school_wise";
+      this.level = "School";
       this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
         }_${this.subject ? this.subject : ""}_allSchools_${this.commonService.dateAndTime
         }`;
@@ -1060,7 +1024,7 @@ export class SatReportComponent implements OnInit {
                     mapZoom: this.commonService.zoomLevel,
                     centerLat: this.lat,
                     centerLng: this.lng,
-                    level: "school_wise",
+                    level: "School",
                   };
 
                   this.schoolMarkers = [];
@@ -1136,11 +1100,10 @@ export class SatReportComponent implements OnInit {
                           this.subject
                         );
                       }
-                      var markerIcon = this.commonService.initMarkers(
+                      var markerIcon = this.commonService.initMarkers1(
                         this.schoolMarkers[i].Details.latitude,
                         this.schoolMarkers[i].Details.longitude,
                         this.selected == "absolute" ? color : this.colors[i],
-                        this.getMarkerRadius(1.5, 1.2, 1, 0),
                         0,
                         0.3,
                         "school"
@@ -1164,12 +1127,7 @@ export class SatReportComponent implements OnInit {
                       [options.centerLat - 4.5, options.centerLng - 6],
                       [options.centerLat + 3.5, options.centerLng + 6],
                     ]);
-                    this.setZoomLevel(
-                      options.centerLat,
-                      options.centerLng,
-                      globalMap,
-                      options.mapZoom
-                    );
+                    this.commonService.onResize(this.level);
 
                     ///schoolCount
                     this.schoolCount = res['footer'] ? res['footer'].total_schools : null;
@@ -1221,14 +1179,14 @@ export class SatReportComponent implements OnInit {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    if (this.level != "block") {
+    if (this.level != "blockPerDistrict") {
       this.subjectHidden = true;
       this.grade = undefined;
       this.subject = undefined;
     }
     this.blockId = undefined;
     this.reportData = [];
-    this.level = "block";
+    this.level = "blockPerDistrict";
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
       }_${this.subject ? this.subject : ""}_${this.level
       }s_of_district_${districtId}_${this.commonService.dateAndTime}`;
@@ -1279,14 +1237,16 @@ export class SatReportComponent implements OnInit {
 
           // options to set for markers in the map
           let options = {
-            radius: this.getMarkerRadius(14, 10, 8, 4),
             fillOpacity: 1,
             strokeWeight: 0.01,
             mapZoom: this.commonService.zoomLevel + 1,
             centerLat: this.data[0].Details.latitude,
             centerLng: this.data[0].Details.longitude,
-            level: "block",
+            level: "blockPerDistrict",
           };
+
+          this.commonService.latitude = this.lat = options.centerLat;
+          this.commonService.longitude = this.lng = options.centerLng;
 
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([
@@ -1295,12 +1255,8 @@ export class SatReportComponent implements OnInit {
           ]);
 
           this.genericFun(res, options, this.fileName);
-          this.setZoomLevel(
-            options.centerLat,
-            options.centerLng,
-            globalMap,
-            options.mapZoom
-          );
+          this.commonService.onResize(this.level);
+
           // sort the blockname alphabetically
           this.blockMarkers.sort((a, b) =>
             a.Details.block_name > b.Details.block_name
@@ -1334,14 +1290,14 @@ export class SatReportComponent implements OnInit {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    if (this.level != "cluster") {
+    if (this.level != "clusterPerBlock") {
       this.subjectHidden = true;
       this.grade = undefined;
       this.subject = undefined;
     }
     this.clusterId = undefined;
     this.reportData = [];
-    this.level = "cluster";
+    this.level = "clusterPerBlock";
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
       }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime
       }`;
@@ -1406,14 +1362,16 @@ export class SatReportComponent implements OnInit {
 
           // options to set for markers in the map
           let options = {
-            radius: this.getMarkerRadius(14, 10, 7, 3.5),
             fillOpacity: 1,
             strokeWeight: 0.01,
             mapZoom: this.commonService.zoomLevel + 3,
             centerLat: this.data[0].Details.latitude,
             centerLng: this.data[0].Details.longitude,
-            level: "cluster",
+            level: "clusterPerBlock",
           };
+          this.commonService.latitude = this.lat = options.centerLat;
+          this.commonService.longitude = this.lng = options.centerLng;
+
           this.commonService.restrictZoom(globalMap);
           globalMap.setMaxBounds([
             [options.centerLat - 1.5, options.centerLng - 3],
@@ -1421,12 +1379,8 @@ export class SatReportComponent implements OnInit {
           ]);
 
           this.genericFun(res, options, this.fileName);
-          this.setZoomLevel(
-            options.centerLat,
-            options.centerLng,
-            globalMap,
-            options.mapZoom
-          );
+          this.commonService.onResize(this.level);
+
           // sort the clusterName alphabetically
           this.clusterMarkers.sort((a, b) =>
             a.Details.cluster_name > b.Details.cluster_name
@@ -1460,8 +1414,8 @@ export class SatReportComponent implements OnInit {
     // to clear the existing data on the map layer
     globalMap.removeLayer(this.markersList);
     this.layerMarkers.clearLayers();
-    this.level = "school";
-    if (this.level != "school") {
+    this.level = "schoolPerCluster";
+    if (this.level != "schoolPerCluster") {
       this.subjectHidden = true;
       this.grade = undefined;
       this.subject = undefined;
@@ -1563,14 +1517,16 @@ export class SatReportComponent implements OnInit {
 
                 // options to set for markers in the map
                 let options = {
-                  radius: this.getMarkerRadius(14, 10, 8, 3.5),
                   fillOpacity: 1,
                   strokeWeight: 0.01,
                   mapZoom: this.commonService.zoomLevel + 5,
                   centerLat: this.data[0].Details.latitude,
                   centerLng: this.data[0].Details.longitude,
-                  level: "school",
+                  level: "schoolPerCluster",
                 };
+                this.commonService.latitude = this.lat = options.centerLat;
+                this.commonService.longitude = this.lng = options.centerLng;
+
                 this.level = options.level;
                 this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
                   }_${this.subject ? this.subject : ""}_${this.level
@@ -1584,12 +1540,8 @@ export class SatReportComponent implements OnInit {
                 ]);
 
                 this.genericFun(res, options, this.fileName);
-                this.setZoomLevel(
-                  options.centerLat,
-                  options.centerLng,
-                  globalMap,
-                  options.mapZoom
-                );
+                this.commonService.onResize(this.level);
+
               },
               (err) => {
                 this.errorHandling();
@@ -1698,7 +1650,7 @@ export class SatReportComponent implements OnInit {
 
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
-        var markerIcon = this.commonService.initMarkers(
+        var markerIcon = this.commonService.initMarkers1(
           this.markers[i].Details.latitude,
           this.markers[i].Details.longitude,
           this.selected == "absolute"
@@ -1722,7 +1674,6 @@ export class SatReportComponent implements OnInit {
               },
               this.colors
             ),
-          options.radius,
           options.strokeWeight,
           1,
           options.level
@@ -1798,7 +1749,7 @@ export class SatReportComponent implements OnInit {
       }
     });
     if (this.period != 'all') {
-      if (level != "school") {
+      if (level != "School" || level != "schoolPerCluster") {
         if (orgObject["total_schools"] != null) {
           orgObject["total_schools"] = orgObject["total_schools"]
             .toString()
@@ -1844,19 +1795,19 @@ export class SatReportComponent implements OnInit {
     var ordered;
     var mylevel;
     if (this.period != 'all') {
-      if (level == "district" || level == 'block' || level == 'cluster' || level == 'school') {
+      if (level == "District" || level == 'Block' || level == 'Cluster' || level == 'School') {
         mylevel = level;
       }
     } else {
-      if (level == "district") {
+      if (level == "District") {
         mylevel = level;
       }
     }
-    if (level == "block_wise") {
+    if (level == "blockPerDistrict") {
       mylevel = level;
-    } else if (level == "cluster_wise") {
+    } else if (level == "clusterPerBlock") {
       mylevel = level;
-    } else if (level == "school_wise") {
+    } else if (level == "schoolPerCluster") {
       mylevel = level;
     }
 
@@ -1980,12 +1931,15 @@ export class SatReportComponent implements OnInit {
       });
 
       this.layerMarkers.addLayer(markerIcon);
-      if (level != "school") {
+      if (level === "schoolPerCluster" || level === "School") {
+        markerIcon.on("click", this.onClickSchool, this);
+      } else {
         markerIcon.on("click", this.onClick_Marker, this);
       }
       markerIcon.myJsonData = markers;
     }
   }
+  onClickSchool(event) { }
 
   //Showing tooltips on markers on mouse hover...
   onMouseOver(m, infowindow) {
@@ -2080,13 +2034,13 @@ export class SatReportComponent implements OnInit {
     });
     var ordered = {};
     var mylevel;
-    if (level == "district") {
+    if (level == "District") {
       mylevel = level;
-    } else if (level == "block_wise") {
+    } else if (level == "Block") {
       mylevel = level;
-    } else if (level == "cluster_wise") {
+    } else if (level == "Cluster") {
       mylevel = level;
-    } else if (level == "school_wise") {
+    } else if (level == "School") {
       mylevel = level;
     }
     if (level != mylevel) {
@@ -2138,7 +2092,7 @@ export class SatReportComponent implements OnInit {
     let data: any = {};
 
     if (this.dist) {
-      data.level = "district";
+      data.level = "District";
       data.value = this.districtHierarchy.distId;
     } else if (this.blok) {
       data.level = "block";

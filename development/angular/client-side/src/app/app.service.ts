@@ -184,8 +184,7 @@ export class AppServiceComponent {
     }
 
     setMarkerRadius(level){
-        this.markersIcons.map(markerIcon=>{
-            var radius;
+        this.markersIcons.map(markerIcon=>{            
             if (level === "District") {
                 markerIcon.setRadius(this.getMarkerRadius(18, 14, 10, 6));
             }
