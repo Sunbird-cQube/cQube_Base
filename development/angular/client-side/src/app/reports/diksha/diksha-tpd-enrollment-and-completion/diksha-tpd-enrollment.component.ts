@@ -206,6 +206,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     }
   }
   getBarChartData() {
+    this.completion = [];
     if (this.result.labels.length <= 25) {
       for (let i = 0; i <= 25; i++) {
         this.category.push(this.result.labels[i] ? this.result.labels[i] : ' ')

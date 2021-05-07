@@ -918,9 +918,26 @@ table.dataTable.nowrap td {
 
 @media only screen and (min-width: 2560px) {
     .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
-        max-height: 68vh !important;
+        max-height: 62vh !important;
+        font-size: 22px !important;
     }
 
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead{
+        font-size: 22px !important;
+    }
+
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .rank{
+        height: 150px !important;
+    }
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .indicator{
+        min-width: 250px !important;
+    }
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr th{
+        min-width: 50px !important;
+    }
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody .indicator{
+        min-width: 250px !important;
+    }
     .page-item.active .page-link{
         background-color: whitesmoke !important;
         color: black !important;
@@ -929,13 +946,31 @@ table.dataTable.nowrap td {
     .page-link{
         color: black !important;
         font-size: 23px;
+    }
+
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead table thead .sorting{
+        background-size: 30px 30px !important;
     }
   
 }
 
 @media only screen and (min-width: 3840px) {
         .dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
-        max-height: 72vh !important;
+        max-height: 66vh !important;
+        font-size: 30px !important;
+    }
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead{
+        font-size: 30px !important;
+    }
+
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .rank{
+        height: 220px !important;
+    }
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .indicator{
+        width: 350px;
+    }
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollBody .indicator{
+        min-width: 350px !important;
     }
     .page-item.active .page-link{
         background-color: whitesmoke !important;
@@ -946,4 +981,36 @@ table.dataTable.nowrap td {
         color: black !important;
         font-size: 30px;
     }
+    .dataTableCustom .dataTables_wrapper .dataTables_scrollHead table thead .sorting{
+        background-size: 40px 40px !important;
+    }
+}
+
+.dataTableCustom .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .rank{
+    height: 60px;
+    padding-left: -10px;
+}
+.dataTableCustom .dataTables_wrapper .dataTables_scrollBody {
+  font-size: 11px;
+}
+
+.dataTableCustom .dataTables_wrapper .dataTables_scrollHead{
+  font-size: 11px;
+}
+
+
+.dataTableCustom .dataTables_wrapper .dataTables_scrollHead .dataTables_scrollHeadInner table thead tr .indicator{
+    width: 150px;
+}
+
+.dataTableCustom .dataTables_wrapper .dataTables_scrollBody .indicator{
+    min-width: 150px;
+}
+
+.dataTableCustom .dataTables_wrapper .dataTables_scrollHead table thead .sorting{
+    background-size: 20px 20px;
+}
+
+.dataTableCustom .dataTables_wrapper .dataTables_scrollBody table tbody tr th, .dataTableCustom .dataTables_wrapper .dataTables_scrollBody table table.dataTable tbody tr td {
+    padding: 0px 0px !important;
 }
