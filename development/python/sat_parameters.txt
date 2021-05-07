@@ -1592,5 +1592,76 @@ or obtained_marks IS NULL""",
       "allDistrictsFooter": "&"
     }
   }
-]"""
+]""",
+"sat_mv_queries":"""REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW sat_stud_count_school_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_stud_count_school_grade_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_stud_count_school_mgmt_last30;
+REFRESH MATERIALIZED VIEW sat_stud_count_school_grade_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_all;
+REFRESH MATERIALIZED VIEW semester_exam_block_all;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_all;
+REFRESH MATERIALIZED VIEW semester_exam_school_all;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_mgmt_all;
+REFRESH MATERIALIZED VIEW semester_exam_block_mgmt_all;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_mgmt_all;
+REFRESH MATERIALIZED VIEW semester_exam_school_mgmt_all;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_last30;
+REFRESH MATERIALIZED VIEW semester_exam_block_last30;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_last30;
+REFRESH MATERIALIZED VIEW semester_exam_school_last30;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_exam_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_exam_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_last7;
+REFRESH MATERIALIZED VIEW semester_exam_block_last7;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_last7;
+REFRESH MATERIALIZED VIEW semester_exam_school_last7;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_exam_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_exam_school_mgmt_last7;
+
+REFRESH MATERIALIZED VIEW semester_grade_district_last30;
+REFRESH MATERIALIZED VIEW semester_grade_block_last30;
+REFRESH MATERIALIZED VIEW semester_grade_cluster_last30;
+REFRESH MATERIALIZED VIEW semester_grade_school_last30;
+
+REFRESH MATERIALIZED VIEW semester_grade_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_grade_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_grade_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_grade_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW semester_grade_district_last7;
+REFRESH MATERIALIZED VIEW semester_grade_block_last7;
+REFRESH MATERIALIZED VIEW semester_grade_cluster_last7;
+REFRESH MATERIALIZED VIEW semester_grade_school_last7;
+
+REFRESH MATERIALIZED VIEW semester_grade_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_grade_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_grade_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_grade_school_mgmt_last7;"""
 }
