@@ -7925,7 +7925,7 @@ group by academic_year,cluster_id,semester
 /*semester exam school*/
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS semester_exam_school_all as
-select d.*,b.total_schools,b.students_count from
+select d.* from
 (select c.*,d.subject_wise_performance from
 (select a.*,b.grade_wise_performance from
 (select academic_year,semester,
@@ -7945,36 +7945,21 @@ school_id)as a
 group by school_id,academic_year,semester)as b
 on a.academic_year=b.academic_year and a.school_id=b.school_id and a.semester=b.semester)as c
 left join 
-(
-select academic_year,semester,school_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance from
+(select academic_year,semester,school_id,json_object_agg(grade,subject_wise_performance)as subject_wise_performance from
 (select academic_year,school_id,semester,
 grade,json_object_agg(subject_name,percentage  order by subject_name)::jsonb as subject_wise_performance from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
-school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage
+school_id,round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage
 from semester_exam_school_result group by academic_year,grade,subject,semester,
 school_id order by grade desc,subject_name)
 union
 (select academic_year,semester,cast('Grade '||grade as text)as grade,'Grade Performance'as subject_name,
-school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage
+school_id,round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage
 from semester_exam_school_result group by academic_year,grade,semester,
 school_id order by grade desc,subject_name)) as a
 group by academic_year,school_id,grade,semester)as d
 group by academic_year,school_id,semester
-)as d on c.academic_year=d.academic_year and c.school_id=d.school_id and c.semester=d.semester)as d
-left join 
- (select a.school_id,b.assessment_year as academic_year,b.semester,
-	count(distinct(student_uid)) as students_count,count(distinct(a.school_id)) as total_schools
-from
-(select exam_id,school_id,student_uid
-from semester_exam_result_trans where school_id in (select school_id from semester_exam_school_result)
-group by exam_id,school_id,student_uid) as a
-left join (select exam_id,assessment_year,semester from semester_exam_mst) as b on a.exam_id=b.exam_id
-left join school_hierarchy_details as c on a.school_id=c.school_id
-group by a.school_id,b.assessment_year,semester )as b
- on d.academic_year=b.academic_year and d.school_id=b.school_id and d.semester=b.semester;
-
+)as d on c.academic_year=d.academic_year and c.school_id=d.school_id and c.semester=d.semester)as d;
 
 
 /*----------------------------------------------------------- sat grade subject wise*/
@@ -8458,7 +8443,7 @@ order by 1,grade)as b on a.academic_year=b.academic_year and a.school_id=b.schoo
 left join
  sat_school_grade_enrolment_school_last30 tot_stud
 on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade
-join
+left join
 sat_stud_count_school_grade_mgmt_last30 as c
 on b.school_id=c.school_id and b.grade=c.grade  and b.semester=c.semester and b.academic_year=c.academic_year;
 
@@ -8964,7 +8949,7 @@ order by 1,grade)as b on a.academic_year=b.academic_year and a.school_id=b.schoo
 left join
  sat_school_grade_enrolment_school_last7 tot_stud
 on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade
-join
+left join
 sat_stud_count_school_grade_mgmt_last7 as c
 on b.school_id=c.school_id and b.grade=c.grade  and b.semester=c.semester and b.academic_year=c.academic_year;
 
@@ -10264,7 +10249,7 @@ order by 1,grade)as b on a.academic_year=b.academic_year and a.school_id=b.schoo
 left join
  sat_school_grade_enrolment_school_mgmt_last30 tot_stud
 on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade and b.school_management_type=tot_stud.school_management_type
-join
+left join
 sat_stud_count_school_grade_mgmt_last30 as c
 on b.school_id=c.school_id and b.grade=c.grade and b.semester=c.semester and b.academic_year=c.academic_year and b.school_management_type=c.school_management_type;
 
@@ -10760,7 +10745,7 @@ order by 1,grade)as b on a.academic_year=b.academic_year and a.school_id=b.schoo
 left join
  sat_school_grade_enrolment_school_mgmt_last7 tot_stud
 on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade and b.school_management_type=tot_stud.school_management_type
-join
+left join
 sat_stud_count_school_grade_mgmt_last7 as c
 on b.school_id=c.school_id and b.grade=c.grade and b.semester=c.semester and b.academic_year=c.academic_year and b.school_management_type=c.school_management_type;
 
@@ -11409,12 +11394,12 @@ group by school_id,grade,month,academic_year,school_management_type,cluster_id,b
 
 /* unlogged tables */
 
-CREATE UNLOGGED TABLE student_att_count as 
+CREATE UNLOGGED TABLE if not exists student_att_count as 
 select cluster_id,academic_year,month,school_management_type,
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_year_month group by cluster_id,academic_year,month,school_management_type;
 
-CREATE UNLOGGED TABLE student_att_grade_count as 
+CREATE UNLOGGED TABLE if not exists student_att_grade_count as 
 select cluster_id,grade,school_management_type,academic_year,month,
 	sum(students_attended) as students_attended,sum(total_schools) as total_schools
 from stud_count_school_grade_mgmt_year_month group by cluster_id,grade,school_management_type,academic_year,month;
@@ -17226,20 +17211,6 @@ on basic.district_id=infra.district_id;
 
 
 /*Health card state*/
-
-
-create or replace view hc_student_attendance_state_overall as
-SELECT Round(Sum(total_present)*100.0/Sum(total_students),1)AS Attendance,
-Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools
-FROM student_attendance_agg_overall WHERE block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL
-AND school_name IS NOT NULL and cluster_name is not null and total_students>0;
-
-
-create or replace view hc_student_attendance_state_last30 as
-SELECT Round(Sum(total_present)*100.0/Sum(total_students),1)AS Attendance,
-Sum(students_count) AS students_count,Count(DISTINCT(school_id)) AS total_schools
-FROM student_attendance_agg_last_30_days WHERE block_latitude IS NOT NULL AND block_latitude <> 0 AND cluster_latitude IS NOT NULL AND cluster_latitude <> 0 AND school_latitude <>0 AND school_latitude IS NOT NULL
-AND school_name IS NOT NULL and cluster_name is not null and total_students>0;
 
 create or replace view hc_semester_performance_state as
   SELECT grade,semester,
