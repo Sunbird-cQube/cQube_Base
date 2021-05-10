@@ -133,7 +133,7 @@ block_id,block_name,district_id,district_name,school_management_type,school_cate
 select data.school_id,data.exam_code,data.exam_date,data.grade,data.total_marks,data.obtained_marks,data.indicator,data.question_id
 	,assessment_year as academic_year,data.students_attended,
 	d.subject_name as subject,initcap(b.school_name)as school_name,b.cluster_id,initcap(b.cluster_name)as cluster_name,g.students_count as total_students,
-	b.block_id,initcap(b.block_name)as block_name,b.district_id,initcap(b.district_name)as district_name,b.school_management_type,b.school_category
+	b.block_id,initcap(b.block_name)as block_name,b.district_id,initcap(b.district_name)as district_name,b.school_management_type,b.school_category,now(),now()
 	from
 	(select data.* from 
 	(select a.school_id,a.exam_code,a.students_attended,to_date(substr(exam_code,8,14)::text,'ddmmyyyy')as exam_date,

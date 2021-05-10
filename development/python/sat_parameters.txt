@@ -338,7 +338,7 @@ block_id,block_name,district_id,district_name,school_management_type,school_cate
 select data.school_id,data.exam_code,data.exam_date,data.grade,data.total_marks,data.obtained_marks,data.indicator,data.question_id
 	,assessment_year as academic_year,data.students_attended,
 	d.subject_name as subject,initcap(b.school_name)as school_name,b.cluster_id,initcap(b.cluster_name)as cluster_name,g.students_count as total_students,
-	b.block_id,initcap(b.block_name)as block_name,b.district_id,initcap(b.district_name)as district_name,b.school_management_type,b.school_category
+	b.block_id,initcap(b.block_name)as block_name,b.district_id,initcap(b.district_name)as district_name,b.school_management_type,b.school_category,now(),now()
 	from
 	(select data.* from 
 	(select a.school_id,a.exam_code,a.students_attended,to_date(substr(exam_code,8,14)::text,'ddmmyyyy')as exam_date,
@@ -371,23 +371,6 @@ obtained_marks=excluded.obtained_marks,indicator=excluded.indicator,question_id=
 students_attended=excluded.students_attended,school_name=excluded.school_name,total_students=excluded.total_students,
 cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,block_id=excluded.block_id,block_name=excluded.block_name,
 district_id=excluded.district_id,district_name=excluded.district_name,school_management_type=excluded.school_management_type,school_category=excluded.school_category,updated_on=now();""",
-"semester_exam_result_unique_record_same_id_qry":"""insert into semester_exam_result_trans(id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks)
-SELECT  id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks from 
-(SELECT  id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks,count(*) over 
-	(partition by exam_code,student_uid,question_id) as rn from semester_exam_result_staging_2) sq Where rn =1
-  on conflict(exam_code,student_uid,question_id)
-do update set 	
-id=excluded.id,
-exam_id=excluded.exam_id,
-exam_code=excluded.exam_code,
-student_id=excluded.student_id,
-student_uid=excluded.student_uid,
-school_id=excluded.school_id,
-studying_class=excluded.studying_class,
-section=excluded.section,
-question_id=excluded.question_id,
-obtained_marks=excluded.obtained_marks,
-updated_on=now()""",
 "sat_semester_exam_qst_mst_count_null":"""(select
 SUM(CASE when question_id IS NULL THEN 1 ELSE 0 END) AS count_null_question_id,
 SUM(CASE when exam_id IS NULL THEN 1 ELSE 0 END) AS count_null_exam_id,
