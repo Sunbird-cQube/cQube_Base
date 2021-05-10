@@ -112,25 +112,24 @@ export class DashboardComponent implements OnInit {
   }
 
   setDefault() {
-    if (!localStorage.getItem('management') && !localStorage.getItem('category')) {
-      this.management = this.managementType;
-      this.category = this.categoryType;
-      let obj = {
-        id: this.management,
-        value: this.service.changeingStringCases(this.management.replace(/_/g, ' '))
+    this.changeDetection.detectChanges();
+    this.management = this.managementType;
+    this.category = this.categoryType;
+    let obj = {
+      id: this.management,
+      value: this.service.changeingStringCases(this.management.replace(/_/g, ' '))
+    }
+    localStorage.setItem("management", JSON.stringify(obj));
+    obj = {
+      id: this.category,
+      value: this.service.changeingStringCases(this.category.replace(/_/g, ' '))
+    }
+    localStorage.setItem("category", JSON.stringify(obj));
+    if (this.managementType) {
+      if (this.managements.length <= 0) {
+        this.managements.push({ id: this.managementType, value: this.service.changeingStringCases(this.managementType.replace(/_/g, ' ')) })
       }
-      localStorage.setItem("management", JSON.stringify(obj));
-      obj = {
-        id: this.category,
-        value: this.service.changeingStringCases(this.category.replace(/_/g, ' '))
-      }
-      localStorage.setItem("category", JSON.stringify(obj));
     } else {
-      if (this.managementType) {
-        if (this.managements.length <= 0) {
-          this.managements.push({ id: this.managementType, value: this.service.changeingStringCases(this.managementType.replace(/_/g, ' ')) })
-        }
-      }
       this.management = JSON.parse(localStorage.getItem('management')).id;
       this.category = JSON.parse(localStorage.getItem('category')).id;
     }
@@ -204,7 +203,6 @@ export class DashboardComponent implements OnInit {
       document.getElementById("spinner").style.display = "none";
     });
     this.getDefault();
-    this.changeDetection.detectChanges();
   }
 
   //Management and category

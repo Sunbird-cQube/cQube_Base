@@ -172,7 +172,9 @@ export class BarChartComponent implements OnInit {
       if (reportName == "enroll/comp") {
         obj = `<b>${level.charAt(0).toUpperCase() + level.substr(1).toLowerCase()} Name:</b> ${point.category}
         <br> ${point.y !== null ? `<b>${type.charAt(0).toUpperCase() + type.substr(1).toLowerCase()}:</b> ${point.y.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : ''}
-        <br> ${type != `completion` && xData[point.index] ? `<b>Completion: </b>${xData[point.index].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : '' }`
+        ${type != `completion` && xData[point.index] ? `<br><b>Completion: </b>${xData[point.index].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : '' }
+        ${type != `enrollment` && xData[point.index] ? `<br><b>Enrollment: </b>${xData[point.index].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : '' }
+        `
         return obj;
       }
     }

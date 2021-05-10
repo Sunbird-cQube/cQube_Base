@@ -216,7 +216,11 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     }
     this.result.data.forEach(element => {
       this.chartData.push(Number(element[`${this.type}`]));
-      this.completion.push(Number(element[`completion`]));
+      if (this.type != 'completion') {
+        this.completion.push(Number(element[`completion`]));
+      }else{
+        this.completion.push(Number(element[`enrollment`]));
+      }
     });
     this.footer = (this.chartData.reduce((a, b) => Number(a) + Number(b), 0)).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 
