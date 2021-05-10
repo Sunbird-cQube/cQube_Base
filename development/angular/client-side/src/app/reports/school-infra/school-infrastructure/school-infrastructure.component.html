@@ -36,11 +36,11 @@
         </div>
         <div class="col-sm-4">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <p id="errMsg" class="note">
                     </p>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-7">
                     <div *ngIf="skul; else ng_else" style="float: right; " id="select">
                         <em class="fa fa-cloud-download" title="Download Report" id="download"
                             (click)="downloadReportofState(downloadType)"></em>
@@ -78,7 +78,7 @@
         <!-- [ngStyle]="{height: height > 1760 ? '78vh': height > 1180 && height < 1760 ? '80vh': height > 667 && height < 1180 ? '76vh':'69vh'}"> -->
         <div class="col-sm-6">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <span class="chooseLevel">X-Axis: &nbsp;</span> <select id="x-axis" [(ngModel)]="xAxis" name="xAxis"
                         (change)="selectAxis()">
                         <option [value]="xAxis" disabled selected="selected">choose
@@ -89,7 +89,7 @@
                         </option>
                     </select>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <span class="chooseLevel">Y-Axis: &nbsp;</span> <select id="y-axis" [(ngModel)]="yAxis" name="yAxis"
                         (change)="selectAxis()">
                         <option [value]="yAxis" disabled selected="selected">choose
@@ -101,13 +101,13 @@
                     </select>
                 </div>
             </div>
-            <br>
-            <p class="note">
+            <!-- <br> -->
+            <p class="note" style="padding-top: 10px !important;">
                 <strong> NOTE:</strong> The scatter plot below provides information for the metrics selected in the
                 dropdown above. You can
                 alter the metrics to update the scatter plot.
             </p>
-            <br>
+            <!-- <br> -->
             <div class="row">
                 <canvas id="myChart" width="100%"></canvas>
             </div>
@@ -141,8 +141,8 @@
                     </option>
                 </select>
             </div>
-            <br>
-            <p class="note">
+            <!-- <br> -->
+            <p class="note" style="padding-top: 10px !important;">
                 <strong> NOTE:</strong> The table provides information about the various metrics. You can sort the
                 entire table based on any metrics available in this table.
             </p>
@@ -150,6 +150,11 @@
                 <table #dataTable id="table" class="display responsive cell-border">
                 </table>
             </div>
+        </div>
+    </div>
+    <div class="row" id="footer">
+        <div class="col-sm-4">
+            <span id="nm" class="note" style="text-align: center;">Management Type: {{managementName}}</span>
         </div>
     </div>
 </div>

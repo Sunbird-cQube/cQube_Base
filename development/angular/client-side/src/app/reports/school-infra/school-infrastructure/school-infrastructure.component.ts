@@ -562,7 +562,7 @@ export class SchoolInfrastructureComponent implements OnInit {
       $("#table").append(body);
       $('#table').DataTable({
         destroy: true, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: height > 1760 ? '67vh' : height > 1180 && height < 1760 ? '58vh' : height > 667 && height < 1180 ? '54vh' : '42vh', scrollX: true,
+        bPaginate: false, scrollY: height > 1760 ? '62vh' : height > 1180 && height < 1760 ? '56vh' : height > 667 && height < 1180 ? '46vh' : '40vh', scrollX: true,
         scrollCollapse: true, paging: false, searching: false,
         fixedColumns: {
           leftColumns: 1
@@ -573,7 +573,7 @@ export class SchoolInfrastructureComponent implements OnInit {
 
   createChart(labels, chartData, name, obj) {
     var ctx = $('#myChart');
-    ctx.attr('height', this.height > 1760 ? '71vh' : this.height > 1180 && this.height < 1760 ? '66vh' : this.height > 667 && this.height < 1180 ? '60vh' : '52vh');
+    ctx.attr('height', this.height > 1760 ? '68vh' : this.height > 1180 && this.height < 1760 ? '64vh' : this.height > 667 && this.height < 1180 ? '60vh' : '52vh');
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
       data: {
