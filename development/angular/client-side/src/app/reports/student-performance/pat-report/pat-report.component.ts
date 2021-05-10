@@ -448,8 +448,8 @@ export class PATReportComponent implements OnInit {
     try {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
-      this.commonService.latitude = this.lat;
-      this.commonService.longitude = this.lng;
+      this.commonService.latitude = this.lat = this.commonService.mapCenterLatlng.lat;
+    this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
       if (this.level != "District") {
