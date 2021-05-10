@@ -22,6 +22,7 @@
     "@angular/platform-browser": "~11.2.13",
     "@angular/platform-browser-dynamic": "~11.2.13",
     "@angular/router": "~11.2.13",
+    "@ionic/angular-toolkit": "^3.1.1",
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
     "@types/datatables.net": "^1.10.19",
     "@types/jquery": "^3.5.5",

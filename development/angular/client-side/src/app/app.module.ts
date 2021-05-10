@@ -13,7 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule, MatSortModule } from '@angular/material';
+// import { MatPaginatorModule, MatSortModule } from '@angular/material';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -63,8 +63,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     MatButtonModule,
     MatIconModule,
     MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
+    // MatPaginatorModule,
+    // MatSortModule,
     HttpClientModule,
     FormsModule,
     ChartsModule,
@@ -75,8 +75,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
   ],
   exports: [
     MatTableModule,
-    MatPaginatorModule,
-    MatSortModule
+    // MatPaginatorModule,
+    // MatSortModule
   ],
   providers: [
     {
