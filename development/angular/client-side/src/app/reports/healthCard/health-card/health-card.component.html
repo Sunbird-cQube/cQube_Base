@@ -182,7 +182,7 @@
         </div>
     </div>
 
-    <div class="row" *ngIf="showAll">
+    <div class="row" *ngIf="showAll" style="padding-bottom: 2%;">
         <div *ngIf="!err" class="col-sm-12" style="font-size: 13px;">
             <div class="row">
                 <div class="col-lg-4 col-md-12 col-sm-12" id="stdAttendance" style="margin-bottom:10px !important">
@@ -1039,6 +1039,11 @@
     </div>
     <div *ngIf="err" style="position: absolute; top: 45%; left: 45%; color: red;">
         No Data Found
+    </div>
+    <div class="row" id="footer">
+        <div class="col-sm-4">
+            <span id="nm" class="note" style="text-align: center;">Management Type: {{managementName}}</span>
+        </div>
     </div>
 </div>
 <div id="spinner" style="display: block;">

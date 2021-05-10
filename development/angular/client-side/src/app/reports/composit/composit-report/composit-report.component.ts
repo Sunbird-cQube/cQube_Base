@@ -588,7 +588,7 @@ export class CompositReportComponent implements OnInit {
 
   createChart(labels, chartData, name, obj) {
     var ctx = $('#myChart');
-    ctx.attr('height', this.height > 1760 ? '70vh' : this.height > 1180 && this.height < 1760 ? '66vh' : this.height > 667 && this.height < 1180 ? '55vh' : '50vh');
+    ctx.attr('height', this.height > 1760 ? '64vh' : this.height > 1180 && this.height < 1760 ? '63vh' : this.height > 667 && this.height < 1180 ? '55vh' : '50vh');
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
 
