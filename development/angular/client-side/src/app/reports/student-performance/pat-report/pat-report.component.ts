@@ -201,14 +201,14 @@ export class PATReportComponent implements OnInit {
 
       if (params && params.level) {
         let data = params.data;
-        if (params.level === "District") {
+        if (params.level === "district") {
           this.districtHierarchy = {
             distId: data.id,
           };
 
           this.districtId = data.id;
           this.getDistricts(params.level);
-        } else if (params.level === "Block") {
+        } else if (params.level === "block") {
           this.districtHierarchy = {
             distId: data.districtId,
           };
@@ -222,7 +222,7 @@ export class PATReportComponent implements OnInit {
           this.blockId = data.id;
           this.getDistricts(params.level);
           this.getBlocks(data.districtId, data.id);
-        } else if (params.level === "Cluster") {
+        } else if (params.level === "cluster") {
           this.districtHierarchy = {
             distId: data.districtId,
           };
@@ -269,7 +269,7 @@ export class PATReportComponent implements OnInit {
             this.distFilter = this.districtMarkers;
           }
 
-          if (level === "District") {
+          if (level === "district") {
             this.ondistLinkClick(this.districtId);
           }
           this.allDistricts.sort((a, b) =>
@@ -2180,7 +2180,7 @@ export class PATReportComponent implements OnInit {
     let data: any = {};
 
     if (this.dist) {
-      data.level = "District";
+      data.level = "district";
       data.value = this.districtHierarchy.distId;
     } else if (this.blok) {
       data.level = "block";

@@ -167,14 +167,14 @@ export class SatReportComponent implements OnInit {
 
     if (params && params.level) {
       let data = params.data;
-      if (params.level === "District") {
+      if (params.level === "district") {
         this.districtHierarchy = {
           distId: data.id,
         };
 
         this.districtId = data.id;
         this.getDistricts(params.level);
-      } else if (params.level === "Block") {
+      } else if (params.level === "block") {
         this.districtHierarchy = {
           distId: data.districtId,
         };
@@ -187,7 +187,7 @@ export class SatReportComponent implements OnInit {
         this.districtId = data.districtId;
         this.blockId = data.id;
         this.getDistricts(params.level);
-      } else if (params.level === "Cluster") {
+      } else if (params.level === "cluster") {
         this.districtHierarchy = {
           distId: data.districtId,
         };
@@ -256,11 +256,8 @@ export class SatReportComponent implements OnInit {
             this.distFilter = this.districtMarkers;
           }
 
-          if (level === "District") {
-            this.ondistLinkClick(this.districtId);
-          } else {
-            this.getBlocks(level, this.districtId, this.blockId);
-          }
+          if (level == "district")  this.ondistLinkClick(this.districtId);
+          else this.getBlocks(level, this.districtId, this.blockId);
         });
     });
   }
@@ -282,7 +279,7 @@ export class SatReportComponent implements OnInit {
           this.blockFilter = this.blockMarkers;
         }
 
-        if (level === "Block") this.onblockLinkClick(blockId);
+        if (level == "block") this.onblockLinkClick(blockId);
         else this.getClusters(this.districtId, this.blockId, this.clusterId);
       });
   }
@@ -2091,7 +2088,7 @@ export class SatReportComponent implements OnInit {
     let data: any = {};
 
     if (this.dist) {
-      data.level = "District";
+      data.level = "district";
       data.value = this.districtHierarchy.distId;
     } else if (this.blok) {
       data.level = "block";

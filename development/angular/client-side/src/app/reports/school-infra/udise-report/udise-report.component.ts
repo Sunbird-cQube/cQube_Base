@@ -133,7 +133,7 @@ export class UdiseReportComponent implements OnInit {
 
     if (params && params.level) {
       let data = params.data;
-      if (params.level === "District") {
+      if (params.level === "district") {
         this.districtHierarchy = {
           distId: data.id,
         };
@@ -1332,7 +1332,7 @@ export class UdiseReportComponent implements OnInit {
         let myobj = { ...orgObject, ...markers.rank, ...markers.indices };
         this.reportData.push(myobj);
       }
-    } else if (level == "block") {
+    } else if (level == "Block" || level == "blockPerDistrict") {
       if (this.indiceData !== "Infrastructure_Score") {
         let obj = {
           district_id: markers.details.district_id,
@@ -1346,7 +1346,7 @@ export class UdiseReportComponent implements OnInit {
         let myobj = { ...orgObject, ...markers.rank, ...markers.indices };
         this.reportData.push(myobj);
       }
-    } else if (level == "cluster") {
+    } else if (level == "Cluster" || level == "clusterPerBlock") {
       if (this.indiceData !== "Infrastructure_Score") {
         let obj = {
           district_id: markers.details.district_id,
@@ -1362,7 +1362,7 @@ export class UdiseReportComponent implements OnInit {
         let myobj = { ...orgObject, ...markers.rank, ...markers.indices };
         this.reportData.push(myobj);
       }
-    } else if (level == "school") {
+    } else if (level == "school" || level == "schoolPerCluster") {
       if (this.indiceData !== "Infrastructure_Score") {
         let obj = {
           district_id: markers.details.district_id,
@@ -1418,13 +1418,13 @@ export class UdiseReportComponent implements OnInit {
   goToHealthCard(): void {
     let data: any = {};
 
-    if (this.level === "block") {
-      data.level = "District";
+    if (this.level === "blockPerDistrict") {
+      data.level = "district";
       data.value = this.districtHierarchy.distId;
-    } else if (this.level === "cluster") {
+    } else if (this.level === "clusterPerBlock") {
       data.level = "block";
       data.value = this.blockHierarchy.blockId;
-    } else if (this.level === "school") {
+    } else if (this.level === "schoolPerCluster") {
       data.level = "cluster";
       data.value = this.clusterHierarchy.clusterId;
     } else {
