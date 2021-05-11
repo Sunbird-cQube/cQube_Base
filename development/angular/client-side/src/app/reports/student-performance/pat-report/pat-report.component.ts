@@ -172,10 +172,14 @@ export class PATReportComponent implements OnInit {
       this.year = this.years[this.years.length - 1];
 
       this.months = [];
+      var months= [];
       this.getMonthYear.map((item) => {
         if (item["academic_year"] == this.year) {
-          this.months = item["month"];
+          months = item["month"];
         }
+      });
+      months.map(a=>{
+        this.months.push(a.trim());
       });
       this.months.sort((a, b) => {
         return this.allMonths.indexOf(a) - this.allMonths.indexOf(b);
@@ -1276,8 +1280,7 @@ export class PATReportComponent implements OnInit {
     this.reportData = [];
     this.level = "blockPerDistrict";
     this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_${this.grade ? this.grade : "allGrades"
-      }_${this.subject ? this.subject : ""}_${this.level
-      }s_of_district_${districtId}_${this.commonService.dateAndTime}`;
+      }_${this.subject ? this.subject : ""}_blocks_of_district_${districtId}_${this.commonService.dateAndTime}`;
 
     this.data = this.allBlocks = [];
     this.allClusters = [];
@@ -1384,7 +1387,7 @@ export class PATReportComponent implements OnInit {
     this.reportData = [];
     this.level = "clusterPerBlock";
     this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_${this.grade ? this.grade : "allGrades"
-      }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime
+      }_${this.subject ? this.subject : ""}_clusters_of_block_${blockId}_${this.commonService.dateAndTime
       }`;
     this.data = this.allClusters = [];
     if (this.myData) {
@@ -1614,8 +1617,7 @@ export class PATReportComponent implements OnInit {
 
                 this.level = options.level;
                 this.fileName = `${this.reportName}_${this.period != 'select_month' ? this.period : this.month_year.year + '_' + this.month_year.month}_${this.grade ? this.grade : "allGrades"
-                  }_${this.subject ? this.subject : ""}_${this.level
-                  }s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
+                  }_${this.subject ? this.subject : ""}_schools_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
 
                 globalMap.doubleClickZoom.enable();
                 globalMap.scrollWheelZoom.enable();
