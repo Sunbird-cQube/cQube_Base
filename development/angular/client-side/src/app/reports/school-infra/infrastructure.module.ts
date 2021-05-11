@@ -27,6 +27,11 @@ const infraRoutes: Routes = [
 
 
 @NgModule({
+  declarations: [
+    SchoolInfrastructureComponent,
+    InfraMapVisualisationComponent,
+    UdiseReportComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,

@@ -37,6 +37,14 @@ const performRoute: Routes = [
 ]
 
 @NgModule({
+  declarations: [
+    SemViewComponent,
+    PATReportComponent,
+    HeatChartComponent,
+    PATLOTableComponent,
+    SatReportComponent,
+    SatHeatChartComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
