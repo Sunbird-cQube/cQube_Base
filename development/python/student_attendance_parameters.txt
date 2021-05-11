@@ -1775,5 +1775,6 @@ day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day
 ]""",
 "stud_att_mv_queries":"""REFRESH MATERIALIZED VIEW student_attendance_agg_overall;
 REFRESH MATERIALIZED VIEW student_attendance_agg_last_30_days;
-REFRESH MATERIALIZED VIEW student_attendance_agg_last_7_days;"""
+REFRESH MATERIALIZED VIEW student_attendance_agg_last_7_days;
+REFRESH MATERIALIZED VIEW student_attendance_agg_last_1_day;"""
 }
