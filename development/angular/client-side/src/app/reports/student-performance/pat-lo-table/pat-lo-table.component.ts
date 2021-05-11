@@ -360,7 +360,6 @@ export class PATLOTableComponent implements OnInit {
       this.table = $(`#LOtable`).DataTable(obj);
       $(function () {
         $('[data-toggle="tooltip"]').tooltip().on('inserted.bs.tooltip', function () {
-          console.log(`${innerWidth < 2540 ? '10px' : '20px'}`)
           $("body div.tooltip-inner").css({
             "min-width": `${innerWidth < 2540 ? "200px" : '300px'}`,
             "max-width": `${innerWidth < 2540 ? "600px" : '900px'}`,

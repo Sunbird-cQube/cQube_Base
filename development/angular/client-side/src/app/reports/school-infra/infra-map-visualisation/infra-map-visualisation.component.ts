@@ -130,7 +130,7 @@ export class InfraMapVisualisationComponent implements OnInit {
     let params = JSON.parse(sessionStorage.getItem("report-level-info"));
     if (params && params.level) {
       let data = params.data;
-      if (params.level === "District") {
+      if (params.level === "district") {
         this.districtHierarchy = {
           distId: data.id,
         };
@@ -138,7 +138,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.districtId = data.id;
         this.getDistricts();
         this.onDistrictSelect(data.id);
-      } else if (params.level === "Block") {
+      } else if (params.level === "block") {
         this.districtHierarchy = {
           distId: data.districtId,
         };
@@ -152,7 +152,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         this.blockId = data.id;
         this.getDistricts();
         this.getBlocks(data.districtId, data.id);
-      } else if (params.level === "Cluster") {
+      } else if (params.level === "cluster") {
         this.districtHierarchy = {
           distId: data.districtId,
         };
@@ -1253,7 +1253,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         let myobj = { ...orgObject, ...markers.metrics };
         this.reportData.push(myobj);
       }
-    } else if (level == "block") {
+    } else if (level == "Block" || level == "blockPerDistrict") {
       if (this.infraData !== "infrastructure_score") {
         let obj = {
           district_id: markers.details.district_id,
@@ -1267,7 +1267,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         let myobj = { ...orgObject, ...markers.metrics };
         this.reportData.push(myobj);
       }
-    } else if (level == "Cluster") {
+    } else if (level == "Cluster" || level == "clusterPerBlock") {
       if (this.infraData !== "infrastructure_score") {
         let obj = {
           district_id: markers.details.district_id,
@@ -1283,7 +1283,7 @@ export class InfraMapVisualisationComponent implements OnInit {
         let myobj = { ...orgObject, ...markers.metrics };
         this.reportData.push(myobj);
       }
-    } else if (level == "School") {
+    } else if (level == "School" || level == "schoolPerCluster") {
       if (this.infraData !== "infrastructure_score") {
         let obj = {
           district_id: markers.details.district_id,
@@ -1308,13 +1308,13 @@ export class InfraMapVisualisationComponent implements OnInit {
     let data: any = {};
 
     if (this.dist) {
-      data.level = "District";
+      data.level = "district";
       data.value = this.districtHierarchy.distId;
     } else if (this.blok) {
       data.level = "block";
       data.value = this.blockHierarchy.blockId;
     } else if (this.clust) {
-      data.level = "Cluster";
+      data.level = "cluster";
       data.value = this.clusterHierarchy.clusterId;
     } else {
       data.level = "state";
