@@ -19183,7 +19183,7 @@ ${query_type:startsWith('stud_att_school_wise'):or(${query_type:startsWith('stud
     <entry>
         <key>log-message</key>
         <value>Data type validation, 
-file: ${filename} has invalid data type: invalid record=${count.invalid.lines:minus} , Total records=${count.total.lines}</value>
+file: ${filename} has invalid data type: invalid record=${count.invalid.lines} , Total records=${count.total.lines}</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -34937,5 +34937,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/10/2021 15:57:12 IST</timestamp>
+    <timestamp>05/11/2021 18:09:14 IST</timestamp>
 </template>
