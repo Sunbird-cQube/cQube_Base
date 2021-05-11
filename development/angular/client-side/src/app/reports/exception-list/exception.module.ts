@@ -32,13 +32,6 @@ const exceptionRoutes: Routes = [
 ]
 
 @NgModule({
-  declarations: [
-    SemesterExceptionComponent,
-    MissingDataComponent,
-    PATExceptionComponent,
-    StudentAttendanceExceptionComponent,
-    TeacherAttendanceExceptionComponent
-  ],
   imports: [
     CommonModule,
     FormsModule,

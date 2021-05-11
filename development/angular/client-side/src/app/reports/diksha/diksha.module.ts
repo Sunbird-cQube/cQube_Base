@@ -14,7 +14,6 @@ import { DikshaTPDTeachersPercentageComponent } from './tpd/diksha-tpd-teachers-
 import { DikshaTpdEnrollmentComponent } from './diksha-tpd-enrollment-and-completion/diksha-tpd-enrollment.component';
 import { DikshaTpdCompletionComponent } from './diksha-tpd-completion-percentage/diksha-tpd-completion.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
-import { MultiSelectComponent } from '../../common/multi-select/multi-select.component';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 const dikshaRoutes: Routes = [
@@ -52,15 +51,6 @@ const dikshaRoutes: Routes = [
 ]
 
 @NgModule({
-  declarations: [
-    DikshaTableComponent,
-    DikshaBarChartComponent,
-    DikshaUsageByTextBookComponent,
-    UsageByTextbookContentComponent,
-    DikshaTpdEnrollmentComponent,
-    DikshaTpdCompletionComponent,
-    BarChartComponent,
-  ],
   imports: [
     CommonModule,
     FormsModule,
