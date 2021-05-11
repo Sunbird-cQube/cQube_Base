@@ -36,7 +36,10 @@
               "node_modules/jquery/dist/jquery.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": [
+              "highcharts", "export-to-csv", "chart.js"
+           ]
           },
           "configurations": {
             "production": {

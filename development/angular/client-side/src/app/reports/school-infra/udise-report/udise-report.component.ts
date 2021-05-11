@@ -686,7 +686,7 @@ export class UdiseReportComponent implements OnInit {
     this.indiceFilter = [];
 
     this.level = "blockPerDistrict";
-    this.fileName = `${this.reportName}_${this.indiceData}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.indiceData}_blocks_of_district_${districtId}_${this.commonService.dateAndTime}`;
 
     // api call to get the blockwise data for selected district
     if (this.myData) {
@@ -762,7 +762,7 @@ export class UdiseReportComponent implements OnInit {
     this.indiceFilter = [];
 
     this.level = "clusterPerBlock";
-    this.fileName = `${this.reportName}_${this.indiceData}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.indiceData}_clusters_of_block_${blockId}_${this.commonService.dateAndTime}`;
 
     // api call to get the clusterwise data for selected district, block
     if (this.myData) {
@@ -848,7 +848,7 @@ export class UdiseReportComponent implements OnInit {
     this.reportData = [];
     this.indiceFilter = [];
     this.level = "schoolPerCluster";
-    this.fileName = `${this.reportName}_${this.indiceData}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.indiceData}_schools_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
     // api call to get the schoolwise data for selected district, block, cluster
     if (this.myData) {
       this.myData.unsubscribe();

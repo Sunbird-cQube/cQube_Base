@@ -257,7 +257,7 @@ export class PATLOTableComponent implements OnInit {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
         if (i > 3) {
-          headers += `<th class="rank"><div style="transform: rotate(270deg);">${col}</div></th>`;
+          headers += `<th class="rank"><div style="transform: rotate(270deg);">${col.substring(0, 10)}</div></th>`;
         } else {
           if (col == 'Indicator') {
             headers += `<th class="indicator">${col}</th>`;
@@ -316,7 +316,7 @@ export class PATLOTableComponent implements OnInit {
         body += "<tr>";
         columns.forEach((column, i2) => {
           if (i2 > 3 && column.value) {
-            body += `<td class="numberData" data-toggle="tooltip" data-html="true" data-placement="bottom" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length - 1]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
+            body += `<td class="numberData" data-toggle="tooltip" data-html="true" data-placement="auto" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length - 1]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
           }
           else {
             if (column.data == 'indicator') {
@@ -349,6 +349,7 @@ export class PATLOTableComponent implements OnInit {
         scrollY: "54vh",
         scrollX: true,
         scrollCollapse: true,
+        displayLength: 10,
         searching: false
       }
       if (dataSet.length > 0) {
@@ -359,16 +360,17 @@ export class PATLOTableComponent implements OnInit {
       this.table = $(`#LOtable`).DataTable(obj);
       $(function () {
         $('[data-toggle="tooltip"]').tooltip().on('inserted.bs.tooltip', function () {
+          console.log(`${innerWidth < 2540 ? '10px' : '20px'}`)
           $("body div.tooltip-inner").css({
-            "min-width": "200px",
-            "max-width": "400px auto",
-            "padding": "5%",
+            "min-width": `${innerWidth < 2540 ? "200px" : '300px'}`,
+            "max-width": `${innerWidth < 2540 ? "600px" : '900px'}`,
+            "padding": `${innerWidth < 2540 ? '10px' : '15px'}`,
             "text-align": "left",
-            "border-radius": "20px",
+            "border-radius": `${innerWidth < 2540 ? '20px' : '30px'}`,
             "background-color": "black",
             "color": "white",
             "font-family": "Arial",
-            "font-size": "11px",
+            "font-size": `${innerWidth < 2540 ? '11px' : '26px'}`,
             "border": "1px solid gray"
           });
         });

@@ -700,7 +700,7 @@ export class InfraMapVisualisationComponent implements OnInit {
           distId: this.data[0].details.district_id,
           districtName: this.data[0].details.district_name,
         };
-        this.fileName = `${this.reportName}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
+        this.fileName = `${this.reportName}_blocks_of_district_${districtId}_${this.commonService.dateAndTime}`;
 
         // to show and hide the dropdowns
         this.blockHidden = false;
@@ -792,7 +792,7 @@ export class InfraMapVisualisationComponent implements OnInit {
             blockId: this.data[0].details.block_id,
             blockName: this.data[0].details.block_name,
           };
-          this.fileName = `${this.reportName}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
+          this.fileName = `${this.reportName}_clusters_of_block_${blockId}_${this.commonService.dateAndTime}`;
 
           // to show and hide the dropdowns
           this.blockHidden = false;
@@ -907,7 +907,7 @@ export class InfraMapVisualisationComponent implements OnInit {
                 clusterId: this.data[0].details.cluster_id,
                 clusterName: this.data[0].details.cluster_name,
               };
-              this.fileName = `${this.reportName}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
+              this.fileName = `${this.reportName}_schools_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
 
               this.blockHidden = false;
               this.clusterHidden = false;

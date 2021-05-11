@@ -142,7 +142,7 @@ export class SemesterExceptionComponent implements OnInit {
   getSemesters() {
     this.service.semExceptionMetaData({ period: this.period }).subscribe((res) => {
       this.semesters = res["data"];
-      if (this.semesters.length > 0)
+      if (this.semesters.length > 0 && !this.semester)
         this.semester = this.semesters[this.semesters.length - 1].id;
       this.onResize();
     }, err => {
