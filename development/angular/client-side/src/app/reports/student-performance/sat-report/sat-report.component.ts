@@ -309,13 +309,14 @@ export class SatReportComponent implements OnInit {
   }
 
   onPeriodSelect() {
+    document.getElementById("spinner").style.display = "block";
     this.grade = undefined;
     this.subject = undefined;
     this.subjectHidden = true;
     this.service.semMetaData({ period: this.period }).subscribe((res) => {
       this.semesters = res["data"];
-      if (this.semesters.length > 0)
-        this.semester = this.semesters[this.semesters.length - 1].id;
+      // if (this.semesters.length > 0)
+      //   this.semester = this.semesters[this.semesters.length - 1].id;
       this.levelWiseFilter();
     });
   }
@@ -1188,8 +1189,7 @@ export class SatReportComponent implements OnInit {
     this.reportData = [];
     this.level = "blockPerDistrict";
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
-      }_${this.subject ? this.subject : ""}_${this.level
-      }s_of_district_${districtId}_${this.commonService.dateAndTime}`;
+      }_${this.subject ? this.subject : ""}_blocks_of_district_${districtId}_${this.commonService.dateAndTime}`;
     var myData = this.distFilter.find(
       (a) => a.Details.district_id == districtId
     );
@@ -1299,7 +1299,7 @@ export class SatReportComponent implements OnInit {
     this.reportData = [];
     this.level = "clusterPerBlock";
     this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
-      }_${this.subject ? this.subject : ""}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime
+      }_${this.subject ? this.subject : ""}_clusters_of_block_${blockId}_${this.commonService.dateAndTime
       }`;
 
     // api call to get the clusterwise data for selected district, block
@@ -1529,8 +1529,7 @@ export class SatReportComponent implements OnInit {
 
                 this.level = options.level;
                 this.fileName = `${this.reportName}_${this.period}_${this.grade ? this.grade : "allGrades"
-                  }_${this.subject ? this.subject : ""}_${this.level
-                  }s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
+                  }_${this.subject ? this.subject : ""}_schools_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
 
                 globalMap.doubleClickZoom.enable();
                 globalMap.scrollWheelZoom.enable();
