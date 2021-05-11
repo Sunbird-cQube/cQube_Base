@@ -293,7 +293,7 @@ export class PATLOTableComponent implements OnInit {
         var keys = Object.keys(colors);
         var setColor = '';
         for (let i = 0; i < keys.length; i++) {
-          if (data < parseInt(keys[i])) {
+          if (data <= parseInt(keys[i])) {
             setColor = colors[keys[i]];
             break;
           } else if (data > parseInt(keys[i]) && data <= parseInt(keys[i + 1])) {
