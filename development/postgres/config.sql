@@ -21,9 +21,13 @@ drop function IF exists insert_diksha_agg;
 /* Drop views */
 
 drop view if exists student_attendance_agg_last_1_day cascade;
-drop view if exists student_attendance_agg_last_30_days cascade;
 drop view if exists student_attendance_agg_last_7_days cascade;
-drop view if exists student_attendance_agg_overall cascade;
+/*drop view if exists student_attendance_agg_last_30_days cascade;
+drop view if exists student_attendance_agg_overall cascade;*/
+
+drop materialized view if exists student_attendance_agg_last_30_days cascade;
+drop materialized view if exists student_attendance_agg_overall cascade;
+
 drop view if exists hc_crc_school cascade;
 drop view if exists hc_crc_cluster cascade;
 drop view if exists hc_crc_block cascade;
@@ -88,7 +92,7 @@ drop view if exists composite_mgt_block;
 drop view if exists composite_mgt_cluster;
 drop view if exists composite_mgt_school;
 
-
+/*
 drop view if exists semester_exam_district_all cascade;
 drop view if exists semester_exam_block_all cascade;
 drop view if exists semester_exam_cluster_all cascade;
@@ -230,7 +234,7 @@ drop view if exists periodic_grade_cluster_mgmt_year_month cascade;
 drop view if exists periodic_grade_block_mgmt_year_month cascade;
 drop view if exists periodic_grade_district_mgmt_year_month cascade;
 
-/*
+*/
 drop materialized view if exists stud_count_school_mgmt_last30 cascade;
 drop materialized view if exists stud_count_school_grade_mgmt_last30 cascade;
 drop materialized view if exists stud_count_school_mgmt_last7 cascade;
@@ -307,7 +311,7 @@ drop materialized view  if exists semester_exam_district_mgmt_last7 cascade;
 drop materialized view  if exists semester_exam_block_mgmt_last7 cascade;
 drop materialized view  if exists semester_exam_cluster_mgmt_last7 cascade;
 drop materialized view  if exists semester_exam_school_mgmt_last7 cascade;
-*/
+
 drop table if exists student_att_count cascade;
 drop table if exists student_att_grade_count cascade;
 
@@ -3404,7 +3408,7 @@ left join
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_last30 group by district_id,academic_year)as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id
-   left join
+    join
  (select sum(total_students) as total_students,district_id from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result where exam_code in  (select exam_code from pat_date_range where date_range='last30days')) group by district_id) tot_stud
 on d.district_id=tot_stud.district_id;
@@ -3484,7 +3488,7 @@ left join
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_last30 group by block_id,academic_year)as b
  on d.academic_year=b.academic_year and d.block_id=b.block_id
-   left join
+    join
  (select sum(total_students) as total_students,block_id from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result where exam_code in  (select exam_code from pat_date_range where date_range='last30days')) group by block_id) tot_stud
 on d.block_id=tot_stud.block_id;
@@ -3565,7 +3569,7 @@ left join
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_last30 group by cluster_id,academic_year)as b
  on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id
-   left join
+    join
  (select sum(total_students) as total_students,cluster_id from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result where exam_code in  (select exam_code from pat_date_range where date_range='last30days')) group by cluster_id) tot_stud
 on d.cluster_id=tot_stud.cluster_id;
@@ -3634,7 +3638,7 @@ on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade)) b_1
 left join 
 stud_count_school_mgmt_last30 as b
  on d.academic_year=b.academic_year and d.school_id=b.school_id
-   left join
+    join
  (select school_id,total_students from school_hierarchy_details
 where school_id in (select school_id from periodic_exam_school_result where exam_code in  (select exam_code from pat_date_range where date_range='last30days')) ) tot_stud
 on d.school_id=tot_stud.school_id;
@@ -3663,7 +3667,7 @@ union
 (select a.*,sa.students_attended from 
 (select academic_year,cast('Grade '||grade as text)as grade,'Grade Performance' as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,max(students_count) as total_students
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,max(students_count) as total_students,count(distinct school_id) as total_schools
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,
@@ -3693,7 +3697,7 @@ from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+count(distinct school_id) as total_schools,sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -3737,7 +3741,7 @@ from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+count(distinct school_id) as total_schools,sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -3781,7 +3785,7 @@ from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+count(distinct school_id) as total_schools,sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last30days')
 group by academic_year,grade,subject,
@@ -4162,8 +4166,8 @@ order by subject_name) as subjects
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,max(students_count) as total_students,count(distinct school_id) as total_schools,
-max(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,
+max(students_count) as total_students,max(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -4201,8 +4205,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -4245,8 +4249,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -4289,8 +4293,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range where date_range='last7days')
 group by academic_year,grade,subject,
@@ -6103,7 +6107,7 @@ from (select (generate_series('now()'::date-number_of_days::interval,('now()'::d
 where extract(month from days_in_period.day)=month 
 and extract(year from days_in_period.day)=year;
 
-_query_res:='create or replace view student_attendance_agg_'||period||' as select sch_res.school_id,cast(sch_res.total_present as bigint),cast(sch_res.total_students as bigint),cast(sch_res.students_count as bigint),
+_query_res:='create materialized view if not exists student_attendance_agg_'||period||' as select sch_res.school_id,cast(sch_res.total_present as bigint),cast(sch_res.total_students as bigint),cast(sch_res.students_count as bigint),
 b.school_name,b.school_latitude,b.school_longitude,b.cluster_id,b.cluster_name,b.cluster_latitude,b.cluster_longitude,
 b.block_id,b.block_name,b.block_latitude,b.block_longitude,b.district_id,b.district_name,b.district_latitude,b.district_longitude,b.school_management_type,b.school_category
    from (
@@ -13519,8 +13523,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range 
 where date_range='last30days') and school_management_type is not null
@@ -13568,8 +13572,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range 
 where date_range='last30days') and school_management_type is not null
@@ -13616,8 +13620,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range 
 where date_range='last30days') and school_management_type is not null
@@ -13808,7 +13812,7 @@ on b.district_id=tot_stud.district_id and b.grade=tot_stud.grade and b.school_ma
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_year_month group by district_id,academic_year,month,school_management_type)as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id and d.month=b.month and d.school_management_type=b.school_management_type
-       left join
+        join
  (select sum(total_students) as total_students,district_id,school_management_type from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result) group by district_id,school_management_type) tot_stud
 on d.district_id=tot_stud.district_id and d.school_management_type=tot_stud.school_management_type where d.school_management_type is not null;
@@ -13937,7 +13941,7 @@ on b.block_id=tot_stud.block_id and b.grade=tot_stud.grade and b.school_manageme
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_year_month group by block_id,academic_year,month,school_management_type)as b
  on d.academic_year=b.academic_year and d.block_id=b.block_id and d.month=b.month and d.school_management_type=b.school_management_type
-       left join
+       join
  (select sum(total_students) as total_students,block_id,school_management_type from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result) group by block_id,school_management_type) tot_stud
 on d.block_id=tot_stud.block_id and d.school_management_type=tot_stud.school_management_type where d.school_management_type is not null;
@@ -14073,7 +14077,7 @@ on b.cluster_id=tot_stud.cluster_id and b.grade=tot_stud.grade and b.school_mana
  (select sum(total_students) as total_students,cluster_id,school_management_type from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result) group by cluster_id,school_management_type) tot_stud
 on d.cluster_id=tot_stud.cluster_id and d.school_management_type=tot_stud.school_management_type
-left join
+ join
  student_att_count as b 
  on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id and d.month=b.month and d.school_management_type=b.school_management_type
  where d.school_management_type is not null;
@@ -14212,7 +14216,7 @@ on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade and b.school_manage
 				  and c.school_management_type=d_1.school_management_type) d
 LEFT JOIN stud_count_school_mgmt_year_month b ON d.academic_year::text = b.academic_year::text AND d.school_id = b.school_id AND d.month = b.month 
 and d.school_management_type = b.school_management_type
-left join
+ join
  (select sum(total_students) as total_students,school_id,school_management_type from school_hierarchy_details group by school_id,school_management_type) tot_stud
 on d.school_id=tot_stud.school_id and d.school_management_type=tot_stud.school_management_type where d.school_management_type is not null;
 
@@ -14460,7 +14464,7 @@ left join
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_last7 group by district_id,academic_year,school_management_type)as b
  on d.academic_year=b.academic_year and d.district_id=b.district_id and d.school_management_type=b.school_management_type
-   left join
+    join
  (select sum(total_students) as total_students,district_id,school_management_type from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result where exam_code in  (select exam_code from pat_date_range where date_range='last7days')) group by district_id,school_management_type) tot_stud
 on d.district_id=tot_stud.district_id and d.school_management_type=tot_stud.school_management_type where d.school_management_type is not null;	
@@ -14543,7 +14547,7 @@ left join
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_last7 group by block_id,academic_year,school_management_type)as b
  on d.academic_year=b.academic_year and d.block_id=b.block_id and d.school_management_type=b.school_management_type
-   left join
+    join
  (select sum(total_students) as total_students,block_id,school_management_type from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result where exam_code in  (select exam_code from pat_date_range where date_range='last7days')) group by block_id,school_management_type) tot_stud
 on d.block_id=tot_stud.block_id and d.school_management_type=tot_stud.school_management_type  where d.school_management_type is not null;	
@@ -14627,12 +14631,12 @@ left join
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_last7 group by cluster_id,academic_year,school_management_type)as b
  on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id and d.school_management_type=b.school_management_type
-   left join
+    join
  (select sum(total_students) as total_students,cluster_id,school_management_type from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result where exam_code in  (select exam_code from pat_date_range where date_range='last7days')) group by cluster_id,school_management_type) tot_stud
 on d.cluster_id=tot_stud.cluster_id and d.school_management_type=tot_stud.school_management_type where d.school_management_type is not null;	
 
-	/* school*/
+/* school*/
 	
 CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_school_mgmt_last7 as
 select d.*,b.total_schools,b.students_count as students_attended,tot_stud.total_students from
@@ -14711,7 +14715,7 @@ left join
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_last7 group by school_id,academic_year,school_management_type)as b
  on d.academic_year=b.academic_year and d.school_id=b.school_id and d.school_management_type=b.school_management_type
-   left join
+    join
  (select sum(total_students) as total_students,school_id,school_management_type from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result where exam_code in  (select exam_code from pat_date_range where date_range='last7days')) group by school_id,school_management_type) tot_stud
 on d.school_id=tot_stud.school_id and d.school_management_type=tot_stud.school_management_type;
@@ -14732,8 +14736,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range 
 where date_range='last7days') and school_management_type is not null
@@ -14781,8 +14785,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range 
 where date_range='last7days') and school_management_type is not null
@@ -14829,8 +14833,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from periodic_exam_school_result 
 where exam_code in (select exam_code from pat_date_range 
 where date_range='last7days') and school_management_type is not null
