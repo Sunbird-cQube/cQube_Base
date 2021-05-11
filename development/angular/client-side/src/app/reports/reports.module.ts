@@ -38,12 +38,6 @@ const otherRoutes = [
 
 
 @NgModule({
-  declarations: [
-    CrcReportComponent,
-    ChangePasswordComponent,
-    TelemetryDataComponent,
-    CompositReportComponent
-  ],
   imports: [
     CommonModule,
     FormsModule,

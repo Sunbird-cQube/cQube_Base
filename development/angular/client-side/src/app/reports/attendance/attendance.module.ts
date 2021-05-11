@@ -25,11 +25,6 @@ const sttendanceRoutes: Routes = [
 ]
 
 @NgModule({
-  declarations: [
-    TeacherAttendanceComponent,
-    ComingSoonComponent,
-    StudengtAttendanceComponent
-  ],
   imports: [
     CommonModule,
     FormsModule,
