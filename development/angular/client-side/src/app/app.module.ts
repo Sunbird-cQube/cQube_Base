@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
+// import { MatPaginatorModule, MatSortModule } from '@angular/material';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -30,34 +31,6 @@ import { DikshaTPDContentProgressComponent } from './reports/diksha/tpd/diksha-t
 import { DikshaTPDTeachersPercentageComponent } from './reports/diksha/tpd/diksha-tpd-teachers-percentage/diksha-tpd-teachers-percentage.component';
 import { StudentAttendanceChartComponent } from './reports/attendance/student-attendance-chart/student-attendance-chart.component';
 import { LineChartComponent } from './common/line-chart/line-chart.component';
-import { ComingSoonComponent } from './common/coming-soon/coming-soon.component';
-import { StudengtAttendanceComponent } from './reports/attendance/student-attendance/student-attendance.component';
-import { TeacherAttendanceComponent } from './reports/attendance/teacher-attendance/teacher-attendance.component';
-import { BarChartComponent } from './reports/diksha/bar-chart/bar-chart.component';
-import { DikshaBarChartComponent } from './reports/diksha/diksha-bar-chart/diksha-bar-chart.component';
-import { DikshaTableComponent } from './reports/diksha/diksha-table/diksha-table.component';
-import { DikshaTpdCompletionComponent } from './reports/diksha/diksha-tpd-completion-percentage/diksha-tpd-completion.component';
-import { DikshaTpdEnrollmentComponent } from './reports/diksha/diksha-tpd-enrollment-and-completion/diksha-tpd-enrollment.component';
-import { DikshaUsageByTextBookComponent } from './reports/diksha/diksha-usage-by-text-book/diksha-usage-by-text-book.component';
-import { UsageByTextbookContentComponent } from './reports/diksha/usage-by-textbook-content/usage-by-textbook-content.component';
-import { MissingDataComponent } from './reports/exception-list/missing-data/missing-data.component';
-import { PATExceptionComponent } from './reports/exception-list/pat-exception/pat-exception.component';
-import { SemesterExceptionComponent } from './reports/exception-list/sat-exception/semester-exception.component';
-import { StudentAttendanceExceptionComponent } from './reports/exception-list/student-attendance-exception/student-attendance-exception.component';
-import { TeacherAttendanceExceptionComponent } from './reports/exception-list/teacher-attendance-exception/teacher-attendance-exception.component';
-import { InfraMapVisualisationComponent } from './reports/school-infra/infra-map-visualisation/infra-map-visualisation.component';
-import { SchoolInfrastructureComponent } from './reports/school-infra/school-infrastructure/school-infrastructure.component';
-import { UdiseReportComponent } from './reports/school-infra/udise-report/udise-report.component';
-import { HeatChartComponent } from './reports/student-performance/heat-chart/heat-chart.component';
-import { PATLOTableComponent } from './reports/student-performance/pat-lo-table/pat-lo-table.component';
-import { PATReportComponent } from './reports/student-performance/pat-report/pat-report.component';
-import { SatHeatChartComponent } from './reports/student-performance/sat-heat-chart/sat-heat-chart.component';
-import { SatReportComponent } from './reports/student-performance/sat-report/sat-report.component';
-import { SemViewComponent } from './reports/student-performance/sem-view/sem-view.component';
-import { CompositReportComponent } from './reports/composit/composit-report/composit-report.component';
-import { CrcReportComponent } from './reports/school-monitoring/crc-report/crc-report.component';
-import { TelemetryDataComponent } from './reports/telemetry/telemetry-data/telemetry-data.component';
-import { ChangePasswordComponent } from './reports/users/change-password/change-password.component';
 
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
@@ -80,35 +53,7 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     DikshaTPDContentProgressComponent,
     DikshaTPDTeachersPercentageComponent,
     StudentAttendanceChartComponent,
-    LineChartComponent,
-    TeacherAttendanceComponent,
-    ComingSoonComponent,
-    StudengtAttendanceComponent,
-    DikshaTableComponent,
-    DikshaBarChartComponent,
-    DikshaUsageByTextBookComponent,
-    UsageByTextbookContentComponent,
-    DikshaTpdEnrollmentComponent,
-    DikshaTpdCompletionComponent,
-    BarChartComponent,
-    SemesterExceptionComponent,
-    MissingDataComponent,
-    PATExceptionComponent,
-    StudentAttendanceExceptionComponent,
-    TeacherAttendanceExceptionComponent,
-    SchoolInfrastructureComponent,
-    InfraMapVisualisationComponent,
-    UdiseReportComponent,
-    SemViewComponent,
-    PATReportComponent,
-    HeatChartComponent,
-    PATLOTableComponent,
-    SatReportComponent,
-    SatHeatChartComponent,
-    CrcReportComponent,
-    ChangePasswordComponent,
-    TelemetryDataComponent,
-    CompositReportComponent
+    LineChartComponent
   ],
   imports: [
     BrowserModule,
