@@ -113,16 +113,21 @@ export class DashboardComponent implements OnInit {
 
   setDefault() {
     this.changeDetection.detectChanges();
-    this.management = this.managementType;
-    this.category = this.categoryType;
+    if (localStorage.getItem('management') == null) {
+      this.management = this.managementType;
+      this.category = this.categoryType;
+    } else {
+      this.management = JSON.parse(localStorage.getItem('management')).id;
+      this.category = JSON.parse(localStorage.getItem('category')).id;
+    }
     let obj = {
-      id: this.management,
-      value: this.service.changeingStringCases(this.management.replace(/_/g, ' '))
+      id: this.managementType,
+      value: this.service.changeingStringCases(this.managementType.replace(/_/g, ' '))
     }
     localStorage.setItem("management", JSON.stringify(obj));
     obj = {
-      id: this.category,
-      value: this.service.changeingStringCases(this.category.replace(/_/g, ' '))
+      id: this.categoryType,
+      value: this.service.changeingStringCases(this.categoryType.replace(/_/g, ' '))
     }
     localStorage.setItem("category", JSON.stringify(obj));
     if (this.managementType) {
