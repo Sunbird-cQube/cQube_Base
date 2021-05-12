@@ -12,13 +12,7 @@
 
 - name: Add BinTray deb repository
   become: yes
-  shell: echo "deb https://kong.bintray.com/kong-deb {{ ansible_distribution_release }} main" | sudo tee -a /etc/apt/sources.list
-
-- name: Import apt key [Debian/Ubuntu]
-  apt_key:
-    url: "https://bintray.com/user/downloadSubjectPublicKey?username=bintray"
-    state: present
-    validate_certs: true
+  shell:  echo "deb [trusted=yes] https://download.konghq.com/gateway-2.x-ubuntu-$(lsb_release -sc)/ default all" | sudo tee /etc/apt/sources.list.d/kong.list
 
 - name: "Install Kong"
   become: yes
