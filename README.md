@@ -33,7 +33,7 @@ Note: For <b>Installation:</b> follow the below steps directly, for upgradation 
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.12
+git checkout release-1.13
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
@@ -143,6 +143,18 @@ cqube_emission
 ├── school_management
 │   └── school_management_master.zip
 │       └── school_management_master.csv
+├── sat
+│   └── semester_exam_subject_details.zip
+│       └── semester_exam_subject_details.csv
+├── sat
+│   └── semester_exam_grade_details.zip
+│       └── semester_exam_grade_details.csv
+├── pat
+│   └── periodic_exam_subject_details.zip
+│       └── periodic_exam_subject_details.csv
+├── pat
+│   └── periodic_exam_grade_details.zip
+│       └── periodic_exam_grade_details.csv
 ```
 
 Transactional Files:
@@ -196,7 +208,7 @@ python3 client.py
 - Navigate to the directory where cQube has been downloaded or cloned
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.12
+git checkout release-1.13
 ```
 - Copy the upgradation_config.yml.template to upgradation_config.yml 
 `cp upgradation_config.yml.template upgradation_config.yml`
