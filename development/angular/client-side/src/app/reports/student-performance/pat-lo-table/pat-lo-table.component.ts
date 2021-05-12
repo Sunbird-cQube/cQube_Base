@@ -277,6 +277,20 @@ export class PATLOTableComponent implements OnInit {
         });
         newArr.push(temp);
       });
+      // var extra = 8 - newArr.length;
+      // if (extra > 0) {
+      //   for (let i = 0; i < extra; i++) {
+      //     var temp = [];
+      //     my_columns.map((data, i) => {
+      //       var new_item = {};
+      //       new_item["data"] = '*';
+      //       new_item["value"] = '*';
+      //       temp.push(new_item);
+      //     })
+      //     newArr.push(temp);
+      //   }
+      // }
+
       function tableCellColor(data) {
         var colors = {
           1: '#a50026',
@@ -314,7 +328,7 @@ export class PATLOTableComponent implements OnInit {
       newArr.forEach((columns, i1) => {
         body += "<tr>";
         columns.forEach((column, i2) => {
-          if (i2 > 3 && column.value || i2 > 3 && String(column.value)==String(0)) {
+          if (i2 > 3 && column.value || i2 > 3 && String(column.value) == String(0)) {
             body += `<td class="numberData" data-toggle="tooltip" data-html="true" data-placement="auto" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length - 1]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
           }
           else {
@@ -380,6 +394,12 @@ export class PATLOTableComponent implements OnInit {
           $('.dataTables_scrollBody').scrollTop(0);
         });
       }, 300);
+      $('select').on('keydown', function (e) {
+        if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) { //up or down
+          e.preventDefault();
+          return false;
+        }
+      });
       document.getElementById('spinner').style.display = 'none';
     });
     this.showPagination = true;

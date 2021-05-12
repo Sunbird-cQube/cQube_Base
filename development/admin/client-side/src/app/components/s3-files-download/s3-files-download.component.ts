@@ -59,6 +59,8 @@ export class S3FilesDownloadComponent implements OnInit {
         element['checked'] = false;
       });
       document.getElementById('spinner').style.display = 'none';
+    }, err =>{
+      document.getElementById('spinner').style.display = 'none';
     })
   }
 
@@ -71,6 +73,8 @@ export class S3FilesDownloadComponent implements OnInit {
   onSubmit() {
     this.service.downloadFile(this.selectedFile, this.bucketName).subscribe(res => {
       window.open(`${res['downloadUrl']}`, "_blank");
+    }, err=>{
+      document.getElementById('spinner').style.display = 'none';
     });
   }
 
