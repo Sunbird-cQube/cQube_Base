@@ -23,8 +23,9 @@ class download_clusterwise_csv():
         self.cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(15)
-        self.filename = p.get_download_dir() + "/" + self.fname.composite_cluster()
+        self.filename = p.get_download_dir() + "/" + self.fname.composite_cluster()+self.cal.get_current_date()+'.csv'
         self.cal.page_loading(self.driver)
+        print(self.filename)
         return os.path.isfile(self.filename)
 
 

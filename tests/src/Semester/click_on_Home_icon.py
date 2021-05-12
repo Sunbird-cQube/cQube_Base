@@ -9,7 +9,7 @@ class Home():
         self.driver = driver
 
     def click_on_blocks_click_on_home_icon(self):
-        self.driver.find_element_by_id(Data.sr_block_btn).click()
+        self.driver.find_element_by_id(Data.block_btn).click()
         cal = GetData()
         cal.page_loading(self.driver)
 

@@ -4,18 +4,29 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const helper = require('./helper');
 
-router.post('/distWise', auth.authController, async (req, res) => {
+router.post('/distWise', auth.authController, async(req, res) => {
     try {
-        logger.info('---PAT heat map distwise api ---');
-        let { year, month, grade, subject_name, exam_date, viewBy } = req.body
+        logger.info(`---${req.body.report} heat map distwise api ---`);
+        let { year, month, grade, subject_name, exam_date, viewBy, report, management, category } = req.body
         let fileName;
-        if (grade == "") {
-            fileName = `pat/heatmap-summary/${year}/${month}/allData.json`
+        if (management != 'overall' && category == 'overall') {
+            if (grade == "") {
+                fileName = `${report}/school_management_category/heatmap-summary/${year}/${month}/overall_category/${management}/allData.json`
+            } else {
+                if (viewBy == 'indicator') {
+                    fileName = `${report}/school_management_category/heatChart/indicatorIdLevel/${year}/${month}/overall_category/${management}/allData.json`;
+                } else if (viewBy == 'question_id')
+                    fileName = `${report}/school_management_category/heatChart/questionIdLevel/${year}/${month}/overall_category/${management}/allData.json`;
+            }
         } else {
-            if (viewBy == 'indicator') {
-                fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/allData.json`;
-            } else if (viewBy == 'question_id')
-                fileName = `pat/heatChart/questionIdLevel/${year}/${month}/allData.json`;
+            if (grade == "") {
+                fileName = `${report}/heatmap-summary/${year}/${month}/allData.json`
+            } else {
+                if (viewBy == 'indicator') {
+                    fileName = `${report}/heatChart/indicatorIdLevel/${year}/${month}/allData.json`;
+                } else if (viewBy == 'question_id')
+                    fileName = `${report}/heatChart/questionIdLevel/${year}/${month}/allData.json`;
+            }
         }
 
         var data = await s3File.readS3File(fileName);
@@ -52,7 +63,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
         data = data.sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1)
         let result = await helper.generalFun(grade, data, 0, viewBy)
 
-        logger.info('--- PAT heat map distwise response sent ---');
+        logger.info(`--- ${req.body.report} heat map distwise response sent ---`);
 
         res.status(200).send({ districtDetails, result, downloadData: data });
     } catch (e) {

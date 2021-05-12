@@ -7,7 +7,9 @@ import { SemViewComponent } from './sem-view/sem-view.component';
 import { FormsModule } from '@angular/forms';
 import { HeatChartComponent } from './heat-chart/heat-chart.component';
 import { PATLOTableComponent } from './pat-lo-table/pat-lo-table.component';
-import {NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { SatReportComponent } from './sat-report/sat-report.component';
+import { SatHeatChartComponent } from './sat-heat-chart/sat-heat-chart.component';
 
 const performRoute: Routes = [
   {
@@ -23,6 +25,12 @@ const performRoute: Routes = [
       },
       {
         path: 'PAT-LO-table', component: PATLOTableComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'sat-report', component: SatReportComponent, canActivateChild: [AuthGuard]
+      },
+      {
+        path: 'sat-heat-chart', component: SatHeatChartComponent, canActivateChild: [AuthGuard]
       }
     ]
   }
@@ -34,6 +42,8 @@ const performRoute: Routes = [
     PATReportComponent,
     HeatChartComponent,
     PATLOTableComponent,
+    SatReportComponent,
+    SatHeatChartComponent,
   ],
   imports: [
     CommonModule,

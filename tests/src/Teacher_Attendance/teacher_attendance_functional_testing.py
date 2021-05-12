@@ -27,7 +27,7 @@ from Teacher_Attendance.download_schoolwise_csv import SchoolwiseCsv
 from reuse_func import GetData
 
 
-class cQube_Teacher_Attendance(unittest.TestCase):
+class Teacher_FunctionalTesting(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):

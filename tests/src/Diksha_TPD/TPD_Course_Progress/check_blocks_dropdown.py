@@ -31,7 +31,8 @@ class Cluster_wise_records():
                 self.load.page_loading(self.driver)
                 self.driver.find_element_by_id(Data.Download).click()
                 time.sleep(3)
-                self.filename = self.p.get_download_dir() + '/' + self.fname.lpd_cluster()
+                self.filename = self.p.get_download_dir() + '/' + self.fname.tpd_cluster()+self.load.get_current_date()+'.csv'
+                print(self.filename)
                 file = os.path.isfile(self.filename)
                 if file != True:
                     print(dists.options[i].text,Blocks.options[j].text,'Cluster wise records csv file is not downloaded ')

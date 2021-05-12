@@ -18,9 +18,11 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
 
   public category: String[] = [];
   public chartData: Number[] = [];
+  public completion: Number[] = [];
   public xAxisLabel: String = "Enrollment";
   public yAxisLabel: String;
-  public reportName: String = "tpd";
+  public reportName: String = "enrollment_completion";
+  public report = "enroll/comp"
 
   enrollTypes = [{ key: 'enrollment', name: 'Enrollment' }, { key: 'completion', name: 'Completion' }];
   type = 'enrollment';
@@ -49,7 +51,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
   public timePeriod = 'overall';
   public hierName: any;
   public all: boolean = false;
-  public timeDetails: any = [{ id: "last_day", name: "Last Day" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_30_days", name: "Last 30 Days" }, { id: "overall", name: "Overall" }];
+  public timeDetails: any = [{ id: "overall", name: "Overall" }, { id: "last_30_days", name: "Last 30 Days" }, { id: "last_7_days", name: "Last 7 Days" }, { id: "last_day", name: "Last Day" }];
   public districtsDetails: any = '';
   public myChart: Chart;
   public showAllChart: boolean = false;
@@ -204,6 +206,7 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     }
   }
   getBarChartData() {
+    this.completion = [];
     if (this.result.labels.length <= 25) {
       for (let i = 0; i <= 25; i++) {
         this.category.push(this.result.labels[i] ? this.result.labels[i] : ' ')
@@ -213,6 +216,11 @@ export class DikshaTpdEnrollmentComponent implements OnInit {
     }
     this.result.data.forEach(element => {
       this.chartData.push(Number(element[`${this.type}`]));
+      if (this.type != 'completion') {
+        this.completion.push(Number(element[`completion`]));
+      }else{
+        this.completion.push(Number(element[`enrollment`]));
+      }
     });
     this.footer = (this.chartData.reduce((a, b) => Number(a) + Number(b), 0)).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
 

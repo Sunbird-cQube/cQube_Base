@@ -31,7 +31,9 @@ class completion_time_periods():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(5)
-            self.filename = self.p.get_download_dir() + '/all_completion_data.csv'
+            times = (self.driver.find_element_by_name(Data.timeperiods).text).strip()
+            self.filename = self.p.get_download_dir() + '/'+'enrollment_completion_completion_all_district_overall_'+self.data.get_current_date()+'.csv'
+            print(self.filename)
             self.data.page_loading(self.driver)
             collnames = Select(self.driver.find_element_by_id(Data.coll_names))
             counter = len(collnames.options)-1
@@ -63,7 +65,10 @@ class completion_time_periods():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + '/all_completion_data.csv'
+            times = (self.driver.find_element_by_name(Data.timeperiods).text).strip()
+            ctype = (self.driver.find_element_by_id(Data.coursetype).text).strip()
+            self.filename = self.p.get_download_dir() + '/'+'tpd_'+ctype+'_all_district_last_day'+'_'+self.data.get_current_date()+'.csv'
+            print(self.filename)
             self.data.page_loading(self.driver)
             collnames = Select(self.driver.find_element_by_id(Data.coll_names))
             counter = len(collnames.options)-1
@@ -95,7 +100,10 @@ class completion_time_periods():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(4)
-            self.filename = self.p.get_download_dir() + '/all_completion_data.csv'
+            times = (self.driver.find_element_by_name(Data.timeperiods).text).strip()
+            ctype = (self.driver.find_element_by_id(Data.coursetype).text).strip()
+            self.filename = self.p.get_download_dir() + '/'+'tpd_'+ctype+'_all_district_last_7_days'+'_'+self.data.get_current_date()+'.csv'
+            print(self.filename)
             self.data.page_loading(self.driver)
             collnames = Select(self.driver.find_element_by_id(Data.coll_names))
             counter = len(collnames.options) - 1
@@ -127,7 +135,10 @@ class completion_time_periods():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + '/all_completion_data.csv'
+            times = (self.driver.find_element_by_name(Data.timeperiods).text).strip()
+            ctype = (self.driver.find_element_by_id(Data.coursetype).text).strip()
+            self.filename = self.p.get_download_dir() + '/'+'tpd_'+ctype+'_all_district_last_30_days_'+'_'+self.data.get_current_date()+'.csv'
+            print(self.filename)
             self.data.page_loading(self.driver)
             collnames = Select(self.driver.find_element_by_id(Data.coll_names))
             counter = len(collnames.options) - 1

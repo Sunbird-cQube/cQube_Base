@@ -30,9 +30,11 @@ class DistrictsBlock():
         for x in range(len(select_district.options)-1, len(select_district.options)):
             select_district.select_by_index(x)
             cal.page_loading(self.driver)
-            for y in range(len(select_block.options), len(select_block.options)):
+            for y in range(1, len(select_block.options)):
                 select_block.select_by_index(y)
                 cal.page_loading(self.driver)
+                value = self.driver.find_element_by_id('choose_block').get_attribute('value')
+                value = value[4:]+'_'
                 markers = self.driver.find_elements_by_class_name(Data.dots)
                 if len(markers) - 1 == 0:
                     print("District" + select_district.first_selected_option.text +"Block"+ select_block.first_selected_option.text +"No Data")
@@ -42,7 +44,8 @@ class DistrictsBlock():
                     self.driver.find_element_by_id('download').click()
                     time.sleep(2)
                     p = pwd()
-                    self.filename = p.get_download_dir() + "/" + self.fname.sr_blockwise()
+                    self.filename = p.get_download_dir() + "/" + self.fname.sr_blockwise()+value.strip()+cal.get_current_date()+'.csv'
+                    print(self.filename)
                     if not os.path.isfile(self.filename):
                         print("District" + select_district.first_selected_option.text +"Block"+ select_block.first_selected_option.text+"csv is not downloaded")
                         count = count + 1
@@ -50,22 +53,12 @@ class DistrictsBlock():
                         with open(self.filename) as fin:
                             csv_reader = csv.reader(fin, delimiter=',')
                             header = next(csv_reader)
-                            total = 0
-                            schools = 0
-                            for row in csv.reader(fin):
-                                total += int(row[13].replace(',',''))
-                                schools += int(row[14].replace(',',''))
-                            students = self.driver.find_element_by_id("students").text
-                            res = re.sub('\D', "", students)
-
-                            school = self.driver.find_element_by_id("schools").text
-                            sc = re.sub('\D', "", school)
-                            if int(res) != total:
-                                print("District" + select_district.first_selected_option.text +"Block"+ select_block.first_selected_option.text +"student count mismatched")
-                                count = count + 1
-                            if int(sc) != schools:
-                                print("District" + select_district.first_selected_option.text +"Block"+ select_block.first_selected_option.text +"school count mismatched")
+                            data = list(csv_reader)
+                            row_count = len(data)
+                            dots = len(markers) - 1
+                            if dots != row_count:
+                                print('Markers records and csv file records are not matching ', dots, row_count)
                                 count = count + 1
                         self.remove_csv()
 
-        return count
+                return count

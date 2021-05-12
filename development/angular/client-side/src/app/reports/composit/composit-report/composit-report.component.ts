@@ -58,6 +58,15 @@ export class CompositReportComponent implements OnInit {
   state: string;
 
   selected = '';
+  managementName;
+  management;
+  category;
+
+  height = window.innerHeight;
+  onResize() {
+    this.height = window.innerHeight;
+    this.levelWiseFilter();
+  }
 
 
   constructor(public http: HttpClient, public service: CompositReportService, public router: Router, private changeDetection: ChangeDetectorRef, public commonService: AppServiceComponent,) {
@@ -68,10 +77,16 @@ export class CompositReportComponent implements OnInit {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
+    this.managementName = this.management = JSON.parse(localStorage.getItem('management')).id;
+    this.category = JSON.parse(localStorage.getItem('category')).id;
+    this.managementName = this.commonService.changeingStringCases(
+      this.managementName.replace(/_/g, " ")
+    );
+    this.onResize();
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.dist_wise_data().subscribe(res => {
+    this.myData = this.service.dist_wise_data({ management: this.management, category: this.category }).subscribe(res => {
       this.result = res;
       if (Object.keys(this.result[0]).includes("Student Attendance(%)")) {
         this.xAxis = "Student Attendance(%)";
@@ -131,7 +146,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.dist_wise_data().subscribe(res => {
+    this.myData = this.service.dist_wise_data({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureDistrictsNames = this.result = res;
       //for chart =============================================
       this.showChart(this.result, this.downloadLevel);
@@ -182,7 +197,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.block_per_dist_data(data).subscribe(res => {
+    this.myData = this.service.block_per_dist_data(data, { management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureBlocksNames = this.result = res;
       // for download========
       this.funToDownload(this.reportData);
@@ -239,7 +254,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.cluster_per_block_data(this.distName, data).subscribe(res => {
+    this.myData = this.service.cluster_per_block_data(this.distName, data, { management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureClusterNames = this.result = res;
       // for download========
       this.funToDownload(this.reportData);
@@ -295,7 +310,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.school_per_cluster_data(distId, blockId, data).subscribe(res => {
+    this.myData = this.service.school_per_cluster_data(distId, blockId, data, { management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.SchoolInfrastructureSchoolNames = this.result = res;
       // for download========
       this.funToDownload(this.reportData);
@@ -323,7 +338,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.dist_wise_data().subscribe(res => {
+    this.myData = this.service.dist_wise_data({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = res;
       if (res !== null) {
         document.getElementById('spinner').style.display = 'none';
@@ -361,7 +376,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.block_wise_data().subscribe(res => {
+    this.myData = this.service.block_wise_data({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.result = res;
       this.funToDownload(this.reportData);
       //for chart =============================================
@@ -399,7 +414,7 @@ export class CompositReportComponent implements OnInit {
     if (this.myData) {
       this.myData.unsubscribe();
     }
-    this.myData = this.service.cluster_wise_data().subscribe(res => {
+    this.myData = this.service.cluster_wise_data({ management: this.management, category: this.category }).subscribe(res => {
       this.reportData = this.result = res;
       this.funToDownload(this.reportData);
       //for chart =============================================
@@ -454,13 +469,13 @@ export class CompositReportComponent implements OnInit {
   showChart(result, downloadType) {
     var l = undefined;
     if (downloadType == "dist") {
-      l = 1;
+      l = this.management != 'overall' ? 2 : 1;
     } else if (downloadType == "block") {
-      l = 2;
+      l = this.management != 'overall' ? 3 : 2;
     } else if (downloadType == "cluster") {
-      l = 3;
+      l = this.management != 'overall' ? 4 : 3;
     } else if (downloadType == "school") {
-      l = 4;
+      l = this.management != 'overall' ? 5 : 4;
     }
 
     var replace = ['_', ' %']
@@ -543,6 +558,10 @@ export class CompositReportComponent implements OnInit {
   }
 
   selectAxis() {
+    this.levelWiseFilter();
+  }
+
+  levelWiseFilter() {
     if (this.skul) {
       if (this.downloadLevel == "dist") {
         this.districtWise();
@@ -568,8 +587,11 @@ export class CompositReportComponent implements OnInit {
   }
 
   createChart(labels, chartData, name, obj) {
+    var ctx = $('#myChart');
+    ctx.attr('height', this.height > 1760 ? '64vh' : this.height > 1180 && this.height < 1760 ? '63vh' : this.height > 667 && this.height < 1180 ? '55vh' : '50vh');
     this.scatterChart = new Chart('myChart', {
       type: 'scatter',
+
       data: {
         labels: labels,
         datasets: [{
@@ -577,15 +599,23 @@ export class CompositReportComponent implements OnInit {
           pointBackgroundColor: "#0850b8",
           pointBorderColor: '#7cd6cc',
           pointBorderWidth: 0.5,
-          pointRadius: 5
+          pointRadius: this.height > 1760 ? 16 : this.height > 1180 && this.height < 1760 ? 10 : this.height > 667 && this.height < 1180 ? 8 : 5,
+          pointHoverRadius: this.height > 1760 ? 18 : this.height > 1180 && this.height < 1760 ? 12 : this.height > 667 && this.height < 1180 ? 9 : 6,
         }]
       },
       options: {
         legend: {
           display: false
         },
+
         responsive: true,
         tooltips: {
+          titleFontSize: 16,
+          cornerRadius: 10,
+          xPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 7,
+          yPadding: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 20 : this.height > 667 && this.height < 1180 ? 10 : 7,
+          bodyFontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
+          displayColors: false,
           custom: function (tooltip) {
             if (!tooltip) return;
             // disable displaying the color box;
@@ -610,14 +640,13 @@ export class CompositReportComponent implements OnInit {
             ticks: {
               fontColor: 'black',
               min: 0,
-              // max: 100
+              fontSize: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 23 : this.height > 667 && this.height < 1180 ? 13 : 10,
             },
             scaleLabel: {
               fontColor: "black",
               display: true,
               labelString: obj.xAxis,
-              fontSize: 12,
-              // fontColor: "dark gray"
+              fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
             }
           }],
           yAxes: [{
@@ -627,19 +656,19 @@ export class CompositReportComponent implements OnInit {
             ticks: {
               fontColor: 'black',
               min: 0,
-              // max: 100
+              fontSize: this.height > 1760 ? 30 : this.height > 1180 && this.height < 1760 ? 23 : this.height > 667 && this.height < 1180 ? 13 : 10,
             },
             scaleLabel: {
               fontColor: "black",
               display: true,
               labelString: obj.yAxis,
-              fontSize: 12,
-              // fontColor: "dark gray",
+              fontSize: this.height > 1760 ? 32 : this.height > 1180 && this.height < 1760 ? 22 : this.height > 667 && this.height < 1180 ? 12 : 10,
             }
           }]
         }
       }
     });
+
   }
 
   funToDownload(data) {
@@ -666,6 +695,8 @@ export class CompositReportComponent implements OnInit {
     this.reportData = newData
   }
   downloadRoport() {
+    var position = this.reportName.length;
+    this.fileName = [this.fileName.slice(0, position), `_${this.management}`, this.fileName.slice(position)].join('');
     this.commonService.download(this.fileName, this.reportData);
   }
 }

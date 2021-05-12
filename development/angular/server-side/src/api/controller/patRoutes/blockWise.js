@@ -8,27 +8,97 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         logger.info('--- all blocks PAT api ---');
         var period = req.body.data.period;
         var grade = req.body.data.grade;
+        var subject = req.body.data.subject;
+        var report = req.body.data.report;
+        var semester = req.body.data.sem;
+        var academic_year = req.body.data.year;
+        var month = req.body.data.month;
+        var management = req.body.data.management;
+        var category = req.body.data.category;
         var fileName;
         var blockData = {}
+        var footerFile;
+        var footerData = {}
 
-        if (period == '') {
-            if (grade) {
-                fileName = `pat/all/block/${grade}.json`;
+        if (management != 'overall' && category == 'overall') {
+            if (report == 'pat') {
+                if (grade) {
+                    if (period != 'select_month') {
+                        fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/block/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/all_subjects_footer.json`
+                        }
+                    } else {
+                        fileName = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/block/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/all_subjects_footer.json`
+                        }
+                    }
+                } else {
+                    if (period != 'select_month') {
+                        fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/block.json`;
+                    } else {
+                        fileName = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/block.json`;
+                    }
+                }
             } else {
-                fileName = `pat/all/pat_block.json`
+                if (grade) {
+                    fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/block/${grade}.json`;
+                    if (subject) {
+                        footerFile = `${report}/school_management_category/${period}/${semester}/overall_category/${management}/all_subjects_footer.json`;
+                    }
+                } else {
+                    fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/block.json`;
+                }
             }
         } else {
-            if (grade) {
-                fileName = `pat/${period}/block/${grade}.json`;
+            if (report == 'pat') {
+                if (grade) {
+                    if (period != 'select_month') {
+                        fileName = `${report}/${period}/block/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/${period == 'all' ? 'overall' : period}/all_subjects_footer.json`
+                        }
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/block/${grade}.json`;
+                        if (subject) {
+                            footerFile = `${report}/${academic_year}/${month}/all_subjects_footer.json`
+                        }
+                    }
+                } else {
+                    if (period != 'select_month') {
+                        fileName = `${report}/${period}/${report}_block.json`;
+                    } else {
+                        fileName = `${report}/${academic_year}/${month}/block/block.json`;
+                    }
+                }
             } else {
-                fileName = `pat/${period}/pat_block.json`
+                if (grade) {
+                    fileName = `${report}/${period}/block/${semester}/${grade}.json`;
+                    if (subject) {
+                        footerFile = `${report}/${period}/${semester}/all_subjects_footer.json`;
+                    }
+                } else {
+                    fileName = `${report}/${period}/${semester}/${report}_block.json`;
+                }
             }
         }
-
         blockData = await s3File.readS3File(fileName);
+        var footer;
+        if (period != 'all') {
+            if (subject)
+                footerData = await s3File.readS3File(footerFile);
+            if (grade && !subject || !grade && !subject) {
+                footer = blockData['AllBlocksFooter'];
+            } else {
+                footerData.map(foot => {
+                    footer = foot.subjects[`${subject}`]
+                })
+            }
+        }
         var mydata = blockData.data;
         logger.info('--- blocks PAT api response sent---');
-        res.status(200).send({ data: mydata, footer: blockData.AllBlocksFooter });
+        res.status(200).send({ data: mydata, footer: footer });
 
     } catch (e) {
         logger.error(`Error :: ${e}`);
@@ -38,24 +108,116 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
 
 router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
-        logger.info('--- block wise PAT api ---');
+        logger.info('--- block Per District PAT api ---');
+        var footerData = {}
         var period = req.body.data.period;
+        var report = req.body.data.report;
+        var semester = req.body.data.sem;
+        var academic_year = req.body.data.year;
+        var month = req.body.data.month;
+        var management = req.body.data.management;
+        var category = req.body.data.category;
+        var grad = req.body.data.grade;
+        var subject = req.body.data.subject;
         var fileName;
-        if (period == "") {
-            fileName = `pat/all/pat_block.json`;
-        } else {
-            fileName = `pat/${period}/pat_block.json`;
-        }
+        let footerFile;
 
+        if (management != 'overall' && category == 'overall') {
+            if (report == 'pat') {
+                if (period != 'select_month') {
+                    fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/block.json`;
+                    footerFile = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/overall_category/${management}/district/grade_subject_footer.json`;
+                } else {
+                    fileName = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/block.json`;
+                    footerFile = `${report}/school_management_category/${academic_year}/${month}/overall_category/${management}/district/grade_subject_footer.json`;
+                }
+            } else {
+                fileName = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/block.json`;
+                footerFile = `${report}/school_management_category/${period == 'all' ? 'overall' : period}/${semester}/overall_category/${management}/district/grade_subject_footer.json`;
+            }
+        } else {
+            if (report == 'pat') {
+                if (period != 'select_month') {
+                    fileName = `${report}/${period}/${report}_block.json`;
+                    footerFile = `${report}/${period}/district/grade_subject_footer.json`;
+                } else {
+                    fileName = `${report}/${academic_year}/${month}/block/block.json`;
+                    footerFile = `${report}/${academic_year}/${month}/district/grade_subject_footer.json`;
+                }
+            } else {
+                fileName = `${report}/${period}/${semester}/${report}_block.json`;
+                footerFile = `${report}/${period}/district/${semester}/grade_subject_footer.json`;
+            }
+        }
         var blockData = await s3File.readS3File(fileName);
         let distId = req.params.distId
 
         let filterData = blockData.data.filter(obj => {
             return (obj.Details.district_id == distId)
         })
-        let mydata = filterData;
+        var grades = [];
+
+        filterData.map(item => {
+            Object.keys(item.Grades).map(grade => {
+                grades.push(grade);
+            })
+        });
+        var uniqueGrades = [];
+        [...new Set(grades)].map(grade => {
+            uniqueGrades.push({ grade: grade });
+        })
+        uniqueGrades = uniqueGrades.sort((a, b) => a.grade > b.grade ? 1 : -1);
+        var footer;
+        if (period != 'all') {
+            if (grad)
+                footerData = await s3File.readS3File(footerFile);
+            if (grad && !subject) {
+                if (footerData && footerData[distId])
+                    footer = footerData[distId][grad];
+            } else if (grad && subject) {
+                if (footerData && footerData[distId])
+                    footer = footerData[distId][grad].subject[subject];
+            } else {
+                if (blockData['footer'])
+                    footer = blockData['footer'][distId]
+            }
+        }
+        var mydata = [];
+        var allSubjects = [];
+        if (period != 'all' && grad) {
+            filterData.map(obj => {
+                if (obj.Grades[`${grad}`]) {
+                    obj['Subjects'] = obj.Grades[`${grad}`]
+                    delete obj['Grade Wise Performance'];
+                    mydata.push(obj);
+                    var subjects = Object.keys(obj['Subjects']);
+                    var index = subjects.indexOf('Grade Performance');
+                    subjects.splice(index, 1);
+                    subjects.map(sub => {
+                        allSubjects.push(sub);
+                    })
+                }
+            })
+        } else if (period == 'all' && grad) {
+            filterData.map(obj => {
+                if (obj.Grades[`${grad}`]) {
+                    obj['Subjects'] = obj.Grades[`${grad}`]
+                    delete obj['Grade Wise Performance'];
+                    mydata.push(obj);
+                    var subjects = Object.keys(obj.Subjects);
+                    var index = subjects.indexOf('Grade Performance');
+                    subjects.splice(index, 1);
+                    subjects.map(sub => {
+                        allSubjects.push(sub);
+                    })
+                }
+            })
+        } else {
+            mydata = filterData;
+        }
+        var Subjects = [...new Set(allSubjects)];
         logger.info('--- block per dist PAT api response sent---');
-        res.status(200).send({ data: mydata, footer: blockData.footer[`${distId}`] });
+        res.status(200).send({ data: mydata, subjects: Subjects, grades: uniqueGrades, footer: footer });
 
     } catch (e) {
         logger.error(e);

@@ -1,15 +1,98 @@
-#rawDownload{
-    transition: transform .3s;
-    cursor: pointer;
-  }
-  
+#rawDownload {
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
 #rawDownload:hover {
-    -ms-transform: scale(1.04);
-    -webkit-transform: scale(1.04);
-    transform: scale(1.04); 
+  -ms-transform: scale(1.04);
+  -webkit-transform: scale(1.04);
+  transform: scale(1.04);
+}
+
+#table_filter {
+  display: none;
+}
+
+#dist_level, #block_level {
+  color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;
+}
+
+.report-subtitle {
+  text-align: justify; font-size: 11px;
+}
+
+#time_range.select-control, #choose_dist.select-control {
+  margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163);
+}
+
+.search-container {
+  float: right; margin-top: -5px;
+}
+
+@media only screen and (min-width: 2560px) {
+ table thead tr th{
+    font-size: 22px !important;
+  }
+  #dist_level, #block_level {
+    font-size: 2.5rem !important;
   }
 
-  #table_filter
-  {
-      display:none;
+  .report-subtitle {
+    font-size: 1rem !important;
   }
+
+  #download, #home {
+    font-size: 3rem !important;
+  }
+
+  #rawDownload {
+    font-size: 1.5rem !important;
+  }
+
+  #time_range.select-control, #choose_dist.select-control {
+    padding: 15px !important;
+    font-size: 1.5rem !important;
+  }
+
+  .select-control option {
+    font-size: 1.5rem !important;
+  }
+
+  .search-container {
+    font-size: 2rem;
+  }
+}
+
+@media only screen and (min-width: 3840px) {
+  table thead tr th{
+    font-size: 30px !important;
+  }
+  #dist_level, #block_level {
+    font-size: 3.3rem !important;
+  }
+
+  .report-subtitle {
+    font-size: 1.5rem !important;
+  }
+
+  #download, #home, #rawDownload {
+    font-size: 3.5rem !important;
+  }
+
+  #rawDownload {
+    font-size: 2rem !important;
+  }
+
+  #time_range.select-control, #choose_dist.select-control {
+    padding: 15px !important;
+    font-size: 1.8rem !important;
+  }
+
+  .select-control option {
+    font-size: 1.8rem !important;
+  }
+
+  .search-container {
+    font-size: 2rem;
+  }
+}

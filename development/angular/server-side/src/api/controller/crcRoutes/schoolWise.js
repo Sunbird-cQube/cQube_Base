@@ -3,12 +3,29 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allSchoolWise', auth.authController, async (req, res) => {
+router.post('/allSchoolWise', auth.authController, async(req, res) => {
     try {
         logger.info('--- crc all school wise api ---');
 
         var timePeriod = req.body.timePeriod;
-        let fileName = `crc/${timePeriod}/school.json`;
+        var year = req.body.year;
+        var month = req.body.month
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+        if (management != 'overall' && category == 'overall') {
+            if (timePeriod && timePeriod != 'select_month') {
+                fileName = `crc/school_management_category/${timePeriod}/overall_category/${management}/school.json`;
+            } else {
+                fileName = `crc/school_management_category/${year}/${month}/overall_category/${management}/school.json`;
+            }
+        } else {
+            if (timePeriod && timePeriod != 'select_month') {
+                fileName = `crc/${timePeriod}/school.json`;
+            } else {
+                fileName = `crc/${year}/${month}/school.json`;
+            }
+        }
         var jsonData = await s3File.readS3File(fileName);
 
         var schoolData = jsonData.data;
@@ -21,21 +38,35 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
     }
 })
 
-router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
+router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async(req, res) => {
     try {
         logger.info('--- crc school per cluster api ---');
         var timePeriod = req.body.timePeriod;
-        let fileName = `crc/${timePeriod}/school.json`;
+        var year = req.body.year;
+        var month = req.body.month
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+        if (management != 'overall' && category == 'overall') {
+            if (timePeriod && timePeriod != 'select_month') {
+                fileName = `crc/school_management_category/${timePeriod}/overall_category/${management}/school.json`;
+            } else {
+                fileName = `crc/school_management_category/${year}/${month}/overall_category/${management}/school.json`;
+            }
+        } else {
+            if (timePeriod && timePeriod != 'select_month') {
+                fileName = `crc/${timePeriod}/school.json`;
+            } else {
+                fileName = `crc/${year}/${month}/school.json`;
+            }
+        }
         var jsonData = await s3File.readS3File(fileName);
 
         var schoolData = jsonData
-
-        let distId = req.params.distId;
-        let blockId = req.params.blockId;
         let clusterId = req.params.clusterId;
 
         let filterData = schoolData.data.filter(obj => {
-            return (obj.districtId == distId && obj.blockId == blockId && obj.clusterId == clusterId);
+            return (obj.clusterId == clusterId);
         });
         if (filterData.length > 0) {
             logger.info('--- crc school per cluster api response sent ---');

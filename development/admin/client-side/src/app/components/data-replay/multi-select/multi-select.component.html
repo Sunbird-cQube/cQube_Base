@@ -1,0 +1,21 @@
+<div>
+    <div (mouseleave)="showDropDown = false">
+        <button class="btn btn-secondary" (click)="showDropDown=!showDropDown"
+            style="font-size: 12px;padding: 8px; cursor:initial;" [ngStyle]="{width: width1}">
+            <span *ngIf="checkedList.length<=0">{{selection}}</span>
+            <span *ngIf="checkedList.length>0">{{checkedList.length }}
+                {{text}} Selected</span>
+            <em class="fa fa-angle-down" style="margin-top:2px; font-weight: bold; font-size: 15px;"></em>
+        </button>
+        <div class="drop-show" *ngIf="showDropDown">
+            <div *ngIf="list.length > 0" id="div1" style="position:relative; border-radius: 10px;"
+                [ngStyle]="{width: width2}">
+                <label *ngFor="let a of list" style="margin-left: 0px;">
+                    <input type="checkbox" [(ngModel)]="a.status" style="float: left;margin-top: 2px;"
+                        (change)="getSelectedValue(a.id,a.status);getSelected()">
+                    <span style="font-size: 12px; margin-left: 5px;">{{a.name}}</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

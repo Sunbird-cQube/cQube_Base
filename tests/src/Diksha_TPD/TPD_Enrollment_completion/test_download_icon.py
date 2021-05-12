@@ -20,7 +20,8 @@ class Click_download_icon():
         self.data.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(3)
-        self.filename =self.p.get_download_dir() + '/all_enrollment_data.csv'
+        self.filename =self.p.get_download_dir() + '/'+"enrollment_completion_enrollment_all_district_overall_"+self.data.get_current_date()+'.csv'
+        print(self.filename)
         if os.path.isfile(self.filename) != True:
             print('Districtwise csv file is not downloaded')
             count = count + 1

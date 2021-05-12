@@ -22,7 +22,8 @@ class Districtwise_download():
         self.cal.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(10)
-        self.filename = p.get_download_dir() + "/"+self.fname.composite_district()
+        self.filename = p.get_download_dir() + "/"+self.fname.composite_district()+self.cal.get_current_date()+'.csv'
+        print(self.filename)
         self.cal.page_loading(self.driver)
         return os.path.isfile(self.filename)
 

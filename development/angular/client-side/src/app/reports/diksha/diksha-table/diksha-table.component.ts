@@ -1,8 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from '../../../services/diksha-report.service';
 import { Router } from '@angular/router';
-import { ExportToCsv } from 'export-to-csv';
 import { AppServiceComponent } from 'src/app/app.service';
 declare const $;
 
@@ -33,6 +32,15 @@ export class DikshaTableComponent implements OnInit {
 
   reportName = 'usage_by_course_content';
 
+  //For pagination.....
+  pageSize = 500;
+  currentPage = 1;
+  filteredData = []
+  showPagination = false;
+  validTransactions: any;
+  table: any;
+  updatedTable:any = [];
+
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
@@ -41,12 +49,27 @@ export class DikshaTableComponent implements OnInit {
   ) {
     this.allCollections = [{ id: "course", name: "Course" }]
   }
+  height = window.innerHeight;
+  onResize() {
+    this.height = window.innerHeight;
+  }
+
+  onChangePage(){
+    document.getElementById('spinner').style.display = 'block';
+    this.pageChange();
+  }
+
+  pageChange(){
+    this.filteredData = this.result.slice(((this.currentPage - 1) * this.pageSize), ((this.currentPage - 1) * this.pageSize + this.pageSize));
+    this.tableCreation(this.filteredData);
+  }
 
   ngOnInit(): void {
     this.state = this.commonService.state;
     document.getElementById('homeBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
     this.collectionWise();
+    this.onResize();
   }
 
 
@@ -68,6 +91,7 @@ export class DikshaTableComponent implements OnInit {
   }
 
   default() {
+    this.currentPage = 1;
     this.collectionWise();
   }
 
@@ -86,6 +110,7 @@ export class DikshaTableComponent implements OnInit {
         this.timeDetails.push(obj);
       });
       await this.timeDetails.push({ timeRange: "all", name: "Overall" });
+      await this.timeDetails.reverse();
     })
     if (this.result.length! > 0) {
       $('#table').DataTable().destroy();
@@ -99,8 +124,9 @@ export class DikshaTableComponent implements OnInit {
       this.fileName = `${this.reportName}_${this.timePeriod}_${this.commonService.dateAndTime}`;
       this.time = this.timePeriod == 'all' ? 'overall' : this.timePeriod;
       this.fileToDownload = `diksha_raw_data/table_reports/course/${this.time}/${this.time}.csv`;
-      this.result = res;
-      this.tableCreation(this.result);
+     this.updatedTable = this.result = res;
+      // this.tableCreation(this.result);
+      this.onChangePage();
 
       this.result.forEach(element => {
         var obj1 = {};
@@ -117,9 +143,6 @@ export class DikshaTableComponent implements OnInit {
         });
         this.reportData.push(obj2);
       });
-
-      // this.reportData = this.result;
-      document.getElementById('spinner').style.display = 'none';
     }, err => {
       this.loaderAndErr();
     })
@@ -163,12 +186,11 @@ export class DikshaTableComponent implements OnInit {
       this.reportData = [];
       this.service.dikshaDistrictTableData({ districtId: districtId, collectionType: this.collectionType }).subscribe(res => {
         this.fileName = `${this.reportName}_${this.timePeriod}_${districtId}_${this.commonService.dateAndTime}`;
-        this.result = res;
-        this.tableCreation(this.result);
+        this.updatedTable = this.result = res;
+        // this.tableCreation(this.result);
+        this.onChangePage();
 
         this.reportData = this.result;
-
-        document.getElementById('spinner').style.display = 'none';
       }, err => {
         this.loaderAndErr();
       })
@@ -194,8 +216,9 @@ export class DikshaTableComponent implements OnInit {
     this.result = [];
     this.reportData = [];
     this.service.dikshaTimeRangeTableData({ districtId: this.districtId, timePeriod: myTime, collectionType: this.collectionType }).subscribe(res => {
-      this.result = res;
-      this.tableCreation(this.result);
+      this.updatedTable =  this.result = res;
+      // this.tableCreation(this.result);
+      this.onChangePage();
       if (this.hierName) {
         this.reportData = this.result;
         this.fileName = `${this.reportName}_${this.timePeriod}_${this.commonService.dateAndTime}`;
@@ -217,8 +240,6 @@ export class DikshaTableComponent implements OnInit {
         });
         this.fileName = `Diksha_${this.collectionType}_Dist_Data_${this.timePeriod}`;
       }
-
-      document.getElementById('spinner').style.display = 'none';
     }, err => {
       this.loaderAndErr();
     })
@@ -244,17 +265,11 @@ export class DikshaTableComponent implements OnInit {
     );
   }
 
+  columns;
   tableCreation(dataSet) {
-    var my_columns = [];
-    $.each(dataSet[0], function (key, value) {
-      var my_item = {};
-      my_item['data'] = key;
-      my_item['value'] = value;
-      // if (value != 'All' && value != '') {
-      my_columns.push(my_item);
-      // }
-    });
-
+    var my_columns = this.commonService.getColumns(dataSet);
+    
+    this.columns = my_columns;
 
     $(document).ready(function () {
       var headers = '<thead><tr>'
@@ -294,41 +309,61 @@ export class DikshaTableComponent implements OnInit {
       $(`#table`).empty();
       $(`#table`).append(headers);
       $(`#table`).append(body);
-      var table = $(`#table`).DataTable({
-        "order": [[my_columns.length - 5, "desc"]],
+      var obj = {
         destroy: true, bLengthChange: false, bInfo: false,
-        bPaginate: false, scrollY: "60vh", scrollX: true,
-        scrollCollapse: true, paging: false, searching: true,
+        bPaginate: false, scrollY: "56vh", scrollX: true,
+        scrollCollapse: true, searching: false, paging: false,
         fixedColumns: {
           leftColumns: 1
-        },
-        oSearch: { "bSmart": false }
+        }
+      }
+      if(dataSet.length > 0)
+        obj['order'] = [[my_columns.length - 5, "desc"]];
+      
+      this.table = $(`#table`).DataTable(obj);
+      $(document).ready(function() {
+        
+        $('#table').on( 'page.dt', function () 
+        {
+          $('.dataTables_scrollBody').scrollTop(0);
+        });
+        }, 300);
+        document.getElementById('spinner').style.display = 'none';
       });
-      $('#search-inp').on('keyup', function () {
-        table.search($(this).val()).draw();
-      });
-      $('input.global_filter').on('keyup click', function () {
-        filterGlobal();
-      });
+      this.showPagination = true;
+  }
 
-      $('input.column_filter').on('keyup click', function () {
-        filterColumn($(this).parents('tr').attr('data-column'));
-      });
-    });
-    function filterGlobal() {
-      $('#example').DataTable().search(
-        $('#global_filter').val(),
-        $('#global_regex').prop('checked'),
-        $('#global_smart').prop('checked')
-      ).draw();
-    }
+  updateFilter(event: any) {
+    this.columns = this.commonService.getColumns(this.updatedTable);
+    var val = event.target.value.toLowerCase();
+    // filter our data
+    let ref = this;
+    let temp:any = [];
 
-    function filterColumn(i) {
-      $('#example').DataTable().column(i).search(
-        $('#col' + i + '_filter').val(),
-        $('#col' + i + '_regex').prop('checked'),
-        $('#col' + i + '_smart').prop('checked')
-      ).draw();
+    if (val) {
+      temp = this.updatedTable.filter(function (d: any) {
+        let found = false;
+  
+        for (let i = 0; i < ref.columns.length; i++) {
+          let value = d[ref.columns[i].data]; 
+          if (typeof value === 'number') {
+            value = value.toString()
+          }
+
+          if (value.toLowerCase().indexOf(val) !== -1) {
+            found = true;
+            break;
+          }
+        }
+        return found;
+      });
+    } else {
+      document.getElementById('spinner').style.display = 'block';
+      temp = this.updatedTable;
     }
+        
+    // update the rows
+    this.result = temp;
+    this.pageChange();
   }
 }

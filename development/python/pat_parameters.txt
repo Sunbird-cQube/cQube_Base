@@ -21,17 +21,17 @@
         "block_name": "data.[&1].Details.block_name",
         "cluster_id": "data.[&1].Details.cluster_id",
         "cluster_name": "data.[&1].Details.cluster_name",
-        "students_count": "data.[&1].Details.students_count",
+        "total_students": "data.[&1].Details.total_students",
+        "students_attended": "data.[&1].Details.students_attended",
         "total_schools": "data.[&1].Details.total_schools",
         "cluster_performance": "data.[&1].Details.Performance",
         "academic_year": "data.[&1].Details.Academic year",
+        "month": "data.[&1].Details.month",
+        "school_management_type": "data.[&1].Details.school_management_type",
         "@grade_wise_performance": "data.[&1].Grade Wise Performance",
-        "subject_wise_performance": {
-          "*": {
-            "Grade*": "data.[&3].Grades.&"
-          }
-        },
-        "@students_count": "footer.@(1,block_id).students_count[]",
+        "subject_wise_performance": "data.[&1].Grades",
+        "@total_students": "footer.@(1,block_id).total_students[]",
+        "@students_attended": "footer.@(1,block_id).students_attended[]",
         "@total_schools": "footer.@(1,block_id).total_schools[]"
       }
     }
@@ -43,7 +43,8 @@
         "*": {
           "Details": "data.[&1].&",
           "Grade*": "data.[&1].&",
-          "@Details.students_count": "AllClustersFooter.students_count",
+          "@Details.total_students": "AllClustersFooter.total_students",
+          "@Details.students_attended": "AllClustersFooter.students_attended",
           "@Details.total_schools": "AllClustersFooter.total_schools"
         }
       },
@@ -55,7 +56,8 @@
     "spec": {
       "footer": {
         "*": {
-          "students_count": "=intSum(@(1,students_count))",
+          "total_students": "=intSum(@(1,total_students))",
+          "students_attended": "=intSum(@(1,students_attended))",
           "total_schools": "=intSum(@(1,total_schools))"
         }
       }
@@ -65,7 +67,8 @@
     "operation": "modify-overwrite-beta",
     "spec": {
       "*": {
-        "students_count": "=intSum(@(1,students_count))",
+        "total_students": "=intSum(@(1,total_students))",
+        "students_attended": "=intSum(@(1,students_attended))",
         "total_schools": "=intSum(@(1,total_schools))"
       }
     }
@@ -75,17 +78,6 @@
 "pat_exam_exam_mst_table_name":"""periodic_exam_qst_mst""",
 "pat_filter_same_record_periodic_exam_subject_details_qry":"""select subject_id,subject,grade from (select  subject_id,subject,grade,row_number() over
 (partition by subject_id,subject,grade) as rn from flowfile) sq Where rn =1""",
-"pat_update_null_count_periodic_result_trans_qry":"""update log_summary
-SET id = pat_trans_null_col.count_null_id,
-exam_id = pat_trans_null_col.count_null_exam_id,
-exam_code = pat_trans_null_col.count_null_exam_code,
-student_uid = pat_trans_null_col.count_null_student_uid,
-school_id = pat_trans_null_col.count_null_school_id,
-studying_class = pat_trans_null_col.count_null_studying_class,
-question_id = pat_trans_null_col.count_null_question_id,
-obtained_marks = pat_trans_null_col.count_null_obtained_marks
-from pat_trans_null_col
-where pat_trans_null_col.ff_uuid = log_summary.ff_uuid""",
 "periodic_exam_result_unique_record_same_id_qry":"""insert into periodic_exam_result_trans(id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks)
 SELECT  id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks from 
 (SELECT  id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks,count(*) over 
@@ -103,6 +95,17 @@ section=excluded.section,
 question_id=excluded.question_id,
 obtained_marks=excluded.obtained_marks,
 updated_on=now()""",
+"pat_update_null_count_periodic_result_trans_qry":"""update log_summary
+SET id = pat_trans_null_col.count_null_id,
+exam_id = pat_trans_null_col.count_null_exam_id,
+exam_code = pat_trans_null_col.count_null_exam_code,
+student_uid = pat_trans_null_col.count_null_student_uid,
+school_id = pat_trans_null_col.count_null_school_id,
+studying_class = pat_trans_null_col.count_null_studying_class,
+question_id = pat_trans_null_col.count_null_question_id,
+obtained_marks = pat_trans_null_col.count_null_obtained_marks
+from pat_trans_null_col
+where pat_trans_null_col.ff_uuid = log_summary.ff_uuid""",
 "pat_select_columns_periodic_exam_qst_mst_qry":"""select question_id,exam_id,indicator_id,indicator_title,"indicator",question_title,question,question_marks from flowfile""",
 "periodic_exam_grade_details_count_null":"""(select
 SUM(CASE when school_id IS NULL THEN 1 ELSE 0 END) AS count_null_school_id,
@@ -123,50 +126,46 @@ and exam_code IS NOT  NULL
 and exam_date IS NOT  NULL
 and total_questions IS NOT  NULL
 and total_marks IS NOT  NULL""",
+"pat_null_column_table_name":"""pat_null_col""",
 "pat_trans_qst_agg":"""insert into periodic_exam_school_qst_result(school_id,exam_code,exam_date,grade,total_marks,obtained_marks,indicator,question_id
 ,academic_year,students_attended,subject,school_name,cluster_id,cluster_name,total_students,
-block_id,block_name,district_id,district_name,created_on,updated_on)
+block_id,block_name,district_id,district_name,school_management_type,school_category,created_on,updated_on)
 select data.school_id,data.exam_code,data.exam_date,data.grade,data.total_marks,data.obtained_marks,data.indicator,data.question_id
-,date_part('year', data.exam_date) as academic_year,e.students_attended,
-d.subject_name as subject,initcap(b.school_name)as school_name,b.cluster_id,initcap(b.cluster_name)as cluster_name,c.students_count,
-b.block_id,initcap(b.block_name)as block_name,b.district_id,initcap(b.district_name)as district_name, 
-now(),now()
-from
-(select data.* from 
-(select a.school_id,a.exam_code,to_date(substr(exam_code,8,14)::text,'ddmmyyyy')as exam_date,
-    a.studying_class as grade,b.question_id,b.indicator,b.question_marks*sum(students_attended) as total_marks,sum(a.obtained_marks)as obtained_marks,b.exam_id
-from
-(select exam_id,school_id,exam_code,studying_class,question_id,sum(obtained_marks)as obtained_marks,count(distinct(student_uid)) as students_attended
-from periodic_exam_result_trans 
-group by exam_id,school_id,exam_code,studying_class,question_id)as a
-left join (select exam_id,question_id,indicator,question_marks from periodic_exam_qst_mst group by exam_id,question_id,indicator,question_marks) as b 
-on a.exam_id=b.exam_id and a.question_id=b.question_id
-group by a.school_id,a.exam_code,a.studying_class,b.question_id,b.indicator,b.exam_id,b.question_marks,a.question_id)as data
-where data.total_marks is not null)as data
-inner join 
-(select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
-a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude
-from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
-where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
-)as b 
-on data.school_id=b.school_id
-left join 
-(select school_id,count(distinct(student_uid)) as students_count from periodic_exam_result_trans group by school_id)as c on data.school_id=c.school_id
-left join
-(select exam_id,assessment_year,exam_code,subject_name from periodic_exam_mst) as d on data.exam_id=d.exam_id and data.exam_code=d.exam_code
-left join
-(select exam_code,exam_id,question_id,school_id,studying_class,count(distinct(student_uid)) as students_attended from periodic_exam_result_trans 
-    group by exam_code,exam_id,question_id,school_id,studying_class) as e
-on data.school_id=e.school_id and data.grade=e.studying_class and data.exam_code=e.exam_code and data.question_id=e.question_id
-where total_marks>=obtained_marks
+	,assessment_year as academic_year,data.students_attended,
+	d.subject_name as subject,initcap(b.school_name)as school_name,b.cluster_id,initcap(b.cluster_name)as cluster_name,g.students_count as total_students,
+	b.block_id,initcap(b.block_name)as block_name,b.district_id,initcap(b.district_name)as district_name,b.school_management_type,b.school_category,now(),now()
+	from
+	(select data.* from 
+	(select a.school_id,a.exam_code,a.students_attended,to_date(substr(exam_code,8,14)::text,'ddmmyyyy')as exam_date,
+		a.studying_class as grade,b.question_id,b.indicator,b.question_marks*sum(students_attended) as total_marks,sum(a.obtained_marks)as obtained_marks,b.exam_id
+	from
+	(select exam_id,school_id,exam_code,studying_class,question_id,sum(obtained_marks)as obtained_marks,count(distinct(student_uid)) as students_attended
+	from periodic_exam_result_trans 
+	group by exam_id,school_id,exam_code,studying_class,question_id)as a
+	left join (select exam_id,question_id,indicator,question_marks from periodic_exam_qst_mst group by exam_id,question_id,indicator,question_marks) as b 
+	on a.exam_id=b.exam_id and a.question_id=b.question_id
+	group by a.school_id,a.exam_code,a.studying_class,a.students_attended,b.question_id,b.indicator,b.exam_id,b.question_marks,a.question_id)as data
+	where data.total_marks is not null)as data
+	inner join 
+	(select a.school_id,a.school_name,b.school_latitude,b.school_longitude,a.cluster_id,a.cluster_name,b.cluster_latitude,b.cluster_longitude,
+	a.block_id,a.block_name,b.block_latitude,b.block_longitude,a.district_id,a.district_name,b.district_latitude,b.district_longitude,a.school_management_type,a.school_category
+	from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
+	where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
+	)as b 
+	on data.school_id=b.school_id
+	left join 
+	(select exam_id,assessment_year,exam_code,subject_name from periodic_exam_mst) as d on data.exam_id=d.exam_id and data.exam_code=d.exam_code
+	left join 
+(select * from school_grade_enrolment) as g
+on data.school_id=g.school_id and data.grade=g.grade
+	where total_marks>=obtained_marks
 on conflict(school_id,exam_code,academic_year,question_id)
 do update set 
 school_id=excluded.school_id,exam_code=excluded.exam_code,exam_date=excluded.exam_date,grade=excluded.grade,total_marks=excluded.total_marks,
 obtained_marks=excluded.obtained_marks,indicator=excluded.indicator,question_id=excluded.question_id,academic_year=excluded.academic_year,subject=excluded.subject,
 students_attended=excluded.students_attended,school_name=excluded.school_name,total_students=excluded.total_students,
 cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,block_id=excluded.block_id,block_name=excluded.block_name,
-district_id=excluded.district_id,district_name=excluded.district_name,updated_on=now()""",
-"pat_null_column_table_name":"""pat_null_col""",
+district_id=excluded.district_id,district_name=excluded.district_name,school_management_type=excluded.school_management_type,school_category=excluded.school_category,updated_on=now();""",
 "pat_filter_same_record_periodic_exam_grade_details_qry":"""select school_id,grade,students_count from (select  school_id,grade,students_count,row_number() over
 (partition by school_id,grade,students_count) as rn from flowfile) sq Where rn =1""",
 "pat_filter_same_record_periodic_exam_qst_mst_qry":"""select question_id,exam_id,indicator_id,indicator_title,"indicator",question_title,question,question_marks from (select question_id,exam_id,indicator_id,indicator_title,"indicator",question_title,question,question_marks,
@@ -188,9 +187,20 @@ from pat_null_col
 where pat_null_col.ff_uuid = log_summary.ff_uuid""",
 "pat_filter_same_id_record_periodic_exam_qst_mst_qry":"""SELECT  question_id,exam_id,indicator_id,indicator_title,"indicator",question_title,question,question_marks from 
 (SELECT  question_id,exam_id,indicator_id,indicator_title,"indicator",question_title,question,question_marks,count(*) over (partition by question_id) as rn from FLOWFILE) sq Where rn =1""",
-"periodic_exam_result_staging_1_tb_name":"""periodic_exam_result_staging_1""",
 "pat_select_columns_periodic_exam_result_trans_qry":"""select id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks
 from flowfile""",
+"periodic_exam_result_staging_1_tb_name":"""periodic_exam_result_staging_1""",
+"pat_subject_footer_block_jolt_spec":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "@json_object_agg": "@block_id"
+      }
+    }
+	}
+]
+""",
 "periodic_exam_subject_details_count_null":"""(select
 SUM(CASE when subject_id IS NULL THEN 1 ELSE 0 END) AS count_null_subject_id,
 SUM(CASE when grade IS NULL THEN 1 ELSE 0 END) AS count_null_grade
@@ -204,6 +214,14 @@ from flowfile)""",
       }
     }
   }]""",
+"pat_update_null_count_periodic_exam_qst_mst_qry":"""update log_summary
+SET question_id = pat_null_col.count_null_question_id,
+exam_id = pat_null_col.count_null_exam_id,
+question_title = pat_null_col.count_null_question_title,
+question = pat_null_col.count_null_question,
+question_marks = pat_null_col.count_null_question_marks
+from pat_null_col
+where pat_null_col.ff_uuid = log_summary.ff_uuid""",
 "pat_periodic_result_trans_count_null":"""(select
 SUM(CASE when id IS NULL THEN 1 ELSE 0 END) AS count_null_id,
 SUM(CASE when exam_id IS NULL THEN 1 ELSE 0 END) AS count_null_exam_id,
@@ -213,20 +231,12 @@ SUM(CASE when school_id IS NULL THEN 1 ELSE 0 END) AS count_null_school_id,
 SUM(CASE when studying_class IS NULL THEN 1 ELSE 0 END) AS count_null_studying_class,
 SUM(CASE when question_id IS NULL THEN 1 ELSE 0 END) AS count_null_question_id,
 SUM(CASE when obtained_marks IS NULL THEN 1 ELSE 0 END) AS count_null_obtained_marks from periodic_exam_result_staging_1)""",
-"pat_update_null_count_periodic_exam_qst_mst_qry":"""update log_summary
-SET question_id = pat_null_col.count_null_question_id,
-exam_id = pat_null_col.count_null_exam_id,
-question_title = pat_null_col.count_null_question_title,
-question = pat_null_col.count_null_question,
-question_marks = pat_null_col.count_null_question_marks
-from pat_null_col
-where pat_null_col.ff_uuid = log_summary.ff_uuid""",
 "pat_qst_to_agg":"""insert into periodic_exam_school_result(school_id,exam_code,exam_date,grade,academic_year,subject,total_marks,obtained_marks
 ,school_name,school_latitude,school_longitude,cluster_id,cluster_name,cluster_latitude,cluster_longitude,students_count,students_attended,
-block_id,block_name,block_latitude,block_longitude,district_id,district_name,district_latitude,district_longitude,created_on,updated_on)
+block_id,block_name,block_latitude,block_longitude,district_id,district_name,district_latitude,district_longitude,school_management_type,school_category,created_on,updated_on)
 select a.school_id,a.exam_code,exam_date,grade,academic_year,subject,total_marks,obtained_marks
 ,school_name,school_latitude,school_longitude,a.cluster_id,cluster_name,cluster_latitude,cluster_longitude,students_count,students_attended,
-a.block_id,block_name,block_latitude,block_longitude,a.district_id,district_name,district_latitude,district_longitude,now(),now()
+a.block_id,block_name,block_latitude,block_longitude,a.district_id,district_name,district_latitude,district_longitude,school_management_type,school_category,now(),now()
 from
 (select school_id,exam_code,exam_date,grade,academic_year,subject,sum(total_marks)as total_marks,sum(obtained_marks)as obtained_marks,school_name,
 cluster_id,cluster_name,
@@ -235,13 +245,14 @@ district_id,district_name
 from periodic_exam_school_qst_result
 group by school_id,exam_code,exam_date,grade,academic_year,subject,school_name,cluster_id,cluster_name,total_students,
 block_id,block_name,district_id,district_name
-) as a inner join 
-(
-	select a.school_id,b.school_latitude,b.school_longitude,a.cluster_id,b.cluster_latitude,b.cluster_longitude,
-a.block_id,b.block_latitude,b.block_longitude,a.district_id,b.district_latitude,b.district_longitude
+) as a 
+inner join 
+(select a.school_id,b.school_latitude,b.school_longitude,a.cluster_id,b.cluster_latitude,b.cluster_longitude,
+a.block_id,b.block_latitude,b.block_longitude,a.district_id,b.district_latitude,b.district_longitude,a.school_management_type,a.school_category
 from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
-where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
-)as b on a.school_id=b.school_id
+where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0 )as b on a.school_id=b.school_id
+left join
+(select exam_id,assessment_year,exam_code from periodic_exam_mst) as d on a.exam_code=d.exam_code
 left join (select count(distinct(student_uid)) as students_attended,school_id,exam_code from periodic_exam_result_trans group by school_id,exam_code) as trans 
 on a.school_id=trans.school_id and a.exam_code=trans.exam_code 
 on conflict(school_id,exam_code,academic_year)
@@ -251,11 +262,7 @@ total_marks=excluded.total_marks,obtained_marks=excluded.obtained_marks,school_n
 school_latitude=excluded.school_latitude,school_longitude=excluded.school_longitude,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,
 cluster_latitude=excluded.cluster_latitude,cluster_longitude=excluded.cluster_longitude,block_id=excluded.block_id,block_name=excluded.block_name,
 block_latitude=excluded.block_latitude,block_longitude=excluded.block_longitude,district_id=excluded.district_id,district_name=excluded.district_name,
-district_latitude=excluded.district_latitude,district_longitude=excluded.district_longitude,updated_on=now()""",
-"pat_check_same_record_periodic_exam_subject_details_qry":"""SELECT subject_id,subject,grade,count(*)-1  num_of_times
-FROM flowfile
-GROUP BY subject_id,subject,grade
-HAVING  COUNT(*) > 1""",
+district_latitude=excluded.district_latitude,district_longitude=excluded.district_longitude,school_management_type=excluded.school_management_type,school_category=excluded.school_category,updated_on=now()""",
 "pat_exception_block_jolt_spec":"""[
   {
     "operation": "shift",
@@ -267,6 +274,7 @@ HAVING  COUNT(*) > 1""",
         "district_name": "data.[&1].district_name",
         "block_id": "data.[&1].block_id",
         "block_name": "data.[&1].block_name",
+        "school_management_type": "data.[&1].school_management_type",
         "total_schools": "data.[&1].total_schools",
         "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
         "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
@@ -295,6 +303,7 @@ HAVING  COUNT(*) > 1""",
           "district_name": "data.[&1].district_name",
           "block_id": "data.[&1].block_id",
           "block_name": "data.[&1].block_name",
+          "school_management_type": "data.[&1].school_management_type",
           "total_schools": "data.[&1].total_schools",
           "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "total_schools_with_missing_data": "allBlocksFooter.total_schools_with_missing_data[]",
@@ -324,6 +333,7 @@ HAVING  COUNT(*) > 1""",
           "district_name": "data.[&1].district_name",
           "block_id": "data.[&1].block_id",
           "block_name": "data.[&1].block_name",
+          "school_management_type": "data.[&1].school_management_type",
           "total_schools": "data.[&1].total_schools",
           "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
@@ -334,6 +344,10 @@ HAVING  COUNT(*) > 1""",
     }
   }
 ]""",
+"pat_check_same_record_periodic_exam_subject_details_qry":"""SELECT subject_id,subject,grade,count(*)-1  num_of_times
+FROM flowfile
+GROUP BY subject_id,subject,grade
+HAVING  COUNT(*) > 1""",
 "pat_periodic_exam_mst_dup_table_name":"""periodic_exam_mst_dup""",
 "pat_periodic_exam_mst_datatype":"""Optional(parseInt()),Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(StrNotNullOrEmpty()),Optional(parseInt()),
 Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty()),Optional(ParseDate("yyyy-MM-dd")),Optional(parseInt()),Optional(parseInt())""",
@@ -363,6 +377,7 @@ Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(StrNotNullOrEmpty())
         "cluster_name": "data.[&1].cluster_name",
         "school_id": "data.[&1].school_id",
         "school_name": "data.[&1].school_name",
+        "school_management_type": "data.[&1].school_management_type",
         "total_schools": "data.[&1].total_schools",
         "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
         "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
@@ -395,6 +410,7 @@ Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(StrNotNullOrEmpty())
           "cluster_name": "data.[&1].cluster_name",
           "school_id": "data.[&1].school_id",
           "school_name": "data.[&1].school_name",
+          "school_management_type": "data.[&1].school_management_type",
           "total_schools": "data.[&1].total_schools",
           "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "total_schools_with_missing_data": "allSchoolsFooter.total_schools_with_missing_data[]",
@@ -427,6 +443,7 @@ Optional(StrNotNullOrEmpty()),Optional(parseInt()),Optional(StrNotNullOrEmpty())
           "cluster_name": "data.[&1].cluster_name",
           "school_id": "data.[&1].school_id",
           "school_name": "data.[&1].school_name",
+          "school_management_type": "data.[&1].school_management_type",
           "total_schools": "data.[&1].total_schools",
           "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
@@ -453,17 +470,17 @@ group by b.subject_id,b.grade,b.subject""",
         "district_name": "data.[&1].Details.district_name",
         "block_id": "data.[&1].Details.block_id",
         "block_name": "data.[&1].Details.block_name",
-        "students_count": "data.[&1].Details.students_count",
+        "total_students": "data.[&1].Details.total_students",
+        "students_attended": "data.[&1].Details.students_attended",
         "total_schools": "data.[&1].Details.total_schools",
         "block_performance": "data.[&1].Details.Performance",
         "academic_year": "data.[&1].Details.Academic year",
+        "month": "data.[&1].Details.month",
+        "school_management_type": "data.[&1].Details.school_management_type",
         "@grade_wise_performance": "data.[&1].Grade Wise Performance",
-        "subject_wise_performance": {
-          "*": {
-            "Grade*": "data.[&3].Grades.&"
-          }
-        },
-        "@students_count": "footer.@(1,district_id).students_count[]",
+      "subject_wise_performance": "data.[&1].Grades",
+        "@total_students": "footer.@(1,district_id).total_students[]",
+        "@students_attended": "footer.@(1,district_id).students_attended[]",
         "@total_schools": "footer.@(1,district_id).total_schools[]"
       }
     }
@@ -475,7 +492,8 @@ group by b.subject_id,b.grade,b.subject""",
         "*": {
           "Details": "data.[&1].&",
           "Grade*": "data.[&1].&",
-          "@Details.students_count": "AllBlocksFooter.students_count",
+          "@Details.total_students": "AllBlocksFooter.total_students",
+          "@Details.students_attended": "AllBlocksFooter.students_attended",
           "@Details.total_schools": "AllBlocksFooter.total_schools"
         }
       },
@@ -487,7 +505,8 @@ group by b.subject_id,b.grade,b.subject""",
     "spec": {
       "footer": {
         "*": {
-          "students_count": "=intSum(@(1,students_count))",
+          "total_students": "=intSum(@(1,total_students))",
+          "students_attended": "=intSum(@(1,students_attended))",
           "total_schools": "=intSum(@(1,total_schools))"
         }
       }
@@ -497,7 +516,8 @@ group by b.subject_id,b.grade,b.subject""",
     "operation": "modify-overwrite-beta",
     "spec": {
       "*": {
-        "students_count": "=intSum(@(1,students_count))",
+        "total_students": "=intSum(@(1,total_students))",
+        "students_attended": "=intSum(@(1,students_attended))",
         "total_schools": "=intSum(@(1,total_schools))"
       }
     }
@@ -517,15 +537,17 @@ group by b.subject_id,b.grade,b.subject""",
         "cluster_name": "data.[&1].Details.cluster_name",
         "cluster_performance": "data.[&1].Details.Performance",
         "academic_year": "data.[&1].Details.Academic year",
+        "month": "data.[&1].Details.month",
         "grade": "data.[&1].Details.Grade",
+        "school_management_type": "data.[&1].Details.school_management_type",
         "@grade_wise_performance": "data.[&1].Grade Wise Performance",
-        "students_count": "data.[&1].Details.students_count",
+        "total_students": "data.[&1].Details.total_students",
+        "students_attended": "data.[&1].Details.students_attended",
         "total_schools": "data.[&1].Details.total_schools",
-        "subjects": {
-          "*": "data.[&2].Subjects.&"
-        },
-        "@students_count": "footer.@(1,block_id).students_count",
-        "@total_schools": "footer.@(1,block_id).total_schools"
+        "subjects": "data.[&1].Subjects",
+        "@total_students": "footer.@(1,block_id).total_students[]",
+        "@students_attended": "footer.@(1,block_id).students_attended[]",
+        "@total_schools": "footer.@(1,block_id).total_schools[]"
       }
     }
 	},
@@ -536,7 +558,8 @@ group by b.subject_id,b.grade,b.subject""",
         "*": {
           "Details": "data.[&1].&",
           "Subjects": "data.[&1].&",
-          "@Details.students_count": "AllClustersFooter.students_count",
+          "@Details.total_students": "AllClustersFooter.total_students",
+          "@Details.students_attended": "AllClustersFooter.students_attended",
           "@Details.total_schools": "AllClustersFooter.total_schools"
         }
       },
@@ -548,7 +571,8 @@ group by b.subject_id,b.grade,b.subject""",
     "spec": {
       "footer": {
         "*": {
-          "students_count": "=intSum(@(1,students_count))",
+          "total_students": "=intSum(@(1,total_students))",
+          "students_attended": "=intSum(@(1,students_attended))",
           "total_schools": "=intSum(@(1,total_schools))"
         }
       }
@@ -558,25 +582,38 @@ group by b.subject_id,b.grade,b.subject""",
     "operation": "modify-overwrite-beta",
     "spec": {
       "*": {
-        "students_count": "=intSum(@(1,students_count))",
+        "total_students": "=intSum(@(1,total_students))",
+        "students_attended": "=intSum(@(1,students_attended))",
         "total_schools": "=intSum(@(1,total_schools))"
       }
     }
-	}]
-""",
+	}]""",
 "periodic_exam_grade_details_not_null":"""select * from flowfile where school_id  is not null and grade  is not null""",
+"pat_subject_footer_school_jolt_spec":"""[
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "school_id": ["=toString", null]
+      }
+    }
+	},
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "@json_object_agg": "@school_id"
+      }
+    }
+	}
+]
+""",
 "pat_check_same_id_record_periodic_exam_grade_details_qry":"""SELECT b.school_id,b.grade,b.students_count,count(*) num_of_times  from (select school_id,grade from flowfile
 group by school_id,grade having count(1)>1) as a, flowfile  b
 where a.school_id=b.school_id and
 a.grade=b.grade
 group by b.school_id,b.grade,b.students_count""",
 "pat_select_columns_periodic_exam_subject_details_qry":"""select subject_id,subject,grade from flowfile""",
-"pat_update_null_count_periodic_exam_subject_details_qry":"""update log_summary
-SET subject_id = pat_null_col.count_null_subject_id,
-grade = pat_null_col.count_null_grade
-from pat_null_col
-where pat_null_col.ff_uuid = log_summary.ff_uuid""",
-"pat_periodic_exam_result_dup_table_name":"""periodic_exam_result_dup""",
 "pat_periodic_result_trans_check_if_null":"""select * from periodic_exam_result_staging_1
 where id  IS NULL
 or exam_id IS NULL
@@ -586,6 +623,12 @@ or school_id IS NULL
 or studying_class IS NULL
 or question_id IS NULL
 or obtained_marks IS NULL""",
+"pat_periodic_exam_result_dup_table_name":"""periodic_exam_result_dup""",
+"pat_update_null_count_periodic_exam_subject_details_qry":"""update log_summary
+SET subject_id = pat_null_col.count_null_subject_id,
+grade = pat_null_col.count_null_grade
+from pat_null_col
+where pat_null_col.ff_uuid = log_summary.ff_uuid""",
 "pat_exception_grade_school_jolt_spec":"""[
   {
     "operation": "modify-overwrite-beta",
@@ -612,6 +655,7 @@ or obtained_marks IS NULL""",
         "cluster_name": "data.[&1].cluster_name",
         "school_id": "data.[&1].school_id",
         "school_name": "data.[&1].school_name",
+        "school_management_type": "data.[&1].school_management_type",
         "grade": "data.[&1].grade",
         "subjects": "data.[&1].subjects",
         "total_schools": "data.[&1].total_schools",
@@ -646,6 +690,7 @@ or obtained_marks IS NULL""",
           "cluster_name": "data.[&1].cluster_name",
           "school_id": "data.[&1].school_id",
           "school_name": "data.[&1].school_name",
+          "school_management_type": "data.[&1].school_management_type",
           "grade": "data.[&1].grade",
           "subjects": "data.[&1].subjects",
           "total_schools": "data.[&1].total_schools",
@@ -680,6 +725,7 @@ or obtained_marks IS NULL""",
           "cluster_name": "data.[&1].cluster_name",
           "school_id": "data.[&1].school_id",
           "school_name": "data.[&1].school_name",
+          "school_management_type": "data.[&1].school_management_type",
           "grade": "data.[&1].grade",
           "subjects": "data.[&1].subjects",
           "total_schools": "data.[&1].total_schools",
@@ -738,15 +784,17 @@ updated_on=now()""",
         "block_name": "data.[&1].Details.block_name",
         "block_performance": "data.[&1].Details.Performance",
         "academic_year": "data.[&1].Details.Academic year",
+        "month": "data.[&1].Details.month",
         "grade": "data.[&1].Details.Grade",
+        "school_management_type": "data.[&1].Details.school_management_type",
         "@grade_wise_performance": "data.[&1].Grade Wise Performance",
-        "students_count": "data.[&1].Details.students_count",
+        "total_students": "data.[&1].Details.total_students",
+        "students_attended": "data.[&1].Details.students_attended",
         "total_schools": "data.[&1].Details.total_schools",
-        "subjects": {
-          "*": "data.[&2].Subjects.&"
-        },
-        "@students_count": "footer.@(1,district_id).students_count",
-        "@total_schools": "footer.@(1,district_id).total_schools"
+       "subjects": "data.[&1].Subjects",
+        "@total_students": "footer.@(1,district_id).total_students[]",
+        "@students_attended": "footer.@(1,district_id).students_attended[]",
+        "@total_schools": "footer.@(1,district_id).total_schools[]"
       }
     }
 	},
@@ -757,7 +805,8 @@ updated_on=now()""",
         "*": {
           "Details": "data.[&1].&",
           "Subjects": "data.[&1].&",
-          "@Details.students_count": "AllBlocksFooter.students_count",
+          "@Details.total_students": "AllBlocksFooter.total_students",
+          "@Details.students_attended": "AllBlocksFooter.students_attended",
           "@Details.total_schools": "AllBlocksFooter.total_schools"
         }
       },
@@ -769,7 +818,8 @@ updated_on=now()""",
     "spec": {
       "footer": {
         "*": {
-          "students_count": "=intSum(@(1,students_count))",
+          "total_students": "=intSum(@(1,total_students))",
+          "students_attended": "=intSum(@(1,students_attended))",
           "total_schools": "=intSum(@(1,total_schools))"
         }
       }
@@ -779,11 +829,22 @@ updated_on=now()""",
     "operation": "modify-overwrite-beta",
     "spec": {
       "*": {
-        "students_count": "=intSum(@(1,students_count))",
+        "total_students": "=intSum(@(1,total_students))",
+        "students_attended": "=intSum(@(1,students_attended))",
         "total_schools": "=intSum(@(1,total_schools))"
       }
     }
 	}]""",
+"pat_meta_jolt_grade_year_month":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "@grade": "@level[].grade"
+      }
+    }
+  }
+]""",
 "pat_exception_cluster_jolt_spec":"""[
   {
     "operation": "shift",
@@ -797,6 +858,7 @@ updated_on=now()""",
         "block_name": "data.[&1].block_name",
         "cluster_id": "data.[&1].cluster_id",
         "cluster_name": "data.[&1].cluster_name",
+        "school_management_type": "data.[&1].school_management_type",
         "total_schools": "data.[&1].total_schools",
         "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
         "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
@@ -827,6 +889,7 @@ updated_on=now()""",
           "block_name": "data.[&1].block_name",
           "cluster_id": "data.[&1].cluster_id",
           "cluster_name": "data.[&1].cluster_name",
+          "school_management_type": "data.[&1].school_management_type",
           "total_schools": "data.[&1].total_schools",
           "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "total_schools_with_missing_data": "allClustersFooter.total_schools_with_missing_data[]",
@@ -857,6 +920,7 @@ updated_on=now()""",
           "block_name": "data.[&1].block_name",
           "cluster_id": "data.[&1].cluster_id",
           "cluster_name": "data.[&1].cluster_name",
+          "school_management_type": "data.[&1].school_management_type",
           "total_schools": "data.[&1].total_schools",
           "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
@@ -866,15 +930,45 @@ updated_on=now()""",
       "allClustersFooter": "&"
     }
   }
-]""",
+]
+""",
 "pat_filter_same_id_record_periodic_exam_mst_qry":"""SELECT  exam_id,assessment_year,medium,standard,division,subject_id,subject_name,exam_type_id,exam_type,exam_code,exam_date,total_questions,
 total_marks from 
 (SELECT  exam_id,assessment_year,medium,standard,division,subject_id,subject_name,exam_type_id,exam_type,exam_code,exam_date,total_questions,
 total_marks,count(*) over (partition by exam_id,assessment_year) as rn from FLOWFILE) sq Where rn =1""",
+"pat_subject_footer_district_jolt_spec":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "@json_object_agg": "@district_id"
+      }
+    }
+	}
+]""",
 "pat_check_same_id_record_periodic_exam_qst_mst_qry":"""SELECT b.question_id,b.exam_id,b.indicator_id,b.indicator_title,b."indicator",b.question_title,b.question,b.question_marks,count(*) num_of_times  from (select question_id from flowfile
 group by question_id having count(1)>1)  as a, flowfile  b
 where a.question_id=b.question_id
 group by b.question_id,b.exam_id,b.indicator_id,b.indicator_title,b."indicator",b.question_title,b.question,b.question_marks""",
+"pat_subject_footer_cluster_jolt_spec":"""[
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "cluster_id": ["=toString", null]
+      }
+    }
+	},
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "@json_object_agg": "@cluster_id"
+      }
+    }
+	}
+]
+""",
 "pat_exception_grade_district_jolt_spec":"""[
   {
     "operation": "shift",
@@ -884,6 +978,7 @@ group by b.question_id,b.exam_id,b.indicator_id,b.indicator_title,b."indicator",
         "district_longitude": "data.[&1].district_longitude",
         "district_id": "data.[&1].district_id",
         "district_name": "data.[&1].district_name",
+        "school_management_type": "data.[&1].school_management_type",
         "grade": "data.[&1].grade",
         "subjects": "data.[&1].subjects",
         "total_schools": "data.[&1].total_schools",
@@ -910,6 +1005,7 @@ group by b.question_id,b.exam_id,b.indicator_id,b.indicator_title,b."indicator",
           "district_longitude": "data.[&1].district_longitude",
           "district_id": "data.[&1].district_id",
           "district_name": "data.[&1].district_name",
+          "school_management_type": "data.[&1].school_management_type",
           "grade": "data.[&1].grade",
           "subjects": "data.[&1].subjects",
           "total_schools": "data.[&1].total_schools",
@@ -946,17 +1042,17 @@ from  periodic_exam_result_staging_1""",
         "district_longitude": "data.[&1].Details.longitude",
         "district_id": "data.[&1].Details.district_id",
         "district_name": "data.[&1].Details.district_name",
-        "students_count": "data.[&1].Details.students_count",
+        "total_students": "data.[&1].Details.total_students",
+        "students_attended": "data.[&1].Details.students_attended",
         "total_schools": "data.[&1].Details.total_schools",
         "district_performance": "data.[&1].Details.Performance",
         "academic_year": "data.[&1].Details.Academic Year",
+        "month": "data.[&1].Details.month",
+        "school_management_type": "data.[&1].Details.school_management_type",
         "@grade_wise_performance": "data.[&1].Grade Wise Performance",
-        "subject_wise_performance": {
-          "*": {
-            "Grade*": "data.[&3].Grades.&"
-          }
-        },
-        "@students_count": "AllDistrictsFooter.students_count",
+       "subject_wise_performance": "data.[&1].Grades",
+        "@total_students": "AllDistrictsFooter.total_students",
+        "@students_attended": "AllDistrictsFooter.students_attended",
         "@total_schools": "AllDistrictsFooter.total_schools"
       }
     }
@@ -965,7 +1061,8 @@ from  periodic_exam_result_staging_1""",
     "operation": "modify-overwrite-beta",
     "spec": {
       "*": {
-        "students_count": "=intSum(@(1,students_count))",
+        "total_students": "=intSum(@(1,total_students))",
+        "students_attended": "=intSum(@(1,students_attended))",
         "total_schools": "=intSum(@(1,total_schools))"
       }
     }
@@ -976,13 +1073,13 @@ SET school_id = pat_null_col.count_null_school_id,
 grade = pat_null_col.count_null_grade
 from pat_null_col
 where pat_null_col.ff_uuid = log_summary.ff_uuid""",
-"periodic_exam_subject_details_datatype":"""Optional(parseInt()),StrNotNullOrEmpty(),Optional(parseInt())""",
 "pat_check_same_record_periodic_exam_mst_qry":"""SELECT exam_id,assessment_year,medium,standard,division,subject_id,subject_name,exam_type_id,exam_type,exam_code,exam_date,total_questions,
 total_marks,count(exam_id)-1  num_of_times
 FROM flowfile
 GROUP BY exam_id,assessment_year,medium,standard,division,subject_id,subject_name,exam_type_id,exam_type,exam_code,exam_date,total_questions,
 total_marks
 HAVING  COUNT(*) > 1""",
+"periodic_exam_subject_details_datatype":"""Optional(parseInt()),StrNotNullOrEmpty(),Optional(parseInt())""",
 "pat_filter_same_record_periodic_exam_result_qry":"""insert into periodic_exam_result_staging_2(id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks,ff_uuid)
 select id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks,ff_uuid from 
 (select id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks,ff_uuid,
@@ -1011,14 +1108,16 @@ HAVING  COUNT(*) > 1""",
         "district_name": "data.[&1].Details.district_name",
         "district_performance": "data.[&1].Details.Performance",
         "academic_year": "data.[&1].Details.Academic year",
+        "month": "data.[&1].Details.month",
         "grade": "data.[&1].Details.Grade",
+        "school_management_type": "data.[&1].Details.school_management_type",
         "@grade_wise_performance": "data.[&1].Grade Wise Performance",
-        "students_count": "data.[&1].Details.students_count",
+        "total_students": "data.[&1].Details.total_students",
+        "students_attended": "data.[&1].Details.students_attended",
         "total_schools": "data.[&1].Details.total_schools",
-        "subjects": {
-          "*": "data.[&2].Subjects.&"
-        },
-        "@students_count": "AllDistrictsFooter.students_count",
+        "subjects": "data.[&1].Subjects",
+        "@total_students": "AllDistrictsFooter.total_students",
+        "@students_attended": "AllDistrictsFooter.students_attended",
         "@total_schools": "AllDistrictsFooter.total_schools"
       }
     }
@@ -1027,14 +1126,16 @@ HAVING  COUNT(*) > 1""",
     "operation": "modify-overwrite-beta",
     "spec": {
       "*": {
-        "students_count": "=intSum(@(1,students_count))",
+        "total_students": "=intSum(@(1,total_students))",
+        "students_attended": "=intSum(@(1,students_attended))",
         "total_schools": "=intSum(@(1,total_schools))"
       }
     }
-	}]""",
+	}]
+""",
+"pat_management_exam_year_month":"""${query_type:startsWith('pat_management_exam_district_year_month'):or(${query_type:startsWith('pat_management_exam_cluster_year_month'):or(${query_type:startsWith('pat_management_exam_block_year_month'):or(${query_type:startsWith('pat_management_exam_school_year_month')})})})}""",
 "periodic_exam_subject_details_check_if_null":"""select * from flowfile
 where subject_id is null or grade is null""",
-"pat_periodic_exam_subject_details_dup_table_name":"""pat_subject_details_dup""",
 "pat_exception_grade_block_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1046,6 +1147,7 @@ where subject_id is null or grade is null""",
         "district_name": "data.[&1].district_name",
         "block_id": "data.[&1].block_id",
         "block_name": "data.[&1].block_name",
+        "school_management_type": "data.[&1].school_management_type",
         "grade": "data.[&1].grade",
         "subjects": "data.[&1].subjects",
         "total_schools": "data.[&1].total_schools",
@@ -1076,6 +1178,7 @@ where subject_id is null or grade is null""",
           "district_name": "data.[&1].district_name",
           "block_id": "data.[&1].block_id",
           "block_name": "data.[&1].block_name",
+          "school_management_type": "data.[&1].school_management_type",
           "grade": "data.[&1].grade",
           "subjects": "data.[&1].subjects",
           "total_schools": "data.[&1].total_schools",
@@ -1107,6 +1210,7 @@ where subject_id is null or grade is null""",
           "district_name": "data.[&1].district_name",
           "block_id": "data.[&1].block_id",
           "block_name": "data.[&1].block_name",
+          "school_management_type": "data.[&1].school_management_type",
           "grade": "data.[&1].grade",
           "subjects": "data.[&1].subjects",
           "total_schools": "data.[&1].total_schools",
@@ -1119,6 +1223,12 @@ where subject_id is null or grade is null""",
     }
   }
 ]""",
+"pat_periodic_exam_subject_details_dup_table_name":"""pat_subject_details_dup""",
+"pat_check_same_id_record_periodic_exam_mst_qry":"""SELECT b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id,b.subject_name,b.exam_type_id,b.exam_type,b.exam_code,b.exam_date,b.total_questions,b.
+total_marks,count(*) num_of_times  from (select exam_id from flowfile
+group by exam_id having count(1)>1)  as a, flowfile  b
+where a.exam_id=b.exam_id
+group by b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id,b.subject_name,b.exam_type_id,b.exam_type,b.exam_code,b.exam_date,b.total_questions,b.total_marks""",
 "pat_exception_grade_cluster_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1132,6 +1242,7 @@ where subject_id is null or grade is null""",
         "block_name": "data.[&1].block_name",
         "cluster_id": "data.[&1].cluster_id",
         "cluster_name": "data.[&1].cluster_name",
+        "school_management_type": "data.[&1].school_management_type",
         "grade": "data.[&1].grade",
         "subjects": "data.[&1].subjects",
         "total_schools": "data.[&1].total_schools",
@@ -1164,6 +1275,7 @@ where subject_id is null or grade is null""",
           "block_name": "data.[&1].block_name",
           "cluster_id": "data.[&1].cluster_id",
           "cluster_name": "data.[&1].cluster_name",
+          "school_management_type": "data.[&1].school_management_type",
           "grade": "data.[&1].grade",
           "subjects": "data.[&1].subjects",
           "total_schools": "data.[&1].total_schools",
@@ -1196,6 +1308,7 @@ where subject_id is null or grade is null""",
           "block_name": "data.[&1].block_name",
           "cluster_id": "data.[&1].cluster_id",
           "cluster_name": "data.[&1].cluster_name",
+          "school_management_type": "data.[&1].school_management_type",
           "grade": "data.[&1].grade",
           "total_schools": "data.[&1].total_schools",
           "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
@@ -1208,11 +1321,6 @@ where subject_id is null or grade is null""",
     }
   }
 ]""",
-"pat_check_same_id_record_periodic_exam_mst_qry":"""SELECT b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id,b.subject_name,b.exam_type_id,b.exam_type,b.exam_code,b.exam_date,b.total_questions,b.
-total_marks,count(*) num_of_times  from (select exam_id from flowfile
-group by exam_id having count(1)>1)  as a, flowfile  b
-where a.exam_id=b.exam_id
-group by b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id,b.subject_name,b.exam_type_id,b.exam_type,b.exam_code,b.exam_date,b.total_questions,b.total_marks""",
 "pat_exception_district_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1222,6 +1330,7 @@ group by b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id
         "district_longitude": "data.[&1].district_longitude",
         "district_id": "data.[&1].district_id",
         "district_name": "data.[&1].district_name",
+        "school_management_type": "data.[&1].school_management_type",
         "total_schools": "data.[&1].total_schools",
         "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
         "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
@@ -1246,6 +1355,7 @@ group by b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id
           "district_longitude": "data.[&1].district_longitude",
           "district_id": "data.[&1].district_id",
           "district_name": "data.[&1].district_name",
+          "school_management_type": "data.[&1].school_management_type",
           "total_schools": "data.[&1].total_schools",
           "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
           "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
@@ -1280,15 +1390,17 @@ group by b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id
         "school_name": "data.[&1].Details.school_name",
         "school_performance": "data.[&1].Details.Performance",
         "academic_year": "data.[&1].Details.Academic year",
+        "month": "data.[&1].Details.month",
         "grade": "data.[&1].Details.Grade",
+        "school_management_type": "data.[&1].Details.school_management_type",
         "@grade_wise_performance": "data.[&1].Grade Wise Performance",
-        "students_count": "data.[&1].Details.students_count",
-        "@total_schools": "data.[&1].Details.total_schools",
-        "subjects": {
-          "*": "data.[&2].Subjects.&"
-        },
-        "@students_count": "footer.@(1,cluster_id).students_count",
-        "total_schools": "footer.@(1,cluster_id).total_schools"
+        "total_students": "data.[&1].Details.total_students",
+        "students_attended": "data.[&1].Details.students_attended",
+        "total_schools": "data.[&1].Details.total_schools",
+     "subjects": "data.[&1].Subjects",
+        "@total_students": "footer.@(1,cluster_id).total_students[]",
+        "@students_attended": "footer.@(1,cluster_id).students_attended[]",
+        "@total_schools": "footer.@(1,cluster_id).total_schools[]"
       }
     }
 	},
@@ -1299,7 +1411,8 @@ group by b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id
         "*": {
           "Details": "data.[&1].&",
           "Subjects": "data.[&1].&",
-          "@Details.students_count": "AllSchoolsFooter.students_count",
+          "@Details.total_students": "AllSchoolsFooter.total_students",
+          "@Details.students_attended": "AllSchoolsFooter.students_attended",
           "@Details.total_schools": "AllSchoolsFooter.total_schools"
         }
       },
@@ -1311,7 +1424,8 @@ group by b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id
     "spec": {
       "footer": {
         "*": {
-          "students_count": "=intSum(@(1,students_count))",
+          "total_students": "=intSum(@(1,total_students))",
+          "students_attended": "=intSum(@(1,students_attended))",
           "total_schools": "=intSum(@(1,total_schools))"
         }
       }
@@ -1321,19 +1435,20 @@ group by b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id
     "operation": "modify-overwrite-beta",
     "spec": {
       "*": {
-        "students_count": "=intSum(@(1,students_count))",
+        "total_students": "=intSum(@(1,total_students))",
+        "students_attended": "=intSum(@(1,students_attended))",
         "total_schools": "=intSum(@(1,total_schools))"
       }
     }
 	}]""",
 "pat_trans_null_column_table_name":"""pat_trans_null_col""",
+"pat_periodic_exam_qst_mst_dup_table_name":"""periodic_exam_qst_mst_dup""",
 "pat_periodic_exam_qst_mst_check_if_null":"""select * from flowfile
 where question_id  IS NULL
 or exam_id IS NULL
 or question_title IS NULL
 or question IS NULL
 or question_marks IS NULL""",
-"pat_periodic_exam_qst_mst_dup_table_name":"""periodic_exam_qst_mst_dup""",
 "periodic_exam_subject_details_not_null":"""select * from flowfile where subject_id is not null and grade is not null""",
 "periodic_exam_grade_details_check_if_null":"""select * from flowfile
 where school_id is null or grade is null""",
@@ -1367,18 +1482,18 @@ total_marks) as rn from flowfile) sq Where rn =1""",
         "cluster_name": "data.[&1].Details.cluster_name",
         "school_id": "data.[&1].Details.school_id",
         "school_name": "data.[&1].Details.school_name",
-        "students_count": "data.[&1].Details.students_count",
-        "@total_schools": "data.[&1].Details.total_schools",
+        "month": "data.[&1].Details.month",
+        "school_management_type": "data.[&1].Details.school_management_type",
+        "total_students": "data.[&1].Details.total_students",
+        "students_attended": "data.[&1].Details.students_attended",
+        "total_schools": "data.[&1].Details.total_schools",
         "school_performance": "data.[&1].Details.Performance",
         "academic_year": "data.[&1].Details.Academic year",
         "@grade_wise_performance": "data.[&1].Grade Wise Performance",
-        "subject_wise_performance": {
-          "*": {
-            "Grade*": "data.[&3].Grades.&"
-          }
-        },
-        "@students_count": "footer.@(1,cluster_id).students_count[]",
-        "total_schools": "footer.@(1,cluster_id).total_schools[]"
+     "subject_wise_performance": "data.[&1].Grades",
+        "@total_students": "footer.@(1,cluster_id).total_students[]",
+        "@students_attended": "footer.@(1,cluster_id).students_attended[]",
+        "@total_schools": "footer.@(1,cluster_id).total_schools[]"
       }
     }
 	},
@@ -1389,7 +1504,8 @@ total_marks) as rn from flowfile) sq Where rn =1""",
         "*": {
           "Details": "data.[&1].&",
           "Grade*": "data.[&1].&",
-          "@Details.students_count": "AllSchoolsFooter.students_count",
+          "@Details.total_students": "AllSchoolsFooter.total_students",
+          "@Details.students_attended": "AllSchoolsFooter.students_attended",
           "@Details.total_schools": "AllSchoolsFooter.total_schools"
         }
       },
@@ -1401,7 +1517,8 @@ total_marks) as rn from flowfile) sq Where rn =1""",
     "spec": {
       "footer": {
         "*": {
-          "students_count": "=intSum(@(1,students_count))",
+          "total_students": "=intSum(@(1,total_students))",
+          "students_attended": "=intSum(@(1,students_attended))",
           "total_schools": "=intSum(@(1,total_schools))"
         }
       }
@@ -1411,7 +1528,8 @@ total_marks) as rn from flowfile) sq Where rn =1""",
     "operation": "modify-overwrite-beta",
     "spec": {
       "*": {
-        "students_count": "=intSum(@(1,students_count))",
+        "total_students": "=intSum(@(1,total_students))",
+        "students_attended": "=intSum(@(1,students_attended))",
         "total_schools": "=intSum(@(1,total_schools))"
       }
     }
@@ -1455,5 +1573,120 @@ and exam_id IS NOT NULL
 and question_title IS NOT NULL
 and question IS NOT NULL
 and question_marks IS NOT NULL""",
-"pat_periodic_exam_subject_details_table_name":"""subject_details"""
+"pat_periodic_exam_subject_details_table_name":"""subject_details""",
+"pat_mv_queries":"""REFRESH MATERIALIZED VIEW school_grade_enrolment_district;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW stud_count_school_mgmt_last30;
+REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_last30;
+REFRESH MATERIALIZED VIEW stud_count_school_mgmt_last7;
+REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_last7;
+REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_year_month;
+REFRESH MATERIALIZED VIEW stud_count_school_mgmt_year_month;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_block_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_school_last30;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_block_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_school_last7;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_last7;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_all;
+REFRESH MATERIALIZED VIEW periodic_exam_block_all;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_all;
+REFRESH MATERIALIZED VIEW periodic_exam_school_all;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_all;
+REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_all;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_all;
+REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_all;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_year_month;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_block_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_school_year_month;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_block_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_school_year_month;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_block_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_school_mgmt_year_month;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_school_mgmt_last7;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_block_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_school_last30;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_block_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_school_last7;""",
+"pat_mv_pre_query":"""
+REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_year_month;
+REFRESH MATERIALIZED VIEW stud_count_school_mgmt_year_month;
+truncate table student_att_count;
+insert into student_att_count(cluster_id,academic_year,month,school_management_type,students_count,total_schools) 
+(select cluster_id,academic_year,month,school_management_type,
+	sum(students_count) as students_count,sum(total_schools) as total_schools
+from stud_count_school_mgmt_year_month group by cluster_id,academic_year,month,school_management_type);
+
+truncate table student_att_grade_count;
+insert into student_att_grade_count(cluster_id,grade,school_management_type,academic_year,month,students_attended,total_schools) 
+(select cluster_id,grade,school_management_type,academic_year,month,
+	sum(students_attended) as students_attended,sum(total_schools) as total_schools
+from stud_count_school_grade_mgmt_year_month group by cluster_id,grade,school_management_type,academic_year,month);"""
 }

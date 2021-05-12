@@ -4,11 +4,28 @@ const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
 
-router.post('/allBlockWise', auth.authController, async (req, res) => {
+router.post('/allBlockWise', auth.authController, async(req, res) => {
     try {
         logger.info('--- crc all block wise api ---');
         var timePeriod = req.body.timePeriod;
-        let fileName = `crc/${timePeriod}/block.json`;
+        var year = req.body.year;
+        var month = req.body.month
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+        if (management != 'overall' && category == 'overall') {
+            if (timePeriod && timePeriod != 'select_month') {
+                fileName = `crc/school_management_category/${timePeriod}/overall_category/${management}/block.json`;
+            } else {
+                fileName = `crc/school_management_category/${year}/${month}/overall_category/${management}/block.json`;
+            }
+        } else {
+            if (timePeriod && timePeriod != 'select_month') {
+                fileName = `crc/${timePeriod}/block.json`;
+            } else {
+                fileName = `crc/${year}/${month}/block.json`;
+            }
+        }
         var jsonData = await s3File.readS3File(fileName);
 
         var blockData = jsonData.data;
@@ -21,13 +38,30 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
     }
 })
 
-router.post('/blockWise/:distId', auth.authController, async (req, res) => {
+router.post('/blockWise/:distId', auth.authController, async(req, res) => {
     try {
         logger.info('--- crc block per district api ---');
 
         let distId = req.params.distId;
         var timePeriod = req.body.timePeriod;
-        let fileName = `crc/${timePeriod}/block.json`;
+        var year = req.body.year;
+        var month = req.body.month
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+        if (management != 'overall' && category == 'overall') {
+            if (timePeriod && timePeriod != 'select_month') {
+                fileName = `crc/school_management_category/${timePeriod}/overall_category/${management}/block.json`;
+            } else {
+                fileName = `crc/school_management_category/${year}/${month}/overall_category/${management}/block.json`;
+            }
+        } else {
+            if (timePeriod && timePeriod != 'select_month') {
+                fileName = `crc/${timePeriod}/block.json`;
+            } else {
+                fileName = `crc/${year}/${month}/block.json`;
+            }
+        }
         var jsonData = await s3File.readS3File(fileName);
 
         var blockData = jsonData

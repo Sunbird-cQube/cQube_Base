@@ -41,7 +41,18 @@ class file_extention():
         name = Files()
         sr_district = name.sr_district
         return sr_district
-       
+
+    def sr_gradewise(self):
+        name = Files()
+        sr_gradewise = name.sr_gradewise
+        return sr_gradewise
+
+    def sr_subjectwise(self):
+        name = Files()
+        sr_subjectwise = name.sr_subjectwise
+        return sr_subjectwise
+
+
 
     #exception
     def exception_block(self):
@@ -358,6 +369,16 @@ class file_extention():
             pat_district = name.pat_district
             return pat_district
 
+    def pat_gradewise(self):
+        name = Files()
+        pat_gradewise = name.pat_gradewise
+        return pat_gradewise
+
+    def pat_subjectwise(self):
+        name = Files()
+        pat_subjectwise = name.pat_subjectwise
+        return pat_subjectwise
+
     def completion_error(self):
             name = Files()
             completion_error = name.completion_error
@@ -373,24 +394,40 @@ class file_extention():
         location_textbook = name.location_textbook
         return location_textbook
 
+    def student_academic_files(self):
+        name = Files()
+        student_academic = name.student_academic
+        return student_academic
+
+    def teacher_academic_file(self):
+        name = Files()
+        teacher_academic = name.teacher_academic
+        return teacher_academic
+
+    #pat heat chart report
     def pchart_districts(self):
         name = Files()
         pchart_districtwise = name.pchart_districtwise
         return pchart_districtwise
 
+    def pchart_all_districts(self):
+        name = Files()
+        pchart_all_districts = name.pchart_district
+        return pchart_all_districts
+
     def pchart_blocks(self):
         name = Files()
-        pchart_blocks = name.pchart_blocks
+        pchart_blocks = name.pchart_districtwise
         return pchart_blocks
 
     def pchart_clusters(self):
         name = Files()
-        pchart_clusters = name.pchart_clusters
+        pchart_clusters = name.pchart_blockwise
         return pchart_clusters
 
     def pchart_schools(self):
         name = Files()
-        pchart_schools = name.pchart_schools
+        pchart_schools = name.pchart_clusterwise
         return pchart_schools
 
     def pchart_views(self):
@@ -408,26 +445,194 @@ class file_extention():
         pchart_grades = name.pchart_grades
         return pchart_grades
 
-    def lpd_districts(self):
-        name = Files()
-        lpd_districtwise = name.lpd_district
-        return lpd_districtwise
+        # pat heat chart report
 
-    def lpd_block(self):
+    def satchart_districts(self):
         name = Files()
-        lpd_blockwise = name.lpd_block
-        return lpd_blockwise
+        satchart_districtwise = name.satchart_districtwise
+        return satchart_districtwise
 
-    def lpd_cluster(self):
+    def satchart_all_districts(self):
         name = Files()
-        lpd_clusterwise = name.lpd_cluster
-        return lpd_clusterwise
+        satchart_district = name.satchart_district
+        return satchart_district
 
-    def lpd_school(self):
+    def satchart_blocks(self):
         name = Files()
-        lpd_schoolwise = name.lpd_school
-        return lpd_schoolwise
+        pchart_blocks = name.satchart_districtwise
+        return pchart_blocks
 
+    def satchart_clusters(self):
+        name = Files()
+        pchart_clusters = name.satchart_blockwise
+        return pchart_clusters
+
+    def satchart_schools(self):
+        name = Files()
+        pchart_schools = name.satchart_clusterwise
+        return pchart_schools
+
+    def satchart_views(self):
+        name = Files()
+        pchart_view = name.satchart_view
+        return pchart_view
+
+    def satchart_subjects(self):
+        name = Files()
+        pchart_subjects = name.sat_subject_wise
+        return pchart_subjects
+
+    def satchart_grades(self):
+        name = Files()
+        pchart_grades = name.sat_chart_grades
+        return pchart_grades
+
+    #pat lo table
+    def pat_districts(self):
+        name = Files()
+        pchart_districtwise = name.patlo_districtwise
+        return pchart_districtwise
+
+    def patlo_all_districts(self):
+        name = Files()
+        pchart_all_districts = name.patlo_district
+        return pchart_all_districts
+
+    def patlo_blocks(self):
+        name = Files()
+        pchart_blocks = name.patlo_districtwise
+        return pchart_blocks
+
+    def patlo_clusters(self):
+        name = Files()
+        pchart_clusters = name.patlo_blockwise
+        return pchart_clusters
+
+    def patlo_schools(self):
+        name = Files()
+        pchart_schools = name.patlo_clusterwise
+        return pchart_schools
+
+    def patlo_views(self):
+        name = Files()
+        pchart_view = name.patlo_view
+        return pchart_view
+
+    def patlo_subjects(self):
+        name = Files()
+        pchart_subjects = name.patlo_subjectwise
+        return pchart_subjects
+
+    def patlo_grades(self):
+        name = Files()
+        pchart_grades = name.patlo_grades
+        return pchart_grades
+
+
+    def tpd_districts(self):
+        name = Files()
+        tpd_districtwise = name.tpd_district
+        return tpd_districtwise
+
+    def tpd_lastweek_districtwise(self):
+        name = Files()
+        tpd_lastweek_districtwise = name.tpd_lastweek_districtwise
+        return tpd_lastweek_districtwise
+
+    def tpd_lastday_districtwise(self):
+        name = Files()
+        tpd_lastday_districtwise = name.tpd_lastday_districtwise
+        return tpd_lastday_districtwise
+
+    def tpd_all_districtwise(self):
+        name = Files()
+        tpd_all_districtwise = name.tpd_all_districtwise
+        return tpd_all_districtwise
+
+    def tpd_lastmonth_districtwise(self):
+        name = Files()
+        tpd_lastmonth_districtwise = name.tpd_lastmonth_districtwise
+        return tpd_lastmonth_districtwise
+
+    def tpd_cluster(self):
+        name = Files()
+        tpd_clusterwise = name.tpd_cluster
+        return tpd_clusterwise
+
+    def tpd_lastday(self):
+        name = Files()
+        tpd_lastday = name.tpd_lastday
+        return tpd_lastday
+
+    def tpd_lastweek(self):
+        name = Files()
+        tpd_lastweek = name.tpd_lastweek
+        return tpd_lastweek
+
+    def tpd_lastmonth(self):
+        name = Files()
+        tpd_lastmonth = name.tpd_lastmonth
+        return tpd_lastmonth
+
+    def tpd_school(self):
+        name = Files()
+        tpd_schoolwise = name.tpd_school
+        return tpd_schoolwise
+
+    def tpd_teacher_district(self):
+        name = Files()
+        tpd_teacher_district = name.tpd_teacher_district
+        return tpd_teacher_district
+
+    def tpd_teacher_lastweek(self):
+        name = Files()
+        tpd_teacher_district = name.tpd_teacher_lastweek
+        return tpd_teacher_district
+
+    def tpd_teacher_lastweek_districtwise(self):
+        name = Files()
+        tpd_teacher_lastweek_districtwise = name.tpd_teacher_lastweek_districtwise
+        return tpd_teacher_lastweek_districtwise
+
+    def tpd_teacher_lastday_districtwise(self):
+        name = Files()
+        tpd_lastday_districtwise = name.tpd_teacher_lastday_districtwise
+        return tpd_lastday_districtwise
+
+    def tpd_teacher_all_districtwise(self):
+        name = Files()
+        tpd_all_districtwise = name.tpd_teacher_all_districtwise
+        return tpd_all_districtwise
+
+    def tpd_teacher_lastmonth_districtwise(self):
+        name = Files()
+        tpd_lastmonth_districtwise = name.tpd_teacher_lastmonth_districtwise
+        return tpd_lastmonth_districtwise
+
+    def tpd_teacher_cluster(self):
+        name = Files()
+        tpd_clusterwise = name.tpd_teacher_cluster
+        return tpd_clusterwise
+
+    def tpd_teacher_lastday(self):
+        name = Files()
+        tpd_lastday = name.tpd_teacher_lastday
+        return tpd_lastday
+
+    def tpd_techer_lastweek(self):
+        name = Files()
+        tpd_lastweek = name.tpd_teacher_lastweek
+        return tpd_lastweek
+
+    def tpd_teacherlastmonth(self):
+        name = Files()
+        tpd_lastmonth = name.tpd_teacher_lastmonth
+        return tpd_lastmonth
+
+    def tpd_teacher_school(self):
+        name = Files()
+        tpd_schoolwise = name.tpd_teacher_school
+        return tpd_schoolwise
 
     def health_card_d1_name(self):
         name = Files()
@@ -518,3 +723,76 @@ class file_extention():
         name = Files()
         ndf =name.ndf
         return ndf
+
+    def student_download(self):
+        name = Files()
+        download = name.student_donwload
+        return download
+
+    def student_block_download(self):
+        name = Files()
+        student_block = name.student_block
+        return student_block
+
+    def student_cluster_download(self):
+        name = Files()
+        student_cluster = name.student_cluster
+        return student_cluster
+
+    def student_school_download(self):
+        name = Files()
+        student_school = name.student_school
+        return student_school
+
+    def student_districtwise_download(self):
+        name = Files()
+        student_districtwise = name.student_districtwise
+        return student_districtwise
+
+    def student_blockwise_download(self):
+        name = Files()
+        student_blockwise = name.student_blockwise
+        return student_blockwise
+
+    def student_clusterwise_download(self):
+        name = Files()
+        student_clusterwise = name.student_clusterwise
+        return student_clusterwise
+
+    def teacher_download(self):
+        name = Files()
+        download = name.teacher_donwload
+        return download
+
+    def teacher_block_download(self):
+        name = Files()
+        teacher_block = name.teacher_block
+        return teacher_block
+
+    def teacher_cluster_download(self):
+        name = Files()
+        teacher_cluster = name.teacher_cluster
+        return teacher_cluster
+
+    def teacher_school_download(self):
+        name = Files()
+        teacher_school = name.teacher_school
+        return teacher_school
+
+    def teacher_districtwise_download(self):
+        name = Files()
+        teacher_districtwise = name.teacher_districtwise
+        return teacher_districtwise
+
+    def teacher_blockwise_download(self):
+        name = Files()
+        teacher_blockwise = name.teacher_blockwise
+        return teacher_blockwise
+
+    def teacher_clusterwise_download(self):
+        name = Files()
+        techer_clusterwise = name.teacher_clusterwise
+        return techer_clusterwise
+
+
+    #TPD Enrollment

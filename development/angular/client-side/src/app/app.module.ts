@@ -13,7 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule, MatSortModule } from '@angular/material';
+// import { MatPaginatorModule, MatSortModule } from '@angular/material';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeycloakSecurityService } from './keycloak-security.service';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -25,6 +25,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { BubblesComponent } from './reports/healthCard/bubbles/bubbles.component';
 import { ProgressCircleComponent } from './reports/healthCard/progress-circle/progress-circle.component';
+import { MapLegendsComponent } from './common/map-legends/map-legends.component';
+import { MultiSelectComponent } from './common/multi-select/multi-select.component';
+import { DikshaTPDContentProgressComponent } from './reports/diksha/tpd/diksha-tpd-course-progress/diksha-tpd-content-progress.component';
+import { DikshaTPDTeachersPercentageComponent } from './reports/diksha/tpd/diksha-tpd-teachers-percentage/diksha-tpd-teachers-percentage.component';
+import { StudentAttendanceChartComponent } from './reports/attendance/student-attendance-chart/student-attendance-chart.component';
+import { LineChartComponent } from './common/line-chart/line-chart.component';
 
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
@@ -41,7 +47,13 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     DikshaChartComponent,
     HealthCardComponent,
     BubblesComponent,
-    ProgressCircleComponent
+    ProgressCircleComponent,
+    MapLegendsComponent,
+    MultiSelectComponent,
+    DikshaTPDContentProgressComponent,
+    DikshaTPDTeachersPercentageComponent,
+    StudentAttendanceChartComponent,
+    LineChartComponent
   ],
   imports: [
     BrowserModule,
@@ -51,8 +63,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     MatButtonModule,
     MatIconModule,
     MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
+    // MatPaginatorModule,
+    // MatSortModule,
     HttpClientModule,
     FormsModule,
     ChartsModule,
@@ -63,8 +75,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
   ],
   exports: [
     MatTableModule,
-    MatPaginatorModule,
-    MatSortModule
+    // MatPaginatorModule,
+    // MatSortModule
   ],
   providers: [
     {

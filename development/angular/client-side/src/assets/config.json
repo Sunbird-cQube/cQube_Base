@@ -4,13 +4,55 @@
         "lat": 22.3660414123535,
         "lng": 71.48396301269531,
         "zoomLevel": 7,
-        "stateCode": 24
+        "stateCode": "24"
     },
     "MP": {
         "name": "Madhya Pradesh",
         "lat": 23.9259,
         "lng": 78.8383,
         "zoomLevel": 7,
-        "stateCode": 23
+        "stateCode": "23"
+    },
+    "UP": {
+        "name": "Uttar Pradesh",
+        "lat": 26.8467,
+        "lng": 80.9462,
+        "zoomLevel": 6,
+        "stateCode": "09"
+    },
+    "BI": {
+        "name": "Bihar",
+        "lat": 25.6838,
+        "lng": 85.3550,
+        "zoomLevel": 7,
+        "stateCode": "10"
+    },
+    "DL": {
+        "name": "Delhi",
+        "lat": 28.6643,
+        "lng": 77.2167,
+        "zoomLevel": 10,
+        "stateCode": "07"
+    },
+    "PU": {
+        "name": "Punjab",
+        "lat": 30.6874,
+        "lng": 75.2479,
+        "zoomLevel": 7,
+        "stateCode": "03"
+    },
+    "JH": {
+        "name": "Jharkhand",
+        "lat": 23.6635,
+        "lng": 85.9713,
+        "zoomLevel": 7,
+        "stateCode": "20"
+    },
+    "CH": {
+        "name": "Chhattisgarh",
+        "lat": 21.1797,
+        "lng": 81.7787,
+        "zoomLevel": 6,
+        "stateCode": "22"
     }
 }

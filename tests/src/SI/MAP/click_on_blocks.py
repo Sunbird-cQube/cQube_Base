@@ -23,7 +23,8 @@ class click_on_blocks():
        self.p.page_loading(self.driver)
        self.driver.find_element_by_id('download').click()
        time.sleep(3)
-       self.filename = cal.get_download_dir() + "/" + self.fname.scmap_block()
+       self.filename = cal.get_download_dir() + "/" + self.fname.scmap_block()+self.p.get_current_date()+'.csv'
+       print(self.filename)
        self.p.page_loading(self.driver)
        file = os.path.isfile(self.filename)
        self.p.page_loading(self.driver)

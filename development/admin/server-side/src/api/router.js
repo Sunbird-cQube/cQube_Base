@@ -9,8 +9,16 @@ const summary = require('./controller/statistics/summary');
 //logs
 const logs = require('./controller/logs/logs');
 const s3Download = require('./controller/s3Downloads/s3FileDownload');
-
 const nifi = require('./controller/niFiScheduler/nifiScheduler');
+
+const dataSource = require('./controller/data-replay/getDataSources');
+router.use('/getDataSource', dataSource);
+
+const getMonthAndYear = require('./controller/data-replay/getMonthAndYear');
+router.use('/', getMonthAndYear);
+
+const saveDataToS3 = require('./controller/data-replay/saveDatatoS3');
+router.use('/savetoS3', saveDataToS3);
 
 // user details routes
 router.use('/addUser', addUser);

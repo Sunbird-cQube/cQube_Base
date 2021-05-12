@@ -11,6 +11,7 @@ import { environment } from '../../environments/environment';
 })
 export class HomeComponent implements OnInit {
   edate: Date;
+  semester = true;
 
   constructor(public http: HttpClient, public service: AppServiceComponent, public keyCloakService: KeycloakSecurityService) { }
   email: any;
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit {
   nifi_udise;
   nifi_pat;
   nifi_composite;
+  nifi_sat;
 
 
   ngOnInit() {
@@ -92,6 +94,9 @@ export class HomeComponent implements OnInit {
         if (element.template === 'nifi_composite') {
           this.nifi_composite = element.status;
         }
+        if (element.template === 'nifi_sat') {
+          this.nifi_sat = element.status;
+        }
       });
     })
   }
@@ -123,5 +128,10 @@ export class HomeComponent implements OnInit {
 
   clearSessionStorage(): void {
     sessionStorage.clear();
+  }
+
+  onBackClick(){
+    localStorage.removeItem('management');
+    localStorage.removeItem('category');
   }
 }

@@ -6,7 +6,15 @@ const s3File = require('../../lib/reads3File');
 router.post('/clusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---composite report all cluster wise api ---');
-        let fileName = `composite/comp_cluster.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `composite/school_management_category/overall_category/${management}/comp_cluster.json`
+        }else{
+            fileName = `composite/comp_cluster.json`
+        }
         var data = await s3File.readS3File(fileName);
 
         logger.info('---composite report all cluster wise response sent---');
@@ -23,7 +31,15 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         logger.info('---composite report cluster per block api ---');
         var distId = req.params.distId;
         var blockId = req.params.blockId;
-        let fileName = `composite/comp_cluster.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `composite/school_management_category/overall_category/${management}/comp_cluster.json`
+        }else{
+            fileName = `composite/comp_cluster.json`
+        }
         var clusterData = await s3File.readS3File(fileName);
 
         let clusterFilterData = clusterData.filter(obj => {

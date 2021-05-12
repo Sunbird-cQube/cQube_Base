@@ -29,7 +29,8 @@ class Time_periods():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + "/" + self.fname.lpd_districts()
+            self.filename = self.p.get_download_dir() + "/" + self.fname.tpd_teacher_lastday()+self.data.get_current_date()+'.csv'
+            print(self.filename)
             if os.path.isfile(self.filename) != True:
                 print('Last Day Districtwise csv file is not downloaded ')
                 count = count + 1
@@ -62,7 +63,8 @@ class Time_periods():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + "/" + self.fname.lpd_districts()
+            self.filename = self.p.get_download_dir() + "/"+self.fname.tpd_teacherlastmonth()+self.data.get_current_date()+'.csv'
+            print(self.filename)
             if os.path.isfile(self.filename) != True:
                 print('Last Day Districtwise csv file is not downloaded ')
                 count = count + 1
@@ -95,7 +97,8 @@ class Time_periods():
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + "/" + self.fname.lpd_districts()
+            self.filename = self.p.get_download_dir() + "/" + self.fname.tpd_teacher_lastweek()+self.data.get_current_date()+".csv"
+            print(self.filename)
             if os.path.isfile(self.filename) != True:
                 print('Last Day Districtwise csv file is not downloaded ')
                 count = count + 1
@@ -120,12 +123,13 @@ class Time_periods():
         self.fname = file_extention()
         self.driver.find_element_by_xpath(Data.hyper_link).click()
         self.data.page_loading(self.driver)
-        if self.fname.no_data_available() in self.driver.page_source:
+        if self.fname.no_data_found() in self.driver.page_source:
             print('No Data found for district level')
         else:
             self.driver.find_element_by_id(Data.Download).click()
             time.sleep(3)
-            self.filename = self.p.get_download_dir() + "/" + self.fname.lpd_districts()
+            self.filename = self.p.get_download_dir() + "/" + self.fname.tpd_teacher_district()+self.data.get_current_date()+'.csv'
+            print(self.filename)
             if os.path.isfile(self.filename) != True:
                 print('All Districtwise csv file is not downloaded ')
                 count = count + 1

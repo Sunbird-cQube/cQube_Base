@@ -1,0 +1,355 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12" style="padding-top: 20px !important;">
+            <h4>Data Replay</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2 col-md-0 col-sm-0" style="padding-top: 20px !important;">
+            <!-- <table #DataTable id="table" class="display nowrap" width="100%"
+                style="font-size: 12px; text-align: center;">
+                <thead>
+                    <tr>
+                        <th>Data Source</th>
+                        <th>Options for Replay</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Student Attendance</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 350px;">
+                                <select class="time" required id="stdyear"
+                                    [ngStyle]="{float: months1.length > 0 ? 'left' : ''}"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectStdYear($event.target.value)">
+                                    <option *ngFor="let year of years1; let i = index;" [value]="year.value"
+                                        [selected]="i==0">
+                                        {{year.value}}</option>
+                                </select>
+                                <app-multi-select *ngIf="months1.length > 0" #multiSelect1 [selection]="'Select Months'"
+                                    [width1]="'140px'" [width2]="'130px'"
+                                    style="float: left; margin-left: 30px;margin-top: 1px; width: 120px;"
+                                    [list]="months1" [text]="'Months'" (shareCheckedList)="shareCheckedList1($event)">
+                                </app-multi-select>
+                                <span *ngIf="selectedStdYear !=  'Select Year' && stdMonthErr != ''"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{stdMonthErr}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Teacher Attendance</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 350px;">
+                                <select class="time" required id="tchryear"
+                                    [ngStyle]="{float: months2.length > 0 ? 'left' : ''}"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectTchrYear($event.target.value)">
+                                    <option *ngFor="let year of years2; let i = index;" [value]="year.value"
+                                        [selected]="i==0">
+                                        {{year.value}}</option>
+                                </select>
+                                <app-multi-select *ngIf="months2.length > 0" #multiSelect2 [selection]="'Select Months'"
+                                    [width1]="'140px'" [width2]="'130px'"
+                                    style="float: left; margin-left: 30px;margin-top: 1px;" [list]="months2"
+                                    [text]="'Months'" (shareCheckedList)="shareCheckedList2($event)">
+                                </app-multi-select>
+                                <span *ngIf="selectedTchrYear != 'Select Year' && tchrMonthErr != ''"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{tchrMonthErr}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CRC</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 350px;">
+                                <select class="time" required id="crcyear"
+                                    [ngStyle]="{float: months3.length > 0 ? 'left' : ''}"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectCRCYear($event.target.value)">
+                                    <option *ngFor="let year of years3; let i = index;" [value]="year.value"
+                                        [selected]="i==0">
+                                        {{year.value}}</option>
+                                </select>
+                                <app-multi-select *ngIf="months3.length > 0" #multiSelect3 [selection]="'Select Months'"
+                                    [width1]="'140px'" [width2]="'130px'" id="crcMonths"
+                                    style="float: left; margin-left: 30px;margin-top: 1px;" [list]="months3"
+                                    [text]="'Months'" (shareCheckedList)="shareCheckedList5($event)">
+                                </app-multi-select>
+                                <div *ngIf="selectedCRCYear != 'Select Year' && crcMonthErr != ''">
+                                    <span
+                                        style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{crcMonthErr}}</span>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Summary Rollup</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 500px;">
+                                <div style="float: left;">
+                                    <span style="float: left;margin: 8px 5px 0px 0px;">From Date:</span> <input
+                                        type="text" (bsValueChange)="onSelectFromDate()"
+                                        style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
+                                        placeholder="Select from date" class="form-control" #dp="bsDatepicker"
+                                        bsDatepicker [(ngModel)]="summaryFromDate"
+                                        [bsConfig]="{dateInputFormat: 'DD-MM-YYYY'}">
+                                </div>
+                                <div style="float: left; margin-left: 30px;">
+                                    <span style="float: left;margin: 8px 5px 0px 0px;">To Date:</span> <input
+                                        [disabled]="summaryFromDate == undefined" type="text"
+                                        (bsValueChange)="onSelectToDate()"
+                                        style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
+                                        placeholder="Select to date" class="form-control" #dp="bsDatepicker"
+                                        bsDatepicker [(ngModel)]="summaryToDate"
+                                        [bsConfig]="{dateInputFormat: 'DD-MM-YYYY'}">
+                                </div>
+                                <span *ngIf="toDateErr != ''"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 300px;">{{toDateErr}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Semester</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 150px;">
+                                <app-multi-select #multiSelect [selection]="'Select Semesters'" style="margin-top: 1px;"
+                                    [width1]="'150px'" [width2]="'140px'" [list]="semesters" [text]="'Semesters'"
+                                    (shareCheckedList)="shareCheckedList3($event)">
+                                </app-multi-select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Periodic Assessment Test</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 155px;">
+                                <app-multi-select #multiSelect [selection]="'Select Exam Codes'"
+                                    style="margin-top: 1px;" [width1]="'155px'" [width2]="'145px'" [list]="months2"
+                                    (shareCheckedList)="shareCheckedList2($event)">
+                                </app-multi-select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>TPD</td>
+                        <td>
+                            <div style="margin: 0px auto; width: 140px;">
+                                <app-multi-select #multiSelect [selection]="'Select Batch Ids'" style="margin-top: 1px;"
+                                    [width1]="'140px'" [width2]="'130px'" [list]="batchIds" [text]="'Batch Ids'"
+                                    (shareCheckedList)="shareCheckedList4($event)">
+                                </app-multi-select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>UDISE</td>
+                        <td>
+                            <select class="time" required id="udise"
+                                style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                (change)="onSelecUdise($event.target.value)">
+                                <option *ngFor="let option of options; let i = index;" [value]="option.id"
+                                    [selected]="i==0">
+                                    {{option.value}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Infrastructure</td>
+                        <td>
+                            <select class="time" required id="infrastructure"
+                                style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                (change)="onSelectInfrastructure($event.target.value)">
+                                <option *ngFor="let option of options; let i = index;" [value]="option.id"
+                                    [selected]="i==0">
+                                    {{option.value}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Static</td>
+                        <td>
+                            <select class="time" required id="static"
+                                style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                (change)="onSelectStatic($event.target.value)">
+                                <option *ngFor="let option of options; let i = index;" [value]="option.id"
+                                    [selected]="i==0">
+                                    {{option.value}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> -->
+        </div>
+        <div class="col-lg-8 col-md-12 col-sm-12">
+            <div class="row box" style="padding: 10px; border-radius: 10px; margin-top: 15%;">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div style="float: left;">
+                        <p>Select Data Source: </p> <select required id="dataSources"
+                            style="padding: 9px;width: 170px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: -10px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                            (change)="onSelectDataSource($event.target.value)">
+                            <option value="Select Data Source" disabled selected>Select Data Source</option>
+                            <option *ngFor="let source of dataSources; let i = index;" [value]="source.template">
+                                <span *ngIf="source.status">{{source.sourceName}}</span>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div style="float: left;">
+                        <p *ngIf="dataSourceName">Select options for replay :</p>
+                        <div style="margin-top: -6px;">
+                            <div *ngIf="dataSourceName == 'nifi_student_attendance'"
+                                style="margin-top: 0px; width: 350px;">
+                                <select class="time" required id="stdyear"
+                                    [ngStyle]="{float: months1.length > 0 ? 'left' : ''}"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectStdYear($event.target.value)">
+                                    <option *ngFor="let year of years1; let i = index;" [value]="year.value"
+                                        [selected]="i==0">
+                                        {{year.value}}</option>
+                                </select>
+                                <app-multi-select *ngIf="months1.length > 0" #multiSelect1 [selection]="'Select Months'"
+                                    [width1]="'140px'" [width2]="'130px'"
+                                    style="float: left; margin-left: 20px;margin-top: 1px; width: 120px;"
+                                    [list]="months1" [text]="'Months'" (shareCheckedList)="shareCheckedList1($event)">
+                                </app-multi-select>
+                                <span *ngIf="selectedStdYear !=  'Select Year' && stdMonthErr != ''"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 20px;">{{stdMonthErr}}</span>
+                            </div>
+                            <div *ngIf="dataSourceName == 'nifi_teacher_attendance'"
+                                style="margin: 0px auto; width: 350px;">
+                                <select class="time" required id="tchryear"
+                                    [ngStyle]="{float: months2.length > 0 ? 'left' : ''}"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectTchrYear($event.target.value)">
+                                    <option *ngFor="let year of years2; let i = index;" [value]="year.value"
+                                        [selected]="i==0">
+                                        {{year.value}}</option>
+                                </select>
+                                <app-multi-select *ngIf="months2.length > 0" #multiSelect2 [selection]="'Select Months'"
+                                    [width1]="'140px'" [width2]="'130px'"
+                                    style="float: left; margin-left: 20px;margin-top: 1px;" [list]="months2"
+                                    [text]="'Months'" (shareCheckedList)="shareCheckedList2($event)">
+                                </app-multi-select>
+                                <span *ngIf="selectedTchrYear != 'Select Year' && tchrMonthErr != ''"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 20px;">{{tchrMonthErr}}</span>
+                            </div>
+                            <div *ngIf="dataSourceName == 'nifi_crc'" style="margin: 0px auto; width: 350px;">
+                                <select class="time" required id="crcyear"
+                                    [ngStyle]="{float: months3.length > 0 ? 'left' : ''}"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectCRCYear($event.target.value)">
+                                    <option *ngFor="let year of years3; let i = index;" [value]="year.value"
+                                        [selected]="i==0">
+                                        {{year.value}}</option>
+                                </select>
+                                <app-multi-select *ngIf="months3.length > 0" #multiSelect3 [selection]="'Select Months'"
+                                    [width1]="'140px'" [width2]="'130px'" id="crcMonths"
+                                    style="float: left; margin-left: 30px;margin-top: 1px;" [list]="months3"
+                                    [text]="'Months'" (shareCheckedList)="shareCheckedList5($event)">
+                                </app-multi-select>
+                                <div *ngIf="selectedCRCYear != 'Select Year' && crcMonthErr != ''">
+                                    <span
+                                        style="color: red; font-size: 9px; float: left; margin-left: 30px;">{{crcMonthErr}}</span>
+                                </div>
+                            </div>
+                            <div *ngIf="dataSourceName == 'nifi_summary'" style="margin: 0px auto; width: 500px;">
+                                <div style="float: left;">
+                                    <input type="text" (bsValueChange)="onSelectFromDate()"
+                                        style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
+                                        placeholder="Select from date" class="form-control" #dp="bsDatepicker"
+                                        bsDatepicker [(ngModel)]="summaryFromDate"
+                                        [bsConfig]="{dateInputFormat: 'YYYY-MM-DD', showWeekNumbers:false}">
+                                </div>
+                                <div style="float: left; margin-left: 30px;">
+                                    <input [disabled]="summaryFromDate == undefined" type="text"
+                                        (bsValueChange)="onSelectToDate()" [minDate]="minDate"
+                                        style="width:150px; margin:0px auto; margin-left: 2px; float: left;"
+                                        placeholder="Select to date" class="form-control" #dp="bsDatepicker"
+                                        bsDatepicker [(ngModel)]="summaryToDate"
+                                        [bsConfig]="{dateInputFormat: 'YYYY-MM-DD', showWeekNumbers:false}">
+                                </div>
+                                <span *ngIf="toDateErr != ''"
+                                    style="color: red; font-size: 9px; float: left; margin-left: 200px;">{{toDateErr}}</span>
+                            </div>
+                            <div *ngIf="dataSourceName == 'nifi_semester'" style="width: 400px;">
+                                <div style="float: left;">
+                                    <select class="time" required id="semyear"
+                                        [ngStyle]="{float: semesters.length > 0 ? 'left' : ''}"
+                                        style="padding: 9px;width: 170px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                        (change)="onSelectAcademicYear($event.target.value)">
+                                        <option *ngFor="let year of academic_years; let i = index;"
+                                            [value]="academic_years[i]" [selected]="i==0">
+                                            {{academic_years[i]}}</option>
+                                    </select>
+                                </div>
+                                <div *ngIf="semesters.length > 0" style="float: left; margin-left: 30px;">
+                                    <app-multi-select #multiSelect [selection]="'Select Semesters'"
+                                        style="margin-top: 1px;" [width1]="'150px'" [width2]="'140px'"
+                                        [list]="semesters" [text]="'Semesters'"
+                                        (shareCheckedList)="shareCheckedList3($event)">
+                                    </app-multi-select>
+                                </div>
+                            </div>
+                            <div *ngIf="dataSourceName == 'nifi_pat'" style="width: 155px;">
+                                <app-multi-select #multiSelect [selection]="'Select Exam Codes'"
+                                    style="margin-top: 1px;" [width1]="'155px'" [width2]="'145px'" [list]="examCodes"
+                                    [text]="'Exam Codes'" (shareCheckedList)="shareCheckedList6($event)">
+                                </app-multi-select>
+                            </div>
+                            <div *ngIf="dataSourceName == 'nifi_tpd'" style="width: 190px;">
+                                <app-multi-select #multiSelect [selection]="'Select Batch Ids'" style="margin-top: 1px;"
+                                    [width1]="'190px'" [width2]="'180px'" [list]="batchIds" [text]="'Batch Ids'"
+                                    (shareCheckedList)="shareCheckedList4($event)">
+                                </app-multi-select>
+                            </div>
+                            <div *ngIf="dataSourceName == 'nifi_udise'">
+                                <select class="time" required id="udise"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelecUdise($event.target.value)">
+                                    <option *ngFor="let option of options; let i = index;" [value]="option.id"
+                                        [selected]="i==0">
+                                        {{option.value}}</option>
+                                </select>
+                            </div>
+                            <div *ngIf="dataSourceName == 'nifi_infra'">
+                                <select class="time" required id="infrastructure"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectInfrastructure($event.target.value)">
+                                    <option *ngFor="let option of options; let i = index;" [value]="option.id"
+                                        [selected]="i==0">
+                                        {{option.value}}</option>
+                                </select>
+                            </div>
+                            <div *ngIf="dataSourceName == 'nifi_static'">
+                                <select class="time" required id="static"
+                                    style="padding: 9px;width: 120px;margin: 0px auto; color: rgb(2, 2, 2); border-radius: 4px;border: 1px solid rgb(199, 196, 196); margin: 0px 0px 2px 0px; font-size: 13px; background-color: rgb(255, 255, 255);"
+                                    (change)="onSelectStatic($event.target.value)">
+                                    <option *ngFor="let option of options; let i = index;" [value]="option.id"
+                                        [selected]="i==0">
+                                        {{option.value}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div style="top: 20px; position: relative;">
+                        <button class="btn btn-primary" (click)="onSubmit()" style="float: right;">Submit</button>
+                        <button class="btn btn-secondary" (click)="onCancel()"
+                            style="margin-right: 30px; float: right;">
+                            Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="spinner" style="display: block;">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>

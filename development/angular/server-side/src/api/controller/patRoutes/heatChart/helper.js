@@ -63,12 +63,9 @@ const generalFun = (grade, data, level, viewBy) => {
             }
             let finalData = []
 
-            let colors = grade != "" ? colorsHelper.colors : colorsHelper.colors1
+            let colors = colorsHelper.colors;
             var keys;
-            if (grade == "") {
-                keys = Object.keys(colors);
-            }
-            
+            keys = Object.keys(colors);
             var tooltipData = [];
             Promise.all(Object.entries(arr).map((entry, index) => {
                 for (let y = 0; y < totalDistLen.length; y++) {
@@ -84,25 +81,26 @@ const generalFun = (grade, data, level, viewBy) => {
                         students_attended: mark ? parseInt(mark.students_attended) : '',
                         total_schools: mark ? parseInt(mark.total_schools) : '',
                         total_students: mark ? parseInt(mark.total_students) : '',
-                        name: mark ? mark.district_name && !mark.block_name && !mark.cluster_name && !mark.school_name ? mark.district_name : '' || mark.district_name && mark.block_name && !mark.cluster_name && !mark.school_name ? mark.block_name : '' || mark.block_name && mark.cluster_name && !mark.school_name ? mark.cluster_name : '' || mark.cluster_name && mark.school_name ? mark.school_name : '' : ''
+                        name: mark ? mark.district_name && !mark.block_name && !mark.cluster_name && !mark.school_name ? mark.district_name : '' || mark.district_name && mark.block_name && !mark.cluster_name && !mark.school_name ? mark.block_name : '' || mark.block_name && mark.cluster_name && !mark.school_name ? mark.cluster_name : '' || mark.cluster_name && mark.school_name ? mark.school_name : '' : '',
+                        mark: mark ? parseFloat(mark.marks) : null,
+                        marks_percentage: mark && mark.percentage ? parseFloat(mark.percentage) : null,
 
                     })
-                    mark = mark ? parseFloat(mark.marks) : null;
-
-                    if (grade == "" && mark != null) {
+                    let marks_percentage = mark ? mark.percentage : null;
+                    if (marks_percentage != null) {
                         var color = '';
                         for (let i = 0; i < keys.length; i++) {
-                            if (mark <= keys[i]) {
+                            if (marks_percentage <= parseInt(keys[i])) {
                                 color = colors[keys[i]];
                                 break;
-                            } else if (mark > keys[i] && mark <= keys[i + 1]) {
+                            } else if (marks_percentage > parseInt(keys[i]) && marks_percentage <= parseInt(keys[i + 1])) {
                                 color = colors[keys[i + 1]];
                                 break;
                             }
                         }
-                        finalData.push({ x: y, y: index, value: mark, color: color })
+                        finalData.push({ x: y, y: index, value: marks_percentage, color: color })
                     } else {
-                        finalData.push({ x: y, y: index, value: mark, color: colors[mark] })
+                        finalData.push({ x: y, y: index, value: marks_percentage, color: colors[marks_percentage] })
                     }
                 }
             })).then(() => {

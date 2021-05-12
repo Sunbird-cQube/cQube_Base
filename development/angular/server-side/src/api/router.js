@@ -77,6 +77,7 @@ const PAT_dist_wise = require('./controller/patRoutes/distWise');
 const PAT_block_wise = require('./controller/patRoutes/blockWise');
 const PAT_cluster_wise = require('./controller/patRoutes/clusterWise');
 const PAT_school_wise = require('./controller/patRoutes/schoolWise');
+const getMonthYear = require('./controller/patRoutes/getMonthYear');
 
 // Composit report
 const composit_dist_wise = require('./controller/composit-report/distWise');
@@ -204,6 +205,7 @@ router.use('/pat', PAT_dist_wise);
 router.use('/pat', PAT_block_wise);
 router.use('/pat', PAT_cluster_wise);
 router.use('/pat', PAT_school_wise);
+router.use('/pat', getMonthYear);
 
 //composit report
 router.use('/composit', composit_dist_wise);
@@ -259,5 +261,21 @@ router.use('/sarException', sarExceptionDistWise);
 router.use('/sarException', sarExceptionBlockWise);
 router.use('/sarException', sarExceptionClusterWise);
 router.use('/sarException', sarExceptionSchoolWise);
+
+//Attendance Line-chart
+const onDistSelect = require('./controller/attendanceRoutes/sttendance-line-chart/onSelectDistrict');
+router.use('/line-chart', onDistSelect);
+const onBlockSelect = require('./controller/attendanceRoutes/sttendance-line-chart/onSelectBlock');
+router.use('/line-chart', onBlockSelect);
+const onClusterSelect = require('./controller/attendanceRoutes/sttendance-line-chart/onSelectCluster');
+router.use('/line-chart', onClusterSelect);
+const onSchoolSelect = require('./controller/attendanceRoutes/sttendance-line-chart/onSelectSchool');
+router.use('/line-chart', onSchoolSelect);
+
+const management_category_meta = require('./controller/attendanceRoutes/management_category_meta');
+router.use('/management-category-meta', management_category_meta);
+
+const getDefault = require('./lib/management_category_config');
+router.use('/getDefault', getDefault);
 
 module.exports = router;

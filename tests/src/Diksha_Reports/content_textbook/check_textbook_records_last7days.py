@@ -39,7 +39,8 @@ class course_districtwise_lastweek_record():
                 else:
                     self.driver.find_element_by_id(Data.Download).click()
                     time.sleep(3)
-                    self.filename = self.p.get_download_dir() + "/Diksha_"+names+ "_Dist_Data_last_7_days.csv"
+                    self.filename = self.p.get_download_dir() + "/"+'usage_by_textbook_content_last_7_days_'+self.data.get_current_date()+".csv"
+                    print(self.filename)
                     file = os.path.isfile(self.filename)
                     self.data.page_loading(self.driver)
                     with open(self.filename) as fin:

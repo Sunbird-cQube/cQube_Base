@@ -256,30 +256,6 @@ check_length(){
     fi
 }
 
-check_readonly_db_naming(){
-check_length $2
-if [[ $? == 0 ]]; then
-    if [[ ! $2 =~ ^[A-Za-z_]*[^_0-9\$\@\#\%\*\-\^\?]$ ]]; then
-        echo "Error - Naming convention is not correct. Please change the value of $1."; fail=1
-    fi
-else
-    echo "Error - Length of the value $1 is not correct. Provide the length between 3 and 63."; fail=1
-fi
-}
-
-check_readonly_db_password(){
-    len="${#2}"
-    if test $len -ge 8 ; then
-        echo "$2" | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@#$%^&*]" > /dev/null 2>&1
-        if [[ ! $? -eq 0 ]]; then
-            echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
-        fi
-    else
-        echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
-    fi
-}
-# Only for release 1.9
-
 check_api_endpoint(){
 temp_ep=`grep '^KEYCLOAK_HOST =' $base_dir/cqube/dashboard/server_side/.env | awk '{print $3}' | sed s/\"//g`
 if [[ ! $temp_ep == "https://$2" ]]; then
@@ -301,10 +277,10 @@ check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
 if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
-  min_shared_mem=$(echo $mem_total*11.5/100 | bc)
+  min_shared_mem=$(echo $mem_total*13/100 | bc)
   min_work_mem=$(echo $mem_total*2/100 | bc)
-  min_java_arg_2=$(echo $mem_total*52/100 | bc)
-  min_java_arg_3=$(echo $mem_total*71.5/100 | bc)
+  min_java_arg_2=$(echo $mem_total*13/100 | bc)
+  min_java_arg_3=$(echo $mem_total*65/100 | bc)
   echo """---
 shared_buffers: ${min_shared_mem}MB
 work_mem: ${min_work_mem}MB
@@ -312,10 +288,10 @@ java_arg_2: -Xms${min_java_arg_2}m
 java_arg_3: -Xmx${min_java_arg_3}m""" > memory_config.yml
 
 elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
-  max_shared_mem=$(echo $mem_total*10/100 | bc)
-  max_work_mem=$(echo $mem_total*3/100 | bc)
-  max_java_arg_2=$(echo $mem_total*40/100 | bc)
-  max_java_arg_3=$(echo $mem_total*57/100 | bc)
+  max_shared_mem=$(echo $mem_total*13/100 | bc)
+  max_work_mem=$(echo $mem_total*2/100 | bc)
+  max_java_arg_2=$(echo $mem_total*7/100 | bc)
+  max_java_arg_3=$(echo $mem_total*65/100 | bc)
   echo """---
 shared_buffers: ${max_shared_mem}MB
 work_mem: ${max_work_mem}MB
@@ -345,8 +321,8 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("diksha_columns" "state_code" "static_datasource" "system_user_name" "base_dir" "db_user" "db_name" "db_password" "read_only_db_user" \
-                "read_only_db_password" "s3_access_key" "s3_secret_key" "s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
+declare -a arr=("diksha_columns" "state_code" "static_datasource" "management" "system_user_name" "base_dir" "db_user" "db_name" "db_password" \
+                "s3_access_key" "s3_secret_key" "s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
 		"aws_default_region" "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
 		"keycloak_config_otp" "session_timeout")
 
@@ -375,7 +351,7 @@ db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=1.10
+version_upgradable_from=1.12.1
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
@@ -408,6 +384,11 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_static_datasource $key $value
+       fi
+       ;;
+   management)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
        fi
        ;;
    system_user_name)
@@ -486,13 +467,6 @@ case $key in
           check_db_naming $key $value CQUBE_DB_NAME
        fi
        ;;
-   read_only_db_user)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_readonly_db_naming $key $value
-       fi
-       ;;
    keycloak_adm_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
@@ -517,13 +491,6 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_password $db_name $db_user $db_password
-       fi
-       ;;
-   read_only_db_password)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_readonly_db_password $key $value
        fi
        ;;
    api_endpoint)

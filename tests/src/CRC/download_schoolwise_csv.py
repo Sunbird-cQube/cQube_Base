@@ -25,7 +25,7 @@ class school_wise_download():
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(5)
         self.cal.page_loading(self.driver)
-        self.filename = p.get_download_dir() + '/' + self.fname.crc_school()
+        self.filename = p.get_download_dir() + '/' + self.fname.crc_school()+self.cal.get_current_date()+'.csv'
         self.cal.page_loading(self.driver)
         return os.path.isfile(self.filename)
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import * as Highcharts from 'highcharts/highstock';
 import HeatmapModule from 'highcharts/modules/heatmap';
 HeatmapModule(Highcharts);
@@ -6,7 +6,7 @@ import { AppServiceComponent } from '../../../../app.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from 'src/app/services/diksha-report.service';
-import { MultiSelectComponent } from '../multi-select/multi-select.component';
+import { MultiSelectComponent } from '../../../../common/multi-select/multi-select.component';
 
 @Component({
   selector: 'app-diksha-tpd-teachers-percentage',
@@ -37,7 +37,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
   reportType = "percentage_teachers";
   timePeriod = 'All';
-  timePeriods = [{ key: "Last_Day", value: "Last Day" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_30_Day", value: "Last 30 Days" }, { key: "All", value: "Overall" }]
+  timePeriods = [{ key: "All", value: "Overall" }, { key: "Last_30_Day", value: "Last 30 Days" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_Day", value: "Last Day" }]
 
   //to set hierarchy level
   skul = true;
@@ -70,12 +70,22 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
   @ViewChild(MultiSelectComponent) multiSelect: MultiSelectComponent;
 
+  screenWidth: number;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.screenWidth = window.innerWidth;
+    this.resetFontSizesOfChart();
+  }
+
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
     public commonService: AppServiceComponent,
     public router: Router
-  ) { }
+  ) {
+    this.screenWidth = window.innerWidth;
+  }
 
   scousesTOShow: any = [];
   ngOnInit(): void {
@@ -117,7 +127,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   resetToInitPage() {
-    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.commonService.dateAndTime}`;
     this.skul = true;
     this.dist = false;
     this.blok = false;
@@ -140,7 +150,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   }
 
   commonFunc = () => {
-    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_allDistrict_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.commonService.dateAndTime}`;
     this.commonService.errMsg();
     this.level = 'district';
     this.reportData = [];
@@ -160,15 +170,133 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.districtNames);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
   }
+
+  resetFontSizesOfChart(): void {
+    if (this.chart) {
+      let xAxis, yAxis, dataLabels, tooltipStyle;
+
+      if (this.screenWidth <= 1920) {
+        xAxis = {
+          fontSize: '12px'
+        };
+
+        yAxis = {
+          fontSize: '12px'
+        };
+
+        dataLabels = {
+          fontSize: '11px'
+        };
+
+        tooltipStyle = {
+          fontSize: '12px'
+        }
+      } else if (this.screenWidth > 1920 && this.screenWidth < 3840) {
+        xAxis = {
+          fontSize: '1.2rem'
+        };
+
+        yAxis = {
+          fontSize: '1.2rem'
+        };
+
+        dataLabels = {
+          fontSize: '1.1rem'
+        };
+
+        tooltipStyle = {
+          fontSize: '1.2rem'
+        }
+      } else {
+        xAxis = {
+          fontSize: '1.6rem'
+        };
+
+        yAxis = {
+          fontSize: '1.6rem'
+        };
+
+        dataLabels = {
+          fontSize: '1.5rem'
+        };
+
+        tooltipStyle = {
+          fontSize: '1.6rem'
+        }
+      }
+
+      Highcharts.setOptions({
+        xAxis: {
+          labels: {
+            style: {
+              fontSize: xAxis.fontSize
+            }
+          }
+        }
+      });
+    }
+  }
+
   chart;
   chartFun = (xLabel, xLabelId, yLabel, zLabel, data, level, xLabel1, yLabel1, tooltipData) => {
     let scrollBarX
     let scrollBarY
+    let xAxis, yAxis, dataLabels, tooltipStyle;
+
+    if (this.screenWidth <= 1920) {
+      xAxis = {
+        fontSize: '12px'
+      };
+
+      yAxis = {
+        fontSize: '12px'
+      };
+
+      dataLabels = {
+        fontSize: '11px'
+      };
+
+      tooltipStyle = {
+        fontSize: '12px'
+      }
+    } else if (this.screenWidth > 1920 && this.screenWidth < 3840) {
+      xAxis = {
+        fontSize: '1.2rem'
+      };
+
+      yAxis = {
+        fontSize: '1.2rem'
+      };
+
+      dataLabels = {
+        fontSize: '1.1rem'
+      };
+
+      tooltipStyle = {
+        fontSize: '1.2rem'
+      }
+    } else {
+      xAxis = {
+        fontSize: '1.6rem'
+      };
+
+      yAxis = {
+        fontSize: '1.6rem'
+      };
+
+      dataLabels = {
+        fontSize: '1.5rem'
+      };
+
+      tooltipStyle = {
+        fontSize: '1.6rem'
+      }
+    }
 
     if (xLabel1.length <= 30) {
       scrollBarX = false
@@ -176,7 +304,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       scrollBarX = true
     }
 
-    var scrollLimit = this.height > 800 ? 20 : this.height > 650 && this.height < 800 ? 15 : this.height < 500 ? 8 : 12;
+    var scrollLimit = this.height > 800 ? 16 : this.height > 650 && this.height < 800 ? 12 : this.height < 500 ? 8 : 12;
     if (yLabel1.length <= scrollLimit) {
       scrollBarY = false
     } else {
@@ -224,7 +352,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
           rotation: 270,
           style: {
             color: 'black',
-            fontSize: '11px',
+            fontSize: xAxis.fontSize,
             fontFamily: 'Arial',
           }
         },
@@ -234,18 +362,21 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: '10px',
+            fontSize: yAxis.fontSize,
             textDecoration: "underline",
             textOverflow: "ellipsis",
             fontFamily: 'Arial'
           },
-          align: "right"
+          align: "right",
+          formatter: function (this) {
+            return this.value !== this.pos ? `${this.value}` : '';
+          }
         },
         gridLineColor: 'transparent',
         title: null,
         reversed: true,
         min: 0,
-        max: this.height == screen.height ? 11 : this.height > 800 ? 19 : this.height > 650 && this.height < 800 ? 14 : this.height < 500 ? 7 : 11,
+        max: scrollLimit - 1,
         scrollbar: {
           enabled: scrollBarY
         }
@@ -263,6 +394,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
           color: '#000000',
           style: {
             textOutline: 'none',
+            fontSize: dataLabels.fontSize
           },
           overflow: false,
           crop: true,
@@ -273,6 +405,9 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
         text: null
       },
       tooltip: {
+        style: {
+          fontSize: tooltipStyle.fontSize
+        },
         formatter: function () {
           return '<b>' + getPointCategoryName(this.point, 'y', level) + '</b>';
         }
@@ -326,7 +461,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
   selectedDistrict(districtId) {
     this.level = 'block';
-    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_district_${districtId}_${this.commonService.dateAndTime}`;
     this.block = undefined;
     this.cluster = undefined;
     this.blockHidden = false;
@@ -358,7 +493,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -367,7 +502,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
   selectedBlock(blockId) {
     this.level = 'cluster';
-    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_block_${blockId}_${this.commonService.dateAndTime}`;
     this.cluster = undefined;
     this.blockHidden = false;
     this.clusterHidden = false;
@@ -403,7 +538,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -411,7 +546,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
 
   selectedCluster(clusterId) {
     this.level = 'school';
-    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod: 'overall'}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
+    this.fileName = `${this.reportName}_${this.timePeriod != 'All' ? this.timePeriod : 'overall'}_${this.level}s_of_cluster_${clusterId}_${this.commonService.dateAndTime}`;
     document.getElementById('home').style.display = 'block';
     this.commonService.errMsg();
     this.reportData = [];
@@ -446,7 +581,7 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
       this.scousesTOShow = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -513,4 +648,29 @@ export class DikshaTPDTeachersPercentageComponent implements OnInit {
   downloadReport() {
     this.commonService.download(this.fileName, this.reportData);
   }
+
+  public legendColors: any = [
+    "#a50026",
+    "#d73027",
+    "#f46d43",
+    "#fdae61",
+    "#fee08b",
+    "#d9ef8b",
+    "#a6d96a",
+    "#66bd63",
+    "#1a9850",
+    "#006837",
+  ];
+  public values = [
+    "0-10",
+    "11-20",
+    "21-30",
+    "31-40",
+    "41-50",
+    "51-60",
+    "61-70",
+    "71-80",
+    "81-90",
+    "91-100",
+  ];
 }

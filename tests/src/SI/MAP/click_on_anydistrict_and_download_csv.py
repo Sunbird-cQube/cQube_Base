@@ -27,7 +27,7 @@ class download_icon():
         self.p.page_loading(self.driver)
         self.driver.find_element_by_id(Data.Download).click()
         time.sleep(3)
-        self.filename = cal.get_download_dir() + '/' + self.fname.scmap_district()
+        self.filename = cal.get_download_dir() + '/' + self.fname.scmap_district()+self.p.get_current_date()+'.csv'
         self.p.page_loading(self.driver)
         if not os.path.isfile(self.filename):
             print("Districtwise csv is not downloaded")
@@ -41,7 +41,6 @@ class download_icon():
                     schools += int(row[0])
                 school = self.driver.find_element_by_id("schools").text
                 sc = re.sub('\D', "", school)
-                print( int(sc) , int(schools))
                 if int(sc) != int(schools):
                     print("school count mismatched")
                     count = count + 1

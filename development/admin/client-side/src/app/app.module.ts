@@ -23,6 +23,8 @@ import { SummaryStatistictsComponent } from './components/summary-statisticts/su
 import { NifiShedularComponent } from './components/nifi-shedular/nifi-shedular.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DataReplayComponent } from './components/data-replay/data-replay.component';
+import { MultiSelectComponent } from './components/data-replay/multi-select/multi-select.component';
 
 export function kcFactory(kcSecurity: KeycloakSecurityService) {
   return () => kcSecurity.init();
@@ -41,6 +43,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     DashboardComponent,
     SummaryStatistictsComponent,
     NifiShedularComponent,
+    DataReplayComponent,
+    MultiSelectComponent,
   ],
   imports: [
     FormsModule,

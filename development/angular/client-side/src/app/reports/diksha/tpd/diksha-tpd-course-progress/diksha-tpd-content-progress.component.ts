@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import * as Highcharts from 'highcharts/highstock';
 import HeatmapModule from 'highcharts/modules/heatmap';
 HeatmapModule(Highcharts);
@@ -6,7 +6,7 @@ import { AppServiceComponent } from '../../../../app.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DikshaReportService } from 'src/app/services/diksha-report.service';
-import { MultiSelectComponent } from '../multi-select/multi-select.component';
+import { MultiSelectComponent } from '../../../../common/multi-select/multi-select.component';
 
 @Component({
   selector: 'app-diksha-tpd-content-progress',
@@ -35,7 +35,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
 
   reportType = "collection_progress";
   timePeriod = 'All';
-  timePeriods = [{ key: "Last_Day", value: "Last Day" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_30_Day", value: "Last 30 Days" }, { key: "All", value: "Overall" }]
+  timePeriods = [{ key: "All", value: "Overall" }, { key: "Last_30_Day", value: "Last 30 Days" }, { key: "Last_7_Day", value: "Last 7 Days" }, { key: "Last_Day", value: "Last Day" }]
 
   //to set hierarchy level
   skul = true;
@@ -71,12 +71,22 @@ export class DikshaTPDContentProgressComponent implements OnInit {
 
   @ViewChild(MultiSelectComponent) multiSelect: MultiSelectComponent;
 
+  screenWidth: number;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.screenWidth = window.innerWidth;
+    this.resetFontSizesOfChart();
+  }
+
   constructor(
     public http: HttpClient,
     public service: DikshaReportService,
     public commonService: AppServiceComponent,
     public router: Router
-  ) { }
+  ) {
+    this.screenWidth = window.innerWidth;
+  }
 
   scousesTOShow: any = [];
   ngOnInit(): void {
@@ -163,23 +173,140 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.districtNames);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
+  }
+
+  resetFontSizesOfChart(): void {
+    if (this.chart) {
+      let xAxis, yAxis, dataLabels, tooltipStyle;
+
+      if (this.screenWidth <= 1920) {
+        xAxis = {
+          fontSize: '12px'
+        };
+
+        yAxis = {
+          fontSize: '12px'
+        };
+
+        dataLabels = {
+          fontSize: '11px'
+        };
+
+        tooltipStyle = {
+          fontSize: '12px'
+        }
+      } else if (this.screenWidth > 1920 && this.screenWidth < 3840) {
+        xAxis = {
+          fontSize: '1.2rem'
+        };
+
+        yAxis = {
+          fontSize: '1.2rem'
+        };
+
+        dataLabels = {
+          fontSize: '1.1rem'
+        };
+
+        tooltipStyle = {
+          fontSize: '1.2rem'
+        }
+      } else {
+        xAxis = {
+          fontSize: '1.6rem'
+        };
+
+        yAxis = {
+          fontSize: '1.6rem'
+        };
+
+        dataLabels = {
+          fontSize: '1.5rem'
+        };
+
+        tooltipStyle = {
+          fontSize: '1.6rem'
+        }
+      }
+
+      Highcharts.setOptions({
+        xAxis: {
+          labels: {
+            style: {
+              fontSize: xAxis.fontSize
+            }
+          }
+        }
+      });
+    }
   }
 
   chart;
   chartFun = (xLabel, xLabelId, yLabel, zLabel, data, level, xLabel1, yLabel1, tooltipData) => {
     let scrollBarX
     let scrollBarY
+    let xAxis, yAxis, dataLabels, tooltipStyle;
+    //console.log(this.screenWidth);
+    if (this.screenWidth <= 1920) {
+      xAxis = {
+        fontSize: '12px'
+      };
+
+      yAxis = {
+        fontSize: '12px'
+      };
+
+      dataLabels = {
+        fontSize: '11px'
+      };
+
+      tooltipStyle = {
+        fontSize: '12px'
+      }
+    } else if (this.screenWidth > 1920 && this.screenWidth < 3840) {
+      xAxis = {
+        fontSize: '1.2rem'
+      };
+
+      yAxis = {
+        fontSize: '1.2rem'
+      };
+
+      dataLabels = {
+        fontSize: '1.1rem'
+      };
+
+      tooltipStyle = {
+        fontSize: '1.2rem'
+      }
+    } else {
+      xAxis = {
+        fontSize: '1.6rem'
+      };
+
+      yAxis = {
+        fontSize: '1.6rem'
+      };
+
+      dataLabels = {
+        fontSize: '1.5rem'
+      };
+
+      tooltipStyle = {
+        fontSize: '1.6rem'
+      }
+    }
 
     if (xLabel1.length <= 30) {
       scrollBarX = false
     } else {
       scrollBarX = true
     }
-    var scrollLimit = this.height > 800 ? 20 : this.height > 650 && this.height < 800 ? 15 : this.height < 500 ? 8 : 12;
+    var scrollLimit = this.height > 800 ? 16 : this.height > 650 && this.height < 800 ? 12 : this.height < 500 ? 8 : 12;
     if (yLabel1.length <= scrollLimit) {
       scrollBarY = false
     } else {
@@ -227,7 +354,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
           rotation: 270,
           style: {
             color: 'black',
-            fontSize: '11px',
+            fontSize: xAxis.fontSize,
             fontFamily: 'Arial',
           }
         },
@@ -237,18 +364,21 @@ export class DikshaTPDContentProgressComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: '10px',
+            fontSize: yAxis.fontSize,
             textDecoration: "underline",
             textOverflow: "ellipsis",
             fontFamily: 'Arial'
           },
-          align: "right"
+          align: "right",
+          formatter: function (this) {
+            return this.value !== this.pos ? `${this.value}` : '';
+          }
         },
         gridLineColor: 'transparent',
         title: null,
         reversed: true,
         min: 0,
-        max: this.height == screen.height ? 11 : this.height > 800 ? 19 : this.height > 650 && this.height < 800 ? 14 : this.height < 500 ? 7 : 11,
+        max: scrollLimit - 1,
         scrollbar: {
           enabled: scrollBarY
         }
@@ -266,6 +396,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
           color: '#000000',
           style: {
             textOutline: 'none',
+            fontSize: dataLabels.fontSize
           },
           overflow: false,
           crop: true,
@@ -276,6 +407,9 @@ export class DikshaTPDContentProgressComponent implements OnInit {
         text: null
       },
       tooltip: {
+        style: {
+          fontSize: tooltipStyle.fontSize
+        },
         formatter: function () {
           return '<b>' + getPointCategoryName(this.point, 'y', level) + '</b>';
         }
@@ -325,9 +459,9 @@ export class DikshaTPDContentProgressComponent implements OnInit {
 
   allDistricts = []; allBlocks = []; allClusters = [];
   selectedTimePeriod() {
-    this.districtNames = [];
-    this.blockNames = [];
-    this.clusterNames = [];
+    //this.districtNames = [];
+    //this.blockNames = [];
+    //this.clusterNames = [];
     this.levelWiseFilter();
   }
 
@@ -366,7 +500,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -412,7 +546,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -456,7 +590,7 @@ export class DikshaTPDContentProgressComponent implements OnInit {
       this.items = [];
       this.reportData = [];
       this.commonService.loaderAndErr(this.reportData);
-      if (this.chart.axes) {
+      if (this.chart && this.chart.axes) {
         this.chart.destroy();
       }
     })
@@ -523,4 +657,29 @@ export class DikshaTPDContentProgressComponent implements OnInit {
   downloadReport() {
     this.commonService.download(this.fileName, this.reportData);
   }
+
+  public legendColors: any = [
+    "#a50026",
+    "#d73027",
+    "#f46d43",
+    "#fdae61",
+    "#fee08b",
+    "#d9ef8b",
+    "#a6d96a",
+    "#66bd63",
+    "#1a9850",
+    "#006837",
+  ];
+  public values = [
+    "0-10",
+    "11-20",
+    "21-30",
+    "31-40",
+    "41-50",
+    "51-60",
+    "61-70",
+    "71-80",
+    "81-90",
+    "91-100",
+  ];
 }

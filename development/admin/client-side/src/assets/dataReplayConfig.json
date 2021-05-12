@@ -1,0 +1,62 @@
+[
+    {
+        "template": "nifi_crc",
+        "status": true,
+        "sourceName": "CRC"
+    },
+    {
+        "template": "nifi_student_attendance",
+        "status": true,
+        "sourceName": "Student Attendance"
+    },
+    {
+        "template": "nifi_teacher_attendance",
+        "status": true,
+        "sourceName": "Teacher Attendance"
+    },
+    {
+        "template": "nifi_semester",
+        "status": true,
+        "sourceName": "Semester"
+    },
+    {
+        "template": "nifi_infra",
+        "status": true,
+        "sourceName": "Infrastructure"
+    },
+    {
+        "template": "nifi_diksha",
+        "status": false,
+        "sourceName": "Diksha"
+    },
+    {
+        "template": "nifi_summary",
+        "status": true,
+        "sourceName": "Diksha ETB"
+    },
+    {
+        "template": "nifi_tpd",
+        "status": true,
+        "sourceName": "Diksha TPD"
+    },
+    {
+        "template": "nifi_static",
+        "status": true,
+        "sourceName": "Static"
+    },
+    {
+        "template": "nifi_udise",
+        "status": true,
+        "sourceName": "UDISE"
+    },
+    {
+        "template": "nifi_pat",
+        "status": true,
+        "sourceName": "PAT"
+    },
+    {
+        "template": "nifi_composite",
+        "status": false,
+        "sourceName": "Composite"
+    }
+]

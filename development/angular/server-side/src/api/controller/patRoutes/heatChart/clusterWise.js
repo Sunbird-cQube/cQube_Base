@@ -4,18 +4,30 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const helper = require('./helper');
 
-router.post('/clusterWise', auth.authController, async (req, res) => {
+router.post('/clusterWise', auth.authController, async(req, res) => {
     try {
-        logger.info('---PAT heat map cluster wise api ---');
-        let { year, month, grade, subject_name, exam_date, blockId, viewBy } = req.body
+        logger.info(`--- ${req.body.report} heat map cluster wise api ---`);
+        let { year, month, grade, subject_name, exam_date, blockId, viewBy, report, management, category } = req.body
         let fileName = ''
-        if (grade == "") {
-            fileName = `pat/heatmap-summary/${year}/${month}/blocks/${blockId}.json`
+
+        if (management != 'overall' && category == 'overall') {
+            if (grade == "") {
+                fileName = `${report}/school_management_category/heatmap-summary/${year}/${month}/overall_category/${management}/blocks/${blockId}.json`
+            } else {
+                if (viewBy == 'indicator') {
+                    fileName = `${report}/school_management_category/heatChart/indicatorIdLevel/${year}/${month}/overall_category/${management}/blocks/${blockId}.json`;
+                } else if (viewBy == 'question_id')
+                    fileName = `${report}/school_management_category/heatChart/questionIdLevel/${year}/${month}/overall_category/${management}/blocks/${blockId}.json`;
+            }
         } else {
-            if (viewBy == 'indicator') {
-                fileName = `pat/heatChart/indicatorIdLevel/${year}/${month}/blocks/${blockId}.json`;
-            } else if (viewBy == 'question_id')
-                fileName = `pat/heatChart/questionIdLevel/${year}/${month}/blocks/${blockId}.json`;
+            if (grade == "") {
+                fileName = `${report}/heatmap-summary/${year}/${month}/blocks/${blockId}.json`
+            } else {
+                if (viewBy == 'indicator') {
+                    fileName = `${report}/heatChart/indicatorIdLevel/${year}/${month}/blocks/${blockId}.json`;
+                } else if (viewBy == 'question_id')
+                    fileName = `${report}/heatChart/questionIdLevel/${year}/${month}/blocks/${blockId}.json`;
+            }
         }
         var data = await s3File.readS3File(fileName);
 
@@ -64,7 +76,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         data = data.sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1)
         let result = await helper.generalFun(grade, data, 2, viewBy)
 
-        logger.info('--- PAT heat map cluster wise response sent ---');
+        logger.info(`--- ${req.body.report} heat map cluster wise response sent ---`);
         res.status(200).send({ clusterDetails, result, downloadData: data });
     } catch (e) {
         logger.error(`Error :: ${e}`)

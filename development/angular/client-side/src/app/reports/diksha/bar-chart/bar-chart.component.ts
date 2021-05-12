@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, Input, OnInit } from "@angular/core";
 import * as Highcharts from 'highcharts/highstock'
 
 @Component({
@@ -11,19 +11,30 @@ export class BarChartComponent implements OnInit {
   chartOptions;
   @Input() public category: String[];
   @Input() public data: Number[];
+  @Input() public xData: Number[];
   @Input() public xAxisLabel: String;
   @Input() public yAxisLabel: String;
   @Input() public reportName: String;
   @Input() public level: String;
   @Input() public type: String;
+  @Input() height: any = window.innerHeight;
 
-  constructor() { }
+  constructor(public changeDetection: ChangeDetectorRef) {
+  }
 
-  ngOnInit() {
+  onResize() {
+    this.height = window.innerHeight;
     this.createBarChart();
   }
 
+
+  ngOnInit() {
+    this.changeDetection.detectChanges();
+    this.onResize();
+  }
+
   createBarChart() {
+    var xData = this.xData;
     var name = this.reportName;
     var level = this.level;
     var type = this.type;
@@ -46,7 +57,7 @@ export class BarChartComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: "10px"
+            fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px"
           }
         },
         type: "category",
@@ -56,13 +67,14 @@ export class BarChartComponent implements OnInit {
           text: this.yAxisLabel,
           style: {
             color: 'black',
-            fontSize: "10px",
+            fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px",
             fontWeight: "bold"
           }
         },
         min: 0,
         max: 25,
         scrollbar: {
+          minWidth: 6,
           enabled: scrollBarX,
         },
         tickLength: 0
@@ -71,7 +83,7 @@ export class BarChartComponent implements OnInit {
         labels: {
           style: {
             color: 'black',
-            fontSize: "10px"
+            fontSize: this.height > 1760 ? "26px" : this.height > 1180 && this.height < 1760 ? "16px" : this.height > 667 && this.height < 1180 ? "12px" : "10px"
           },
           formatter: function () {
             return this.value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -85,7 +97,7 @@ export class BarChartComponent implements OnInit {
           text: this.xAxisLabel,
           style: {
             color: 'black',
-            fontSize: "10px",
+            fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px",
             fontWeight: "bold"
           }
         }
@@ -113,7 +125,7 @@ export class BarChartComponent implements OnInit {
             enabled: true,
             style: {
               fontWeight: 1,
-              fontSize: "10px"
+              fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px"
             },
             formatter: function () {
               return this.y.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -124,14 +136,19 @@ export class BarChartComponent implements OnInit {
         }
       ],
       tooltip: {
+        style: {
+          fontSize: this.height > 1760 ? "32px" : this.height > 1180 && this.height < 1760 ? "22px" : this.height > 667 && this.height < 1180 ? "12px" : "10px",
+          opacity: 1,
+          backgroundColor: "white"
+        },
         formatter: function () {
-          return '<b>' + getPointCategoryName(this.point, name, level, type) + '</b>';
+          return '<b>' + getPointCategoryName(this.point, name, xData, level, type) + '</b>';
         }
       }
     }
     this.Highcharts.chart("container", this.chartOptions);
 
-    function getPointCategoryName(point, reportName, level, type) {
+    function getPointCategoryName(point, reportName, xData, level, type) {
       var obj = '';
       if (reportName == "course") {
         let percentage = ((point.y / point.series.yData.reduce((a, b) => a + b, 0)) * 100).toFixed(2);
@@ -154,9 +171,13 @@ export class BarChartComponent implements OnInit {
       }
       if (reportName == "enroll/comp") {
         obj = `<b>${level.charAt(0).toUpperCase() + level.substr(1).toLowerCase()} Name:</b> ${point.category}
-        <br> ${point.y !== null ? `<b>${type.charAt(0).toUpperCase() + type.substr(1).toLowerCase()}:</b> ${point.y.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : ''}`
+        <br> ${point.y !== null ? `<b>${type.charAt(0).toUpperCase() + type.substr(1).toLowerCase()}:</b> ${point.y.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : ''}
+        ${type != `completion` && xData[point.index] ? `<br><b>Completion: </b>${xData[point.index].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : '' }
+        ${type != `enrollment` && xData[point.index] ? `<br><b>Enrollment: </b>${xData[point.index].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,")}` : '' }
+        `
         return obj;
       }
     }
   }
 }
+

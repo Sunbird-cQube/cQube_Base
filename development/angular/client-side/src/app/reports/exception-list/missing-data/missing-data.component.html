@@ -6,7 +6,7 @@
         <div class="col-sm-4">
             <div class="row">
                 <div class="col-sm-7">
-                    <p id="errMsg"
+                    <p id="errMsg" class="note"
                         style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
                     </p>
                 </div>
@@ -30,7 +30,7 @@
                     <tr>
                         <td>Missing School Data (Geo-location)</td>
                         <td><button class="btn btn-primary" style="padding: 0.5% 2% 0.5% 2%"
-                                (click)="school_Invalid_Data()">Download</button></td>
+                                (click)="school_Invalid_Data()" id="invalidData">Download</button></td>
                     </tr>
                 </tbody>
             </table>

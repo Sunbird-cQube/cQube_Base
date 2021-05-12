@@ -85,7 +85,7 @@
     password: "{{ read_only_db_password }}"
     encrypted: yes
     state: present
-  tags: [ install, update ]
+  tags: install
 
 - name: Grant the SELECT privilege to the read_only_db_user
   become: true
@@ -95,7 +95,7 @@
     privs: SELECT
     objs: ALL_IN_SCHEMA
     role: "{{ read_only_db_user }}"
-  tags: [ install, update ]
+  tags: install
 
 - name: Stopping postgresql 
   service: 

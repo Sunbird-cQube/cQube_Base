@@ -1,0 +1,83 @@
+<div class="container-fluid" style="padding-top:15px !important;">
+    <div class="row" (window:resize)="onResize()">
+        <div class="col-lg-7 col-md-12 col-sm-12">
+            <div>
+                <p id="dist">
+                    Student Attendance Report for: <span id="state" style="cursor: pointer;text-decoration: underline;" (click)="onHomeClick(false)">{{state}}</span>
+                    <span *ngIf="selectedDistricts.length === 1"> / <span style="cursor: pointer;text-decoration: underline;" (click)="shareCheckedList(selectedDistricts)">{{ getDistrictName(selectedDistricts[0]) }}</span></span>
+                    <span *ngIf="selectedBlock.length === 1"> / <span style="cursor: pointer;text-decoration: underline;" (click)="shareCheckedList1(selectedBlock)">{{ getBlockName(selectedBlock[0]) }}</span></span>
+                    <span *ngIf="selectedCluster.length === 1"> / <span style="cursor: pointer;text-decoration: underline;" (click)="shareCheckedList2(selectedCluster)">{{ getClusterName(selectedCluster[0]) }}</span></span>
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-12 col-sm-12">
+            <div class="row">
+                <div class="col-sm-7">
+                    <p id="errMsg" class="note"></p>
+                </div>
+                <div class="col-sm-5">
+                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="onHomeClick(false)"></em>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <select id="year" [(ngModel)]="selectedYear" (change)="onSelectYear()" name="year" style="float: left;">
+                <option [value]="selectedYear" disabled selected="selected">Choose Year
+                </option>
+                <option *ngFor="let year of years, let i = index" [(ngValue)]="years[i]">
+                    {{years[i]}}
+                </option>
+            </select>
+            <div>
+                <app-multi-select #multiSelect1 style="float: left;width: auto; margin-right: 10px;" [list]="districtList" [text]="'District'" [width1]="height > 1780 ? '350px !important': height > 1180 && height < 1780 ? '300px': height > 667 && height < 1180 ? '200px':'130px'"
+                    [width2]="height > 1780 ? '350px !important': height > 1180 && height < 1780 ? '300px': height > 667 && height < 1180 ? '220px':'130px'" (shareCheckedList)="shareCheckedList($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
+                </app-multi-select>
+            </div>
+            <div *ngIf="blockData.length > 0 && selectedDistricts.length == 1">
+                <app-multi-select #multiSelect2 style="float: left;width: auto; margin-right: 10px;" [list]="blockList" [text]="'Block'" [width1]="height > 1780 ? '350px !important': height > 1180 && height < 1780 ? '300px': height > 667 && height < 1180 ? '200px':'130px'"
+                    [width2]="height > 1780 ? '350px !important': height > 1180 && height < 1780 ? '300px': height > 667 && height < 1180 ? '220px':'130px'"
+                    (shareCheckedList)="shareCheckedList1($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
+                </app-multi-select>
+            </div>
+            <div *ngIf="clusterData.length > 0 && selectedBlock.length == 1">
+                <app-multi-select #multiSelect3 style="float: left;width: auto; margin-right: 10px;" [list]="clusterList" [text]="'Cluster'" [width1]="height > 1780 ? '450px !important': height > 1180 && height < 1780 ? '400px': height > 667 && height < 1180 ? '270px':'220px'"
+                    [width2]="height > 1780 ? '450px !important': height > 1180 && height < 1780 ? '400px': height > 667 && height < 1180 ? '270px':'220px'" 
+                    (shareCheckedList)="shareCheckedList2($event)" from="trendChart" (clearSuccessors)="clearSuccessors($event)">
+                </app-multi-select>
+            </div>
+            <div *ngIf="schoolData.length > 0 && selectedCluster.length == 1">
+                <app-multi-select #multiSelect4 style="float: left;width: auto; margin-right: 10px;" [list]="schoolList" [text]="'School'" [width1]="height > 1780 ? '450px !important': height > 1180 && height < 1780 ? '400px': height > 667 && height < 1180 ? '270px':'220px'"
+                    [width2]="height > 1780 ? '450px !important': height > 1180 && height < 1780 ? '400px': height > 667 && height < 1180 ? '270px':'220px'"
+                    (shareCheckedList)="shareCheckedList3($event)" from="trendChart">
+                </app-multi-select>
+            </div>
+            <!-- <span class="note" style="float: left; margin-left: 3%;"><strong>Recommended: </strong>Please select maximum
+                10 districts for proper chart visibility</span> -->
+            <span class="note" [routerLink]="['/attendance/student-attendance']" style="cursor: pointer; float: right; font-weight: bold; text-decoration: underline; font-size: 13px; color: #3100cc">Access
+                Student Attendance Report</span>
+        </div>
+    </div>
+    <hr>
+    <div class="row" style="margin-top: 1%;">
+        <div [ngClass]="dataWithColors.length > 0 ? 'col-lg-10 col-md-10 col-sm-12' : 'col-lg-12 col-md-12 col-sm-12'">
+            <app-line-chart *ngIf="currentData.length > 0" [selectedYear]="selectedYear" [data]="data" [xAxisLabels]="xAxisLabels" [lineData]="currentData" [level]="level" [xAxisTitle]="'Months'"
+                 [yAxisTitle]="'Attendance'" [counts]="counts" [managementName]='managementName'>
+            </app-line-chart>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12" *ngIf="dataWithColors.length > 0">
+            <p class="note"><strong>{{level}} Legend</strong> </p>
+            <div *ngFor="let data of dataWithColors">
+                <div [ngStyle]="{backgroundColor: data.color}" id="circle"></div>
+                <div id="distName">{{data.name}}</div>
+                <br>
+                <br *ngIf="height > 1180">
+                <br *ngIf="height > 1750">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="spinner">
+    <div id="loader" class="loading">Loading&#8230;</div>
+</div>

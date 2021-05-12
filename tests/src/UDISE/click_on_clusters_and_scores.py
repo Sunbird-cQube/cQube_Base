@@ -30,4 +30,6 @@ class cluster_btn_scores():
                 print(scores.options[i].text, 'does not contains markers on map ')
                 count = count + 1
         self.p.page_loading(self.driver)
+        scores.select_by_index(1)
+        time.sleep(2)
         return count

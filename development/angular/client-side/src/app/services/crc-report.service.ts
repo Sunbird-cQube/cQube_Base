@@ -48,4 +48,9 @@ export class CrcReportService {
     return this.http.post(`${this.baseUrl}/crc/allSchoolWise`, data);
   }
 
+  getMonthYear(){
+    this.service.logoutOnTokenExpire();
+    return this.http.get(`${this.baseUrl}/crc/getDateRange`);
+  }
+
 }

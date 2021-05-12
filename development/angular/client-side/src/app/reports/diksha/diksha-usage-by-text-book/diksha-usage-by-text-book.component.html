@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-9 col-md-9 col-sm-12">
             <div *ngIf='all'>
-                <p id="dist_level" style=" color: #284d8a;font-size: 18px; line-height: 1.2em; margin-top: 5px;">
+                <p id="dist">
                     {{header}} Content Usage: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
@@ -18,18 +18,14 @@
         <div class="col-lg-3 col-md-3 col-sm-12">
             <div class="row">
                 <div class="col-sm-0" style="display: none;">
-                    <p id="errMsg"
-                        style="display: none; text-align: center;line-height: 1.2em; font-size: 12px; margin-top: 3%; ">
+                    <p id="errMsg" class="note">
                     </p>
                 </div>
                 <div class="col-sm-12">
                     <em class="fa fa-cloud-download" title="Download Report" id="download"
-                        style="cursor: pointer;font-size: 27px; float: right;margin: 5px 0px 0px 8px;color: #3100cc;"
                         (click)="downloadRoport()"></em>
 
-                    <em class="fa fa-home" id="home" title="Home"
-                        style="cursor: pointer;font-size: 30px; float: right;margin: 2px 0px 0px 0px; color: #3100cc; display: none;"
-                        alt="Home" (click)="homeClick()"></em>
+                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="homeClick()"></em>
                     <span id="rawDownload" *ngIf="reportData.length > 0"
                         style="color: #284d8a;cursor: pointer; float: right;margin: 8px 20px 0px 0px; text-decoration: underline; font-size: 13px;"
                         (click)="downloadRawFile()"><strong>Download Raw
@@ -41,44 +37,41 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <p style="text-align: justify; font-size: 11px;">
+            <p class="note">
                 <strong> About the dashboard:</strong> The dashboard provides information on the total content plays at
                 the textbook level for the Energised Textbooks at the district level.
             </p>
         </div>
     </div>
     <div class="col-sm-12">
-        <div class="row" style="margin-top: 5px;">
+        <div class="row">
             <div class="col-sm-9">
-                <select id="time_range"
-                    style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                    [(ngModel)]="timePeriod" name="timePeriod" (change)="chooseTimeRange()">
+                <select id="time_range" [(ngModel)]="timePeriod" name="timePeriod" (change)="chooseTimeRange()">
                     <option [value]="timePeriod" disabled selected="selected">Choose Time Range
                     </option>
-                    <option *ngFor="let time of timeDetails" [(ngValue)]="time.id" style=" font-size: 11px;">
+                    <option *ngFor="let time of timeDetails" [(ngValue)]="time.id">
                         {{time.name}}
                     </option>
                 </select>
 
-                <select id="coll_name"
-                    style="margin-right: 10px; padding: 5px; color: white; border-radius: 4px; font-size: 11px; font-weight: bold; background-color: rgb(152, 160, 163)"
-                    [(ngModel)]="collectionName" name="collectionName" (change)="getDataBasedOnCollections()">
+                <select id="coll_name" [(ngModel)]="collectionName" name="collectionName"
+                    (change)="getDataBasedOnCollections()">
                     <option [value]="collectionName" disabled selected="selected">Choose Textbook Name
                     </option>
                     <option *ngFor="let collectionName of collectionNames; let i = index"
-                        [(ngValue)]="collectionNames[i]" style=" font-size: 11px;">
+                        [(ngValue)]="collectionNames[i]">
                         {{collectionNames[i]}}
                     </option>
                 </select>
             </div>
             <div class="col-sm-3">
-                <span id="totalCount" style="float: right;font-size: 13px;"><strong>Total Content
+                <span id="totalCount" style="float: right;"><strong>Total Content
                         Plays:</strong>
                     {{footer}}</span>
             </div>
         </div>
 
-        <div class="row" style="margin-top: 10px;" id="chart">
+        <div class="row" id="chart">
             <div class="col-lg-1">
 
             </div>

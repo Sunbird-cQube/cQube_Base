@@ -29,6 +29,7 @@ class cQube_Teacher_Attendance_regression(unittest.TestCase):
     def setUpClass(self):
         self.data = GetData()
         self.driver = self.data.get_driver()
+        self.driver.implicitly_wait(100)
         self.data.open_cqube_appln(self.driver)
         self.data.login_cqube(self.driver)
         self.data.navigate_to_teacher_attendance_report()
@@ -84,9 +85,8 @@ class cQube_Teacher_Attendance_regression(unittest.TestCase):
     def test_clusterwise_csv_download(self):
         csv = ClusterwiseCsv(self.driver, self.year, self.month)
         result = csv.click_download_icon_of_clusters()
-        if result:
+        if result == 0:
             print("Cluster wise csv report download is working")
-            csv.remove_csv()
         else:
             raise self.failureException("Cluster wise csv report download is not working")
 
@@ -140,7 +140,7 @@ class cQube_Teacher_Attendance_regression(unittest.TestCase):
         home = Home(self.driver)
         home.click_on_blocks_click_on_home_icon()
         result = home.click_HomeButton()
-        if "student-attendance" in result:
+        if "teacher-attendance" in result:
             print("Home Icon is working")
         else:
             raise self.failureException('Home Icon is not working')
@@ -151,21 +151,22 @@ class cQube_Teacher_Attendance_regression(unittest.TestCase):
         student_count, Bstudents,school_count, Bschools = tc.block_total_no_of_students()
         self.assertEqual(int(student_count), int(Bstudents), msg="Block level no of students are not equal")
         self.assertEqual(int(school_count), int(Bschools), msg="Block level no of schools are not equal to no of schools ")
+
         student_count, Cstudents,school_count,Cschool = tc.cluster_total_no_of_students()
         self.assertEqual(int(student_count), int(Cstudents), msg="Cluster level no of students are not equal")
         self.assertEqual(int(school_count), int(Cschool), msg="Cluster level no of schools are not equal to no of schools ")
+
         student_count, Sstudents,school_count,Sschool = tc.schools_total_no_of_students()
         self.assertEqual(int(student_count), int(Sstudents), msg="Cluster level no of students are not equal")
         self.assertEqual(int(school_count), int(Sschool), msg="Cluster level no of schools are not equal to no of schools ")
         print("Total number of students equals on clicking of blocks,clusters,schools")
-        print("Total number of schools equals on clicking of blocks,clusters,schools")
 
-    def test_date_range(self):
-        daterange = DateRange(self.driver)
-        result = daterange.check_date_range()
-        self.driver.find_element_by_id('homeBtn').click()
-        time.sleep(2)
-        self.data.navigate_to_teacher_attendance_report()
+    # def test_date_range(self):
+    #     daterange = DateRange(self.driver)
+    #     result = daterange.check_date_range()
+    #     self.driver.find_element_by_id('homeBtn').click()
+    #     time.sleep(2)
+    #     self.data.navigate_to_teacher_attendance_report()
         # if result != 0:
         #  raise self.failureException('Data Range in correct')
 

@@ -32,7 +32,7 @@ class composite_report(unittest.TestCase):
     def test_navigate_composite(self):
         self.data.page_loading(self.driver)
         count = 0
-        if 'composit-report' in self.driver.current_url:
+        if 'composite-report' in self.driver.current_url:
             print("Composite report is present ")
         else:
             print("Composite report is not displayed ")
@@ -45,13 +45,13 @@ class composite_report(unittest.TestCase):
         count = 0
         self.driver.find_element_by_id(Data.home).click()
         self.data.page_loading(self.driver)
-        if 'home' in self.driver.current_url:
+        if 'dashboard' in self.driver.current_url:
             print("Landing page is displayed ")
         else:
             print('Home button is not working ')
             count = count + 1
         self.assertEqual(0,count,msg="Home btn is not working ")
-        self.driver.find_element_by_id('composit').click()
+        self.driver.find_element_by_id('composite').click()
         self.data.page_loading(self.driver)
 
     def test_graph_on_report(self):

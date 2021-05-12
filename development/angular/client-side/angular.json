@@ -36,7 +36,10 @@
               "node_modules/jquery/dist/jquery.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": [
+              "highcharts", "export-to-csv", "chart.js"
+           ]
           },
           "configurations": {
             "production": {
@@ -49,7 +52,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": true,
-              "extractCss": true,
+              "extractCss": false,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -106,15 +109,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         },
@@ -135,6 +134,7 @@
   },
   "defaultProject": "client-side",
   "cli": {
-    "analytics": "ba1a22eb-5816-43e5-b88d-9836f8523d87"
+    "analytics": "ba1a22eb-5816-43e5-b88d-9836f8523d87",
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }

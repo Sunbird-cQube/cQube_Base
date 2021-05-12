@@ -186,6 +186,20 @@
             </div>
         </div>
     </div>
+    
+    <br>
+    <div class="row">
+        <div class="col-sm-12">
+            <h5 style="color: #284d8a">Semester Assesment Test Summary:</h5>
+            <div *ngIf="tableData14.length > 0 " style="border: 1px solid gray">
+                <table #DataTable id="table15" class="display nowrap" width="100%"
+                    style="font-size: 11px; text-align: center;"></table>
+            </div>
+            <div *ngIf="tableData14.length === 0 " style="text-align: center; color: red;">
+                No Data Available
+            </div>
+        </div>
+    </div>
 
 </div>
 <div id="spinner" style="display: block;">

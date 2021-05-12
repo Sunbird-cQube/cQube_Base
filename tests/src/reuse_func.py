@@ -2,10 +2,12 @@ import configparser
 import json
 import os
 import time
+from datetime import date
+
 import psycopg2
 import requests
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.select import Select
 
@@ -50,6 +52,11 @@ class GetData():
         self.driver = webdriver.Chrome(options=options, executable_path=self.p.get_driver_path())
         return self.driver
 
+    def get_current_date(self):
+        today = date.today()
+        todaydate = today.strftime('%d-%m-%Y')
+        return todaydate
+
     def get_firefox_driver(self):
         p = pwd()
         options = webdriver.FirefoxOptions()
@@ -62,14 +69,17 @@ class GetData():
     def open_cqube_appln(self, driver):
         self.driver = driver
         self.driver.maximize_window()
-        self.driver.get(self.get_domain_name())
+        try:
+            self.driver.get(self.get_domain_name())
+        except WebDriverException:
+                print("page down")
         self.driver.implicitly_wait(60)
 
     def login_cqube(self, driver):
         self.driver = driver
         self.driver.implicitly_wait(60)
-        self.driver.find_element_by_id(Data.email).send_keys(self.get_username())
-        self.driver.find_element_by_id(Data.passwd).send_keys(self.get_password())
+        self.driver.find_element_by_name(Data.email).send_keys(self.get_username())
+        self.driver.find_element_by_name(Data.passwd).send_keys(self.get_password())
         self.driver.find_element_by_id(Data.login).click()
         self.page_loading(self.driver)
         self.driver.find_element_by_tag_name('button').click()
@@ -77,7 +87,7 @@ class GetData():
 
     def login_to_adminconsole(self, driver):
         self.driver = driver
-        self.driver.implicitly_wait(60)
+        self.driver.implicitly_wait(30)
         self.driver.find_element_by_id(Data.email).send_keys(self.get_admin_username())
         self.driver.find_element_by_id(Data.passwd).send_keys(self.get_admin_password())
         self.driver.find_element_by_id(Data.login).click()
@@ -118,6 +128,15 @@ class GetData():
         self.driver.find_element_by_xpath(Data.semester_sel).click()
         time.sleep(2)
         self.driver.find_element_by_id("lotable").click()
+        time.sleep(4)
+
+    def navigate_to_sat_heatchart_report(self):
+        self.driver.implicitly_wait(20)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath(Data.semester_sel).click()
+        time.sleep(2)
+        self.driver.find_element_by_id("satHeatChart").click()
         time.sleep(4)
 
     def navigate_to_composite_report(self):
@@ -163,6 +182,35 @@ class GetData():
         time.sleep(2)
         self.driver.find_element_by_xpath(Data.user_options).click()
         time.sleep(2)
+
+
+    def get_month_and_year_values(self):
+        year = self.driver.find_element_by_id('year').text
+        month = self.driver.find_element_by_id('month').text
+        return year , month
+
+    def get_student_month_and_year_values(self):
+        times = Select(self.driver.find_element_by_id('period'))
+        times.select_by_visible_text(' Year and Month ')
+        year = Select(self.driver.find_element_by_id(Data.sar_year))
+        month = Select(self.driver.find_element_by_id(Data.sar_month))
+        self.year = (year.first_selected_option.text).strip()
+        self.month = (month.first_selected_option.text).strip()
+        return self.year,self.month
+
+    def get_pat_month_and_year_values(self):
+        year = Select(self.driver.find_element_by_id(Data.sar_year))
+        month = Select(self.driver.find_element_by_id(Data.sar_month))
+        self.year = (year.first_selected_option.text).strip()
+        self.month = (month.first_selected_option.text).strip()
+        return self.year, self.month
+
+    def pat_month_and_year_values(self):
+        year = Select(self.driver.find_element_by_id('year'))
+        month = Select(self.driver.find_element_by_id('month'))
+        self.year = (year.first_selected_option.text).strip()
+        self.month = (month.first_selected_option.text).strip()
+        return self.year,self.month
 
     def navigate_to_student_report(self):
         self.driver.implicitly_wait(30)
@@ -215,7 +263,7 @@ class GetData():
         time.sleep(3)
         self.driver.find_element_by_xpath(Data.semester_sel).click()
         time.sleep(2)
-        self.driver.find_element_by_id("semReport").click()
+        self.driver.find_element_by_id("sat").click()
         time.sleep(5)
 
     def navigate_to_udise_report(self):
@@ -276,7 +324,7 @@ class GetData():
         time.sleep(3)
         self.driver.find_element_by_xpath(Data.tpds).click()
         time.sleep(2)
-        self.driver.find_element_by_id('tpd-comp').click()
+        self.driver.find_element_by_xpath("//a[@id='tpd-comp']").click()
         time.sleep(6)
 
     def navigate_to_health_card_index(self):
@@ -338,6 +386,33 @@ class GetData():
         self.driver.find_element_by_xpath(Data.exception_click).click()
         time.sleep(2)
         self.driver.find_element_by_id(Data.sem_exception).click()
+        time.sleep(5)
+
+    def navigate_to_pat_exception(self):
+        self.driver.implicitly_wait(20)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath(Data.exception_click).click()
+        time.sleep(2)
+        self.driver.find_element_by_id('patexp').click()
+        time.sleep(5)
+
+    def navigate_to_teacher_exception(self):
+        self.driver.implicitly_wait(20)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath(Data.exception_click).click()
+        time.sleep(2)
+        self.driver.find_element_by_id('tarExcpt').click()
+        time.sleep(5)
+
+    def navigate_to_student_exception(self):
+        self.driver.implicitly_wait(20)
+        self.driver.find_element_by_id(Data.Dashboard).click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath(Data.exception_click).click()
+        time.sleep(2)
+        self.driver.find_element_by_id('sarExp').click()
         time.sleep(5)
 
     def Details_text(self):

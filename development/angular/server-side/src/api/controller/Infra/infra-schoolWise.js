@@ -4,10 +4,18 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allSchoolWise', async (req, res) => {
+router.post('/allSchoolWise', async(req, res) => {
     try {
         logger.info('---Infra all school wise api ---');
-        let fileName = `infra/infra_school_table.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `infra/school_management_category/overall_category/${management}/infra_school_table.json`;
+        } else {
+            fileName = `infra/infra_school_table.json`
+        }
         var data = await s3File.readS3File(fileName);
 
         logger.info('---Infra all school wise response sent---');
@@ -19,17 +27,23 @@ router.post('/allSchoolWise', async (req, res) => {
     }
 });
 
-router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
+router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async(req, res) => {
     try {
         logger.info('---Infra school per cluster api ---');
-        var distId = req.params.distId;
-        var blockId = req.params.blockId;
         var clusterId = req.params.clusterId;
-        let fileName = `infra/infra_school_table.json`
+        var management = req.body.management;
+        var category = req.body.category;
+        let fileName;
+
+        if (management != 'overall' && category == 'overall') {
+            fileName = `infra/school_management_category/overall_category/${management}/infra_school_table.json`;
+        } else {
+            fileName = `infra/infra_school_table.json`
+        }
         var schoolData = await s3File.readS3File(fileName);
 
         let schoolFilterData = schoolData.filter(obj => {
-            return (obj.district.id == distId && obj.block.id == blockId && obj.cluster.id == clusterId)
+            return (obj.cluster.id == clusterId)
         });
         if (schoolFilterData.length == 0) {
             res.status(404).json({ errMsg: "No data found" });

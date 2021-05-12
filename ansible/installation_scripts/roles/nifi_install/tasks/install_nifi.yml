@@ -19,6 +19,7 @@
   apt: name=curl
   tags: install
 
+#1.12
 - name: Download NiFi
   get_url:
     url: https://archive.apache.org/dist/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.tar.gz
@@ -64,6 +65,7 @@
     dest: "{{ base_dir }}/cqube/nifi/nifi/jars"
     mode: "0644"
   tags: install
+#1.12 end
 
 - name: Creating nifi_queries directory
   file:
@@ -80,13 +82,16 @@
     - crc_queries.json
     - student_attendance_queries.json
     - student_assessment_queries.json
-    - diksha_queries_all.json
-    - diksha_queries_less.json
+    - diksha_summary_rollup_queries_all.json
+    - diksha_summary_rollup_queries_less.json
+    - diksha_tpd_queries.json
     - composite_queries.json
     - pat_queries.json
     - udise_queries.json
     - health_card_queries.json
     - teacher_attendance_queries.json
+    - data_replay_queries.json
+    - sat_queries.json
   tags: [ install, update ]
 
 - name: Touch a file
@@ -105,7 +110,7 @@
                db_pwd= "{{ db_password }}"
                nifi_port= "{{ nifi_port }}" 
   tags: install
-
+#1.12
 - name: configure the webserver in nifi.properties file
   replace:
     dest: "{{ base_dir }}/cqube/nifi/nifi/conf/nifi.properties"
@@ -119,19 +124,12 @@
     regexp: 'nifi.web.http.port=8080'
     replace: 'nifi.web.http.port={{ nifi_port }}'
   tags: install
-
+#constant
 - name: Increase nifi memory
   lineinfile:
     path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
     regexp: '^java.arg.2='
     line: "java.arg.2={{ java_arg_2 }}"
-  tags: [ install, update ]
-
-- name: Enabling the garbage collector value
-  lineinfile:
-    path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
-    regexp: '^#java.arg.13='
-    line: 'java.arg.13=-XX:+UseG1GC'
   tags: [ install, update ]
 
 - name: Add time zone to nifi
@@ -140,13 +138,14 @@
         block: |
                java.arg.8=-Duser.timezone=Asia/Kolkata
   tags: install
-
+#constant
 - name: Increase nifi memory
   lineinfile:
     path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
     regexp: '^java.arg.3='
     line: "java.arg.3={{ java_arg_3 }}"
   tags: [ install, update ]
+#1.12 end
 
 - name: Delete existing templates in nifi
   become: yes
@@ -154,7 +153,7 @@
     path: "{{ base_dir }}/cqube/nifi/nifi/conf/flow.xml.gz"
     state: absent
   tags: update
-
+#1.12
 - name: start NiFi
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
   tags: install
@@ -163,7 +162,7 @@
     minutes: 3
     prompt: "nifi is starting, kindly do not press any key"
   tags: install
-
+#1.12 end
 - name: Restart NiFi
   shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh restart"
   tags: update
@@ -184,15 +183,15 @@
     url: http://localhost:{{ nifi_port }}/nifi-api/controller/config
     method: GET
   register: nifi_config  
-  tags: install
+  tags: [ install, update ]
     
 - name: Update the NiFi thread count
   uri:
     url: http://localhost:{{ nifi_port }}/nifi-api/controller/config
     method: PUT
     body_format: json
-    body: {"revision":{"version":"{{ nifi_config.json.revision.version }}"},"component":{"maxTimerDrivenThreadCount":"22","maxEventDrivenThreadCount":"10"}}
-  tags: install
+    body: {"revision":{"version":"{{ nifi_config.json.revision.version }}"},"component":{"maxTimerDrivenThreadCount":"10","maxEventDrivenThreadCount":"6"}}
+  tags: [ install, update ]
 
 - name: Create the prometheus task
   uri:
@@ -200,7 +199,7 @@
     method: POST
     body_format: json
     status_code: 201
-    body: {"revision":{"clientId":"","version":0},"disconnectedNodeAcknowledged":false,"component":{"type":"org.apache.nifi.reporting.prometheus.PrometheusReportingTask","bundle":{"group":"org.apache.nifi","artifact":"nifi-prometheus-nar","version":"1.11.4"}}}
+    body: {"revision":{"clientId":"","version":0},"disconnectedNodeAcknowledged":false,"component":{"type":"org.apache.nifi.reporting.prometheus.PrometheusReportingTask","bundle":{"group":"org.apache.nifi","artifact":"nifi-prometheus-nar","version":"1.12.1"}}}
   register: output
   tags: [ install, update ]
 
