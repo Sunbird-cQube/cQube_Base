@@ -6088,7 +6088,7 @@ alter table teacher_attendance_exception_agg add column if not exists school_cat
 alter table sat_null_col add column  IF NOT EXISTS count_null_semester int;
 
 
-create unlogged table student_att_grade_count (
+create unlogged table if not exists student_att_grade_count (
 cluster_id bigint,
 grade text,
 school_management_type varchar(100),
@@ -6097,7 +6097,7 @@ month text,
 students_attended bigint,
 total_schools bigint);
 
-create unlogged table student_att_count (
+create unlogged table if not exists student_att_count (
 cluster_id bigint,
 academic_year varchar(10),
 month text,
