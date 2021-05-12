@@ -1675,7 +1675,10 @@ REFRESH MATERIALIZED VIEW periodic_grade_district_last7;
 REFRESH MATERIALIZED VIEW periodic_grade_block_last7;
 REFRESH MATERIALIZED VIEW periodic_grade_cluster_last7;
 REFRESH MATERIALIZED VIEW periodic_grade_school_last7;""",
-"pat_mv_pre_query":"""truncate table student_att_count;
+"pat_mv_pre_query":"""
+REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_year_month;
+REFRESH MATERIALIZED VIEW stud_count_school_mgmt_year_month;
+truncate table student_att_count;
 insert into student_att_count(cluster_id,academic_year,month,school_management_type,students_count,total_schools) 
 (select cluster_id,academic_year,month,school_management_type,
 	sum(students_count) as students_count,sum(total_schools) as total_schools
