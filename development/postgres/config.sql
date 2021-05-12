@@ -14029,8 +14029,7 @@ on b.cluster_id=tot_stud.cluster_id and b.grade=tot_stud.grade and b.school_mana
 on d.cluster_id=tot_stud.cluster_id and d.school_management_type=tot_stud.school_management_type 
  left join
  student_att_count as b 
- on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id and d.month=b.month and d.school_management_type=b.school_management_type				  
-) WITH NO DATA;
+ on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id and d.month=b.month and d.school_management_type=b.school_management_type where d.school_management_type is not null) WITH NO DATA;
 
 
 
