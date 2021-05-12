@@ -273,9 +273,6 @@ drop view if exists periodic_grade_cluster_mgmt_year_month cascade;
 drop view if exists periodic_grade_block_mgmt_year_month cascade;
 drop view if exists periodic_grade_district_mgmt_year_month cascade;
 
-drop table if exists student_att_count cascade;
-drop table if exists student_att_grade_count cascade;
-
 drop view if exists composite_mgt_district;
 drop view if exists composite_mgt_block;
 drop view if exists composite_mgt_cluster;
@@ -8390,8 +8387,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-max(students_count) as total_students,count(distinct school_id) as total_schools,max(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+max(students_count) as total_students,max(students_attended) as students_attended
 from semester_exam_school_result where exam_code in (select exam_code from sat_date_range where date_range='last30days') group by academic_year,grade,subject,semester,
 school_id order by grade desc,subject_name)
 union
@@ -8427,8 +8424,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result where exam_code in (select exam_code from sat_date_range where date_range='last30days') group by academic_year,grade,subject,semester,
 cluster_id order by grade desc,subject_name)
 union
@@ -8467,8 +8464,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result where exam_code in (select exam_code from sat_date_range where date_range='last30days') group by academic_year,grade,subject,semester,
 block_id order by grade desc,subject_name)
 union
@@ -8508,8 +8505,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last30days')
  group by academic_year,grade,subject,semester,
 district_id order by grade desc,subject_name)
@@ -8896,8 +8893,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-max(students_count) as total_students,count(distinct school_id) as total_schools,max(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+max(students_count) as total_students,max(students_attended) as students_attended
 from semester_exam_school_result where exam_code in (select exam_code from sat_date_range where date_range='last7days') group by academic_year,grade,subject,semester,
 school_id order by grade desc,subject_name)
 union
@@ -8933,8 +8930,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result where exam_code in (select exam_code from sat_date_range where date_range='last7days') group by academic_year,grade,subject,semester,
 cluster_id order by grade desc,subject_name)
 union
@@ -8973,8 +8970,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result where exam_code in (select exam_code from sat_date_range where date_range='last7days') group by academic_year,grade,subject,semester,
 block_id order by grade desc,subject_name)
 union
@@ -9014,8 +9011,8 @@ json_object_agg(subject_name,json_build_object('percentage',percentage,'total_st
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last7days')
  group by academic_year,grade,subject,semester,
 district_id order by grade desc,subject_name)
@@ -10067,15 +10064,15 @@ on d.school_id=tot_stud.school_id and d.school_management_type=tot_stud.school_m
 CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_district_mgmt_last30 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
-(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance from semester_exam_district_mgmt_all)as a
+(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance from semester_exam_district_mgmt_last30)as a
 left join
 (select academic_year,district_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last30days') group by academic_year,grade,subject,semester,school_management_type,
 district_id order by grade desc,subject_name)
 union
@@ -10108,15 +10105,15 @@ on b.district_id=tot_stud.district_id and b.grade=tot_stud.grade and b.school_ma
 CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_block_mgmt_last30 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
-(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,block_latitude,block_longitude,block_performance from semester_exam_block_mgmt_all)as a
+(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,block_latitude,block_longitude,block_performance from semester_exam_block_mgmt_last30)as a
 left join
 (select academic_year,block_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last30days') group by academic_year,grade,subject,semester,school_management_type,
 block_id order by grade desc,subject_name)
 union
@@ -10149,15 +10146,15 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_cluster_mgmt_last30 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
 (select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name) as block_name,
-cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,cluster_performance from semester_exam_cluster_mgmt_all)as a
+cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,cluster_performance from semester_exam_cluster_mgmt_last30)as a
 left join
 (select academic_year,cluster_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last30days') group by academic_year,grade,subject,semester,school_management_type,
 cluster_id order by grade desc,subject_name)
 union
@@ -10191,15 +10188,15 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_school_mgmt_last30 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
 (select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,cluster_id,initcap(cluster_name)as cluster_name,
-school_id,initcap(school_name)as school_name,school_latitude,school_longitude,school_performance from semester_exam_school_mgmt_all)as a
+school_id,initcap(school_name)as school_name,school_latitude,school_longitude,school_performance from semester_exam_school_mgmt_last30)as a
 left join
 (select academic_year,school_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last30days') 
 group by academic_year,grade,subject,semester,school_management_type,school_id order by grade desc,subject_name)
 union
@@ -10565,15 +10562,15 @@ on d.school_id=tot_stud.school_id and d.school_management_type=tot_stud.school_m
 CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_district_mgmt_last7 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
-(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance from semester_exam_district_mgmt_all)as a
+(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance from semester_exam_district_mgmt_last7)as a
 left join
 (select academic_year,district_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 district_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last7days') group by academic_year,grade,subject,semester,school_management_type,
 district_id order by grade desc,subject_name)
 union
@@ -10606,15 +10603,15 @@ on b.district_id=tot_stud.district_id and b.grade=tot_stud.grade and b.school_ma
 CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_block_mgmt_last7 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
-(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,block_latitude,block_longitude,block_performance from semester_exam_block_mgmt_all)as a
+(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,block_latitude,block_longitude,block_performance from semester_exam_block_mgmt_last7)as a
 left join
 (select academic_year,block_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 block_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last7days') group by academic_year,grade,subject,semester,school_management_type,
 block_id order by grade desc,subject_name)
 union
@@ -10647,15 +10644,15 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_cluster_mgmt_last7 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
 (select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name) as block_name,
-cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,cluster_performance from semester_exam_cluster_mgmt_all)as a
+cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,cluster_performance from semester_exam_cluster_mgmt_last7)as a
 left join
 (select academic_year,cluster_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 cluster_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last7days') group by academic_year,grade,subject,semester,school_management_type,
 cluster_id order by grade desc,subject_name)
 union
@@ -10689,15 +10686,15 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_school_mgmt_last7 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
 (select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,cluster_id,initcap(cluster_name)as cluster_name,
-school_id,initcap(school_name)as school_name,school_latitude,school_longitude,school_performance from semester_exam_school_mgmt_all)as a
+school_id,initcap(school_name)as school_name,school_latitude,school_longitude,school_performance from semester_exam_school_mgmt_last7)as a
 left join
 (select academic_year,school_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
 from
 ((select academic_year,semester,cast('Grade '||grade as text)as grade,cast(subject as text)as subject_name,
 school_id,school_management_type,
-round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,
-sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
+round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),1),1) as percentage,count(distinct school_id) as total_schools,
+sum(students_count) as total_students,sum(students_attended) as students_attended
 from semester_exam_school_result  where exam_code in (select exam_code from sat_date_range where date_range='last7days') 
 group by academic_year,grade,subject,semester,school_management_type,school_id order by grade desc,subject_name)
 union
@@ -11343,7 +11340,7 @@ $$  LANGUAGE plpgsql;
 
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS stud_count_school_mgmt_year_month as
-select a.school_id,c.cluster_id,c.block_id,c.district_id,b.assessment_year as academic_year,b.month,school_management_type,
+(select a.school_id,c.cluster_id,c.block_id,c.district_id,b.assessment_year as academic_year,b.month,school_management_type,
 	count(distinct(student_uid)) as students_count,count(distinct(a.school_id)) as total_schools
 from
 (select exam_id,school_id,student_uid
@@ -11351,30 +11348,17 @@ from periodic_exam_result_trans where school_id in (select school_id  from perio
 group by exam_id,school_id,student_uid) as a
 left join (select exam_id,assessment_year, trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month from periodic_exam_mst) as b on a.exam_id=b.exam_id
 left join school_hierarchy_details as c on a.school_id=c.school_id
-group by a.school_id,b.assessment_year,month ,school_management_type,cluster_id,block_id,district_id;
+group by a.school_id,b.assessment_year,month ,school_management_type,cluster_id,block_id,district_id) WITH NO DATA ;
 
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS stud_count_school_grade_mgmt_year_month as
-select grade,school_id,cluster_id,block_id,district_id,school_management_type,count(distinct student_uid) as students_attended,trim(TO_CHAR(TO_DATE (month::text, 'MM'), 'Month')) AS month ,
+(select grade,school_id,cluster_id,block_id,district_id,school_management_type,count(distinct student_uid) as students_attended,trim(TO_CHAR(TO_DATE (month::text, 'MM'), 'Month')) AS month ,
 case when month in (6,7,8,9,10,11,12) then
  (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year,count(distinct school_id) as total_schools from (
 select concat('Grade ',studying_class) as grade,cast (substring (exam_code,10,2) as integer) as month ,  
 cast (right(exam_code,4)as integer) as year,pert.school_id,cluster_id,block_id,district_id,
 school_management_type,student_uid from periodic_exam_result_trans pert  join school_hierarchy_details shd on pert.school_id=shd.school_id) as a
-group by school_id,grade,month,academic_year,school_management_type,cluster_id,block_id,district_id;
-
-/* unlogged tables */
-
-CREATE UNLOGGED TABLE if not exists student_att_count as 
-select cluster_id,academic_year,month,school_management_type,
-	sum(students_count) as students_count,sum(total_schools) as total_schools
-from stud_count_school_mgmt_year_month group by cluster_id,academic_year,month,school_management_type;
-
-CREATE UNLOGGED TABLE if not exists student_att_grade_count as 
-select cluster_id,grade,school_management_type,academic_year,month,
-	sum(students_attended) as students_attended,sum(total_schools) as total_schools
-from stud_count_school_grade_mgmt_year_month group by cluster_id,grade,school_management_type,academic_year,month;
-
+group by school_id,grade,month,academic_year,school_management_type,cluster_id,block_id,district_id) WITH NO DATA;
 
 /* District */
 
@@ -21572,3 +21556,164 @@ $$LANGUAGE plpgsql;
 select composite_create_views();
 select composite_create_mgt_views();
 select composite_jolt_spec();
+
+
+/* PAT indexes */
+
+create index  IF NOT EXISTS school_grade_enrolment_district_district_id_idx ON school_grade_enrolment_district (district_id);
+create index IF NOT EXISTS school_grade_enrolment_district_grade_idx on school_grade_enrolment_district(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_block_block_id_idx on school_grade_enrolment_block(block_id);
+create index IF NOT EXISTS school_grade_enrolment_block_grade_idx on school_grade_enrolment_block(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_cluster_cluster_id_idx on school_grade_enrolment_cluster(cluster_id);
+create index IF NOT EXISTS school_grade_enrolment_cluster_grade_idx on school_grade_enrolment_cluster(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_school_school_id_idx on school_grade_enrolment_school (school_id);
+create index IF NOT EXISTS school_grade_enrolment_school_grade_idx on school_grade_enrolment_school (grade);
+
+create index IF NOT EXISTS stud_count_school_grade_mgmt_year_month_block_id_idx on stud_count_school_grade_mgmt_year_month(block_id);
+create index IF NOT EXISTS stud_count_school_grade_mgmt_year_month_grade_idx on stud_count_school_grade_mgmt_year_month(grade);
+create index IF NOT EXISTS stud_count_school_grade_mgmt_year_month_academic_year_idx on stud_count_school_grade_mgmt_year_month(academic_year);
+create index IF NOT EXISTS stud_count_school_grade_mgmt_year_month_month_idx on stud_count_school_grade_mgmt_year_month(month);
+create index IF NOT EXISTS stud_count_school_grade_mgmt_year_month_school_management_type_idx on stud_count_school_grade_mgmt_year_month(school_management_type);
+create index IF NOT EXISTS stud_count_school_grade_mgmt_year_month_school_id_idx on stud_count_school_grade_mgmt_year_month(school_id);
+
+
+create index IF NOT EXISTS school_grade_enrolment_district_mgmt_district_id_idx on school_grade_enrolment_district_mgmt (district_id);
+create index IF NOT EXISTS school_grade_enrolment_district_mgmt_grade_idx on school_grade_enrolment_district_mgmt (grade);
+create index IF NOT EXISTS school_grade_enrolment_district_mgmt_school_management_type_idx on school_grade_enrolment_district_mgmt (school_management_type);
+
+create index IF NOT EXISTS school_grade_enrolment_block_mgmt_block_id_idx on school_grade_enrolment_block_mgmt(block_id);
+create index IF NOT EXISTS school_grade_enrolment_block_mgmt_grade_idx on school_grade_enrolment_block_mgmt(grade);
+create index IF NOT EXISTS school_grade_enrolment_block_mgmt_school_management_type_idx on school_grade_enrolment_block_mgmt (school_management_type);
+
+create index IF NOT EXISTS school_grade_enrolment_cluster_mgmt_cluster_id_idx on school_grade_enrolment_cluster_mgmt(cluster_id);
+create index IF NOT EXISTS school_grade_enrolment_cluster_mgmt_grade_idx on school_grade_enrolment_cluster_mgmt(grade);
+create index IF NOT EXISTS school_grade_enrolment_cluster_mgmt_school_management_type_idx on school_grade_enrolment_cluster_mgmt (school_management_type);
+
+create index IF NOT EXISTS school_grade_enrolment_school_mgmt_school_id_idx on school_grade_enrolment_school_mgmt(school_id);
+create index IF NOT EXISTS school_grade_enrolment_school_mgmt_grade_idx on school_grade_enrolment_school_mgmt(grade);
+create index IF NOT EXISTS school_grade_enrolment_school_mgmt_school_management_type_idx on school_grade_enrolment_school_mgmt (school_management_type);
+
+
+create index IF NOT EXISTS school_grade_enrolment_school_last7_school_id_idx on school_grade_enrolment_school_last7(school_id);
+create index IF NOT EXISTS school_grade_enrolment_school_last7_grade_idx on school_grade_enrolment_school_last7(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_cluster_last7_cluster_id_idx on school_grade_enrolment_cluster_last7(cluster_id);
+create index IF NOT EXISTS school_grade_enrolment_cluster_last7_grade_idx on school_grade_enrolment_cluster_last7(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_block_last7_block_id_idx on school_grade_enrolment_block_last7(block_id);
+create index IF NOT EXISTS school_grade_enrolment_block_last7_grade_idx on school_grade_enrolment_block_last7(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_district_last7_district_id_idx on school_grade_enrolment_district_last7(district_id);
+create index IF NOT EXISTS school_grade_enrolment_district_last7_grade_idx on school_grade_enrolment_district_last7(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_school_last30_school_id_idx on school_grade_enrolment_school_last30(school_id);
+create index IF NOT EXISTS school_grade_enrolment_school_last30_grade_idx on school_grade_enrolment_school_last30(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_cluster_last30_cluster_id_idx on school_grade_enrolment_cluster_last30(cluster_id);
+create index IF NOT EXISTS school_grade_enrolment_cluster_last30_grade_idx on school_grade_enrolment_cluster_last30(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_block_last30_block_id_idx on school_grade_enrolment_block_last30(block_id);
+create index IF NOT EXISTS school_grade_enrolment_block_last30_grade_idx on school_grade_enrolment_block_last30(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_district_last30_district_id_idx on school_grade_enrolment_district_last30(district_id);
+create index IF NOT EXISTS school_grade_enrolment_district_last30_grade_idx on school_grade_enrolment_district_last30(grade);
+
+create index IF NOT EXISTS school_grade_enrolment_school_mgmt_last30_school_id_idx on school_grade_enrolment_school_mgmt_last30(school_id);
+create index IF NOT EXISTS school_grade_enrolment_school_mgmt_last30_grade_idx  on school_grade_enrolment_school_mgmt_last30(grade);
+create index IF NOT EXISTS school_grade_enrolment_school_mgmt_last30_school_management_type_idx  on school_grade_enrolment_school_mgmt_last30 (school_management_type);
+
+create index IF NOT EXISTS school_grade_enrolment_cluster_mgmt_last30_cluster_id_idx  on school_grade_enrolment_cluster_mgmt_last30(cluster_id);
+create index IF NOT EXISTS school_grade_enrolment_cluster_mgmt_last30_grade_idx on school_grade_enrolment_cluster_mgmt_last30(grade);
+create index IF NOT EXISTS school_grade_enrolment_cluster_mgmt_last30_school_management_type_idx on school_grade_enrolment_cluster_mgmt_last30 (school_management_type);
+
+create index IF NOT EXISTS school_grade_enrolment_block_mgmt_last30_block_id_idx  on school_grade_enrolment_block_mgmt_last30(block_id);
+create index IF NOT EXISTS school_grade_enrolment_block_mgmt_last30_grade_idx on school_grade_enrolment_block_mgmt_last30(grade);
+create index IF NOT EXISTS school_grade_enrolment_block_mgmt_last30_school_management_type_idx on school_grade_enrolment_block_mgmt_last30 (school_management_type);
+
+create index IF NOT EXISTS school_grade_enrolment_district_mgmt_last30_district_id_idx on school_grade_enrolment_district_mgmt_last30(district_id);
+create index IF NOT EXISTS school_grade_enrolment_district_mgmt_last30_grade_idx on school_grade_enrolment_district_mgmt_last30(grade);
+create index IF NOT EXISTS school_grade_enrolment_district_mgmt_last30_school_management_type_idx on school_grade_enrolment_district_mgmt_last30 (school_management_type);
+
+create index IF NOT EXISTS school_grade_enrolment_school_mgmt_last7_school_id_idx on school_grade_enrolment_school_mgmt_last7(school_id);
+create index IF NOT EXISTS school_grade_enrolment_school_mgmt_last7_grade_idx  on school_grade_enrolment_school_mgmt_last7(grade);
+create index IF NOT EXISTS school_grade_enrolment_school_mgmt_last7_school_management_type_idx  on school_grade_enrolment_school_mgmt_last7 (school_management_type);
+
+create index IF NOT EXISTS school_grade_enrolment_cluster_mgmt_last7_cluster_id_idx  on school_grade_enrolment_cluster_mgmt_last7(cluster_id);
+create index IF NOT EXISTS school_grade_enrolment_cluster_mgmt_last7_grade_idx on school_grade_enrolment_cluster_mgmt_last7(grade);
+create index IF NOT EXISTS school_grade_enrolment_cluster_mgmt_last7_school_management_type_idx on school_grade_enrolment_cluster_mgmt_last7 (school_management_type);
+
+create index IF NOT EXISTS school_grade_enrolment_block_mgmt_last7_block_id_idx  on school_grade_enrolment_block_mgmt_last7(block_id);
+create index IF NOT EXISTS school_grade_enrolment_block_mgmt_last7_grade_idx on school_grade_enrolment_block_mgmt_last7(grade);
+create index IF NOT EXISTS school_grade_enrolment_block_mgmt_last7_school_management_type_idx on school_grade_enrolment_block_mgmt_last7 (school_management_type);
+
+create index IF NOT EXISTS school_grade_enrolment_district_mgmt_last7_district_id_idx on school_grade_enrolment_district_mgmt_last7(district_id);
+create index IF NOT EXISTS school_grade_enrolment_district_mgmt_last7_grade_idx on school_grade_enrolment_district_mgmt_last7(grade);
+create index IF NOT EXISTS school_grade_enrolment_district_mgmt_last7_school_management_type_idx on school_grade_enrolment_district_mgmt_last7 (school_management_type);
+
+/* SAT indexes */
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_district_mgmt_last30_district_id_idx ON sat_school_grade_enrolment_district_mgmt_last30 (district_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_district_mgmt_last30_grade_idx on sat_school_grade_enrolment_district_mgmt_last30(grade);
+create index IF NOT EXISTS sat_school_grade_enrolment_district_mgmt_last30_school_management_type_idx on sat_school_grade_enrolment_district_mgmt_last30(school_management_type);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_block_mgmt_last30_block_id_idx ON sat_school_grade_enrolment_block_mgmt_last30 (block_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_block_mgmt_last30_grade_idx on sat_school_grade_enrolment_block_mgmt_last30(grade);
+create index IF NOT EXISTS sat_school_grade_enrolment_block_mgmt_last30_school_management_type_idx on sat_school_grade_enrolment_block_mgmt_last30(school_management_type);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_cluster_mgmt_last30_cluster_id_idx ON sat_school_grade_enrolment_cluster_mgmt_last30 (cluster_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_cluster_mgmt_last30_grade_idx on sat_school_grade_enrolment_cluster_mgmt_last30(grade);
+create index IF NOT EXISTS sat_school_grade_enrolment_cluster_mgmt_last30_school_management_type_idx on sat_school_grade_enrolment_cluster_mgmt_last30(school_management_type);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_school_mgmt_last30_cluster_id_idx ON sat_school_grade_enrolment_school_mgmt_last30 (school_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_school_mgmt_last30_grade_idx on sat_school_grade_enrolment_school_mgmt_last30(grade);
+create index IF NOT EXISTS sat_school_grade_enrolment_school_mgmt_last30_school_management_type_idx on sat_school_grade_enrolment_school_mgmt_last30(school_management_type);
+
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_district_mgmt_last7_district_id_idx ON sat_school_grade_enrolment_district_mgmt_last7 (district_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_district_mgmt_last7_grade_idx on sat_school_grade_enrolment_district_mgmt_last7(grade);
+create index IF NOT EXISTS sat_school_grade_enrolment_district_mgmt_last7_school_management_type_idx on sat_school_grade_enrolment_district_mgmt_last7(school_management_type);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_block_mgmt_last7_block_id_idx ON sat_school_grade_enrolment_block_mgmt_last7 (block_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_block_mgmt_last7_grade_idx on sat_school_grade_enrolment_block_mgmt_last7(grade);
+create index IF NOT EXISTS sat_school_grade_enrolment_block_mgmt_last7_school_management_type_idx on sat_school_grade_enrolment_block_mgmt_last7(school_management_type);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_cluster_mgmt_last7_cluster_id_idx ON sat_school_grade_enrolment_cluster_mgmt_last7 (cluster_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_cluster_mgmt_last7_grade_idx on sat_school_grade_enrolment_cluster_mgmt_last7(grade);
+create index IF NOT EXISTS sat_school_grade_enrolment_cluster_mgmt_last7_school_management_type_idx on sat_school_grade_enrolment_cluster_mgmt_last7(school_management_type);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_school_mgmt_last7_cluster_id_idx ON sat_school_grade_enrolment_school_mgmt_last7 (school_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_school_mgmt_last7_grade_idx on sat_school_grade_enrolment_school_mgmt_last7(grade);
+create index IF NOT EXISTS sat_school_grade_enrolment_school_mgmt_last7_school_management_type_idx on sat_school_grade_enrolment_school_mgmt_last7(school_management_type);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_district_last30_district_id_idx ON sat_school_grade_enrolment_district_last30 (district_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_district_last30_grade_idx on sat_school_grade_enrolment_district_last30(grade);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_block_last30_block_id_idx ON sat_school_grade_enrolment_block_last30 (block_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_block_last30_grade_idx on sat_school_grade_enrolment_block_last30(grade);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_cluster_last30_cluster_id_idx ON sat_school_grade_enrolment_cluster_last30 (cluster_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_cluster_last30_grade_idx on sat_school_grade_enrolment_cluster_last30(grade);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_school_last30_cluster_id_idx ON sat_school_grade_enrolment_school_last30 (school_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_school_last30_grade_idx on sat_school_grade_enrolment_school_last30(grade);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_district_last7_district_id_idx ON sat_school_grade_enrolment_district_last7 (district_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_district_last7_grade_idx on sat_school_grade_enrolment_district_last7(grade);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_block_last7_block_id_idx ON sat_school_grade_enrolment_block_last7 (block_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_block_last7_grade_idx on sat_school_grade_enrolment_block_last7(grade);
+
+create index  IF NOT EXISTS sat_school_grade_enrolment_cluster_last7_cluster_id_idx ON sat_school_grade_enrolment_cluster_last7 (cluster_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_cluster_last7_grade_idx on sat_school_grade_enrolment_cluster_last7(grade);
+
+create index IF NOT EXISTS sat_school_grade_enrolment_school_last7_cluster_id_idx ON sat_school_grade_enrolment_school_last7 (school_id);
+create index IF NOT EXISTS sat_school_grade_enrolment_school_last7_grade_idx on sat_school_grade_enrolment_school_last7(grade);
+
+create index IF NOT EXISTS sat_stud_count_school_grade_mgmt_last30_school_id_idx ON sat_stud_count_school_grade_mgmt_last30 (school_id);
+create index IF NOT EXISTS sat_stud_count_school_grade_mgmt_last30_grade_idx on sat_stud_count_school_grade_mgmt_last30(grade);
+create index IF NOT EXISTS sat_stud_count_school_grade_mgmt_last30_semester_idx on sat_stud_count_school_grade_mgmt_last30(semester);
+create index IF NOT EXISTS sat_stud_count_school_grade_mgmt_last30_school_mgmt_type_idx on sat_stud_count_school_grade_mgmt_last30(school_management_type);
+create index IF NOT EXISTS sat_stud_count_school_grade_mgmt_last30_academic_year_idx on sat_stud_count_school_grade_mgmt_last30(academic_year);
