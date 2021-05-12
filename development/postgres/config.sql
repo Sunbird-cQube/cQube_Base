@@ -7762,6 +7762,9 @@ union
 (select exam_code,'last7days' as date_range from semester_exam_mst where exam_date between 
 (select ((now()::Date)-INTERVAL '7 DAY')::Date) and (select now()::DATE) );
 
+
+
+
 /*   SAT materialized views */
 
 /* last 30 days */
