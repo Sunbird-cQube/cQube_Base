@@ -10067,7 +10067,7 @@ on d.school_id=tot_stud.school_id and d.school_management_type=tot_stud.school_m
 CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_district_mgmt_last30 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
-(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance from semester_exam_district_mgmt_all)as a
+(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance from semester_exam_district_mgmt_last30)as a
 left join
 (select academic_year,district_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
@@ -10108,7 +10108,7 @@ on b.district_id=tot_stud.district_id and b.grade=tot_stud.grade and b.school_ma
 CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_block_mgmt_last30 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
-(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,block_latitude,block_longitude,block_performance from semester_exam_block_mgmt_all)as a
+(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,block_latitude,block_longitude,block_performance from semester_exam_block_mgmt_last30)as a
 left join
 (select academic_year,block_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
@@ -10149,7 +10149,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_cluster_mgmt_last30 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
 (select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name) as block_name,
-cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,cluster_performance from semester_exam_cluster_mgmt_all)as a
+cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,cluster_performance from semester_exam_cluster_mgmt_last30)as a
 left join
 (select academic_year,cluster_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
@@ -10191,7 +10191,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_school_mgmt_last30 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
 (select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,cluster_id,initcap(cluster_name)as cluster_name,
-school_id,initcap(school_name)as school_name,school_latitude,school_longitude,school_performance from semester_exam_school_mgmt_all)as a
+school_id,initcap(school_name)as school_name,school_latitude,school_longitude,school_performance from semester_exam_school_mgmt_last30)as a
 left join
 (select academic_year,school_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
@@ -10565,7 +10565,7 @@ on d.school_id=tot_stud.school_id and d.school_management_type=tot_stud.school_m
 CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_district_mgmt_last7 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
-(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance from semester_exam_district_mgmt_all)as a
+(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,district_latitude,district_longitude,district_performance from semester_exam_district_mgmt_last7)as a
 left join
 (select academic_year,district_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
@@ -10606,7 +10606,7 @@ on b.district_id=tot_stud.district_id and b.grade=tot_stud.grade and b.school_ma
 CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_block_mgmt_last7 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
-(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,block_latitude,block_longitude,block_performance from semester_exam_block_mgmt_all)as a
+(select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,block_latitude,block_longitude,block_performance from semester_exam_block_mgmt_last7)as a
 left join
 (select academic_year,block_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
@@ -10647,7 +10647,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_cluster_mgmt_last7 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
 (select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name) as block_name,
-cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,cluster_performance from semester_exam_cluster_mgmt_all)as a
+cluster_id,initcap(cluster_name)as cluster_name,cluster_latitude,cluster_longitude,cluster_performance from semester_exam_cluster_mgmt_last7)as a
 left join
 (select academic_year,cluster_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
@@ -10689,7 +10689,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS semester_grade_school_mgmt_last7 as
 (select a.*,b.grade,b.subjects,c.students_attended,tot_stud.total_students,c.total_schools
 from
 (select academic_year,school_management_type,semester,district_id,initcap(district_name)as district_name,block_id,initcap(block_name)as block_name,cluster_id,initcap(cluster_name)as cluster_name,
-school_id,initcap(school_name)as school_name,school_latitude,school_longitude,school_performance from semester_exam_school_mgmt_all)as a
+school_id,initcap(school_name)as school_name,school_latitude,school_longitude,school_performance from semester_exam_school_mgmt_last7)as a
 left join
 (select academic_year,school_id,grade,semester,school_management_type,
 json_object_agg(subject_name,json_build_object('percentage',percentage,'total_students',total_students,'students_attended',students_attended,'total_schools',total_schools) order by subject_name) as subjects
