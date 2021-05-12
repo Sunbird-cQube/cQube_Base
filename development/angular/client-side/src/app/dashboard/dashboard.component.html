@@ -699,7 +699,7 @@
                     <div class="col-lg-6 col-md-6  col-sm-6">
                         <div class="card card-stats"
                             style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);;" id="sat"
-                            [routerLink]="!nifi_semester ? ['/coming-soon'] :['/student-performance/sat-report']"
+                            [routerLink]="!nifi_sat ? ['/coming-soon'] :['/student-performance/sat-report']"
                             (click)="fetchTelemetry($event,'sat')">
                             <div class="card-body ">
                                 <div class="row">
@@ -736,7 +736,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="card card-stats"
                             style="background: linear-gradient(135deg, #07A997 0%, #1BC9B4 100%);;" id="satHeatChart"
-                            [routerLink]="!nifi_pat ? ['/coming-soon'] :['/student-performance/sat-heat-chart']"
+                            [routerLink]="!nifi_sat ? ['/coming-soon'] :['/student-performance/sat-heat-chart']"
                             (click)="fetchTelemetry($event,'satHeatChart')">
                             <div class="card-body ">
                                 <div class="row">
