@@ -13757,7 +13757,7 @@ on b.district_id=tot_stud.district_id and b.grade=tot_stud.grade and b.school_ma
                           GROUP BY b_1.academic_year, b_1.district_id, b_1.grade, b_1.month,b_1.school_management_type) d_2
                   GROUP BY d_2.academic_year, d_2.district_id, d_2.month,d_2.school_management_type) d_1 ON c.academic_year::text = d_1.academic_year::text AND c.district_id = d_1.district_id AND c.month = d_1.month
 				  and c.school_management_type=d_1.school_management_type) d
-				  join
+left join
  (select district_id,academic_year,month,school_management_type,
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_year_month group by district_id,academic_year,month,school_management_type)as b
@@ -13886,7 +13886,7 @@ on b.block_id=tot_stud.block_id and b.grade=tot_stud.grade and b.school_manageme
                           GROUP BY b_1.academic_year, b_1.block_id, b_1.grade, b_1.month,b_1.school_management_type) d_2
                   GROUP BY d_2.academic_year, d_2.block_id, d_2.month,d_2.school_management_type) d_1 ON c.academic_year::text = d_1.academic_year::text AND c.block_id = d_1.block_id AND c.month = d_1.month
 				  and c.school_management_type=d_1.school_management_type) d
-				  join
+left join
  (select block_id,academic_year,month,school_management_type,
 	sum(students_count) as students_count,sum(total_schools) as total_schools
 from stud_count_school_mgmt_year_month group by block_id,academic_year,month,school_management_type)as b
@@ -14023,14 +14023,15 @@ on b.cluster_id=tot_stud.cluster_id and b.grade=tot_stud.grade and b.school_mana
                           GROUP BY b_1.academic_year, b_1.cluster_id, b_1.grade, b_1.month,b_1.school_management_type) d_2
                   GROUP BY d_2.academic_year, d_2.cluster_id, d_2.month,d_2.school_management_type) d_1 ON c.academic_year::text = d_1.academic_year::text AND c.cluster_id = d_1.cluster_id AND c.month = d_1.month
 				  and c.school_management_type=d_1.school_management_type) d
-       left join
+       join
  (select sum(total_students) as total_students,cluster_id,school_management_type from school_hierarchy_details shd 
  where school_id in (select school_id from periodic_exam_school_result) group by cluster_id,school_management_type) tot_stud
-on d.cluster_id=tot_stud.cluster_id and d.school_management_type=tot_stud.school_management_type
- join
+on d.cluster_id=tot_stud.cluster_id and d.school_management_type=tot_stud.school_management_type 
+ left join
  student_att_count as b 
- on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id and d.month=b.month and d.school_management_type=b.school_management_type
- where d.school_management_type is not null) WITH NO DATA;
+ on d.academic_year=b.academic_year and d.cluster_id=b.cluster_id and d.month=b.month and d.school_management_type=b.school_management_type where d.school_management_type is not null) WITH NO DATA;
+
+
 
 /* school */
 
