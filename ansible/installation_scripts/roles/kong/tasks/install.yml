@@ -29,7 +29,6 @@
     name: "{{ kong_db_name}}"
     encoding: 'UTF-8'
     state: present
-  tags: install
 
 - name: Ensure Kong DB user
   become: true

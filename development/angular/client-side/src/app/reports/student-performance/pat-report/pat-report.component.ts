@@ -172,13 +172,13 @@ export class PATReportComponent implements OnInit {
       this.year = this.years[this.years.length - 1];
 
       this.months = [];
-      var months= [];
+      var months = [];
       this.getMonthYear.map((item) => {
         if (item["academic_year"] == this.year) {
           months = item["month"];
         }
       });
-      months.map(a=>{
+      months.map(a => {
         this.months.push(a.trim());
       });
       this.months.sort((a, b) => {
@@ -453,7 +453,7 @@ export class PATReportComponent implements OnInit {
       // to clear the existing data on the map layer
       globalMap.removeLayer(this.markersList);
       this.commonService.latitude = this.lat = this.commonService.mapCenterLatlng.lat;
-    this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;
+      this.commonService.longitude = this.lng = this.commonService.mapCenterLatlng.lng;
       this.layerMarkers.clearLayers();
       this.districtId = undefined;
       if (this.level != "District") {
@@ -1780,21 +1780,23 @@ export class PATReportComponent implements OnInit {
         this.getDownloadableData(this.markers[i], options.level);
       }
       this.commonService.loaderAndErr(this.data);
+
+      //schoolCount
+      this.schoolCount = data['footer'] ? data['footer'].total_schools : null;
+      if (this.schoolCount != null) {
+        this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
+      this.studentCount = data['footer'] ? data['footer'].total_students : null;
+      if (this.studentCount != null) {
+        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
+      this.studentAttended = data['footer'] ? data['footer'].students_attended : null;
+      if (this.studentAttended != null) {
+        this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
       this.changeDetection.detectChanges();
     }
-    //schoolCount
-    this.schoolCount = data['footer'] ? data['footer'].total_schools : null;
-    if (this.schoolCount != null) {
-      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
-    this.studentCount = data['footer'] ? data['footer'].total_students : null;
-    if (this.studentCount != null) {
-      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
-    this.studentAttended = data['footer'] ? data['footer'].students_attended : null;
-    if (this.studentAttended != null) {
-      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
+
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {

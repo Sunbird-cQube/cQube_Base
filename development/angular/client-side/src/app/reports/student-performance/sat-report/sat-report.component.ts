@@ -256,7 +256,7 @@ export class SatReportComponent implements OnInit {
             this.distFilter = this.districtMarkers;
           }
 
-          if (level == "district")  this.ondistLinkClick(this.districtId);
+          if (level == "district") this.ondistLinkClick(this.districtId);
           else this.getBlocks(level, this.districtId, this.blockId);
         });
     });
@@ -1688,21 +1688,24 @@ export class SatReportComponent implements OnInit {
         this.getDownloadableData(this.markers[i], options.level);
       }
       this.commonService.loaderAndErr(this.data);
+      
+      //schoolCount
+      this.schoolCount = data['footer'] ? data['footer'].total_schools : null;
+      if (this.schoolCount != null) {
+        this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
+      this.studentCount = data['footer'] ? data['footer'].total_students : null;
+      if (this.studentCount != null) {
+        this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
+      this.studentAttended = data['footer'] ? data['footer'].students_attended : null;
+      if (this.studentAttended != null) {
+        this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      }
+     
       this.changeDetection.detectChanges();
     }
-    //schoolCount
-    this.schoolCount = data['footer'] ? data['footer'].total_schools : null;
-    if (this.schoolCount != null) {
-      this.schoolCount = (this.schoolCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
-    this.studentCount = data['footer'] ? data['footer'].total_students : null;
-    if (this.studentCount != null) {
-      this.studentCount = (this.studentCount).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
-    this.studentAttended = data['footer'] ? data['footer'].students_attended : null;
-    if (this.studentAttended != null) {
-      this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-    }
+
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {
