@@ -68,7 +68,7 @@ export class PATLOTableComponent implements OnInit {
   category;
 
   //For pagination.....
-  pageSize = 500;
+  pageSize = 200;
   currentPage = 1;
   filteredData = []
   showPagination = false;
@@ -209,7 +209,6 @@ export class PATLOTableComponent implements OnInit {
     this.commonService.errMsg();
     this.level = "district";
     this.fetchFilters(this.metaData);
-    // $(`#LOtable`).empty();
     let a = {
       year: this.year,
       month: this.month,
@@ -278,6 +277,20 @@ export class PATLOTableComponent implements OnInit {
         });
         newArr.push(temp);
       });
+      // var extra = 8 - newArr.length;
+      // if (extra > 0) {
+      //   for (let i = 0; i < extra; i++) {
+      //     var temp = [];
+      //     my_columns.map((data, i) => {
+      //       var new_item = {};
+      //       new_item["data"] = '*';
+      //       new_item["value"] = '*';
+      //       temp.push(new_item);
+      //     })
+      //     newArr.push(temp);
+      //   }
+      // }
+
       function tableCellColor(data) {
         var colors = {
           1: '#a50026',
@@ -315,7 +328,7 @@ export class PATLOTableComponent implements OnInit {
       newArr.forEach((columns, i1) => {
         body += "<tr>";
         columns.forEach((column, i2) => {
-          if (i2 > 3 && column.value) {
+          if (i2 > 3 && column.value || i2 > 3 && String(column.value) == String(0)) {
             body += `<td class="numberData" data-toggle="tooltip" data-html="true" data-placement="auto" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length - 1]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
           }
           else {
@@ -358,34 +371,35 @@ export class PATLOTableComponent implements OnInit {
       }
 
       this.table = $(`#LOtable`).DataTable(obj);
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip().on('inserted.bs.tooltip', function () {
-          $("body div.tooltip-inner").css({
-            "min-width": `${innerWidth < 2540 ? "200px" : '300px'}`,
-            "max-width": `${innerWidth < 2540 ? "600px" : '900px'}`,
-            "padding": `${innerWidth < 2540 ? '10px' : '15px'}`,
-            "text-align": "left",
-            "border-radius": `${innerWidth < 2540 ? '20px' : '30px'}`,
-            "background-color": "black",
-            "color": "white",
-            "font-family": "Arial",
-            "font-size": `${innerWidth < 2540 ? '11px' : '26px'}`,
-            "border": "1px solid gray"
-          });
-        });
-        $('[data-toggle="tooltip"]').click(function () {
-          $('[data-toggle="tooltip"]').tooltip("hide");
+      $('[data-toggle="tooltip"]').tooltip().on('inserted.bs.tooltip', function () {
+        $("body div.tooltip-inner").css({
+          "min-width": `${innerWidth < 2540 ? "200px" : '300px'}`,
+          "max-width": `${innerWidth < 2540 ? "600px" : '900px'}`,
+          "padding": `${innerWidth < 2540 ? '10px' : '15px'}`,
+          "text-align": "left",
+          "border-radius": `${innerWidth < 2540 ? '20px' : '30px'}`,
+          "background-color": "black",
+          "color": "white",
+          "font-family": "Arial",
+          "font-size": `${innerWidth < 2540 ? '11px' : '26px'}`,
+          "border": "1px solid gray"
         });
       });
-
-
-      // new $.fn.dataTable.FixedColumns(this.table);
+      $('[data-toggle="tooltip"]').click(function () {
+        $('[data-toggle="tooltip"]').tooltip("hide");
+      });
 
       $(document).ready(function () {
         $('#LOtable').on('page.dt', function () {
           $('.dataTables_scrollBody').scrollTop(0);
         });
       }, 300);
+      $('select').on('keydown', function (e) {
+        if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) { //up or down
+          e.preventDefault();
+          return false;
+        }
+      });
       document.getElementById('spinner').style.display = 'none';
     });
     this.showPagination = true;
@@ -717,15 +731,15 @@ export class PATLOTableComponent implements OnInit {
     "#006837",
   ];
   public values = [
-    "0-10",
-    "11-20",
-    "21-30",
-    "31-40",
-    "41-50",
-    "51-60",
-    "61-70",
-    "71-80",
-    "81-90",
-    "91-100",
+    "0-1",
+    "1.1-2",
+    "2.1-3",
+    "3.1-4",
+    "4.1-5",
+    "5.1-6",
+    "6.1-7",
+    "7.1-8",
+    "8.1.9",
+    "9.1-10"
   ];
 }

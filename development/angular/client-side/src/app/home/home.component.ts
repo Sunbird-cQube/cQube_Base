@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
   nifi_udise;
   nifi_pat;
   nifi_composite;
+  nifi_sat;
 
 
   ngOnInit() {
@@ -92,6 +93,9 @@ export class HomeComponent implements OnInit {
         }
         if (element.template === 'nifi_composite') {
           this.nifi_composite = element.status;
+        }
+        if (element.template === 'nifi_sat') {
+          this.nifi_sat = element.status;
         }
       });
     })

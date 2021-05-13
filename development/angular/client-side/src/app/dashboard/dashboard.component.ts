@@ -85,6 +85,7 @@ export class DashboardComponent implements OnInit {
   nifi_udise;
   nifi_pat;
   nifi_composite;
+  nifi_sat;
 
 
   managementType;
@@ -113,18 +114,23 @@ export class DashboardComponent implements OnInit {
 
   setDefault() {
     this.changeDetection.detectChanges();
-    this.management = this.managementType;
-    this.category = this.categoryType;
-    let obj = {
-      id: this.management,
-      value: this.service.changeingStringCases(this.management.replace(/_/g, ' '))
+    if (localStorage.getItem('management') == null) {
+      this.management = this.managementType;
+      this.category = this.categoryType;
+      let obj = {
+        id: this.managementType,
+        value: this.service.changeingStringCases(this.managementType.replace(/_/g, ' '))
+      }
+      localStorage.setItem("management", JSON.stringify(obj));
+      obj = {
+        id: this.categoryType,
+        value: this.service.changeingStringCases(this.categoryType.replace(/_/g, ' '))
+      }
+      localStorage.setItem("category", JSON.stringify(obj));
+    } else {
+      this.management = JSON.parse(localStorage.getItem('management')).id;
+      this.category = JSON.parse(localStorage.getItem('category')).id;
     }
-    localStorage.setItem("management", JSON.stringify(obj));
-    obj = {
-      id: this.category,
-      value: this.service.changeingStringCases(this.category.replace(/_/g, ' '))
-    }
-    localStorage.setItem("category", JSON.stringify(obj));
     if (this.managementType) {
       if (this.managements.length <= 0) {
         this.managements.push({ id: this.managementType, value: this.service.changeingStringCases(this.managementType.replace(/_/g, ' ')) })
@@ -256,6 +262,9 @@ export class DashboardComponent implements OnInit {
         }
         if (element.template === "nifi_composite") {
           this.nifi_composite = element.status;
+        }
+        if (element.template === 'nifi_sat') {
+          this.nifi_sat = element.status;
         }
       });
     });
