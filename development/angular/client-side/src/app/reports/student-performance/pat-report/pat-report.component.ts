@@ -668,37 +668,19 @@ export class PATReportComponent implements OnInit {
                       this.blockFilter = filterData;
                     }
 
-                    // this.colors =
-                    //   this.blockMarkers.length == 1
-                    //     ? ["red"]
-                    //     : this.commonService
-                    //       .exceptionColor()
-                    //       .generateGradient(
-                    //         "#FF0000",
-                    //         "#00FF00",
-                    //         this.blockMarkers.length,
-                    //         "rgb"
-                    //       );
+                    this.colors =
+                      this.blockMarkers.length == 1
+                        ? ["red"]
+                        : this.commonService
+                          .exceptionColor()
+                          .generateGradient(
+                            "#FF0000",
+                            "#00FF00",
+                            this.blockMarkers.length,
+                            "rgb"
+                          );
                     // this.schoolCount = 0;
                     // this.studentCount = 0;
-
-                    if (this.selected != "absolute") {
-                      this.colors = this.commonService.getRelativeColors(this.blockMarkers, {
-                        value: this.grade
-                          ? this.blockMarkers[0].Subjects
-                            ? "Grade Performance"
-                            : this.grade
-                          : this.grade && this.subject
-                            ? this.subject
-                            : "Performance",
-                        selected: this.grade
-                          ? "G"
-                          : this.grade && this.subject
-                            ? "GS"
-                            : "all",
-                        report: "reports",
-                      });
-                    }
 
                     for (let i = 0; i < this.blockMarkers.length; i++) {
                       if (this.period != 'all') {
@@ -915,35 +897,17 @@ export class PATReportComponent implements OnInit {
                       });
                       this.clusterMarkers = filterData;
                     }
-                    // this.colors =
-                    //   this.clusterMarkers.length == 1
-                    //     ? ["red"]
-                    //     : this.commonService
-                    //       .exceptionColor()
-                    //       .generateGradient(
-                    //         "#FF0000",
-                    //         "#00FF00",
-                    //         this.clusterMarkers.length,
-                    //         "rgb"
-                    //       );
-
-                    if (this.selected != "absolute") {
-                      this.colors = this.commonService.getRelativeColors(this.clusterMarkers, {
-                        value: this.grade
-                          ? this.clusterMarkers[0].Subjects
-                            ? "Grade Performance"
-                            : this.grade
-                          : this.grade && this.subject
-                            ? this.subject
-                            : "Performance",
-                        selected: this.grade
-                          ? "G"
-                          : this.grade && this.subject
-                            ? "GS"
-                            : "all",
-                        report: "reports",
-                      });
-                    }
+                    this.colors =
+                      this.clusterMarkers.length == 1
+                        ? ["red"]
+                        : this.commonService
+                          .exceptionColor()
+                          .generateGradient(
+                            "#FF0000",
+                            "#00FF00",
+                            this.clusterMarkers.length,
+                            "rgb"
+                          );
 
                     for (let i = 0; i < this.clusterMarkers.length; i++) {
                       if (this.period != 'all') {
@@ -1157,35 +1121,17 @@ export class PATReportComponent implements OnInit {
                       this.schoolMarkers = filterData;
                     }
 
-                    // this.colors =
-                    //   this.schoolMarkers.length == 1
-                    //     ? ["red"]
-                    //     : this.commonService
-                    //       .exceptionColor()
-                    //       .generateGradient(
-                    //         "#FF0000",
-                    //         "#00FF00",
-                    //         this.schoolMarkers.length,
-                    //         "rgb"
-                    //       );
-
-                    if (this.selected != "absolute") {
-                      this.colors = this.commonService.getRelativeColors(this.schoolMarkers, {
-                        value: this.grade
-                          ? this.schoolMarkers[0].Subjects
-                            ? "Grade Performance"
-                            : this.grade
-                          : this.grade && this.subject
-                            ? this.subject
-                            : "Performance",
-                        selected: this.grade
-                          ? "G"
-                          : this.grade && this.subject
-                            ? "GS"
-                            : "all",
-                        report: "reports",
-                      });
-                    }
+                    this.colors =
+                      this.schoolMarkers.length == 1
+                        ? ["red"]
+                        : this.commonService
+                          .exceptionColor()
+                          .generateGradient(
+                            "#FF0000",
+                            "#00FF00",
+                            this.schoolMarkers.length,
+                            "rgb"
+                          );
 
                     for (let i = 0; i < this.schoolMarkers.length; i++) {
                       if (this.period != 'all') {
