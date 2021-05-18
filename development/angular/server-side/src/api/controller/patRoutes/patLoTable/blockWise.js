@@ -85,7 +85,7 @@ router.post('/blockWise', auth.authController, async(req, res) => {
                 }
                 z.map(val1 => {
                     let y = {
-                        [`${val1.block_name}`]: val1.marks
+                        [`${val1.block_name}`]: val1.percentage
                     }
                     x = {...x, ...y }
                 })
