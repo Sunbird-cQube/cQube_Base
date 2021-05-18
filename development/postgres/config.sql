@@ -15170,7 +15170,6 @@ select udise_school_mgt_score();
 
 /* Infrstructure management changes */
 
-
 create or replace FUNCTION infra_district_mgt_reports(category_1 text,category_2 text)
 RETURNS text AS
 $$
@@ -15230,14 +15229,12 @@ select district_id,count(distinct(school_id)) as total_schools_data_received,'||
 '||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||',school_management_type
  from school_infrastructure_score where school_management_type is not null group by district_id,school_management_type)as d
 inner join 
-(select a.district_id,a.district_name,b.total_schools,c.infra_score,school_management_type 
+(select a.district_id,a.district_name,a.total_schools,c.infra_score,a.school_management_type 
 from 
-(select district_id,district_name from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-  group by district_id,district_name)as a 
-inner join (select district_id,count(distinct(school_id)) as total_schools from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-  group by district_id)as b on a.district_id=b.district_id
+(select district_id,district_name,count(distinct(school_id)) as total_schools,school_management_type from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and school_management_type is not null
+  group by district_id,district_name,school_management_type)as a 
 inner join (select district_id,'||select_infra_score_cols||',school_management_type
-from infra_score_view where school_management_type is not null group by district_id,school_management_type) as c on a.district_id=c.district_id) as c
+from infra_score_view where school_management_type is not null group by district_id,school_management_type) as c on a.district_id=c.district_id and a.school_management_type=c.school_management_type) as c
 on d.district_id=c.district_id and d.school_management_type=c.school_management_type';
 infra_map= 'create or replace view infra_district_map_mgt_view as 
 select d.district_id,d.total_schools_data_received,c.infra_score,'||select_2_cols||',c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent,
@@ -15326,13 +15323,11 @@ select block_id,count(distinct(school_id)) as total_schools_data_received,'||sel
 '||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||',school_management_type
 from school_infrastructure_score where school_management_type is not null group by block_id,school_management_type) as d
 inner join 
-(select a.block_id,a.block_name,a.district_id,a.district_name,b.total_schools,c.infra_score,c.school_management_type from 
-(select block_id,block_name,district_id,district_name from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-  group by block_id,block_name,district_id,district_name)as a inner join 
-(select block_id,count(distinct(school_id)) as total_schools from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-  group by block_id)as b on a.block_id=b.block_id
+(select a.block_id,a.block_name,a.district_id,a.district_name,a.total_schools,c.infra_score,c.school_management_type from 
+(select block_id,block_name,district_id,district_name,count(distinct(school_id)) as total_schools,school_management_type from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and school_management_type is not null
+  group by block_id,block_name,district_id,district_name,school_management_type)as a
 inner join (select block_id,'||select_infra_score_cols||',school_management_type
-from infra_score_view where school_management_type is not null group by block_id,school_management_type) as c on a.block_id=c.block_id) as c
+from infra_score_view where school_management_type is not null group by block_id,school_management_type) as c on a.block_id=c.block_id and a.school_management_type=c.school_management_type) as c
 on d.block_id=c.block_id and d.school_management_type=c.school_management_type';
 infra_map= 'create or replace view infra_block_map_mgt_view as 
 select d.block_id,d.total_schools_data_received,c.infra_score,'||select_2_cols||',c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent,
@@ -15422,15 +15417,12 @@ select cluster_id,count(distinct(school_id)) as total_schools_data_received,'||s
 '||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||',school_management_type
 from school_infrastructure_score where school_management_type is not null group by cluster_id,school_management_type ) as d
 inner join 
-(select a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,b.total_schools,c.infra_score,c.school_management_type from 
-(select cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details 
-  where cluster_name is not null and block_name is not null and school_name is not null
-  group by cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
-(select cluster_id,count(distinct(school_id)) as total_schools from school_hierarchy_details 
-  where cluster_name is not null and block_name is not null and school_name is not null
-  group by cluster_id)as b on a.cluster_id=b.cluster_id
+(select a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,a.total_schools,c.infra_score,c.school_management_type from 
+(select cluster_id,cluster_name,block_id,block_name,district_id,district_name,count(distinct(school_id)) as total_schools,school_management_type from school_hierarchy_details 
+  where cluster_name is not null and block_name is not null and school_name is not null and school_management_type is not null
+  group by cluster_id,cluster_name,block_id,block_name,district_id,district_name,school_management_type)as a
 inner join (select cluster_id,'||select_infra_score_cols||',school_management_type
-from infra_score_view where school_management_type is not null group by cluster_id,school_management_type) as c on a.cluster_id=c.cluster_id) as c
+from infra_score_view where school_management_type is not null group by cluster_id,school_management_type) as c on a.cluster_id=c.cluster_id and a.school_management_type=c.school_management_type) as c
 on d.cluster_id=c.cluster_id and d.school_management_type=c.school_management_type';
 infra_map= 'create or replace view infra_cluster_map_mgt_view as 
 select d.cluster_id,d.total_schools_data_received,c.infra_score,'||select_2_cols||',c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent,
@@ -15522,14 +15514,11 @@ initcap(c.block_name)as block_name,c.district_id,initcap(c.district_name)as dist
 '||select_average_percent_cols||','||select_infra_value_cols||','||select_infra_percent_cols||',school_management_type
  from school_infrastructure_score where school_management_type is not null group by school_id,school_management_type ) as d
 inner join 
-(select a.school_id,a.school_name,a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,b.total_schools,c.infra_score,c.school_management_type from 
-(select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name from school_hierarchy_details 
-  where cluster_name is not null and block_name is not null and school_name is not null
-  group by school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name)as a inner join 
-(select school_id,count(distinct(school_id)) as total_schools from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null
-  group by school_id)as b on a.school_id=b.school_id
+(select a.school_id,a.school_name,a.cluster_id,a.cluster_name,a.block_id,a.block_name,a.district_id,a.district_name,a.total_schools,c.infra_score,c.school_management_type from 
+(select school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,count(distinct(school_id)) as total_schools,school_management_type from school_hierarchy_details where cluster_name is not null and block_name is not null and school_name is not null and school_management_type is not null
+  group by school_id,school_name,cluster_id,cluster_name,block_id,block_name,district_id,district_name,school_management_type)as a
 inner join (select school_id,'||select_infra_score_cols||',school_management_type
-from infra_score_view where school_management_type is not null group by school_id,school_management_type)as c on a.school_id=c.school_id) as c
+from infra_score_view where school_management_type is not null group by school_id,school_management_type)as c on a.school_id=c.school_id and a.school_management_type=c.school_management_type) as c
 on d.school_id=c.school_id';
 infra_map= 'create or replace view infra_school_map_mgt_view as 
 select d.school_id,d.total_schools_data_received,c.infra_score,'||select_2_cols||',c.access_to_'||category_1||'_percent,c.access_to_'||category_2||'_percent,
@@ -15559,7 +15548,6 @@ END;
 $$LANGUAGE plpgsql;
 
 select infra_school_mgt_reports('water','toilet');
-
 
 /*----health card ----*/
 
