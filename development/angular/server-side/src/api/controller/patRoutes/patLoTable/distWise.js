@@ -76,7 +76,7 @@ router.post('/distWise', auth.authController, async(req, res) => {
                 }
                 z.map(val1 => {
                     let y = {
-                        [`${val1.district_name}`]: val1.marks
+                        [`${val1.district_name}`]: val1.percentage
                     }
                     x = {...x, ...y }
                 })

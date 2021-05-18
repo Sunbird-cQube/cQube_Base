@@ -591,17 +591,9 @@ export class SatReportComponent implements OnInit {
                       this.blockFilter = filterData;
                     }
 
-                    this.colors =
-                      this.blockMarkers.length == 1
-                        ? ["red"]
-                        : this.commonService
-                          .exceptionColor()
-                          .generateGradient(
-                            "#FF0000",
-                            "#00FF00",
-                            this.blockMarkers.length,
-                            "rgb"
-                          );
+                    if (this.selected != "absolute") {
+                      this.colors = this.generateRelativeColors(this.blockMarkers);
+                    }
 
                     for (let i = 0; i < this.blockMarkers.length; i++) {
                       if (this.period != 'all') {
@@ -652,14 +644,7 @@ export class SatReportComponent implements OnInit {
                         );
                       }
 
-                      var markerIcon = this.commonService.initMarkers1(
-                        this.blockMarkers[i].Details.latitude,
-                        this.blockMarkers[i].Details.longitude,
-                        this.selected == "absolute" ? color : this.colors[i],
-                        0.01,
-                        1,
-                        options.level
-                      );
+                      var markerIcon = this.attachColorsToMarkers(this.blockMarkers[i], color, this.colors, 0.01,1, options.level);
                       this.generateToolTip(
                         this.blockMarkers[i],
                         options.level,
@@ -814,19 +799,10 @@ export class SatReportComponent implements OnInit {
                       });
                       this.clusterMarkers = filterData;
                     }
-                    this.colors =
-                      this.clusterMarkers.length == 1
-                        ? ["red"]
-                        : this.commonService
-                          .exceptionColor()
-                          .generateGradient(
-                            "#FF0000",
-                            "#00FF00",
-                            this.clusterMarkers.length,
-                            "rgb"
-                          );
-                    // this.schoolCount = 0;
-                    // this.studentCount = 0;
+                   
+                    if (this.selected != "absolute") {
+                      this.colors = this.generateRelativeColors(this.clusterMarkers);
+                    }
 
                     for (let i = 0; i < this.clusterMarkers.length; i++) {
                       if (this.period != 'all') {
@@ -876,14 +852,8 @@ export class SatReportComponent implements OnInit {
                           this.subject
                         );
                       }
-                      var markerIcon = this.commonService.initMarkers1(
-                        this.clusterMarkers[i].Details.latitude,
-                        this.clusterMarkers[i].Details.longitude,
-                        this.selected == "absolute" ? color : this.colors[i],
-                        0.01,
-                        0.5,
-                        options.level
-                      );
+      
+                      var markerIcon = this.attachColorsToMarkers(this.clusterMarkers[i], color, this.colors, 0.01, 0.5,  options.level);
                       this.generateToolTip(
                         this.clusterMarkers[i],
                         options.level,
@@ -1036,19 +1006,10 @@ export class SatReportComponent implements OnInit {
                       });
                       this.schoolMarkers = filterData;
                     }
-                    this.colors =
-                      this.schoolMarkers.length == 1
-                        ? ["red"]
-                        : this.commonService
-                          .exceptionColor()
-                          .generateGradient(
-                            "#FF0000",
-                            "#00FF00",
-                            this.schoolMarkers.length,
-                            "rgb"
-                          );
-                    // this.schoolCount = 0;
-                    // this.studentCount = 0;
+                    
+                    if (this.selected != "absolute") {
+                      this.colors = this.generateRelativeColors(this.schoolMarkers);
+                    }
 
                     for (let i = 0; i < this.schoolMarkers.length; i++) {
                       if (this.period != 'all') {
@@ -1098,14 +1059,8 @@ export class SatReportComponent implements OnInit {
                           this.subject
                         );
                       }
-                      var markerIcon = this.commonService.initMarkers1(
-                        this.schoolMarkers[i].Details.latitude,
-                        this.schoolMarkers[i].Details.longitude,
-                        this.selected == "absolute" ? color : this.colors[i],
-                        0,
-                        0.3,
-                        "school"
-                      );
+                    
+                      var markerIcon = this.attachColorsToMarkers(this.clusterMarkers[i], color, this.colors, 0, 0.3,  options.level);
                       this.generateToolTip(
                         this.schoolMarkers[i],
                         options.level,
@@ -1627,53 +1582,12 @@ export class SatReportComponent implements OnInit {
       }
 
       if (this.selected != "absolute") {
-        this.colors = this.commonService.getRelativeColors(this.markers, {
-          value: this.grade
-            ? this.markers[0].Subjects
-              ? "Grade Performance"
-              : this.grade
-            : this.grade && this.subject
-              ? this.subject
-              : "Performance",
-          selected: this.grade
-            ? "G"
-            : this.grade && this.subject
-              ? "GS"
-              : "all",
-          report: "reports",
-        });
+        this.colors = this.generateRelativeColors(this.markers)
       }
 
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
-        var markerIcon = this.commonService.initMarkers1(
-          this.markers[i].Details.latitude,
-          this.markers[i].Details.longitude,
-          this.selected == "absolute"
-            ? colors[i]
-            : this.commonService.relativeColorGredient(
-              this.markers[i],
-              {
-                value: this.grade
-                  ? this.markers[i].Subjects
-                    ? "Grade Performance"
-                    : this.grade
-                  : this.grade && this.subject
-                    ? this.subject
-                    : "Performance",
-                selected: this.grade
-                  ? "G"
-                  : this.grade && this.subject
-                    ? "GS"
-                    : "all",
-                report: "reports",
-              },
-              this.colors
-            ),
-          options.strokeWeight,
-          1,
-          options.level
-        );
+        var markerIcon = this.attachColorsToMarkers(this.markers[i], colors[i], this.colors, options.strokeWeight, 1,  options.level);
         // data to show on the tooltip for the desired levels
         this.generateToolTip(
           this.markers[i],
@@ -1688,7 +1602,7 @@ export class SatReportComponent implements OnInit {
         this.getDownloadableData(this.markers[i], options.level);
       }
       this.commonService.loaderAndErr(this.data);
-      
+
       //schoolCount
       this.schoolCount = data['footer'] ? data['footer'].total_schools : null;
       if (this.schoolCount != null) {
@@ -1702,10 +1616,61 @@ export class SatReportComponent implements OnInit {
       if (this.studentAttended != null) {
         this.studentAttended = (this.studentAttended).toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       }
-     
       this.changeDetection.detectChanges();
     }
+  }
 
+  //Generate relative colors.......
+  generateRelativeColors(markers){
+      var colors = this.commonService.getRelativeColors(markers, {
+        value: this.grade
+          ? markers[0].Subjects
+            ? "Grade Performance"
+            : this.grade
+          : this.grade && this.subject
+            ? this.subject
+            : "Performance",
+        selected: this.grade
+          ? "G"
+          : this.grade && this.subject
+            ? "GS"
+            : "all",
+        report: "reports",
+      });
+      return colors;
+  }
+
+  //Attach colors to markers.........
+  attachColorsToMarkers(marker, color, colors, strock,border, level) {
+    var icon = this.commonService.initMarkers1(
+      marker.Details.latitude,
+      marker.Details.longitude,
+      this.selected == "absolute"
+        ? color
+        : this.commonService.relativeColorGredient(
+          marker,
+          {
+            value: this.grade
+              ? marker.Subjects
+                ? "Grade Performance"
+                : this.grade
+              : this.grade && this.subject
+                ? this.subject
+                : "Performance",
+            selected: this.grade
+              ? "G"
+              : this.grade && this.subject
+                ? "GS"
+                : "all",
+            report: "reports",
+          },
+          this.colors
+        ),
+      strock,
+      border,
+      level
+    );
+    return icon;
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {

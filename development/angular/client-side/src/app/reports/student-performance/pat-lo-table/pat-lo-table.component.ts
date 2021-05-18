@@ -293,16 +293,16 @@ export class PATLOTableComponent implements OnInit {
 
       function tableCellColor(data) {
         var colors = {
-          1: '#a50026',
-          2: '#d73027',
-          3: '#f46d43',
-          4: '#fdae61',
-          5: '#fee08b',
-          6: '#d9ef8b',
-          7: '#a6d96a',
-          8: '#66bd63',
-          9: '#1a9850',
-          10: '#006837'
+          10: '#a50026',
+          20: '#d73027',
+          30: '#f46d43',
+          40: '#fdae61',
+          50: '#fee08b',
+          60: '#d9ef8b',
+          70: '#a6d96a',
+          80: '#66bd63',
+          90: '#1a9850',
+          100: '#006837'
         }
         var keys = Object.keys(colors);
         var setColor = '';
@@ -731,15 +731,15 @@ export class PATLOTableComponent implements OnInit {
     "#006837",
   ];
   public values = [
-    "0-1",
-    "1.1-2",
-    "2.1-3",
-    "3.1-4",
-    "4.1-5",
-    "5.1-6",
-    "6.1-7",
-    "7.1-8",
-    "8.1.9",
-    "9.1-10"
+    "0-10",
+    "11-20",
+    "21-30",
+    "31-40",
+    "41-50",
+    "51-60",
+    "61-70",
+    "71-80",
+    "81-90",
+    "91-100"
   ];
 }
