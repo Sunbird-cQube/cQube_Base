@@ -90,7 +90,7 @@ router.post('/schoolWise', auth.authController, async(req, res) => {
                 }
                 z.map(val1 => {
                     let y = {
-                        [`${val1.school_name}`]: val1.marks
+                        [`${val1.school_name}`]: val1.percentage
                     }
                     x = {...x, ...y }
                 })
