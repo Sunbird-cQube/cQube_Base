@@ -272,7 +272,8 @@ export class PATLOTableComponent implements OnInit {
         $.each(b, function (key, value) {
           var new_item = {};
           new_item["data"] = key;
-          new_item["value"] = value;
+          new_item["value"] = typeof (value) != 'object' ? value : value.percentage;
+          new_item["mark"] = typeof (value) != 'object' ? '' : value.mark;
           temp.push(new_item);
         });
         newArr.push(temp);
@@ -329,7 +330,7 @@ export class PATLOTableComponent implements OnInit {
         body += "<tr>";
         columns.forEach((column, i2) => {
           if (i2 > 3 && column.value || i2 > 3 && String(column.value) == String(0)) {
-            body += `<td class="numberData" data-toggle="tooltip" data-html="true" data-placement="auto" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length - 1]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
+            body += `<td class="numberData" data-toggle="tooltip" data-html="true" data-placement="auto" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length - 1]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value} <br>Marks: ${column.mark}'>${column.value}</td>`;
           }
           else {
             if (column.data == 'indicator') {

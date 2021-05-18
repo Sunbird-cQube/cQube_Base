@@ -3,7 +3,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/clusterWise', auth.authController, async(req, res) => {
+router.post('/clusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT LO table clusterWise api ---');
 
@@ -89,9 +89,9 @@ router.post('/clusterWise', auth.authController, async(req, res) => {
                 }
                 z.map(val1 => {
                     let y = {
-                        [`${val1.cluster_name}`]: val1.percentage
+                        [`${val1.cluster_name}`]: { percentage: val1.percentage, mark: val1.marks }
                     }
-                    x = {...x, ...y }
+                    x = { ...x, ...y }
                 })
                 val.push(x);
             }
@@ -99,13 +99,13 @@ router.post('/clusterWise', auth.authController, async(req, res) => {
             var tableData = [];
             // filling the missing key - value to make the object contains same data set
             if (val.length > 0) {
-                let obj = val.reduce((res1, item) => ({...res1, ...item }));
+                let obj = val.reduce((res1, item) => ({ ...res1, ...item }));
                 let keys1 = Object.keys(obj);
                 let def = keys1.reduce((result1, key) => {
                     result1[key] = ''
                     return result1;
                 }, {});
-                tableData = val.map((item) => ({...def, ...item }));
+                tableData = val.map((item) => ({ ...def, ...item }));
                 logger.info('--- PAT LO table clusterWise response sent ---');
                 res.status(200).send({ clusterDetails, tableData });
             } else {
