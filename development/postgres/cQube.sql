@@ -6105,3 +6105,15 @@ school_management_type varchar(100),
 students_count bigint,
 total_schools bigint);
 
+create table if not exists pat_processing_info(
+id text,
+date date,
+start_date_time timestamp,
+end_date_time timestamp,
+exam_codes_list text,
+status varchar(20));
+
+			
+create table if not exists latest_data_to_be_processed_pat(
+exam_code text);
+
