@@ -278,19 +278,19 @@ export class PATLOTableComponent implements OnInit {
         });
         newArr.push(temp);
       });
-      // var extra = 8 - newArr.length;
-      // if (extra > 0) {
-      //   for (let i = 0; i < extra; i++) {
-      //     var temp = [];
-      //     my_columns.map((data, i) => {
-      //       var new_item = {};
-      //       new_item["data"] = '*';
-      //       new_item["value"] = '*';
-      //       temp.push(new_item);
-      //     })
-      //     newArr.push(temp);
-      //   }
-      // }
+      var extra = (8 - newArr.length)*2;
+      if (extra > 0) {
+        for (let i = 0; i < extra; i++) {
+          var temp = [];
+          my_columns.map((data, i) => {
+            var new_item = {};
+            new_item["data"] = '';
+            new_item["value"] = '';
+            temp.push(new_item);
+          })
+          newArr.push(temp);
+        }
+      }
 
       function tableCellColor(data) {
         var colors = {

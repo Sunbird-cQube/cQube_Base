@@ -590,64 +590,68 @@ export class StudengtAttendanceComponent implements OnInit {
 
             this.reportData = this.markers = sorted;
 
-            let colors = this.commonService.getRelativeColors(sorted, {
-              value: "attendance",
-              report: "reports",
-            });
-            if (this.markers.length > 0) {
-              for (var i = 0; i < this.markers.length; i++) {
-                var color = this.commonService.color(
-                  this.markers[i],
-                  "attendance"
-                );
-                this.districtsIds.push(this.markers[i]["district_id"]);
-                distNames.push({
-                  id: this.markers[i]["district_id"],
-                  name: this.markers[i]["district_name"],
-                });
-                var markerIcon = this.commonService.initMarkers1(
-                  this.markers[i].lat,
-                  this.markers[i].lng,
-                  this.selected == "absolute"
-                    ? color
-                    : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
-                  0.01,
-                  1,
-                  this.levelWise
-                );
-                this.generateToolTip(
-                  markerIcon,
-                  this.markers[i],
-                  this.onClick_Marker,
-                  this.layerMarkers,
-                  this.levelWise
-                );
+            // if (!this.valueRange) {
+              let colors = this.commonService.getRelativeColors(sorted, {
+                value: "attendance",
+                report: "reports",
+              });
+              if (this.markers.length > 0) {
+                for (var i = 0; i < this.markers.length; i++) {
+                  var color = this.commonService.color(
+                    this.markers[i],
+                    "attendance"
+                  );
+                  this.districtsIds.push(this.markers[i]["district_id"]);
+                  distNames.push({
+                    id: this.markers[i]["district_id"],
+                    name: this.markers[i]["district_name"],
+                  });
+                  var markerIcon = this.commonService.initMarkers1(
+                    this.markers[i].lat,
+                    this.markers[i].lng,
+                    this.selected == "absolute"
+                      ? color
+                      : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                    0.01,
+                    1,
+                    this.levelWise
+                  );
+                  this.generateToolTip(
+                    markerIcon,
+                    this.markers[i],
+                    this.onClick_Marker,
+                    this.layerMarkers,
+                    this.levelWise
+                  );
+                }
               }
-            }
 
-            distNames.sort((a, b) =>
-              a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            );
-            this.districtsNames = distNames;
+              distNames.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+              );
+              this.districtsNames = distNames;
 
-            this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([
-              [this.lat - 4.5, this.lng - 6],
-              [this.lat + 3.5, this.lng + 6],
-            ]);
-            this.commonService.onResize(this.levelWise);
-            this.schoolCount = this.schoolCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.studentCount = this.studentCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.commonService.loaderAndErr(this.markers);
-            this.changeDetection.markForCheck();
+              this.commonService.restrictZoom(globalMap);
+              globalMap.setMaxBounds([
+                [this.lat - 4.5, this.lng - 6],
+                [this.lat + 3.5, this.lng + 6],
+              ]);
+              this.commonService.onResize(this.levelWise);
+              this.schoolCount = this.schoolCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.studentCount = this.studentCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.commonService.loaderAndErr(this.markers);
+              this.changeDetection.markForCheck();
+            // } else {
+            //   this.filterRangeWiseData(this.valueRange);
+            // }
           },
           (err) => {
             this.dateRange = "";
@@ -656,6 +660,7 @@ export class StudengtAttendanceComponent implements OnInit {
             this.markers = [];
             this.commonService.loaderAndErr(this.markers);
           }
+
         );
     } else {
       this.markers = [];
@@ -703,65 +708,68 @@ export class StudengtAttendanceComponent implements OnInit {
             this.schoolCount = res["schoolCount"];
 
             this.reportData = this.markers = sorted
-
-            let colors = this.commonService.getRelativeColors(sorted, {
-              value: "attendance",
-              report: "reports",
-            });
-            if (this.markers.length > 0) {
-              for (let i = 0; i < this.markers.length; i++) {
-                var color = this.commonService.color(
-                  this.markers[i],
-                  "attendance"
-                );
-                this.blocksIds.push(this.markers[i]["block_id"]);
-                blockNames.push({
-                  id: this.markers[i]["block_id"],
-                  name: this.markers[i]["block_name"],
-                  distId: this.markers[i]["dist"],
-                });
-                var markerIcon = this.commonService.initMarkers1(
-                  this.markers[i].lat,
-                  this.markers[i].lng,
-                  this.selected == "absolute"
-                    ? color
-                    : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
-                  0.01,
-                  1,
-                  this.levelWise
-                );
-                this.generateToolTip(
-                  markerIcon,
-                  this.markers[i],
-                  this.onClick_Marker,
-                  this.layerMarkers,
-                  this.levelWise
-                );
+            // if (!this.valueRange) {
+              let colors = this.commonService.getRelativeColors(sorted, {
+                value: "attendance",
+                report: "reports",
+              });
+              if (this.markers.length > 0) {
+                for (let i = 0; i < this.markers.length; i++) {
+                  var color = this.commonService.color(
+                    this.markers[i],
+                    "attendance"
+                  );
+                  this.blocksIds.push(this.markers[i]["block_id"]);
+                  blockNames.push({
+                    id: this.markers[i]["block_id"],
+                    name: this.markers[i]["block_name"],
+                    distId: this.markers[i]["dist"],
+                  });
+                  var markerIcon = this.commonService.initMarkers1(
+                    this.markers[i].lat,
+                    this.markers[i].lng,
+                    this.selected == "absolute"
+                      ? color
+                      : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                    0.01,
+                    1,
+                    this.levelWise
+                  );
+                  this.generateToolTip(
+                    markerIcon,
+                    this.markers[i],
+                    this.onClick_Marker,
+                    this.layerMarkers,
+                    this.levelWise
+                  );
+                }
               }
-            }
-            blockNames.sort((a, b) =>
-              a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            );
-            this.blocksNames = blockNames;
+              blockNames.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+              );
+              this.blocksNames = blockNames;
 
-            this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([
-              [this.lat - 4.5, this.lng - 6],
-              [this.lat + 3.5, this.lng + 6],
-            ]);
-            this.commonService.onResize(this.levelWise);
-            this.schoolCount = this.schoolCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.studentCount = this.studentCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.commonService.loaderAndErr(this.markers);
-            this.changeDetection.markForCheck();
+              this.commonService.restrictZoom(globalMap);
+              globalMap.setMaxBounds([
+                [this.lat - 4.5, this.lng - 6],
+                [this.lat + 3.5, this.lng + 6],
+              ]);
+              this.commonService.onResize(this.levelWise);
+              this.schoolCount = this.schoolCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.studentCount = this.studentCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.commonService.loaderAndErr(this.markers);
+              this.changeDetection.markForCheck();
+            // } else {
+            //   this.filterRangeWiseData(this.valueRange);
+            // }
           },
           (err) => {
             this.dateRange = "";
@@ -817,84 +825,88 @@ export class StudengtAttendanceComponent implements OnInit {
             this.studentCount = res["studentCount"];
             this.schoolCount = res["schoolCount"];
 
-            this.reportData = this.markers = sorted
-            let colors = this.commonService.getRelativeColors(sorted, {
-              value: "attendance",
-              report: "reports",
-            });
-            if (this.markers.length > 0) {
-              for (let i = 0; i < this.markers.length; i++) {
-                var color = this.commonService.color(
-                  this.markers[i],
-                  "attendance"
-                );
-                this.clusterIds.push(this.markers[i]["cluster_id"]);
-                this.blocksIds.push(this.markers[i]["block_id"]);
-                if (this.markers[i]["cluster_name"] !== null) {
-                  clustNames.push({
-                    id: this.markers[i]["cluster_id"],
-                    name: this.markers[i]["cluster_name"],
-                    blockId: this.markers[i]["block_id"],
+            this.reportData = this.markers = sorted;
+            // if (!this.valueRange) {
+              let colors = this.commonService.getRelativeColors(sorted, {
+                value: "attendance",
+                report: "reports",
+              });
+              if (this.markers.length > 0) {
+                for (let i = 0; i < this.markers.length; i++) {
+                  var color = this.commonService.color(
+                    this.markers[i],
+                    "attendance"
+                  );
+                  this.clusterIds.push(this.markers[i]["cluster_id"]);
+                  this.blocksIds.push(this.markers[i]["block_id"]);
+                  if (this.markers[i]["cluster_name"] !== null) {
+                    clustNames.push({
+                      id: this.markers[i]["cluster_id"],
+                      name: this.markers[i]["cluster_name"],
+                      blockId: this.markers[i]["block_id"],
+                    });
+                  } else {
+                    clustNames.push({
+                      id: this.markers[i]["cluster_id"],
+                      name: "NO NAME FOUND",
+                      blockId: this.markers[i]["block_id"],
+                    });
+                  }
+                  blockNames.push({
+                    id: this.markers[i]["block_id"],
+                    name: this.markers[i]["block_name"],
+                    distId: this.markers[i]["district_id"],
                   });
-                } else {
-                  clustNames.push({
-                    id: this.markers[i]["cluster_id"],
-                    name: "NO NAME FOUND",
-                    blockId: this.markers[i]["block_id"],
-                  });
+                  var markerIcon = this.commonService.initMarkers1(
+                    this.markers[i].lat,
+                    this.markers[i].lng,
+                    this.selected == "absolute"
+                      ? color
+                      : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                    0.01,
+                    0.5,
+                    this.levelWise
+                  );
+                  this.generateToolTip(
+                    markerIcon,
+                    this.markers[i],
+                    this.onClick_Marker,
+                    this.layerMarkers,
+                    this.levelWise
+                  );
                 }
-                blockNames.push({
-                  id: this.markers[i]["block_id"],
-                  name: this.markers[i]["block_name"],
-                  distId: this.markers[i]["district_id"],
-                });
-                var markerIcon = this.commonService.initMarkers1(
-                  this.markers[i].lat,
-                  this.markers[i].lng,
-                  this.selected == "absolute"
-                    ? color
-                    : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
-                  0.01,
-                  0.5,
-                  this.levelWise
-                );
-                this.generateToolTip(
-                  markerIcon,
-                  this.markers[i],
-                  this.onClick_Marker,
-                  this.layerMarkers,
-                  this.levelWise
-                );
               }
-            }
 
-            clustNames.sort((a, b) =>
-              a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            );
-            this.clusterNames = clustNames;
-            blockNames.sort((a, b) =>
-              a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            );
-            this.blocksNames = blockNames;
+              clustNames.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+              );
+              this.clusterNames = clustNames;
+              blockNames.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+              );
+              this.blocksNames = blockNames;
 
-            this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([
-              [this.lat - 4.5, this.lng - 6],
-              [this.lat + 3.5, this.lng + 6],
-            ]);
-            this.commonService.onResize(this.levelWise);
-            this.schoolCount = this.schoolCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.studentCount = this.studentCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.commonService.loaderAndErr(this.markers);
-            this.changeDetection.markForCheck();
+              this.commonService.restrictZoom(globalMap);
+              globalMap.setMaxBounds([
+                [this.lat - 4.5, this.lng - 6],
+                [this.lat + 3.5, this.lng + 6],
+              ]);
+              this.commonService.onResize(this.levelWise);
+              this.schoolCount = this.schoolCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.studentCount = this.studentCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.commonService.loaderAndErr(this.markers);
+              this.changeDetection.markForCheck();
+            // } else {
+            //   this.filterRangeWiseData(this.valueRange);
+            // }
           },
           (err) => {
             this.dateRange = "";
@@ -950,56 +962,60 @@ export class StudengtAttendanceComponent implements OnInit {
             this.schoolCount = res["schoolCount"];
 
             this.reportData = this.markers = sorted
-            let colors = this.commonService.getRelativeColors(sorted, {
-              value: "attendance",
-              report: "reports",
-            });
-            if (this.markers.length > 0) {
-              for (let i = 0; i < this.markers.length; i++) {
-                var color = this.commonService.color(
-                  this.markers[i],
-                  "attendance"
-                );
-                this.districtsIds.push(sorted[i]["district_id"]);
-                var markerIcon = this.commonService.initMarkers1(
-                  this.markers[i].lat,
-                  this.markers[i].lng,
-                  this.selected == "absolute"
-                    ? color
-                    : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
-                  0,
-                  0.3,
-                  this.levelWise
-                );
-                this.generateToolTip(
-                  markerIcon,
-                  this.markers[i],
-                  this.onClick_Marker,
-                  this.layerMarkers,
-                  this.levelWise
-                );
+            // if (!this.valueRange) {
+              let colors = this.commonService.getRelativeColors(sorted, {
+                value: "attendance",
+                report: "reports",
+              });
+              if (this.markers.length > 0) {
+                for (let i = 0; i < this.markers.length; i++) {
+                  var color = this.commonService.color(
+                    this.markers[i],
+                    "attendance"
+                  );
+                  this.districtsIds.push(sorted[i]["district_id"]);
+                  var markerIcon = this.commonService.initMarkers1(
+                    this.markers[i].lat,
+                    this.markers[i].lng,
+                    this.selected == "absolute"
+                      ? color
+                      : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                    0,
+                    0.3,
+                    this.levelWise
+                  );
+                  this.generateToolTip(
+                    markerIcon,
+                    this.markers[i],
+                    this.onClick_Marker,
+                    this.layerMarkers,
+                    this.levelWise
+                  );
+                }
               }
-            }
 
-            globalMap.doubleClickZoom.enable();
-            globalMap.scrollWheelZoom.enable();
-            globalMap.setMaxBounds([
-              [this.lat - 4.5, this.lng - 6],
-              [this.lat + 3.5, this.lng + 6],
-            ]);
-            this.commonService.onResize(this.levelWise);
-            this.schoolCount = this.markers.length
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.studentCount = this.studentCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.commonService.loaderAndErr(this.markers);
-            this.changeDetection.markForCheck();
+              globalMap.doubleClickZoom.enable();
+              globalMap.scrollWheelZoom.enable();
+              globalMap.setMaxBounds([
+                [this.lat - 4.5, this.lng - 6],
+                [this.lat + 3.5, this.lng + 6],
+              ]);
+              this.commonService.onResize(this.levelWise);
+              this.schoolCount = this.markers.length
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.studentCount = this.studentCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.commonService.loaderAndErr(this.markers);
+              this.changeDetection.markForCheck();
+            // } else {
+            //   this.filterRangeWiseData(this.valueRange);
+            // }
           },
           (err) => {
             this.dateRange = "";
@@ -1249,66 +1265,70 @@ export class StudengtAttendanceComponent implements OnInit {
               parseInt(a.attendance) > parseInt(b.attendance) ? 1 : -1
             );
 
-            this.reportData = this.markers = sorted
-            let colors = this.commonService.getRelativeColors(sorted, {
-              value: "attendance",
-              report: "reports",
-            });
-            this.studentCount = res["studentCount"];
-            this.schoolCount = res["schoolCount"];
-            if (this.markers.length > 0) {
-              for (var i = 0; i < this.markers.length; i++) {
-                var color = this.commonService.color(
-                  this.markers[i],
-                  "attendance"
-                );
-                this.blocksIds.push(this.markers[i]["block_id"]);
-                blokName.push({
-                  id: this.markers[i]["block_id"],
-                  name: this.markers[i]["block_name"],
-                });
-                var markerIcon = this.commonService.initMarkers1(
-                  this.markers[i].lat,
-                  this.markers[i].lng,
-                  this.selected == "absolute"
-                    ? color
-                    : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
-                  0.01,
-                  1,
-                  this.levelWise
-                );
-                this.generateToolTip(
-                  markerIcon,
-                  this.markers[i],
-                  this.onClick_Marker,
-                  this.layerMarkers,
-                  this.levelWise
-                );
+            this.reportData = this.markers = sorted;
+            // if (!this.valueRange) {
+              let colors = this.commonService.getRelativeColors(sorted, {
+                value: "attendance",
+                report: "reports",
+              });
+              this.studentCount = res["studentCount"];
+              this.schoolCount = res["schoolCount"];
+              if (this.markers.length > 0) {
+                for (var i = 0; i < this.markers.length; i++) {
+                  var color = this.commonService.color(
+                    this.markers[i],
+                    "attendance"
+                  );
+                  this.blocksIds.push(this.markers[i]["block_id"]);
+                  blokName.push({
+                    id: this.markers[i]["block_id"],
+                    name: this.markers[i]["block_name"],
+                  });
+                  var markerIcon = this.commonService.initMarkers1(
+                    this.markers[i].lat,
+                    this.markers[i].lng,
+                    this.selected == "absolute"
+                      ? color
+                      : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                    0.01,
+                    1,
+                    this.levelWise
+                  );
+                  this.generateToolTip(
+                    markerIcon,
+                    this.markers[i],
+                    this.onClick_Marker,
+                    this.layerMarkers,
+                    this.levelWise
+                  );
+                }
               }
-            }
-            blokName.sort((a, b) =>
-              a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            );
-            this.blocksNames = blokName;
+              blokName.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+              );
+              this.blocksNames = blokName;
 
-            this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([
-              [this.lat - 1.5, this.lng - 3],
-              [this.lat + 1.5, this.lng + 2],
-            ]);
-            this.commonService.onResize(this.levelWise);
-            this.schoolCount = this.schoolCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.studentCount = this.studentCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.commonService.loaderAndErr(this.markers);
-            this.changeDetection.markForCheck();
+              this.commonService.restrictZoom(globalMap);
+              globalMap.setMaxBounds([
+                [this.lat - 1.5, this.lng - 3],
+                [this.lat + 1.5, this.lng + 2],
+              ]);
+              this.commonService.onResize(this.levelWise);
+              this.schoolCount = this.schoolCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.studentCount = this.studentCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.commonService.loaderAndErr(this.markers);
+              this.changeDetection.markForCheck();
+            // } else {
+            //   this.filterRangeWiseData(this.valueRange);
+            // }
           },
           (err) => {
             this.dateRange = "";
@@ -1450,74 +1470,78 @@ export class StudengtAttendanceComponent implements OnInit {
             this.schoolCount = res["schoolCount"];
             // sorted.pop();
 
-            this.reportData = this.markers = sorted
-            let colors = this.commonService.getRelativeColors(sorted, {
-              value: "attendance",
-              report: "reports",
-            });
-            if (this.markers.length > 0) {
-              for (var i = 0; i < sorted.length; i++) {
-                var color = this.commonService.color(
-                  this.markers[i],
-                  "attendance"
-                );
-                this.clusterIds.push(sorted[i]["cluster_id"]);
-                if (sorted[i]["name"] !== null) {
-                  clustNames.push({
-                    id: sorted[i]["cluster_id"],
-                    name: sorted[i]["cluster_name"],
-                    blockId: sorted[i]["block_id"],
-                  });
-                } else {
-                  clustNames.push({
-                    id: sorted[i]["cluster_id"],
-                    name: "NO NAME FOUND",
-                    blockId: sorted[i]["block_id"],
-                  });
+            this.reportData = this.markers = sorted;
+            // if (!this.valueRange) {
+              let colors = this.commonService.getRelativeColors(sorted, {
+                value: "attendance",
+                report: "reports",
+              });
+              if (this.markers.length > 0) {
+                for (var i = 0; i < sorted.length; i++) {
+                  var color = this.commonService.color(
+                    this.markers[i],
+                    "attendance"
+                  );
+                  this.clusterIds.push(sorted[i]["cluster_id"]);
+                  if (sorted[i]["name"] !== null) {
+                    clustNames.push({
+                      id: sorted[i]["cluster_id"],
+                      name: sorted[i]["cluster_name"],
+                      blockId: sorted[i]["block_id"],
+                    });
+                  } else {
+                    clustNames.push({
+                      id: sorted[i]["cluster_id"],
+                      name: "NO NAME FOUND",
+                      blockId: sorted[i]["block_id"],
+                    });
+                  }
+                  var markerIcon = this.commonService.initMarkers1(
+                    this.markers[i].lat,
+                    this.markers[i].lng,
+                    this.selected == "absolute"
+                      ? color
+                      : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                    0.01,
+                    1,
+                    this.levelWise
+                  );
+                  this.generateToolTip(
+                    markerIcon,
+                    this.markers[i],
+                    this.onClick_Marker,
+                    this.layerMarkers,
+                    this.levelWise
+                  );
                 }
-                var markerIcon = this.commonService.initMarkers1(
-                  this.markers[i].lat,
-                  this.markers[i].lng,
-                  this.selected == "absolute"
-                    ? color
-                    : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
-                  0.01,
-                  1,
-                  this.levelWise
-                );
-                this.generateToolTip(
-                  markerIcon,
-                  this.markers[i],
-                  this.onClick_Marker,
-                  this.layerMarkers,
-                  this.levelWise
-                );
               }
-            }
 
-            clustNames.sort((a, b) =>
-              a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            );
-            this.clusterNames = clustNames;
+              clustNames.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+              );
+              this.clusterNames = clustNames;
 
-            this.commonService.restrictZoom(globalMap);
-            globalMap.setMaxBounds([
-              [this.lat - 1.5, this.lng - 3],
-              [this.lat + 1.5, this.lng + 2],
-            ]);
-            this.commonService.onResize(this.levelWise);
-            this.schoolCount = this.schoolCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.studentCount = this.studentCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.commonService.loaderAndErr(this.markers);
-            this.changeDetection.markForCheck();
+              this.commonService.restrictZoom(globalMap);
+              globalMap.setMaxBounds([
+                [this.lat - 1.5, this.lng - 3],
+                [this.lat + 1.5, this.lng + 2],
+              ]);
+              this.commonService.onResize(this.levelWise);
+              this.schoolCount = this.schoolCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.studentCount = this.studentCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.commonService.loaderAndErr(this.markers);
+              this.changeDetection.markForCheck();
+            // } else {
+            //   this.filterRangeWiseData(this.valueRange);
+            // }
           },
           (err) => {
             this.dateRange = "";
@@ -1693,55 +1717,59 @@ export class StudengtAttendanceComponent implements OnInit {
             this.studentCount = res["studentCount"];
             this.schoolCount = res["schoolCount"];
 
-            this.reportData = this.markers = sorted
-            let colors = this.commonService.getRelativeColors(sorted, {
-              value: "attendance",
-              report: "reports",
-            });
-            if (this.markers.length > 0) {
-              for (var i = 0; i < sorted.length; i++) {
-                var color = this.commonService.color(
-                  this.markers[i],
-                  "attendance"
-                );
-                var markerIcon = this.commonService.initMarkers1(
-                  this.markers[i].lat,
-                  this.markers[i].lng,
-                  this.selected == "absolute"
-                    ? color
-                    : this.commonService.relativeColorGredient(
-                      sorted[i],
-                      { value: "attendance", report: "reports" },
-                      colors
-                    ),
-                  0.1,
-                  1,
-                  this.levelWise
-                );
-                this.generateToolTip(
-                  markerIcon,
-                  this.markers[i],
-                  this.onClick_Marker,
-                  this.layerMarkers,
-                  this.levelWise
-                );
+            this.reportData = this.markers = sorted;
+            // if (!this.valueRange) {
+              let colors = this.commonService.getRelativeColors(sorted, {
+                value: "attendance",
+                report: "reports",
+              });
+              if (this.markers.length > 0) {
+                for (var i = 0; i < sorted.length; i++) {
+                  var color = this.commonService.color(
+                    this.markers[i],
+                    "attendance"
+                  );
+                  var markerIcon = this.commonService.initMarkers1(
+                    this.markers[i].lat,
+                    this.markers[i].lng,
+                    this.selected == "absolute"
+                      ? color
+                      : this.commonService.relativeColorGredient(
+                        sorted[i],
+                        { value: "attendance", report: "reports" },
+                        colors
+                      ),
+                    0.1,
+                    1,
+                    this.levelWise
+                  );
+                  this.generateToolTip(
+                    markerIcon,
+                    this.markers[i],
+                    this.onClick_Marker,
+                    this.layerMarkers,
+                    this.levelWise
+                  );
+                }
               }
-            }
-            globalMap.doubleClickZoom.enable();
-            globalMap.scrollWheelZoom.enable();
-            globalMap.setMaxBounds([
-              [this.lat - 1.5, this.lng - 3],
-              [this.lat + 1.5, this.lng + 2],
-            ]);
-            this.commonService.onResize(this.levelWise);
-            this.schoolCount = this.markers.length
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.studentCount = this.studentCount
-              .toString()
-              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-            this.commonService.loaderAndErr(this.markers);
-            this.changeDetection.markForCheck();
+              globalMap.doubleClickZoom.enable();
+              globalMap.scrollWheelZoom.enable();
+              globalMap.setMaxBounds([
+                [this.lat - 1.5, this.lng - 3],
+                [this.lat + 1.5, this.lng + 2],
+              ]);
+              this.commonService.onResize(this.levelWise);
+              this.schoolCount = this.markers.length
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.studentCount = this.studentCount
+                .toString()
+                .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+              this.commonService.loaderAndErr(this.markers);
+              this.changeDetection.markForCheck();
+            // } else {
+            //   this.filterRangeWiseData(this.valueRange);
+            // }
           },
           (err) => {
             this.dateRange = "";
@@ -1936,6 +1964,7 @@ export class StudengtAttendanceComponent implements OnInit {
   public prevRange = undefined;
   selectRange(value) {
     this.valueRange = value;
+    document.getElementById('spinner').style.display = 'block';
     this.filterRangeWiseData(value);
   }
 
@@ -2058,6 +2087,7 @@ export class StudengtAttendanceComponent implements OnInit {
     }
     this.commonService.onResize(this.levelWise);
     this.changeDetection.detectChanges();
+    document.getElementById('spinner').style.display = 'none';
     this.commonService.loaderAndErr(markers);
   }
 
