@@ -3,7 +3,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/schoolWise', auth.authController, async(req, res) => {
+router.post('/schoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('---PAT LO table schoolWise api ---');
 
@@ -90,9 +90,9 @@ router.post('/schoolWise', auth.authController, async(req, res) => {
                 }
                 z.map(val1 => {
                     let y = {
-                        [`${val1.school_name}`]: val1.marks
+                        [`${val1.school_name}`]: { percentage: val1.percentage, mark: val1.marks }
                     }
-                    x = {...x, ...y }
+                    x = { ...x, ...y }
                 })
                 val.push(x);
             }
@@ -100,13 +100,13 @@ router.post('/schoolWise', auth.authController, async(req, res) => {
             var tableData = [];
             // filling the missing key - value to make the object contains same data set
             if (val.length > 0) {
-                let obj = val.reduce((res1, item) => ({...res1, ...item }));
+                let obj = val.reduce((res1, item) => ({ ...res1, ...item }));
                 let keys1 = Object.keys(obj);
                 let def = keys1.reduce((result1, key) => {
                     result1[key] = ''
                     return result1;
                 }, {});
-                tableData = val.map((item) => ({...def, ...item }));
+                tableData = val.map((item) => ({ ...def, ...item }));
                 logger.info('--- PAT LO table schoolWise response sent ---');
                 res.status(200).send({ schoolDetails, tableData });
             } else {

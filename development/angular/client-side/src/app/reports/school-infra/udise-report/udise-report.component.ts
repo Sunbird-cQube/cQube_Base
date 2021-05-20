@@ -226,6 +226,10 @@ export class UdiseReportComponent implements OnInit {
     document.getElementById("spinner").style.marginTop = "3%";
   }
 
+  homeClick(){
+    this.indiceData = "Infrastructure_Score";
+    this.districtWise();
+  }
   // to load all the districts for state data on the map
   districtWise() {
     try {

@@ -73,7 +73,7 @@ export class PATLOTableComponent implements OnInit {
   filteredData = []
   showPagination = false;
   validTransactions: any;
-  table: any;
+  table: any = undefined;
   updatedTable: any = [];
 
   constructor(
@@ -236,7 +236,7 @@ export class PATLOTableComponent implements OnInit {
               : 0
         );
         this.onChangePage();
-        this.commonService.loaderAndErr(this.reportData);
+        //this.commonService.loaderAndErr(this.reportData);
       },
       (err) => {
         this.handleError();
@@ -272,19 +272,20 @@ export class PATLOTableComponent implements OnInit {
         $.each(b, function (key, value) {
           var new_item = {};
           new_item["data"] = key;
-          new_item["value"] = value;
+          new_item["value"] = typeof (value) != 'object' ? value : value.percentage;
+          new_item["mark"] = typeof (value) != 'object' ? '' : value.mark;
           temp.push(new_item);
         });
         newArr.push(temp);
       });
-      // var extra = 8 - newArr.length;
+      // var extra = Math.fround((8 - newArr.length)*2.5);
       // if (extra > 0) {
       //   for (let i = 0; i < extra; i++) {
       //     var temp = [];
       //     my_columns.map((data, i) => {
       //       var new_item = {};
-      //       new_item["data"] = '*';
-      //       new_item["value"] = '*';
+      //       new_item["data"] = '';
+      //       new_item["value"] = '';
       //       temp.push(new_item);
       //     })
       //     newArr.push(temp);
@@ -293,16 +294,16 @@ export class PATLOTableComponent implements OnInit {
 
       function tableCellColor(data) {
         var colors = {
-          1: '#a50026',
-          2: '#d73027',
-          3: '#f46d43',
-          4: '#fdae61',
-          5: '#fee08b',
-          6: '#d9ef8b',
-          7: '#a6d96a',
-          8: '#66bd63',
-          9: '#1a9850',
-          10: '#006837'
+          10: '#a50026',
+          20: '#d73027',
+          30: '#f46d43',
+          40: '#fdae61',
+          50: '#fee08b',
+          60: '#d9ef8b',
+          70: '#a6d96a',
+          80: '#66bd63',
+          90: '#1a9850',
+          100: '#006837'
         }
         var keys = Object.keys(colors);
         var setColor = '';
@@ -329,7 +330,7 @@ export class PATLOTableComponent implements OnInit {
         body += "<tr>";
         columns.forEach((column, i2) => {
           if (i2 > 3 && column.value || i2 > 3 && String(column.value) == String(0)) {
-            body += `<td class="numberData" data-toggle="tooltip" data-html="true" data-placement="auto" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length - 1]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value}'>${column.value}</td>`;
+            body += `<td class="numberData" data-toggle="tooltip" data-html="true" data-placement="auto" style='background-color: ${tableCellColor(column.value)}' title='${level} Name: ${column.data}<br> Date: ${columns[0].value} <br> Grade: ${columns[1].value[columns[1].value.length - 1]} <br> Subject: ${columns[2].value} <br> ${toTitleCase(columns[3].data.replace('_', ' '))}: ${columns[3].value} <br>Marks: ${column.mark}'>${column.value}</td>`;
           }
           else {
             if (column.data == 'indicator') {
@@ -400,7 +401,8 @@ export class PATLOTableComponent implements OnInit {
           return false;
         }
       });
-      document.getElementById('spinner').style.display = 'none';
+      if(this.table)
+        document.getElementById('spinner').style.display = 'none';
     });
     this.showPagination = true;
   }
@@ -514,7 +516,7 @@ export class PATLOTableComponent implements OnInit {
         this.dist = true;
         this.blok = false;
         this.clust = false;
-        this.commonService.loaderAndErr(this.reportData);
+        //this.commonService.loaderAndErr(this.reportData);
       },
       (err) => {
         this.handleError();
@@ -577,7 +579,7 @@ export class PATLOTableComponent implements OnInit {
         this.dist = false;
         this.blok = true;
         this.clust = false;
-        this.commonService.loaderAndErr(this.reportData);
+        //this.commonService.loaderAndErr(this.reportData);
       },
       (err) => {
         this.handleError();
@@ -632,7 +634,7 @@ export class PATLOTableComponent implements OnInit {
         this.blok = false;
         this.clust = true;
 
-        this.commonService.loaderAndErr(this.reportData);
+        //this.commonService.loaderAndErr(this.reportData);
       },
       (err) => {
         this.handleError();
@@ -731,15 +733,15 @@ export class PATLOTableComponent implements OnInit {
     "#006837",
   ];
   public values = [
-    "0-1",
-    "1.1-2",
-    "2.1-3",
-    "3.1-4",
-    "4.1-5",
-    "5.1-6",
-    "6.1-7",
-    "7.1-8",
-    "8.1.9",
-    "9.1-10"
+    "0-10",
+    "11-20",
+    "21-30",
+    "31-40",
+    "41-50",
+    "51-60",
+    "61-70",
+    "71-80",
+    "81-90",
+    "91-100"
   ];
 }
