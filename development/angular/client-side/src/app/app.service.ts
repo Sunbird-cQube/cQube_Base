@@ -454,6 +454,7 @@ export class AppServiceComponent {
         }
         for (let i = 0; i < keys.length; i++) {
             let val = filter.value ? filter.value : filter;
+            if(dataSet[val] == null) setColor = "red";
             if (parseFloat(dataSet[val]) == parseFloat(keys[i])) {
                 setColor = colors[keys[i]];
                 break;
