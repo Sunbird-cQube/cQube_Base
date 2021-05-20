@@ -3,12 +3,12 @@
         <div class="col-sm-8">
             <div *ngIf='skul'>
                 <p id="dist">
-                    UDISE Report for: <span (click)="districtWise()"
+                    UDISE Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block">
-                    UDISE Report for: <span (click)="districtWise()"
+                    UDISE Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -16,7 +16,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster">
-                    UDISE Report for: <span (click)="districtWise()"
+                    UDISE Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school">
-                    UDISE Report for: <span (click)="districtWise()"
+                    UDISE Report for: <span (click)="homeClick()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -48,7 +48,7 @@
                 <div class="col-sm-5">
                     <em class="fa fa-cloud-download" title="Download Report" id="download"
                         (click)="downloadReport()"></em>
-                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="districtWise()"></em>
+                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="homeClick()"></em>
                 </div>
             </div>
         </div>
