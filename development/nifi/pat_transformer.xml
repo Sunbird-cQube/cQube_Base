@@ -20770,7 +20770,7 @@ peqm.created_on&gt;(select max(end_date_time) from pat_processing_info))
 union 
 (SELECT distinct exam_code from periodic_exam_result_staging_2)
 union
-(select exam_codes_list from pat_processing_info where status='FAILURE' and date in (select max(date) from pat_processing_info where status='SUCCESS' )))as a);</value>
+(select exam_codes_list from pat_processing_info where status!='SUCCESS' and start_date_time &gt;= (select max(start_date_time) from pat_processing_info where status='SUCCESS' )))as a);</value>
     </entry>
     <entry>
         <key>Support Fragmented Transactions</key>
@@ -41408,5 +41408,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/19/2021 19:39:59 IST</timestamp>
+    <timestamp>05/20/2021 17:37:23 IST</timestamp>
 </template>
