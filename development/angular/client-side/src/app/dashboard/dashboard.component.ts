@@ -203,8 +203,11 @@ export class DashboardComponent implements OnInit {
       if (isThere) {
         this.managements.unshift(JSON.parse(localStorage.getItem('management')));
       }
-      if (JSON.parse(localStorage.getItem('management')).value != 'Overall') {
-        this.managements.unshift({ id: "overall", value: "Overall" });
+      if (JSON.parse(localStorage.getItem('management'))) {
+        var name = this.managements.find(a => { return a.id == JSON.parse(localStorage.getItem('management')).id });
+        if (name.value != 'Overall') {
+          this.managements.unshift({ id: "overall", value: "Overall" });
+        }
       }
       document.getElementById("spinner").style.display = "none";
     });
