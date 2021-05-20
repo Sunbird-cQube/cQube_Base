@@ -1170,12 +1170,8 @@ select id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,sect
 row_number() over (partition by id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks) as rn 
 from semester_exam_result_staging_1) sq Where rn =1""",
 "sat_exam_exam_mst_table_name":"""semester_exam_qst_mst""",
-"sat_check_same_id_record_semester_exam_result_qry":"""SELECT b.id,b.exam_id,b.exam_code,b.student_id,b.student_uid,b.school_id,b.studying_class,b.section,b.question_id,b.obtained_marks,count(*) num_of_times  from 
-(select exam_code,student_uid,question_id from semester_exam_result_staging_2
-group by exam_code,student_uid,question_id having count(1)>1)  as a, semester_exam_result_staging_2  b
-where 
-a.exam_code=b.exam_code and a.student_uid=b.student_uid and a.question_id=b.question_id
-group by b.id,b.exam_id,b.exam_code,b.student_id,b.student_uid,b.school_id,b.studying_class,b.section,b.question_id,b.obtained_marks""",
+"sat_check_same_id_record_semester_exam_result_qry":"""SELECT b.id,b.exam_id,b.exam_code,b.student_id,b.student_uid,b.school_id,b.studying_class,b.section,b.question_id,b.obtained_marks,b.cnt num_of_times
+ from (select per.* ,count(*) over(PARTITION by exam_code,student_uid,question_id) as cnt from semester_exam_result_staging_2 per ) b where cnt>1;""",
 "sat_learning_outcome_meta_jolt_spec":"""[
   {
     "operation": "shift",
