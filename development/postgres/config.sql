@@ -230,8 +230,8 @@ create or replace function drop_materialized_view()
 returns int as
 $body$
 begin
-drop MATERIALIZED VIEW if exists stud_count_school_grade_mgmt_year_month;
-drop MATERIALIZED VIEW if exists stud_count_school_mgmt_year_month;
+drop MATERIALIZED VIEW if exists stud_count_school_grade_mgmt_year_month cascade;
+drop MATERIALIZED VIEW if exists stud_count_school_mgmt_year_month cascade;
 
 drop materialized view  if exists periodic_exam_school_year_month cascade;
 drop materialized view  if exists periodic_exam_cluster_year_month cascade;
