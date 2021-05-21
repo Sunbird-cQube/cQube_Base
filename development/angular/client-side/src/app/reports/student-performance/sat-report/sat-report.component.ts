@@ -644,7 +644,7 @@ export class SatReportComponent implements OnInit {
                         );
                       }
 
-                      var markerIcon = this.attachColorsToMarkers(this.blockMarkers[i], color, this.colors, 0.01,1, options.level);
+                      var markerIcon = this.attachColorsToMarkers(this.blockMarkers[i], color, this.colors, 0.01, 1, options.level);
                       this.generateToolTip(
                         this.blockMarkers[i],
                         options.level,
@@ -799,7 +799,7 @@ export class SatReportComponent implements OnInit {
                       });
                       this.clusterMarkers = filterData;
                     }
-                   
+
                     if (this.selected != "absolute") {
                       this.colors = this.generateRelativeColors(this.clusterMarkers);
                     }
@@ -852,8 +852,8 @@ export class SatReportComponent implements OnInit {
                           this.subject
                         );
                       }
-      
-                      var markerIcon = this.attachColorsToMarkers(this.clusterMarkers[i], color, this.colors, 0.01, 0.5,  options.level);
+
+                      var markerIcon = this.attachColorsToMarkers(this.clusterMarkers[i], color, this.colors, 0.01, 0.5, options.level);
                       this.generateToolTip(
                         this.clusterMarkers[i],
                         options.level,
@@ -1006,7 +1006,7 @@ export class SatReportComponent implements OnInit {
                       });
                       this.schoolMarkers = filterData;
                     }
-                    
+
                     if (this.selected != "absolute") {
                       this.colors = this.generateRelativeColors(this.schoolMarkers);
                     }
@@ -1059,8 +1059,8 @@ export class SatReportComponent implements OnInit {
                           this.subject
                         );
                       }
-                    
-                      var markerIcon = this.attachColorsToMarkers(this.clusterMarkers[i], color, this.colors, 0, 0.3,  options.level);
+
+                      var markerIcon = this.attachColorsToMarkers(this.clusterMarkers[i], color, this.colors, 0, 0.3, options.level);
                       this.generateToolTip(
                         this.schoolMarkers[i],
                         options.level,
@@ -1587,7 +1587,7 @@ export class SatReportComponent implements OnInit {
 
       // attach values to markers
       for (let i = 0; i < this.markers.length; i++) {
-        var markerIcon = this.attachColorsToMarkers(this.markers[i], colors[i], this.colors, options.strokeWeight, 1,  options.level);
+        var markerIcon = this.attachColorsToMarkers(this.markers[i], colors[i], this.colors, options.strokeWeight, 1, options.level);
         // data to show on the tooltip for the desired levels
         this.generateToolTip(
           this.markers[i],
@@ -1621,268 +1621,272 @@ export class SatReportComponent implements OnInit {
   }
 
   //Generate relative colors.......
-  generateRelativeColors(markers){
-      var colors = this.commonService.getRelativeColors(markers, {
-        value: this.grade
-          ? markers[0].Subjects
-            ? "Grade Performance"
-            : this.grade
-          : this.grade && this.subject
-            ? this.subject
-            : "Performance",
-        selected: this.grade
-          ? "G"
-          : this.grade && this.subject
-            ? "GS"
-            : "all",
-        report: "reports",
-      });
-      return colors;
+  generateRelativeColors(markers) {
+    var colors = this.commonService.getRelativeColors(markers, {
+      value: this.grade
+        ? markers[0].Subjects
+          ? "Grade Performance"
+          : this.grade
+        : this.grade && this.subject
+          ? this.subject
+          : "Performance",
+      selected: this.grade
+        ? "G"
+        : this.grade && this.subject
+          ? "GS"
+          : "all",
+      report: "reports",
+    });
+    return colors;
   }
 
   //Attach colors to markers.........
-  attachColorsToMarkers(marker, color, colors, strock,border, level) {
-    var icon = this.commonService.initMarkers1(
-      marker.Details.latitude,
-      marker.Details.longitude,
-      this.selected == "absolute"
-        ? color
-        : this.commonService.relativeColorGredient(
-          marker,
-          {
-            value: this.grade
-              ? marker.Subjects
-                ? "Grade Performance"
-                : this.grade
-              : this.grade && this.subject
-                ? this.subject
-                : "Performance",
-            selected: this.grade
-              ? "G"
-              : this.grade && this.subject
-                ? "GS"
-                : "all",
-            report: "reports",
-          },
-          this.colors
-        ),
-      strock,
-      border,
-      level
-    );
-    return icon;
+  attachColorsToMarkers(marker, color, colors, strock, border, level) {
+    if (marker != undefined) {
+      var icon = this.commonService.initMarkers1(
+        marker.Details.latitude,
+        marker.Details.longitude,
+        this.selected == "absolute"
+          ? color
+          : this.commonService.relativeColorGredient(
+            marker,
+            {
+              value: this.grade
+                ? marker.Subjects
+                  ? "Grade Performance"
+                  : this.grade
+                : this.grade && this.subject
+                  ? this.subject
+                  : "Performance",
+              selected: this.grade
+                ? "G"
+                : this.grade && this.subject
+                  ? "GS"
+                  : "all",
+              report: "reports",
+            },
+            colors
+          ),
+        strock,
+        border,
+        level
+      );
+      return icon;
+    }
   }
 
   generateToolTip(markers, level, markerIcon, lat, lng) {
-    this.popups(markerIcon, markers, level);
-    let colorText = `style='color:blue !important;'`;
-    var details = {};
-    var orgObject = {};
-    var data1 = {};
-    var data2 = {};
-    var data3 = {}
-    // student_count, total_schools
+    if (markers && markerIcon) {
+      this.popups(markerIcon, markers, level);
+      let colorText = `style='color:blue !important;'`;
+      var details = {};
+      var orgObject = {};
+      var data1 = {};
+      var data2 = {};
+      var data3 = {}
+      // student_count, total_schools
 
-    Object.keys(markers.Details).forEach((key) => {
-      if (key !== lat) {
-        details[key] = markers.Details[key];
+      Object.keys(markers.Details).forEach((key) => {
+        if (key !== lat) {
+          details[key] = markers.Details[key];
+        }
+      });
+      if (this.period == 'all') {
+        Object.keys(details).forEach((key) => {
+          if (key !== "total_students") {
+            data1[key] = details[key];
+          }
+        });
+        Object.keys(data1).forEach((key) => {
+          if (key !== "total_schools") {
+            data2[key] = data1[key];
+          }
+        });
+        Object.keys(data2).forEach((key) => {
+          if (key !== "students_attended") {
+            data3[key] = data2[key];
+          }
+        });
+      } else {
+        data3 = details;
       }
-    });
-    if (this.period == 'all') {
-      Object.keys(details).forEach((key) => {
-        if (key !== "total_students") {
-          data1[key] = details[key];
+      Object.keys(data3).forEach((key) => {
+        if (key !== lng) {
+          orgObject[key] = data3[key];
         }
       });
-      Object.keys(data1).forEach((key) => {
-        if (key !== "total_schools") {
-          data2[key] = data1[key];
+      if (this.period != 'all') {
+        if (level != "School" || level != "schoolPerCluster") {
+          if (orgObject["total_schools"] != null) {
+            orgObject["total_schools"] = orgObject["total_schools"]
+              .toString()
+              .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+          }
         }
-      });
-      Object.keys(data2).forEach((key) => {
-        if (key !== "students_attended") {
-          data3[key] = data2[key];
+        if (orgObject["total_students"] != null) {
+          orgObject["total_students"] = orgObject["total_students"]
+            .toString()
+            .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         }
-      });
-    } else {
-      data3 = details;
-    }
-    Object.keys(data3).forEach((key) => {
-      if (key !== lng) {
-        orgObject[key] = data3[key];
-      }
-    });
-    if (this.period != 'all') {
-      if (level != "School" || level != "schoolPerCluster") {
-        if (orgObject["total_schools"] != null) {
-          orgObject["total_schools"] = orgObject["total_schools"]
+        if (orgObject["students_attended"] != null) {
+          orgObject["students_attended"] = orgObject["students_attended"]
             .toString()
             .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
         }
       }
-      if (orgObject["total_students"] != null) {
-        orgObject["total_students"] = orgObject["total_students"]
-          .toString()
-          .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      var yourData1;
+      if (this.grade) {
+        yourData1 = this.commonService
+          .getInfoFrom(
+            orgObject,
+            "Performance",
+            level,
+            "patReport",
+            "",
+            colorText
+          )
+          .join(" <br>");
+      } else {
+        yourData1 = this.commonService
+          .getInfoFrom(
+            orgObject,
+            "Performance",
+            level,
+            "patReport",
+            "Performance",
+            colorText
+          )
+          .join(" <br>");
       }
-      if (orgObject["students_attended"] != null) {
-        orgObject["students_attended"] = orgObject["students_attended"]
-          .toString()
-          .replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      var yourData;
+      var ordered;
+      var mylevel;
+      if (this.period != 'all') {
+        if (level == "District" || level == 'Block' || level == 'Cluster' || level == 'School') {
+          mylevel = level;
+        }
+      } else {
+        if (level == "District") {
+          mylevel = level;
+        }
       }
-    }
-    var yourData1;
-    if (this.grade) {
-      yourData1 = this.commonService
-        .getInfoFrom(
-          orgObject,
-          "Performance",
-          level,
-          "patReport",
-          "",
-          colorText
-        )
-        .join(" <br>");
-    } else {
-      yourData1 = this.commonService
-        .getInfoFrom(
-          orgObject,
-          "Performance",
-          level,
-          "patReport",
-          "Performance",
-          colorText
-        )
-        .join(" <br>");
-    }
-    var yourData;
-    var ordered;
-    var mylevel;
-    if (this.period != 'all') {
-      if (level == "District" || level == 'Block' || level == 'Cluster' || level == 'School') {
+      if (level == "blockPerDistrict") {
+        mylevel = level;
+      } else if (level == "clusterPerBlock") {
+        mylevel = level;
+      } else if (level == "schoolPerCluster") {
         mylevel = level;
       }
-    } else {
-      if (level == "District") {
-        mylevel = level;
-      }
-    }
-    if (level == "blockPerDistrict") {
-      mylevel = level;
-    } else if (level == "clusterPerBlock") {
-      mylevel = level;
-    } else if (level == "schoolPerCluster") {
-      mylevel = level;
-    }
 
-    if (level == mylevel) {
-      if (this.grade && !this.subject) {
-        yourData = this.commonService
-          .getInfoFrom(
-            markers.Subjects,
-            "Performance",
-            level,
-            "patReport",
-            "Grade Performance",
-            colorText
-          )
-          .join(" <br>");
-      } else if (this.grade && this.subject) {
-        yourData = this.commonService
-          .getInfoFrom(
-            markers.Subjects,
-            "Performance",
-            level,
-            "patReport",
-            this.subject,
-            colorText
-          )
-          .join(" <br>");
+      if (level == mylevel) {
+        if (this.grade && !this.subject) {
+          yourData = this.commonService
+            .getInfoFrom(
+              markers.Subjects,
+              "Performance",
+              level,
+              "patReport",
+              "Grade Performance",
+              colorText
+            )
+            .join(" <br>");
+        } else if (this.grade && this.subject) {
+          yourData = this.commonService
+            .getInfoFrom(
+              markers.Subjects,
+              "Performance",
+              level,
+              "patReport",
+              this.subject,
+              colorText
+            )
+            .join(" <br>");
+        } else {
+          ordered = {};
+          Object.keys(markers["Grade Wise Performance"])
+            .sort()
+            .forEach(function (key) {
+              ordered[key] = markers["Grade Wise Performance"][key];
+            });
+          yourData = this.commonService
+            .getInfoFrom(
+              ordered,
+              "Performance",
+              level,
+              "patReport",
+              "",
+              colorText
+            )
+            .join(" <br>");
+        }
       } else {
-        ordered = {};
-        Object.keys(markers["Grade Wise Performance"])
-          .sort()
-          .forEach(function (key) {
-            ordered[key] = markers["Grade Wise Performance"][key];
-          });
-        yourData = this.commonService
-          .getInfoFrom(
-            ordered,
-            "Performance",
-            level,
-            "patReport",
-            "",
-            colorText
-          )
-          .join(" <br>");
+        if (this.grade && !this.subject) {
+          ordered = {};
+          Object.keys(markers["Subjects"])
+            .sort()
+            .forEach(function (key) {
+              ordered[key] = markers["Subjects"][key];
+            });
+          yourData = this.commonService
+            .getInfoFrom(
+              ordered,
+              "Performance",
+              level,
+              "patReport",
+              "Grade Performance",
+              colorText
+            )
+            .join(" <br>");
+        } else if (this.grade && this.subject) {
+          ordered = {};
+          Object.keys(markers["Subjects"])
+            .sort()
+            .forEach(function (key) {
+              ordered[key] = markers["Subjects"][key];
+            });
+          yourData = this.commonService
+            .getInfoFrom(
+              ordered,
+              "Performance",
+              level,
+              "patReport",
+              this.subject,
+              colorText
+            )
+            .join(" <br>");
+        } else {
+          ordered = {};
+          Object.keys(markers["Grade Wise Performance"])
+            .sort()
+            .forEach(function (key) {
+              ordered[key] = markers["Grade Wise Performance"][key];
+            });
+          yourData = this.commonService
+            .getInfoFrom(
+              ordered,
+              "Performance",
+              level,
+              "patReport",
+              "",
+              colorText
+            )
+            .join(" <br>");
+        }
       }
-    } else {
-      if (this.grade && !this.subject) {
-        ordered = {};
-        Object.keys(markers["Subjects"])
-          .sort()
-          .forEach(function (key) {
-            ordered[key] = markers["Subjects"][key];
-          });
-        yourData = this.commonService
-          .getInfoFrom(
-            ordered,
-            "Performance",
-            level,
-            "patReport",
-            "Grade Performance",
-            colorText
-          )
-          .join(" <br>");
-      } else if (this.grade && this.subject) {
-        ordered = {};
-        Object.keys(markers["Subjects"])
-          .sort()
-          .forEach(function (key) {
-            ordered[key] = markers["Subjects"][key];
-          });
-        yourData = this.commonService
-          .getInfoFrom(
-            ordered,
-            "Performance",
-            level,
-            "patReport",
-            this.subject,
-            colorText
-          )
-          .join(" <br>");
-      } else {
-        ordered = {};
-        Object.keys(markers["Grade Wise Performance"])
-          .sort()
-          .forEach(function (key) {
-            ordered[key] = markers["Grade Wise Performance"][key];
-          });
-        yourData = this.commonService
-          .getInfoFrom(
-            ordered,
-            "Performance",
-            level,
-            "patReport",
-            "",
-            colorText
-          )
-          .join(" <br>");
-      }
+      const popup = R.responsivePopup({
+        hasTip: false,
+        autoPan: false,
+        offset: [15, 20],
+      }).setContent(
+        "<b><u>Details</u></b>" +
+        "<br>" +
+        yourData1 +
+        "<br><br><b><u>Periodic Exam Score (%)</u></b>" +
+        "<br>" +
+        yourData
+      );
+      markerIcon.addTo(globalMap).bindPopup(popup);
     }
-    const popup = R.responsivePopup({
-      hasTip: false,
-      autoPan: false,
-      offset: [15, 20],
-    }).setContent(
-      "<b><u>Details</u></b>" +
-      "<br>" +
-      yourData1 +
-      "<br><br><b><u>Periodic Exam Score (%)</u></b>" +
-      "<br>" +
-      yourData
-    );
-    markerIcon.addTo(globalMap).bindPopup(popup);
   }
 
   popups(markerIcon, markers, level) {

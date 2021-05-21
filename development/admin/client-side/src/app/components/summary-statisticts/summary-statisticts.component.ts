@@ -137,6 +137,10 @@ export class SummaryStatistictsComponent implements OnInit {
   }
 
   tableWithSubHeaders(dataSet, tablename) {
+    if ($.fn.DataTable.isDataTable(`#${tablename}`)) {
+      $(`#${tablename}`).DataTable().destroy();
+      $(`#${tablename}`).empty();
+    }
     var my_columns = [];
     $.each(dataSet[0], function (key, value) {
       var my_item = {};
