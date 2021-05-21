@@ -142,7 +142,7 @@ select data.school_id,data.exam_code,data.exam_date,data.grade,data.total_marks,
 	(select exam_id,school_id,exam_code,studying_class,question_id,sum(obtained_marks)as obtained_marks,count(distinct(student_uid)) as students_attended
 	from periodic_exam_result_trans 
 	group by exam_id,school_id,exam_code,studying_class,question_id)as a
-	left join (select exam_id,question_id,indicator,question_marks from periodic_exam_qst_mst group by exam_id,question_id,indicator,question_marks) as b 
+	join (select exam_id,question_id,indicator,question_marks from periodic_exam_qst_mst group by exam_id,question_id,indicator,question_marks) as b 
 	on a.exam_id=b.exam_id and a.question_id=b.question_id
 	group by a.school_id,a.exam_code,a.studying_class,a.students_attended,b.question_id,b.indicator,b.exam_id,b.question_marks,a.question_id)as data
 	where data.total_marks is not null)as data
@@ -153,7 +153,7 @@ select data.school_id,data.exam_code,data.exam_date,data.grade,data.total_marks,
 	where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0
 	)as b 
 	on data.school_id=b.school_id
-	left join 
+	join 
 	(select exam_id,assessment_year,exam_code,subject_name from periodic_exam_mst) as d on data.exam_id=d.exam_id and data.exam_code=d.exam_code
 	left join 
 (select * from school_grade_enrolment) as g
@@ -170,6 +170,38 @@ district_id=excluded.district_id,district_name=excluded.district_name,school_man
 (partition by school_id,grade,students_count) as rn from flowfile) sq Where rn =1""",
 "pat_filter_same_record_periodic_exam_qst_mst_qry":"""select question_id,exam_id,indicator_id,indicator_title,"indicator",question_title,question,question_marks from (select question_id,exam_id,indicator_id,indicator_title,"indicator",question_title,question,question_marks,
 row_number() over (partition by question_id,exam_id,indicator_id,indicator_title,"indicator",question_title,question,question_marks) as rn from flowfile) sq Where rn =1""",
+"pat_insert_periodic_exam_school_grade_result_qry":"""insert into periodic_exam_school_grade_result(school_id,exam_code,exam_date,grade,academic_year,total_marks,obtained_marks
+,school_name,school_latitude,school_longitude,cluster_id,cluster_name,cluster_latitude,cluster_longitude,students_count,students_attended,
+block_id,block_name,block_latitude,block_longitude,district_id,district_name,district_latitude,district_longitude,school_management_type,school_category,created_on,updated_on)
+select a.school_id,a.exam_code,exam_date,grade,academic_year,total_marks,obtained_marks
+,school_name,school_latitude,school_longitude,a.cluster_id,cluster_name,cluster_latitude,cluster_longitude,students_count,students_attended,
+a.block_id,block_name,block_latitude,block_longitude,a.district_id,district_name,district_latitude,district_longitude,school_management_type,school_category,now(),now()
+from
+(select school_id,exam_code,exam_date,grade,academic_year,sum(total_marks)as total_marks,sum(obtained_marks)as obtained_marks,school_name,
+cluster_id,cluster_name,
+total_students students_count,block_id,block_name,
+district_id,district_name
+from periodic_exam_school_qst_result
+group by school_id,exam_code,exam_date,grade,academic_year,school_name,cluster_id,cluster_name,total_students,
+block_id,block_name,district_id,district_name
+) as a 
+inner join 
+(select a.school_id,b.school_latitude,b.school_longitude,a.cluster_id,b.cluster_latitude,b.cluster_longitude,
+a.block_id,b.block_latitude,b.block_longitude,a.district_id,b.district_latitude,b.district_longitude,a.school_management_type,a.school_category
+from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
+where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0 )as b on a.school_id=b.school_id
+left join
+(select exam_id,assessment_year,exam_code from periodic_exam_mst) as d on a.exam_code=d.exam_code
+left join (select count(distinct(student_uid)) as students_attended,school_id,exam_code from periodic_exam_result_trans group by school_id,exam_code) as trans 
+on a.school_id=trans.school_id and a.exam_code=trans.exam_code 
+on conflict(school_id,exam_code,academic_year)
+do update set 
+school_id=excluded.school_id,exam_code=excluded.exam_code,exam_date=excluded.exam_date,grade=excluded.grade,academic_year=excluded.academic_year,
+total_marks=excluded.total_marks,obtained_marks=excluded.obtained_marks,school_name=excluded.school_name,students_count=excluded.students_count,students_attended=excluded.students_attended,
+school_latitude=excluded.school_latitude,school_longitude=excluded.school_longitude,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,
+cluster_latitude=excluded.cluster_latitude,cluster_longitude=excluded.cluster_longitude,block_id=excluded.block_id,block_name=excluded.block_name,
+block_latitude=excluded.block_latitude,block_longitude=excluded.block_longitude,district_id=excluded.district_id,district_name=excluded.district_name,
+district_latitude=excluded.district_latitude,district_longitude=excluded.district_longitude,school_management_type=excluded.school_management_type,school_category=excluded.school_category,updated_on=now();""",
 "pat_update_null_count_periodic_exam_mst_qry":"""update log_summary
 SET exam_id = pat_null_col.count_null_exam_id,
 assessment_year = pat_null_col.count_null_assessment_year,
@@ -251,9 +283,9 @@ inner join
 a.block_id,b.block_latitude,b.block_longitude,a.district_id,b.district_latitude,b.district_longitude,a.school_management_type,a.school_category
 from school_hierarchy_details as a inner join school_geo_master as b on a.school_id=b.school_id 
 where a.school_name is not null and a.cluster_name is not null and b.school_latitude>0 and b.school_longitude>0 and b.cluster_latitude>0 and b.cluster_longitude>0 )as b on a.school_id=b.school_id
-left join
+join
 (select exam_id,assessment_year,exam_code from periodic_exam_mst) as d on a.exam_code=d.exam_code
-left join (select count(distinct(student_uid)) as students_attended,school_id,exam_code from periodic_exam_result_trans group by school_id,exam_code) as trans 
+join (select count(distinct(student_uid)) as students_attended,school_id,exam_code from periodic_exam_result_trans group by school_id,exam_code) as trans 
 on a.school_id=trans.school_id and a.exam_code=trans.exam_code 
 on conflict(school_id,exam_code,academic_year)
 do update set 
@@ -262,7 +294,7 @@ total_marks=excluded.total_marks,obtained_marks=excluded.obtained_marks,school_n
 school_latitude=excluded.school_latitude,school_longitude=excluded.school_longitude,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,
 cluster_latitude=excluded.cluster_latitude,cluster_longitude=excluded.cluster_longitude,block_id=excluded.block_id,block_name=excluded.block_name,
 block_latitude=excluded.block_latitude,block_longitude=excluded.block_longitude,district_id=excluded.district_id,district_name=excluded.district_name,
-district_latitude=excluded.district_latitude,district_longitude=excluded.district_longitude,school_management_type=excluded.school_management_type,school_category=excluded.school_category,updated_on=now()""",
+district_latitude=excluded.district_latitude,district_longitude=excluded.district_longitude,school_management_type=excluded.school_management_type,school_category=excluded.school_category,updated_on=now();""",
 "pat_exception_block_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1080,6 +1112,108 @@ GROUP BY exam_id,assessment_year,medium,standard,division,subject_id,subject_nam
 total_marks
 HAVING  COUNT(*) > 1""",
 "periodic_exam_subject_details_datatype":"""Optional(parseInt()),StrNotNullOrEmpty(),Optional(parseInt())""",
+"pat_mv_queries":"""REFRESH MATERIALIZED VIEW school_grade_enrolment_district;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt_last7;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW stud_count_school_mgmt_last30;
+REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_last30;
+REFRESH MATERIALIZED VIEW stud_count_school_mgmt_last7;
+REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_last7;
+REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_year_month;
+REFRESH MATERIALIZED VIEW stud_count_school_mgmt_year_month;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_block_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_school_last30;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_block_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_school_last7;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_last7;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_all;
+REFRESH MATERIALIZED VIEW periodic_exam_block_all;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_all;
+REFRESH MATERIALIZED VIEW periodic_exam_school_all;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_all;
+REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_all;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_all;
+REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_all;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_year_month;
+
+REFRESH MATERIALIZED VIEW periodic_exam_district_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_block_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_cluster_year_month;
+REFRESH MATERIALIZED VIEW periodic_exam_school_year_month;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_block_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_school_year_month;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_block_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_mgmt_year_month;
+REFRESH MATERIALIZED VIEW periodic_grade_school_mgmt_year_month;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_school_mgmt_last7;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_block_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_last30;
+REFRESH MATERIALIZED VIEW periodic_grade_school_last30;
+
+REFRESH MATERIALIZED VIEW periodic_grade_district_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_block_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_cluster_last7;
+REFRESH MATERIALIZED VIEW periodic_grade_school_last7;
+refresh materialized view periodic_exam_school_ind_result;""",
 "pat_filter_same_record_periodic_exam_result_qry":"""insert into periodic_exam_result_staging_2(id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks,ff_uuid)
 select id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks,ff_uuid from 
 (select id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks,ff_uuid,
@@ -1365,6 +1499,19 @@ group by b.exam_id,b.assessment_year,b.medium,b.standard,b.division,b.subject_id
     }
   }
 ]""",
+"pat_mv_pre_query":"""REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_year_month;
+REFRESH MATERIALIZED VIEW stud_count_school_mgmt_year_month;
+truncate table student_att_count;
+insert into student_att_count(cluster_id,academic_year,month,school_management_type,students_count,total_schools) 
+(select cluster_id,academic_year,month,school_management_type,
+	sum(students_count) as students_count,sum(total_schools) as total_schools
+from stud_count_school_mgmt_year_month group by cluster_id,academic_year,month,school_management_type);
+
+truncate table student_att_grade_count;
+insert into student_att_grade_count(cluster_id,grade,school_management_type,academic_year,month,students_attended,total_schools) 
+(select cluster_id,grade,school_management_type,academic_year,month,
+	sum(students_attended) as students_attended,sum(total_schools) as total_schools
+from stud_count_school_grade_mgmt_year_month group by cluster_id,grade,school_management_type,academic_year,month);""",
 "pat_grade_school_jolt_spec":"""[
   {
     "operation": "modify-overwrite-beta",
@@ -1561,132 +1708,12 @@ HAVING  COUNT(*) > 1""",
 "pat_periodic_exam_grade_details_table_name":"""school_grade_enrolment""",
 "pat_filter_same_id_record_periodic_exam_subject_details_qry":"""SELECT  subject_id,subject,grade from 
 (SELECT  subject_id,subject,grade,count(*) over (partition by subject_id,grade) as rn from FLOWFILE) sq Where rn =1""",
-"pat_check_same_id_record_periodic_exam_result_qry":"""SELECT b.id,b.exam_id,b.exam_code,b.student_id,b.student_uid,b.school_id,b.studying_class,b.section,b.question_id,b.obtained_marks,count(*) num_of_times  from 
-(select exam_code,student_uid,question_id from periodic_exam_result_staging_2
-group by exam_code,student_uid,question_id having count(1)>1)  as a, periodic_exam_result_staging_2  b
-where 
-a.exam_code=b.exam_code and a.student_uid=b.student_uid and a.question_id=b.question_id
-group by b.id,b.exam_id,b.exam_code,b.student_id,b.student_uid,b.school_id,b.studying_class,b.section,b.question_id,b.obtained_marks""",
+"pat_check_same_id_record_periodic_exam_result_qry":"""SELECT b.id,b.exam_id,b.exam_code,b.student_id,b.student_uid,b.school_id,b.studying_class,b.section,b.question_id,b.obtained_marks,b.cnt num_of_times from (select per.* ,count(*) over(PARTITION by exam_code,student_uid,question_id) as cnt from periodic_exam_result_staging_2 per) b where cnt>1;""",
 "pat_periodic_exam_qst_mst_not_null":"""select * from flowfile
 where question_id IS NOT NULL
 and exam_id IS NOT NULL
 and question_title IS NOT NULL
 and question IS NOT NULL
 and question_marks IS NOT NULL""",
-"pat_periodic_exam_subject_details_table_name":"""subject_details""",
-"pat_mv_queries":"""REFRESH MATERIALIZED VIEW school_grade_enrolment_district;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_district_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt_last7;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_district_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_district_mgmt_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_block_mgmt_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_cluster_mgmt_last30;
-REFRESH MATERIALIZED VIEW school_grade_enrolment_school_mgmt_last30;
-
-REFRESH MATERIALIZED VIEW stud_count_school_mgmt_last30;
-REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_last30;
-REFRESH MATERIALIZED VIEW stud_count_school_mgmt_last7;
-REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_last7;
-REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_year_month;
-REFRESH MATERIALIZED VIEW stud_count_school_mgmt_year_month;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_block_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_school_last30;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_block_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_school_last7;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_last30;
-REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_last30;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_last7;
-REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_last7;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_all;
-REFRESH MATERIALIZED VIEW periodic_exam_block_all;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_all;
-REFRESH MATERIALIZED VIEW periodic_exam_school_all;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_all;
-REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_all;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_all;
-REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_all;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_mgmt_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_block_mgmt_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_mgmt_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_school_mgmt_year_month;
-
-REFRESH MATERIALIZED VIEW periodic_exam_district_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_block_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_cluster_year_month;
-REFRESH MATERIALIZED VIEW periodic_exam_school_year_month;
-
-REFRESH MATERIALIZED VIEW periodic_grade_district_year_month;
-REFRESH MATERIALIZED VIEW periodic_grade_block_year_month;
-REFRESH MATERIALIZED VIEW periodic_grade_cluster_year_month;
-REFRESH MATERIALIZED VIEW periodic_grade_school_year_month;
-
-REFRESH MATERIALIZED VIEW periodic_grade_district_mgmt_year_month;
-REFRESH MATERIALIZED VIEW periodic_grade_block_mgmt_year_month;
-REFRESH MATERIALIZED VIEW periodic_grade_cluster_mgmt_year_month;
-REFRESH MATERIALIZED VIEW periodic_grade_school_mgmt_year_month;
-
-REFRESH MATERIALIZED VIEW periodic_grade_district_mgmt_last30;
-REFRESH MATERIALIZED VIEW periodic_grade_block_mgmt_last30;
-REFRESH MATERIALIZED VIEW periodic_grade_cluster_mgmt_last30;
-REFRESH MATERIALIZED VIEW periodic_grade_school_mgmt_last30;
-
-REFRESH MATERIALIZED VIEW periodic_grade_district_mgmt_last7;
-REFRESH MATERIALIZED VIEW periodic_grade_block_mgmt_last7;
-REFRESH MATERIALIZED VIEW periodic_grade_cluster_mgmt_last7;
-REFRESH MATERIALIZED VIEW periodic_grade_school_mgmt_last7;
-
-REFRESH MATERIALIZED VIEW periodic_grade_district_last30;
-REFRESH MATERIALIZED VIEW periodic_grade_block_last30;
-REFRESH MATERIALIZED VIEW periodic_grade_cluster_last30;
-REFRESH MATERIALIZED VIEW periodic_grade_school_last30;
-
-REFRESH MATERIALIZED VIEW periodic_grade_district_last7;
-REFRESH MATERIALIZED VIEW periodic_grade_block_last7;
-REFRESH MATERIALIZED VIEW periodic_grade_cluster_last7;
-REFRESH MATERIALIZED VIEW periodic_grade_school_last7;""",
-"pat_mv_pre_query":"""
-REFRESH MATERIALIZED VIEW stud_count_school_grade_mgmt_year_month;
-REFRESH MATERIALIZED VIEW stud_count_school_mgmt_year_month;
-truncate table student_att_count;
-insert into student_att_count(cluster_id,academic_year,month,school_management_type,students_count,total_schools) 
-(select cluster_id,academic_year,month,school_management_type,
-	sum(students_count) as students_count,sum(total_schools) as total_schools
-from stud_count_school_mgmt_year_month group by cluster_id,academic_year,month,school_management_type);
-
-truncate table student_att_grade_count;
-insert into student_att_grade_count(cluster_id,grade,school_management_type,academic_year,month,students_attended,total_schools) 
-(select cluster_id,grade,school_management_type,academic_year,month,
-	sum(students_attended) as students_attended,sum(total_schools) as total_schools
-from stud_count_school_grade_mgmt_year_month group by cluster_id,grade,school_management_type,academic_year,month);"""
+"pat_periodic_exam_subject_details_table_name":"""subject_details"""
 }
