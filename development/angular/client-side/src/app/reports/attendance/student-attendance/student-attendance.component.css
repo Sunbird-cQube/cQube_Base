@@ -1,0 +1,6 @@
+@media screen and (min-width : 2520px) {
+    #resetImg{
+        height: 40px !important;
+        width: 40px !important;
+    }
+}

@@ -19,7 +19,7 @@ export class UsersService {
 
   changePassword(data, id) {
     this.service.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/changePassword/${id}`, { cnfpass: data });
+    return this.http.post(`${this.baseUrl}/changePassword/${id}`, data );
   }
 
   allUsers() {

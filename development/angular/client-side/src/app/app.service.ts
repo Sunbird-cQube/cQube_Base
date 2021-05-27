@@ -34,7 +34,7 @@ export class AppServiceComponent {
         localStorage.setItem('token', this.token);
         this.dateAndTime = `${("0" + (this.date.getDate())).slice(-2)}-${("0" + (this.date.getMonth() + 1)).slice(-2)}-${this.date.getFullYear()}`;
     }
-  
+
     width = window.innerWidth;
     onResize(level) {
         this.width = window.innerWidth;
@@ -57,7 +57,7 @@ export class AppServiceComponent {
     changeingStringCases(str) {
         return str.replace(
             /\w\S*/g,
-            function(txt) {
+            function (txt) {
                 return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
             }
         );
@@ -68,15 +68,16 @@ export class AppServiceComponent {
             localStorage.removeItem('management');
             localStorage.removeItem('category');
             let options = {
-                redirectUri: environment.appUrl
+                redirectUri: environment.appUrl,
             }
+            this.keyCloakService.kc.clearToken();
             this.keyCloakService.kc.logout(options);
         }
     }
 
     changePassword(data, id) {
         this.logoutOnTokenExpire();
-        return this.http.post(`${this.baseUrl}/changePassword/${id}`, { cnfpass: data });
+        return this.http.post(`${this.baseUrl}/changePassword/${id}`, data);
     }
 
     // to load and hide the spinner 
@@ -169,13 +170,13 @@ export class AppServiceComponent {
     public initMarkers1(lat, lng, color, strokeWeight, weight, levelWise) {
         if (lat !== undefined && lng !== undefined) {
             var markerIcon;
-                markerIcon = L.circleMarker([lat, lng], {
-                    color: "gray",
-                    fillColor: color,
-                    fillOpacity: 1,
-                    strokeWeight: strokeWeight,
-                    weight: weight
-                });
+            markerIcon = L.circleMarker([lat, lng], {
+                color: "gray",
+                fillColor: color,
+                fillOpacity: 1,
+                strokeWeight: strokeWeight,
+                weight: weight
+            });
             this.markersIcons.push(markerIcon);
             return markerIcon;
         }
@@ -183,8 +184,8 @@ export class AppServiceComponent {
         return undefined;
     }
 
-    setMarkerRadius(level){
-        this.markersIcons.map(markerIcon=>{            
+    setMarkerRadius(level) {
+        this.markersIcons.map(markerIcon => {
             if (level === "District") {
                 markerIcon.setRadius(this.getMarkerRadius(18, 14, 10, 6));
             }
@@ -200,7 +201,7 @@ export class AppServiceComponent {
             if (level === "blockPerDistrict" || level === "clusterPerBlock" || level === "schoolPerCluster") {
                 markerIcon.setRadius(this.getMarkerRadius(18, 14, 10, 5));
             }
-        })        
+        })
     }
 
     getMarkerRadius(rad1, rad2, rad3, rad4) {
@@ -212,16 +213,16 @@ export class AppServiceComponent {
         var zoomLevel;
         if (level === "District" || level === "Block" || level === "Cluster" || level === "School") {
             zoomLevel = this.zoomLevel
-         }
-         if (level === "blockPerDistrict") {
-             zoomLevel =  this.zoomLevel + 1;
-         }
-         if (level === "clusterPerBlock") {
-            zoomLevel =  this.zoomLevel + 3;
-         }
-         if (level === "schoolPerCluster") {
-            zoomLevel =  this.zoomLevel + 5;
-         }
+        }
+        if (level === "blockPerDistrict") {
+            zoomLevel = this.zoomLevel + 1;
+        }
+        if (level === "clusterPerBlock") {
+            zoomLevel = this.zoomLevel + 3;
+        }
+        if (level === "schoolPerCluster") {
+            zoomLevel = this.zoomLevel + 5;
+        }
         globalMap.options.minZoom = zoomLevel;
         if (this.latitude !== null && this.longitude !== null)
             globalMap.setView(new L.LatLng(this.latitude, this.longitude), zoomLevel);
@@ -238,7 +239,7 @@ export class AppServiceComponent {
                 var split = object[key].split("% ");
                 object[`${key}`] = parseFloat(split[0].replace(` `, '')).toFixed(1) + ' % ' + split[1];
             }
-            if(key == 'school_management_type' || key == 'school_category'){
+            if (key == 'school_management_type' || key == 'school_category') {
                 object[`${key}`] = this.changeingStringCases(object[key].replace(/_/g, ' '));
             }
             if (object.hasOwnProperty(key)) {
@@ -454,7 +455,7 @@ export class AppServiceComponent {
         }
         for (let i = 0; i < keys.length; i++) {
             let val = filter.value ? filter.value : filter;
-            if(dataSet[val] == null) setColor = "red";
+            if (dataSet[val] == null) setColor = "red";
             if (parseFloat(dataSet[val]) == parseFloat(keys[i])) {
                 setColor = colors[keys[i]];
                 break;
@@ -633,25 +634,26 @@ export class AppServiceComponent {
     }
 
     //Get table columns
-    getColumns(dataSet){
+    getColumns(dataSet) {
         var my_columns = [];
         $.each(dataSet[0], function (key, value) {
-          var my_item = {};
-          my_item['data'] = key;
-          my_item['value'] = value;
-          my_columns.push(my_item);
+            var my_item = {};
+            my_item['data'] = key;
+            my_item['value'] = value;
+            my_columns.push(my_item);
         });
         return my_columns;
-      }
+    }
 
-//management category metadata
-  management_category_metaData(){
-    this.logoutOnTokenExpire();
-    return this.http.post(`${this.baseUrl}/management-category-meta`, {});
-  }
+    //management category metadata
+    management_category_metaData() {
+        this.logoutOnTokenExpire();
+        return this.http.post(`${this.baseUrl}/management-category-meta`, {});
+    }
 
-//getDefaultOptions
-  getDefault(){
-   return this.http.get(`${this.baseUrl}/getDefault`);
-  }
+    //getDefaultOptions
+    getDefault() {
+        this.logoutOnTokenExpire();
+        return this.http.get(`${this.baseUrl}/getDefault`);
+    }
 }

@@ -36,7 +36,7 @@ export class ChangePasswordComponent implements OnInit {
         this.err = "Password not matched";
         document.getElementById('spinner').style.display = 'none';
       } else {
-        this.service.changePassword(this.changePasswdData.cnfpass, localStorage.getItem('user_id')).subscribe(res => {
+        this.service.changePassword(this.changePasswdData, localStorage.getItem('user_id')).subscribe(res => {
           document.getElementById('success').style.display = "Block";
           this.err = '';
           this.successMsg = res['msg'] + "\n" + " please login again...";
