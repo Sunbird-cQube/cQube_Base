@@ -9,7 +9,7 @@ dotenv.config();
 
 var host = process.env.KEYCLOAK_HOST;
 var realm = process.env.KEYCLOAK_REALM;
-var client_id = process.env.CLIENT_ID
+var client_id = process.env.KEYCLOAK_CLIENT
 
 
 router.post('/:id', auth.authController, async function (req, res) {
