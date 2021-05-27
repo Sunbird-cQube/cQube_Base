@@ -147,7 +147,7 @@ export class StudengtAttendanceComponent implements OnInit {
       (res) => {
         this.getMonthYear = res;
         this.years = Object.keys(this.getMonthYear);
-        this.year = this.years[this.years.length - 1];
+        this.year = this.years[0];
         var allMonths = [];
         allMonths = this.getMonthYear[`${this.year}`];
         this.months = [];
@@ -1680,6 +1680,7 @@ export class StudengtAttendanceComponent implements OnInit {
       }
 
       this.month_year["id"] = data;
+      this.month_year["blockId"] = blockId;
       this.myData = this.service
         .schoolsPerCluster({
           ...this.month_year,

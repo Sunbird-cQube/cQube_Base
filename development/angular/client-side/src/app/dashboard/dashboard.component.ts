@@ -205,7 +205,7 @@ export class DashboardComponent implements OnInit {
       }
       if (JSON.parse(localStorage.getItem('management'))) {
         var name = this.managements.find(a => { return a.id == JSON.parse(localStorage.getItem('management')).id });
-        if (name.value != 'Overall') {
+        if (name && name.value != 'Overall') {
           this.managements.unshift({ id: "overall", value: "Overall" });
         }
       }

@@ -34,7 +34,7 @@ router.post('/clusterWise', auth.authController, async(req, res) => {
             if (timePeriod != null) {
                 fileName = `attendance/${timePeriod}/cluster.json`;
             } else {
-                fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`;
+                fileName = `attendance/${year}/${month}/cluster.json`;
             }
         }
         var jsonData = await s3File.readS3File(fileName);
@@ -77,27 +77,27 @@ router.post('/clusterPerBlock', auth.authController, async(req, res) => {
         let fileName;
         if (management != 'overall' && category != 'overall') {
             if (timePeriod != null) {
-                fileName = `attendance/${timePeriod}/school_management_category/${management}/${category}/cluster.json`;
+                fileName = `attendance/${timePeriod}/school_management_category/${management}/${category}/cluster/${blockId}.json`;
             } else {
                 fileName = `attendance/school_management_category/${management}/${category}/cluster_${year}_${month}.json`;
             }
         } else if (management == 'overall' && category != 'overall') {
             if (timePeriod != null) {
-                fileName = `attendance/${timePeriod}/school_management_category/overall_management/${category}/cluster.json`;
+                fileName = `attendance/${timePeriod}/school_management_category/overall_management/${category}/cluster/${blockId}.json`;
             } else {
-                fileName = `attendance/school_management_category/${year}/${month}/overall_management${category}/cluster.json`;
+                fileName = `attendance/school_management_category/${year}/${month}/overall_management${category}/cluster/${blockId}.json`;
             }
         } else if (management != 'overall' && category == 'overall') {
             if (timePeriod != null) {
-                fileName = `attendance/${timePeriod}/school_management_category/overall_category/${management}/cluster.json`;
+                fileName = `attendance/${timePeriod}/school_management_category/overall_category/${management}/cluster/${blockId}.json`;
             } else {
-                fileName = `attendance/school_management_category/${year}/${month}/overall_category/${management}/cluster.json`;
+                fileName = `attendance/school_management_category/${year}/${month}/overall_category/${management}/cluster/${blockId}.json`;
             }
         } else {
             if (timePeriod != null) {
-                fileName = `attendance/${timePeriod}/cluster.json`;
+                fileName = `attendance/${timePeriod}/cluster/${blockId}.json`;
             } else {
-                fileName = `attendance/cluster_attendance_opt_json_${year}_${month}.json`;
+                fileName = `attendance/${year}/${month}/cluster/${blockId}.json`;
             }
         }
         var jsonData = await s3File.readS3File(fileName);
