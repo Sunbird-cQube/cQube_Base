@@ -42,6 +42,7 @@ export class HomePageComponent implements OnInit {
       let options = {
         redirectUri: environment.appUrl
       }
+      this.keycloakService.kc.clearToken();
       this.keycloakService.kc.logout(options);
     }
   }
@@ -50,6 +51,7 @@ export class HomePageComponent implements OnInit {
     let options = {
       redirectUri: environment.appUrl
     }
+    this.keycloakService.kc.clearToken();
     this.keycloakService.kc.logout(options);
   }
 

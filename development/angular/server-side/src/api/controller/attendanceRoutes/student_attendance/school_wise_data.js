@@ -3,7 +3,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/schoolWise', auth.authController, async function(req, res) {
+router.post('/schoolWise', auth.authController, async function (req, res) {
     try {
         logger.info('--- Attendance school wise api ---');
         var month = req.body.month;
@@ -34,7 +34,7 @@ router.post('/schoolWise', auth.authController, async function(req, res) {
             if (timePeriod != null) {
                 fileName = `attendance/${timePeriod}/school.json`;
             } else {
-                fileName = `attendance/school_attendance_opt_json_${year}_${month}.json`;
+                fileName = `attendance/${year}/${month}/school.json`;
             }
         }
         var jsonData = await s3File.readS3File(fileName);
@@ -66,11 +66,12 @@ router.post('/schoolWise', auth.authController, async function(req, res) {
     }
 });
 
-router.post('/schoolPerCluster', auth.authController, async(req, res) => {
+router.post('/schoolPerCluster', auth.authController, async (req, res) => {
     try {
         logger.info('--- Attendance schoolPerCluster api ---');
 
         var clusterId = req.body.id;
+        var blockId = req.body.blockId;
         var month = req.body.month;
         var year = req.body.year;
         var timePeriod = req.body.period;
@@ -79,32 +80,30 @@ router.post('/schoolPerCluster', auth.authController, async(req, res) => {
         let fileName;
         if (management != 'overall' && category != 'overall') {
             if (timePeriod != null) {
-                fileName = `attendance/${timePeriod}/school_management_category/${management}/${category}/school.json`;
+                fileName = `attendance/${timePeriod}/school_management_category/${management}/${category}/school/${blockId}.json`;
             } else {
                 fileName = `attendance/school_management_category/${management}/${category}/school_${year}_${month}.json`;
             }
         } else if (management == 'overall' && category != 'overall') {
             if (timePeriod != null) {
-                fileName = `attendance/${timePeriod}/school_management_category/overall_management/${category}/school.json`;
+                fileName = `attendance/${timePeriod}/school_management_category/overall_management/${category}/school/${blockId}.json`;
             } else {
-                fileName = `attendance/school_management_category/${year}/${month}/overall_management${category}/school.json`;
+                fileName = `attendance/school_management_category/${year}/${month}/overall_management${category}/school/${blockId}.json`;
             }
         } else if (management != 'overall' && category == 'overall') {
             if (timePeriod != null) {
-                fileName = `attendance/${timePeriod}/school_management_category/overall_category/${management}/school.json`;
+                fileName = `attendance/${timePeriod}/school_management_category/overall_category/${management}/school/${blockId}.json`;
             } else {
-                fileName = `attendance/school_management_category/${year}/${month}/overall_category/${management}/school.json`;
+                fileName = `attendance/school_management_category/${year}/${month}/overall_category/${management}/school/${blockId}.json`;
             }
         } else {
             if (timePeriod != null) {
-                fileName = `attendance/${timePeriod}/school.json`;
+                fileName = `attendance/${timePeriod}/school/${blockId}.json`;
             } else {
-                fileName = `attendance/school_attendance_opt_json_${year}_${month}.json`;
+                fileName = `attendance/${year}/${month}/school/${blockId}.json`;
             }
         }
-
         var jsonData = await s3File.readS3File(fileName);
-        // res.send(jsonData)
         var schoolsDetails = [];
         var filterData = jsonData.data.filter(data => {
             return (data.cluster_id == clusterId)

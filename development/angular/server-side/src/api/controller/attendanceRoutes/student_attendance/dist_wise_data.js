@@ -34,7 +34,7 @@ router.post('/distWise', auth.authController, async function(req, res) {
             if (timePeriod != null) {
                 fileName = `attendance/${timePeriod}/district.json`;
             } else {
-                fileName = `attendance/district_attendance_opt_json_${year}_${month}.json`;
+                fileName = `attendance/${year}/${month}/district.json`;
             }
         }
         var jsonData = await s3File.readS3File(fileName);

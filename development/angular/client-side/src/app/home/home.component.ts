@@ -107,6 +107,7 @@ export class HomeComponent implements OnInit {
     let options = {
       redirectUri: environment.appUrl
     }
+    this.keyCloakService.kc.clearToken();
     this.keyCloakService.kc.logout(options);
   }
 
