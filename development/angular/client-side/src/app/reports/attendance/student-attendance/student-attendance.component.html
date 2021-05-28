@@ -150,15 +150,18 @@
                 </div>
             </div>
             <div style="float: left; width: 9%; margin-left: 1%;">
-                <h5 id="legend" style="margin-left: 20%;">Legend</h5>
+                <h5 id="legend" style="margin-left: 15%;">Legend <img *ngIf="valueRange && valueRange != '0-100'"
+                        id="resetImg" src="../../../../assets/reset.png" alt="reset" title="Reset to all"
+                        style="cursor: pointer;height: 20px; width:20px; float: right; background-color: aqua; border-radius: 20px; padding: 5px; margin-top: -5px;"
+                        (click)="reset('0-100');"></h5>
                 <div *ngFor="let value of values; let i = index">
-                    <span class="legends" style="float: left;" [ngStyle]="{color: i> 1 ?'black': 'white'}"
+                    <span id={{i}} class="legends" style="float: left; cursor: pointer;"
+                        (click)="selectRange(value); select(i)" [ngStyle]="{color: i> 1 ?'black': 'white'}"
                         [style.background-color]="legendColors[i]">
                         {{values[i]}} </span>
                 </div>
                 <p id="legendNote"><span style="font-weight: bold;">Note: </span>These colors are applicable for the
                     absolute selection only</p>
-                <!-- <app-map-legends></app-map-legends> -->
             </div>
         </div>
     </div>
@@ -168,7 +171,7 @@
                 <div id="absolute" (click)="getColor('absolute')"
                     [ngStyle]="{'background-color' : selected == 'absolute' ? '#3100cc' : '#f5f6fb'}">
                     <p [ngStyle]="{'color' : selected == 'absolute' ? 'white' : 'black'}"
-                        style="text-align: center; padding: 2%;">
+                        style="text-align: center; padding: 2%; margin-right: 1%;">
                         Absolute</p>
                 </div>
                 <div id="relative" (click)="getColor('relative')"

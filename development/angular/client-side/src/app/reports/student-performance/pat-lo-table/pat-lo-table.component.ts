@@ -73,7 +73,7 @@ export class PATLOTableComponent implements OnInit {
   filteredData = []
   showPagination = false;
   validTransactions: any;
-  table: any;
+  table: any = undefined;
   updatedTable: any = [];
 
   constructor(
@@ -236,7 +236,7 @@ export class PATLOTableComponent implements OnInit {
               : 0
         );
         this.onChangePage();
-        this.commonService.loaderAndErr(this.reportData);
+        //this.commonService.loaderAndErr(this.reportData);
       },
       (err) => {
         this.handleError();
@@ -278,14 +278,14 @@ export class PATLOTableComponent implements OnInit {
         });
         newArr.push(temp);
       });
-      // var extra = 8 - newArr.length;
+      // var extra = Math.fround((8 - newArr.length)*2.5);
       // if (extra > 0) {
       //   for (let i = 0; i < extra; i++) {
       //     var temp = [];
       //     my_columns.map((data, i) => {
       //       var new_item = {};
-      //       new_item["data"] = '*';
-      //       new_item["value"] = '*';
+      //       new_item["data"] = '';
+      //       new_item["value"] = '';
       //       temp.push(new_item);
       //     })
       //     newArr.push(temp);
@@ -401,7 +401,8 @@ export class PATLOTableComponent implements OnInit {
           return false;
         }
       });
-      document.getElementById('spinner').style.display = 'none';
+      if(this.table)
+        document.getElementById('spinner').style.display = 'none';
     });
     this.showPagination = true;
   }
@@ -515,7 +516,7 @@ export class PATLOTableComponent implements OnInit {
         this.dist = true;
         this.blok = false;
         this.clust = false;
-        this.commonService.loaderAndErr(this.reportData);
+        //this.commonService.loaderAndErr(this.reportData);
       },
       (err) => {
         this.handleError();
@@ -578,7 +579,7 @@ export class PATLOTableComponent implements OnInit {
         this.dist = false;
         this.blok = true;
         this.clust = false;
-        this.commonService.loaderAndErr(this.reportData);
+        //this.commonService.loaderAndErr(this.reportData);
       },
       (err) => {
         this.handleError();
@@ -633,7 +634,7 @@ export class PATLOTableComponent implements OnInit {
         this.blok = false;
         this.clust = true;
 
-        this.commonService.loaderAndErr(this.reportData);
+        //this.commonService.loaderAndErr(this.reportData);
       },
       (err) => {
         this.handleError();

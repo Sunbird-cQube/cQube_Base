@@ -84,50 +84,6 @@ drop view if exists composite_mgt_block;
 drop view if exists composite_mgt_cluster;
 drop view if exists composite_mgt_school;
 
-
-drop materialized view if exists sat_school_grade_enrolment_district_last7 cascade;
-drop materialized view if exists sat_school_grade_enrolment_block_last7 cascade;
-drop materialized view if exists sat_school_grade_enrolment_cluster_last7 cascade;
-drop materialized view if exists sat_school_grade_enrolment_school_last7 cascade;
-drop materialized view if exists sat_school_grade_enrolment_district_mgmt_last7 cascade;
-drop materialized view if exists sat_school_grade_enrolment_block_mgmt_last7 cascade;
-drop materialized view if exists sat_school_grade_enrolment_cluster_mgmt_last7 cascade;
-drop materialized view if exists sat_school_grade_enrolment_school_mgmt_last7 cascade;
-drop materialized view if exists sat_school_grade_enrolment_district_last30 cascade;
-drop materialized view if exists sat_school_grade_enrolment_block_last30 cascade;
-drop materialized view if exists sat_school_grade_enrolment_cluster_last30 cascade;
-drop materialized view if exists sat_school_grade_enrolment_school_last30 cascade;
-drop materialized view if exists sat_school_grade_enrolment_district_mgmt_last30 cascade;
-drop materialized view if exists sat_school_grade_enrolment_block_mgmt_last30 cascade;
-drop materialized view if exists sat_school_grade_enrolment_cluster_mgmt_last30 cascade;
-drop materialized view if exists sat_school_grade_enrolment_school_mgmt_last30 cascade;
-
-
-drop materialized view if exists school_grade_enrolment_district cascade;
-drop materialized view if exists school_grade_enrolment_block cascade;
-drop materialized view if exists school_grade_enrolment_cluster cascade;
-drop materialized view if exists school_grade_enrolment_school cascade;
-drop materialized view if exists school_grade_enrolment_district_mgmt cascade;
-drop materialized view if exists school_grade_enrolment_block_mgmt cascade;
-drop materialized view if exists school_grade_enrolment_cluster_mgmt cascade;
-drop materialized view if exists school_grade_enrolment_school_mgmt cascade;
-drop materialized view if exists school_grade_enrolment_district_last7 cascade;
-drop materialized view if exists school_grade_enrolment_block_last7 cascade;
-drop materialized view if exists school_grade_enrolment_cluster_last7 cascade;
-drop materialized view if exists school_grade_enrolment_school_last7 cascade;
-drop materialized view if exists school_grade_enrolment_district_mgmt_last7 cascade;
-drop materialized view if exists school_grade_enrolment_block_mgmt_last7 cascade;
-drop materialized view if exists school_grade_enrolment_cluster_mgmt_last7 cascade;
-drop materialized view if exists school_grade_enrolment_school_mgmt_last7 cascade;
-drop materialized view if exists school_grade_enrolment_district_last30 cascade;
-drop materialized view if exists school_grade_enrolment_block_last30 cascade;
-drop materialized view if exists school_grade_enrolment_cluster_last30 cascade;
-drop materialized view if exists school_grade_enrolment_school_last30 cascade;
-drop materialized view if exists school_grade_enrolment_district_mgmt_last30 cascade;
-drop materialized view if exists school_grade_enrolment_block_mgmt_last30 cascade;
-drop materialized view if exists school_grade_enrolment_cluster_mgmt_last30 cascade;
-drop materialized view if exists school_grade_enrolment_school_mgmt_last30 cascade;
-
 create or replace function drop_view()
 returns int as
 $body$
@@ -274,131 +230,28 @@ create or replace function drop_materialized_view()
 returns int as
 $body$
 begin
-drop materialized view  if exists semester_exam_district_all cascade;
-drop materialized view  if exists semester_exam_block_all cascade;
-drop materialized view  if exists semester_exam_cluster_all cascade;
-drop materialized view  if exists semester_exam_school_all cascade;
-
-drop materialized view  if exists semester_exam_district_last30 cascade;
-drop materialized view  if exists semester_exam_block_last30 cascade;
-drop materialized view  if exists semester_exam_cluster_last30 cascade;
-drop materialized view  if exists semester_exam_school_last30 cascade;
-
-drop materialized view  if exists semester_grade_district_last30 cascade;
-drop materialized view  if exists semester_grade_block_last30 cascade;
-drop materialized view  if exists semester_grade_cluster_last30 cascade;
-drop materialized view  if exists semester_grade_school_last30 cascade;
-
-drop materialized view  if exists semester_exam_district_last7 cascade;
-drop materialized view  if exists semester_exam_block_last7 cascade;
-drop materialized view  if exists semester_exam_cluster_last7 cascade;
-drop materialized view  if exists semester_exam_school_last7 cascade;
-
-drop materialized view  if exists semester_grade_district_last7 cascade;
-drop materialized view  if exists semester_grade_block_last7 cascade;
-drop materialized view  if exists semester_grade_cluster_last7 cascade;
-drop materialized view  if exists semester_grade_school_last7 cascade;
-
-
-drop materialized view  if exists semester_exam_district_mgmt_all cascade;
-drop materialized view  if exists semester_exam_block_mgmt_all cascade;
-drop materialized view  if exists semester_exam_cluster_mgmt_all cascade;
-drop materialized view  if exists semester_exam_school_mgmt_all cascade;
-
-drop materialized view  if exists semester_exam_district_mgmt_last30 cascade;
-drop materialized view  if exists semester_exam_block_mgmt_last30 cascade;
-drop materialized view  if exists semester_exam_cluster_mgmt_last30 cascade;
-drop materialized view  if exists semester_exam_school_mgmt_last30 cascade;
-
-drop materialized view  if exists semester_grade_district_mgmt_last30 cascade;
-drop materialized view  if exists semester_grade_block_mgmt_last30 cascade;
-drop materialized view  if exists semester_grade_cluster_mgmt_last30 cascade;
-drop materialized view  if exists semester_grade_school_mgmt_last30 cascade;
-
-drop materialized view  if exists semester_exam_district_mgmt_last7 cascade;
-drop materialized view  if exists semester_exam_block_mgmt_last7 cascade;
-drop materialized view  if exists semester_exam_cluster_mgmt_last7 cascade;
-drop materialized view  if exists semester_exam_school_mgmt_last7 cascade;
-
-drop materialized view  if exists semester_grade_district_mgmt_last7 cascade;
-drop materialized view  if exists semester_grade_block_mgmt_last7 cascade;
-drop materialized view  if exists semester_grade_cluster_mgmt_last7 cascade;
-drop materialized view  if exists semester_grade_school_mgmt_last7 cascade;
-
-drop materialized view  if exists periodic_exam_school_all cascade;
-drop materialized view  if exists periodic_exam_cluster_all cascade;
-drop materialized view  if exists periodic_exam_block_all cascade;
-drop materialized view  if exists periodic_exam_district_all cascade;
-
-drop materialized view  if exists periodic_exam_school_last7 cascade;
-drop materialized view  if exists periodic_exam_cluster_last7 cascade;
-drop materialized view  if exists periodic_exam_block_last7 cascade;
-drop materialized view  if exists periodic_exam_district_last7 cascade;
-
-drop materialized view  if exists periodic_exam_school_last30 cascade;
-drop materialized view  if exists periodic_exam_cluster_last30 cascade;
-drop materialized view  if exists periodic_exam_block_last30 cascade;
-drop materialized view  if exists periodic_exam_district_last30 cascade;
+drop MATERIALIZED VIEW if exists stud_count_school_grade_mgmt_year_month cascade;
+drop MATERIALIZED VIEW if exists stud_count_school_mgmt_year_month cascade;
 
 drop materialized view  if exists periodic_exam_school_year_month cascade;
 drop materialized view  if exists periodic_exam_cluster_year_month cascade;
 drop materialized view  if exists periodic_exam_block_year_month cascade;
 drop materialized view  if exists periodic_exam_district_year_month cascade;
 
-drop materialized view  if exists periodic_exam_school_mgmt_all cascade;
-drop materialized view  if exists periodic_exam_cluster_mgmt_all cascade;
-drop materialized view  if exists periodic_exam_block_mgmt_all cascade;
-drop materialized view  if exists periodic_exam_district_mgmt_all cascade;
-
-drop materialized view  if exists periodic_exam_school_mgmt_last7 cascade;
-drop materialized view  if exists periodic_exam_cluster_mgmt_last7 cascade;
-drop materialized view  if exists periodic_exam_block_mgmt_last7 cascade;
-drop materialized view  if exists periodic_exam_district_mgmt_last7 cascade;
-
-drop materialized view  if exists periodic_exam_school_mgmt_last30 cascade;
-drop materialized view  if exists periodic_exam_cluster_mgmt_last30 cascade;
-drop materialized view  if exists periodic_exam_block_mgmt_last30 cascade;
-drop materialized view  if exists periodic_exam_district_mgmt_last30 cascade;
+drop materialized view  if exists periodic_grade_school_year_month cascade;
+drop materialized view  if exists periodic_grade_cluster_year_month cascade;
+drop materialized view  if exists periodic_grade_block_year_month cascade;
+drop materialized view  if exists periodic_grade_district_year_month cascade;
 
 drop materialized view  if exists periodic_exam_school_mgmt_year_month cascade;
 drop materialized view  if exists periodic_exam_cluster_mgmt_year_month cascade;
 drop materialized view  if exists periodic_exam_block_mgmt_year_month cascade;
 drop materialized view  if exists periodic_exam_district_mgmt_year_month cascade;
 
-drop materialized view  if exists periodic_grade_school_last7 cascade;
-drop materialized view  if exists periodic_grade_cluster_last7 cascade;
-drop materialized view  if exists periodic_grade_block_last7 cascade;
-drop materialized view  if exists periodic_grade_district_last7 cascade;
-
-drop materialized view  if exists periodic_grade_school_last30 cascade;
-drop materialized view  if exists periodic_grade_cluster_last30 cascade;
-drop materialized view  if exists periodic_grade_block_last30 cascade;
-drop materialized view  if exists periodic_grade_district_last30 cascade;
-
-drop materialized view  if exists periodic_grade_school_year_month cascade;
-drop materialized view  if exists periodic_grade_cluster_year_month cascade;
-drop materialized view  if exists periodic_grade_block_year_month cascade;
-drop materialized view  if exists periodic_grade_district_year_month cascade;
-
-drop materialized view  if exists periodic_grade_school_mgmt_last7 cascade;
-drop materialized view  if exists periodic_grade_cluster_mgmt_last7 cascade;
-drop materialized view  if exists periodic_grade_block_mgmt_last7 cascade;
-drop materialized view  if exists periodic_grade_district_mgmt_last7 cascade;
-
-drop materialized view  if exists periodic_grade_school_mgmt_last30 cascade;
-drop materialized view  if exists periodic_grade_cluster_mgmt_last30 cascade;
-drop materialized view  if exists periodic_grade_block_mgmt_last30 cascade;
-drop materialized view  if exists periodic_grade_district_mgmt_last30 cascade;
-
 drop materialized view  if exists periodic_grade_school_mgmt_year_month cascade;
 drop materialized view  if exists periodic_grade_cluster_mgmt_year_month cascade;
 drop materialized view  if exists periodic_grade_block_mgmt_year_month cascade;
 drop materialized view  if exists periodic_grade_district_mgmt_year_month cascade;
-
-drop materialized view if exists student_attendance_agg_last_1_day cascade;
-drop materialized view if exists student_attendance_agg_last_7_days cascade;
-drop materialized view if exists student_attendance_agg_last_30_days cascade;
-drop materialized view if exists student_attendance_agg_overall cascade;
   return 0;
 
     exception 
@@ -11470,17 +11323,17 @@ $$  LANGUAGE plpgsql;
 
 /* Pat year and month */
 
-
 CREATE MATERIALIZED VIEW IF NOT EXISTS stud_count_school_mgmt_year_month as
-(select a.school_id,c.cluster_id,c.block_id,c.district_id,b.assessment_year as academic_year,b.month,school_management_type,
-	count(distinct(student_uid)) as students_count,count(distinct(a.school_id)) as total_schools
-from
-(select exam_id,school_id,student_uid
-from periodic_exam_result_trans where school_id in (select school_id  from periodic_exam_school_result where school_management_type is not null)
-group by exam_id,school_id,student_uid) as a
-left join (select exam_id,assessment_year, trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month from periodic_exam_mst) as b on a.exam_id=b.exam_id
-left join school_hierarchy_details as c on a.school_id=c.school_id
-group by a.school_id,b.assessment_year,month ,school_management_type,cluster_id,block_id,district_id) WITH NO DATA ;
+	(select a.school_id,c.cluster_id,c.block_id,c.district_id,b.assessment_year as academic_year,b.month,school_management_type,
+		count(distinct(student_uid)) as students_count,count(distinct(a.school_id)) as total_schools
+	from
+	(select exam_id,school_id,student_uid
+	from periodic_exam_result_trans where exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
+	group by exam_id,school_id,student_uid) as a
+	left join (select exam_id,assessment_year, trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month from periodic_exam_mst) as b on a.exam_id=b.exam_id
+	left join school_hierarchy_details as c on a.school_id=c.school_id
+	group by a.school_id,b.assessment_year,month ,school_management_type,cluster_id,block_id,district_id) WITH NO DATA ;
 
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS stud_count_school_grade_mgmt_year_month as
@@ -11489,8 +11342,11 @@ case when month in (6,7,8,9,10,11,12) then
  (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year,count(distinct school_id) as total_schools from (
 select concat('Grade ',studying_class) as grade,cast (substring (exam_code,10,2) as integer) as month ,  
 cast (right(exam_code,4)as integer) as year,pert.school_id,cluster_id,block_id,district_id,
-school_management_type,student_uid from periodic_exam_result_trans pert  join school_hierarchy_details shd on pert.school_id=shd.school_id) as a
+school_management_type,student_uid from periodic_exam_result_trans pert  join school_hierarchy_details shd on pert.school_id=shd.school_id 
+where exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)) as a
 group by school_id,grade,month,academic_year,school_management_type,cluster_id,block_id,district_id) WITH NO DATA;
+
 
 /* District */
 
@@ -11532,6 +11388,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_district_year_month AS
                             round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS district_performance,
                             trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
                            FROM periodic_exam_school_result
+						   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                           GROUP BY periodic_exam_school_result.academic_year, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)),
 						  periodic_exam_school_result.district_id, periodic_exam_school_result.district_name, periodic_exam_school_result.district_latitude, periodic_exam_school_result.district_longitude) a
                     LEFT JOIN (SELECT a_1.academic_year,
@@ -11544,6 +11402,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_district_year_month AS
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text,
 								  'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.district_id) as b
 join (select district_id,grade,academic_year,month,
@@ -11573,6 +11433,8 @@ GROUP BY a_1.district_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
 									sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
                                    FROM periodic_exam_school_result
+								   	where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.district_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
                                 UNION
@@ -11583,6 +11445,8 @@ GROUP BY a_1.district_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade,
 								  (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.district_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text) as b
@@ -11652,6 +11516,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS  periodic_exam_block_year_month AS
                             round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS block_performance,
                             trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
                            FROM periodic_exam_school_result
+						   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+						  substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                           GROUP BY periodic_exam_school_result.academic_year, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)),
 						  periodic_exam_school_result.district_id, periodic_exam_school_result.district_name,periodic_exam_school_result.block_id, periodic_exam_school_result.block_name, periodic_exam_school_result.block_latitude, periodic_exam_school_result.block_longitude) a
                     LEFT JOIN (SELECT a_1.academic_year,
@@ -11664,6 +11530,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS  periodic_exam_block_year_month AS
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text,
 								  'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.block_id) as b
 join (select block_id,grade,academic_year,month,
@@ -11693,6 +11561,8 @@ GROUP BY a_1.block_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::tex
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
 									sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.block_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
                                 UNION
@@ -11703,6 +11573,8 @@ GROUP BY a_1.block_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::tex
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade,
 								  (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.block_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text) as b
@@ -11780,6 +11652,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS  periodic_exam_cluster_year_month AS
                             round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS cluster_performance,
                             trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
                            FROM periodic_exam_school_result
+						   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                           GROUP BY periodic_exam_school_result.academic_year, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)),
 						  periodic_exam_school_result.district_id, periodic_exam_school_result.district_name,periodic_exam_school_result.block_id, periodic_exam_school_result.block_name,
 						  periodic_exam_school_result.cluster_id, periodic_exam_school_result.cluster_name, periodic_exam_school_result.cluster_latitude, periodic_exam_school_result.cluster_longitude) a
@@ -11793,6 +11667,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS  periodic_exam_cluster_year_month AS
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text,
 								  'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.cluster_id) as b
 join (select cluster_id,grade,academic_year,month,
@@ -11822,6 +11698,8 @@ GROUP BY a_1.cluster_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::t
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
 									sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.cluster_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
                                 UNION
@@ -11832,6 +11710,8 @@ GROUP BY a_1.cluster_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::t
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade,
 								  (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.cluster_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text) as b
@@ -11917,6 +11797,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS  periodic_exam_school_year_month AS
                             round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS school_performance,
                             trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
                            FROM periodic_exam_school_result
+						   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                           GROUP BY periodic_exam_school_result.academic_year, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)),
 						  periodic_exam_school_result.district_id, periodic_exam_school_result.district_name,periodic_exam_school_result.block_id, periodic_exam_school_result.block_name,
 						  periodic_exam_school_result.cluster_id, periodic_exam_school_result.cluster_name,periodic_exam_school_result.school_id, periodic_exam_school_result.school_name, periodic_exam_school_result.school_latitude, periodic_exam_school_result.school_longitude) a
@@ -11930,6 +11812,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS  periodic_exam_school_year_month AS
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text,
 								  'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.school_id) as b
 join stud_count_school_grade_mgmt_year_month as c
@@ -11957,6 +11841,8 @@ GROUP BY a_1.school_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::te
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
 									sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.school_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
                                 UNION
@@ -11967,6 +11853,8 @@ GROUP BY a_1.school_id, a_1.academic_year, a_1.month) b_1 ON a.academic_year::te
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
                                    FROM periodic_exam_school_result
+								   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+								   substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade,
 								  (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.school_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text) as b
@@ -12001,7 +11889,10 @@ district_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-from periodic_exam_school_result group by academic_year,grade,subject,month,
+from periodic_exam_school_result 
+where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) 
+group by academic_year,grade,subject,month,
 district_id order by grade desc,subject_name)
 union
 (select a.*,sa.students_attended from 
@@ -12010,7 +11901,9 @@ district_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 max(students_count) as total_students,count(distinct school_id) as total_schools
-from periodic_exam_school_result group by academic_year,grade,month,
+from periodic_exam_school_result 
+where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) group by academic_year,grade,month,
 district_id order by 3,grade)as a
 join (select district_id,grade,academic_year,month,
 	sum(students_attended) as students_attended,sum(total_schools) as total_schools
@@ -12044,7 +11937,10 @@ block_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-from periodic_exam_school_result group by academic_year,grade,subject,month,
+from periodic_exam_school_result 
+where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) 
+group by academic_year,grade,subject,month,
 block_id order by grade desc,subject_name)
 union
 (select a.*,sa.students_attended from 
@@ -12053,7 +11949,10 @@ block_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 max(students_count) as total_students,count(distinct school_id) as total_schools
-from periodic_exam_school_result group by academic_year,grade,month,
+from periodic_exam_school_result 
+where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) 
+group by academic_year,grade,month,
 block_id order by 3,grade)as a
 join (select block_id,grade,academic_year,month,
 	sum(students_attended) as students_attended,sum(total_schools) as total_schools
@@ -12086,7 +11985,10 @@ cluster_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-from periodic_exam_school_result group by academic_year,grade,subject,month,
+from periodic_exam_school_result 
+where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) 
+group by academic_year,grade,subject,month,
 cluster_id order by grade desc,subject_name)
 union
 (select a.*,sa.students_attended from 
@@ -12095,7 +11997,10 @@ cluster_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 max(students_count) as total_students,count(distinct school_id) as total_schools
-from periodic_exam_school_result group by academic_year,grade,month,
+from periodic_exam_school_result 
+where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) 
+group by academic_year,grade,month,
 cluster_id order by 3,grade)as a
 join (select cluster_id,grade,academic_year,month,
 	sum(students_attended) as students_attended,sum(total_schools) as total_schools
@@ -12129,7 +12034,10 @@ school_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-from periodic_exam_school_result group by academic_year,grade,subject,month,
+from periodic_exam_school_result 
+where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) 
+group by academic_year,grade,subject,month,
 school_id order by grade desc,subject_name)
 union
 (select a.*,sa.students_attended from 
@@ -12138,7 +12046,10 @@ school_id,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 max(students_count) as total_students,count(distinct school_id) as total_schools
-from periodic_exam_school_result group by academic_year,grade,month,
+from periodic_exam_school_result 
+where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) 
+group by academic_year,grade,month,
 school_id order by 3,grade)as a
 join stud_count_school_grade_mgmt_year_month as sa 
 on a.school_id=sa.school_id and a.grade=sa.grade and a.academic_year=sa.academic_year and a.month=sa.month))as a
@@ -12150,7 +12061,6 @@ on b.school_id=c.school_id and b.grade=c.grade and b.academic_year=c.academic_ye
 left join
  school_grade_enrolment_school tot_stud
 on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade) WITH NO DATA;
-
 
 /* CRC month and year queries */
 
@@ -13778,6 +13688,7 @@ on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade and b.school_manage
 
 /* ------------------- Year and month -------------------------------------------*/
 
+
 /* district */
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_district_mgmt_year_month AS
@@ -13821,7 +13732,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_district_mgmt_year_month AS
                             periodic_exam_school_result.district_longitude,
                             round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS district_performance,
                             trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
-                           FROM periodic_exam_school_result
+                           FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                           GROUP BY periodic_exam_school_result.academic_year,periodic_exam_school_result.school_management_type, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)),
 						  periodic_exam_school_result.district_id, periodic_exam_school_result.district_name,
 						   periodic_exam_school_result.district_latitude, periodic_exam_school_result.district_longitude) a
@@ -13834,7 +13745,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_district_mgmt_year_month AS
                                     periodic_exam_school_result.district_id,periodic_exam_school_result.school_management_type,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text,
 								   'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.district_id,periodic_exam_school_result.school_management_type) as b
 join (select district_id,grade,school_management_type,academic_year,month,
@@ -13863,7 +13774,7 @@ a.school_management_type=b_1.school_management_type) c
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
 									sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.school_management_type,
 								  periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.district_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
@@ -13874,7 +13785,7 @@ a.school_management_type=b_1.school_management_type) c
                                     periodic_exam_school_result.district_id,periodic_exam_school_result.school_management_type,
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade,periodic_exam_school_result.school_management_type,
 								  (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.district_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text) as b
@@ -13896,7 +13807,7 @@ from stud_count_school_mgmt_year_month group by district_id,academic_year,month,
  on d.academic_year=b.academic_year and d.district_id=b.district_id and d.month=b.month and d.school_management_type=b.school_management_type
         join
  (select sum(total_students) as total_students,district_id,school_management_type from school_hierarchy_details shd 
- where school_id in (select school_id from periodic_exam_school_result) group by district_id,school_management_type) tot_stud
+ where school_id in (select school_id FROM periodic_exam_school_result) group by district_id,school_management_type) tot_stud
 on d.district_id=tot_stud.district_id and d.school_management_type=tot_stud.school_management_type where d.school_management_type is not null) WITH NO DATA;
 
 /* block */
@@ -13950,7 +13861,8 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_block_mgmt_year_month AS
                             periodic_exam_school_result.block_longitude,
                             round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS block_performance,
                             trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
-                           FROM periodic_exam_school_result
+                           FROM periodic_exam_school_result 
+						   where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                           GROUP BY periodic_exam_school_result.academic_year,periodic_exam_school_result.school_management_type, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)),
 						  periodic_exam_school_result.district_id, periodic_exam_school_result.district_name,periodic_exam_school_result.block_id, periodic_exam_school_result.block_name,
 						  periodic_exam_school_result.block_latitude, periodic_exam_school_result.block_longitude) a
@@ -13963,7 +13875,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_block_mgmt_year_month AS
                                     periodic_exam_school_result.block_id,periodic_exam_school_result.school_management_type,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text,
 								   'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.block_id,periodic_exam_school_result.school_management_type) as b
 join (select block_id,grade,school_management_type,academic_year,month,
@@ -13992,7 +13904,7 @@ a.school_management_type=b_1.school_management_type) c
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
 									sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.school_management_type,
 								  periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.block_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
@@ -14003,7 +13915,7 @@ a.school_management_type=b_1.school_management_type) c
                                     periodic_exam_school_result.block_id,periodic_exam_school_result.school_management_type,
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade,periodic_exam_school_result.school_management_type,
 								  (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.block_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text) as b
@@ -14025,7 +13937,7 @@ from stud_count_school_mgmt_year_month group by block_id,academic_year,month,sch
  on d.academic_year=b.academic_year and d.block_id=b.block_id and d.month=b.month and d.school_management_type=b.school_management_type
        join
  (select sum(total_students) as total_students,block_id,school_management_type from school_hierarchy_details shd 
- where school_id in (select school_id from periodic_exam_school_result) group by block_id,school_management_type) tot_stud
+ where school_id in (select school_id FROM periodic_exam_school_result) group by block_id,school_management_type) tot_stud
 on d.block_id=tot_stud.block_id and d.school_management_type=tot_stud.school_management_type where d.school_management_type is not null) WITH NO DATA;
 
 /* cluster */
@@ -14087,7 +13999,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_cluster_mgmt_year_month AS
                             cluster_longitude,
                             round(COALESCE(sum(obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(total_marks), 0::numeric), 1) AS cluster_performance,
                             trim(to_char(to_date(date_part('month'::text, exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
-                           FROM periodic_exam_school_result
+                           FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                           GROUP BY academic_year,school_management_type, (to_char(to_date(date_part('month'::text, exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)),
 						  district_id, district_name,block_id, block_name,
 						  cluster_id, cluster_name, cluster_latitude, cluster_longitude) a
@@ -14100,7 +14012,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_cluster_mgmt_year_month AS
                                     cluster_id,school_management_type,
                                     round(COALESCE(sum(obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(total_marks), 0::numeric), 1) AS percentage,
                                     trim(to_char(to_date(date_part('month'::text, exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY academic_year, grade, (to_char(to_date(date_part('month'::text, exam_date)::text,
 								   'MM'::text)::timestamp with time zone, 'Month'::text)), cluster_id,school_management_type) as b
 join (select cluster_id,grade,school_management_type,academic_year,month,
@@ -14129,7 +14041,7 @@ a.school_management_type=b_1.school_management_type) c
                                     trim(to_char(to_date(date_part('month'::text, exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(total_marks), 0::numeric), 1) AS percentage,
 									sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY academic_year, grade, school_management_type,
 								  subject, (to_char(to_date(date_part('month'::text, exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), cluster_id
                                   ORDER BY ('Grade '::text || grade) DESC, subject)
@@ -14140,7 +14052,7 @@ a.school_management_type=b_1.school_management_type) c
                                     cluster_id,school_management_type,
                                     trim(to_char(to_date(date_part('month'::text, exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(total_marks), 0::numeric), 1) AS percentage
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY academic_year, grade,school_management_type,
 								  (to_char(to_date(date_part('month'::text, exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), cluster_id
                                   ORDER BY ('Grade '::text || grade) DESC, 'Grade Performance'::text) as b
@@ -14157,7 +14069,7 @@ on b.cluster_id=tot_stud.cluster_id and b.grade=tot_stud.grade and b.school_mana
 				  and c.school_management_type=d_1.school_management_type) d
        join
  (select sum(total_students) as total_students,cluster_id,school_management_type from school_hierarchy_details shd 
- where school_id in (select school_id from periodic_exam_school_result) group by cluster_id,school_management_type) tot_stud
+ where school_id in (select school_id FROM periodic_exam_school_result) group by cluster_id,school_management_type) tot_stud
 on d.cluster_id=tot_stud.cluster_id and d.school_management_type=tot_stud.school_management_type 
  left join
  student_att_count as b 
@@ -14232,7 +14144,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_school_mgmt_year_month AS
                             periodic_exam_school_result.school_longitude,
                             round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS school_performance,
                             trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
-                           FROM periodic_exam_school_result
+                           FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                           GROUP BY periodic_exam_school_result.academic_year, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)),
 						  periodic_exam_school_result.district_id, periodic_exam_school_result.district_name,periodic_exam_school_result.block_id, periodic_exam_school_result.block_name,
 						  periodic_exam_school_result.cluster_id, periodic_exam_school_result.cluster_name,periodic_exam_school_result.school_id, periodic_exam_school_result.school_name, periodic_exam_school_result.school_latitude, periodic_exam_school_result.school_longitude,
@@ -14246,7 +14158,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS periodic_exam_school_mgmt_year_month AS
                                     periodic_exam_school_result.school_id,periodic_exam_school_result.school_management_type,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text,
 								  'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.school_id,periodic_exam_school_result.school_management_type) as b
 join stud_count_school_grade_mgmt_year_month as c
@@ -14273,7 +14185,7 @@ and a.school_management_type=b_1.school_management_type) c
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage,
 									sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade, periodic_exam_school_result.school_management_type,
 								  periodic_exam_school_result.subject, (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.school_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, periodic_exam_school_result.subject)
@@ -14284,7 +14196,7 @@ and a.school_management_type=b_1.school_management_type) c
                                     periodic_exam_school_result.school_id,periodic_exam_school_result.school_management_type,
                                     trim(to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)) AS month,
                                     round(COALESCE(sum(periodic_exam_school_result.obtained_marks), 0::numeric) * 100.0 / COALESCE(sum(periodic_exam_school_result.total_marks), 0::numeric), 1) AS percentage
-                                   FROM periodic_exam_school_result
+                                   FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
                                   GROUP BY periodic_exam_school_result.academic_year, periodic_exam_school_result.grade,periodic_exam_school_result.school_management_type,
 								  (to_char(to_date(date_part('month'::text, periodic_exam_school_result.exam_date)::text, 'MM'::text)::timestamp with time zone, 'Month'::text)), periodic_exam_school_result.school_id
                                   ORDER BY ('Grade '::text || periodic_exam_school_result.grade) DESC, 'Grade Performance'::text) as b
@@ -14321,7 +14233,7 @@ district_id,school_management_type,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-from periodic_exam_school_result group by academic_year,grade,subject,month,school_management_type,
+FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) group by academic_year,grade,subject,month,school_management_type,
 district_id order by grade desc,subject_name)
 union
 (select a.*,sa.students_attended from 
@@ -14330,7 +14242,7 @@ district_id,school_management_type,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 max(students_count) as total_students,count(distinct school_id) as total_schools
-from periodic_exam_school_result group by academic_year,grade,month,school_management_type,
+FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) group by academic_year,grade,month,school_management_type,
 district_id order by 3,grade)as a
 join (select district_id,grade,school_management_type,academic_year,month,
 	sum(students_attended) as students_attended,sum(total_schools) as total_schools
@@ -14364,7 +14276,7 @@ block_id,school_management_type,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-from periodic_exam_school_result group by academic_year,grade,subject,month,school_management_type,
+FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) group by academic_year,grade,subject,month,school_management_type,
 block_id order by grade desc,subject_name)
 union
 (select a.*,sa.students_attended from 
@@ -14373,7 +14285,7 @@ block_id,school_management_type,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 max(students_count) as total_students,count(distinct school_id) as total_schools
-from periodic_exam_school_result group by academic_year,grade,month,school_management_type,
+FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) group by academic_year,grade,month,school_management_type,
 block_id order by 3,grade)as a
 join (select block_id,grade,school_management_type,academic_year,month,
 	sum(students_attended) as students_attended,sum(total_schools) as total_schools
@@ -14406,7 +14318,7 @@ cluster_id,school_management_type,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-from periodic_exam_school_result group by academic_year,grade,subject,month,school_management_type,
+FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) group by academic_year,grade,subject,month,school_management_type,
 cluster_id order by grade desc,subject_name)
 union
 (select a.*,sa.students_attended from 
@@ -14415,7 +14327,7 @@ cluster_id,school_management_type,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 max(students_count) as total_students,count(distinct school_id) as total_schools
-from periodic_exam_school_result group by academic_year,grade,month,school_management_type,
+FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) group by academic_year,grade,month,school_management_type,
 cluster_id order by 3,grade)as a
 join (select cluster_id,grade,school_management_type,academic_year,month,
 	sum(students_attended) as students_attended,sum(total_schools) as total_schools
@@ -14447,7 +14359,7 @@ school_id,school_management_type,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 sum(students_count) as total_students,count(distinct school_id) as total_schools,sum(students_attended) as students_attended
-from periodic_exam_school_result group by academic_year,grade,subject,month,school_management_type,
+FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) group by academic_year,grade,subject,month,school_management_type,
 school_id order by grade desc,subject_name)
 union
 (select a.*,sa.students_attended from 
@@ -14456,7 +14368,7 @@ school_id,school_management_type,
 round(coalesce(sum(obtained_marks),0)*100.0/coalesce(sum(total_marks),0),1) as percentage,
 trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month,
 max(students_count) as total_students,count(distinct school_id) as total_schools
-from periodic_exam_school_result group by academic_year,grade,month,school_management_type,
+FROM periodic_exam_school_result where periodic_exam_school_result.exam_code in (select exam_code from latest_data_to_be_processed_pat) or substring(periodic_exam_school_result.exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat) group by academic_year,grade,month,school_management_type,
 school_id order by 3,grade)as a
 join stud_count_school_grade_mgmt_year_month as sa 
 on a.school_id=sa.school_id and a.grade=sa.grade and a.academic_year=sa.academic_year and a.month=sa.month and a.school_management_type=sa.school_management_type))as a
@@ -14468,6 +14380,7 @@ on b.school_id=c.school_id and b.grade=c.grade and b.academic_year=c.academic_ye
 left join
  school_grade_enrolment_school_mgmt tot_stud
 on b.school_id=tot_stud.school_id and b.grade=tot_stud.grade  and b.school_management_type=tot_stud.school_management_type) WITH NO DATA;
+
 
 /*------------------------last 7 days--------------------------------------------------------------------------------------------------------*/
 
@@ -21838,3 +21751,57 @@ create index IF NOT EXISTS sat_stud_count_school_grade_mgmt_last30_grade_idx on 
 create index IF NOT EXISTS sat_stud_count_school_grade_mgmt_last30_semester_idx on sat_stud_count_school_grade_mgmt_last30(semester);
 create index IF NOT EXISTS sat_stud_count_school_grade_mgmt_last30_school_mgmt_type_idx on sat_stud_count_school_grade_mgmt_last30(school_management_type);
 create index IF NOT EXISTS sat_stud_count_school_grade_mgmt_last30_academic_year_idx on sat_stud_count_school_grade_mgmt_last30(academic_year);
+
+create materialized view if not exists periodic_exam_school_ind_result as
+select academic_year,exam_code,exam_date,school_id,grade,school_name,district_id,district_name,block_id,block_name,cluster_id,cluster_name,subject,indicator,
+avg(obtained_marks)::numeric as obtained_marks,avg(total_marks)::numeric as total_marks,max(students_attended) as students_attended,max(total_students) as total_students,
+school_management_type,school_category
+from periodic_exam_school_qst_result where students_attended > 0
+group by academic_year,exam_code,exam_date,school_id,grade,school_name,district_id,district_name,block_id,block_name,cluster_id,cluster_name,subject,indicator,school_management_type,school_category
+with no data;
+
+create materialized view if not exists semester_exam_school_ind_result as
+select academic_year,exam_code,exam_date,school_id,grade,school_name,district_id,district_name,block_id,block_name,cluster_id,cluster_name,subject,indicator,
+avg(obtained_marks)::numeric as obtained_marks,avg(total_marks)::numeric as total_marks,max(students_attended) as students_attended,max(total_students) as total_students,
+school_management_type,school_category
+from semester_exam_school_qst_result where students_attended > 0
+group by academic_year,exam_code,exam_date,school_id,grade,school_name,district_id,district_name,block_id,block_name,cluster_id,cluster_name,subject,indicator,school_management_type,school_category
+with no data;
+
+
+/*Month wise refresh */
+
+create or replace function insert_diksha_year_month()
+returns int as
+$body$
+declare
+cnt_query text:='select count(*) from diksha_total_content_year_month limit 10';
+_count bigint;
+begin
+EXECUTE cnt_query into _count;
+IF _count = 0 THEN  
+   EXECUTE 'insert into diksha_total_content_year_month
+    select nextval(''diksha_total_content_year_month_id_seq''::regclass),district_id,district_name,date_part(''month'',content_view_date),date_part(''year'',content_view_date),content_name,content_medium,content_gradelevel,content_subject,object_id,collection_name,collection_type,collection_medium,collection_gradelevel,sum(total_count),sum(total_time_spent) 
+    from diksha_total_content 
+group by district_id,district_name,date_part(''month'',content_view_date),date_part(''year'',content_view_date),content_name,content_medium,content_gradelevel,content_subject,object_id,collection_name,collection_type,collection_medium,collection_gradelevel';
+ELSE
+
+delete from diksha_total_content_year_month dt using diksha_refresh dr where dt.month=date_part('month',dr.content_view_date) and dt.year=date_part('year',dr.content_view_date);
+
+insert into diksha_total_content_year_month
+select nextval('diksha_total_content_year_month_id_seq'::regclass),district_id,district_name,date_part('month',content_view_date),date_part('year',content_view_date),content_name,content_medium,content_gradelevel,content_subject,object_id,collection_name,collection_type,collection_medium,collection_gradelevel,sum(total_count),sum(total_time_spent) 
+from diksha_total_content 
+where content_view_date BETWEEN
+(select (date_trunc('month',(select min(content_view_date) from diksha_refresh))::date))
+and (select (date_trunc('month',(select max(content_view_date) from diksha_refresh))+'1month'::interval-'1day'::interval)::date) 
+group by district_id,district_name,date_part('month',content_view_date),date_part('year',content_view_date),content_name,content_medium,content_gradelevel,content_subject,object_id,collection_name,collection_type,collection_medium,collection_gradelevel;
+END IF;
+  return 0;
+
+   exception 
+   when others then
+       return 1;
+
+end;
+$body$
+language plpgsql;

@@ -24542,8 +24542,8 @@ ${query_type:startsWith('sat_exception_management_block_all'):ifElse('exception_
 ${query_type:startsWith('sat_exception_management_cluster_all'):ifElse('exception_list/sat_exception/school_management_category/overall/sem_${semester}/overall_category/${management_type}/cluster.json',
 ${query_type:startsWith('sat_exception_management_school_all'):ifElse('exception_list/sat_exception/school_management_category/overall/sem_${semester}/overall_category/${management_type}/school.json',
 ${query_type:startsWith('sat_exception_management_district_last7days'):ifElse('exception_list/sat_exception/school_management_category/last_7_days/sem_${semester}/overall_category/${management_type}/district.json',
-${query_type:startsWith('sat_exception_management_cluster_last7days'):ifElse('exception_list/sat_exception/school_management_category/last_7_days/sem_${semester}/overall_category/${management_type}/block.json',
-${query_type:startsWith('sat_exception_management_block_last7days'):ifElse('exception_list/sat_exception/school_management_category/last_7_days/sem_${semester}/overall_category/${management_type}/cluster.json',
+${query_type:startsWith('sat_exception_management_block_last7days'):ifElse('exception_list/sat_exception/school_management_category/last_7_days/sem_${semester}/overall_category/${management_type}/block.json',
+${query_type:startsWith('sat_exception_management_cluster_last7days'):ifElse('exception_list/sat_exception/school_management_category/last_7_days/sem_${semester}/overall_category/${management_type}/cluster.json',
 ${query_type:startsWith('sat_exception_management_schools_last7days'):ifElse('exception_list/sat_exception/school_management_category/last_7_days/sem_${semester}/overall_category/${management_type}/school.json',
 ${query_type:startsWith('sat_exception_management_district_last_30_days'):ifElse('exception_list/sat_exception/school_management_category/last_30_days/sem_${semester}/overall_category/${management_type}/district.json',
 ${query_type:startsWith('sat_exception_management_block_last_30_days'):ifElse('exception_list/sat_exception/school_management_category/last_30_days/sem_${semester}/overall_category/${management_type}/block.json',
@@ -24556,7 +24556,7 @@ ${query_type:startsWith('sat_exception_management_grade_school_all'):ifElse('exc
 ${query_type:startsWith('sat_exception_management_grade_district_last_7_days'):ifElse('exception_list/sat_exception/school_management_category/grade/last_7_days/sem_${semester}/overall_category/${management_type}/district/${grade}.json',
 ${query_type:startsWith('sat_exception_management_grade_block_last_7_days'):ifElse('exception_list/sat_exception/school_management_category/grade/last_7_days/sem_${semester}/overall_category/${management_type}/block/${grade}.json',
 ${query_type:startsWith('sat_exception_management_grade_cluster_last_7_days'):ifElse('exception_list/sat_exception/school_management_category/grade/last_7_days/sem_${semester}/overall_category/${management_type}/cluster/${grade}.json',
-${query_type:startsWith('sat_exception_management_grade_cluster_last_7_days'):ifElse('exception_list/sat_exception/school_management_category/grade/last_7_days/sem_${semester}/overall_category/${management_type}/school/${grade}.json',
+${query_type:startsWith('sat_exception_management_grade_school_last_7_days'):ifElse('exception_list/sat_exception/school_management_category/grade/last_7_days/sem_${semester}/overall_category/${management_type}/school/${grade}.json',
 ${query_type:startsWith('sat_exception_management_grade_district_last_30_days'):ifElse('exception_list/sat_exception/school_management_category/grade/last_30_days/sem_${semester}/overall_category/${management_type}/district/${grade}.json',
 ${query_type:startsWith('sat_exception_management_grade_block_last_30_days'):ifElse('exception_list/sat_exception/school_management_category/grade/last_30_days/sem_${semester}/overall_category/${management_type}/block/${grade}.json',
 ${query_type:startsWith('sat_exception_management_grade_cluster_last_30_days'):ifElse('exception_list/sat_exception/school_management_category/grade/last_30_days/sem_${semester}/overall_category/${management_type}/cluster/${grade}.json',
@@ -39553,5 +39553,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/07/2021 19:53:04 IST</timestamp>
+    <timestamp>05/21/2021 17:07:04 IST</timestamp>
 </template>

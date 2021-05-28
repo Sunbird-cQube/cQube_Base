@@ -6105,3 +6105,41 @@ school_management_type varchar(100),
 students_count bigint,
 total_schools bigint);
 
+create table if not exists pat_processing_info(
+id text,
+date date,
+start_date_time timestamp,
+end_date_time timestamp,
+exam_codes_list text,
+status varchar(20));
+
+			
+create table if not exists latest_data_to_be_processed_pat(
+exam_code text);
+
+/* Diksha Summary Rollup month wise */
+
+ create table IF NOT EXISTS diksha_total_content_year_month(
+ id serial,
+ district_id integer,
+ district_name text,
+ month integer,
+ year integer,
+ content_name text,
+ content_medium text,
+ content_gradelevel text,
+ content_subject text,
+ object_id text,
+ collection_name text,
+ collection_type text,
+ collection_medium text,
+ collection_gradelevel text,
+ total_count integer,
+ total_time_spent double precision,
+ created_on timestamp without time zone,
+ updated_on timestamp without time zone
+  );
+
+create index IF NOT EXISTS diksha_total_content_year_month_month_year_idx on diksha_total_content_year_month (month,year);
+
+create table IF NOT EXISTS diksha_refresh (content_view_date date);
