@@ -52,6 +52,5 @@
       KEYCLOAK_USER= "{{ keycloak_adm_user }}"
       PASSWORD= "{{ keycloak_adm_passwd }}"
       GRANT_TYPE= "password"
-      CLIENT_ID= "admin-cli"
       BASE_DIR = "{{ base_dir }}"
   tags: [ install, update ]

@@ -1317,7 +1317,7 @@ export class UdiseReportComponent implements OnInit {
         orgObject[key] = details[key];
       }
     });
-    if (level == "school") {
+    if (level == "School") {
       Object.keys(orgObject).forEach((key) => {
         if (key !== "total_schools_data_received") {
           detailSchool[key] = details[key];
@@ -1366,7 +1366,7 @@ export class UdiseReportComponent implements OnInit {
         let myobj = { ...orgObject, ...markers.rank, ...markers.indices };
         this.reportData.push(myobj);
       }
-    } else if (level == "school" || level == "schoolPerCluster") {
+    } else if (level == "School" || level == "schoolPerCluster") {
       if (this.indiceData !== "Infrastructure_Score") {
         let obj = {
           district_id: markers.details.district_id,

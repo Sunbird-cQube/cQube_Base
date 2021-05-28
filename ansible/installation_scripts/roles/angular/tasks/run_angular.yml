@@ -14,7 +14,7 @@
 
 - name: Starting the http-server
   become: yes
-  shell: pm2 start /usr/bin/http-server --name client_side -- -a {{ local_ipv4_address }} -p 4200 
+  shell: pm2 start /usr/bin/http-server --name client_side -- -d false -a {{ local_ipv4_address }} -p 4200 
   args:
     chdir: "{{ base_dir }}/cqube/dashboard/client_side/dist/client-side"
   tags: install

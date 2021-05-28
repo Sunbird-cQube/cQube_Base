@@ -52,7 +52,6 @@
       KEYCLOAK_USER= "{{ keycloak_adm_user }}"
       PASSWORD= "{{ keycloak_adm_passwd }}"
       GRANT_TYPE= "password"
-      CLIENT_ID= "admin-cli"
 
       EMISSION_BUCKET_NAME= {{ s3_emission_bucket }}
       INPUT_BUCKET_NAME= {{ s3_input_bucket }}
