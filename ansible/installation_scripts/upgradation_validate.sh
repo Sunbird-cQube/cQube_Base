@@ -351,7 +351,7 @@ db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=1.13
+version_upgradable_from=1.13.1
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
