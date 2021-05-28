@@ -21768,3 +21768,40 @@ from semester_exam_school_qst_result where students_attended > 0
 group by academic_year,exam_code,exam_date,school_id,grade,school_name,district_id,district_name,block_id,block_name,cluster_id,cluster_name,subject,indicator,school_management_type,school_category
 with no data;
 
+
+/*Month wise refresh */
+
+create or replace function insert_diksha_year_month()
+returns int as
+$body$
+declare
+cnt_query text:='select count(*) from diksha_total_content_year_month limit 10';
+_count bigint;
+begin
+EXECUTE cnt_query into _count;
+IF _count = 0 THEN  
+   EXECUTE 'insert into diksha_total_content_year_month
+    select nextval(''diksha_total_content_year_month_id_seq''::regclass),district_id,district_name,date_part(''month'',content_view_date),date_part(''year'',content_view_date),content_name,content_medium,content_gradelevel,content_subject,object_id,collection_name,collection_type,collection_medium,collection_gradelevel,sum(total_count),sum(total_time_spent) 
+    from diksha_total_content 
+group by district_id,district_name,date_part(''month'',content_view_date),date_part(''year'',content_view_date),content_name,content_medium,content_gradelevel,content_subject,object_id,collection_name,collection_type,collection_medium,collection_gradelevel';
+ELSE
+
+delete from diksha_total_content_year_month dt using diksha_refresh dr where dt.month=date_part('month',dr.content_view_date) and dt.year=date_part('year',dr.content_view_date);
+
+insert into diksha_total_content_year_month
+select nextval('diksha_total_content_year_month_id_seq'::regclass),district_id,district_name,date_part('month',content_view_date),date_part('year',content_view_date),content_name,content_medium,content_gradelevel,content_subject,object_id,collection_name,collection_type,collection_medium,collection_gradelevel,sum(total_count),sum(total_time_spent) 
+from diksha_total_content 
+where content_view_date BETWEEN
+(select (date_trunc('month',(select min(content_view_date) from diksha_refresh))::date))
+and (select (date_trunc('month',(select max(content_view_date) from diksha_refresh))+'1month'::interval-'1day'::interval)::date) 
+group by district_id,district_name,date_part('month',content_view_date),date_part('year',content_view_date),content_name,content_medium,content_gradelevel,content_subject,object_id,collection_name,collection_type,collection_medium,collection_gradelevel;
+END IF;
+  return 0;
+
+   exception 
+   when others then
+       return 1;
+
+end;
+$body$
+language plpgsql;
