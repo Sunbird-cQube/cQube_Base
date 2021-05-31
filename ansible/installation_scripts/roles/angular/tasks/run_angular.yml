@@ -21,6 +21,6 @@
 
 - name: Starting the client_side app
   become: yes
-  shell: pm2 start client_side
+  shell: pm2 start client_side -- -d false -a {{ local_ipv4_address }} -p 4200
   tags: update
 
