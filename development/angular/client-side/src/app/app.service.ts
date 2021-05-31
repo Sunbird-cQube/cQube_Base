@@ -70,6 +70,7 @@ export class AppServiceComponent {
             let options = {
                 redirectUri: environment.appUrl,
             }
+            sessionStorage.clear();
             this.keyCloakService.kc.clearToken();
             this.keyCloakService.kc.logout(options);
         }
