@@ -35,7 +35,7 @@ export class DataReplayComponent implements OnInit {
   batchIds: any = [];
   selectedBatchIds;
   options = [
-    { id: '', value: "Select" }, 
+    { id: '', value: "Select" },
     //{ id: 'No', value: 'No' }, 
     { id: 'delete all data', value: 'Delete all data' }];
 
@@ -60,6 +60,11 @@ export class DataReplayComponent implements OnInit {
   getMonthYears2: any;
   getMonthYears3: any;
   public currTime;
+
+  //For Retention
+  daysArr = [];
+  selectedDays = 90;
+  retentionData = {};
 
   ngOnInit(): void {
     document.getElementById('spinner').style.display = 'block';
@@ -121,10 +126,13 @@ export class DataReplayComponent implements OnInit {
       }
     })
     this.dataSources = this.dataSources.sort((a, b) => (a.sourceName > b.sourceName) ? 1 : ((b.sourceName > a.sourceName) ? -1 : 0));
-    //this.dataSources.unshift({ template: 'Select Data Source', status: true, sourceName: 'Select Data Source' });
-
     this.createDataTable();
-    // });       
+
+    var noOfDaysInCurrYear = (new Date()).getFullYear() % 4 == 0 ? 366 : 365;
+    for (let i = 0; i < noOfDaysInCurrYear; i += 30) {
+      this.daysArr.push(i);
+    }
+    this.daysArr.push(this.daysArr[this.daysArr.length - 1] + noOfDaysInCurrYear % 30);
   }
 
   onSelectDataSource(data) {
@@ -417,6 +425,19 @@ export class DataReplayComponent implements OnInit {
 
     if (this.multiSelect)
       this.multiSelect.forEach((child) => { child.resetSelected() })
+  }
+
+
+  onSubmitRet() {
+    var date = new Date();
+    var currTime = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + (date.getDate())).slice(-2)}, ${("0" + (date.getHours())).slice(-2)}:${("0" + (date.getMinutes())).slice(-2)}:${("0" + (date.getSeconds())).slice(-2)}`;
+    this.retentionData = { retentionDays: this.selectedDays, retentionTime: currTime }
+    this.service.saveDataToS3({ dataType: "retention", retData: this.retentionData }).subscribe(res => {
+      document.getElementById('spinner').style.display = 'none';
+      alert("Data retention successully initiated");
+    }, err => {
+      alert(err.errMsg);
+    })
   }
 
 }
