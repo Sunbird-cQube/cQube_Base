@@ -12,7 +12,7 @@ router.post('/', auth.authController, async (req, res) => {
         var fileName = `data_replay/data_replay_${timeStamp}.json`;
         if(req.body.dataType == 'retention'){
             formData = req.body.retData;
-            fileName = `data_retention/data_retntion.json`;
+            fileName = `data_retention/data_retention.json`;
         }
         var params = {
             Bucket: const_data['getParams1']['Bucket'],
