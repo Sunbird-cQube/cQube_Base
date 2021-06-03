@@ -429,6 +429,7 @@ export class DataReplayComponent implements OnInit {
 
 
   onSubmitRet() {
+    document.getElementById('spinner').style.display = 'block';
     var date = new Date();
     var currTime = `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + (date.getDate())).slice(-2)}, ${("0" + (date.getHours())).slice(-2)}:${("0" + (date.getMinutes())).slice(-2)}:${("0" + (date.getSeconds())).slice(-2)}`;
     this.retentionData = { retentionDays: this.selectedDays, retentionTime: currTime }
@@ -437,6 +438,7 @@ export class DataReplayComponent implements OnInit {
       alert("Data retention successully initiated");
     }, err => {
       alert(err.errMsg);
+      document.getElementById('spinner').style.display = 'none';
     })
   }
 
