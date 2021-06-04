@@ -67,15 +67,15 @@ const stoppingJob = (myJob, schedularData) => {
     return new Promise(async (resolve, reject) => {
         try {
             var stopTime;
-            // if (myJob.day && myJob.day != "*") {
-            //     stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
-            // } else if (myJob.date && myJob.date != "*") {
-            //     stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
-            // } else if (myJob.date && myJob.date != "*" && myJob.month && myJob.month != "*") {
-            //     stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
-            // } else {
-            stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
-            // }
+            if (myJob.day && myJob.day != "*") {
+                stopTime = `${myJob.mins} ${myJob.timeToStop} * * ${myJob.day}`;
+            } else if (myJob.date && myJob.date != "*") {
+                stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} * *`;
+            } else if (myJob.date && myJob.date != "*" && myJob.month && myJob.month != "*") {
+                stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} ${myJob.month} *`;
+            } else {
+                stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
+            }
             await schedule.scheduleJob(myJob.groupName + '_stop', stopTime, async function () {
 
                 var processorsList = await axios.get(`${process.env.NIFI_URL}/process-groups/root/process-groups`);
