@@ -106,7 +106,7 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
         } else if (date != "*" && month == "*") {
             timePeriod = "monthly";
             schedulerTime = `${mins} ${hours} ${date} * *`;
-            stopTime = `${mins} ${timeToStop} ${data} * *`;
+            stopTime = `${mins} ${timeToStop} ${date} * *`;
         } else if (date != "*" && month != "*") {
             timePeriod = "yearly";
             schedulerTime = `${mins} ${hours} ${date} ${month} *`;
@@ -349,7 +349,7 @@ router.post('/scheduleNiFiProcessor/:id/:name', async (req, res) => {
         } else if (date != "*" && month == "*") {
             timePeriod = "monthly";
             schedulerTime = `${mins} ${hours} ${date} * *`;
-            stopTime = `${mins} ${timeToStop} ${data} * *`;
+            stopTime = `${mins} ${timeToStop} ${date} * *`;
         } else if (date != "*" && month != "*") {
             timePeriod = "yearly";
             schedulerTime = `${mins} ${hours} ${date} ${month} *`;
