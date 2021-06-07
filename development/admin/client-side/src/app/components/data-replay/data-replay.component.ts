@@ -132,6 +132,7 @@ export class DataReplayComponent implements OnInit {
     for (let i = 0; i < noOfDaysInCurrYear; i += 30) {
       this.daysArr.push(i);
     }
+    this.daysArr.splice(0,1);
     this.daysArr.push(this.daysArr[this.daysArr.length - 1] + noOfDaysInCurrYear % 30);
   }
 
