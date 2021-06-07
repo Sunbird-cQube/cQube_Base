@@ -1317,7 +1317,7 @@ export class UdiseReportComponent implements OnInit {
         orgObject[key] = details[key];
       }
     });
-    if (level == "School") {
+    if (level == "School" || level == "schoolPerCluster") {
       Object.keys(orgObject).forEach((key) => {
         if (key !== "total_schools_data_received") {
           detailSchool[key] = details[key];
