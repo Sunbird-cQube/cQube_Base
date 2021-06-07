@@ -1233,11 +1233,11 @@ export class InfraMapVisualisationComponent implements OnInit {
         orgObject[key] = details[key];
       }
     });
-    if (level == "School") {
-      var detailSchool = {};
+    var detailSchool = {};
+    if (level == "School" || level == "schoolPerCluster") {
       Object.keys(orgObject).forEach((key) => {
-        if (key !== "total_schools_data_received") {
-          detailSchool[key] = details[key];
+        if (key != "total_schools_data_received") {
+          detailSchool[key] = orgObject[key];
         }
       });
     }
