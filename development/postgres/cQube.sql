@@ -6147,3 +6147,5 @@ create table IF NOT EXISTS diksha_refresh (content_view_date date);
 create table if not exists periodic_exam_stud_grade_count(exam_code varchar(100),student_uid bigint,school_id bigint,studying_class bigint,primary key(exam_code,student_uid,school_id));
 
 create table if not exists semester_exam_stud_grade_count(exam_code varchar(100),student_uid bigint,school_id bigint,studying_class bigint,primary key(exam_code,student_uid,school_id));
+
+alter table data_replay_meta add column if not exists retention_period integer;
