@@ -1,3 +1,0 @@
-- name: Run python code for nifi scheduler
-  shell: "{{ base_dir }}/cqube/emission_app/flaskenv/bin/python {{ base_dir }}/cqube/emission_app/python/nifi_scheduler.py"
-

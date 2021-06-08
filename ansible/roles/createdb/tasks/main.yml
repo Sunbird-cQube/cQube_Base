@@ -1,0 +1,3 @@
+--- 
+- include_tasks: install_postgres.yml
+  tags: [ install, update ]

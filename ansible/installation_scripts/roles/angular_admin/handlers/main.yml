@@ -1,4 +1,0 @@
-- name: restart keycloak
-  service: 
-    name: keycloak
-    state: restarted

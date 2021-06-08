@@ -1,0 +1,23 @@
+---
+- name: Installing cQube
+  hosts: localhost
+  gather_facts: true
+  remote_user: root
+  vars_files:
+    - ../config.yml
+    - ../memory_config.yml
+    - ../.version
+
+  roles:
+          - { role: java, tags: install }  
+          - { role: python, tags: install }
+          - createdb
+          - python_flask
+          - { role: kong, tags: install }
+          - keycloak
+          - prometheus
+          - { role: grafana, tags: install }
+
+          - nifi_install   
+          - angular
+          - cqube_version

@@ -1,7 +1,0 @@
----
-
-parameter_name: diksha_parameters
-parameter_name_cqube_raw: cQube-raw-data-fetch-parameters
-
-parameter_path: "{{ base_dir }}/cqube/emission_app/python/diksha_parameters.txt"
-parameter_path_cqube_raw: "{{ base_dir }}/cqube/emission_app/python/cQube-raw-data-fetch-parameters.txt"  

@@ -1,4 +1,0 @@
----
-
-parameter_name: static_data_parameters
-parameter_path: "{{ base_dir }}/cqube/emission_app/python/static_data_parameters.txt"

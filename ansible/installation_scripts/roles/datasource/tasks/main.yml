@@ -1,3 +1,0 @@
---- 
-- include_tasks: create_datasource.yml
-  tags: [ install, update ]

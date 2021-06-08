@@ -1,0 +1,19 @@
+---
+- name: Upgrading cQube
+  hosts: localhost
+  gather_facts: true
+  remote_user: root
+  vars_files:
+    - upgradation_config.yml  
+    - memory_config.yml
+    - .version
+    
+  roles: 
+          - createdb
+          - python_flask
+          - { role: kong, tags: update }
+          - keycloak
+          - prometheus
+          - nifi_install
+          - angular
+          - cqube_version

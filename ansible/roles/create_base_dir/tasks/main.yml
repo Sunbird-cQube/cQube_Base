@@ -1,0 +1,40 @@
+---
+- name: Creating the Base Directory for the installation
+  file:
+    path: "{{ base_dir }}/cqube"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  tags: install
+
+- name: Creating Postgres backup directory
+  file:
+    path: "{{ base_dir }}/cqube/postgres/backups"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  tags: [install, update]
+
+- name: Creating conf directory
+  file:
+    path: "{{ base_dir }}/cqube/conf"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  tags: [install, update]
+
+- name: Copying the config.yml file as base_config.yml
+  copy:
+    src: ../config.yml
+    dest: "{{ base_dir }}/cqube/conf/base_config.yml"
+    mode: 0644
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+
+- name: Setting timezone to IST
+  timezone:
+    name: Asia/Kolkata
+  tags: [install, update]
