@@ -11324,16 +11324,16 @@ $$  LANGUAGE plpgsql;
 /* Pat year and month */
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS stud_count_school_mgmt_year_month as
-	(select a.school_id,c.cluster_id,c.block_id,c.district_id,b.assessment_year as academic_year,b.month,school_management_type,
-		count(distinct(student_uid)) as students_count,count(distinct(a.school_id)) as total_schools
-	from
-	(select exam_id,school_id,student_uid
-	from periodic_exam_result_trans where exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
-								   substring(exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
-	group by exam_id,school_id,student_uid) as a
-	left join (select exam_id,assessment_year, trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month from periodic_exam_mst) as b on a.exam_id=b.exam_id
-	left join school_hierarchy_details as c on a.school_id=c.school_id
-	group by a.school_id,b.assessment_year,month ,school_management_type,cluster_id,block_id,district_id) WITH NO DATA ;
+(select a.school_id,c.cluster_id,c.block_id,c.district_id,b.assessment_year as academic_year,b.month,school_management_type,
+    count(distinct(student_uid)) as students_count,count(distinct(a.school_id)) as total_schools
+from
+(select exam_code,school_id,student_uid
+from periodic_exam_stud_grade_count where exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
+                                substring(exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)
+group by exam_code,school_id,student_uid) as a
+left join (select exam_code,assessment_year, trim(TO_CHAR(TO_DATE(date_part('month',exam_date)::text, 'MM'), 'Month')) AS month from periodic_exam_mst) as b on a.exam_code=b.exam_code
+left join school_hierarchy_details as c on a.school_id=c.school_id
+group by a.school_id,b.assessment_year,month ,school_management_type,cluster_id,block_id,district_id) WITH NO DATA ;
 
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS stud_count_school_grade_mgmt_year_month as
@@ -11342,11 +11342,10 @@ case when month in (6,7,8,9,10,11,12) then
  (year ||'-'|| substring(cast((year+1) as text),3,2)) else ((year-1) || '-' || substring(cast(year as text),3,2)) end as academic_year,count(distinct school_id) as total_schools from (
 select concat('Grade ',studying_class) as grade,cast (substring (exam_code,10,2) as integer) as month ,  
 cast (right(exam_code,4)as integer) as year,pert.school_id,cluster_id,block_id,district_id,
-school_management_type,student_uid from periodic_exam_result_trans pert  join school_hierarchy_details shd on pert.school_id=shd.school_id 
+school_management_type,student_uid from periodic_exam_stud_grade_count pert  join school_hierarchy_details shd on pert.school_id=shd.school_id 
 where exam_code in (select exam_code from latest_data_to_be_processed_pat) or 
 								   substring(exam_code,10,6) in (select substring(exam_code,10,6) from latest_data_to_be_processed_pat)) as a
 group by school_id,grade,month,academic_year,school_management_type,cluster_id,block_id,district_id) WITH NO DATA;
-
 
 /* District */
 
