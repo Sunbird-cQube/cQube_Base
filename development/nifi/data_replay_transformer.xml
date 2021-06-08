@@ -4923,7 +4923,8 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             </entry>
                             <entry>
 <key>putsql-sql-statement</key>
-<value>update data_replay_meta set cqube_process_status='IN_PROGRESS'
+<value>update data_replay_meta set cqube_process_status='IN_PROGRESS',
+retention_period=(select max(retention_period) from data_replay_meta)
 where ff_uuid='${ff_uuid}';</value>
                             </entry>
                             <entry>
@@ -12350,5 +12351,5 @@ ${data_source:equalsIgnoreCase('infrastructure'):ifElse("select all_del_data('${
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>06/08/2021 11:12:59 IST</timestamp>
+    <timestamp>06/08/2021 15:39:52 IST</timestamp>
 </template>
