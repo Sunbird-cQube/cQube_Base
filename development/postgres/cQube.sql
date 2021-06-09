@@ -5858,6 +5858,7 @@ insert into del_data_source_details values('periodic_assessment_test','exam_code
 insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_result_trans',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_school_qst_result',5) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_school_result',6) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_stud_grade_count',7) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 
 --Tables related to semester_assessment_test
 
@@ -5869,6 +5870,7 @@ insert into del_data_source_details values('semester_assessment_test','exam_code
 insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_result_trans',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_school_qst_result',5) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_school_result',6) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_stud_grade_count',7) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 
 --Tables related to diksha_tpd
 
