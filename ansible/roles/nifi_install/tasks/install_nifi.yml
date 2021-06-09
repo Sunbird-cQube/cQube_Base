@@ -6,15 +6,6 @@
   file: path={{ base_dir }}/cqube/nifi state=directory
   tags: install
 
-- name: Creates a directory
-  file: 
-    path: nifi_json_files 
-    owner: "{{ system_user_name }}"
-    group: "{{ system_user_name }}"
-    mode: '1755'
-    state: directory
-  tags: [ install , update ]
-
 - name: Installing curl
   apt: name=curl
   tags: install

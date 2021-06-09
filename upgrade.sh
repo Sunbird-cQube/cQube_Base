@@ -16,12 +16,12 @@ chmod u+x upgradation_validate.sh
 
 . "upgradation_validate.sh"
 
-ansible-playbook create_base.yml --tags "update" --extra-vars "@upgradation_config.yml"
+ansible-playbook ansible/create_base.yml --tags "update" --extra-vars "@upgradation_config.yml"
 
 if [ -e /etc/ansible/ansible.cfg ]; then
 	sudo sed -i 's/^#log_path/log_path/g' /etc/ansible/ansible.cfg
 fi
-ansible-playbook upgrade.yml --tags "update"
+ansible-playbook ansible/upgrade.yml --tags "update"
 if [ $? = 0 ]; then
 echo "cQube upgraded successfully!!"
 fi

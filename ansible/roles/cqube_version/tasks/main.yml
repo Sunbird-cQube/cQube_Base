@@ -21,7 +21,7 @@
                CQUBE_S3_EMISSION={{ s3_emission_bucket }}
                CQUBE_API_ENDPOINT={{ api_endpoint }}
   tags: install
-  
+
 - name: Updating the CQUBE_VERSION
   lineinfile: 
     regex: '^CQUBE_VERSION='
