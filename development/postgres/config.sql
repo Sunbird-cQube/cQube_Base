@@ -21805,10 +21805,7 @@ end;
 $body$
 language plpgsql;
 
-/* Data retention */
-update data_replay_meta set retention_period =90 where retention_period is null;
-
-
+/* Data Retention */
 CREATE OR REPLACE FUNCTION pat_del_data_ret(p_data_source text)
 RETURNS text AS
 $$
@@ -21818,7 +21815,7 @@ v_exam_code text;
 BEGIN
 IF p_data_source='periodic_assessment_test' THEN
 FOR v_exam_code in select exam_code from periodic_exam_mst where 
-to_date(substr(exam_code,8,14),'ddmmyyyy')<(now() -(select concat(trim(max(retention_period)::text),'days') from data_replay_meta)::interval)::date
+to_date(substr(exam_code,8,14),'ddmmyyyy')<(now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') from data_replay_meta)::interval)::date
 except
 select exam_code from periodic_exam_mst 
 where exam_code in 
@@ -21842,7 +21839,7 @@ v_exam_code text;
 BEGIN
 IF p_data_source='semester_assessment_test' THEN
 FOR v_exam_code in select exam_code from semester_exam_mst sem where 
-to_date(substr(sem.exam_code,8,14),'ddmmyyyy')<(now() -(select concat(trim(max(retention_period)::text),'days') from data_replay_meta)::interval)::date
+to_date(substr(sem.exam_code,8,14),'ddmmyyyy')<(now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') from data_replay_meta)::interval)::date
 except
 select distinct exam_code from semester_exam_mst sem 
 join (select distinct unnest(string_to_array(regexp_replace(semesters,'[^0-9,]','','g'),',')) as semesters,
@@ -21866,7 +21863,7 @@ v_date date;
 BEGIN
 IF p_data_source='diksha_summary_rollup' THEN
 FOR v_date in select distinct content_view_date from diksha_content_trans 
-    where content_view_date < (now() -(select concat(trim(max(retention_period)::text),'days') 
+    where content_view_date < (now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') 
     from data_replay_meta)::interval)::date and content_view_date not between 
 (select min(from_date) from data_replay_meta where created_on>now()-'5days'::interval and data_source='diksha_summary_rollup' )
 and (select max(to_date) from data_replay_meta where created_on>now()-'5days'::interval and data_source='diksha_summary_rollup')
@@ -21890,25 +21887,25 @@ v_my record;
 BEGIN
 
 IF p_data_source='student_attendance' THEN
-FOR v_my in (select distinct month,year from student_attendance_trans where to_date(year||'-'||month||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(max(retention_period)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='student_attendance' and created_on >now()-'5days'::interval)
+FOR v_my in (select distinct month,year from student_attendance_trans where to_date(year||'-'||month||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='student_attendance' and created_on >now()-'5days'::interval)
 LOOP
      execute 'delete from student_attendance_trans where year='||v_my.year||' and  month='||v_my.month;
 END LOOP;
 END IF;
 
 IF p_data_source='teacher_attendance' THEN
-FOR v_my in (select distinct month,year from teacher_attendance_trans where to_date(year||'-'||month||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(max(retention_period)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='teacher_attendance' and created_on >now()-'5days'::interval)
+FOR v_my in (select distinct month,year from teacher_attendance_trans where to_date(year||'-'||month||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='teacher_attendance' and created_on >now()-'5days'::interval)
 LOOP
      execute 'delete from teacher_attendance_trans where year='||v_my.year||' and  month='||v_my.month;
 END LOOP;
 END IF;
 
 IF p_data_source='crc' THEN
-FOR v_my in (select distinct month,year from crc_location_trans where to_date(year||'-'||month||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(max(retention_period)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='crc' and created_on >now()-'5days'::interval)
+FOR v_my in (select distinct month,year from crc_location_trans where to_date(year||'-'||month||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='crc' and created_on >now()-'5days'::interval)
 LOOP
     execute 'delete from crc_location_trans where month='||v_my.month||' and year='||v_my.year;
 END LOOP;
-FOR v_my in (select distinct extract(month from visit_date) as month,extract(year from visit_date) as year from crc_inspection_trans where visit_date is not null and to_date(extract(year from visit_date)||'-'||extract(month from visit_date)||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(max(retention_period)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='crc' and created_on >now()-'5days'::interval)
+FOR v_my in (select distinct extract(month from visit_date) as month,extract(year from visit_date) as year from crc_inspection_trans where visit_date is not null and to_date(extract(year from visit_date)||'-'||extract(month from visit_date)||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='crc' and created_on >now()-'5days'::interval)
 LOOP
     execute 'delete from crc_inspection_trans where extract(month from visit_date)='||v_my.month||' and extract(year from visit_date)='||v_my.year;
 END LOOP;
