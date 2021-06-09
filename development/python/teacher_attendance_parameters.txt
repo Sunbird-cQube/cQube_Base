@@ -71,6 +71,40 @@
     }
   }
 ]""",
+"tch_att_jolt_spec_district":"""[{
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "district_name": "data.[&1].district_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "year": "data.[&1].year",
+        "month": "data.[&1].month",
+	"school_management_type": "data.[&1].school_management_type",
+	"school_category": "data.[&1].school_category",
+        "@teachers_count": "data.[&1].teachers_count",
+        "@total_schools": "data.[&1].total_schools",
+        "teachers_count": "allDistrictsFooter.teachers[]",
+        "total_schools": "allDistrictsFooter.schools[]"
+      }
+    }
+},
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "teachers": "=intSum(@(1,teachers))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+  }
+]""",
 "tch_att_jolt_spec_school":"""[
   {
     "operation": "modify-overwrite-beta",
@@ -166,40 +200,6 @@
     }
 	}
 ]""",
-"tch_att_jolt_spec_district":"""[{
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "x_axis": "data.[&1].x_axis",
-        "district_name": "data.[&1].district_name",
-        "x_value": "data.[&1].x_value",
-        "y_axis": "data.[&1].y_axis",
-        "y_value": "data.[&1].y_value",
-        "z_axis": "data.[&1].z_axis",
-        "z_value": "data.[&1].z_value",
-        "data_from_date": "data.[&1].data_from_date",
-        "data_upto_date": "data.[&1].data_upto_date",
-        "year": "data.[&1].year",
-        "month": "data.[&1].month",
-	"school_management_type": "data.[&1].school_management_type",
-	"school_category": "data.[&1].school_category",
-        "@teachers_count": "data.[&1].teachers_count",
-        "@total_schools": "data.[&1].total_schools",
-        "teachers_count": "allDistrictsFooter.teachers[]",
-        "total_schools": "allDistrictsFooter.schools[]"
-      }
-    }
-},
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "*": {
-        "teachers": "=intSum(@(1,teachers))",
-        "schools": "=intSum(@(1,schools))"
-      }
-    }
-  }
-]""",
 "teacher_attendance_update_null_count":"""update log_summary
 SET teacher_id = tch_att_null_col.count_null_teacherid,
 school_id = tch_att_null_col.count_null_schoolid,
@@ -207,6 +207,39 @@ year = tch_att_null_col.count_null_academicyear,
 month = tch_att_null_col.count_null_month
 from tch_att_null_col
 where tch_att_null_col.ff_uuid = log_summary.ff_uuid	""",
+"teacher_attendance_select_columns":"""select TCHCD as "teacher_id",SCHCD as "school_id",AC_YEAR as "year","Month",
+case when "1"  = 'NULL' then '0' else "1" end  as "day_1",
+case when "2"  = 'NULL' then '0' else "2" end  as "day_2",
+case when "3"  = 'NULL' then '0' else "3" end  as "day_3",
+case when "4"  = 'NULL' then '0' else "4" end  as "day_4",
+case when "5"  = 'NULL' then '0' else "5" end  as "day_5",
+case when "6"  = 'NULL' then '0' else "6" end  as "day_6",
+case when "7"  = 'NULL' then '0' else "7" end  as "day_7",
+case when "8"  = 'NULL' then '0' else "8" end  as "day_8",
+case when "9"  = 'NULL' then '0' else "9" end  as "day_9",
+case when "10"  = 'NULL' then '0' else "10" end  as "day_10",
+case when "11"  = 'NULL' then '0' else "11" end  as "day_11",
+case when "12"  = 'NULL' then '0' else "12" end  as "day_12",
+case when "13"  = 'NULL' then '0' else "13" end  as "day_13",
+case when "14"  = 'NULL' then '0' else "14" end  as "day_14",
+case when "15"  = 'NULL' then '0' else "15" end  as "day_15",
+case when "16"  = 'NULL' then '0' else "16" end  as "day_16",
+case when "17"  = 'NULL' then '0' else "17" end  as "day_17",
+case when "18"  = 'NULL' then '0' else "18" end  as "day_18",
+case when "19"  = 'NULL' then '0' else "19" end  as "day_19",
+case when "20"  = 'NULL' then '0' else "20" end  as "day_20",
+case when "21"  = 'NULL' then '0' else "21" end  as "day_21",
+case when "22"  = 'NULL' then '0' else "22" end  as "day_22",
+case when "23"  = 'NULL' then '0' else "23" end  as "day_23",
+case when "24"  = 'NULL' then '0' else "24" end  as "day_24",
+case when "25"  = 'NULL' then '0' else "25" end  as "day_25",
+case when "26"  = 'NULL' then '0' else "26" end  as "day_26",
+case when "27"  = 'NULL' then '0' else "27" end  as "day_27",
+case when "28"  = 'NULL' then '0' else "28" end  as "day_28",
+case when "29"  = 'NULL' then '0' else "29" end  as "day_29",
+case when "30"  = 'NULL' then '0' else "30" end  as "day_30",
+case when "31"  = 'NULL' then '0' else "31" end  as "day_31"
+from flowfile""",
 "tch_att_exception_school_jolt_spec":"""[
   {
     "operation": "modify-overwrite-beta",
@@ -322,39 +355,6 @@ where tch_att_null_col.ff_uuid = log_summary.ff_uuid	""",
     }
   }
 ]""",
-"teacher_attendance_select_columns":"""select TCHCD as "teacher_id",SCHCD as "school_id",AC_YEAR as "year","Month",
-case when "1"  = 'NULL' then '0' else "1" end  as "day_1",
-case when "2"  = 'NULL' then '0' else "2" end  as "day_2",
-case when "3"  = 'NULL' then '0' else "3" end  as "day_3",
-case when "4"  = 'NULL' then '0' else "4" end  as "day_4",
-case when "5"  = 'NULL' then '0' else "5" end  as "day_5",
-case when "6"  = 'NULL' then '0' else "6" end  as "day_6",
-case when "7"  = 'NULL' then '0' else "7" end  as "day_7",
-case when "8"  = 'NULL' then '0' else "8" end  as "day_8",
-case when "9"  = 'NULL' then '0' else "9" end  as "day_9",
-case when "10"  = 'NULL' then '0' else "10" end  as "day_10",
-case when "11"  = 'NULL' then '0' else "11" end  as "day_11",
-case when "12"  = 'NULL' then '0' else "12" end  as "day_12",
-case when "13"  = 'NULL' then '0' else "13" end  as "day_13",
-case when "14"  = 'NULL' then '0' else "14" end  as "day_14",
-case when "15"  = 'NULL' then '0' else "15" end  as "day_15",
-case when "16"  = 'NULL' then '0' else "16" end  as "day_16",
-case when "17"  = 'NULL' then '0' else "17" end  as "day_17",
-case when "18"  = 'NULL' then '0' else "18" end  as "day_18",
-case when "19"  = 'NULL' then '0' else "19" end  as "day_19",
-case when "20"  = 'NULL' then '0' else "20" end  as "day_20",
-case when "21"  = 'NULL' then '0' else "21" end  as "day_21",
-case when "22"  = 'NULL' then '0' else "22" end  as "day_22",
-case when "23"  = 'NULL' then '0' else "23" end  as "day_23",
-case when "24"  = 'NULL' then '0' else "24" end  as "day_24",
-case when "25"  = 'NULL' then '0' else "25" end  as "day_25",
-case when "26"  = 'NULL' then '0' else "26" end  as "day_26",
-case when "27"  = 'NULL' then '0' else "27" end  as "day_27",
-case when "28"  = 'NULL' then '0' else "28" end  as "day_28",
-case when "29"  = 'NULL' then '0' else "29" end  as "day_29",
-case when "30"  = 'NULL' then '0' else "30" end  as "day_30",
-case when "31"  = 'NULL' then '0' else "31" end  as "day_31"
-from flowfile""",
 "teacher_attendance_jolt_district":"""[{
     "operation": "shift",
     "spec": {
@@ -572,13 +572,6 @@ block_longitude=excluded.block_longitude,cluster_id=excluded.cluster_id,cluster_
 cluster_latitude=excluded.cluster_latitude,cluster_longitude=excluded.cluster_longitude,total_present=excluded.total_present,total_working_days=excluded.total_working_days,
 teachers_count=excluded.teachers_count,school_management_type=excluded.school_management_type,school_category=excluded.school_category,created_on=excluded.created_on,updated_on=now();""",
 "tch_att_queries_filename":"""teacher_attendance_queries.json""",
-"teacher_attendance_check_same_record":"""SELECT teacher_id,school_id,year,
-month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31
-,ff_uuid,count(*)-1  num_of_times
-FROM teacher_attendance_staging_1
-GROUP BY teacher_id,school_id,year,
-month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
-HAVING  COUNT(*) > 1""",
 "teacher_attendance_filter_same_record":"""insert into teacher_attendance_staging_2(teacher_id,school_id,year,
 month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,
 day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
@@ -592,101 +585,58 @@ row_number() over (partition by teacher_id,school_id,year,
 month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,
 day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid) 
 as rn from teacher_attendance_staging_1) sq Where rn =1""",
-"tch_att_exception_cluster_jolt_spec":"""[
+"teacher_attendance_check_same_record":"""SELECT teacher_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31
+,ff_uuid,count(*)-1  num_of_times
+FROM teacher_attendance_staging_1
+GROUP BY teacher_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+HAVING  COUNT(*) > 1""",
+"tch_att_raw_district_jolt_spec":"""[
   {
     "operation": "shift",
     "spec": {
       "*": {
-        "cluster_latitude": "data.[&1].cluster_latitude",
-        "cluster_longitude": "data.[&1].cluster_longitude",
-        "district_id": "data.[&1].district_id",
-        "district_name": "data.[&1].district_name",
-        "block_id": "data.[&1].block_id",
-        "block_name": "data.[&1].block_name",
-        "cluster_id": "data.[&1].cluster_id",
-        "cluster_name": "data.[&1].cluster_name",
-        "data_from_date": "data.[&1].data_from_date",
-        "data_upto_date": "data.[&1].data_upto_date",
-        "month": "data.[&1].month",
-        "year": "data.[&1].year",
-        "school_management_type": "data.[&1].school_management_type",
-        "total_schools": "data.[&1].total_schools",
-        "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
-        "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
-        "total_schools_with_missing_data": "footer.@(1,block_id).total_schools_with_missing_data"
+        "district_id": "[&1].District ID",
+        "district_name": "[&1].District Name",
+        "academic_year": "[&1].Academic Year",
+        "attendance_percent_june": "[&1].Attendance (%) June",
+        "teachers_count_june": "[&1].Total Teachers June",
+        "total_schools_june": "[&1].Total Schools June",
+        "attendance_percent_july": "[&1].Attendance (%) July",
+        "teachers_count_july": "[&1].Total Teachers July",
+        "total_schools_july": "[&1].Total Schools July",
+        "attendance_percent_august": "[&1].Attendance (%) August",
+        "teachers_count_august": "[&1].Total Teachers August",
+        "total_schools_august": "[&1].Total Schools August",
+        "attendance_percent_september": "[&1].Attendance (%) September",
+        "teachers_count_september": "[&1].Total Teachers September",
+        "total_schools_september": "[&1].Total Schools September",
+        "attendance_percent_october": "[&1].Attendance (%) October",
+        "teachers_count_october": "[&1].Total Teachers October",
+        "total_schools_october": "[&1].Total Schools October",
+        "attendance_percent_november": "[&1].Attendance (%) November",
+        "teachers_count_november": "[&1].Total Teachers November",
+        "total_schools_november": "[&1].Total Schools November",
+        "attendance_percent_december": "[&1].Attendance (%) December",
+        "teachers_count_december": "[&1].Total Teachers December",
+        "total_schools_december": "[&1].Total Schools December",
+        "attendance_percent_january": "[&1].Attendance (%) January",
+        "teachers_count_january": "[&1].Total Teachers January",
+        "total_schools_january": "[&1].Total Schools January",
+        "attendance_percent_february": "[&1].Attendance (%) February",
+        "teachers_count_february": "[&1].Total Teachers February",
+        "total_schools_february": "[&1].Total Schools February",
+        "attendance_percent_march": "[&1].Attendance (%) March",
+        "teachers_count_march": "[&1].Total Teachers March",
+        "total_schools_march": "[&1].Total Schools March",
+        "attendance_percent_april": "[&1].Attendance (%) April",
+        "teachers_count_april": "[&1].Total Teachers April",
+        "total_schools_april": "[&1].Total Schools April",
+        "attendance_percent_may": "[&1].Attendance (%) May",
+        "teachers_count_may": "[&1].Total Teachers May",
+        "total_schools_may": "[&1].Total Schools May"
       }
-    }
-  },
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "footer": {
-        "*": {
-          "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
-        }
-      }
-    }
-  },
-  {
-    "operation": "shift",
-    "spec": {
-      "data": {
-        "*": {
-          "cluster_latitude": "data.[&1].cluster_latitude",
-          "cluster_longitude": "data.[&1].cluster_longitude",
-          "district_id": "data.[&1].district_id",
-          "district_name": "data.[&1].district_name",
-          "block_id": "data.[&1].block_id",
-          "block_name": "data.[&1].block_name",
-          "cluster_id": "data.[&1].cluster_id",
-          "cluster_name": "data.[&1].cluster_name",
-          "data_from_date": "data.[&1].data_from_date",
-          "data_upto_date": "data.[&1].data_upto_date",
-          "month": "data.[&1].month",
-          "year": "data.[&1].year",
-          "school_management_type": "data.[&1].school_management_type",
-          "total_schools": "data.[&1].total_schools",
-          "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
-          "total_schools_with_missing_data": "allClustersFooter.total_schools_with_missing_data[]",
-          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
-        }
-      },
-      "footer": "&"
-    }
-  },
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "*": {
-        "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
-      }
-    }
-  },
-  {
-    "operation": "shift",
-    "spec": {
-      "data": {
-        "*": {
-          "cluster_latitude": "data.[&1].cluster_latitude",
-          "cluster_longitude": "data.[&1].cluster_longitude",
-          "district_id": "data.[&1].district_id",
-          "district_name": "data.[&1].district_name",
-          "block_id": "data.[&1].block_id",
-          "block_name": "data.[&1].block_name",
-          "cluster_id": "data.[&1].cluster_id",
-          "cluster_name": "data.[&1].cluster_name",
-          "data_from_date": "data.[&1].data_from_date",
-          "data_upto_date": "data.[&1].data_upto_date",
-          "month": "data.[&1].month",
-          "year": "data.[&1].year",
-          "school_management_type": "data.[&1].school_management_type",
-          "total_schools": "data.[&1].total_schools",
-          "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
-          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
-        }
-      },
-      "footer": "&",
-      "allClustersFooter": "&"
     }
   }
 ]""",
@@ -784,51 +734,101 @@ as rn from teacher_attendance_staging_1) sq Where rn =1""",
   }
 ]
 """,
-"tch_att_raw_district_jolt_spec":"""[
+"tch_att_exception_cluster_jolt_spec":"""[
   {
     "operation": "shift",
     "spec": {
       "*": {
-        "district_id": "[&1].District ID",
-        "district_name": "[&1].District Name",
-        "academic_year": "[&1].Academic Year",
-        "attendance_percent_june": "[&1].Attendance (%) June",
-        "teachers_count_june": "[&1].Total Teachers June",
-        "total_schools_june": "[&1].Total Schools June",
-        "attendance_percent_july": "[&1].Attendance (%) July",
-        "teachers_count_july": "[&1].Total Teachers July",
-        "total_schools_july": "[&1].Total Schools July",
-        "attendance_percent_august": "[&1].Attendance (%) August",
-        "teachers_count_august": "[&1].Total Teachers August",
-        "total_schools_august": "[&1].Total Schools August",
-        "attendance_percent_september": "[&1].Attendance (%) September",
-        "teachers_count_september": "[&1].Total Teachers September",
-        "total_schools_september": "[&1].Total Schools September",
-        "attendance_percent_october": "[&1].Attendance (%) October",
-        "teachers_count_october": "[&1].Total Teachers October",
-        "total_schools_october": "[&1].Total Schools October",
-        "attendance_percent_november": "[&1].Attendance (%) November",
-        "teachers_count_november": "[&1].Total Teachers November",
-        "total_schools_november": "[&1].Total Schools November",
-        "attendance_percent_december": "[&1].Attendance (%) December",
-        "teachers_count_december": "[&1].Total Teachers December",
-        "total_schools_december": "[&1].Total Schools December",
-        "attendance_percent_january": "[&1].Attendance (%) January",
-        "teachers_count_january": "[&1].Total Teachers January",
-        "total_schools_january": "[&1].Total Schools January",
-        "attendance_percent_february": "[&1].Attendance (%) February",
-        "teachers_count_february": "[&1].Total Teachers February",
-        "total_schools_february": "[&1].Total Schools February",
-        "attendance_percent_march": "[&1].Attendance (%) March",
-        "teachers_count_march": "[&1].Total Teachers March",
-        "total_schools_march": "[&1].Total Schools March",
-        "attendance_percent_april": "[&1].Attendance (%) April",
-        "teachers_count_april": "[&1].Total Teachers April",
-        "total_schools_april": "[&1].Total Schools April",
-        "attendance_percent_may": "[&1].Attendance (%) May",
-        "teachers_count_may": "[&1].Total Teachers May",
-        "total_schools_may": "[&1].Total Schools May"
+        "cluster_latitude": "data.[&1].cluster_latitude",
+        "cluster_longitude": "data.[&1].cluster_longitude",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "cluster_id": "data.[&1].cluster_id",
+        "cluster_name": "data.[&1].cluster_name",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "month": "data.[&1].month",
+        "year": "data.[&1].year",
+        "school_management_type": "data.[&1].school_management_type",
+        "total_schools": "data.[&1].total_schools",
+        "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data",
+        "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+        "total_schools_with_missing_data": "footer.@(1,block_id).total_schools_with_missing_data"
       }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "cluster_latitude": "data.[&1].cluster_latitude",
+          "cluster_longitude": "data.[&1].cluster_longitude",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "cluster_id": "data.[&1].cluster_id",
+          "cluster_name": "data.[&1].cluster_name",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",
+          "school_management_type": "data.[&1].school_management_type",
+          "total_schools": "data.[&1].total_schools",
+          "@total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "total_schools_with_missing_data": "allClustersFooter.total_schools_with_missing_data[]",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "total_schools_with_missing_data": "=intSum(@(1,total_schools_with_missing_data))"
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "cluster_latitude": "data.[&1].cluster_latitude",
+          "cluster_longitude": "data.[&1].cluster_longitude",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "cluster_id": "data.[&1].cluster_id",
+          "cluster_name": "data.[&1].cluster_name",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
+          "month": "data.[&1].month",
+          "year": "data.[&1].year",
+          "school_management_type": "data.[&1].school_management_type",
+          "total_schools": "data.[&1].total_schools",
+          "total_schools_with_missing_data": "data.[&1].total_schools_with_missing_data",
+          "percentage_schools_with_missing_data": "data.[&1].percentage_schools_with_missing_data"
+        }
+      },
+      "footer": "&",
+      "allClustersFooter": "&"
     }
   }
 ]""",
@@ -1166,17 +1166,12 @@ month is null""",
   }
 ]""",
 "teacher_attendance_check_same_id_records":"""SELECT b.teacher_id,b.school_id,b.year,
-b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid
-,count(*) num_of_times  from (select teacher_id,school_id,year,month,ff_uuid from teacher_attendance_staging_2
-    group by teacher_id,school_id,year,month,ff_uuid having count(1)>1)  as a, teacher_attendance_staging_2 b
-where 
-a.teacher_id=b.teacher_id
-and a.school_id=b.school_id
-and a.year=b.year
-and a.month=b.month
-and a.ff_uuid=b.ff_uuid
+b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,
+b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid,b.cnt num_of_times from 
+(select tas.*,count(*) over (PARTITION by teacher_id,school_id,year,month,ff_uuid) as cnt from teacher_attendance_staging_2  tas ) b where cnt>1 
 group by b.teacher_id,b.school_id,b.year,
-b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid""",
+b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,
+b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid,b.cnt;""",
 "teacher_attendance_count_null":"""(select 
 SUM(CASE when teacher_id IS NULL THEN 1 ELSE 0 END) AS count_null_teacherid,
 SUM(CASE when school_id IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
@@ -1277,13 +1272,6 @@ where a.rn=1""",
     }
   }
 ]""",
-"teacher_attendance_stg_to_tmp":"""insert into teacher_attendance_temp(teacher_id,school_id,year,
-month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
-day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
-select teacher_id,school_id,year,
-month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
-day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
-from  teacher_attendance_staging_2""",
 "tch_att_raw_block_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1333,5 +1321,12 @@ from  teacher_attendance_staging_2""",
       }
     }
   }
-]"""
+]""",
+"teacher_attendance_stg_to_tmp":"""insert into teacher_attendance_temp(teacher_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select teacher_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from  teacher_attendance_staging_2""",
 }

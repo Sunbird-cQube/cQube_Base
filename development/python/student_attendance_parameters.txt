@@ -269,6 +269,32 @@ month is null""",
     }
   }
 ]""",
+"stud_att_jolt_line_chart_state":"""[{
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_value": "attendance.[&1].attendance_percentage",
+        "students_count": "attendance.[&1].students_count",
+        "total_schools": "attendance.[&1].total_schools",
+        "month": "attendance.[&1].month",
+        "year": "attendance.[&1].year"
+      }
+    }
+	}
+
+ ,
+  {
+    "operation": "shift",
+    "spec": {
+      "attendance": {
+        "*": {
+          "@": "@(1,year)[]"
+        }
+      }
+    }
+}
+]
+""",
 "stud_att_jolt_spec_cluster":"""[{
     "operation": "shift",
     "spec": {
@@ -349,31 +375,6 @@ month is null""",
       }
     }
   }
-]""",
-"stud_att_jolt_line_chart_state":"""[{
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "x_value": "attendance.[&1].attendance_percentage",
-        "students_count": "attendance.[&1].students_count",
-        "total_schools": "attendance.[&1].total_schools",
-        "month": "attendance.[&1].month",
-        "year": "attendance.[&1].year"
-      }
-    }
-	}
-
- ,
-  {
-    "operation": "shift",
-    "spec": {
-      "attendance": {
-        "*": {
-          "@": "@(1,year)[]"
-        }
-      }
-    }
-}
 ]""",
 "stud_att_raw_school_jolt_spec":"""[
   {
@@ -480,6 +481,7 @@ student_id is null or
 school_id is null or
 year is null or
 month is null""",
+"stud_att_queries_filename":"""student_attendance_queries.json""",
 "stud_att_transform_district_wise":"""[{
     "operation": "shift",
     "spec": {
@@ -514,7 +516,6 @@ month is null""",
   
 ]
 """,
-"stud_att_queries_filename":"""student_attendance_queries.json""",
 "stud_att_staging_1_tb_name":"""student_attendance_staging_1""",
 "stud_att_jolt_line_chart_school":"""[
   {
@@ -547,17 +548,6 @@ month is null""",
     }
 }]
 """,
-"stud_att_jolt_spec_school_management_category_meta":"""[
-
-  {
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "@type": "@(1,category)"
-      }
-    }
-  }
-  ]""",
 "save-to-school_student_total_att_pre_query":"""create or replace view attendance_trans_to_aggregate as 
 select ll.year,ll.month,ll.school_id,hr.school_name,
 ll.school_latitude,ll.school_longitude,ll.district_id,hr.district_name,ll.district_latitude,
@@ -647,6 +637,17 @@ block_id=excluded.block_id,block_name=excluded.block_name,brc_name=excluded.brc_
 block_longitude=excluded.block_longitude,cluster_id=excluded.cluster_id,cluster_name=excluded.cluster_name,crc_name=excluded.crc_name,
 cluster_latitude=excluded.cluster_latitude,cluster_longitude=excluded.cluster_longitude,total_present=excluded.total_present,total_working_days=excluded.total_working_days,
 students_count=excluded.students_count,school_management_type=excluded.school_management_type,school_category=excluded.school_category,created_on=excluded.created_on,updated_on=now();""",
+"stud_att_jolt_spec_school_management_category_meta":"""[
+
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "@type": "@(1,category)"
+      }
+    }
+  }
+  ]""",
 "stud_att_jolt_spec_school":"""[
   {
     "operation": "modify-overwrite-beta",
@@ -795,6 +796,79 @@ students_count=excluded.students_count,school_management_type=excluded.school_ma
     }
   }
 ]""",
+"stud_att_cluster_timeseries_jolt_spec":"""[
+  {
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "cluster_name": "data.[&1].cluster_name",
+        "district_id": "data.[&1].district_id",
+        "district_name": "data.[&1].district_name",
+        "block_id": "data.[&1].block_id",
+        "block_name": "data.[&1].block_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "@students_count": "data.[&1].students_count",
+        "@total_schools": "data.[&1].total_schools",
+        "students_count": "footer.@(1,block_id).students[]",
+        "total_schools": "footer.@(1,block_id).schools[]"
+      }
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "students": "=intSum(@(1,students))",
+          "schools": "=intSum(@(1,schools))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "x_axis": "data.[&1].x_axis",
+          "cluster_name": "data.[&1].cluster_name",
+          "district_id": "data.[&1].district_id",
+          "district_name": "data.[&1].district_name",
+          "block_id": "data.[&1].block_id",
+          "block_name": "data.[&1].block_name",
+          "x_value": "data.[&1].x_value",
+          "y_axis": "data.[&1].y_axis",
+          "y_value": "data.[&1].y_value",
+          "z_axis": "data.[&1].z_axis",
+          "z_value": "data.[&1].z_value",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
+          "@students_count": "data.[&1].students_count",
+          "@total_schools": "data.[&1].total_schools",
+          "students_count": "allClustersFooter.students[]",
+          "total_schools": "allClustersFooter.schools[]"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "students": "=intSum(@(1,students))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+  }
+]""",
 "stud_att_exception_school_jolt_spec":"""[
   {
     "operation": "modify-overwrite-beta",
@@ -910,79 +984,6 @@ students_count=excluded.students_count,school_management_type=excluded.school_ma
     }
   }
 ]""",
-"stud_att_cluster_timeseries_jolt_spec":"""[
-  {
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "x_axis": "data.[&1].x_axis",
-        "cluster_name": "data.[&1].cluster_name",
-        "district_id": "data.[&1].district_id",
-        "district_name": "data.[&1].district_name",
-        "block_id": "data.[&1].block_id",
-        "block_name": "data.[&1].block_name",
-        "x_value": "data.[&1].x_value",
-        "y_axis": "data.[&1].y_axis",
-        "y_value": "data.[&1].y_value",
-        "z_axis": "data.[&1].z_axis",
-        "z_value": "data.[&1].z_value",
-        "data_from_date": "data.[&1].data_from_date",
-        "data_upto_date": "data.[&1].data_upto_date",
-        "@students_count": "data.[&1].students_count",
-        "@total_schools": "data.[&1].total_schools",
-        "students_count": "footer.@(1,block_id).students[]",
-        "total_schools": "footer.@(1,block_id).schools[]"
-      }
-    }
-  },
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "footer": {
-        "*": {
-          "students": "=intSum(@(1,students))",
-          "schools": "=intSum(@(1,schools))"
-        }
-      }
-    }
-  },
-  {
-    "operation": "shift",
-    "spec": {
-      "data": {
-        "*": {
-          "x_axis": "data.[&1].x_axis",
-          "cluster_name": "data.[&1].cluster_name",
-          "district_id": "data.[&1].district_id",
-          "district_name": "data.[&1].district_name",
-          "block_id": "data.[&1].block_id",
-          "block_name": "data.[&1].block_name",
-          "x_value": "data.[&1].x_value",
-          "y_axis": "data.[&1].y_axis",
-          "y_value": "data.[&1].y_value",
-          "z_axis": "data.[&1].z_axis",
-          "z_value": "data.[&1].z_value",
-          "data_from_date": "data.[&1].data_from_date",
-          "data_upto_date": "data.[&1].data_upto_date",
-          "@students_count": "data.[&1].students_count",
-          "@total_schools": "data.[&1].total_schools",
-          "students_count": "allClustersFooter.students[]",
-          "total_schools": "allClustersFooter.schools[]"
-        }
-      },
-      "footer": "&"
-    }
-  },
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "*": {
-        "students": "=intSum(@(1,students))",
-        "schools": "=intSum(@(1,schools))"
-      }
-    }
-  }
-]""",
 "stud_att_null_to_log_db":"""update log_summary
 SET attendance_id = stud_att_null_col.count_null_studentattid,
 student_id = stud_att_null_col.count_null_studentid,
@@ -1069,6 +1070,10 @@ where stud_att_null_col.ff_uuid = log_summary.ff_uuid""",
   }
 
 ]""",
+"stud_att_mv_queries":"""REFRESH MATERIALIZED VIEW student_attendance_agg_overall;
+REFRESH MATERIALIZED VIEW student_attendance_agg_last_30_days;
+REFRESH MATERIALIZED VIEW student_attendance_agg_last_7_days;
+REFRESH MATERIALIZED VIEW student_attendance_agg_last_1_day;""",
 "stud_att_raw_cluster_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1117,83 +1122,6 @@ where stud_att_null_col.ff_uuid = log_summary.ff_uuid""",
         "attendance_percent_may": "[&1].Attendance (%) May",
         "students_count_may": "[&1].Total Students May",
         "total_schools_may": "[&1].Total Schools May"
-      }
-    }
-  }
-]""",
-"stud_att_jolt_spec_block":"""[{
-    "operation": "shift",
-    "spec": {
-      "*": {
-        "x_axis": "data.[&1].x_axis",
-        "district_name": "data.[&1].district_name",
-        "district_id": "data.[&1].district_id",
-        "block_name": "data.[&1].block_name",
-        "x_value": "data.[&1].x_value",
-        "y_axis": "data.[&1].y_axis",
-        "y_value": "data.[&1].y_value",
-        "z_axis": "data.[&1].z_axis",
-        "z_value": "data.[&1].z_value",
-        "data_from_date": "data.[&1].data_from_date",
-        "data_upto_date": "data.[&1].data_upto_date",
-        "year": "data.[&1].year",
-        "month": "data.[&1].month",
-        "school_management_type": "data.[&1].school_management_type",
-        "school_category": "data.[&1].school_category",
-        "@students_count": "data.[&1].students_count",
-        "@total_schools": "data.[&1].total_schools",
-        "students_count": "footer.@(1,district_id).students[]",
-        "total_schools": "footer.@(1,district_id).schools[]"
-      }
-    }
-},
-
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "footer": {
-        "*": {
-          "students": "=intSum(@(1,students))",
-          "schools": "=intSum(@(1,schools))"
-        }
-      }
-    }
-  },
-  {
-    "operation": "shift",
-    "spec": {
-      "data": {
-        "*": {
-          "x_axis": "data.[&1].x_axis",
-          "district_name": "data.[&1].district_name",
-          "district_id": "data.[&1].district_id",
-          "block_name": "data.[&1].block_name",
-          "x_value": "data.[&1].x_value",
-          "y_axis": "data.[&1].y_axis",
-          "y_value": "data.[&1].y_value",
-          "z_axis": "data.[&1].z_axis",
-          "z_value": "data.[&1].z_value",
-          "data_from_date": "data.[&1].data_from_date",
-          "data_upto_date": "data.[&1].data_upto_date",
-          "year": "data.[&1].year",
-          "month": "data.[&1].month",
-          "school_management_type": "data.[&1].school_management_type",
-          "school_category": "data.[&1].school_category",
-          "@students_count": "data.[&1].students_count",
-          "@total_schools": "data.[&1].total_schools",
-          "students_count": "allBlocksFooter.students[]",
-          "total_schools": "allBlocksFooter.schools[]"
-        }
-      },
-      "footer": "&"
-    }
-  },
-  {
-    "operation": "modify-overwrite-beta",
-    "spec": {
-      "*": {
-        "students": "=intSum(@(1,students))",
-        "schools": "=intSum(@(1,schools))"
       }
     }
   }
@@ -1291,6 +1219,84 @@ where stud_att_null_col.ff_uuid = log_summary.ff_uuid""",
 	}
   ]
 """,
+"stud_att_jolt_spec_block":"""[{
+    "operation": "shift",
+    "spec": {
+      "*": {
+        "x_axis": "data.[&1].x_axis",
+        "district_name": "data.[&1].district_name",
+        "district_id": "data.[&1].district_id",
+        "block_name": "data.[&1].block_name",
+        "x_value": "data.[&1].x_value",
+        "y_axis": "data.[&1].y_axis",
+        "y_value": "data.[&1].y_value",
+        "z_axis": "data.[&1].z_axis",
+        "z_value": "data.[&1].z_value",
+        "data_from_date": "data.[&1].data_from_date",
+        "data_upto_date": "data.[&1].data_upto_date",
+        "year": "data.[&1].year",
+        "month": "data.[&1].month",
+        "school_management_type": "data.[&1].school_management_type",
+        "school_category": "data.[&1].school_category",
+        "@students_count": "data.[&1].students_count",
+        "@total_schools": "data.[&1].total_schools",
+        "students_count": "footer.@(1,district_id).students[]",
+        "total_schools": "footer.@(1,district_id).schools[]"
+      }
+    }
+},
+
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "footer": {
+        "*": {
+          "students": "=intSum(@(1,students))",
+          "schools": "=intSum(@(1,schools))"
+        }
+      }
+    }
+  },
+  {
+    "operation": "shift",
+    "spec": {
+      "data": {
+        "*": {
+          "x_axis": "data.[&1].x_axis",
+          "district_name": "data.[&1].district_name",
+          "district_id": "data.[&1].district_id",
+          "block_name": "data.[&1].block_name",
+          "x_value": "data.[&1].x_value",
+          "y_axis": "data.[&1].y_axis",
+          "y_value": "data.[&1].y_value",
+          "z_axis": "data.[&1].z_axis",
+          "z_value": "data.[&1].z_value",
+          "data_from_date": "data.[&1].data_from_date",
+          "data_upto_date": "data.[&1].data_upto_date",
+          "year": "data.[&1].year",
+          "month": "data.[&1].month",
+          "school_management_type": "data.[&1].school_management_type",
+          "school_category": "data.[&1].school_category",
+          "@students_count": "data.[&1].students_count",
+          "@total_schools": "data.[&1].total_schools",
+          "students_count": "allBlocksFooter.students[]",
+          "total_schools": "allBlocksFooter.schools[]"
+        }
+      },
+      "footer": "&"
+    }
+  },
+  {
+    "operation": "modify-overwrite-beta",
+    "spec": {
+      "*": {
+        "students": "=intSum(@(1,students))",
+        "schools": "=intSum(@(1,schools))"
+      }
+    }
+  }
+]""",
+"save-to-school_student_total_att_select_query":"""select * from school_student_total_attendance limit 1""",
 "stud_att_transform_block_wise":"""[{
     "operation": "shift",
     "spec": {
@@ -1366,7 +1372,6 @@ where stud_att_null_col.ff_uuid = log_summary.ff_uuid""",
   }
 ]
 """,
-"save-to-school_student_total_att_select_query":"""select * from school_student_total_attendance limit 1""",
 "select_att_files_from__log_db":"""select * from log_summary where filename like 'student_attendance%'""",
 "student_att_stg_2_to_temp_qry":"""insert into student_attendance_temp(attendance_id,student_id,school_id,year,
 month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
@@ -1376,18 +1381,12 @@ month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
 day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
 from  student_attendance_staging_2""",
 "stud_att_check_same_id_records":"""SELECT b.attendance_id,b.student_id,b.school_id,b.year,
-b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid
-,count(*) num_of_times  from (select attendance_id,student_id,school_id,year,month,ff_uuid from student_attendance_staging_2
-    group by attendance_id,student_id,school_id,year,month,ff_uuid having count(1)>1)  as a, student_attendance_staging_2 b
-where 
-a.attendance_id=b.attendance_id
-and a.student_id=b.student_id
-and a.school_id=b.school_id
-and a.year=b.year
-and a.month=b.month
-and a.ff_uuid=b.ff_uuid
+b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,
+b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid,b.cnt num_of_times  from 
+(select sas.*,count(*) over (PARTITION by attendance_id,student_id,school_id,year,month,ff_uuid) as cnt from student_attendance_staging_2  sas ) b where cnt>1 
 group by b.attendance_id,b.student_id,b.school_id,b.year,
-b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid""",
+b.month,b.day_1,b.day_2,b.day_3,b.day_4,b.day_5,b.day_6,b.day_7,b.day_8,b.day_9,b.day_10,b.day_11,b.day_12,b.day_13,b.day_14,b.day_15,b.day_16,b.day_17,
+b.day_18,b.day_19,b.day_20,b.day_21,b.day_22,b.day_23,b.day_24,b.day_25,b.day_26,b.day_27,b.day_28,b.day_29,b.day_30,b.day_31,b.ff_uuid,b.cnt;""",
 "stud_attendance_normalize":"""select StudentAttendanceId as "attendance_id",StudentId as "student_id",SchoolId as "school_id","Month",AcademicYear as "year",
 case when "1"  = 'NULL' then '0' else "1" end  as "day_1",
 case when "2"  = 'NULL' then '0' else "2" end  as "day_2",
@@ -1421,7 +1420,6 @@ case when "29"  = 'NULL' then '0' else "29" end  as "day_29",
 case when "30"  = 'NULL' then '0' else "30" end  as "day_30",
 case when "31"  = 'NULL' then '0' else "31" end  as "day_31"
 from flowfile""",
-"stud_att_sum_of_dup":"""select sum(num_of_times) from flowfile""",
 "stud_att_district_timeseries_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1453,6 +1451,7 @@ from flowfile""",
     }
   }
 ]""",
+"stud_att_sum_of_dup":"""select sum(num_of_times) from flowfile""",
 "stud_att_unique_record_same_id":"""insert into student_attendance_temp(attendance_id,student_id,school_id,year,month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
 day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
 select attendance_id,student_id,school_id,year,month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
@@ -1538,6 +1537,7 @@ from  student_attendance_staging_1""",
     }
   }
 ]""",
+"stud_att_save_null_tb_name":"""stud_att_null_col""",
 "stud_att_jolt_for_log_summary":"""[{
 		"operation": "shift",
 		"spec": {
@@ -1566,7 +1566,6 @@ from  student_attendance_staging_1""",
 		}
 	}
 ]""",
-"stud_att_save_null_tb_name":"""stud_att_null_col""",
 "stud_att_exception_cluster_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1711,18 +1710,6 @@ SUM(CASE when school_id IS NULL THEN 1 ELSE 0 END) AS count_null_schoolid,
 SUM(CASE when year IS NULL THEN 1 ELSE 0 END) AS count_null_AcademicYear,
 SUM(CASE when month IS NULL THEN 1 ELSE 0 END) AS count_null_Month
 from student_attendance_staging_1)""",
-"stud_att_unique_records_same_records":"""insert into student_attendance_staging_2(attendance_id,student_id,school_id,year,
-month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
-day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
-select attendance_id,student_id,school_id,year,
-month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
-day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
-from (SELECT attendance_id,student_id,school_id,year,
-month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,
-day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid,
-row_number() over (partition by attendance_id,student_id,school_id,year,
-month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,
-day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid) as rn from student_attendance_staging_1) sq Where rn =1""",
 "stud_att_raw_block_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1773,8 +1760,16 @@ day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day
     }
   }
 ]""",
-"stud_att_mv_queries":"""REFRESH MATERIALIZED VIEW student_attendance_agg_overall;
-REFRESH MATERIALIZED VIEW student_attendance_agg_last_30_days;
-REFRESH MATERIALIZED VIEW student_attendance_agg_last_7_days;
-REFRESH MATERIALIZED VIEW student_attendance_agg_last_1_day;"""
+"stud_att_unique_records_same_records":"""insert into student_attendance_staging_2(attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid)
+select attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
+day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
+from (SELECT attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,
+day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid,
+row_number() over (partition by attendance_id,student_id,school_id,year,
+month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,day_10,day_11,day_12,day_13,day_14,day_15,day_16,
+day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid) as rn from student_attendance_staging_1) sq Where rn =1""",
 }

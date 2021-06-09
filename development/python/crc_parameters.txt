@@ -461,5 +461,9 @@ from flowfile)""",
 "crc_insp_not_null":"""select * from flowfile
 where SchoolId IS NOT NULL
 AND InspectionId IS NOT NULL
-"""
+""",
+"crc_user_location_temp_filter_qry":"""WITH deleted AS (with crc_temp as ((select month,year from crc_location_temp where to_date(year||'-'||month||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='crc' and created_on >now()-'5days'::interval))
+delete from crc_location_temp as ct using crc_temp ctmp where ct.year=ctmp.year and ct.month=ctmp.month IS TRUE RETURNING *) SELECT CASE WHEN count(*)>0 THEN 'Deleted '||count(*)||' record from crc_location_temp due to retention policy' else 'crc user location temp completed' end as msg FROM deleted;""",
+"crc_inspection_temp_filter_qry":"""WITH deleted AS (with crc_temp as ((select distinct extract(month from visit_date) as month,extract(year from visit_date) as year from crc_inspection_temp where visit_date is not null and to_date(extract(year from visit_date)||'-'||extract(month from visit_date)||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='crc' and created_on >now()-'5days'::interval))
+delete from crc_inspection_temp as ct using crc_temp ctmp where ctmp.year=extract(year from ct.visit_date) and ctmp.month=extract(month from ct.visit_date) IS TRUE RETURNING *) SELECT CASE WHEN count(*)>0 THEN 'Deleted '||count(*)||' record from crc_location_temp due to retention policy' else 'crc user location temp completed' end as msg FROM deleted;"""
 }
