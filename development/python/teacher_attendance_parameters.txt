@@ -1329,6 +1329,4 @@ select teacher_id,school_id,year,
 month,day_1,day_2,day_3,day_4,day_5,day_6,day_7,day_8,day_9,
 day_10,day_11,day_12,day_13,day_14,day_15,day_16,day_17,day_18,day_19,day_20,day_21,day_22,day_23,day_24,day_25,day_26,day_27,day_28,day_29,day_30,day_31,ff_uuid
 from  teacher_attendance_staging_2""",
-"tch_att_filter_data_retention_qry":"""WITH deleted AS (with ta_temp as ((select distinct month,year from teacher_attendance_staging_1 where to_date(year||'-'||month||'-01','yyyy-mm-dd')<(select (date_trunc('month',now() -(select concat(trim(max(retention_period)::text),'days') from data_replay_meta)::interval))::date) order by 1,2 desc) except (select distinct unnest(string_to_array(regexp_replace(months,'[^a-zA-Z0-9,]','','g'),','))::int as month,year from data_replay_meta where data_source='teacher_attendance' and created_on >now()-'5days'::interval))
-delete from teacher_attendance_staging_1 as ta using ta_temp where ta.month=ta_temp.month and ta.year=ta_temp.year IS TRUE RETURNING *) SELECT CASE WHEN count(*)>0 THEN 'Deleted '||count(*)||' record from teacher_attendance_staging_1 due to retention policy' else 'teacher attendance staging_1 completed' end as msg FROM deleted;"""
 }
