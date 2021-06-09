@@ -655,8 +655,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-5952.0</x>
-<y>2464.0</y>
+<x>-6497.0</x>
+<y>2914.0</y>
                             </bends>
                             <destination>
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
@@ -1319,8 +1319,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>-6320.0</x>
-<y>1792.0</y>
+<x>-6865.0</x>
+<y>2242.0</y>
                             </bends>
                             <destination>
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
@@ -2741,17 +2741,13 @@
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>-136.0</x>
-<y>-152.0</y>
-                            </bends>
                             <destination>
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
 <id>fa597a63-ab0f-3496-0000-000000000000</id>
 <type>PROCESSOR</type>
                             </destination>
                             <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
+                            <labelIndex>0</labelIndex>
                             <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
                             <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
@@ -4546,8 +4542,8 @@
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
                             <backPressureObjectThreshold>10000</backPressureObjectThreshold>
                             <bends>
-<x>976.0</x>
-<y>-456.0</y>
+<x>784.0</x>
+<y>-472.0</y>
                             </bends>
                             <destination>
 <groupId>7c401c62-bff9-3085-0000-000000000000</groupId>
@@ -6916,8 +6912,8 @@
                             <id>650a19e5-de3e-3ba5-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-456.0</x>
-<y>-336.0</y>
+<x>-464.0</x>
+<y>-168.0</y>
                             </position>
                             <versionedComponentId>0efcaa30-9e02-339a-9f9c-e31a4b353a73</versionedComponentId>
                             <comments></comments>
@@ -7203,7 +7199,7 @@ all category vs management</label>
 <y>-848.0</y>
                             </position>
                             <versionedComponentId>75a54ab2-7813-30c8-baa2-76d4c7492a47</versionedComponentId>
-                            <height>800.0</height>
+                            <height>1008.0</height>
                             <label></label>
                             <style>
 <entry>
@@ -7215,16 +7211,16 @@ all category vs management</label>
     <value>24px</value>
 </entry>
                             </style>
-                            <width>408.0</width>
+                            <width>424.0</width>
                         </labels>
                         <labels>
                             <id>90667747-3a8f-3b1b-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-6738.324757340988</x>
-<y>1519.1467877750663</y>
+<x>-7296.0</x>
+<y>1992.0</y>
                             </position>
-                            <height>64.0</height>
+                            <height>48.0</height>
                             <label>            null validation</label>
                             <style>
 <entry>
@@ -7236,7 +7232,7 @@ all category vs management</label>
     <value>24px</value>
 </entry>
                             </style>
-                            <width>424.0</width>
+                            <width>288.0</width>
                         </labels>
                         <labels>
                             <id>9a7ac51d-4b02-3c7c-0000-000000000000</id>
@@ -7767,8 +7763,8 @@ ${query_type:startsWith('tch_att_management_category_school'):ifElse(#{tch_att_j
                             <id>05805271-e75d-3073-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
-<y>2600.0</y>
+<x>-7040.0</x>
+<y>3048.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -8137,8 +8133,8 @@ where ff_uuid='${zip_identifier}'</value>
                             <id>0cc42588-3377-3f1f-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
-<y>2056.0</y>
+<x>-7040.0</x>
+<y>2504.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -8995,8 +8991,8 @@ where ff_uuid='${zip_identifier}'</value>
                             <id>1a67aeba-0ae6-3261-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
-<y>1832.0</y>
+<x>-7040.0</x>
+<y>2280.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -10638,8 +10634,8 @@ ${query_type:startsWith('tch_att_management_exception_school_by_month_year'):ifE
                             <id>347e4e7b-2912-3902-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
-<y>1616.0</y>
+<x>-7040.0</x>
+<y>2064.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -11136,8 +11132,8 @@ WHERE filename like 'teacher_attendance%';</value>
                             <id>3af39bf5-33ae-3d7f-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>120.0</x>
-<y>-416.0</y>
+<x>128.0</x>
+<y>-432.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -11861,8 +11857,8 @@ same id data validation of file:${filename} started</value>
                             <id>4df7dc8a-a804-3f52-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
-<y>2240.0</y>
+<x>-7040.0</x>
+<y>2688.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -12155,8 +12151,8 @@ same id data validation of file:${filename} started</value>
                             <id>5024554b-0382-355c-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>120.0</x>
-<y>8.0</y>
+<x>128.0</x>
+<y>-8.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -14510,8 +14506,8 @@ WHERE ff_uuid='${zip_identifier}'</value>
                             <id>75ba4960-513f-3029-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>120.0</x>
-<y>-608.0</y>
+<x>128.0</x>
+<y>-624.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -14795,7 +14791,7 @@ WHERE ff_uuid='${zip_identifier}'</value>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
 <x>7552.0</x>
-<y>-40.0</y>
+<y>-16.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -15819,8 +15815,8 @@ where ff_uuid= '${zip_identifier}'
                             <id>8d247905-6047-3996-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-5792.0</x>
-<y>2368.0</y>
+<x>-6328.0</x>
+<y>2872.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -16047,8 +16043,8 @@ where ff_uuid= '${zip_identifier}'
                             <id>96749df9-38d8-34e9-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-7080.0</x>
-<y>1952.0</y>
+<x>-7632.0</x>
+<y>2400.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -19076,7 +19072,7 @@ ${query_type:startsWith('tch_att_school_overall')
                             <id>d3b8cee5-b726-3673-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>120.0</x>
+<x>128.0</x>
 <y>-800.0</y>
                             </position>
                             <bundle>
@@ -19735,8 +19731,8 @@ Mirror data validation of file:${filename} started</value>
                             <id>da9dcb2a-cfbc-3d7f-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
-<y>2424.0</y>
+<x>-7040.0</x>
+<y>2872.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -20832,8 +20828,8 @@ ${query_type:startsWith('tch_att_management_category_school'):ifElse(#{tch_att_j
                             <id>e131f884-5a74-33d9-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-7104.0</x>
-<y>1592.0</y>
+<x>-7632.0</x>
+<y>2040.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -20987,8 +20983,8 @@ file: ${filename} Error while getting null values</value>
                             <id>e5225c07-ef0b-3b09-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>-7080.0</x>
-<y>1776.0</y>
+<x>-7632.0</x>
+<y>2224.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -23204,8 +23200,8 @@ WHERE ff_uuid='${zip_identifier}'</value>
                             <id>fa597a63-ab0f-3496-0000-000000000000</id>
                             <parentGroupId>7c401c62-bff9-3085-0000-000000000000</parentGroupId>
                             <position>
-<x>120.0</x>
-<y>-216.0</y>
+<x>128.0</x>
+<y>-232.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -32391,5 +32387,5 @@ VALUES
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>03/30/2021 16:09:30 IST</timestamp>
+    <timestamp>06/09/2021 17:00:39 IST</timestamp>
 </template>
