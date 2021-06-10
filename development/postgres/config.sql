@@ -21755,6 +21755,8 @@ $body$
 language plpgsql;
 
 /* Data Retention */
+insert into data_replay_meta(filename,ff_uuid,retention_period) values('test','test',90) on conflict on constraint data_replay_meta_pkey do nothing;
+
 CREATE OR REPLACE FUNCTION pat_del_data_ret(p_data_source text)
 RETURNS text AS
 $$
