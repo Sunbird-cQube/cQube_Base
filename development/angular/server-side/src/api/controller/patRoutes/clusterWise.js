@@ -85,22 +85,43 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         }
         clusterData = await s3File.readS3File(fileName);
         var footer;
-
+        var allSubjects = [];
         if (period != 'all') {
             if (subject)
                 footerData = await s3File.readS3File(footerFile);
             if (grade && !subject || !grade && !subject) {
                 footer = clusterData['AllClustersFooter'];
+                clusterData.data.forEach(item => {
+                    var sub = Object.keys(item.Subjects);
+                    var index = sub.indexOf('Grade Performance');
+                    sub.splice(index, 1);
+                    sub.forEach(a => {
+                        allSubjects.push(a)
+                    })
+                });
+                allSubjects = [...new Set(allSubjects)];
             } else {
                 footerData.map(foot => {
                     footer = foot.subjects[`${subject}`]
                 })
             }
+        } else {
+            if (grade) {
+                clusterData.data.forEach(item => {
+                    var sub = Object.keys(item.Subjects);
+                    var index = sub.indexOf('Grade Performance');
+                    sub.splice(index, 1);
+                    sub.forEach(a => {
+                        allSubjects.push(a)
+                    })
+                });
+                allSubjects = [...new Set(allSubjects)];
+            }
         }
         var mydata = clusterData.data;
         logger.info('---PAT cluster wise api response sent---');
         // , footer: clusterData.AllClustersFooter
-        res.status(200).send({ data: mydata, footer: footer });
+        res.status(200).send({ data: mydata, subjects: allSubjects, footer: footer });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });
