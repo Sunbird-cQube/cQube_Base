@@ -97,15 +97,17 @@ router.post('/distWise', auth.authController, async (req, res) => {
                 footerData = await s3File.readS3File(footerFile);
             if (grade && !subject || !grade && !subject) {
                 footer = districtData['AllDistrictsFooter'];
-                districtData.data.forEach(item => {
-                    var sub = Object.keys(item.Subjects);
-                    var index = sub.indexOf('Grade Performance');
-                    sub.splice(index, 1);
-                    sub.forEach(a => {
-                        allSubjects.push(a)
-                    })
-                });
-                allSubjects = [...new Set(allSubjects)];
+                if (grade) {
+                    districtData.data.forEach(item => {
+                        var sub = Object.keys(item.Subjects);
+                        var index = sub.indexOf('Grade Performance');
+                        sub.splice(index, 1);
+                        sub.forEach(a => {
+                            allSubjects.push(a)
+                        })
+                    });
+                    allSubjects = [...new Set(allSubjects)];
+                }
             } else {
                 footerData.map(foot => {
                     footer = foot.subjects[`${subject}`]
