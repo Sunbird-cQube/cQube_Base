@@ -397,8 +397,8 @@
 <y>2080.0</y>
                             </bends>
                             <bends>
-<x>-5544.1923828125</x>
-<y>1427.762939453125</y>
+<x>-5504.0</x>
+<y>1424.0</y>
                             </bends>
                             <destination>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
@@ -3838,12 +3838,12 @@
 <y>1992.0</y>
                             </bends>
                             <bends>
-<x>-5579.07763671875</x>
-<y>1440.321533203125</y>
+<x>-5456.0</x>
+<y>1520.0</y>
                             </bends>
                             <bends>
-<x>-5572.1005859375</x>
-<y>1427.762939453125</y>
+<x>-5464.0</x>
+<y>1416.0</y>
                             </bends>
                             <destination>
 <groupId>449d2c73-ea6c-3048-0000-000000000000</groupId>
@@ -7757,8 +7757,8 @@
                             <id>017c233b-ee91-3bb7-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>-3872.0</x>
-<y>-1152.0</y>
+<x>-4152.0</x>
+<y>-824.0</y>
                             </position>
                             <height>56.0</height>
                             <label>    same id with different values in other fields, data validation</label>
@@ -7778,8 +7778,8 @@
                             <id>0538a573-289a-3c03-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>88.0</x>
-<y>-848.0</y>
+<x>72.0</x>
+<y>-856.0</y>
                             </position>
                             <versionedComponentId>75a54ab2-7813-30c8-baa2-76d4c7492a47</versionedComponentId>
                             <height>1024.0</height>
@@ -7821,8 +7821,8 @@
                             <id>3f550a5a-1060-3d46-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>-6738.324757340988</x>
-<y>1519.1467877750663</y>
+<x>-6744.0</x>
+<y>1552.0</y>
                             </position>
                             <height>64.0</height>
                             <label>            null validation</label>
@@ -8038,8 +8038,8 @@ all category vs management</label>
                             <id>c0f23adb-a7d4-3635-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>144.0</x>
-<y>-928.0</y>
+<x>280.0</x>
+<y>-1072.0</y>
                             </position>
                             <height>56.0</height>
                             <label>Transformations</label>
@@ -8744,8 +8744,8 @@ ${query_type:startsWith('stud_att_management_category_block_overall'):ifElse('/d
                             <id>08aa46b4-de97-3f07-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>120.0</x>
-<y>-800.0</y>
+<x>112.0</x>
+<y>-816.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -9131,7 +9131,7 @@ ${query_type:startsWith('stud_att_management_category_block_overall'):ifElse('/d
                             <id>0951c8f8-5345-38bf-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
+<x>-6520.0</x>
 <y>2056.0</y>
                             </position>
                             <bundle>
@@ -9707,8 +9707,8 @@ ${query_type:startsWith('stud_att_school_overall'):ifElse('attendance/overall/sc
                             <id>0b03479d-1106-3e86-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>120.0</x>
-<y>-216.0</y>
+<x>112.0</x>
+<y>-240.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -10022,7 +10022,7 @@ ${query_type:startsWith('stud_att_school_overall'):ifElse('attendance/overall/sc
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>Object Key</key>
@@ -10408,7 +10408,7 @@ ${query_type:startsWith('stud_att_management_category_school_by_month_year'):ifE
         <key>proxy-user-password</key>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
+<runDurationMillis>25</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>60 sec</yieldDuration>
@@ -12213,8 +12213,8 @@ ${query_type:startsWith('stud_att_management_exception_school_by_month_year'):if
                             <id>20e585f2-ed11-3882-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>120.0</x>
-<y>8.0</y>
+<x>112.0</x>
+<y>-16.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -12739,8 +12739,8 @@ district_longitude=excluded.district_longitude,created_on=excluded.created_on,sc
                             <id>2c5695e8-4c9a-3fb8-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>120.0</x>
-<y>-608.0</y>
+<x>112.0</x>
+<y>-632.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -15992,7 +15992,7 @@ Optional(ParseInt()),Optional(ParseInt()),Optional(ParseInt())</value>
                             <id>49effeb6-0f7c-36bb-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
+<x>-6520.0</x>
 <y>1832.0</y>
                             </position>
                             <bundle>
@@ -16253,8 +16253,8 @@ same id data validation of file:${filename} started</value>
                             <id>535e3739-896f-3142-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>120.0</x>
-<y>-416.0</y>
+<x>112.0</x>
+<y>-440.0</y>
                             </position>
                             <bundle>
 <artifact>nifi-standard-nar</artifact>
@@ -21225,7 +21225,7 @@ file: ${filename} has invalid data type: invalid record=${count.invalid.lines} ,
                             <id>93a23b7e-96ae-3edd-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
+<x>-6520.0</x>
 <y>2600.0</y>
                             </position>
                             <bundle>
@@ -22132,7 +22132,7 @@ ${query_type:startsWith('stud_att_school_overall')
                             <id>a801fd46-d56a-3e6b-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
+<x>-6520.0</x>
 <y>1616.0</y>
                             </position>
                             <bundle>
@@ -25453,7 +25453,7 @@ Error: ${executesql.error.message}</value>
                             <id>d6b61591-9fcf-30dd-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
+<x>-6520.0</x>
 <y>2424.0</y>
                             </position>
                             <bundle>
@@ -28036,7 +28036,7 @@ Mirror data validation of file:${filename} started</value>
                             <id>fbf7694d-9d77-3b48-0000-000000000000</id>
                             <parentGroupId>449d2c73-ea6c-3048-0000-000000000000</parentGroupId>
                             <position>
-<x>-6504.0</x>
+<x>-6520.0</x>
 <y>2240.0</y>
                             </position>
                             <bundle>
@@ -37421,5 +37421,5 @@ Sucessfully fetched ${filename} from ${s3.bucket} bucket</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>05/27/2021 09:51:22 IST</timestamp>
+    <timestamp>06/09/2021 17:00:30 IST</timestamp>
 </template>

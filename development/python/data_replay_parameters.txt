@@ -1,3 +1,6 @@
-{
-"data_replay_queries_filename":"""data_replay_queries.json"""
+{"data_replay_queries_filename":"""data_replay_queries.json""",
+"data_retention_functions":"""select pat_del_data_ret('periodic_assessment_test');
+select semester_del_data_ret('semester_assessment_test');
+select diksha_summary_rollup_del_data_ret('diksha_summary_rollup');
+select del_data_ret('crc');""",
 }

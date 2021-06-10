@@ -5858,6 +5858,7 @@ insert into del_data_source_details values('periodic_assessment_test','exam_code
 insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_result_trans',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_school_qst_result',5) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_school_result',6) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('periodic_assessment_test','exam_code','periodic_exam_stud_grade_count',7) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 
 --Tables related to semester_assessment_test
 
@@ -5869,6 +5870,7 @@ insert into del_data_source_details values('semester_assessment_test','exam_code
 insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_result_trans',4) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_school_qst_result',5) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_school_result',6) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
+insert into del_data_source_details values('semester_assessment_test','exam_code','semester_exam_stud_grade_count',7) on conflict  ON CONSTRAINT del_data_source_details_pkey do nothing;
 
 --Tables related to diksha_tpd
 
@@ -6143,3 +6145,9 @@ exam_code text);
 create index IF NOT EXISTS diksha_total_content_year_month_month_year_idx on diksha_total_content_year_month (month,year);
 
 create table IF NOT EXISTS diksha_refresh (content_view_date date);
+
+create table if not exists periodic_exam_stud_grade_count(exam_code varchar(100),student_uid bigint,school_id bigint,studying_class bigint,primary key(exam_code,student_uid,school_id));
+
+create table if not exists semester_exam_stud_grade_count(exam_code varchar(100),student_uid bigint,school_id bigint,studying_class bigint,primary key(exam_code,student_uid,school_id));
+
+alter table data_replay_meta add column if not exists retention_period integer;

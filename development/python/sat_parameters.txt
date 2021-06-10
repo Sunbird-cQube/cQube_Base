@@ -149,7 +149,7 @@ where a.school_name is not null and a.cluster_name is not null and b.school_lati
 )as b on a.school_id=b.school_id
 left join
 (select exam_id,assessment_year,exam_code,semester from semester_exam_mst) as d on a.exam_code=d.exam_code
-left join (select count(distinct(student_uid)) as students_attended,school_id,exam_code from semester_exam_result_trans group by school_id,exam_code) as trans 
+left join (select count(distinct(student_uid)) as students_attended,school_id,exam_code from semester_exam_stud_grade_count group by school_id,exam_code) as trans 
 on a.school_id=trans.school_id and a.exam_code=trans.exam_code 
 on conflict(school_id,exam_code,academic_year)
 do update set 
@@ -159,7 +159,7 @@ school_latitude=excluded.school_latitude,school_longitude=excluded.school_longit
 cluster_latitude=excluded.cluster_latitude,cluster_longitude=excluded.cluster_longitude,block_id=excluded.block_id,block_name=excluded.block_name,
 block_latitude=excluded.block_latitude,block_longitude=excluded.block_longitude,district_id=excluded.district_id,district_name=excluded.district_name,
 district_latitude=excluded.district_latitude,district_longitude=excluded.district_longitude,semester=excluded.semester,school_management_type=excluded.school_management_type,
-school_category=excluded.school_category,updated_on=now()""",
+school_category=excluded.school_category,updated_on=now();""",
 "sat_subject_footer_district_jolt_spec":"""[
   {
     "operation": "shift",
@@ -345,7 +345,7 @@ select data.school_id,data.exam_code,data.exam_date,data.grade,data.total_marks,
 		a.studying_class as grade,b.question_id,b.indicator,b.question_marks*sum(students_attended) as total_marks,sum(a.obtained_marks)as obtained_marks,b.exam_id
 	from
 	(select exam_id,school_id,exam_code,studying_class,question_id,sum(obtained_marks)as obtained_marks,count(distinct(student_uid)) as students_attended
-	from semester_exam_result_trans 
+	from semester_exam_result_trans sem where to_date(substr(sem.exam_code,8,14),'ddmmyyyy')>(now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') from data_replay_meta)::interval)::date and exam_code not in (select exam_code from semester_exam_mst sem join (select distinct unnest(string_to_array(regexp_replace(semesters,'[^0-9,]','','g'),',')) as semesters,academic_year from data_replay_meta where created_on>now()-'5days'::interval and cqube_process_status='SUCCESS' and data_source='semester_assessment_test') dsem on sem.semester=dsem.semesters::int and sem.assessment_year=dsem.academic_year)
 	group by exam_id,school_id,exam_code,studying_class,question_id)as a
 	left join (select exam_id,question_id,indicator,question_marks from semester_exam_qst_mst group by exam_id,question_id,indicator,question_marks) as b 
 	on a.exam_id=b.exam_id and a.question_id=b.question_id
@@ -533,6 +533,7 @@ HAVING  COUNT(*) > 1""",
 "sat_semester_exam_qst_mst_datatype":"""Optional(parseInt()),Optional(parseInt()),Optional(parseInt()),Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty()),Optional(StrNotNullOrEmpty())
 Optional(StrNotNullOrEmpty()),Optional(ParseDouble())""",
 "sat_exam_question_mst_table_name":"""semester_exam_mst""",
+"sat_remove_data_retention_qry":"""WITH deleted AS (delete from semester_exam_result_staging_1 sem where (to_date(substr(sem.exam_code,8,14),'ddmmyyyy')<(now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') from data_replay_meta)::interval)::date) and exam_code not in (select exam_code from semester_exam_mst sem join (select distinct unnest(string_to_array(regexp_replace(semesters,'[^0-9,]','','g'),',')) as semesters,academic_year from data_replay_meta where created_on>now()-'5days'::interval and cqube_process_status='SUCCESS' and data_source='semester_assessment_test') dsem on sem.semester=dsem.semesters::int and sem.assessment_year=dsem.academic_year) IS TRUE RETURNING *) SELECT CASE WHEN count(*)>0 THEN 'Deleted '||count(*)||' record from semester_exam_result_staging_1 due to retention policy' else 'SAT staging_1 completed' end as msg FROM deleted;""",
 "sat_semester_exam_subject_details_table_name":"""subject_details""",
 "sat_check_same_id_record_semester_exam_grade_details_qry":"""SELECT b.school_id,b.grade,b.students_count,count(*) num_of_times  from (select school_id,grade from flowfile
 group by school_id,grade having count(1)>1) as a, flowfile  b
@@ -1170,8 +1171,12 @@ select id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,sect
 row_number() over (partition by id,exam_id,exam_code,student_id,student_uid,school_id,studying_class,section,question_id,obtained_marks) as rn 
 from semester_exam_result_staging_1) sq Where rn =1""",
 "sat_exam_exam_mst_table_name":"""semester_exam_qst_mst""",
-"sat_check_same_id_record_semester_exam_result_qry":"""SELECT b.id,b.exam_id,b.exam_code,b.student_id,b.student_uid,b.school_id,b.studying_class,b.section,b.question_id,b.obtained_marks,b.cnt num_of_times
- from (select per.* ,count(*) over(PARTITION by exam_code,student_uid,question_id) as cnt from semester_exam_result_staging_2 per ) b where cnt>1;""",
+"sat_check_same_id_record_semester_exam_result_qry":"""SELECT b.id,b.exam_id,b.exam_code,b.student_id,b.student_uid,b.school_id,b.studying_class,b.section,b.question_id,b.obtained_marks,count(*) num_of_times  from 
+(select exam_code,student_uid,question_id from semester_exam_result_staging_2
+group by exam_code,student_uid,question_id having count(1)>1)  as a, semester_exam_result_staging_2  b
+where 
+a.exam_code=b.exam_code and a.student_uid=b.student_uid and a.question_id=b.question_id
+group by b.id,b.exam_id,b.exam_code,b.student_id,b.student_uid,b.school_id,b.studying_class,b.section,b.question_id,b.obtained_marks""",
 "sat_learning_outcome_meta_jolt_spec":"""[
   {
     "operation": "shift",
@@ -1183,6 +1188,78 @@ from semester_exam_result_staging_1) sq Where rn =1""",
   }
 ]
 """,
+"sat_mv_queries":"""REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW sat_stud_count_school_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_stud_count_school_grade_mgmt_last7;
+REFRESH MATERIALIZED VIEW sat_stud_count_school_mgmt_last30;
+REFRESH MATERIALIZED VIEW sat_stud_count_school_grade_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_all;
+REFRESH MATERIALIZED VIEW semester_exam_block_all;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_all;
+REFRESH MATERIALIZED VIEW semester_exam_school_all;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_mgmt_all;
+REFRESH MATERIALIZED VIEW semester_exam_block_mgmt_all;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_mgmt_all;
+REFRESH MATERIALIZED VIEW semester_exam_school_mgmt_all;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_last30;
+REFRESH MATERIALIZED VIEW semester_exam_block_last30;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_last30;
+REFRESH MATERIALIZED VIEW semester_exam_school_last30;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_exam_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_exam_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_last7;
+REFRESH MATERIALIZED VIEW semester_exam_block_last7;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_last7;
+REFRESH MATERIALIZED VIEW semester_exam_school_last7;
+
+REFRESH MATERIALIZED VIEW semester_exam_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_exam_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_exam_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_exam_school_mgmt_last7;
+
+REFRESH MATERIALIZED VIEW semester_grade_district_last30;
+REFRESH MATERIALIZED VIEW semester_grade_block_last30;
+REFRESH MATERIALIZED VIEW semester_grade_cluster_last30;
+REFRESH MATERIALIZED VIEW semester_grade_school_last30;
+
+REFRESH MATERIALIZED VIEW semester_grade_district_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_grade_block_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_grade_cluster_mgmt_last30;
+REFRESH MATERIALIZED VIEW semester_grade_school_mgmt_last30;
+
+REFRESH MATERIALIZED VIEW semester_grade_district_last7;
+REFRESH MATERIALIZED VIEW semester_grade_block_last7;
+REFRESH MATERIALIZED VIEW semester_grade_cluster_last7;
+REFRESH MATERIALIZED VIEW semester_grade_school_last7;
+
+REFRESH MATERIALIZED VIEW semester_grade_district_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_grade_block_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_grade_cluster_mgmt_last7;
+REFRESH MATERIALIZED VIEW semester_grade_school_mgmt_last7;
+refresh materialized view semester_exam_school_ind_result;""",
 "semester_exam_subject_details_count_null":"""(select
 SUM(CASE when subject_id IS NULL THEN 1 ELSE 0 END) AS count_null_subject_id,
 SUM(CASE when grade IS NULL THEN 1 ELSE 0 END) AS count_null_grade
@@ -1357,6 +1434,15 @@ where sat_null_col.ff_uuid = log_summary.ff_uuid""",
       }
     }
 	}]""",
+"sat_insert_semester_exam_stud_grade_count_qry":"""insert into semester_exam_stud_grade_count(exam_code,student_uid,school_id,studying_class)
+select distinct exam_code,student_uid,school_id,studying_class
+from  semester_exam_result_trans
+on conflict(exam_code,student_uid,school_id)
+do update set 	
+exam_code=excluded.exam_code,
+student_uid=excluded.student_uid,
+school_id=excluded.school_id,
+studying_class=excluded.studying_class;""",
 "sat_grade_school_jolt_spec":"""[
   {
     "operation": "modify-overwrite-beta",
@@ -1581,76 +1667,5 @@ or obtained_marks IS NULL""",
       "allDistrictsFooter": "&"
     }
   }
-]""",
-"sat_mv_queries":"""REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_last7;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_last7;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_last7;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_last7;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_mgmt_last7;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_mgmt_last7;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_mgmt_last7;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_mgmt_last7;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_last30;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_last30;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_last30;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_last30;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_district_mgmt_last30;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_block_mgmt_last30;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_cluster_mgmt_last30;
-REFRESH MATERIALIZED VIEW sat_school_grade_enrolment_school_mgmt_last30;
-
-REFRESH MATERIALIZED VIEW sat_stud_count_school_mgmt_last7;
-REFRESH MATERIALIZED VIEW sat_stud_count_school_grade_mgmt_last7;
-REFRESH MATERIALIZED VIEW sat_stud_count_school_mgmt_last30;
-REFRESH MATERIALIZED VIEW sat_stud_count_school_grade_mgmt_last30;
-
-REFRESH MATERIALIZED VIEW semester_exam_district_all;
-REFRESH MATERIALIZED VIEW semester_exam_block_all;
-REFRESH MATERIALIZED VIEW semester_exam_cluster_all;
-REFRESH MATERIALIZED VIEW semester_exam_school_all;
-
-REFRESH MATERIALIZED VIEW semester_exam_district_mgmt_all;
-REFRESH MATERIALIZED VIEW semester_exam_block_mgmt_all;
-REFRESH MATERIALIZED VIEW semester_exam_cluster_mgmt_all;
-REFRESH MATERIALIZED VIEW semester_exam_school_mgmt_all;
-
-REFRESH MATERIALIZED VIEW semester_exam_district_last30;
-REFRESH MATERIALIZED VIEW semester_exam_block_last30;
-REFRESH MATERIALIZED VIEW semester_exam_cluster_last30;
-REFRESH MATERIALIZED VIEW semester_exam_school_last30;
-
-REFRESH MATERIALIZED VIEW semester_exam_district_mgmt_last30;
-REFRESH MATERIALIZED VIEW semester_exam_block_mgmt_last30;
-REFRESH MATERIALIZED VIEW semester_exam_cluster_mgmt_last30;
-REFRESH MATERIALIZED VIEW semester_exam_school_mgmt_last30;
-
-REFRESH MATERIALIZED VIEW semester_exam_district_last7;
-REFRESH MATERIALIZED VIEW semester_exam_block_last7;
-REFRESH MATERIALIZED VIEW semester_exam_cluster_last7;
-REFRESH MATERIALIZED VIEW semester_exam_school_last7;
-
-REFRESH MATERIALIZED VIEW semester_exam_district_mgmt_last7;
-REFRESH MATERIALIZED VIEW semester_exam_block_mgmt_last7;
-REFRESH MATERIALIZED VIEW semester_exam_cluster_mgmt_last7;
-REFRESH MATERIALIZED VIEW semester_exam_school_mgmt_last7;
-
-REFRESH MATERIALIZED VIEW semester_grade_district_last30;
-REFRESH MATERIALIZED VIEW semester_grade_block_last30;
-REFRESH MATERIALIZED VIEW semester_grade_cluster_last30;
-REFRESH MATERIALIZED VIEW semester_grade_school_last30;
-
-REFRESH MATERIALIZED VIEW semester_grade_district_mgmt_last30;
-REFRESH MATERIALIZED VIEW semester_grade_block_mgmt_last30;
-REFRESH MATERIALIZED VIEW semester_grade_cluster_mgmt_last30;
-REFRESH MATERIALIZED VIEW semester_grade_school_mgmt_last30;
-
-REFRESH MATERIALIZED VIEW semester_grade_district_last7;
-REFRESH MATERIALIZED VIEW semester_grade_block_last7;
-REFRESH MATERIALIZED VIEW semester_grade_cluster_last7;
-REFRESH MATERIALIZED VIEW semester_grade_school_last7;
-
-REFRESH MATERIALIZED VIEW semester_grade_district_mgmt_last7;
-REFRESH MATERIALIZED VIEW semester_grade_block_mgmt_last7;
-REFRESH MATERIALIZED VIEW semester_grade_cluster_mgmt_last7;
-REFRESH MATERIALIZED VIEW semester_grade_school_mgmt_last7;"""
+]"""
 }
