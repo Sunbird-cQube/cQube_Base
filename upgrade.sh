@@ -23,6 +23,6 @@ if [ -e /etc/ansible/ansible.cfg ]; then
 fi
 ansible-playbook ansible/upgrade.yml --tags "update"
 if [ $? = 0 ]; then
-echo "cQube upgraded successfully!!"
+echo "cQube Base upgraded successfully!!"
 fi
 
