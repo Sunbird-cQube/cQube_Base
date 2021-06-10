@@ -2185,35 +2185,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>4b364a39-19c6-3ff4-0000-000000000000</id>
-                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>9588.0</x>
-<y>-407.0</y>
-                            </bends>
-                            <destination>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>7584b299-ead1-31c7-0000-000000000000</id>
-<type>FUNNEL</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>1</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>failure</selectedRelationships>
-                            <source>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>d6e82076-3a0d-3874-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>4b76cea9-6208-35b7-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -7106,35 +7077,6 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
-                            <id>e10d8ef6-daee-3a7e-0000-000000000000</id>
-                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
-                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
-                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
-                            <bends>
-<x>9592.0</x>
-<y>-1568.0</y>
-                            </bends>
-                            <destination>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>c8d3c870-61de-3889-0000-000000000000</id>
-<type>FUNNEL</type>
-                            </destination>
-                            <flowFileExpiration>0 sec</flowFileExpiration>
-                            <labelIndex>0</labelIndex>
-                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
-                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
-                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
-                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
-                            <name></name>
-                            <selectedRelationships>failure</selectedRelationships>
-                            <source>
-<groupId>ebce70a7-cd5f-3583-0000-000000000000</groupId>
-<id>6e60cc66-a2a3-3c8f-0000-000000000000</id>
-<type>PROCESSOR</type>
-                            </source>
-                            <zIndex>0</zIndex>
-                        </connections>
-                        <connections>
                             <id>e1840844-fee0-3f1d-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -9512,14 +9454,6 @@
                             </position>
                         </funnels>
                         <funnels>
-                            <id>7584b299-ead1-31c7-0000-000000000000</id>
-                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
-                            <position>
-<x>9872.0</x>
-<y>-304.0</y>
-                            </position>
-                        </funnels>
-                        <funnels>
                             <id>98e007a7-3a97-3c77-0000-000000000000</id>
                             <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
                             <position>
@@ -9557,14 +9491,6 @@
                             <position>
 <x>-2246.6261171490164</x>
 <y>861.2082632318334</y>
-                            </position>
-                        </funnels>
-                        <funnels>
-                            <id>c8d3c870-61de-3889-0000-000000000000</id>
-                            <parentGroupId>ebce70a7-cd5f-3583-0000-000000000000</parentGroupId>
-                            <position>
-<x>9568.0</x>
-<y>-1496.0</y>
                             </position>
                         </funnels>
                         <funnels>
@@ -21150,7 +21076,7 @@ ${query_type:startsWith('pat_management_learning_outcome_p3_cluster'):ifElse('pa
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>pat_s3_time_range_overall_category_vs_management</name>
                             <relationships>
-<autoTerminate>false</autoTerminate>
+<autoTerminate>true</autoTerminate>
 <name>failure</name>
                             </relationships>
                             <relationships>
@@ -30530,7 +30456,7 @@ ${query_type:startsWith('pat_management_subject_footer_district_last_7_days'):if
                             <executionNodeRestricted>false</executionNodeRestricted>
                             <name>pat_s3_time_range_overall_category_vs_management</name>
                             <relationships>
-<autoTerminate>false</autoTerminate>
+<autoTerminate>true</autoTerminate>
 <name>failure</name>
                             </relationships>
                             <relationships>
@@ -42601,5 +42527,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>06/09/2021 13:51:45 IST</timestamp>
+    <timestamp>06/10/2021 12:36:50 IST</timestamp>
 </template>
