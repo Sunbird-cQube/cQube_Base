@@ -1,0 +1,8 @@
+- name: Ensure database is created
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: keycloak
+    encoding: 'UTF-8'
+    state: present
+  tags: install

@@ -47,5 +47,5 @@ fi
 ansible-playbook ansible/create_base.yml --tags "install" --extra-vars "@config.yml"
 ansible-playbook ansible/install.yml --tags "install"
 if [ $? = 0 ]; then
-echo "cQube installed successfully!!"
+echo "cQube Base installed successfully!!"
 fi
