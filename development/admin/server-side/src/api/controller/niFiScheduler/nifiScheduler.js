@@ -273,7 +273,7 @@ router.post('/scheduleProcessor/:id/:name', auth.authController, async (req, res
                 try {
                     let result = await axios.put(nifiurl, {
                         id: groupid,
-                        state: input_state,
+                        state: "RUNNING",
                         disconnectedNodeAcknowledged: false
                     });
                     resolve(result.data)
@@ -516,7 +516,7 @@ router.post('/scheduleNiFiProcessor/:id/:name', async (req, res) => {
                 try {
                     let result = await axios.put(nifiurl, {
                         id: groupid,
-                        state: input_state,
+                        state: "RUNNING",
                         disconnectedNodeAcknowledged: false
                     });
                     resolve(result.data)

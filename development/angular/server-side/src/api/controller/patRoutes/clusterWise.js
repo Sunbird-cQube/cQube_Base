@@ -87,20 +87,14 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         var footer;
         var allSubjects = [];
         if (period != 'all') {
-            if (subject)
+            if (subject) {
                 footerData = await s3File.readS3File(footerFile);
+                subjects();
+            }
             if (grade && !subject || !grade && !subject) {
                 footer = clusterData['AllClustersFooter'];
                 if (grade) {
-                    clusterData.data.forEach(item => {
-                        var sub = Object.keys(item.Subjects);
-                        var index = sub.indexOf('Grade Performance');
-                        sub.splice(index, 1);
-                        sub.forEach(a => {
-                            allSubjects.push(a)
-                        })
-                    });
-                    allSubjects = [...new Set(allSubjects)];
+                    subjects();
                 }
             } else {
                 footerData.map(foot => {
@@ -109,16 +103,19 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
             }
         } else {
             if (grade) {
-                clusterData.data.forEach(item => {
-                    var sub = Object.keys(item.Subjects);
-                    var index = sub.indexOf('Grade Performance');
-                    sub.splice(index, 1);
-                    sub.forEach(a => {
-                        allSubjects.push(a)
-                    })
-                });
-                allSubjects = [...new Set(allSubjects)];
+                subjects();
             }
+        }
+        function subjects() {
+            clusterData.data.forEach(item => {
+                var sub = Object.keys(item.Subjects);
+                var index = sub.indexOf('Grade Performance');
+                sub.splice(index, 1);
+                sub.forEach(a => {
+                    allSubjects.push(a)
+                })
+            });
+            allSubjects = [...new Set(allSubjects)];
         }
         var mydata = clusterData.data;
         logger.info('---PAT cluster wise api response sent---');
