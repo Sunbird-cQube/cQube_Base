@@ -91,7 +91,6 @@ router.post('/distWise', auth.authController, async (req, res) => {
         }
         var footer;
         var allSubjects = [];
-        console.log(fileName);
         districtData = await s3File.readS3File(fileName);
         if (period != 'all') {
             if (grade && subject) {
