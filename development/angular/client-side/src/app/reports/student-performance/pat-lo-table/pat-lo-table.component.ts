@@ -401,7 +401,7 @@ export class PATLOTableComponent implements OnInit {
           return false;
         }
       });
-      if(this.table)
+      if (this.table)
         document.getElementById('spinner').style.display = 'none';
     });
     this.showPagination = true;
@@ -680,6 +680,15 @@ export class PATLOTableComponent implements OnInit {
 
   // to download the csv report
   downloadReport() {
+    this.reportData.map(a => {
+      var keys = Object.keys(a);
+      keys.map(key => {
+        console.log(typeof(a[key]));
+        if (typeof(a[key]) == "object") {
+          a[key] = a[key]['percentage'];
+        }
+      })
+    })
     var position = this.reportName.length;
     this.fileName = [this.fileName.slice(0, position), `_${this.management}`, this.fileName.slice(position)].join('');
     this.commonService.download(this.fileName, this.reportData);

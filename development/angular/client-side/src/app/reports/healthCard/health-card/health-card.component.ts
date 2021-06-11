@@ -129,7 +129,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     );
 
     this.params = JSON.parse(sessionStorage.getItem('health-card-info'));
-    
+
     if (this.params) {
       if (this.params.timePeriod == 'overall' || this.params.timePeriod == 'last_30_days') {
         this.period = this.params.timePeriod;
@@ -193,7 +193,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
     document.getElementById('myInput')['disabled'] = true;
     document.getElementById('myInput')['value'] = '';
     this.placeHolder = "First Choose Level From Drop-down";
-    this.service.stateData({...{ timePeriod: this.period }, ...{ management: this.management, category: this.category }}).subscribe(res => {
+    this.service.stateData({ ...{ timePeriod: this.period }, ...{ management: this.management, category: this.category } }).subscribe(res => {
       this.healthCardData = res['data'];
       this.schoolInfra = ['infra_score'];
       this.schoolInfraKey = ['Infrastructure Score'];
@@ -269,7 +269,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         }
 
         this.selectedLevelData = dist;
-        this.service.districtWiseData({...{ id: id, timePeriod: this.period }, ...{ management: this.management, category: this.category }}).subscribe(res => {
+        this.service.districtWiseData({ ...{ id: id, timePeriod: this.period }, ...{ management: this.management, category: this.category } }).subscribe(res => {
           this.healthCardData = res['districtData'][0];
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
@@ -325,7 +325,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         }
 
         this.selectedLevelData = block;
-        this.service.blockWiseData({...{ id: id, timePeriod: this.period }, ...{ management: this.management, category: this.category }}).subscribe(res => {
+        this.service.blockWiseData({ ...{ id: id, timePeriod: this.period }, ...{ management: this.management, category: this.category } }).subscribe(res => {
           this.healthCardData = res['blockData'][0];
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
@@ -381,7 +381,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
         }
 
         this.selectedLevelData = cluster;
-        this.service.clusterWiseData({...{ id: id, blockId: blkId, timePeriod: this.period }, ...{ management: this.management, category: this.category }}).subscribe(res => {
+        this.service.clusterWiseData({ ...{ id: id, blockId: blkId, timePeriod: this.period }, ...{ management: this.management, category: this.category } }).subscribe(res => {
           this.healthCardData = res['clusterData'][0];
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
@@ -436,7 +436,7 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
             blok = school.blockId;
           }
         }
-        this.service.schoolWiseData({...{ id: id, blockId: blok, timePeriod: this.period }, ...{ management: this.management, category: this.category }}).subscribe(res => {
+        this.service.schoolWiseData({ ...{ id: id, blockId: blok, timePeriod: this.period }, ...{ management: this.management, category: this.category } }).subscribe(res => {
           this.healthCardData = res['schoolData'][0];
           this.schoolInfra = ['infra_score'];
           this.schoolInfraKey = ['Infrastructure Score'];
@@ -505,10 +505,10 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
 
   showData(healthCardData) {
     if (this.level != 'state') {
-      if(this.level != 'school')
+      if (this.level != 'school')
         healthCardData['total_schools'] = healthCardData['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
       healthCardData['total_students'] = healthCardData['total_students'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      if(healthCardData['school_management_type'])
+      if (healthCardData['school_management_type'])
         healthCardData['school_management_type'] = this.commonService.changeingStringCases(healthCardData['school_management_type'].replace(/_/g, ' '))
       this.updatedKeys = [];
       this.keys = Object.keys(healthCardData);
@@ -537,9 +537,9 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.updatedKeys = [];
-      healthCardData['basic_details']['total_schools'] = healthCardData['basic_details']['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      healthCardData['basic_details']['total_students'] = healthCardData['basic_details']['total_students'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-      if(healthCardData['basic_details']['school_management_type'])
+      healthCardData['basic_details']['total_schools'] = !healthCardData['basic_details']['total_schools'] ? "" : healthCardData['basic_details']['total_schools'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      healthCardData['basic_details']['total_students'] = !healthCardData['basic_details']['total_students'] ? "" : healthCardData['basic_details']['total_students'].toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+      if (healthCardData['basic_details']['school_management_type'])
         healthCardData['basic_details']['school_management_type'] = this.commonService.changeingStringCases(healthCardData['basic_details']['school_management_type'].replace(/_/g, ' '))
       this.keys = Object.keys(healthCardData['basic_details']);
       this.keys = this.keys.filter(key => {
@@ -634,10 +634,10 @@ export class HealthCardComponent implements OnInit, AfterViewInit {
       this.tooltipPat = Object.keys(healthCardData['pat_performance']);
       if (healthCardData['pat_performance']['grade_wise_performance']) {
         const ordered = Object.keys(healthCardData['pat_performance']['grade_wise_performance']).sort().reduce(
-          (obj, key) => { 
-            obj[key] = healthCardData['pat_performance']['grade_wise_performance'][key]; 
+          (obj, key) => {
+            obj[key] = healthCardData['pat_performance']['grade_wise_performance'][key];
             return obj;
-          }, 
+          },
           {}
         );
         healthCardData['pat_performance']['grade_wise_performance'] = ordered;
