@@ -21815,11 +21815,8 @@ BEGIN
 IF p_data_source='diksha_summary_rollup' THEN
 FOR v_date in select distinct content_view_date from diksha_content_trans 
     where content_view_date < (now() -(select concat(trim(coalesce(max(retention_period),90)::text),'days') 
-    from data_replay_meta)::interval)::date and content_view_date not between 
-(select min(from_date) from data_replay_meta where created_on>now()-'5days'::interval and data_source='diksha_summary_rollup' )
-and (select max(to_date) from data_replay_meta where created_on>now()-'5days'::interval and data_source='diksha_summary_rollup')
+    from data_replay_meta)::interval)::date
 LOOP
-raise notice '%',v_date;
 execute 'delete from diksha_content_trans where content_view_date ='''||v_date||'''::date';
 END LOOP;
 END IF;
