@@ -509,10 +509,7 @@ export class PATReportComponent implements OnInit {
                   this.myDistData = res;
                   this.data = res["data"];
                   if (this.grade) {
-                    this.allSubjects = Object.keys(this.data[0].Subjects);
-                    var index = this.allSubjects.indexOf("Grade Performance");
-                    this.allSubjects.splice(index, 1);
-                    document.getElementById("home").style.display = "block";
+                    this.allSubjects = res['subjects'];
                   }
                   // to show only in dropdowns
                   this.districtMarkers = this.allDistricts = this.data;
@@ -643,9 +640,7 @@ export class PATReportComponent implements OnInit {
                   this.myBlockData = res["data"];
                   this.data = res["data"];
                   if (this.grade) {
-                    this.allSubjects = Object.keys(this.data[0].Subjects);
-                    var index = this.allSubjects.indexOf("Grade Performance");
-                    this.allSubjects.splice(index, 1);
+                    this.allSubjects = res['subjects'];
                   }
                   let options = {
                     mapZoom: this.commonService.zoomLevel,
@@ -854,9 +849,7 @@ export class PATReportComponent implements OnInit {
                 (res) => {
                   this.data = res["data"];
                   if (this.grade) {
-                    this.allSubjects = Object.keys(this.data[0].Subjects);
-                    var index = this.allSubjects.indexOf("Grade Performance");
-                    this.allSubjects.splice(index, 1);
+                    this.allSubjects = res['subjects'];
                   }
                   let options = {
                     mapZoom: this.commonService.zoomLevel,
@@ -1065,9 +1058,7 @@ export class PATReportComponent implements OnInit {
                 (res) => {
                   this.data = res["data"];
                   if (this.grade) {
-                    this.allSubjects = Object.keys(this.data[0].Subjects);
-                    var index = this.allSubjects.indexOf("Grade Performance");
-                    this.allSubjects.splice(index, 1);
+                    this.allSubjects = res['subjects'];
                   }
                   let options = {
                     mapZoom: this.commonService.zoomLevel,
