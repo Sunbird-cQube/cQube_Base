@@ -1,23 +1,23 @@
 [
 {
-"data_replay_stud_att_meta":"select distinct month,year,to_char(to_date(month::text,'MM'),'Month') as month_name from school_student_total_attendance order by year,month,month_name;"
+"data_replay_stud_att_meta":"select distinct month,year,to_char(to_date(month::text,'MM'),'Month') as month_name from school_student_total_attendance where month is not null and year is not null order by year,month,month_name;"
 },
 {
-"data_replay_tch_att_meta":"select distinct month,year,to_char(to_date(month::text,'MM'),'Month') as month_name from school_teacher_total_attendance order by year,month,month_name;"
+"data_replay_tch_att_meta":"select distinct month,year,to_char(to_date(month::text,'MM'),'Month') as month_name from school_teacher_total_attendance where month is not null and year is not null order by year,month,month_name;"
 },
 {
-"data_replay_crc_meta":"select distinct month,year,to_char(to_date(month::text,'MM'),'Month') as month_name from crc_visits_frequency order by year,month,month_name;"
+"data_replay_crc_meta":"select distinct month,year,to_char(to_date(month::text,'MM'),'Month') as month_name from crc_visits_frequency  where month is not null and year is not null order by year,month,month_name;"
 },
 {
-"data_replay_pat_meta":"select distinct exam_code from periodic_exam_school_result order by exam_code;"
+"data_replay_pat_meta":"select distinct exam_code from periodic_exam_school_result where exam_code is not null order by exam_code;"
 },
 {
-"data_replay_diksha_tpd_batch_id":"select distinct batch_id from diksha_tpd_trans;"
+"data_replay_diksha_tpd_batch_id":"select distinct batch_id from diksha_tpd_trans where batch_id is not null;"
 },
 {
-"data_replay_diksha_data_summary":"select min(content_view_date) as from_date,max(content_view_date) as to_date from diksha_total_content;"
+"data_replay_diksha_data_summary":"select min(content_view_date) as from_date,max(content_view_date) as to_date from diksha_total_content where content_view_date is not null;"
 },
 {
-"data_replay_sat_meta":"select distinct semester,academic_year  from semester_exam_school_result order by semester;"
+"data_replay_sat_meta":"select distinct semester,academic_year  from semester_exam_school_result where semester is not null order by semester;"
 }
 ]
