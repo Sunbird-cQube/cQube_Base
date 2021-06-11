@@ -2,3 +2,18 @@
     display: flex;
     justify-content: center;
   }
+@media screen and (min-width: 2520px) {
+  #inProgress img{
+      margin-top: 2%;
+      height: 1000px !important;
+      width: 1200px !important;
+    }
+  }
+
+@media screen and (min-width: 3800px) {
+ #inProgress img{
+    margin-top: 5%;
+    height: 1200px !important;
+    width: 1450px !important;
+  }
+}
