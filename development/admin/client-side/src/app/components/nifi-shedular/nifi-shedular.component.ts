@@ -187,7 +187,7 @@ export class NifiShedularComponent implements OnInit {
   onClickSchedule(data, i) {
     if (this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange == 'daily' || this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.day ||
       this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.date || this.selectedDuration != '' && this.selectedShedule != '' && this.oneTimeRange != '' && this.date && this.month) {
-      this.service.nifiScheduleProcessor(data.id, data.name, { state: "RUNNING", time: { day: this.day, date: this.date, month: this.month, hours: this.selectedShedule, minutes: this.selectMin }, stopTime: this.selectedDuration }).subscribe(res => {
+      this.service.nifiScheduleProcessor(data.id, data.name, { state: "STOPPED", time: { day: this.day, date: this.date, month: this.month, hours: this.selectedShedule, minutes: this.selectMin }, stopTime: this.selectedDuration }).subscribe(res => {
         if (res['msg']) {
           this.msg = res['msg'];
           this.err = '';
