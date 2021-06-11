@@ -76,7 +76,7 @@ const stoppingJob = (myJob, schedularData) => {
             } else if (myJob.date && myJob.date != "*" && myJob.month && myJob.month != "*") {
                 stopTime = `${myJob.mins} ${myJob.timeToStop} ${myJob.date} ${myJob.month} *`;
             } else {
-                stopTime = `${myJob.mins+1} ${myJob.timeToStop} * * *`;
+                stopTime = `${myJob.mins} ${myJob.timeToStop} * * *`;
             }
             await schedule.scheduleJob(myJob.groupName + '_stop', stopTime, async function () {
 
