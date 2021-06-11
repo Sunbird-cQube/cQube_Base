@@ -1,5 +1,4 @@
-<mat-toolbar class="header" color="primary"
-  style="position: fixed; top: 0; z-index: 9999;">
+<mat-toolbar class="header" color="primary" style="position: fixed; top: 0; z-index: 9999;">
   <button class="menu" mat-icon-button (click)="sidenav.toggle()" id="menu">
     <mat-icon style="color: #24223e;">menu</mat-icon>
   </button>
@@ -163,8 +162,7 @@
                     (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'sat')" id="sat"
                     (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">Semester Assesment
                       Report</span></a>
-                  <a mat-list-item
-                    [routerLink]="!nifi_sat ? ['/coming-soon'] :['/student-performance/sat-heat-chart']"
+                  <a mat-list-item [routerLink]="!nifi_sat ? ['/coming-soon'] :['/student-performance/sat-heat-chart']"
                     (click)="sidenav.toggle()" (click)="fetchTelemetry($event,'satHeatChart')" id="satHeatChart"
                     (click)="showSubmenu6 = !showSubmenu6"><span style="margin-left: 50px;">SAT Heatchart</span></a>
                   <a mat-list-item [hidden]="semester"
@@ -280,8 +278,8 @@
     </div>
     <hr>
     <div>
-      <span id="version" style="float: left;">Version : 1.13 </span>
-      <span id="releaseDate" style="float: right;">Date: 12/05/2021</span>
+      <span id="version" style="float: left;">Version : 2.0 </span>
+      <span id="releaseDate" style="float: right;">Date: 11/06/2021</span>
     </div>
   </mat-sidenav>
 
