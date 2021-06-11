@@ -1090,7 +1090,7 @@
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card card-stats" style="background: linear-gradient(135deg, #FF9456 0%, #FFA67C 100%);"
-                        id="tar" [routerLink]="['/attendance/teacher-attendance']"
+                        id="tar" [routerLink]="!nifi_attendance ? ['/coming-soon'] :['/attendance/teacher-attendance']"
                         (click)="fetchTelemetry($event,'tar')">
                         <div class="card-body ">
                             <div class="row">
