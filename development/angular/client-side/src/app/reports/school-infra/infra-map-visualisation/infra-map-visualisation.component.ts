@@ -202,7 +202,10 @@ export class InfraMapVisualisationComponent implements OnInit {
       this.onClusterSelect(clusterId);
     });
   }
-
+  clickHome(){
+    this.infraData = "infrastructure_score";
+    this.districtWise();
+  }
   // to load all the districts for state data on the map
   districtWise() {
     try {

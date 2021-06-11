@@ -3,12 +3,12 @@
         <div class="col-lg-9 col-md-9 col-sm-12">
             <div *ngIf='skul'>
                 <p id="dist">
-                    Report on Infrastructure access by location for: <span (click)="districtWise()"
+                    Report on Infrastructure access by location for: <span (click)="clickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span></p>
             </div>
             <div *ngIf='dist'>
                 <p id="block">
-                    Report on Infrastructure access by location for: <span (click)="districtWise()"
+                    Report on Infrastructure access by location for: <span (click)="clickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span> <span>/ </span><span
                         (click)="onDistrictSelect(districtHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -16,7 +16,7 @@
             </div>
             <div *ngIf="blok">
                 <p id="cluster">
-                    Report on Infrastructure access by location for: <span (click)="districtWise()"
+                    Report on Infrastructure access by location for: <span (click)="clickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(blockHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -28,7 +28,7 @@
 
             <div *ngIf="clust">
                 <p id="school">
-                    Report on Infrastructure access by location for: <span (click)="districtWise()"
+                    Report on Infrastructure access by location for: <span (click)="clickHome()"
                         style="cursor: pointer;text-decoration: underline;">{{state}}</span><span>/ </span><span
                         (click)="onDistrictSelect(clusterHierarchy.distId)"
                         style="cursor: pointer;text-decoration: underline;">
@@ -48,7 +48,7 @@
                 <div class="col-sm-5">
                     <em class="fa fa-cloud-download" title="Download Report" id="download"
                         (click)="downloadReport()"></em>
-                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="districtWise()"></em>
+                    <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="clickHome()"></em>
                 </div>
             </div>
         </div>
