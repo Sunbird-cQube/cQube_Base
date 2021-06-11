@@ -91,22 +91,17 @@ router.post('/distWise', auth.authController, async (req, res) => {
         }
         var footer;
         var allSubjects = [];
+        console.log(fileName);
         districtData = await s3File.readS3File(fileName);
         if (period != 'all') {
-            if (subject)
+            if (grade && subject) {
                 footerData = await s3File.readS3File(footerFile);
+                subjects();
+            }
             if (grade && !subject || !grade && !subject) {
                 footer = districtData['AllDistrictsFooter'];
                 if (grade) {
-                    districtData.data.forEach(item => {
-                        var sub = Object.keys(item.Subjects);
-                        var index = sub.indexOf('Grade Performance');
-                        sub.splice(index, 1);
-                        sub.forEach(a => {
-                            allSubjects.push(a)
-                        })
-                    });
-                    allSubjects = [...new Set(allSubjects)];
+                    subjects();
                 }
             } else {
                 footerData.map(foot => {
@@ -115,16 +110,19 @@ router.post('/distWise', auth.authController, async (req, res) => {
             }
         } else {
             if (grade) {
-                districtData.data.forEach(item => {
-                    var sub = Object.keys(item.Subjects);
-                    var index = sub.indexOf('Grade Performance');
-                    sub.splice(index, 1);
-                    sub.forEach(a => {
-                        allSubjects.push(a)
-                    })
-                });
-                allSubjects = [...new Set(allSubjects)];
+                subjects();
             }
+        }
+        function subjects() {
+            districtData.data.forEach(item => {
+                var sub = Object.keys(item.Subjects);
+                var index = sub.indexOf('Grade Performance');
+                sub.splice(index, 1);
+                sub.forEach(a => {
+                    allSubjects.push(a)
+                })
+            });
+            allSubjects = [...new Set(allSubjects)];
         }
         var mydata = districtData.data;
         logger.info('--- PAT dist wise api response sent ---');

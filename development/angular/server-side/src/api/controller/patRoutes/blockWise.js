@@ -87,20 +87,14 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         var footer;
         var allSubjects = [];
         if (period != 'all') {
-            if (subject)
+            if (subject){
                 footerData = await s3File.readS3File(footerFile);
+                subjects();
+            }
             if (grade && !subject || !grade && !subject) {
                 footer = blockData['AllBlocksFooter'];
                 if (grade) {
-                    blockData.data.forEach(item => {
-                        var sub = Object.keys(item.Subjects);
-                        var index = sub.indexOf('Grade Performance');
-                        sub.splice(index, 1);
-                        sub.forEach(a => {
-                            allSubjects.push(a)
-                        })
-                    });
-                    allSubjects = [...new Set(allSubjects)];
+                    subjects();
                 }
             } else {
                 footerData.map(foot => {
@@ -109,16 +103,19 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
             }
         } else {
             if (grade) {
-                blockData.data.forEach(item => {
-                    var sub = Object.keys(item.Subjects);
-                    var index = sub.indexOf('Grade Performance');
-                    sub.splice(index, 1);
-                    sub.forEach(a => {
-                        allSubjects.push(a)
-                    })
-                });
-                allSubjects = [...new Set(allSubjects)];
+                subjects();
             }
+        }
+        function subjects(){
+            blockData.data.forEach(item => {
+                var sub = Object.keys(item.Subjects);
+                var index = sub.indexOf('Grade Performance');
+                sub.splice(index, 1);
+                sub.forEach(a => {
+                    allSubjects.push(a)
+                })
+            });
+            allSubjects = [...new Set(allSubjects)];
         }
         var mydata = blockData.data;
         logger.info('--- blocks PAT api response sent---');
