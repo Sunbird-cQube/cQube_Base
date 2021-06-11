@@ -20471,7 +20471,7 @@ ${filename:startsWith('semester_exam_subject_details'):ifElse(#{sat_check_same_r
                             <config>
 <bulletinLevel>WARN</bulletinLevel>
 <comments></comments>
-<concurrentlySchedulableTaskCount>2</concurrentlySchedulableTaskCount>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
 <descriptors>
     <entry>
         <key>Object Key</key>
@@ -20867,7 +20867,7 @@ ${query_type:startsWith('sat_management_learning_outcome_p3_cluster'):ifElse('sa
         <key>proxy-user-password</key>
     </entry>
 </properties>
-<runDurationMillis>0</runDurationMillis>
+<runDurationMillis>25</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>60 sec</yieldDuration>
@@ -27307,7 +27307,7 @@ ${query_type:startsWith('sat_exception_grade_school_last_30_days'):ifElse('excep
         <key>proxy-user-password</key>
     </entry>
 </properties>
-<runDurationMillis>100</runDurationMillis>
+<runDurationMillis>25</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>1 sec</yieldDuration>
@@ -31193,7 +31193,7 @@ ${query_type:startsWith('sat_management_subject_footer_district_last_7_days'):if
         <key>proxy-user-password</key>
     </entry>
 </properties>
-<runDurationMillis>100</runDurationMillis>
+<runDurationMillis>25</runDurationMillis>
 <schedulingPeriod>0 sec</schedulingPeriod>
 <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
 <yieldDuration>60 sec</yieldDuration>
@@ -40128,5 +40128,5 @@ WHERE ff_uuid = '${files_uuid}';</value>
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>06/08/2021 18:46:59 IST</timestamp>
+    <timestamp>06/11/2021 13:24:59 IST</timestamp>
 </template>
