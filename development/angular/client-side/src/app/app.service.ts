@@ -501,6 +501,13 @@ export class AppServiceComponent {
             }
         });
         let uniqueItems = [...new Set(values)];
+        uniqueItems = uniqueItems.map(a=>{
+            if(typeof(a) == 'object'){
+                return a['percentage']
+            }else{
+                return a;
+            }
+        })
         uniqueItems = uniqueItems.sort(function (a, b) { return filter.report != 'exception' ? parseFloat(a) - parseFloat(b) : parseFloat(b) - parseFloat(a) });
         var colorsArr = uniqueItems.length == 1 ? (filter.report != 'exception' ? ['#00FF00'] : ['red']) : this.exceptionColor().generateGradient('#FF0000', '#00FF00', uniqueItems.length, 'rgb');
         var colors = {};

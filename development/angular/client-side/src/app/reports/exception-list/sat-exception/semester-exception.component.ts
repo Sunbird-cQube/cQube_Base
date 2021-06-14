@@ -228,7 +228,6 @@ export class SemesterExceptionComponent implements OnInit {
           this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
           this.allGrades = [{ grade: "all" }, ...this.allGrades.filter(item => item !== { grade: "all" })];
         }
-        //this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
         // api call to get all the districts data
         if (this.myData) {
           this.myData.unsubscribe();
@@ -308,9 +307,10 @@ export class SemesterExceptionComponent implements OnInit {
       this.service.gradeMetaData({ period: this.period, report: 'sat_exception' }).subscribe(res => {
         if (res['data']['block']) {
           this.allGrades = res['data']['block'];
+          this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
           this.allGrades = [{ grade: "all" }, ...this.allGrades.filter(item => item !== { grade: "all" })];
         }
-        this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
+
         // api call to get the all clusters data
         if (this.myData) {
           this.myData.unsubscribe();
@@ -392,9 +392,10 @@ export class SemesterExceptionComponent implements OnInit {
       this.service.gradeMetaData({ period: this.period, report: 'sat_exception' }).subscribe(res => {
         if (res['data']['cluster']) {
           this.allGrades = res['data']['cluster'];
+          this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
           this.allGrades = [{ grade: "all" }, ...this.allGrades.filter(item => item !== { grade: "all" })];
         }
-        this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
+
         // api call to get the all clusters data
         if (this.myData) {
           this.myData.unsubscribe();
@@ -473,9 +474,10 @@ export class SemesterExceptionComponent implements OnInit {
       this.service.gradeMetaData({ period: this.period, report: 'sat_exception' }).subscribe(res => {
         if (res['data']['school']) {
           this.allGrades = res['data']['school'];
+          this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
           this.allGrades = [{ grade: "all" }, ...this.allGrades.filter(item => item !== { grade: "all" })];
         }
-        this.allGrades.sort((a, b) => (a.grade > b.grade) ? 1 : ((b.grade > a.grade) ? -1 : 0));
+
         // api call to get the all schools data
         if (this.myData) {
           this.myData.unsubscribe();
