@@ -4162,7 +4162,7 @@
                             <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
                             <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
                             <name></name>
-                            <selectedRelationships>diksha_batch_file</selectedRelationships>
+                            <selectedRelationships>diksha_tpd_batch_mapping</selectedRelationships>
                             <source>
 <groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
 <id>a011832d-a26c-3c38-0000-000000000000</id>
@@ -21698,9 +21698,9 @@ WHERE ff_uuid = '${source.uuid}';</value>
         </value>
     </entry>
     <entry>
-        <key>diksha_batch_file</key>
+        <key>diksha_tpd_batch_mapping</key>
         <value>
-            <name>diksha_batch_file</name>
+            <name>diksha_tpd_batch_mapping</name>
         </value>
     </entry>
 </descriptors>
@@ -21713,8 +21713,9 @@ WHERE ff_uuid = '${source.uuid}';</value>
         <value>Route to Property name</value>
     </entry>
     <entry>
-        <key>diksha_batch_file</key>
-        <value>${filename:startsWith('diksha/diksha_api_progress_exhaust_batch_ids')}</value>
+        <key>diksha_tpd_batch_mapping</key>
+        <value>${filename:startsWith('diksha/diksha_api_progress_exhaust_batch_ids'):
+or(${filename:startsWith('diksha/diksha_tpd_mapping')})}</value>
     </entry>
 </properties>
 <runDurationMillis>0</runDurationMillis>
@@ -21726,7 +21727,7 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <name>route_based_on_s3_dir</name>
                             <relationships>
 <autoTerminate>false</autoTerminate>
-<name>diksha_batch_file</name>
+<name>diksha_tpd_batch_mapping</name>
                             </relationships>
                             <relationships>
 <autoTerminate>true</autoTerminate>
@@ -54483,5 +54484,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>06/15/2021 11:56:29 IST</timestamp>
+    <timestamp>06/15/2021 12:16:16 IST</timestamp>
 </template>
