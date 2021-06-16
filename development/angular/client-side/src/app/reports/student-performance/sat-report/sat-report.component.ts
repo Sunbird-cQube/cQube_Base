@@ -1872,7 +1872,7 @@ export class SatReportComponent implements OnInit {
         "<b><u>Details</u></b>" +
         "<br>" +
         yourData1 +
-        "<br><br><b><u>Periodic Exam Score (%)</u></b>" +
+        "<br><br><b><u>Semester Exam Score (%)</u></b>" +
         "<br>" +
         yourData
       );
