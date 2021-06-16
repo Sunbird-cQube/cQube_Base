@@ -788,6 +788,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>21a954fd-41a0-3263-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>0f58a5e8-a549-3975-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>dcb25029-8d96-3d95-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>238c3c7d-2de3-36b6-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
@@ -4121,6 +4146,31 @@
                             <zIndex>0</zIndex>
                         </connections>
                         <connections>
+                            <id>b534e2b7-346e-34e9-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>4 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>dcb25029-8d96-3d95-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>1</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>diksha_tpd_batch_mapping</selectedRelationships>
+                            <source>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>a011832d-a26c-3c38-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
                             <id>b6b6389b-b00b-3235-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
@@ -5533,6 +5583,31 @@
 <id>d9479ac1-5767-35ea-0000-000000000000</id>
 <type>PROCESSOR</type>
 <versionedComponentId>2e0b0bd5-fbfd-3605-98ce-cfb3ee760235</versionedComponentId>
+                            </source>
+                            <zIndex>0</zIndex>
+                        </connections>
+                        <connections>
+                            <id>f438f53a-e697-35b9-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+                            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+                            <destination>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>a011832d-a26c-3c38-0000-000000000000</id>
+<type>PROCESSOR</type>
+                            </destination>
+                            <flowFileExpiration>0 sec</flowFileExpiration>
+                            <labelIndex>0</labelIndex>
+                            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+                            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+                            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+                            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+                            <name></name>
+                            <selectedRelationships>success</selectedRelationships>
+                            <source>
+<groupId>b62d71e5-34f9-31df-0000-000000000000</groupId>
+<id>08a61f37-6878-3d18-0000-000000000000</id>
+<type>PROCESSOR</type>
                             </source>
                             <zIndex>0</zIndex>
                         </connections>
@@ -9281,6 +9356,275 @@ where ff_uuid= '${ff_uuid}'</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.Wait</type>
+                        </processors>
+                        <processors>
+                            <id>08a61f37-6878-3d18-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>2632.0</x>
+<y>-464.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-aws-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Bucket</key>
+        <value>
+            <name>Bucket</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Region</key>
+        <value>
+            <name>Region</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Access Key</key>
+        <value>
+            <name>Access Key</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Secret Key</key>
+        <value>
+            <name>Secret Key</name>
+        </value>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.serialization.RecordSetWriterFactory</identifiesControllerService>
+            <name>record-writer</name>
+        </value>
+    </entry>
+    <entry>
+        <key>min-age</key>
+        <value>
+            <name>min-age</name>
+        </value>
+    </entry>
+    <entry>
+        <key>write-s3-object-tags</key>
+        <value>
+            <name>write-s3-object-tags</name>
+        </value>
+    </entry>
+    <entry>
+        <key>write-s3-user-metadata</key>
+        <value>
+            <name>write-s3-user-metadata</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Credentials File</key>
+        <value>
+            <name>Credentials File</name>
+        </value>
+    </entry>
+    <entry>
+        <key>AWS Credentials Provider service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.processors.aws.credentials.provider.service.AWSCredentialsProviderService</identifiesControllerService>
+            <name>AWS Credentials Provider service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Communications Timeout</key>
+        <value>
+            <name>Communications Timeout</name>
+        </value>
+    </entry>
+    <entry>
+        <key>SSL Context Service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
+            <name>SSL Context Service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Endpoint Override URL</key>
+        <value>
+            <name>Endpoint Override URL</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Signer Override</key>
+        <value>
+            <name>Signer Override</name>
+        </value>
+    </entry>
+    <entry>
+        <key>proxy-configuration-service</key>
+        <value>
+            <identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
+            <name>proxy-configuration-service</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Proxy Host</key>
+        <value>
+            <name>Proxy Host</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Proxy Host Port</key>
+        <value>
+            <name>Proxy Host Port</name>
+        </value>
+    </entry>
+    <entry>
+        <key>proxy-user-name</key>
+        <value>
+            <name>proxy-user-name</name>
+        </value>
+    </entry>
+    <entry>
+        <key>proxy-user-password</key>
+        <value>
+            <name>proxy-user-password</name>
+        </value>
+    </entry>
+    <entry>
+        <key>delimiter</key>
+        <value>
+            <name>delimiter</name>
+        </value>
+    </entry>
+    <entry>
+        <key>prefix</key>
+        <value>
+            <name>prefix</name>
+        </value>
+    </entry>
+    <entry>
+        <key>use-versions</key>
+        <value>
+            <name>use-versions</name>
+        </value>
+    </entry>
+    <entry>
+        <key>list-type</key>
+        <value>
+            <name>list-type</name>
+        </value>
+    </entry>
+    <entry>
+        <key>requester-pays</key>
+        <value>
+            <name>requester-pays</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>PRIMARY</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Bucket</key>
+        <value>#{s3_emission_bucket}</value>
+    </entry>
+    <entry>
+        <key>Region</key>
+        <value>ap-south-1</value>
+    </entry>
+    <entry>
+        <key>Access Key</key>
+    </entry>
+    <entry>
+        <key>Secret Key</key>
+    </entry>
+    <entry>
+        <key>record-writer</key>
+    </entry>
+    <entry>
+        <key>min-age</key>
+        <value>0 sec</value>
+    </entry>
+    <entry>
+        <key>write-s3-object-tags</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>write-s3-user-metadata</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>Credentials File</key>
+    </entry>
+    <entry>
+        <key>AWS Credentials Provider service</key>
+        <value>b66ecd76-636b-37f9-0000-000000000000</value>
+    </entry>
+    <entry>
+        <key>Communications Timeout</key>
+        <value>60 secs</value>
+    </entry>
+    <entry>
+        <key>SSL Context Service</key>
+    </entry>
+    <entry>
+        <key>Endpoint Override URL</key>
+    </entry>
+    <entry>
+        <key>Signer Override</key>
+        <value>Default Signature</value>
+    </entry>
+    <entry>
+        <key>proxy-configuration-service</key>
+    </entry>
+    <entry>
+        <key>Proxy Host</key>
+    </entry>
+    <entry>
+        <key>Proxy Host Port</key>
+    </entry>
+    <entry>
+        <key>proxy-user-name</key>
+    </entry>
+    <entry>
+        <key>proxy-user-password</key>
+    </entry>
+    <entry>
+        <key>delimiter</key>
+    </entry>
+    <entry>
+        <key>prefix</key>
+    </entry>
+    <entry>
+        <key>use-versions</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>list-type</key>
+        <value>2</value>
+    </entry>
+    <entry>
+        <key>requester-pays</key>
+        <value>false</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>10 secs</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>true</executionNodeRestricted>
+                            <name>s3_list_emission</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.aws.s3.ListS3</type>
                         </processors>
                         <processors>
                             <id>0a018d64-fe8e-3c20-0000-000000000000</id>
@@ -21331,6 +21675,69 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
                         <processors>
+                            <id>a011832d-a26c-3c38-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>2632.0</x>
+<y>-656.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-standard-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>
+            <name>Routing Strategy</name>
+        </value>
+    </entry>
+    <entry>
+        <key>diksha_tpd_batch_mapping</key>
+        <value>
+            <name>diksha_tpd_batch_mapping</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Routing Strategy</key>
+        <value>Route to Property name</value>
+    </entry>
+    <entry>
+        <key>diksha_tpd_batch_mapping</key>
+        <value>${filename:startsWith('diksha/diksha_api_progress_exhaust_batch_ids'):
+or(${filename:startsWith('diksha/diksha_tpd_mapping')})}</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>0 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>route_based_on_s3_dir</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>diksha_tpd_batch_mapping</name>
+                            </relationships>
+                            <relationships>
+<autoTerminate>true</autoTerminate>
+<name>unmatched</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.standard.RouteOnAttribute</type>
+                        </processors>
+                        <processors>
                             <id>a035210e-390c-30cd-0000-000000000000</id>
                             <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
                             <position>
@@ -25955,6 +26362,102 @@ WHERE ff_uuid = '${source.uuid}';</value>
                             <state>STOPPED</state>
                             <style/>
                             <type>org.apache.nifi.processors.standard.LogMessage</type>
+                        </processors>
+                        <processors>
+                            <id>dcb25029-8d96-3d95-0000-000000000000</id>
+                            <parentGroupId>b62d71e5-34f9-31df-0000-000000000000</parentGroupId>
+                            <position>
+<x>2632.0</x>
+<y>-848.0</y>
+                            </position>
+                            <bundle>
+<artifact>nifi-update-attribute-nar</artifact>
+<group>org.apache.nifi</group>
+<version>1.12.1</version>
+                            </bundle>
+                            <config>
+<bulletinLevel>WARN</bulletinLevel>
+<comments></comments>
+<concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+<descriptors>
+    <entry>
+        <key>Delete Attributes Expression</key>
+        <value>
+            <name>Delete Attributes Expression</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Store State</key>
+        <value>
+            <name>Store State</name>
+        </value>
+    </entry>
+    <entry>
+        <key>Stateful Variables Initial Value</key>
+        <value>
+            <name>Stateful Variables Initial Value</name>
+        </value>
+    </entry>
+    <entry>
+        <key>canonical-value-lookup-cache-size</key>
+        <value>
+            <name>canonical-value-lookup-cache-size</name>
+        </value>
+    </entry>
+    <entry>
+        <key>ff_uuid</key>
+        <value>
+            <name>ff_uuid</name>
+        </value>
+    </entry>
+    <entry>
+        <key>s3.key</key>
+        <value>
+            <name>s3.key</name>
+        </value>
+    </entry>
+</descriptors>
+<executionNode>ALL</executionNode>
+<lossTolerant>false</lossTolerant>
+<penaltyDuration>30 sec</penaltyDuration>
+<properties>
+    <entry>
+        <key>Delete Attributes Expression</key>
+    </entry>
+    <entry>
+        <key>Store State</key>
+        <value>Do not store state</value>
+    </entry>
+    <entry>
+        <key>Stateful Variables Initial Value</key>
+    </entry>
+    <entry>
+        <key>canonical-value-lookup-cache-size</key>
+        <value>100</value>
+    </entry>
+    <entry>
+        <key>ff_uuid</key>
+        <value>${uuid}</value>
+    </entry>
+    <entry>
+        <key>s3.key</key>
+        <value>${filename}</value>
+    </entry>
+</properties>
+<runDurationMillis>0</runDurationMillis>
+<schedulingPeriod>5 sec</schedulingPeriod>
+<schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+<yieldDuration>1 sec</yieldDuration>
+                            </config>
+                            <executionNodeRestricted>false</executionNodeRestricted>
+                            <name>add_s3.key</name>
+                            <relationships>
+<autoTerminate>false</autoTerminate>
+<name>success</name>
+                            </relationships>
+                            <state>STOPPED</state>
+                            <style/>
+                            <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
                         </processors>
                         <processors>
                             <id>de7dc9ce-0888-3066-0000-000000000000</id>
@@ -53981,5 +54484,5 @@ ${query_type:startsWith('diksha_tpd_r2_school_overall'):ifElse('/block_id','None
             <variables/>
         </processGroups>
     </snippet>
-    <timestamp>06/10/2021 17:54:11 IST</timestamp>
+    <timestamp>06/15/2021 12:16:16 IST</timestamp>
 </template>
