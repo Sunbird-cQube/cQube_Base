@@ -84,7 +84,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 }
             }
         }
-        schoolData = await s3File.readS3File(fileName);
+        schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
         var footer;
         var allSubjects = [];
         if (period != 'all') {
@@ -172,7 +172,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 footerFile = `${report}/${period}/cluster/${semester}/grade_subject_footer.json`;
             }
         }
-        var schoolData = await s3File.readS3File(fileName);
+        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
         let clusterId = req.params.clusterId;
 
         let filterData = schoolData.data.filter(obj => {

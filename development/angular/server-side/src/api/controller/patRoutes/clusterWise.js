@@ -83,7 +83,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 }
             }
         }
-        clusterData = await s3File.readS3File(fileName);
+        clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
         var footer;
         var allSubjects = [];
         if (period != 'all') {
@@ -170,7 +170,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                 footerFile = `${report}/${period}/block/${semester}/grade_subject_footer.json`;
             }
         }
-        var clusterData = await s3File.readS3File(fileName);
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
 
         let distId = req.params.distId;
         let blockId = req.params.blockId;

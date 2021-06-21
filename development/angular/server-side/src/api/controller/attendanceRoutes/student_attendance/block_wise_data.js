@@ -3,7 +3,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/blockWise', auth.authController, async(req, res) => {
+router.post('/blockWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Attendance block wise api ---');
         var month = req.body.month;
@@ -37,7 +37,7 @@ router.post('/blockWise', auth.authController, async(req, res) => {
                 fileName = `attendance/${year}/${month}/block.json`;
             }
         }
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
 
         var blocksAttendanceData = jsonData.data
         var dateRange = `${blocksAttendanceData[0]['data_from_date']} to ${blocksAttendanceData[0]['data_upto_date']}`;
@@ -65,7 +65,7 @@ router.post('/blockWise', auth.authController, async(req, res) => {
     }
 });
 
-router.post('/blockPerDist', auth.authController, async(req, res) => {
+router.post('/blockPerDist', auth.authController, async (req, res) => {
     try {
         logger.info('---Attendance blockPerDist api ---');
         var distId = req.body.id;
@@ -100,7 +100,7 @@ router.post('/blockPerDist', auth.authController, async(req, res) => {
                 fileName = `attendance/${year}/${month}/block/${distId}.json`;
             }
         }
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
         var blockData = [];
         var filterData = jsonData.data.filter(data => {
             return (data.district_id == distId)

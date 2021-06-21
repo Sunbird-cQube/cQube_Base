@@ -91,7 +91,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
         }
         var footer;
         var allSubjects = [];
-        districtData = await s3File.readS3File(fileName);
+        districtData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
         if (period != 'all') {
             if (grade && subject) {
                 footerData = await s3File.readS3File(footerFile);
@@ -151,7 +151,7 @@ router.post('/grades', async (req, res, next) => {
         } else {
             fileName = `${report}/${period}/${report}_metadata.json`;
         }
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
         logger.info('---grades metadata api response sent---');
         res.status(200).send({ data: data });
     } catch (e) {
@@ -168,7 +168,7 @@ router.post('/getSemesters', async (req, res, next) => {
         if (period != 'select_month')
             fileName = `sat/${period}/sat_semester_metadata.json`;
 
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
         logger.info('---semester metadata api response sent---');
         res.status(200).send({ data: data });
     } catch (e) {
