@@ -9,7 +9,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         logger.info('---diksha tpd  cluster wise api ---');
         let { timePeriod, reportType, blockId, courses } = req.body
         var fileName = `diksha_tpd/cluster/${timePeriod}.json`;
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         if (blockId) {
             data = data.filter(val => {

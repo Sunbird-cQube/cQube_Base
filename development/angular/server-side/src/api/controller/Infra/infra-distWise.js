@@ -4,7 +4,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/distWise', auth.authController, async(req, res) => {
+router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra dist wise api ---');
         var management = req.body.management;
@@ -16,7 +16,7 @@ router.post('/distWise', auth.authController, async(req, res) => {
         } else {
             fileName = `infra/infra_district_table.json`
         }
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         logger.info('--- Infra dist wise api response sent ---');
         res.status(200).send(data);

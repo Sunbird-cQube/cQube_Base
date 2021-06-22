@@ -4,11 +4,11 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/', auth.authController, async(req, res) => {
+router.post('/', auth.authController, async (req, res) => {
     try {
         logger.info('---management category meta api ---');
         let fileName = `meta/school_management_category_meta.json`;
-        var metaData = await s3File.readS3File(fileName);
+        var metaData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var management = [];
         var category = [];
         metaData.management.filter(item => {
@@ -23,7 +23,7 @@ router.post('/', auth.authController, async(req, res) => {
         function changeingStringCases(str) {
             return str.replace(
                 /\w\S*/g,
-                function(txt) {
+                function (txt) {
                     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
                 }
             );

@@ -3,7 +3,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allSchoolWise', auth.authController, async(req, res) => {
+router.post('/allSchoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all school wise api ---');
 
@@ -26,7 +26,7 @@ router.post('/allSchoolWise', auth.authController, async(req, res) => {
                 fileName = `crc/${year}/${month}/school.json`;
             }
         }
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         var schoolData = jsonData.data;
         logger.info('--- crc all school wise api response sent ---');
@@ -38,7 +38,7 @@ router.post('/allSchoolWise', auth.authController, async(req, res) => {
     }
 })
 
-router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async(req, res) => {
+router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc school per cluster api ---');
         var timePeriod = req.body.timePeriod;
@@ -60,7 +60,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 fileName = `crc/${year}/${month}/school.json`;
             }
         }
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         var schoolData = jsonData
         let clusterId = req.params.clusterId;

@@ -3,7 +3,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/schoolWise', auth.authController, async(req, res) => {
+router.post('/schoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Trends dist wise api ---');
         var year = req.body.year;
@@ -13,10 +13,10 @@ router.post('/schoolWise', auth.authController, async(req, res) => {
         let fileName;
         if (management != 'overall' && category == 'overall') {
             fileName = `attendance/trend_line_chart/school_management_category/overall_category/overall/${management}/school/${clusterId}_${year}.json`;
-        }else{
+        } else {
             fileName = `attendance/trend_line_chart/school/${clusterId}_${year}.json`;
         }
-        var schoolData = await s3File.readS3File(fileName);
+        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var keys = Object.keys(schoolData);
         var mydata = [];
 

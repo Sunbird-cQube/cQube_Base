@@ -4,7 +4,7 @@ var const_data = require('../../lib/config');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/allClusterWise', auth.authController, async(req, res) => {
+router.post('/allClusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all cluster wise api ---');
         var timePeriod = req.body.timePeriod;
@@ -26,7 +26,7 @@ router.post('/allClusterWise', auth.authController, async(req, res) => {
                 fileName = `crc/${year}/${month}/cluster.json`;
             }
         }
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         var clusterData = jsonData.data;
 
@@ -40,7 +40,7 @@ router.post('/allClusterWise', auth.authController, async(req, res) => {
     }
 })
 
-router.post('/clusterWise/:distId/:blockId', auth.authController, async(req, res) => {
+router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc cluster per block api ---');
         var timePeriod = req.body.timePeriod;
@@ -62,7 +62,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async(req, res
                 fileName = `crc/${year}/${month}/cluster.json`;
             }
         }
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         var clusterData = jsonData
 

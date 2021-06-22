@@ -8,7 +8,7 @@ router.post('/metaData', auth.authController, async (req, res) => {
         var { level } = req.body;
         logger.info('---healthCard metadata api ---');
         let fileName = `healthCard/${level}/metaData.json`;
-        var districtData = await s3File.readS3File(fileName);
+        var districtData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var districtIds = [];
         var districtNames = [];
         var districts = [];

@@ -4,7 +4,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/allClusterWise', auth.authController, async(req, res) => {
+router.post('/allClusterWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra cluster wise api ---');
         var management = req.body.management;
@@ -16,7 +16,7 @@ router.post('/allClusterWise', auth.authController, async(req, res) => {
         } else {
             fileName = `infra/infra_cluster_map.json`
         }
-        var clusterData = await s3File.readS3File(fileName);
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var mydata = clusterData.data;
         logger.info('---Infra cluster wise api response sent---');
         res.status(200).send({ data: mydata, footer: clusterData.allClustersFooter.totalSchools });
@@ -26,7 +26,7 @@ router.post('/allClusterWise', auth.authController, async(req, res) => {
     }
 });
 
-router.post('/clusterWise/:distId/:blockId', auth.authController, async(req, res) => {
+router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra clusterperBlock api ---');
         var management = req.body.management;
@@ -39,7 +39,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async(req, res
             fileName = `infra/infra_cluster_map.json`
         }
         console.log(fileName)
-        var clusterData = await s3File.readS3File(fileName);
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         let blockId = req.params.blockId;
 

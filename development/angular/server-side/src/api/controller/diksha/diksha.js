@@ -8,7 +8,7 @@ router.post('/dikshaAllData', auth.authController, async (req, res) => {
         logger.info('--- diksha all data api ---');
         var timePeriod = req.body.timePeriod;
         let fileName = `diksha/stack_bar_reports/${timePeriod}/All.json`
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var footer = data['footer'];
         let a = []
         data.data['All'][req.body.login_type].forEach(element => {
@@ -59,7 +59,7 @@ router.post('/dikshaData', auth.authController, async (req, res) => {
         } else {
             fileName = `diksha/stack_bar_reports/${req.body.districtId}.json`
         }
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var footer = data['footer'];
         if (data.data[req.body.districtId][req.body.login_type]) {
             let a = [];
@@ -112,7 +112,7 @@ router.get('/dikshaMetaData', auth.authController, async (req, res) => {
     try {
         logger.info('--- dikshaMetaData api ---');
         let fileName = `diksha/stack_bar_reports/diksha_metadata.json`;
-        var tableData = await s3File.readS3File(fileName);
+        var tableData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         if (tableData.districtDetails != null) {
             var sortedData = tableData.districtDetails.sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1)
             tableData['districtDetails'] = sortedData
@@ -178,11 +178,11 @@ router.post('/dikshaDataDownload', auth.authController, async (req, res) => {
         var data;
         if (districtId == '' && timePeriod != '') {
             let fileName = `diksha/stack_bar_reports/${timePeriod}/All.json`;
-            data = await s3File.readS3File(fileName);
+            data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
             res.status(200).send(data.data);
         } else {
             let fileName = `diksha/stack_bar_reports/${timePeriod}/${districtId}.json`;
-            data = await s3File.readS3File(fileName);
+            data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
             res.status(200).send(data.data);
         }
 

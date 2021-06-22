@@ -27,7 +27,7 @@
                         (click)="downloadRoport()"></em>
 
                     <em class="fa fa-home" id="home" title="Home" alt="Home" (click)="homeClick()"></em>
-                    <span id="rawDownload"
+                    <span hidden id="rawDownload"
                         style="color: #284d8a;cursor: pointer; float: right; margin: 8px 20px 0px 0px; text-decoration: underline; font-size: 13px;"
                         *ngIf="reportData.length > 0" (click)="downloadRawFile()"><strong>Download Raw
                             File</strong></span>

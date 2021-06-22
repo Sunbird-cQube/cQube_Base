@@ -12,10 +12,10 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
         let fileName;
         if (management != 'overall' && category == 'overall') {
             fileName = `exception_list/sat_exception/school_management_category/overall/overall_category/${management_type}/district.json`
-        }else{
+        } else {
             fileName = `exception_list/semester_completion/district_sem_completion_${sem}.json`
         }
-        var districtData = await s3File.readS3File(fileName);
+        var districtData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var sortedData = districtData['data'].sort((a, b) => (a.district_name) > (b.district_name) ? 1 : -1)
         logger.info('--- semester_completion district api response sent ---');
         res.status(200).send({ data: sortedData, footer: districtData.allDistrictsFooter.total_schools_with_missing_data });

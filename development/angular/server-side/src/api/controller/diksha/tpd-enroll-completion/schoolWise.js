@@ -3,14 +3,14 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/schoolData',auth.authController, async (req, res) => {
+router.post('/schoolData', auth.authController, async (req, res) => {
     try {
         logger.info('--- diksha chart allData api ---');
         let timePeriod = req.body.timePeriod;
         let blockId = req.body.blockId;
         let clusterId = req.body.clusterId
         var fileName = `diksha_tpd/report2/${timePeriod}/school/all_collections/${blockId}.json`;
-        var schoolData = await s3File.readS3File(fileName);
+        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var footer = schoolData['footer'][`${clusterId}`];
         schoolData = schoolData.data.filter(a => {
             return a.cluster_id == clusterId;

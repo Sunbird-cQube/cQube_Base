@@ -12,10 +12,10 @@ router.post('/schoolWise', auth.authController, async (req, res) => {
 
         if (management != 'overall' && category == 'overall') {
             fileName = `composite/school_management_category/overall_category/${management}/comp_school.json`
-        }else{
+        } else {
             fileName = `composite/comp_school.json`
         }
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         logger.info('---composite report all school wise response sent---');
         res.status(200).send(data);
@@ -38,10 +38,10 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
 
         if (management != 'overall' && category == 'overall') {
             fileName = `composite/school_management_category/overall_category/${management}/comp_school.json`
-        }else{
+        } else {
             fileName = `composite/comp_school.json`
         }
-        var schoolData = await s3File.readS3File(fileName);
+        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         let schoolFilterData = schoolData.filter(obj => {
             return (obj.district.id == distId && obj.block.id == blockId && obj.cluster.id == clusterId)

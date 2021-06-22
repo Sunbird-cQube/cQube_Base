@@ -4,7 +4,7 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const helper = require('./helper');
 
-router.post('/schoolWise', auth.authController, async(req, res) => {
+router.post('/schoolWise', auth.authController, async (req, res) => {
     try {
         logger.info(`--- ${req.body.report} heat map school wise api ---`);
         let { year, month, grade, subject_name, exam_date, blockId, clusterId, viewBy, report, management, category } = req.body
@@ -29,7 +29,7 @@ router.post('/schoolWise', auth.authController, async(req, res) => {
                     fileName = `${report}/heatChart/questionIdLevel/${year}/${month}/clusters/${blockId}.json`;
             }
         }
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         if (clusterId) {
             data = data.filter(val => {

@@ -132,7 +132,7 @@ router.post('/data', async (req, res) => {
         logger.info('---get telemetry api ---');
         var period = req.body.period;
         let fileName = `cqube_telemetry_views/${period}/telemetry_views_data.json`;
-        var telemetryData = await s3File.readS3File(fileName);
+        var telemetryData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         logger.info('--- get telemetry api response sent ---');
         res.status(200).send({ telemetryData });

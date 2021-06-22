@@ -3,13 +3,13 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/blockData',auth.authController, async (req, res) => {
+router.post('/blockData', auth.authController, async (req, res) => {
     try {
         logger.info('--- diksha chart allData api ---');
         let timePeriod = req.body.timePeriod;
         let districtId = req.body.districtId;
         var fileName = `diksha_tpd/report2/${timePeriod}/block/all_collections/${districtId}.json`;
-        var blockData = await s3File.readS3File(fileName);
+        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var footer = blockData['footer'][`${districtId}`];
         blockData = blockData.data.filter(a => {
             return a.district_id == districtId;
@@ -18,7 +18,7 @@ router.post('/blockData',auth.authController, async (req, res) => {
             labels: '',
             data: ''
         }
-        
+
         blockData = blockData.sort((a, b) => (a.block_name > b.block_name) ? 1 : -1);
         chartData['labels'] = blockData.map(a => {
             return a.block_name

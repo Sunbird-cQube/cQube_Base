@@ -4,7 +4,7 @@ const { logger } = require('../../lib/logger');
 const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
-router.post('/blockWise', auth.authController, async(req, res) => {
+router.post('/blockWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra block wise api ---');
         var management = req.body.management;
@@ -16,7 +16,7 @@ router.post('/blockWise', auth.authController, async(req, res) => {
         } else {
             fileName = `infra/infra_block_table.json`
         }
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         logger.info('--- Infra dist block api response sent ---');
         res.status(200).send(data);
@@ -27,7 +27,7 @@ router.post('/blockWise', auth.authController, async(req, res) => {
     }
 });
 
-router.post('/blockWise/:distId', auth.authController, async(req, res) => {
+router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         logger.info('---Infra block per district api ---');
         var management = req.body.management;
@@ -39,7 +39,7 @@ router.post('/blockWise/:distId', auth.authController, async(req, res) => {
         } else {
             fileName = `infra/infra_block_table.json`
         }
-        var blockData = await s3File.readS3File(fileName);
+        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         let distId = req.params.distId
 

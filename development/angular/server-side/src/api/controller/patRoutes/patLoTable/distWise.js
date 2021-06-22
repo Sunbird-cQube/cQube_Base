@@ -20,7 +20,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
             } else if (viewBy == 'question_id')
                 fileName = `pat/heatChart/questionIdLevel/${year}/${month}/allData.json`;
         }
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         let districtDetails = data.map(e => {
             return {
@@ -76,9 +76,9 @@ router.post('/distWise', auth.authController, async (req, res) => {
                 }
                 z.map(val1 => {
                     let y = {
-                        [`${val1.district_name}`]: {percentage: val1.percentage, mark: val1.marks},
+                        [`${val1.district_name}`]: { percentage: val1.percentage, mark: val1.marks },
                     }
-                    x = { ...x, ...y}
+                    x = { ...x, ...y }
                 })
                 val.push(x);
             }

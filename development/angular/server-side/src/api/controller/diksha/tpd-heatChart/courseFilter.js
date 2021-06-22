@@ -9,7 +9,7 @@ router.post('/', auth.authController, async (req, res) => {
         logger.info('--- diksha tpd distwise api ---');
         let { timePeriod } = req.body
         var fileName = `diksha_tpd/district/${timePeriod}.json`;
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var courses = [];
         data.map(item => {
             courses.push({ id: item['collection_id'], name: item['collection_name'] });

@@ -5,7 +5,7 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const groupArray = require('group-array');
 
-router.post('/stateWise', auth.authController, async(req, res) => {
+router.post('/stateWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Trends state wise api ---');
         var year = req.body.year;
@@ -14,10 +14,10 @@ router.post('/stateWise', auth.authController, async(req, res) => {
         let fileName;
         if (management != 'overall' && category == 'overall') {
             fileName = `attendance/trend_line_chart/school_management_category/overall_category/overall/${management}/state_${year}.json`;
-        }else{
+        } else {
             fileName = `attendance/trend_line_chart/state_${year}.json`;
         }
-        var stateData = await s3File.readS3File(fileName);
+        var stateData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var mydata = [];
 
         if (stateData[year]) {
@@ -131,7 +131,7 @@ router.post('/stateWise', auth.authController, async(req, res) => {
     }
 });
 
-router.post('/distWise', auth.authController, async(req, res) => {
+router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info('---Trends dist wise api ---');
         var year = req.body.year;
@@ -140,11 +140,11 @@ router.post('/distWise', auth.authController, async(req, res) => {
         let fileName;
         if (management != 'overall' && category == 'overall') {
             fileName = `attendance/trend_line_chart/school_management_category/overall_category/overall/${management}/district/district_${year}.json`;
-        }else{
+        } else {
             fileName = `attendance/trend_line_chart/district/district_${year}.json`;
         }
-    
-        var districtData = await s3File.readS3File(fileName);
+
+        var districtData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var keys = Object.keys(districtData);
         var mydata = [];
 
@@ -261,11 +261,11 @@ router.post('/distWise', auth.authController, async(req, res) => {
 });
 
 
-router.get('/getDateRange', auth.authController, function(req, res) {
+router.get('/getDateRange', auth.authController, function (req, res) {
     try {
         logger.info('---getDateRange api ---');
         const_data['getParams']['Key'] = `attendance/student_attendance_meta.json`;
-        const_data['s3'].getObject(const_data['getParams'], function(err, data) {
+        const_data['s3'].getObject(const_data['getParams'], function (err, data) {
             if (err) {
                 logger.error(err);
                 res.status(500).json({ errMsg: "Something went wrong" });

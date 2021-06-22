@@ -31,7 +31,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/school.json`
             }
         }
-        var schoolData = await s3File.readS3File(fileName);
+        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var Subjects = [];
         var sortedData;
         if (schoolData) {
@@ -90,7 +90,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/school.json`
             }
         }
-        var schoolData = await s3File.readS3File(fileName);
+        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         let distId = req.params.distId;
         let blockId = req.params.blockId;
         let clusterId = req.params.clusterId;

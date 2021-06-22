@@ -54,5 +54,12 @@
         "lng": 81.7787,
         "zoomLevel": 6,
         "stateCode": "22"
+    },
+    "OD": {
+        "name": "Odisha",
+        "lat": 20.1517,
+        "lng": 84.0985,
+        "zoomLevel": 7,
+        "stateCode": "21"
     }
 }
