@@ -16,7 +16,7 @@ router.post('/schoolWise', auth.authController, async (req, res) => {
         } else {
             fileName = `attendance/trend_line_chart/school/${clusterId}_${year}.json`;
         }
-        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var keys = Object.keys(schoolData);
         var mydata = [];
 

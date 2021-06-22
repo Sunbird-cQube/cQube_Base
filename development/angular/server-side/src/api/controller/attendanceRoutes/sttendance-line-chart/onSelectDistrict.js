@@ -17,7 +17,7 @@ router.post('/stateWise', auth.authController, async (req, res) => {
         } else {
             fileName = `attendance/trend_line_chart/state_${year}.json`;
         }
-        var stateData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var stateData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var mydata = [];
 
         if (stateData[year]) {
@@ -144,7 +144,7 @@ router.post('/distWise', auth.authController, async (req, res) => {
             fileName = `attendance/trend_line_chart/district/district_${year}.json`;
         }
 
-        var districtData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var districtData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var keys = Object.keys(districtData);
         var mydata = [];
 

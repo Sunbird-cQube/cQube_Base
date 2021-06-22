@@ -15,7 +15,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
         } else {
             fileName = `udise/udise_block_wise.json`
         }
-        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var mydata = blockData.data;
         logger.info('--- blocks UDISE api response sent---');
         res.status(200).send({ data: mydata, footer: blockData.allBlocksFooter.totalSchools });
@@ -38,7 +38,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
         } else {
             fileName = `udise/udise_block_wise.json`
         }
-        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         let distId = req.params.distId
 
         let filterData = blockData.data.filter(obj => {

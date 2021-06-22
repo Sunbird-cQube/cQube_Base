@@ -16,7 +16,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
         } else {
             fileName = `infra/infra_school_map.json`
         }
-        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var mydata = schoolData.data;
         logger.info('---Infra school wise api response sent---');
         res.status(200).send({ data: mydata, footer: schoolData.allSchoolsFooter.totalSchools });
@@ -38,7 +38,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', async (req, res) => {
         } else {
             fileName = `infra/infra_school_map.json`
         }
-        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         let clusterId = req.params.clusterId;
 

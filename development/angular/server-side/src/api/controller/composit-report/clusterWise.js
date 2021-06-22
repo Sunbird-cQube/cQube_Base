@@ -15,7 +15,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         } else {
             fileName = `composite/comp_cluster.json`
         }
-        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         logger.info('---composite report all cluster wise response sent---');
         res.status(200).send(data);
@@ -40,7 +40,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         } else {
             fileName = `composite/comp_cluster.json`
         }
-        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         let clusterFilterData = clusterData.filter(obj => {
             return (obj.district.id == distId && obj.block.id == blockId)

@@ -26,7 +26,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 fileName = `crc/${year}/${month}/cluster.json`;
             }
         }
-        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         var clusterData = jsonData.data;
 
@@ -62,7 +62,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                 fileName = `crc/${year}/${month}/cluster.json`;
             }
         }
-        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         var clusterData = jsonData
 

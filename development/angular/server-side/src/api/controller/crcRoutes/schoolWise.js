@@ -26,7 +26,7 @@ router.post('/allSchoolWise', auth.authController, async (req, res) => {
                 fileName = `crc/${year}/${month}/school.json`;
             }
         }
-        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         var schoolData = jsonData.data;
         logger.info('--- crc all school wise api response sent ---');
@@ -60,7 +60,7 @@ router.post('/schoolWise/:distId/:blockId/:clusterId', auth.authController, asyn
                 fileName = `crc/${year}/${month}/school.json`;
             }
         }
-        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         var schoolData = jsonData
         let clusterId = req.params.clusterId;

@@ -9,7 +9,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         logger.info('--- semester_completion cluster wise api ---');
         var sem = req.body.sem;
         let fileName = `exception_list/semester_completion/cluster_sem_completion_${sem}.json`;
-        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var sortedData = clusterData['data'].sort((a, b) => (a.cluster_name) > (b.cluster_name) ? 1 : -1)
         logger.info('--- semester_completion cluster wise api response sent---');
         res.status(200).send({ data: sortedData, footer: clusterData.allClustersFooter.total_schools_with_missing_data });
@@ -24,7 +24,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         logger.info('---semester_completion clusterperBlock api ---');
         var sem = req.body.sem;
         let fileName = `exception_list/semester_completion/cluster_sem_completion_${sem}.json`;
-        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         let distId = req.params.distId;
         let blockId = req.params.blockId;

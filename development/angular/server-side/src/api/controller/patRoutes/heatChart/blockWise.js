@@ -30,7 +30,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
             }
         }
 
-        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         if (districtId) {
             data = data.filter(val => {
                 return val.district_id == districtId

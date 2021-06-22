@@ -16,7 +16,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         } else {
             fileName = `attendance/trend_line_chart/block/${districtId}_${year}.json`;
         }
-        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var keys = Object.keys(blockData);
         var mydata = [];
 

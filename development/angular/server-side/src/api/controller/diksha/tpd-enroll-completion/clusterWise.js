@@ -9,7 +9,7 @@ router.post('/clusterData', auth.authController, async (req, res) => {
         let timePeriod = req.body.timePeriod;
         let blockId = req.body.blockId;
         var fileName = `diksha_tpd/report2/${timePeriod}/cluster/all_collections/${blockId}.json`;
-        var clsuetrData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var clsuetrData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var footer = clsuetrData['footer'][`${blockId}`];
         clsuetrData = clsuetrData.data.filter(a => {
             return a.block_id == blockId;

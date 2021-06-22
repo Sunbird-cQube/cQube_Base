@@ -15,7 +15,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
         } else {
             fileName = `udise/udise_cluster_wise.json`
         }
-        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var mydata = clusterData.data;
         logger.info('---UDISE cluster wise api response sent---');
         res.status(200).send({ data: mydata, footer: clusterData.allClustersFooter.totalSchools });
@@ -37,7 +37,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
         } else {
             fileName = `udise/udise_cluster_wise.json`
         }
-        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         let distId = req.params.distId;
         let blockId = req.params.blockId;

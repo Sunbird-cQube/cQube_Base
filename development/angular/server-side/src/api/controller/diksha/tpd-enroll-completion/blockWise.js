@@ -9,7 +9,7 @@ router.post('/blockData', auth.authController, async (req, res) => {
         let timePeriod = req.body.timePeriod;
         let districtId = req.body.districtId;
         var fileName = `diksha_tpd/report2/${timePeriod}/block/all_collections/${districtId}.json`;
-        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var footer = blockData['footer'][`${districtId}`];
         blockData = blockData.data.filter(a => {
             return a.district_id == districtId;

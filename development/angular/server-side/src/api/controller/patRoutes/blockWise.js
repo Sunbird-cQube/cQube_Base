@@ -83,7 +83,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                 }
             }
         }
-        blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var footer;
         var allSubjects = [];
         if (period != 'all') {
@@ -170,7 +170,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                 footerFile = `${report}/${period}/district/${semester}/grade_subject_footer.json`;
             }
         }
-        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         let distId = req.params.distId
 
         let filterData = blockData.data.filter(obj => {

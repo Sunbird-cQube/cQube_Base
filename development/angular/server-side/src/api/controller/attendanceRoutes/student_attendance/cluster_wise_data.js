@@ -37,7 +37,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
                 fileName = `attendance/${year}/${month}/cluster.json`;
             }
         }
-        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var clustersAttendanceData = jsonData.data
         var dateRange = `${clustersAttendanceData[0]['data_from_date']} to ${clustersAttendanceData[0]['data_upto_date']}`;
         var clusterData = [];
@@ -100,7 +100,7 @@ router.post('/clusterPerBlock', auth.authController, async (req, res) => {
                 fileName = `attendance/${year}/${month}/cluster/${blockId}.json`;
             }
         }
-        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile("/schoolData.json");;
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var clusterData = [];
         var filterData = jsonData.data.filter(data => {
             return (data.block_id == blockId)
