@@ -2,6 +2,12 @@
     display: flex;
     justify-content: center;
   }
+
+  #inProgress img{
+    margin-top: 0%;
+    height: 500px;
+    width: 650px;
+  }
 @media screen and (min-width: 2520px) {
   #inProgress img{
       margin-top: 2%;
