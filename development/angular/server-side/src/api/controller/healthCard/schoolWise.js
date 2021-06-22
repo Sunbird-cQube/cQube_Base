@@ -19,7 +19,7 @@ router.post('/schoolWise', auth.authController, async (req, res) => {
             fileName = `healthCard/school/${timePeriod}/${blockId}.json`;
         }
 
-        var schoolData = await s3File.readS3File(fileName);
+        var schoolData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         schoolData = schoolData.filter(a => {
             if (a.school_id == schoolId) {
                 return a;

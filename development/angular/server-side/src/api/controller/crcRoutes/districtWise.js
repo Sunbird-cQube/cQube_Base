@@ -4,7 +4,7 @@ const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 var const_data = require('../../lib/config');
 
-router.post('/districtWise', auth.authController, async(req, res) => {
+router.post('/districtWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all district wise api ---');
         var timePeriod = req.body.timePeriod;
@@ -27,7 +27,7 @@ router.post('/districtWise', auth.authController, async(req, res) => {
             }
         }
 
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var districtData = jsonData
 
         districtData.allDistrictsFooter['totalNumberOfVisits'] = parseInt(districtData.allDistrictsFooter.totalNumberOfVisits);
@@ -44,11 +44,11 @@ router.post('/districtWise', auth.authController, async(req, res) => {
 })
 
 
-router.get('/getDateRange', auth.authController, function(req, res) {
+router.get('/getDateRange', auth.authController, function (req, res) {
     try {
         logger.info('---getDateRange api ---');
         const_data['getParams']['Key'] = `crc/crc_meta_year_month.json`;
-        const_data['s3'].getObject(const_data['getParams'], function(err, data) {
+        const_data['s3'].getObject(const_data['getParams'], function (err, data) {
             if (err) {
                 logger.error(err);
                 res.status(500).json({ errMsg: "Something went wrong" });

@@ -4,7 +4,7 @@ const auth = require('../../middleware/check-auth');
 const s3File = require('../../lib/reads3File');
 
 
-router.post('/allBlockWise', auth.authController, async(req, res) => {
+router.post('/allBlockWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc all block wise api ---');
         var timePeriod = req.body.timePeriod;
@@ -26,7 +26,7 @@ router.post('/allBlockWise', auth.authController, async(req, res) => {
                 fileName = `crc/${year}/${month}/block.json`;
             }
         }
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         var blockData = jsonData.data;
         logger.info('--- crc all blocks api response sent ---');
@@ -38,7 +38,7 @@ router.post('/allBlockWise', auth.authController, async(req, res) => {
     }
 })
 
-router.post('/blockWise/:distId', auth.authController, async(req, res) => {
+router.post('/blockWise/:distId', auth.authController, async (req, res) => {
     try {
         logger.info('--- crc block per district api ---');
 
@@ -62,7 +62,7 @@ router.post('/blockWise/:distId', auth.authController, async(req, res) => {
                 fileName = `crc/${year}/${month}/block.json`;
             }
         }
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         var blockData = jsonData
         let filterData = jsonData.data.filter(obj => {

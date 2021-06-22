@@ -17,7 +17,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
         } else {
             fileName = `healthCard/block/${timePeriod}/${blockId}.json`;
         }
-        var blockData = await s3File.readS3File(fileName);
+        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         logger.info('--- healthCard block wise api response sent ---');
         res.status(200).send({ blockData });
     } catch (e) {

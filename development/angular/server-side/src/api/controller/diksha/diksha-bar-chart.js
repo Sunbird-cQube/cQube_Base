@@ -8,7 +8,7 @@ router.post('/dikshaAllData', auth.authController, async (req, res) => {
         logger.info('--- diksha chart allData api ---');
         let collection_type = req.body.collection_type
         var fileName = `diksha/bar_chart_reports/${collection_type}/all_districts.json`
-        var districtsData = await s3File.readS3File(fileName);
+        var districtsData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var chartData = {
             labels: '',
             data: ''
@@ -60,7 +60,7 @@ router.post('/dikshaGetCollections', auth.authController, async (req, res) => {
             fileName = `diksha/bar_chart_reports/${collection_type}/all_collections.json`
         }
 
-        var collectionData = await s3File.readS3File(fileName);
+        var collectionData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         let collections;
         collections = collectionData.map(val => {
             return val.collection_name
@@ -93,7 +93,7 @@ router.post('/dikshaGetCollectionData', auth.authController, async (req, res) =>
         }
         var footerData = await s3File.readS3File(footerFile);
         footerData = footerData.collections[`${collection_name}`];
-        var collectionData = await s3File.readS3File(fileName);
+        var collectionData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         collectionData = collectionData.filter(a => {
             return a.collection_name == collection_name
         })

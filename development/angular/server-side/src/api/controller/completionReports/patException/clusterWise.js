@@ -31,7 +31,7 @@ router.post('/allClusterWise', auth.authController, async (req, res) => {
                 fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster.json`
             }
         }
-        var clusterData = await s3File.readS3File(fileName);
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var Subjects = [];
         var sortedData;
         if (clusterData) {
@@ -91,7 +91,7 @@ router.post('/clusterWise/:distId/:blockId', auth.authController, async (req, re
                 fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/cluster.json`
             }
         }
-        var clusterData = await s3File.readS3File(fileName);
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         let distId = req.params.distId;
         let blockId = req.params.blockId;

@@ -30,7 +30,7 @@ router.post('/allBlockWise', auth.authController, async (req, res) => {
                 fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/block.json`
             }
         }
-        var blockData = await s3File.readS3File(fileName);
+        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var Subjects = [];
         var sortedData;
         if (blockData) {
@@ -87,7 +87,7 @@ router.post('/blockWise/:distId', auth.authController, async (req, res) => {
                 fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/block.json`
             }
         }
-        var blockData = await s3File.readS3File(fileName);
+        var blockData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         let distId = req.params.distId
         let filterData = blockData.data.filter(obj => {
             return (obj.district_id == distId)

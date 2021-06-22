@@ -42,7 +42,7 @@ router.post('/schoolWise', auth.authController, async function (req, res) {
                 }
             }
         }
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var schoolsAttendanceData = jsonData.data
         var dateRange = `${schoolsAttendanceData[0]['data_from_date']} to ${schoolsAttendanceData[0]['data_upto_date']}`;
         var schoolData = [];
@@ -113,7 +113,7 @@ router.post('/schoolPerCluster', auth.authController, async (req, res) => {
             }
         }
 
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var schoolsDetails = [];
         var filterData = jsonData.data.filter(data => {
             return (data.cluster_id == clusterId)

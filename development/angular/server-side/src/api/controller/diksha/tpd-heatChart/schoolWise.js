@@ -7,9 +7,9 @@ const helper = require('./helper');
 router.post('/schoolWise', auth.authController, async (req, res) => {
     try {
         logger.info('---diksha tpd  school wise api ---');
-        let { timePeriod, reportType, clusterId,courses } = req.body
+        let { timePeriod, reportType, clusterId, courses } = req.body
         var fileName = `diksha_tpd/school/${timePeriod}.json`;
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         if (clusterId) {
             data = data.filter(val => {

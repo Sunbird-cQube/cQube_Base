@@ -3,7 +3,7 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/schoolWise', auth.authController, async function(req, res) {
+router.post('/schoolWise', auth.authController, async function (req, res) {
     try {
         logger.info('--- Attendance school wise api ---');
         var month = req.body.month;
@@ -37,7 +37,7 @@ router.post('/schoolWise', auth.authController, async function(req, res) {
                 fileName = `teacher_attendance/school_${year}_${month}.json`;
             }
         }
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var schoolsAttendanceData = jsonData.data;
         var dateRange = `${schoolsAttendanceData[0]['data_from_date']} to ${schoolsAttendanceData[0]['data_upto_date']}`;
         var schoolData = [];
@@ -66,7 +66,7 @@ router.post('/schoolWise', auth.authController, async function(req, res) {
     }
 });
 
-router.post('/schoolPerCluster', auth.authController, async(req, res) => {
+router.post('/schoolPerCluster', auth.authController, async (req, res) => {
     try {
         logger.info('--- Attendance schoolPerCluster api ---');
 
@@ -103,7 +103,7 @@ router.post('/schoolPerCluster', auth.authController, async(req, res) => {
             }
         }
 
-        var jsonData = await s3File.readS3File(fileName);
+        var jsonData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var schoolsDetails = [];
         var filterData = jsonData.data.filter(data => {
             return (data.cluster_id == clusterId)

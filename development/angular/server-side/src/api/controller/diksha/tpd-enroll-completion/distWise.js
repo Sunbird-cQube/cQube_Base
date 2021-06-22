@@ -8,13 +8,13 @@ router.post('/allDistData', auth.authController, async (req, res) => {
         logger.info('--- diksha chart allData api ---');
         let timePeriod = req.body.timePeriod;
         var fileName = `diksha_tpd/report2/${timePeriod}/district/all_collections.json`;
-        var districtsData = await s3File.readS3File(fileName);
+        var districtsData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var footer = districtsData['footer'];
         var chartData = {
             labels: '',
             data: ''
         }
-        
+
         districtsData = districtsData.data.sort((a, b) => (a.district_name > b.district_name) ? 1 : -1)
         chartData['labels'] = districtsData.map(a => {
             return a.district_name
@@ -43,7 +43,7 @@ router.post('/getCollections', auth.authController, async (req, res) => {
         } else {
             fileName = `diksha_tpd/report2/${timePeriod}/${level}/collections/${id}.json`;
         }
-        var collectionsList = await s3File.readS3File(fileName);
+        var collectionsList = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         if (collectionsList) {
             let collections;
@@ -80,7 +80,7 @@ router.post('/getCollectionData', auth.authController, async (req, res) => {
             fileName = `diksha_tpd/report2/${timePeriod}/${level}/collections/${id}.json`;
         }
 
-        var collectionData = await s3File.readS3File(fileName);
+        var collectionData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         collectionData = collectionData.data.filter(a => {
             return a.collection_name == collection_name
         })

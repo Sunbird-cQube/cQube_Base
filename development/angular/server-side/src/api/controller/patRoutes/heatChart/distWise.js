@@ -4,7 +4,7 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const helper = require('./helper');
 
-router.post('/distWise', auth.authController, async(req, res) => {
+router.post('/distWise', auth.authController, async (req, res) => {
     try {
         logger.info(`---${req.body.report} heat map distwise api ---`);
         let { year, month, grade, subject_name, exam_date, viewBy, report, management, category } = req.body
@@ -29,7 +29,7 @@ router.post('/distWise', auth.authController, async(req, res) => {
             }
         }
 
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         let districtDetails = data.map(e => {
             return {
                 district_id: e.district_id,

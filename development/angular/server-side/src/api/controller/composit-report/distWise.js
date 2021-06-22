@@ -12,10 +12,10 @@ router.post('/distWise', auth.authController, async (req, res) => {
 
         if (management != 'overall' && category == 'overall') {
             fileName = `composite/school_management_category/overall_category/${management}/comp_district.json`
-        }else{
+        } else {
             fileName = `composite/comp_district.json`
         }
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         logger.info('--- composite dist wise api response sent ---');
         res.status(200).send(data);

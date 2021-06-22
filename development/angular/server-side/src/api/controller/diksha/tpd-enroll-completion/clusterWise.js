@@ -3,13 +3,13 @@ const { logger } = require('../../../lib/logger');
 const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 
-router.post('/clusterData',auth.authController, async (req, res) => {
+router.post('/clusterData', auth.authController, async (req, res) => {
     try {
         logger.info('--- diksha chart allData api ---');
         let timePeriod = req.body.timePeriod;
         let blockId = req.body.blockId;
         var fileName = `diksha_tpd/report2/${timePeriod}/cluster/all_collections/${blockId}.json`;
-        var clsuetrData = await s3File.readS3File(fileName);
+        var clsuetrData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var footer = clsuetrData['footer'][`${blockId}`];
         clsuetrData = clsuetrData.data.filter(a => {
             return a.block_id == blockId;
@@ -27,7 +27,7 @@ router.post('/clusterData',auth.authController, async (req, res) => {
             return { enrollment: a.total_enrolled, completion: a.total_completed, percent_teachers: a.percentage_teachers, percent_completion: a.percentage_completion }
         })
         logger.info('--- diksha chart allData api response sent ---');
-        res.send({ chartData, downloadData: clsuetrData ,footer});
+        res.send({ chartData, downloadData: clsuetrData, footer });
     } catch (e) {
         logger.error(`Error :: ${e}`)
         res.status(500).json({ errMessage: "Internal error. Please try again!!" });

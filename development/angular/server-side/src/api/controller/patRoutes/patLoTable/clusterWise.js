@@ -21,7 +21,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
                 fileName = `pat/heatChart/questionIdLevel/${year}/${month}/blocks/${blockId}.json`;
         }
 
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         if (blockId) {
             data = data.filter(val => {

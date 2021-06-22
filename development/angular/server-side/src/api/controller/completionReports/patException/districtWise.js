@@ -30,7 +30,7 @@ router.post('/allDistrictWise', auth.authController, async (req, res) => {
                 fileName = `exception_list/${report}/${timePeriod}${report == 'sat_exception' ? '/' + semester : ''}/district.json`
             }
         }
-        var districtData = await s3File.readS3File(fileName);
+        var districtData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         var Subjects = [];
         var sortedData;
         if (districtData) {
@@ -86,7 +86,7 @@ router.post('/grades', async (req, res, next) => {
             }
         }
 
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         logger.info('---grades metadata api response sent---');
         res.status(200).send({ data: data });
     } catch (e) {
@@ -105,7 +105,7 @@ router.post('/getSemesters', async (req, res) => {
         } else {
             fileName = `sat/all/sat_semester_metadata.json`;
         }
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         logger.info('---sat metadata api response sent---');
         res.status(200).send({ data: data });
     } catch (e) {

@@ -16,7 +16,7 @@ router.post('/stateData', auth.authController, async (req, res) => {
         } else {
             fileName = `healthCard/${timePeriod}/state.json`;
         }
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         logger.info('--- healthCard stateData api response sent ---');
         res.status(200).send({ data });
     } catch (e) {

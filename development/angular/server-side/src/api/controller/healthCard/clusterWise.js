@@ -18,7 +18,7 @@ router.post('/clusterWise', auth.authController, async (req, res) => {
         } else {
             fileName = `healthCard/cluster/${timePeriod}/${blockId}.json`;
         }
-        var clusterData = await s3File.readS3File(fileName);
+        var clusterData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         clusterData = clusterData.filter(a => {
             if (a.cluster_id == clusterId) {
                 return a;

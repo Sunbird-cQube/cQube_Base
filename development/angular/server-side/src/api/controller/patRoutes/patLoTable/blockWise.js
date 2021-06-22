@@ -21,7 +21,7 @@ router.post('/blockWise', auth.authController, async (req, res) => {
                 fileName = `pat/heatChart/questionIdLevel/${year}/${month}/districts/${districtId}.json`;
         }
 
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         if (districtId) {
             data = data.filter(val => {
                 return val.district_id == districtId

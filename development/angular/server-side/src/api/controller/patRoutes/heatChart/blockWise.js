@@ -4,7 +4,7 @@ const auth = require('../../../middleware/check-auth');
 const s3File = require('../../../lib/reads3File');
 const helper = require('./helper');
 
-router.post('/blockWise', auth.authController, async(req, res) => {
+router.post('/blockWise', auth.authController, async (req, res) => {
     try {
         logger.info(`--- ${req.body.report} heat map block wise api ---`);
         let { year, month, grade, subject_name, exam_date, districtId, viewBy, report, management, category } = req.body
@@ -30,7 +30,7 @@ router.post('/blockWise', auth.authController, async(req, res) => {
             }
         }
 
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
         if (districtId) {
             data = data.filter(val => {
                 return val.district_id == districtId

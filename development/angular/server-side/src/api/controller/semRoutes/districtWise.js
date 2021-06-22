@@ -8,7 +8,7 @@ router.post('/districtWise', auth.authController, async (req, res) => {
     try {
         logger.info('--- district wise sem api ---');
         let fileName = `semester/district_sem_opt_json_${req.body.sem}.json`
-        var myData = await s3File.readS3File(fileName);
+        var myData = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         let districtData = myData.data;
         districtData = districtData.filter(function (el) {

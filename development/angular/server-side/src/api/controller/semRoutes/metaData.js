@@ -7,7 +7,7 @@ router.post('/metadata', async (req, res) => {
     try {
         logger.info('---sem metadata api ---');
         let fileName = `semester/metaData.json`
-        var data = await s3File.readS3File(fileName);
+        var data = await s3File.storageType == "s3" ? await s3File.readS3File(fileName) : await s3File.readLocalFile(fileName);;
 
         logger.info('--- sem metadata api response sent ---');
         res.status(200).send({ data });
