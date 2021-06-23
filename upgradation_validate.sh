@@ -42,16 +42,6 @@ if [[ $base_dir_status == 1 ]]; then
 fi
 }
 
-check_s3_bucket(){
-
-s3_bucket=$(cat $base_dir/cqube/.cqube_config | grep $3 )
-s3_bucket_name=$(cut -d "=" -f2 <<< "$s3_bucket")
-if [[ ! "$2" == "$s3_bucket_name" ]]; then
-    echo "Error - $1 must be same as previously used bucket"; fail=1
-fi
-
-}
-
 check_version(){
 
 # getting the installed version
@@ -171,16 +161,6 @@ check_vpn_ip()
     fi
 }
 
-check_aws_key(){
-    aws_key_status=0
-    export AWS_ACCESS_KEY_ID=$1
-    export AWS_SECRET_ACCESS_KEY=$2
-    aws s3api list-buckets > /dev/null 2>&1
-    if [ ! $? -eq 0 ]; then echo "Error - Invalid aws access or secret keys"; fail=1
-        aws_key_status=1
-    fi
-}
-
 check_db_naming(){
 dir=$(cat $base_dir/cqube/.cqube_config | grep $3 )
 temp_db_name=$(cut -d "=" -f2 <<< "$dir")
@@ -217,16 +197,6 @@ temp_ep=`grep '^KEYCLOAK_HOST =' $base_dir/cqube/dashboard/server_side/.env | aw
 if [[ ! $temp_ep == "https://$2" ]]; then
     echo "Error - Change in domain name. Please verify the api_endpoint "; fail=1
 fi
-}
-
-check_aws_default_region(){
-    region_len=${#2}
-    if [[ $region_len -ge 9 ]] && [[ $region_len -le 15 ]]; then
-        curl https://s3.$2.amazonaws.com > /dev/null 2>&1
-        if [[ ! $? == 0 ]]; then 
-            echo "Error - There is a problem reaching the aws default region. Please check the $1 value." ; fail=1
-        fi
-    fi
 }
 
 check_mem(){
@@ -278,8 +248,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 # An array of mandatory values
 declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" \
-                "s3_access_key" "s3_secret_key" "s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
-		"aws_default_region" "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
+		"local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
 		"keycloak_config_otp" )
 
 # Create and empty array which will store the key and value pair from config file
@@ -288,9 +257,6 @@ declare -A vals
 # Constant variables
 realm_name=cQube
 
-# Getting aws keys
-aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
 
 # Getting base_dir
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
@@ -333,39 +299,6 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_base_dir $key $value
-       fi
-       ;;
-   s3_access_key)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       fi
-       ;;
-   s3_secret_key)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-      else
-          check_aws_key $aws_access_key $aws_secret_key
-       fi
-       ;;
-   s3_input_bucket)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_s3_bucket $key $value "CQUBE_S3_INPUT"
-       fi
-       ;;
-   s3_output_bucket)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_s3_bucket $key $value "CQUBE_S3_OUTPUT"
-       fi
-       ;;
-   s3_emission_bucket)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_s3_bucket $key $value "CQUBE_S3_EMISSION"
        fi
        ;;
    local_ipv4_address)
@@ -428,13 +361,6 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_api_endpoint $key $value
-       fi
-       ;;
-   aws_default_region)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check. Recommended value is ap-south-1"; fail=1
-       else
-           check_aws_default_region
        fi
        ;;
    *)

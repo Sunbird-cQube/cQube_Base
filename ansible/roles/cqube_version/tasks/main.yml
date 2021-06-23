@@ -16,9 +16,6 @@
                CQUBE_BASE_DIR={{ base_dir }}
                CQUBE_DB_USER={{ db_user }}
                CQUBE_DB_NAME={{ db_name }}
-               CQUBE_S3_INPUT={{ s3_input_bucket }}
-               CQUBE_S3_OUTPUT={{ s3_output_bucket }}
-               CQUBE_S3_EMISSION={{ s3_emission_bucket }}
                CQUBE_API_ENDPOINT={{ api_endpoint }}
   tags: install
 
