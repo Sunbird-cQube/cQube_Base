@@ -17,7 +17,7 @@
                             <span>{{daysArr[i]}}</span>
                         </option>
                     </select>
-                    <button class="btn btn-primary" (click)="onSubmitRet()"
+                    <button class="btn btn-primary" id="ret-submit" (click)="onSubmitRet()"
                         style="float: right;margin-top: -5px !important;">Submit</button>
                 </div>
             </div>
@@ -188,8 +188,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div style="top: 20px; position: relative;">
-                        <button class="btn btn-primary" (click)="onSubmit()" style="float: right;">Submit</button>
-                        <button class="btn btn-secondary" (click)="onCancel()"
+                        <button class="btn btn-primary" id="replay-submit" (click)="onSubmit()" style="float: right;">Submit</button>
+                        <button class="btn btn-secondary" id="cancel" (click)="onCancel()"
                             style="margin-right: 30px; float: right;">
                             Cancel</button>
                     </div>
