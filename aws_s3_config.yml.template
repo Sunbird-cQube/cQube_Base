@@ -1,0 +1,27 @@
+---
+#------------------------------------------------------#
+#
+# cQube Installaion configuration parameters
+#
+# ALL VARIABLES ARE MANDATORY.
+# PLEASE FILL THOSE BEFORE RUNNING CORRESPONDING STEPS.
+#
+#------------------------------------------------------#
+
+#NOTE: Please fill the value with a space between ":" and the value. 
+
+
+# S3 Parameters
+# Naming convention to follow while choosing the bucket name
+# The bucket name can be between 3 and 63 characters long, and can contain only lower-case characters, numbers, periods, and dashes.
+# Each label in the bucket name must start with a lowercase letter or number.
+# The bucket name cannot contain underscores, end with a dash, have consecutive periods, or use dashes adjacent to periods.
+# The bucket name cannot be formatted as an IP address (198.51.100.24).
+
+s3_input_bucket:                            # s3 input bucket name, to store cQube raw input data. ( Example: cqube-prod-input )
+s3_output_bucket:                           # s3 output bucket name, to store the cQube processed output data ( Example: cqube-prod-output )
+s3_emission_bucket:                         # s3 emission bucket name, to store emitted data files (temporary storage location till data files process completes) ( Example: cqube-prod-emission )
+s3_access_key:                              # AWS Access key for creation of s3 bucket
+s3_secret_key:                              # AWS Secret key for creation of s3 bucket
+aws_default_region: 'ap-south-1'            # aws default region for creation of s3 bucket
+

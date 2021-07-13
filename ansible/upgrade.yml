@@ -6,6 +6,7 @@
   vars_files:
     - ../upgradation_config.yml  
     - ../memory_config.yml
+    - ../aws_s3_upgradation_config.yml  
     - ../.version
     
   roles: 

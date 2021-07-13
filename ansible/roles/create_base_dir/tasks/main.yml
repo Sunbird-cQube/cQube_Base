@@ -35,10 +35,29 @@
     group: "{{ system_user_name }}"
   tags: install
 
+- name: Copying the aws_s3_config.yml file as base_aws_s3_installation_config.yml
+  copy:
+    src: ../aws_s3_config.yml
+    dest: "{{ base_dir }}/cqube/conf/base_aws_s3_installation_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  
+  
 - name: Copying the upgradation_config.yml file as base_upgradation_config.yml
   copy:
     src: ../upgradation_config.yml
     dest: "{{ base_dir }}/cqube/conf/base_upgradation_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: update
+
+- name: Copying the aws_s3_upgradation_config.yml file as base_aws_s3_upgradation_config.yml
+  copy:
+    src: ../aws_s3_upgradation_config.yml
+    dest: "{{ base_dir }}/cqube/conf/base_aws_s3_upgradation_config.yml"
     mode: '0644'
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"

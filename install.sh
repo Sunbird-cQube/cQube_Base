@@ -33,7 +33,6 @@ if [ $? -ne 0 ]; then
 fi
 . "validate.sh"
 
-
 if [ -e /etc/ansible/ansible.cfg ]; then
 	sudo sed -i 's/^#log_path/log_path/g' /etc/ansible/ansible.cfg
 fi
