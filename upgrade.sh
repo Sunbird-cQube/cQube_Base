@@ -15,8 +15,7 @@ if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 chmod u+x upgradation_validate.sh
 
 . "upgradation_validate.sh"
-
-ansible-playbook ansible/create_base.yml --tags "update" --extra-vars "@upgradation_config.yml"
+ansible-playbook ansible/create_base.yml --tags "update" --extra-vars "@upgradation_config.yml" --extra-vars "@aws_s3_upgradation_config.yml"
 
 if [ -e /etc/ansible/ansible.cfg ]; then
 	sudo sed -i 's/^#log_path/log_path/g' /etc/ansible/ansible.cfg
