@@ -20,6 +20,7 @@ sudo apt install python -y
 sudo apt-get install python3-pip -y
 sudo apt-get install python-apt -y
 sudo apt install unzip -y
+sudo apt install net-tools -y
 
 chmod u+x validate.sh
 
