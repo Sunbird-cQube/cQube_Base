@@ -17,6 +17,21 @@ if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
 fi
 }
 
+check_input_data(){
+if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
+   echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
+fi   
+ if ! [[ -r "$2" ]];  then
+      echo "Error - '$2' please give read permission to directory."; fail=1
+ fi
+ if ! [[ -w "$2" ]];  then
+      echo "Error - '$2' please give write permission to directory."; fail=1
+ fi
+ if ! [[ -x "$2" ]]; then
+      echo "Error - '$2' please give execute permission to directory."; fail=1
+ fi 	
+}
+
 check_version(){
 if [[ ! "$base_dir" = /* ]] || [[ ! -d $base_dir ]]; then
     echo "Error - Please enter the absolute path or make sure the directory is present.";
@@ -209,7 +224,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 # An array of mandatory values
 declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "read_only_db_user" \
-                " read_only_db_password" \
+                " read_only_db_password" "input_data" "output_data" "emission_data" \
 		"local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
 		"keycloak_config_otp") 
 
@@ -284,6 +299,27 @@ case $key in
           check_db_naming $key $value
        fi
        ;;
+   input_data)
+        if [[ $value == "" ]]; then
+           echo "Error - in $key. Unable to get the value. Please check."; fail=1
+        else
+           check_input_data $key $value
+        fi
+        ;;
+   output_data)
+        if [[ $value == "" ]]; then
+           echo "Error - in $key. Unable to get the value. Please check."; fail=1
+        else
+           check_input_data $key $value
+        fi
+        ;;
+   emission_data)
+        if [[ $value == "" ]]; then
+           echo "Error - in $key. Unable to get the value. Please check."; fail=1
+        else
+           check_input_data $key $value
+        fi
+        ;;
    keycloak_adm_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
