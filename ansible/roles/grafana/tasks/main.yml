@@ -1,5 +1,6 @@
 ---
 - name: Update apt cache - Grafana
+  become: yes
   apt:
     update_cache: true
 
@@ -15,6 +16,7 @@
     validate_certs: false
 
 - name: Add Grafana repository [Debian/Ubuntu]
+  become: yes
   apt_repository:
     repo: deb https://packages.grafana.com/oss/deb stable main
     state: present
