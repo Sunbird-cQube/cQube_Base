@@ -10,11 +10,11 @@
 
 #NOTE: Please fill the value with a space between ":" and the value. 
 
-s3_input_bucket:                            # Enter s3 input bucket name used to store cQube raw input data.
-s3_output_bucket:                           # Enter s3 output bucket name used to store the cQube processed output data.
-s3_emission_bucket:                         # Enter s3 emission bucket name used to store emitted data files.
-s3_access_key:                              # AWS Access key to access s3 bucket.
-s3_secret_key:                              # AWS Secret key to acess s3 bucket.
+s3_input_bucket: bucket_name                           # Enter s3 input bucket name used to store cQube raw input data.
+s3_output_bucket: bucket_name                          # Enter s3 output bucket name used to store the cQube processed output data.
+s3_emission_bucket: bucket_name                        # Enter s3 emission bucket name used to store emitted data files.
+s3_access_key: access_key                             # AWS Access key to access s3 bucket.
+s3_secret_key: secret_key                             # AWS Secret key to acess s3 bucket.
 aws_default_region: 'ap-south-1'            # AWS default region of s3 bucket.
 
 
