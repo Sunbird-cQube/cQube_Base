@@ -6,7 +6,6 @@
   vars_files:
     - ../config.yml
     - ../memory_config.yml
-    - ../aws_s3_config.yml  
     - ../.version
 
   roles:

@@ -3,3 +3,8 @@ ansible/*.tar
 *.tar
 config.yml
 awscli*
+aws_s3_config.yml
+aws_s3_upgradation_config.yml
+local_storage_config.yml
+local_storage_upgradation_config.yml
+upgradation_config.yml
