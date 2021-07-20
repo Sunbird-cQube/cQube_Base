@@ -29,7 +29,7 @@ if [[ $aws_key_status == 0 ]]; then
         bucketstatus=`aws s3api head-bucket --bucket "${2}" 2>&1`
         if [ ! $? == 0 ]
         then
-            echo "Error - [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in config.yml"; fail=1
+            echo "Error - [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in aws_s3_config.yml"; fail=1
         fi
 fi
 }

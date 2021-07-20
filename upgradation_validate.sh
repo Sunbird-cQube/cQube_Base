@@ -254,7 +254,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" \
+declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "storage_type" \
 	        "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
 		"keycloak_config_otp")
 

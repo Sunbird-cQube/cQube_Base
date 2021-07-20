@@ -95,6 +95,26 @@
   tags: update
   when: storage_type == "s3"
 
+- name: Copying the local_storage_upgradation_config.yml.template
+  copy:
+    src: ../local_storage_upgradation_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/local_storage_upgradation_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: update
+  when: storage_type == "local"
+
+- name: Copying the local_storage_upgradation_config.yml.template
+  copy:
+    src: ../local_storage_upgradation_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/local_storage_upgradation_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: update
+  when: storage_type == "s3"
+  
 - name: Copying the local_storage_upgradation_config.yml 
   copy:
     src: ../local_storage_upgradation_config.yml
@@ -109,3 +129,4 @@
   timezone:
     name: Asia/Kolkata
   tags: [install, update]
+
