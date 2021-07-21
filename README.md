@@ -1,7 +1,7 @@
 <h1>cQube</h1>
 
 <b>Prerequisites to install cQube:</b>
-- ubuntu 18.04 (supported)
+- ubuntu 18.04 Server Edition (supported)
 - 32GB of System RAM (minimum requirement)
 - 8 core CPU (minimum requirement)
 - Domain name (with SSL)
@@ -27,12 +27,13 @@ Note: For <b>Installation:</b> follow the below steps directly, for upgradation 
 - Navigate to the directory where cQube has been downloaded or cloned 
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.2.1
+git checkout release-3.0
 ```
 - Copy the config.yml.template to config.yml 
 `cp config.yml.template config.yml`
 - Edit using `nano config.yml`
-- Fill the configuration details for the below mentioned list in `config.yml` (* all the values are mandatory)
+- Fill the configuration details to configure required `usecase_name` in `config.yml` (* all the values are mandatory)
+- Depends on storage_type, user might need to fill aws_s3_config.yml or local_storage_config.yml along with config.yml.
 - cQube installation process installs the components in a sequence as mentioned below:
   - Installs Ansible
   - Installs Openjdk
@@ -143,7 +144,7 @@ python3 client.py
 - Navigate to the directory where cQube has been downloaded or cloned
 ```
 cd cQube/ansible/installation_scripts/
-git checkout release-1.2.1
+git checkout release-3.0
 ```
 - Copy the upgradation_config.yml.template to upgradation_config.yml 
 `cp upgradation_config.yml.template upgradation_config.yml`
