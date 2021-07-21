@@ -44,13 +44,17 @@ base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_confi
 if [[ $storage_type == "s3" ]]; then
 ansible-playbook ansible/upgrade.yml --tags "update" --extra-vars "@aws_s3_upgradation_config.yml" \
                                                       --extra-vars "@$base_dir/cqube/conf/local_storage_upgradation_config.yml"
+    if [ $? = 0 ]; then
+        echo "cQube Base upgraded successfully!!"
+    fi
 fi
 if [[ $storage_type == "local" ]]; then
 ansible-playbook ansible/upgrade.yml --tags "update" --extra-vars "@local_storage_upgradation_config.yml" \
-                                                      --extra-vars "@$base_dir/cqube/conf/aws_s3_upgradation_config.yml"    
+                                                      --extra-vars "@$base_dir/cqube/conf/aws_s3_upgradation_config.yml"
+    if [ $? = 0 ]; then
+        echo "cQube Base upgraded successfully!!"
+    fi
 fi
 
-if [ $? = 0 ]; then
-echo "cQube Base upgraded successfully!!"
-fi
+
 
