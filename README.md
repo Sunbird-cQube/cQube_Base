@@ -28,8 +28,8 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
 # Installation Steps:
 - open Terminal
 - Navigate to the directory where cQube_Base has been downloaded or cloned 
-```cd cQube_Base/
-git checkout release-3.0```
+`cd cQube_Base/
+git checkout release-3.0`
 - Copy the config.yml.template to config.yml cp config.yml.template config.yml
 - Edit using nano config.yml
 - If you are opting for storage_type as s3. Copy the aws_s3_config.yml.template to aws_s3_config.yml `cp aws_s3_config.yml.template aws_s3_config.yml`
@@ -68,8 +68,8 @@ Once installation is completed without any errors, you will be prompted the foll
 
 - Open Terminal
 - Navigate to the directory where cQube has been downloaded or cloned
-```cd cQube_Base/
-git checkout release-3.0```
+`cd cQube_Base/
+git checkout release-3.0`
 - Copy the upgradation_config.yml.template to upgradation_config.yml `cp upgradation_config.yml.template upgradation_config.yml`
 - If you are opting for storage_type as s3. Copy the aws_s3_upgradation_config.yml.template to aws_s3_upgradationconfig.yml `cp aws_s3_upgradation_config.yml.template aws_s3_upgradation_config.yml`
 - If you are opting for storage_type as local. Copy the local_storage_upgradation_config.yml.template to local_storage_upgradation_config.yml `cp local_storageupgradation_upgradation_config.yml.template local_storage_upgradation_config.yml`
