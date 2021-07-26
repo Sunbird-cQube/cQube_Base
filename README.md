@@ -1,5 +1,5 @@
-# Upgradation from 2.0 to 3.0
-###  Prerequisites to install cQube:
+# cQube_Base Installation
+###  Prerequisites to install cQube_Base:
 - ubuntu 18.04 Server (supported)
 - 32GB of System RAM (minimum requirement)
 - 8 core CPU (minimum requirement)
