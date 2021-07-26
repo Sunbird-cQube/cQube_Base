@@ -25,7 +25,7 @@
 Note: For Installation: follow the below steps directly, for upgradation follow the Upgradation: steps mentioned in the last section.
 
 
-# cQube_Base Installation:
+# Installation Steps:
 - open Terminal
 - Navigate to the directory where cQube_Base has been downloaded or cloned 
 - cd cQube_Base/
@@ -63,8 +63,8 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
 
 Once installation is completed without any errors, you will be prompted the following message. CQube installed successfully!!
 
-# Upgradation:
-### cQube_Base Upgradation:
+# cQube_Base Upgradation:
+### Upgradation Steps:
 
 - Open Terminal
 - Navigate to the directory where cQube has been downloaded or cloned
