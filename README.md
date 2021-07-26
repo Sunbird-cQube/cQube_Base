@@ -32,9 +32,9 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
 - git checkout release-3.0
 - Copy the config.yml.template to config.yml cp config.yml.template config.yml
 - Edit using nano config.yml
-- If you are opting for storage_type as s3. Copy the aws_s3_config.yml.template to aws_s3_config.yml cp aws_s3_config.yml.template aws_s3_config.yml
+- If you are opting for storage_type as s3. Copy the aws_s3_config.yml.template to aws_s3_config.yml `cp aws_s3_config.yml.template aws_s3_config.yml`
 - Edit using nano aws_s3_config.yml
-- If you are opting for storage_type as local. Copy the local_storage_config.yml.template to local_storage_config.yml cp local_storage_config.yml.template local_storage_config.yml
+- If you are opting for storage_type as local. Copy the local_storage_config.yml.template to local_storage_config.yml `cp local_storage_config.yml.template local_storage_config.yml`
 - Fill the configuration details for the below mentioned list in config.yml (* all the values are mandatory)
 - cQube_Base installation process installs the components in a sequence as mentioned below:
   - Installs Ansible
@@ -51,15 +51,15 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
 
 - Give the following permission to the install.sh file
 
-  chmod u+x install.sh
+  `chmod u+x install.sh`
 
 - Install cQube using the non-root user with sudo privilege
 
-- Configuration filled in config.yml will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the installation will be aborted. Refer the error message and solve the errors appropriately, then re-run the installation script sudo ./install.sh
+- Configuration filled in config.yml will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the installation will be aborted. Refer the error message and solve the errors appropriately, then re-run the installation script `sudo ./install.sh`
 
 - Start the installation by running install.sh shell script file as mentioned below:
 
-  sudo ./install.sh
+  `sudo ./install.sh`
 
 Once installation is completed without any errors, you will be prompted the following message. CQube installed successfully!!
 
@@ -69,10 +69,10 @@ Once installation is completed without any errors, you will be prompted the foll
 - Open Terminal
 - Navigate to the directory where cQube has been downloaded or cloned
 cd cQube_Base/
- git checkout release-3.0
-- Copy the upgradation_config.yml.template to upgradation_config.yml cp upgradation_config.yml.template upgradation_config.yml
-- If you are opting for storage_type as s3. Copy the aws_s3_upgradation_config.yml.template to aws_s3_upgradationconfig.yml cp aws_s3_upgradation_config.yml.template aws_s3_upgradation_config.yml
-- If you are opting for storage_type as local. Copy the local_storage_upgradation_config.yml.template to local_storage_upgradation_config.yml cp local_storageupgradation_upgradation_config.yml.template local_storage_upgradation_config.yml
+ `git checkout release-3.0`
+- Copy the upgradation_config.yml.template to upgradation_config.yml `cp upgradation_config.yml.template upgradation_config.yml`
+- If you are opting for storage_type as s3. Copy the aws_s3_upgradation_config.yml.template to aws_s3_upgradationconfig.yml `cp aws_s3_upgradation_config.yml.template aws_s3_upgradation_config.yml`
+- If you are opting for storage_type as local. Copy the local_storage_upgradation_config.yml.template to local_storage_upgradation_config.yml `cp local_storageupgradation_upgradation_config.yml.template local_storage_upgradation_config.yml`
 - This script will update the below cQube components:
 
   - Creates & Updates table,sequence,index in postgresql database
@@ -88,11 +88,11 @@ cd cQube_Base/
 
 - Give the following permission to the upgrade.sh file
 
-  chmod u+x upgrade.sh
+  `chmod u+x upgrade.sh`
 - Run the script to update cQube using the non-root user with sudo privilege
 Start the upgradation by running upgrade.sh shell script file as mentioned below:
-  sudo ./upgrade.sh
+  `sudo ./upgrade.sh`
 
-Configuration filled in upgradation_config.yml will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the upgradation will be aborted. Refer the error message and solve the errors appropriately. Restart the upgradation processsudo ./upgrade.sh
+Configuration filled in upgradation_config.yml will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the upgradation will be aborted. Refer the error message and solve the errors appropriately. Restart the upgradation process `sudo ./upgrade.sh`
 
 Once upgradation is completed without any errors, you will be prompted the following message. CQube upgraded successfully!!
