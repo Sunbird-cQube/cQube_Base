@@ -49,24 +49,6 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
   - Installs Prometheus and node exporter
 - Save and Close the file
 
-### Configuration of infrastructure attributes and udise data indices, metrics:
-
-- Based on the number of infrastructure attributes required by the state, configure the infrastructure report by filling the required fields in the file infrastructure_master.csv:
-
-- To edit below mentioned infrastructure details nano infrastructure_master.csv
-
-- Save and Close the file
-
-- Based on the number of udise attributes required by the state, configure the udise_config.csv file by filling the required fields in the file udise_config.csv:
-
-- To edit below mentioned UDISE details nano udise_config.csv
-
-- Save and Close the file
-
-- For more information to configure the weights & columns for udise/infrastucture, please refer operational document.
-
-- Update the diksha parameters(api_url,token,encryption key,dataset name channel_id,org_id) in the development/python/cQube-raw-data-fetch-parameters.txt
-
 - Give the following permission to the install.sh file
 
   chmod u+x install.sh
