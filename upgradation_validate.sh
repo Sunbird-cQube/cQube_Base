@@ -183,6 +183,16 @@ fi
 check_storage_type(){
 if ! [[ $2 == "s3" || $2 == "local" ]]; then
     echo "Error - Please enter either s3 or local for $1"; fail=1
+    else
+	if [[ -e "$base_dir/cqube/.cqube_config" ]]; then			
+        typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
+        strg_typ=$(cut -d "=" -f2 <<< "$typ")
+        if [[ ! "$2" == "$strg_typ" ]]; then
+            echo "Error - storage_type value should be same as previous installation storage_type"; fail=1
+        fi	
+
+    fi
+
 fi
 }
 
@@ -200,7 +210,7 @@ check_length(){
 }
 
 check_api_endpoint(){
-temp_ep=`grep '^KEYCLOAK_HOST =' $base_dir/cqube/dashboard/server_side/.env | awk '{print $3}' | sed s/\"//g`
+temp_ep=`grep '^CQUBE_API_ENDPOINT =' $base_dir/cqube/.cqube_config | awk '{print $3}' | sed s/\"//g`
 if [[ ! $temp_ep == "https://$2" ]]; then
     echo "Error - Change in domain name. Please verify the api_endpoint "; fail=1
 fi
@@ -238,7 +248,7 @@ fi
 
 get_config_values(){
 key=$1
-vals[$key]=$(awk ''/^$key:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
+vals[$key]=$(awk ''/^$key:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 }
 
 bold=$(tput bold)
@@ -265,21 +275,21 @@ declare -A vals
 realm_name=cQube
 
 # Getting base_dir
-base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
+base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 # Getting keycloak_adm_user and keycloak_adm_passwd
-keycloak_adm_user=$(awk ''/^keycloak_adm_user:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-keycloak_adm_passwd=$(awk ''/^keycloak_adm_passwd:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
+keycloak_adm_user=$(awk ''/^keycloak_adm_user:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+keycloak_adm_passwd=$(awk ''/^keycloak_adm_passwd:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 # Getting db_user, db_name and db_password
-db_user=$(awk ''/^db_user:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-db_name=$(awk ''/^db_name:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
+db_user=$(awk ''/^db_user:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+db_name=$(awk ''/^db_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=2.0
+version_upgradable_from=3.0
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
@@ -390,3 +400,4 @@ if [[ $fail -eq 1 ]]; then
 else
    echo -e "\e[0;32m${bold}Config file successfully validated${normal}"
 fi
+

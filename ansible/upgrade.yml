@@ -4,8 +4,8 @@
   gather_facts: true
   remote_user: root
   vars_files:
-    - ../upgradation_config.yml  
-    - ../memory_config.yml 
+    - ../config.yml  
+    - ../memory_config.yml
     - ../.version
     
   roles: 

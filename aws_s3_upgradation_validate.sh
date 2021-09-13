@@ -56,6 +56,7 @@ declare -A vals
 # Getting aws keys
 aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_upgradation_config.yml)
 aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_upgradation_config.yml)
+base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}
@@ -123,3 +124,4 @@ if [[ $fail -eq 1 ]]; then
 else
    echo -e "\e[0;32m${bold}aws_s3_upgradation_Config file successfully validated${normal}"
 fi
+
