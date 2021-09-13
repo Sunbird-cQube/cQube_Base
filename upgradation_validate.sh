@@ -211,7 +211,7 @@ check_length(){
 
 check_api_endpoint(){
 temp_ep=`grep '^CQUBE_API_ENDPOINT =' $base_dir/cqube/.cqube_config | awk '{print $3}' | sed s/\"//g`
-if [[ ! $temp_ep == "https://$2" ]]; then
+if [[ ! $temp_ep == "$2" ]]; then
     echo "Error - Change in domain name. Please verify the api_endpoint "; fail=1
 fi
 }
