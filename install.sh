@@ -20,7 +20,6 @@ sudo apt install python -y
 sudo apt-get install python3-pip -y
 sudo apt-get install python-apt -y
 sudo apt install unzip -y
-sudo apt install net-tools -y 
 
 chmod u+x validate.sh
 
@@ -33,23 +32,8 @@ if [ $? -ne 0 ]; then
     . "$INS_DIR/validation_scripts/install_aws_cli.sh"
 fi
 . "validate.sh"
-storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-if [[ $storage_type == "s3" ]]; then
-   if [[ -f aws_s3_config.yml ]]; then	
-    . "$INS_DIR/aws_s3_validate.sh"
-   else
-	echo "ERROR: aws_s3_config.yml is not available. Please copy aws_s3_config.yml.template as aws_s3_config.yml and fill all the details."  
-       exit;
-   fi
-fi
-if [[ $storage_type == "local" ]]; then
-   if [[ -f local_storage_config.yml ]]; then	   
-    . "$INS_DIR/local_storage_validate.sh"
-    else
-	    echo "ERROR: local_storage_config.yml is not available. Please copy local_storage_config.yml.template as local_storage_config.yml and fill all the details."
-	    exit;
-   fi
-fi
+
+
 if [ -e /etc/ansible/ansible.cfg ]; then
 	sudo sed -i 's/^#log_path/log_path/g' /etc/ansible/ansible.cfg
 fi
@@ -60,22 +44,8 @@ if [ ! $? = 0 ]; then
 tput setaf 1; echo "Error there is a problem installing Ansible"; tput sgr0
 exit
 fi
-base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-
 ansible-playbook ansible/create_base.yml --tags "install" --extra-vars "@config.yml"
-
-if [[ $storage_type == "s3" ]]; then
-ansible-playbook ansible/install.yml --tags "install" --extra-vars "@aws_s3_config.yml" \
-                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml"
-    if [ $? = 0 ]; then
-        echo "cQube Base installed successfully!!"
-    fi
+ansible-playbook ansible/install.yml --tags "install"
+if [ $? = 0 ]; then
+echo "cQube Base installed successfully!!"
 fi
-if [[ $storage_type == "local" ]]; then
-ansible-playbook ansible/install.yml --tags "install" --extra-vars "@local_storage_config.yml" \
-                                                      --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml"
-    if [ $? = 0 ]; then
-        echo "cQube Base installed successfully!!"
-    fi
-fi
-

@@ -28,6 +28,12 @@ fi
    if ! [[ -x "$2" ]]; then
         echo "Error - '$1' please give execute permission to directory."; fail=1
    fi
+
+   if ! [[ "$2" = */ ]]; then
+        echo "Error - $1 Please make sure the absolute path values should end with '/'"; fail=1
+   fi
+
+
 }
 
 get_local_storage_upgradation_config_values(){
@@ -54,8 +60,8 @@ declare -a arr=("input_directory" "output_directory" "emission_directory")
 declare -A vals
 
 # Getting local_storage directories
-system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-
+system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}
 do
@@ -72,7 +78,7 @@ case $key in
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          #check_prv_directory $key $value CQUBE_INPUT_DIRECTORY
+          check_prv_directory $key $value CQUBE_INPUT_DIRECTORY
           check_directory $key $value
        fi
        ;;
@@ -80,7 +86,7 @@ case $key in
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          #check_prv_directory $key $value CQUBE_OUTPUT_DIRECTORY
+          check_prv_directory $key $value CQUBE_OUTPUT_DIRECTORY
           check_directory $key $value
        fi
        ;;
@@ -88,7 +94,7 @@ case $key in
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          #check_prv_directory $key $value CQUBE_EMISSION_DIRECTORY
+          check_prv_directory $key $value CQUBE_EMISSION_DIRECTORY
           check_directory $key $value
        fi
        ;;
