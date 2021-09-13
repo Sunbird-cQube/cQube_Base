@@ -45,20 +45,6 @@ if ! [[ $2 == "true" || $2 == "false" ]]; then
 fi
 }
 
-check_s3_bucket_naming()
-{
-s3_bucket_naming_status=0
-if [[ $1 =~ ^[a-z0-9.-]*[^-]$ ]]; then
-    if [[ (( $1 =~ \-{2,} ))  ||  (( $1 =~ \.{2,} )) || (( $1 == *\-\.* )) || (( $1 == *\.\-* )) || (( $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ )) ]]; then
-        s3_bucket_naming_status=1
-        return $s3_bucket_naming_status;
-    fi
-else
-    s3_bucket_naming_status=1
-    return $s3_bucket_naming_status;
-fi
-}
-
 check_postgres(){
 echo "Checking for Postgres ..."
 temp=$(psql -V > /dev/null 2>&1; echo $?)
@@ -83,7 +69,7 @@ fi
 check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
-if [ $(( $mem_total / 1024 )) -ge 2 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
+if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
   min_shared_mem=$(echo $mem_total*13/100 | bc)
   min_work_mem=$(echo $mem_total*2/100 | bc)
   min_java_arg_2=$(echo $mem_total*13/100 | bc)
@@ -167,25 +153,6 @@ check_vpn_ip()
     fi
 }
 
-check_aws_key(){
-    aws_key_status=0
-    export AWS_ACCESS_KEY_ID=$1
-    export AWS_SECRET_ACCESS_KEY=$2
-    aws s3api list-buckets > /dev/null 2>&1
-    if [ ! $? -eq 0 ]; then echo "Error - Invalid aws access or secret keys"; fail=1
-        aws_key_status=1
-    fi
-}
-check_s3_bucket(){
-if [[ $aws_key_status == 0 ]]; then
-        bucketstatus=`aws s3api head-bucket --bucket "${2}" 2>&1`
-        if [ ! $? == 0 ]
-        then
-            echo "Error - [ $1 : $2 ] Bucket not owned or not found. Please change the bucket name in config.yml"; fail=1
-        fi
-fi
-}
-
 check_db_naming(){
 check_length $2
 if [[ $? == 0 ]]; then
@@ -229,16 +196,6 @@ else
 fi
 }
 
-check_aws_default_region(){
-    region_len=${#2}
-    if [[ $region_len -ge 9 ]] && [[ $region_len -le 15 ]]; then
-        curl https://s3.$2.amazonaws.com > /dev/null 2>&1
-        if [[ ! $? == 0 ]]; then 
-            echo "Error - There is a problem reaching the aws default region. Please check the $1 value." ; fail=1
-        fi
-    fi
-}
-
 get_config_values(){
 key=$1
 vals[$key]=$(awk ''/^$key:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
@@ -258,24 +215,17 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 # An array of mandatory values
 declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "read_only_db_user" \
-<<<<<<< Updated upstream
-                " read_only_db_password" "s3_access_key" "s3_secret_key" "s3_input_bucket" "s3_output_bucket" "s3_emission_bucket" \
-		"aws_default_region" "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
-=======
                 " read_only_db_password" "storage_type" \
-		"local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
->>>>>>> Stashed changes
+	        "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
 		"keycloak_config_otp") 
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
 
-# Getting aws keys
-aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-
 # Getting base_dir
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+
+storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 check_mem
 check_version 
@@ -304,39 +254,6 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_base_dir $key $value
-       fi
-       ;;
-   s3_access_key)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       fi
-       ;;
-   s3_secret_key)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-      else
-          check_aws_key $aws_access_key $aws_secret_key
-       fi
-       ;;
-   s3_input_bucket)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_s3_bucket $key $value 
-       fi
-       ;;
-   s3_output_bucket)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_s3_bucket $key $value 
-       fi
-       ;;
-   s3_emission_bucket)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_s3_bucket $key $value 
        fi
        ;;
    local_ipv4_address)
@@ -416,20 +333,12 @@ case $key in
        else
           check_storage_type $key $value
        fi
-       ;;
-    
+       ;;    
    api_endpoint)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_api_endpoint $key $value
-       fi
-       ;;
-   aws_default_region)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check. Recommended value is ap-south-1"; fail=1
-       else
-           check_aws_default_region
        fi
        ;;
    *)
@@ -446,3 +355,4 @@ if [[ $fail -eq 1 ]]; then
 else
    echo -e "\e[0;32m${bold}Config file successfully validated${normal}"
 fi
+

@@ -16,15 +16,49 @@
                CQUBE_BASE_DIR={{ base_dir }}
                CQUBE_DB_USER={{ db_user }}
                CQUBE_DB_NAME={{ db_name }}
+               CQUBE_STORAGE_TYPE={{ storage_type }}
                CQUBE_S3_INPUT={{ s3_input_bucket }}
                CQUBE_S3_OUTPUT={{ s3_output_bucket }}
                CQUBE_S3_EMISSION={{ s3_emission_bucket }}
-               CQUBE_API_ENDPOINT={{ api_endpoint }}
+               CQUBE_INPUT_DIRECTORY={{ input_directory }}
+               CQUBE_OUTPUT_DIRECTORY={{ output_directory }}
+               CQUBE_EMISSION_DIRECTORY={{ emission_directory }}
+               CQUBE_API_ENDPOINT = "https://{{ api_endpoint }}"
+
   tags: install
 
+- name: Updating the usecase_name to config file
+  lineinfile:
+    path: "{{ base_dir }}/cqube/.cqube_config"
+    insertafter: '^CQUBE_DB_NAME'
+    line: CQUBE_STORAGE_TYPE={{ storage_type }}
+  tags: update
+
+- name: Updating the usecase_name to config file
+  lineinfile:
+    path: "{{ base_dir }}/cqube/.cqube_config"
+    insertafter: '^CQUBE_S3_EMISSION'
+    line: CQUBE_INPUT_DIRECTORY={{ input_directory }}
+  tags: update
+
+- name: Updating the usecase_name to config file
+  lineinfile:
+    path: "{{ base_dir }}/cqube/.cqube_config"
+    insertafter: '^CQUBE_INPUT_DIRECTORY'
+    line: CQUBE_OUTPUT_DIRECTORY={{ output_directory }}
+  tags: update
+
+- name: Updating the usecase_name to config file
+  lineinfile:
+    path: "{{ base_dir }}/cqube/.cqube_config"
+    insertafter: '^CQUBE_OUTPUT_DIRECTORY'
+    line: CQUBE_EMISSION_DIRECTORY={{ emission_directory }}
+  tags: update
+  
 - name: Updating the CQUBE_VERSION
   lineinfile: 
     regex: '^CQUBE_VERSION='
     line: CQUBE_VERSION={{ cqube_version }}
     path: "{{ base_dir }}/cqube/.cqube_config"
   tags: update
+
