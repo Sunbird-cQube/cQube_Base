@@ -36,9 +36,9 @@ fi
 
 }
 
-get_local_storage_upgradation_config_values(){
+get_local_storage_config_values(){
 key=$1
-vals[$key]=$(awk ''/^$key:' /{ if ($2 !~ /#.*/) {print $2}}' local_storage_upgradation_config.yml)
+vals[$key]=$(awk ''/^$key:' /{ if ($2 !~ /#.*/) {print $2}}' local_storage_config.yml)
 }
 
 bold=$(tput bold)
@@ -50,7 +50,7 @@ else
    core_install="NA"
 fi
 
-echo -e "\e[0;33m${bold}Validating the local_storage_upgradation_config file...${normal}"
+echo -e "\e[0;33m${bold}Validating the local_storage_config file...${normal}"
 
 
 # An array of mandatory values
@@ -65,7 +65,7 @@ base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}
 do
-get_local_storage_upgradation_config_values $i
+get_local_storage_config_values $i
 done
 
 for i in ${arr[@]}
@@ -107,9 +107,9 @@ esac
 done
 
 if [[ $fail -eq 1 ]]; then
-   echo -e "\e[0;34m${bold}local_storage_upgradation_Config file has errors. Please rectify the issues and restart the upgradation${normal}"
+   echo -e "\e[0;34m${bold}local_storage_Config file has errors. Please rectify the issues and restart the upgradation${normal}"
    exit 1
 else
-   echo -e "\e[0;32m${bold}local_storage_upgradation_Config file successfully validated${normal}"
+   echo -e "\e[0;32m${bold}local_storage_Config file successfully validated${normal}"
 fi
 

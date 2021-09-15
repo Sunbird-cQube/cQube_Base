@@ -210,12 +210,14 @@ check_length(){
 }
 
 check_api_endpoint(){
-temp_ep=`grep '^CQUBE_API_ENDPOINT =' $base_dir/cqube/.cqube_config | awk '{print $3}' | sed s/\"//g`
-if [[ ! $temp_ep == "https://$2" ]]; then
-    echo "Error - Change in domain name. Please verify the api_endpoint "; fail=1
+if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
+         temp_ep=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_API_ENDPOINT )
+         ep_typ=$(cut -d "=" -f2 <<< "$temp_ep")
+         if [[ ! "$2" == "$ep_typ" ]]; then
+         echo "Change in domain name. Please verify the api_endpoint "; fail=1
+          fi
 fi
 }
-
 check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))

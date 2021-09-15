@@ -23,7 +23,7 @@
                CQUBE_INPUT_DIRECTORY={{ input_directory }}
                CQUBE_OUTPUT_DIRECTORY={{ output_directory }}
                CQUBE_EMISSION_DIRECTORY={{ emission_directory }}
-               CQUBE_API_ENDPOINT = "https://{{ api_endpoint }}"
+               CQUBE_API_ENDPOINT={{ api_endpoint }}
 
   tags: install
 
