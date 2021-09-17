@@ -27,34 +27,6 @@
 
   tags: install
 
-- name: Updating the usecase_name to config file
-  lineinfile:
-    path: "{{ base_dir }}/cqube/.cqube_config"
-    insertafter: '^CQUBE_DB_NAME'
-    line: CQUBE_STORAGE_TYPE={{ storage_type }}
-  tags: update
-
-- name: Updating the usecase_name to config file
-  lineinfile:
-    path: "{{ base_dir }}/cqube/.cqube_config"
-    insertafter: '^CQUBE_S3_EMISSION'
-    line: CQUBE_INPUT_DIRECTORY={{ input_directory }}
-  tags: update
-
-- name: Updating the usecase_name to config file
-  lineinfile:
-    path: "{{ base_dir }}/cqube/.cqube_config"
-    insertafter: '^CQUBE_INPUT_DIRECTORY'
-    line: CQUBE_OUTPUT_DIRECTORY={{ output_directory }}
-  tags: update
-
-- name: Updating the usecase_name to config file
-  lineinfile:
-    path: "{{ base_dir }}/cqube/.cqube_config"
-    insertafter: '^CQUBE_OUTPUT_DIRECTORY'
-    line: CQUBE_EMISSION_DIRECTORY={{ emission_directory }}
-  tags: update
-  
 - name: Updating the CQUBE_VERSION
   lineinfile: 
     regex: '^CQUBE_VERSION='
