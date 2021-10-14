@@ -124,4 +124,3 @@ if [[ $fail -eq 1 ]]; then
 else
    echo -e "\e[0;32m${bold}aws_s3_Config file successfully validated${normal}"
 fi
-
