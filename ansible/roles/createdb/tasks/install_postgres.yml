@@ -71,7 +71,7 @@
 
 - name: Ensure the PostgreSQL service is running
   service: name=postgresql state=restarted enabled=yes
-  tags: install
+  tags: [ install, update ]
 
 - name: Ensure database is created
   become: true

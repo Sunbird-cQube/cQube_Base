@@ -116,7 +116,12 @@ check_ip()
     local ip=$2
     ip_stat=1
     ip_pass=0
-
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "localhost" ]]; then
+        echo "Error - Please provide local ipv4 as localhost for localhost installation"; fail=1
+    fi
+fi
+if [[ $mode_of_installation == "public" ]]; then
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -136,6 +141,7 @@ check_ip()
     else
         echo "Error - Invalid value for $key"; fail=1
     fi
+fi  
 }
 
 check_vpn_ip()
@@ -143,7 +149,12 @@ check_vpn_ip()
     local ip=$2
     ip_stat=1
     ip_pass=0
-
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "127.0.0.1" ]]; then
+        echo "Error - Please provide local vpn ip as 127.0.0.1 for localhost installation"; fail=1
+    fi
+fi
+ if [[ $mode_of_installation == "public" ]]; then
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -159,6 +170,7 @@ check_vpn_ip()
     else
         echo "Error - Invalid value for $key"; fail=1
     fi
+ fi   
 }
 
 check_db_naming(){
@@ -184,15 +196,13 @@ check_storage_type(){
 if ! [[ $2 == "s3" || $2 == "local" ]]; then
     echo "Error - Please enter either s3 or local for $1"; fail=1
     else
-	if [[ -e "$base_dir/cqube/.cqube_config" ]]; then			
+  	   if [[ -e "$base_dir/cqube/.cqube_config" ]]; then			
         typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
         strg_typ=$(cut -d "=" -f2 <<< "$typ")
-        if [[ ! "$2" == "$strg_typ" ]]; then
+        	if [[ ! "$2" == "$strg_typ" ]]; then
             echo "Error - storage_type value should be same as previous installation storage_type"; fail=1
-        fi	
-
-    fi
-
+        	fi	
+           fi
 fi
 }
 
@@ -208,15 +218,27 @@ check_length(){
         return $len_status;
     fi
 }
+check_mode_of_installation(){
+if ! [[ $2 == "localhost" || $2 == "public" ]]; then
+    echo "Error - Please enter either localhost or public for $1"; fail=1
+fi
+}
 
 check_api_endpoint(){
-if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "localhost:8080" ]]; then
+        echo "Error - Please provide api_endpoint as localhost:8080 forlocalhost installation"; fail=1
+    fi
+fi
+if [[ $mode_of_installation == "public" ]]; then	
+ if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
          temp_ep=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_API_ENDPOINT )
          ep_typ=$(cut -d "=" -f2 <<< "$temp_ep")
          if [[ ! "$2" == "$ep_typ" ]]; then
          echo "Change in domain name. Please verify the api_endpoint "; fail=1
           fi
-fi
+ fi
+fi 
 }
 check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
@@ -266,9 +288,9 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "storage_type" \
+declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "storage_type" "mode_of_installation"  \
 	        "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
-		"keycloak_config_otp")
+		"report_viewer_config_otp")
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -281,6 +303,7 @@ base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 # Getting keycloak_adm_user and keycloak_adm_passwd
 keycloak_adm_user=$(awk ''/^keycloak_adm_user:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+mode_of_installation=$(awk ''/^mode_of_installation:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 keycloak_adm_passwd=$(awk ''/^keycloak_adm_passwd:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 # Getting db_user, db_name and db_password
@@ -291,7 +314,7 @@ storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.ym
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=3.0
+version_upgradable_from=3.1
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
@@ -360,7 +383,7 @@ case $key in
           check_keycloak_credentials $keycloak_adm_user $keycloak_adm_passwd
        fi
        ;;
-   keycloak_config_otp)
+   report_viewer_config_otp)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
@@ -379,6 +402,13 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_storage_type $key $value
+       fi
+       ;;
+   mode_of_installation)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_mode_of_installation $key $value
        fi
        ;;    
    api_endpoint)
@@ -402,4 +432,3 @@ if [[ $fail -eq 1 ]]; then
 else
    echo -e "\e[0;32m${bold}Config file successfully validated${normal}"
 fi
-

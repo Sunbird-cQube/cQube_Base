@@ -17,10 +17,9 @@ if [ $temp == 0 ]; then
         pg_dump -h localhost -U $db_user -F t $db_name > $base_dir/cqube/postgres/backups/`date +%Y%m%d%H%M`$bk_db_name.tar
         if [[ ! $? == 0 ]]; then
             echo "There is a problem dumping the database"; tput sgr0 ;
-                exit 1
+	        exit 1
         else
             echo "Database backup is completed"
         fi
      fi
 fi
-

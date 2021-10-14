@@ -29,8 +29,10 @@ if [[ ! -f config.yml ]]; then
     exit;
 fi
 aws --version >/dev/null 2>&1
-if [ $? -ne 0 ]; then 
-    . "$INS_DIR/validation_scripts/install_aws_cli.sh"
+if [[ $storage_type == "s3" ]]; then
+   if [ $? -ne 0 ]; then 
+     . "$INS_DIR/validation_scripts/install_aws_cli.sh"
+   fi
 fi
 . "validate.sh"
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
