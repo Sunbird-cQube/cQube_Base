@@ -189,9 +189,16 @@ check_db_password(){
 }
 
 check_storage_type(){
-if ! [[ $2 == "s3" || $2 == "local" ]]; then
-    echo "Error - Please enter either s3 or local for $1"; fail=1
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "local" ]]; then
+        echo "Error - Please provide storage type as local for localhost installation"; fail=1
+    fi
 fi
+if [[ $mode_of_installation == "public" ]]; then
+    if ! [[ $2 == "s3" || $2 == "local" ]]; then
+        echo "Error - Please enter either s3 or local for $1"; fail=1
+    fi
+fi    
 }
 check_mode_of_installation(){
 if ! [[ $2 == "localhost" || $2 == "public" ]]; then
@@ -201,8 +208,8 @@ fi
 
 check_api_endpoint(){
 if [[ $mode_of_installation == "localhost" ]]; then
-    if [[ ! $2 == "localhost:8080" ]]; then
-        echo "Error - Please provide api_endpoint as localhost:8080 forlocalhost installation"; fail=1
+    if [[ ! $2 == "localhost" ]]; then
+        echo "Error - Please provide api_endpoint as localhost forlocalhost installation"; fail=1
     fi
 fi
 if [[ $mode_of_installation == "public" ]]; then

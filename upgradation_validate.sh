@@ -193,7 +193,14 @@ fi
 }
 
 check_storage_type(){
-if ! [[ $2 == "s3" || $2 == "local" ]]; then
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "local" ]]; then
+        echo "Error - Please provide storage type as local for localhost installation"; fail=1
+    fi
+fi
+if [[ $mode_of_installation == "public" ]]; then
+	
+  if ! [[ $2 == "s3" || $2 == "local" ]]; then
     echo "Error - Please enter either s3 or local for $1"; fail=1
     else
   	   if [[ -e "$base_dir/cqube/.cqube_config" ]]; then			
@@ -203,9 +210,9 @@ if ! [[ $2 == "s3" || $2 == "local" ]]; then
             echo "Error - storage_type value should be same as previous installation storage_type"; fail=1
         	fi	
            fi
+   fi
 fi
 }
-
 
 # Only for release 1.9
 check_length(){
@@ -226,8 +233,8 @@ fi
 
 check_api_endpoint(){
 if [[ $mode_of_installation == "localhost" ]]; then
-    if [[ ! $2 == "localhost:8080" ]]; then
-        echo "Error - Please provide api_endpoint as localhost:8080 forlocalhost installation"; fail=1
+    if [[ ! $2 == "localhost" ]]; then
+        echo "Error - Please provide api_endpoint as localhost forlocalhost installation"; fail=1
     fi
 fi
 if [[ $mode_of_installation == "public" ]]; then	
