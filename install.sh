@@ -28,15 +28,15 @@ if [[ ! -f config.yml ]]; then
     tput setaf 1; echo "ERROR: config.yml is not available. Please copy config.yml.template as config.yml and fill all the details."; tput sgr0
     exit;
 fi
+
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 if [[ $storage_type == "s3" ]]; then
    aws --version >/dev/null 2>&1
-   if [ $? -ne 0 ]; then
+   if [ $? -ne 0 ]; then 
      . "$INS_DIR/validation_scripts/install_aws_cli.sh"
    fi
 fi
-
 . "validate.sh"
 
 if [[ $storage_type == "s3" ]]; then
