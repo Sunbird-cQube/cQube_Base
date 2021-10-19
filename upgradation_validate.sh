@@ -116,12 +116,6 @@ check_ip()
     local ip=$2
     ip_stat=1
     ip_pass=0
-if [[ $mode_of_installation == "localhost" ]]; then
-    if [[ ! $2 == "localhost" ]]; then
-        echo "Error - Please provide local ipv4 as localhost for localhost installation"; fail=1
-    fi
-fi
-if [[ $mode_of_installation == "public" ]]; then
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -141,7 +135,6 @@ if [[ $mode_of_installation == "public" ]]; then
     else
         echo "Error - Invalid value for $key"; fail=1
     fi
-fi  
 }
 
 check_vpn_ip()
@@ -149,12 +142,6 @@ check_vpn_ip()
     local ip=$2
     ip_stat=1
     ip_pass=0
-if [[ $mode_of_installation == "localhost" ]]; then
-    if [[ ! $2 == "127.0.0.1" ]]; then
-        echo "Error - Please provide local vpn ip as 127.0.0.1 for localhost installation"; fail=1
-    fi
-fi
- if [[ $mode_of_installation == "public" ]]; then
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -170,7 +157,6 @@ fi
     else
         echo "Error - Invalid value for $key"; fail=1
     fi
- fi   
 }
 
 check_db_naming(){
@@ -193,24 +179,17 @@ fi
 }
 
 check_storage_type(){
-if [[ $mode_of_installation == "localhost" ]]; then
-    if [[ ! $2 == "local" ]]; then
-        echo "Error - Please provide storage type as local for localhost installation"; fail=1
-    fi
-fi
-if [[ $mode_of_installation == "public" ]]; then
 	
-  if ! [[ $2 == "s3" || $2 == "local" ]]; then
+if ! [[ $2 == "s3" || $2 == "local" ]]; then
     echo "Error - Please enter either s3 or local for $1"; fail=1
-    else
-  	   if [[ -e "$base_dir/cqube/.cqube_config" ]]; then			
-        typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
-        strg_typ=$(cut -d "=" -f2 <<< "$typ")
-        	if [[ ! "$2" == "$strg_typ" ]]; then
-            echo "Error - storage_type value should be same as previous installation storage_type"; fail=1
-        	fi	
-           fi
-   fi
+else
+    if [[ -e "$base_dir/cqube/.cqube_config" ]]; then			
+         typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
+         strg_typ=$(cut -d "=" -f2 <<< "$typ")
+         if [[ ! "$2" == "$strg_typ" ]]; then
+             echo "Error - storage_type value should be same as previous installation storage_type"; fail=1
+         fi	
+     fi
 fi
 }
 
@@ -225,55 +204,68 @@ check_length(){
         return $len_status;
     fi
 }
+
 check_mode_of_installation(){
-if ! [[ $2 == "localhost" || $2 == "public" ]]; then
-    echo "Error - Please enter either localhost or public for $1"; fail=1
+if ! [[ $2 == "public" ]]; then
+    echo "Error - Please enter public for $1"; fail=1
 fi
 }
 
 check_api_endpoint(){
-if [[ $mode_of_installation == "localhost" ]]; then
-    if [[ ! $2 == "localhost" ]]; then
-        echo "Error - Please provide api_endpoint as localhost forlocalhost installation"; fail=1
+if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
+	temp_ep=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_API_ENDPOINT )
+    ep_typ=$(cut -d "=" -f2 <<< "$temp_ep")
+    if [[ ! "$2" == "$ep_typ" ]]; then
+    	echo "Change in domain name. Please verify the api_endpoint "; fail=1
     fi
 fi
-if [[ $mode_of_installation == "public" ]]; then	
- if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
-         temp_ep=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_API_ENDPOINT )
-         ep_typ=$(cut -d "=" -f2 <<< "$temp_ep")
-         if [[ ! "$2" == "$ep_typ" ]]; then
-         echo "Change in domain name. Please verify the api_endpoint "; fail=1
-          fi
- fi
-fi 
 }
+
 check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
-if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
-  min_shared_mem=$(echo $mem_total*13/100 | bc)
-  min_work_mem=$(echo $mem_total*2/100 | bc)
-  min_java_arg_2=$(echo $mem_total*13/100 | bc)
-  min_java_arg_3=$(echo $mem_total*65/100 | bc)
-  echo """---
+
+if [[ $mode_of_installation == "localhost" ]]; then
+  if [ $(($mem_total / 1024)) -ge 7 ]; then
+    local_shared_mem=$(echo $mem_total*13/100 | bc)
+    local_work_mem=$(echo $mem_total*2/100 | bc)
+    local_java_arg_2=$(echo $mem_total*13/100 | bc)
+    local_java_arg_3=$(echo $mem_total*65/100 | bc)
+    echo """---
+shared_buffers: ${local_shared_mem}MB
+work_mem: ${local_work_mem}MB
+java_arg_2: -Xms${local_java_arg_2}m
+java_arg_3: -Xmx${local_java_arg_3}m""" > memory_config.yml
+  else
+    "Error - Minimum Memory requirement to install cQube in localhost/single machine is 8GB. Please increase the RAM size.";
+  fi
+fi
+
+if [[ $mode_of_installation == "public" ]]; then
+    if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
+        min_shared_mem=$(echo $mem_total*13/100 | bc)
+        min_work_mem=$(echo $mem_total*2/100 | bc)
+        min_java_arg_2=$(echo $mem_total*13/100 | bc)
+        min_java_arg_3=$(echo $mem_total*65/100 | bc)
+        echo """---
 shared_buffers: ${min_shared_mem}MB
 work_mem: ${min_work_mem}MB
 java_arg_2: -Xms${min_java_arg_2}m
 java_arg_3: -Xmx${min_java_arg_3}m""" > memory_config.yml
-
-elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
-  max_shared_mem=$(echo $mem_total*13/100 | bc)
-  max_work_mem=$(echo $mem_total*2/100 | bc)
-  max_java_arg_2=$(echo $mem_total*7/100 | bc)
-  max_java_arg_3=$(echo $mem_total*65/100 | bc)
-  echo """---
+    elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
+        max_shared_mem=$(echo $mem_total*13/100 | bc)
+        max_work_mem=$(echo $mem_total*2/100 | bc)
+        max_java_arg_2=$(echo $mem_total*7/100 | bc)
+        max_java_arg_3=$(echo $mem_total*65/100 | bc)
+        echo """---
 shared_buffers: ${max_shared_mem}MB
 work_mem: ${max_work_mem}MB
 java_arg_2: -Xms${max_java_arg_2}m
 java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
-else
-  echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
-  exit 1
+    else
+        echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
+        exit 1
+    fi
 fi
 }
 

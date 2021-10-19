@@ -69,30 +69,48 @@ fi
 check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
-if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
-  min_shared_mem=$(echo $mem_total*13/100 | bc)
-  min_work_mem=$(echo $mem_total*2/100 | bc)
-  min_java_arg_2=$(echo $mem_total*13/100 | bc)
-  min_java_arg_3=$(echo $mem_total*65/100 | bc)
-  echo """---
+
+if [[ $mode_of_installation == "localhost" ]]; then
+  if [ $(($mem_total / 1024)) -ge 7 ]; then
+    local_shared_mem=$(echo $mem_total*13/100 | bc)
+    local_work_mem=$(echo $mem_total*2/100 | bc)
+    local_java_arg_2=$(echo $mem_total*13/100 | bc)
+    local_java_arg_3=$(echo $mem_total*65/100 | bc)
+    echo """---
+shared_buffers: ${local_shared_mem}MB
+work_mem: ${local_work_mem}MB
+java_arg_2: -Xms${local_java_arg_2}m
+java_arg_3: -Xmx${local_java_arg_3}m""" > memory_config.yml
+  else
+    "Error - Minimum Memory requirement to install cQube in localhost/single machine is 8GB. Please increase the RAM size.";
+  fi
+fi
+
+if [[ $mode_of_installation == "public" ]]; then
+    if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
+        min_shared_mem=$(echo $mem_total*13/100 | bc)
+        min_work_mem=$(echo $mem_total*2/100 | bc)
+        min_java_arg_2=$(echo $mem_total*13/100 | bc)
+        min_java_arg_3=$(echo $mem_total*65/100 | bc)
+        echo """---
 shared_buffers: ${min_shared_mem}MB
 work_mem: ${min_work_mem}MB
 java_arg_2: -Xms${min_java_arg_2}m
 java_arg_3: -Xmx${min_java_arg_3}m""" > memory_config.yml
-
-elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
-  max_shared_mem=$(echo $mem_total*13/100 | bc)
-  max_work_mem=$(echo $mem_total*2/100 | bc)
-  max_java_arg_2=$(echo $mem_total*7/100 | bc)
-  max_java_arg_3=$(echo $mem_total*65/100 | bc)
-  echo """---
+    elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
+        max_shared_mem=$(echo $mem_total*13/100 | bc)
+        max_work_mem=$(echo $mem_total*2/100 | bc)
+        max_java_arg_2=$(echo $mem_total*7/100 | bc)
+        max_java_arg_3=$(echo $mem_total*65/100 | bc)
+        echo """---
 shared_buffers: ${max_shared_mem}MB
 work_mem: ${max_work_mem}MB
 java_arg_2: -Xms${max_java_arg_2}m
 java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
-else
-  echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
-  exit 1
+    else
+        echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
+        exit 1
+    fi
 fi
 }
 
