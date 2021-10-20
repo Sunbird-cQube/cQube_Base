@@ -168,15 +168,6 @@ fi
 }
 
 check_db_password(){
-len="${#2}"
-    if test $len -ge 8 ; then
-        echo "$2" | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@%^*!?]" > /dev/null 2>&1
-        if [[ ! $? -eq 0 ]]; then
-            echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
-        fi
-    else
-        echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
-    fi	
 if [[ $check_postgres_status == 0 ]]; then 
     export PGPASSWORD=$3
     psql -h localhost -d $1 -U $2 -c "\l" > /dev/null 2>&1
