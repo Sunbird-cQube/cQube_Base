@@ -1,2 +1,0 @@
-- include_tasks: nifi_sat.yml
-  tags: [ install, update ]

@@ -1,0 +1,9 @@
+--- 
+keycloak_version: 10.0.2
+keycloak_dir: "{{ base_dir }}/cqube"
+keycloak_archive: keycloak-{{ keycloak_version }}.tar.gz
+keycloak_url: https://downloads.jboss.org/keycloak/{{ keycloak_version }}/{{keycloak_archive }}
+keycloak_jboss_home: "{{ keycloak_dir }}/keycloak"
+keycloak_log_dir: "{{ keycloak_jboss_home }}/standalone/log"
+
+

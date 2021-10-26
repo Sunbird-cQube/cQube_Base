@@ -1,9 +1,0 @@
---- 
-- include_tasks: install_postgres.yml
-  tags: [ install, update ]
-
-- include_tasks: keycloak_user.yml
-  tags: install
-
-- include_tasks: initiate_infra.yml
-  tags: [ install, update ]

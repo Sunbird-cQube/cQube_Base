@@ -1,4 +1,0 @@
----
-
-parameter_name: data_replay_parameters
-parameter_path: "{{ base_dir }}/cqube/emission_app/python/data_replay_parameters.txt"

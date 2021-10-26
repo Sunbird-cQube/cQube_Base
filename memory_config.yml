@@ -1,0 +1,5 @@
+---
+shared_buffers: 4093MB
+work_mem: 629MB
+java_arg_2: -Xms4093m
+java_arg_3: -Xmx20466m

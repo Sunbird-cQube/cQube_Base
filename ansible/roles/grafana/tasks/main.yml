@@ -1,0 +1,51 @@
+---
+- name: Update apt cache - Grafana
+  become: yes
+  apt:
+    update_cache: true
+
+- name: Install dependencies - Grafana
+  apt:
+    name: "{{ grafana_dependencies }}"
+    state: present
+
+- name: Import Grafana GPG signing key [Debian/Ubuntu]
+  apt_key:
+    url: "https://packages.grafana.com/gpg.key"
+    state: present
+    validate_certs: false
+
+- name: Add Grafana repository [Debian/Ubuntu]
+  become: yes
+  apt_repository:
+    repo: deb https://packages.grafana.com/oss/deb stable main
+    state: present
+    update_cache: yes
+    mode: "0644"
+
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: present
+
+- name: start grafana
+  become: true
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: Edit grafana config
+  lineinfile:
+    dest: /etc/grafana/grafana.ini
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: ';http_port =', line: 'http_port = 9000' }
+    - { regexp: ';http_addr =', line: 'http_addr = {{ local_ipv4_address }}' }
+
+- name: restart grafana
+  become: true
+  service:
+    name: grafana-server
+    state: restarted

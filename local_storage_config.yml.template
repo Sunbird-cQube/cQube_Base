@@ -1,0 +1,21 @@
+---
+#------------------------------------------------------#
+#
+# cQube Installaion configuration parameters
+#
+# ALL VARIABLES ARE MANDATORY.
+# PLEASE FILL THOSE BEFORE RUNNING CORRESPONDING STEPS.
+#
+#------------------------------------------------------#
+
+#NOTE: Please fill the value with a space between ":" and the value. 
+# local_storage_directories
+# User need to create three directory for input, output and emission
+
+input_directory: /tmp/                               # Enter the input directory path followed by "/". Example: /input_directory/
+
+output_directory: /tmp/                         #Enter the output directory path followed by "/". Example: /output_directory/
+
+emission_directory: /tmp/                           #Enter the emission directory path followed by "/". Example: /emission_directory/
+
+

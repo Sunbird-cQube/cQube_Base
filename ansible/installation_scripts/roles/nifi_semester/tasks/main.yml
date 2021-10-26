@@ -1,3 +1,0 @@
-- include_tasks: nifi_semester.yml
-  tags: [ install, update ]
-

@@ -1,0 +1,101 @@
+- name: Creates directory
+  file: path=~/nifi state=directory
+  tags: install
+
+- name: Creates a directory
+  file: path={{ base_dir }}/cqube/nifi state=directory
+  tags: install
+
+- name: Installing curl
+  apt: name=curl
+  tags: install
+
+#1.12
+- name: Download NiFi
+  get_url:
+    url: https://archive.apache.org/dist/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.tar.gz
+    dest: ~/nifi
+    mode: "0644"
+  tags: install
+
+- name: Check if nifi is present in destination
+  stat: 
+    path: "{{ base_dir }}/cqube/nifi/nifi"
+  register: status
+  tags: install
+
+- name: stop nifi if its running
+  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
+  when: status.stat.exists == true
+  tags: install
+
+- name: remove nifi directory if present
+  become: yes
+  shell: rm -rf {{ base_dir }}/cqube/nifi/nifi
+  ignore_errors: yes
+  args:
+    warn: false
+  tags: install
+
+- name: Extract NiFi in the same folder
+  unarchive:
+    src: ~/nifi/nifi-{{ nifi_version }}-bin.tar.gz
+    dest: "{{ base_dir }}/cqube/nifi"
+  tags: install
+
+- name: Rename the extracted folder
+  shell: mv {{ base_dir }}/cqube/nifi/nifi-* {{ base_dir }}/cqube/nifi/nifi
+  tags: install
+
+- name: Creates directory
+  file: path={{ base_dir }}/cqube/nifi/nifi/jars state=directory
+  tags: install
+
+- name: Download Jar file
+  get_url:
+    url: https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.10/postgresql-42.2.10.jar
+    dest: "{{ base_dir }}/cqube/nifi/nifi/jars"
+    mode: "0644"
+  tags: install
+#1.12 end
+
+#1.12
+- name: configure the webserver in nifi.properties file
+  replace:
+    dest: "{{ base_dir }}/cqube/nifi/nifi/conf/nifi.properties"
+    regexp: 'nifi.web.http.host='
+    replace: 'nifi.web.http.host=0.0.0.0'
+  tags: install
+
+- name: configure the webserver in nifi.properties file
+  replace:
+    dest: "{{ base_dir }}/cqube/nifi/nifi/conf/nifi.properties"
+    regexp: 'nifi.web.http.port=8080'
+    replace: 'nifi.web.http.port={{ nifi_port }}'
+  tags: install
+#constant
+- name: Increase nifi memory
+  lineinfile:
+    path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
+    regexp: '^java.arg.2='
+    line: "java.arg.2={{ java_arg_2 }}"
+  tags: [ install, update ]
+
+- name: Add time zone to nifi
+  blockinfile:
+        path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
+        block: |
+               java.arg.8=-Duser.timezone=Asia/Kolkata
+  tags: install
+#constant
+- name: Increase nifi memory
+  lineinfile:
+    path: "{{ base_dir }}/cqube/nifi/nifi/conf/bootstrap.conf"
+    regexp: '^java.arg.3='
+    line: "java.arg.3={{ java_arg_3 }}"
+  tags: [ install, update ]
+#1.12 end
+
+- name: start NiFi
+  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
+  tags: install

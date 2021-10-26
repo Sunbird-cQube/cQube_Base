@@ -1,0 +1,71 @@
+---
+- name: gunicorn systemd setup
+  template:
+    owner: root
+    group: root
+    mode: 0644
+    src: gunicorn.service.j2
+    dest: /etc/systemd/system/gunicorn.service
+  tags: install
+
+- name: reload systemd
+  become: yes
+  shell: systemctl daemon-reload
+  tags: install
+
+- name: Stopping the emission_app service
+  service:
+    name: gunicorn
+    enabled: yes
+    state: stopped
+  tags: update
+
+- name: Making sure emission_app directory is present
+  file:
+    path: "{{ base_dir }}/cqube/emission_app"
+    recurse: yes
+    state: directory
+  tags: install
+
+- name: Copy requirements.txt
+  copy:
+    src: ../requirements.txt
+    dest: "{{ base_dir }}/cqube/emission_app/requirements.txt"
+    mode: "0644"
+  tags: [ install, update ]
+
+- name: create a virtual environment directory
+  file:
+    path: "{{ base_dir }}/cqube/emission_app/flaskenv"
+    state: directory
+  tags: install
+
+- name: Install requirements
+  become: yes
+  pip:
+    requirements: "{{ base_dir }}/cqube/emission_app/requirements.txt"
+    virtualenv: "{{ base_dir }}/cqube/emission_app/flaskenv"
+    virtualenv_python: /usr/bin/python3
+  tags: [ install, update ]
+
+- name: Manually create the initial virtualenv
+  command:
+    cmd: virtualenv {{ base_dir }}/cqube/emission_app/flaskenv -p python3
+    creates: "{{ base_dir }}/cqube/emission_app/flaskenv"
+  tags: install
+
+- name: Changing the permission of the directory
+  file:
+    path: "{{ base_dir }}/cqube/emission_app"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+  tags: [ install, update ]
+
+- name: Starting the emission_app service
+  service:
+    name: gunicorn
+    enabled: yes
+    state: started
+  tags: [ install, update ]
+

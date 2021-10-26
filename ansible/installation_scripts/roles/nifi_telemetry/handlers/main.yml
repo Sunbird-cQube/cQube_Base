@@ -1,7 +1,0 @@
-- name: start telemetry processor
-  uri:
-    url: http://localhost:{{ nifi_port }}/nifi-api/flow/process-groups/{{ tagExists[0].item.component.id }}
-    method: PUT
-    body_format: json
-    body: {"id":"{{ tagExists[0].item.component.id }}","state":"RUNNING"}
-  no_log: True
