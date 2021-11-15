@@ -26,10 +26,10 @@
     state: directory
   tags: [install, update]
 
-- name: Copying the config.yml file as base_installation_config.yml
+- name: Copying the config.yml file as base_config.yml
   copy:
     src: ../config.yml
-    dest: "{{ base_dir }}/cqube/conf/base_installation_config.yml"
+    dest: "{{ base_dir }}/cqube/conf/base_config.yml"
     mode: '0644'
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
@@ -45,6 +45,46 @@
   tags: install
   when: storage_type == "local"
 
+- name: Copying the aws_s3_config.yml.template
+  copy:
+    src: ../aws_s3_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/aws_s3_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "azure"
+
+- name: Copying the aws_s3_config.yml
+  copy:
+    src: ../aws_s3_config.yml
+    dest: "{{ base_dir }}/cqube/conf/aws_s3_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "s3"
+  
+- name: Copying the local_storage_config.yml.template 
+  copy:
+    src: ../local_storage_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/local_storage_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "s3"
+
+- name: Copying the local_storage_config.yml.template
+  copy:
+    src: ../local_storage_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/local_storage_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "azure"
+
 - name: Copying the local_storage_config.yml
   copy:
     src: ../local_storage_config.yml
@@ -55,7 +95,15 @@
   tags: install
   when: storage_type == "local"
   
-  
+- name: Copying the config.yml file as base_config.yml
+  copy:
+    src: ../config.yml
+    dest: "{{ base_dir }}/cqube/conf/base_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: update
+
 - name: Copying the aws_s3_config.yml 
   copy:
     src: ../aws_s3_config.yml
@@ -63,68 +111,131 @@
     mode: '0644'
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
-  tags: install
+  tags: update
   when: storage_type == "s3"
 
-- name: Copying the local_storage_config.yml.template 
+
+- name: Copying the aws_s3_config.yml.template
+  copy:
+    src: ../aws_s3_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/aws_s3_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: update
+  when: storage_type == "local"
+
+- name: Copying the aws_s3_config.yml.template
+  copy:
+    src: ../aws_s3_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/aws_s3_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: update
+  when: storage_type == "azure"
+
+
+- name: Copying the local_storage_config.yml.template
   copy:
     src: ../local_storage_config.yml.template
     dest: "{{ base_dir }}/cqube/conf/local_storage_config.yml"
     mode: '0644'
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
+  tags: update
+  when: storage_type == "local"
+
+- name: Copying the local_storage_config.yml
+  copy:
+    src: ../local_storage_config.yml
+    dest: "{{ base_dir }}/cqube/conf/local_storage_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: update
+  when: storage_type == "local"
+
+- name: Copying the local_storage_config.yml.template
+  copy:
+    src: ../local_storage_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/local_storage_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: update
+  when: storage_type == "s3"
+
+- name: Copying the local_storage_config.yml.template
+  copy:
+    src: ../local_storage_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/local_storage_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: update
+  when: storage_type == "azure"
+
+- name: Copying the azure_container_config.yml
+  copy:
+    src: ../azure_container_config.yml
+    dest: "{{ base_dir }}/cqube/conf/azure_container_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "azure"
+
+- name: Copying the azure_container_config.yml.template
+  copy:
+    src: ../azure_container_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/azure_container_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "local"
+
+- name: Copying the azure_container_config.yml.template
+  copy:
+    src: ../azure_container_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/azure_container_config.yml"
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
   tags: install
   when: storage_type == "s3"
-    
-- name: Copying the upgradation_config.yml file as base_upgradation_config.yml
+
+- name: Copying the azure_container_config.yml
   copy:
-    src: ../upgradation_config.yml
-    dest: "{{ base_dir }}/cqube/conf/base_upgradation_config.yml"
+    src: ../azure_container_config.yml
+    dest: "{{ base_dir }}/cqube/conf/azure_container_config.yml"
     mode: '0644'
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
   tags: update
+  when: storage_type == "azure"
 
-- name: Copying the aws_s3_upgradation_config.yml 
-  copy:
-    src: ../aws_s3_upgradation_config.yml
-    dest: "{{ base_dir }}/cqube/conf/aws_s3_upgradation_config.yml"
-    mode: '0644'
-    owner: "{{ system_user_name }}"
-    group: "{{ system_user_name }}"
-  tags: update
-  when: storage_type == "s3"
-
-- name: Copying the local_storage_upgradation_config.yml.template
-  copy:
-    src: ../local_storage_upgradation_config.yml.template
-    dest: "{{ base_dir }}/cqube/conf/local_storage_upgradation_config.yml"
+- name: Copying the azure_container_config.yml.template
+  copy: 
+    src: ../azure_container_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/azure_container_config.yml"
     mode: '0644'
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
   tags: update
   when: storage_type == "local"
 
-- name: Copying the local_storage_upgradation_config.yml.template
+- name: Copying the azure_container_config.yml.template
   copy:
-    src: ../local_storage_upgradation_config.yml.template
-    dest: "{{ base_dir }}/cqube/conf/local_storage_upgradation_config.yml"
+    src: ../azure_container_config.yml.template
+    dest: "{{ base_dir }}/cqube/conf/azure_container_config.yml"
     mode: '0644'
     owner: "{{ system_user_name }}"
     group: "{{ system_user_name }}"
   tags: update
   when: storage_type == "s3"
-  
-- name: Copying the local_storage_upgradation_config.yml 
-  copy:
-    src: ../local_storage_upgradation_config.yml
-    dest: "{{ base_dir }}/cqube/conf/local_storage_upgradation_config.yml"
-    mode: '0644'
-    owner: "{{ system_user_name }}"
-    group: "{{ system_user_name }}"
-  tags: update
-  when: storage_type == "local"
-  
+
 - name: Setting timezone to IST
   timezone:
     name: Asia/Kolkata

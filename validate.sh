@@ -69,30 +69,48 @@ fi
 check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
-if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
-  min_shared_mem=$(echo $mem_total*13/100 | bc)
-  min_work_mem=$(echo $mem_total*2/100 | bc)
-  min_java_arg_2=$(echo $mem_total*13/100 | bc)
-  min_java_arg_3=$(echo $mem_total*65/100 | bc)
-  echo """---
+
+if [[ $mode_of_installation == "localhost" ]]; then
+  if [ $(($mem_total / 1024)) -ge 7 ]; then
+    local_shared_mem=$(echo $mem_total*13/100 | bc)
+    local_work_mem=$(echo $mem_total*2/100 | bc)
+    local_java_arg_2=$(echo $mem_total*13/100 | bc)
+    local_java_arg_3=$(echo $mem_total*65/100 | bc)
+    echo """---
+shared_buffers: ${local_shared_mem}MB
+work_mem: ${local_work_mem}MB
+java_arg_2: -Xms${local_java_arg_2}m
+java_arg_3: -Xmx${local_java_arg_3}m""" > memory_config.yml
+  else
+    "Error - Minimum Memory requirement to install cQube in localhost/single machine is 8GB. Please increase the RAM size.";
+  fi
+fi
+
+if [[ $mode_of_installation == "public" ]]; then
+    if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
+        min_shared_mem=$(echo $mem_total*13/100 | bc)
+        min_work_mem=$(echo $mem_total*2/100 | bc)
+        min_java_arg_2=$(echo $mem_total*13/100 | bc)
+        min_java_arg_3=$(echo $mem_total*65/100 | bc)
+        echo """---
 shared_buffers: ${min_shared_mem}MB
 work_mem: ${min_work_mem}MB
 java_arg_2: -Xms${min_java_arg_2}m
 java_arg_3: -Xmx${min_java_arg_3}m""" > memory_config.yml
-
-elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
-  max_shared_mem=$(echo $mem_total*13/100 | bc)
-  max_work_mem=$(echo $mem_total*2/100 | bc)
-  max_java_arg_2=$(echo $mem_total*7/100 | bc)
-  max_java_arg_3=$(echo $mem_total*65/100 | bc)
-  echo """---
+    elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
+        max_shared_mem=$(echo $mem_total*13/100 | bc)
+        max_work_mem=$(echo $mem_total*2/100 | bc)
+        max_java_arg_2=$(echo $mem_total*7/100 | bc)
+        max_java_arg_3=$(echo $mem_total*65/100 | bc)
+        echo """---
 shared_buffers: ${max_shared_mem}MB
 work_mem: ${max_work_mem}MB
 java_arg_2: -Xms${max_java_arg_2}m
 java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
-else
-  echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
-  exit 1
+    else
+        echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
+        exit 1
+    fi
 fi
 }
 
@@ -108,7 +126,12 @@ check_ip()
     local ip=$2
     ip_stat=1
     ip_pass=0
-
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "localhost" ]]; then
+        echo "Error - Please provide local ipv4 as localhost for localhost installation"; fail=1
+    fi
+fi
+if [[ $mode_of_installation == "public" ]]; then    
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -127,7 +150,8 @@ check_ip()
         fi
     else
         echo "Error - Invalid value for $key"; fail=1
-    fi
+   fi
+fi    
 }
 
 check_vpn_ip()
@@ -135,7 +159,12 @@ check_vpn_ip()
     local ip=$2
     ip_stat=1
     ip_pass=0
-
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "127.0.0.1" ]]; then
+        echo "Error - Please provide local vpn ip as 127.0.0.1 for localhost installation"; fail=1
+    fi
+fi
+ if [[ $mode_of_installation == "public" ]]; then   
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -151,6 +180,7 @@ check_vpn_ip()
     else
         echo "Error - Invalid value for $key"; fail=1
     fi
+ fi  
 }
 
 check_db_naming(){
@@ -177,21 +207,40 @@ check_db_password(){
 }
 
 check_storage_type(){
-if ! [[ $2 == "s3" || $2 == "local" ]]; then
-    echo "Error - Please enter either s3 or local for $1"; fail=1
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "local" ]]; then
+        echo "Error - Please provide storage type as local for localhost installation"; fail=1
+    fi
+fi
+if [[ $mode_of_installation == "public" ]]; then
+    if ! [[ $2 == "s3" || $2 == "local" || $2 == "azure" ]]; then
+        echo "Error - Please enter either aws or local or azure for $1"; fail=1
+    fi
+fi    
+}
+check_mode_of_installation(){
+if ! [[ $2 == "localhost" || $2 == "public" ]]; then
+    echo "Error - Please enter either localhost or public for $1"; fail=1
 fi
 }
 
 check_api_endpoint(){
-if [[ (( $2 =~ \-{2,} ))  ||  (( $2 =~ \.{2,} )) ]]; then
-    echo "Error - Please provide the proper api endpoint for $1"; fail=1
-else
-    if [[ $2 =~ ^[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
-        if ! [[ ${#2} -le 255 ]]; then
-          echo "Error - FQDN exceeding 255 characters. Please provide the proper api endpoint for $1"; fail=1
-        fi
-    else
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "localhost" ]]; then
+        echo "Error - Please provide api_endpoint as localhost forlocalhost installation"; fail=1
+    fi
+fi
+if [[ $mode_of_installation == "public" ]]; then
+    if [[ (( $2 =~ \-{2,} ))  ||  (( $2 =~ \.{2,} )) ]]; then
         echo "Error - Please provide the proper api endpoint for $1"; fail=1
+    else
+        if [[ $2 =~ ^[^-.@_][a-z0-9i.-]{2,}\.[a-z/]{2,}$ ]]; then
+            if ! [[ ${#2} -le 255 ]]; then
+            echo "Error - FQDN exceeding 255 characters. Please provide the proper api endpoint for $1"; fail=1
+            fi
+        else
+            echo "Error - Please provide the proper api endpoint for $1"; fail=1
+        fi
     fi
 fi
 }
@@ -215,16 +264,16 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 # An array of mandatory values
 declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "read_only_db_user" \
-                " read_only_db_password" "storage_type" \
+                " read_only_db_password" "storage_type" "mode_of_installation" \
 	        "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
-		"keycloak_config_otp") 
+		"report_viewer_config_otp") 
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
 
 # Getting base_dir
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-
+mode_of_installation=$(awk ''/^mode_of_installation:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 check_mem
@@ -306,7 +355,7 @@ case $key in
           check_db_password $key $value
        fi
        ;;
-   keycloak_config_otp)
+   report_viewer_config_otp)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
@@ -333,7 +382,14 @@ case $key in
        else
           check_storage_type $key $value
        fi
-       ;;    
+       ;;
+   mode_of_installation)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_mode_of_installation $key $value
+       fi
+       ;;
    api_endpoint)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
