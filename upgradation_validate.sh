@@ -116,7 +116,6 @@ check_ip()
     local ip=$2
     ip_stat=1
     ip_pass=0
-
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -143,7 +142,6 @@ check_vpn_ip()
     local ip=$2
     ip_stat=1
     ip_pass=0
-
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -170,6 +168,15 @@ fi
 }
 
 check_db_password(){
+len="${#2}"
+    if test $len -ge 8 ; then
+        echo "$2" | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@%^*!?]" > /dev/null 2>&1
+        if [[ ! $? -eq 0 ]]; then
+            echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
+        fi
+    else
+        echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
+    fi	
 if [[ $check_postgres_status == 0 ]]; then 
     export PGPASSWORD=$3
     psql -h localhost -d $1 -U $2 -c "\l" > /dev/null 2>&1
@@ -181,11 +188,19 @@ fi
 }
 
 check_storage_type(){
-if ! [[ $2 == "s3" || $2 == "local" ]]; then
+	
+if ! [[ $2 == "s3" || $2 == "local" || "azure" ]]; then
     echo "Error - Please enter either s3 or local for $1"; fail=1
+else
+    if [[ -e "$base_dir/cqube/.cqube_config" ]]; then			
+         typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
+         strg_typ=$(cut -d "=" -f2 <<< "$typ")
+         if [[ ! "$2" == "$strg_typ" ]]; then
+             echo "Error - storage_type value should be same as previous installation storage_type"; fail=1
+         fi	
+     fi
 fi
 }
-
 
 # Only for release 1.9
 check_length(){
@@ -199,46 +214,73 @@ check_length(){
     fi
 }
 
+check_mode_of_installation(){
+if ! [[ $2 == "public" || $2 == "localhost" ]]; then
+    echo "Error - Please enter public or localhost for $1"; fail=1
+fi
+}
+
 check_api_endpoint(){
-temp_ep=`grep '^KEYCLOAK_HOST =' $base_dir/cqube/dashboard/server_side/.env | awk '{print $3}' | sed s/\"//g`
-if [[ ! $temp_ep == "https://$2" ]]; then
-    echo "Error - Change in domain name. Please verify the api_endpoint "; fail=1
+if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
+	temp_ep=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_API_ENDPOINT )
+    ep_typ=$(cut -d "=" -f2 <<< "$temp_ep")
+    if [[ ! "$2" == "$ep_typ" ]]; then
+    	echo "Change in domain name. Please verify the api_endpoint "; fail=1
+    fi
 fi
 }
 
 check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
-if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
-  min_shared_mem=$(echo $mem_total*13/100 | bc)
-  min_work_mem=$(echo $mem_total*2/100 | bc)
-  min_java_arg_2=$(echo $mem_total*13/100 | bc)
-  min_java_arg_3=$(echo $mem_total*65/100 | bc)
-  echo """---
+
+if [[ $mode_of_installation == "localhost" ]]; then
+  if [ $(($mem_total / 1024)) -ge 7 ]; then
+    local_shared_mem=$(echo $mem_total*13/100 | bc)
+    local_work_mem=$(echo $mem_total*2/100 | bc)
+    local_java_arg_2=$(echo $mem_total*13/100 | bc)
+    local_java_arg_3=$(echo $mem_total*65/100 | bc)
+    echo """---
+shared_buffers: ${local_shared_mem}MB
+work_mem: ${local_work_mem}MB
+java_arg_2: -Xms${local_java_arg_2}m
+java_arg_3: -Xmx${local_java_arg_3}m""" > memory_config.yml
+  else
+    "Error - Minimum Memory requirement to install cQube in localhost/single machine is 8GB. Please increase the RAM size.";
+  fi
+fi
+
+if [[ $mode_of_installation == "public" ]]; then
+    if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
+        min_shared_mem=$(echo $mem_total*13/100 | bc)
+        min_work_mem=$(echo $mem_total*2/100 | bc)
+        min_java_arg_2=$(echo $mem_total*13/100 | bc)
+        min_java_arg_3=$(echo $mem_total*65/100 | bc)
+        echo """---
 shared_buffers: ${min_shared_mem}MB
 work_mem: ${min_work_mem}MB
 java_arg_2: -Xms${min_java_arg_2}m
 java_arg_3: -Xmx${min_java_arg_3}m""" > memory_config.yml
-
-elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
-  max_shared_mem=$(echo $mem_total*13/100 | bc)
-  max_work_mem=$(echo $mem_total*2/100 | bc)
-  max_java_arg_2=$(echo $mem_total*7/100 | bc)
-  max_java_arg_3=$(echo $mem_total*65/100 | bc)
-  echo """---
+    elif [ $(( $mem_total / 1024 )) -gt 60 ]; then
+        max_shared_mem=$(echo $mem_total*13/100 | bc)
+        max_work_mem=$(echo $mem_total*2/100 | bc)
+        max_java_arg_2=$(echo $mem_total*7/100 | bc)
+        max_java_arg_3=$(echo $mem_total*65/100 | bc)
+        echo """---
 shared_buffers: ${max_shared_mem}MB
 work_mem: ${max_work_mem}MB
 java_arg_2: -Xms${max_java_arg_2}m
 java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
-else
-  echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
-  exit 1
+    else
+        echo "Error - Minimum Memory requirement to install cQube is 32GB. Please increase the RAM size."; 
+        exit 1
+    fi
 fi
 }
 
 get_config_values(){
 key=$1
-vals[$key]=$(awk ''/^$key:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
+vals[$key]=$(awk ''/^$key:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 }
 
 bold=$(tput bold)
@@ -254,9 +296,9 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "storage_type" \
+declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "storage_type" "mode_of_installation"  \
 	        "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
-		"keycloak_config_otp")
+		"report_viewer_config_otp")
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -265,21 +307,22 @@ declare -A vals
 realm_name=cQube
 
 # Getting base_dir
-base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
+base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 # Getting keycloak_adm_user and keycloak_adm_passwd
-keycloak_adm_user=$(awk ''/^keycloak_adm_user:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-keycloak_adm_passwd=$(awk ''/^keycloak_adm_passwd:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
+keycloak_adm_user=$(awk ''/^keycloak_adm_user:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+mode_of_installation=$(awk ''/^mode_of_installation:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+keycloak_adm_passwd=$(awk ''/^keycloak_adm_passwd:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 # Getting db_user, db_name and db_password
-db_user=$(awk ''/^db_user:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-db_name=$(awk ''/^db_name:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
-storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' upgradation_config.yml)
+db_user=$(awk ''/^db_user:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+db_name=$(awk ''/^db_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+db_password=$(awk ''/^db_password:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=2.0
+version_upgradable_from=3.1
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
@@ -348,7 +391,7 @@ case $key in
           check_keycloak_credentials $keycloak_adm_user $keycloak_adm_passwd
        fi
        ;;
-   keycloak_config_otp)
+   report_viewer_config_otp)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
@@ -367,6 +410,13 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_storage_type $key $value
+       fi
+       ;;
+   mode_of_installation)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_mode_of_installation $key $value
        fi
        ;;    
    api_endpoint)

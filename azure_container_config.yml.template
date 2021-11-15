@@ -1,0 +1,26 @@
+---
+#------------------------------------------------------#
+#
+# cQube Installaion configuration parameters
+#
+# ALL VARIABLES ARE MANDATORY.
+# PLEASE FILL THOSE BEFORE RUNNING CORRESPONDING STEPS.
+#
+#------------------------------------------------------#
+
+#NOTE: Please fill the value with a space between ":" and the value. 
+
+
+# azure container Parameters
+# Naming convention to follow while choosing the container name
+# The container name can be between 3 and 63 characters long, and can contain only lower-case characters, numbers, and dashes.
+# Each label in the container name must start with a lowercase letter or number.
+# The container name cannot contain underscores, end with a dash, have consecutive periods, or use dashes adjacent to periods.
+# The bucket name cannot be formatted as an IP address (198.51.100.24).
+
+azure_input_container: container_name                           # azure input container name, to store cQube raw input data. ( Example: cqube-prod-input )
+azure_output_container: container_name                         # azure output container name, to store the cQube processed output data ( Example: cqube-prod-output )
+azure_emission_container: container_name                        # azure emission container name, to store emitted data files (temporary storage location till data files process completes) ( Example: cqube-prod-emission )
+azure_account_name: azure_storage_name                           # azure account name for creation of azure container
+azure_account_key: azure_account_key                             # Azure account key for creation of azure container
+
