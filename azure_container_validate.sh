@@ -37,7 +37,7 @@ check_az_storage_account_name(){
 
 check_az_container(){
 if [[ $az_key_status == 0 ]]; then
-        containerstatus=`az storage container exist --account-name $azure_account_name --account-key $azure_account_key --name $container_name "${2}" 2>&1`
+        containerstatus=`az storage container exist --account-name $azure_account_name --account-key $azure_account_key --name $2 > /dev/null 2>&1`
         if [ ! $? == 0 ]
         then
             echo "Error - [ $1 : $2 ] Container not owned or not found. Please change the container name in azure_container_config.yml"; fail=1
