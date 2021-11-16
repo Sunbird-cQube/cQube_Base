@@ -45,7 +45,7 @@ if [[ $az_key_status == 0 ]]; then
 fi
 }
 
-get_az_container_config_values(){
+get_azure_container_config_values(){
 key=$1
 vals[$key]=$(awk ''/^$key:' /{ if ($2 !~ /#.*/) {print $2}}' azure_container_config.yml)
 }
@@ -59,7 +59,7 @@ else
    core_install="NA"
 fi
 
-echo -e "\e[0;33m${bold}Validating the aws_s3_config file...${normal}"
+echo -e "\e[0;33m${bold}Validating the azure_container_config file...${normal}"
 
 
 # An array of mandatory values
@@ -69,8 +69,8 @@ declare -a arr=("azure_account_name" "azure_account_key" "azure_input_container"
 declare -A vals
 
 # Getting aws keys
-account_name=$(awk ''/^azure_account_name:' /{ if ($2 !~ /#.*/) {print $2}}' azure_container_config.yml)
-account_key=$(awk ''/^azure_account_key:' /{ if ($2 !~ /#.*/) {print $2}}' azure_container_config.yml)
+azure_account_name=$(awk ''/^azure_account_name:' /{ if ($2 !~ /#.*/) {print $2}}' azure_container_config.yml)
+azure_account_key=$(awk ''/^azure_account_key:' /{ if ($2 !~ /#.*/) {print $2}}' azure_container_config.yml)
 
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}
