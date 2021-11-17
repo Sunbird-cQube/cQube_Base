@@ -18,6 +18,10 @@ fi
    if ! [[ -x "$2" ]]; then
         echo "Error - '$1' please give execute permission to directory."; fail=1
    fi
+   if ! [[ "$2" = */ ]]; then
+	echo "Error - $1 Please make sure the absolute path values should end with '/'"; fail=1
+   fi
+
 }
 
 get_local_storage_config_values(){
