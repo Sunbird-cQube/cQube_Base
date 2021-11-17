@@ -12,10 +12,10 @@
 # local_storage_directories
 # User need to create three directory for input, output and emission
 
-input_directory: /tmp                               # Enter the input directory path
+input_directory: /tmp/                               # Enter the input directory path followed by "/". Example: /input_directory/
 
-output_directory: /tmp                         #Enter the output directory path
+output_directory: /tmp/                         #Enter the output directory path followed by "/". Example: /output_directory/
 
-emission_directory: /tmp                           #Enter the emission directory path
+emission_directory: /tmp/                           #Enter the emission directory path followed by "/". Example: /emission_directory/
 
 
