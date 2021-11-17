@@ -21,6 +21,21 @@ fi
 
 . "upgradation_validate.sh"
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+
+if [[ $storage_type == "azure" ]]; then
+   az --version >/dev/null 2>&1
+   if [ $? -ne 0 ]; then
+     . "$INS_DIR/validation_scripts/install_azure_cli.sh"
+   fi
+fi
+
+if [[ $storage_type == "s3" ]]; then
+   aws --version >/dev/null 2>&1
+   if [ $? -ne 0 ]; then
+     . "$INS_DIR/validation_scripts/install_aws_cli.sh"
+   fi
+fi
+
 if [[ $storage_type == "s3" ]]; then
     if [[ -f aws_s3_config.yml ]]; then
     . "$INS_DIR/aws_s3_upgradation_validate.sh"
