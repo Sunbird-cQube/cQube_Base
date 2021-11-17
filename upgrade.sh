@@ -72,7 +72,7 @@ storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.ym
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 if [[ $storage_type == "s3" ]]; then
 ansible-playbook ansible/upgrade.yml --tags "update" --extra-vars "@aws_s3_config.yml" \
-                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml"
+                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
 													  --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
     if [ $? = 0 ]; then
         echo "cQube Base upgraded successfully!!"
@@ -95,6 +95,3 @@ ansible-playbook ansible/upgrade.yml --tags "update" --extra-vars "@local_storag
         echo "cQube Base upgraded successfully!!"
     fi
 fi
-
-
-
