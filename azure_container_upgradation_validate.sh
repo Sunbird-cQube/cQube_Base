@@ -19,22 +19,12 @@ check_az_storage_account_name(){
         az_account_status=1
     fi
 }
-check_s3_bucket(){
-
-s3_bucket=$(cat $base_dir/cqube/.cqube_config | grep $3 )
-s3_bucket_name=$(cut -d "=" -f2 <<< "$s3_bucket")
-if [[ ! "$2" == "$s3_bucket_name" ]]; then
-    echo "Error - $1 must be same as previously used bucket"; fail=1
-fi
-
-}
-
 
 check_az_container(){
 az_container=$(cat $base_dir/cqube/.cqube_config | grep $3 )
 az_container_name=$(cut -d "=" -f2 <<< "$az_container")
 if [[ ! "$2" == "$az_container_name" ]]; then
-    echo "Error - $1 must be same as previously used bucket"; fail=1
+    echo "Error - $1 must be same as previously used container"; fail=1
 fi
 
 }

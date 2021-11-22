@@ -36,13 +36,12 @@ check_az_storage_account_name(){
 
 
 check_az_container(){
-if [[ $az_key_status == 0 ]]; then
-        containerstatus=`az storage container exist --account-name $azure_account_name --account-key $azure_account_key --name $2 > /dev/null 2>&1`
-        if [ ! $? == 0 ]
-        then
-            echo "Error - [ $1 : $2 ] Container not owned or not found. Please change the container name in azure_container_config.yml"; fail=1
-        fi
-fi
+  az_container_status=0
+  export AZURE_STORAGE_CONNECTION_STRING="$1"
+  containerstatus=$(az storage container exists --account-name $azure_account_name --account-key $azure_account_key --name $2 | grep -c false )
+    if [  $containerstatus == 1 ]; then echo "Error - [ $1 : $2 ] Container not owned or not found. Please change the container name in azure_container_config.yml"; fail=1
+         az_container_status=1
+    fi
 }
 
 get_azure_container_config_values(){
@@ -98,21 +97,21 @@ case $key in
           check_az_key $key $value
        fi
        ;;
-   az_input_container)
+   azure_input_container)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_az_container $key $value
        fi
        ;;
-   az_output_container)
+   azure_output_container)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_az_container $key $value
        fi
        ;;
-   az_emission_container)
+   azure_emission_container)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
