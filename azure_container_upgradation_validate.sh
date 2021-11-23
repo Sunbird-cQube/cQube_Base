@@ -21,12 +21,13 @@ check_az_storage_account_name(){
 }
 
 check_az_container(){
+if [[ -e "$base_dir/cqube/.cqube_config" ]]; then	
 az_container=$(cat $base_dir/cqube/.cqube_config | grep $3 )
 az_container_name=$(cut -d "=" -f2 <<< "$az_container")
 if [[ ! "$2" == "$az_container_name" ]]; then
     echo "Error - $1 must be same as previously used container"; fail=1
 fi
-
+fi
 }
 
 get_azure_container_config_values(){
@@ -43,7 +44,7 @@ else
    core_install="NA"
 fi
 
-echo -e "\e[0;33m${bold}Validating the aws_s3_config file...${normal}"
+echo -e "\e[0;33m${bold}Validating the azure_container_config file...${normal}"
 
 
 # An array of mandatory values
@@ -71,8 +72,8 @@ case $key in
    azure_account_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-	   else
-		   check_az_storage_account_name $key $value 	  
+	   #else
+		#   check_az_storage_account_name $key $value 	  
        fi
        ;;
    azure_account_key)
@@ -86,21 +87,21 @@ case $key in
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_az_container $key $value
+          check_az_container $key $value "AZURE_INPUT_STORAGE"
        fi
        ;;
    azure_output_container)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_az_container $key $value
+          check_az_container $key $value "AZURE_OUTPUT_STORAGE"
        fi
        ;;
    azure_emission_container)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_az_container $key $value
+          check_az_container $key $value "AZURE_EMISSION_STORAGE"
        fi
        ;;
    *)
