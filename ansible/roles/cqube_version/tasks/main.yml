@@ -28,7 +28,6 @@
                AZURE_INPUT_STORAGE={{ azure_input_container }}
                AZURE_EMISSION_STORAGE={{ azure_emission_container }}
 
-
   tags: install
   
 - name: Updating the CQUBE_VERSION
