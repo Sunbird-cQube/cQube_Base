@@ -1,0 +1,39 @@
+---
+- name: Creating config file
+  file:
+    path: "{{ base_dir }}/cqube/.cqube_config"
+    state: touch
+    mode: u+rw,g+rw,o+rw
+  tags: install
+
+     
+- name: Loading required data inside config file
+  blockinfile:
+        path: "{{ base_dir }}/cqube/.cqube_config"
+        block: |
+               CQUBE_VERSION={{ cqube_version }}
+               CQUBE_HOME={{ base_dir }}/cqube
+               CQUBE_BASE_DIR={{ base_dir }}
+               CQUBE_DB_USER={{ db_user }}
+               CQUBE_DB_NAME={{ db_name }}
+               CQUBE_STORAGE_TYPE={{ storage_type }}
+               CQUBE_S3_INPUT={{ s3_input_bucket }}
+               CQUBE_S3_OUTPUT={{ s3_output_bucket }}
+               CQUBE_S3_EMISSION={{ s3_emission_bucket }}
+               CQUBE_INPUT_DIRECTORY={{ input_directory }}
+               CQUBE_OUTPUT_DIRECTORY={{ output_directory }}
+               CQUBE_EMISSION_DIRECTORY={{ emission_directory }}
+               CQUBE_API_ENDPOINT={{ api_endpoint }}
+			   AZURE_OUTPUT_STORAGE={{ azure_output_container }}
+               AZURE_INPUT_STORAGE={{ azure_input_container }}
+               AZURE_EMISSION_STORAGE={{ azure_emission_container }}
+
+
+  tags: install
+  
+- name: Updating the CQUBE_VERSION
+  lineinfile: 
+    regex: '^CQUBE_VERSION='
+    line: CQUBE_VERSION={{ cqube_version }}
+    path: "{{ base_dir }}/cqube/.cqube_config"
+  tags: update
