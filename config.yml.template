@@ -24,7 +24,7 @@ db_password:                               # Create your own password to for the
 read_only_db_user:                         # Create your own username for the read only access of cQube database
 read_only_db_password:                     # Create your own password for the read only user, password should contain atleast 1 lower,upper,number,special character (only @!%^*? allowed) and minimum 8 characters
 
-storage_type:                              # enter `s3` or `local` or `azure`
+storage_type:                              # enter `s3` or `local`
 
 # Please fill api_endpoint where node server will be accessible.
 # Node server will be running on 3000 port using local ip.

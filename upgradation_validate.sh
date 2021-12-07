@@ -180,7 +180,7 @@ fi
 
 check_storage_type(){
 	
-if ! [[ $2 == "s3" || $2 == "local" || "azure" ]]; then
+if ! [[ $2 == "s3" || $2 == "local" ]]; then
     echo "Error - Please enter either s3 or local for $1"; fail=1
 else
     if [[ -e "$base_dir/cqube/.cqube_config" ]]; then			
