@@ -2,7 +2,7 @@ wheel==0.34.2
 boto3==1.13.16
 gunicorn==20.0.4
 Flask==1.1.2
-Flask-AppBuilder==1.9.2
+Flask-AppBuilder==3.3.4
 Flask-Caching==1.8.0
 Flask-RESTful==0.3.8
 Flask-Script==2.0.6
