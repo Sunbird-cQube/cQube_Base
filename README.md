@@ -1,6 +1,7 @@
 # cQube_Base Installation
 ###  Prerequisites to install cQube_Base:
-- ubuntu 18.04 Server (supported)
+
+- ubuntu 18.04 (supported)
 - 32GB of System RAM (minimum requirement)
 - 8 core CPU (minimum requirement)
 - Domain name (with SSL)
@@ -22,21 +23,32 @@
 - Port 9000 should be open from openvpn to the cQube server
 - Port 4201 should be open from openvpn to the cQube server
 - Port 3001 should be open from openvpn to the cQube server
+
 Note: For Installation: follow the below steps directly, for upgradation follow the Upgradation: steps mentioned in the last section.
 
 
 # Installation Steps:
-- open Terminal
-- Navigate to the directory where cQube has been downloaded or cloned 
-```
-cd cQube_Base/
-git checkout release-3.0
-```
-- Copy the config.yml.template to config.yml cp config.yml.template config.yml
-- Edit using nano config.yml
-- If you are opting for storage_type as s3. Copy the aws_s3_config.yml.template to aws_s3_config.yml `cp aws_s3_config.yml.template aws_s3_config.yml`
-- Edit using nano aws_s3_config.yml
-- If you are opting for storage_type as local. Copy the local_storage_config.yml.template to local_storage_config.yml `cp local_storage_config.yml.template local_storage_config.yml`
+- Open Terminal
+- Navigate to the directory where cQube_Base has been downloaded or cloned 
+  ```
+  cd cQube_Base/
+  git checkout release-3.3
+  ```
+- Copy the config.yml.template to config.yml 
+  ```
+  cp config.yml.template config.yml
+  ```
+- Edit using ```nano config.yml```
+- If you are opting for mode_of_installation as localhost then storage_type should be local. Copy the local_storage_config.yml.template to local_storage_config.yml  
+  ```
+  cp local_storage_config.yml.template local_storage_config.yml
+  ```
+- If you are opting for mode_of_installation as public then storage_type should be s3. Copy the aws_s3_config.yml.template to aws_s3_config.yml 
+  ```
+  cp aws_s3_config.yml.template aws_s3_config.yml
+  ```
+- Edit using ```nano aws_s3_config.yml```
+
 - Fill the configuration details for the below mentioned list in config.yml (* all the values are mandatory)
 - cQube_Base installation process installs the components in a sequence as mentioned below:
   - Installs Ansible
@@ -51,32 +63,61 @@ git checkout release-3.0
   - Installs Prometheus and node exporter
 - Save and Close the file
 
+### Configuration of infrastructure attributes and udise data indices, metrics:
+
+- Based on the number of infrastructure attributes required by the state, configure the infrastructure report by filling the required fields in the file infrastructure_master.csv:
+
+- To edit below mentioned infrastructure details ```nano infrastructure_master.csv```
+
+- Save and Close the file
+
+- Based on the number of udise attributes required by the state, configure the udise_config.csv file by filling the required fields in the file udise_config.csv:
+
+- To edit below mentioned UDISE details ```nano udise_config.csv```
+
+- Save and Close the file
+
+- For more information to configure the weights & columns for udise/infrastucture, please refer operational document.
+
+- Update the diksha parameters(api_url,token,encryption key,dataset name channel_id,org_id) in the development/python/cQube-raw-data-fetch-parameters.txt
+
 - Give the following permission to the install.sh file
 
-  `chmod u+x install.sh`
+  ```
+  chmod u+x install.sh
+  ```
 
 - Install cQube using the non-root user with sudo privilege
 
-- Configuration filled in config.yml will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the installation will be aborted. Refer the error message and solve the errors appropriately, then re-run the installation script `sudo ./install.sh`
+- Configuration filled in config.yml will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the installation will be aborted. Refer the error message and solve the errors appropriately, then re-run the installation script ```sudo ./install.sh```
 
 - Start the installation by running install.sh shell script file as mentioned below:
 
-  `sudo ./install.sh`
+  ```
+  sudo ./install.sh
+  ```
 
-Once installation is completed without any errors, you will be prompted the following message. CQube installed successfully!!
+Once installation is completed without any errors, you will be prompted the following message. **CQube installed successfully!!**
+
 
 # cQube_Base Upgradation:
 ### Upgradation Steps:
 
 - Open Terminal
 - Navigate to the directory where cQube has been downloaded or cloned
-```
-cd cQube_Base/
-git checkout release-3.0
-```
-- Copy the upgradation_config.yml.template to upgradation_config.yml `cp upgradation_config.yml.template upgradation_config.yml`
-- If you are opting for storage_type as s3. Copy the aws_s3_upgradation_config.yml.template to aws_s3_upgradationconfig.yml `cp aws_s3_upgradation_config.yml.template aws_s3_upgradation_config.yml`
-- If you are opting for storage_type as local. Copy the local_storage_upgradation_config.yml.template to local_storage_upgradation_config.yml `cp local_storageupgradation_upgradation_config.yml.template local_storage_upgradation_config.yml`
+  ```
+  cd cQube_Base/
+  git checkout release-3.3
+  ```
+- Copy the config.yml.template to config.yml ```cp config.yml.template config.yml```
+- If you are opting for mode_of_installation as localhost then storage_type should be local. Copy the local_storage_config.yml.template to local_storage_config.yml  
+  ```
+  cp local_storage_config.yml.template local_storage_config.yml
+  ```
+- If you are opting for mode_of_installation as public then storage_type should be s3. Copy the aws_s3_config.yml.template to aws_s3_config.yml 
+  ```
+  cp aws_s3_config.yml.template aws_s3_config.yml
+  ```
 - This script will update the below cQube components:
 
   - Creates & Updates table,sequence,index in postgresql database
@@ -84,19 +125,23 @@ git checkout release-3.0
   - Updates Angular and Chart JS client side code
   - Updates & configure Apache Nifi template
   - Updates & configure Keycloak
-- Fill the configuration details in upgradation_config.yml (* all the values are mandatory, make sure to fill the same configuration details which were used during installation)
+- Fill the configuration details in config.yml (* all the values are mandatory, make sure to fill the same configuration details which were used during installation)
 
-- Edit using nano upgradation_config.yml
+- Edit using ```nano config.yml```
 
 - Save and Close the file
 
 - Give the following permission to the upgrade.sh file
 
-  `chmod u+x upgrade.sh`
+  ```
+  chmod u+x upgrade.sh
+  ```
 - Run the script to update cQube using the non-root user with sudo privilege
 Start the upgradation by running upgrade.sh shell script file as mentioned below:
-  `sudo ./upgrade.sh`
+  ```
+  sudo ./upgrade.sh
+  ```
 
-Configuration filled in upgradation_config.yml will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the upgradation will be aborted. Refer the error message and solve the errors appropriately. Restart the upgradation process `sudo ./upgrade.sh`
+Configuration filled in config.yml will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the upgradation will be aborted. Refer the error message and solve the errors appropriately. Restart the upgradation process ```sudo ./upgrade.sh```
 
-Once upgradation is completed without any errors, you will be prompted the following message. CQube upgraded successfully!!
+Once upgradation is completed without any errors, you will be prompted the following message. **CQube upgraded successfully!!**
