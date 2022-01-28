@@ -51,6 +51,7 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
 
 - Fill the configuration details for the below mentioned list in config.yml (* all the values are mandatory)
 - cQube_Base installation process installs the components in a sequence as mentioned below:
+
   - Installs Ansible
   - Installs Openjdk
   - Installs Python, pip and flask
