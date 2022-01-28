@@ -31,6 +31,13 @@ fi
 
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
+if [[ $storage_type == "azure" ]]; then
+   az --version >/dev/null 2>&1
+   if [ $? -ne 0 ]; then
+     . "$INS_DIR/validation_scripts/install_azure_cli.sh"
+   fi
+fi
+
 if [[ $storage_type == "s3" ]]; then
    aws --version >/dev/null 2>&1
    if [ $? -ne 0 ]; then 
@@ -55,6 +62,15 @@ if [[ $storage_type == "local" ]]; then
 	    exit;
    fi
 fi
+if [[ $storage_type == "azure" ]]; then
+   if [[ -f azure_container_config.yml ]]; then
+    . "$INS_DIR/azure_container_validate.sh"
+   else
+    echo "ERROR: azure_container_config.yml is not available. Please copy azure_container_config.yml.template as azure_container_config.yml and fill all the details."
+       exit;
+   fi
+fi
+
 if [ -e /etc/ansible/ansible.cfg ]; then
 	sudo sed -i 's/^#log_path/log_path/g' /etc/ansible/ansible.cfg
 fi
@@ -71,14 +87,25 @@ ansible-playbook ansible/create_base.yml --tags "install" --extra-vars "@config.
 
 if [[ $storage_type == "s3" ]]; then
 ansible-playbook ansible/install.yml --tags "install" --extra-vars "@aws_s3_config.yml" \
-                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml"
+                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
+													  --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
     if [ $? = 0 ]; then
         echo "cQube Base installed successfully!!"
     fi
 fi
+if [[ $storage_type == "azure" ]]; then
+ansible-playbook ansible/install.yml --tags "install" --extra-vars "@azure_container_config.yml" \
+                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
+													  --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml"
+    if [ $? = 0 ]; then
+        echo "cQube Base installed successfully!!"
+    fi
+fi
+
 if [[ $storage_type == "local" ]]; then
 ansible-playbook ansible/install.yml --tags "install" --extra-vars "@local_storage_config.yml" \
-                                                      --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml"
+                                                      --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml" \
+													  --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
     if [ $? = 0 ]; then
         echo "cQube Base installed successfully!!"
     fi

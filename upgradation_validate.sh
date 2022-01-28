@@ -206,8 +206,8 @@ check_length(){
 }
 
 check_mode_of_installation(){
-if ! [[ $2 == "public" ]]; then
-    echo "Error - Please enter public for $1"; fail=1
+if ! [[ $2 == "public" || $2 == "localhost" ]]; then
+    echo "Error - Please enter public or localhost for $1"; fail=1
 fi
 }
 
@@ -313,7 +313,7 @@ storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.ym
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=3.1
+version_upgradable_from=3.3
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
