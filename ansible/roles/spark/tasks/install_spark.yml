@@ -1,0 +1,30 @@
+---
+- name: Downloading spark
+  get_url: 
+    url: "{{ spark_url }}"
+    dest: /tmp
+    mode: "0644"
+  tags: install
+
+- name: Removing existing spark files, if any
+  file:
+    path: "{{ base_dir }}/cqube/spark"
+    state: absent
+  tags: install
+
+- name: unpacking spark
+  unarchive: 
+    src: "/tmp/{{spark_archive}}"
+    dest: "{{ base_dir }}/cqube"
+  tags: install
+
+- name: Rename the extracted folder
+  shell: mv {{ base_dir }}/cqube/spark* {{ base_dir }}/cqube/spark
+  tags: install
+
+- name: Download Jar file
+  get_url:
+    url: https://jdbc.postgresql.org/download/postgresql-42.3.1.jar
+    dest: "{{ base_dir }}/cqube/spark/jars/"
+    mode: "0644"
+  tags: install

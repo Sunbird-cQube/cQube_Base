@@ -1,0 +1,3 @@
+---
+- include_tasks: install_spark.yml
+  tags: [ install, update ]

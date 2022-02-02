@@ -1,0 +1,8 @@
+--- 
+spark_version: 3.0.3
+hadoop_version: 2.7
+spark_dir: "{{ base_dir }}/cqube"
+postgresql_jar_file: "postgresql-42.3.1.jar"
+spark_archive: spark-{{ spark_version }}-bin-hadoop{{ hadoop_version }}.tgz
+spark_url: http://archive.apache.org/dist/spark/spark-{{ spark_version }}/{{spark_archive }}
+postgresql_jar_url: https://jdbc.postgresql.org/download/{{ postgresql_jar_file }}
