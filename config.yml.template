@@ -37,4 +37,4 @@ local_ipv4_address:                         # enter the private ip of this serve
 vpn_local_ipv4_address:                     # enter the private ip of vpn server. To find the ip address. Use `ip addr` or `ifconfig`
 keycloak_adm_user:                          # enter the keycloak admin user to be created 
 keycloak_adm_passwd:                        # enter the keycloak admin password. password should contain atleast 1 lower,upper,number,special character (only @!%^*? allowed)  and minimum 8 characters
-report_viewer_config_otp:                   # enter true or false to enable OTP authentication for all users 
+report_viewer_config_otp: false             # enter true or false to enable OTP authentication for all users (only applicable when auth_api is `cqube`)
