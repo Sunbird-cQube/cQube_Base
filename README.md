@@ -32,7 +32,8 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
 - Navigate to the directory where cQube_Base has been downloaded or cloned 
   ```
   cd cQube_Base/
-  git checkout release-3.3
+  git checkout release-3.4
+  git pull
   ```
 - Copy the config.yml.template to config.yml 
   ```
@@ -51,7 +52,6 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
 
 - Fill the configuration details for the below mentioned list in config.yml (* all the values are mandatory)
 - cQube_Base installation process installs the components in a sequence as mentioned below:
-
   - Installs Ansible
   - Installs Openjdk
   - Installs Python, pip and flask
@@ -64,23 +64,6 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
   - Installs Prometheus and node exporter
 - Save and Close the file
 
-### Configuration of infrastructure attributes and udise data indices, metrics:
-
-- Based on the number of infrastructure attributes required by the state, configure the infrastructure report by filling the required fields in the file infrastructure_master.csv:
-
-- To edit below mentioned infrastructure details ```nano infrastructure_master.csv```
-
-- Save and Close the file
-
-- Based on the number of udise attributes required by the state, configure the udise_config.csv file by filling the required fields in the file udise_config.csv:
-
-- To edit below mentioned UDISE details ```nano udise_config.csv```
-
-- Save and Close the file
-
-- For more information to configure the weights & columns for udise/infrastucture, please refer operational document.
-
-- Update the diksha parameters(api_url,token,encryption key,dataset name channel_id,org_id) in the development/python/cQube-raw-data-fetch-parameters.txt
 
 - Give the following permission to the install.sh file
 
@@ -98,7 +81,8 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
   sudo ./install.sh
   ```
 
-Once installation is completed without any errors, you will be prompted the following message. **CQube installed successfully!!**
+Once installation is completed without any errors, you will be prompted the following message. 
+```**CQube installed successfully!!**```
 
 
 # cQube_Base Upgradation:
@@ -108,7 +92,8 @@ Once installation is completed without any errors, you will be prompted the foll
 - Navigate to the directory where cQube has been downloaded or cloned
   ```
   cd cQube_Base/
-  git checkout release-3.3
+  git checkout release-3.4
+  git pull
   ```
 - Copy the config.yml.template to config.yml ```cp config.yml.template config.yml```
 - If you are opting for mode_of_installation as localhost then storage_type should be local. Copy the local_storage_config.yml.template to local_storage_config.yml  
@@ -145,4 +130,5 @@ Start the upgradation by running upgrade.sh shell script file as mentioned below
 
 Configuration filled in config.yml will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the upgradation will be aborted. Refer the error message and solve the errors appropriately. Restart the upgradation process ```sudo ./upgrade.sh```
 
-Once upgradation is completed without any errors, you will be prompted the following message. **CQube upgraded successfully!!**
+Once upgradation is completed without any errors, you will be prompted the following message. ```**CQube upgraded successfully!!**```
+
