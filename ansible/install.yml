@@ -9,6 +9,7 @@
     - ../.version
 
   roles:
+          - spark
           - { role: java, tags: install }  
           - { role: python, tags: install }
           - createdb
