@@ -13,6 +13,11 @@
   shell: systemctl daemon-reload
   tags: install
 
+- name: Install pandas python package
+  pip:
+    name: pandas
+  tags: install
+
 - name: Stopping the emission_app service
   service:
     name: gunicorn
