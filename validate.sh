@@ -87,7 +87,7 @@ java_arg_3: -Xmx${local_java_arg_3}m""" > memory_config.yml
 fi
 
 if [[ $mode_of_installation == "public" ]]; then
-    if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
+    if [ $(( $mem_total / 1024 )) -ge 15 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
         min_shared_mem=$(echo $mem_total*13/100 | bc)
         min_work_mem=$(echo $mem_total*2/100 | bc)
         min_java_arg_2=$(echo $mem_total*13/100 | bc)
@@ -333,7 +333,7 @@ case $key in
 	        check_postgres
           check_db_naming $key $value
        fi
-       ;;
+       ;;	   
    db_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
