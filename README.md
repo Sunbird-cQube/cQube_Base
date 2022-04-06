@@ -6,23 +6,38 @@
 - 8 core CPU (minimum requirement)
 - Domain name (with SSL)
 - 1 TB Storage
-### Reverse proxy rules The following ports have to be configured in the nginix # server with reverse proxy:
+### Reverse proxy rules (public routing)
+The following ports have to be configured in the nginix server with reverse proxy:
 
 - Port 4200 should be proxied to the '/'
 - Port 8080 should be proxied to the '/auth'
 - Port 3000 should be proxied to the '/api'
 - Port 8000 should be proxied to the '/data'
+
 ### Nginx - cQube server firewall configuration
 
 - Port 4200 should be open from nginx to the cQube server
 - Port 8080 should be open from nginx to the cQube server
-- Port 3000 should be open from nginx to the cQube server
 - Port 8000 should be open from nginx to the cQube server
 ### Openvpn - cQube server firewall configuration
 
 - Port 9000 should be open from openvpn to the cQube server
 - Port 4201 should be open from openvpn to the cQube server
-- Port 3001 should be open from openvpn to the cQube server
+
+### Reverse proxy rules (internal routing)
+The following ports have to be configured in the nginix # server with reverse proxy:
+
+- Port 4201 should be proxied to the '/'
+- Port 3001 should be proxied to the '/api'
+
+### Nginx - cQube server firewall configuration
+
+- Port 4201 should be open from nginx to the cQube server
+- Port 3001 should be open from nginx to the cQube server 
+
+### Openvpn - cQube server firewall configuration
+
+- Port 80 should be open from openvpn to the nginx server
 
 Note: For Installation: follow the below steps directly, for upgradation follow the Upgradation: steps mentioned in the last section.
 
@@ -32,7 +47,7 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
 - Navigate to the directory where cQube_Base has been downloaded or cloned 
   ```
   cd cQube_Base/
-  git checkout release-3.5
+  git checkout release-3.4
   git pull
   ```
 - Copy the config.yml.template to config.yml 
@@ -92,7 +107,7 @@ Once installation is completed without any errors, you will be prompted the foll
 - Navigate to the directory where cQube has been downloaded or cloned
   ```
   cd cQube_Base/
-  git checkout release-3.5
+  git checkout release-3.4
   git pull
   ```
 - Copy the config.yml.template to config.yml ```cp config.yml.template config.yml```
