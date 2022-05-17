@@ -36,22 +36,54 @@ if [[ $storage_type == "s3" ]]; then
 fi
 
 #Installing the cQube_Base and cQube_Workflow
-if [ $? = 0 ]; then
+if [[ $storage_type == "s3" ]]; then
+ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@aws_s3_config.yml" \
+                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
+                                                                                                          --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
+fi
+
+if [[ $storage_type == "azure" ]]; then
+ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@azure_container_config.yml" \
+                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
+                                                                                                          --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml"
+fi
+
+if [[ $storage_type == "local" ]]; then
 ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@local_storage_config.yml" \
                                                       --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml" \
                                                                                                           --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
+fi
+
+if [ $? = 0 ]; then
  . "/home/$system_user_name/cQube_Base/install.sh"
     if [ $? = 0 ]; then
   cd ~/cQube_Workflow/workflow_deploy/education_usecase && ./install.sh && cd ~/cQube_Base 
     fi
 fi
 
-if [ $? = 0 ]; then
+if [[ $storage_type == "s3" ]]; then
+ansible-playbook -i hosts ansible/migrate_backup.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@aws_s3_config.yml" \
+                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
+                                                                                                          --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
+    if [ $? = 0 ]; then
+        echo "cQube Data base and output files are restored to remote server successfully!!"
+    fi
+fi
+if [[ $storage_type == "azure" ]]; then
+ansible-playbook -i hosts ansible/migrate_backup.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@azure_container_config.yml" \
+                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
+                                                                                                          --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml"
+    if [ $? = 0 ]; then
+        echo "cQube Data base and output files are restored to remote server successfully!!"
+    fi
+fi
+
+if [[ $storage_type == "local" ]]; then
 ansible-playbook -i hosts ansible/migrate_backup.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@local_storage_config.yml" \
                                                       --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml" \
-   					                                        --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
-  if [ $? = 0 ]; then
+                                                                                                          --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
+    if [ $? = 0 ]; then
         echo "cQube Data base and output files are restored to remote server successfully!!"
-  fi
-
+    fi
 fi
+
