@@ -45,27 +45,6 @@ if ! [[ $2 == "true" || $2 == "false" ]]; then
 fi
 }
 
-check_postgres(){
-echo "Checking for Postgres ..."
-temp=$(psql -V > /dev/null 2>&1; echo $?)
-
-if [ $temp == 0 ]; then
-    version=`psql -V | head -n1 | cut -d" " -f3`
-    if [[ $(echo "$version >= 10.12" | bc) == 1 ]]
-    then
-        echo "WARNING: Postgres found."
-        echo "Removing Postgres..."
-        sudo systemctl stop kong.service > /dev/null 2>&1
-        sleep 5
-        sudo systemctl stop keycloak.service > /dev/null 2>&1
-        sleep 5
-        sudo systemctl stop postgresql
-        sudo apt-get --purge remove postgresql* -y
-        echo "Done"
-     fi
-fi
-}
-
 check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
@@ -275,6 +254,7 @@ declare -A vals
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 mode_of_installation=$(awk ''/^mode_of_installation:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+installation_host_ip=$(awk ''/^installation_host_ip:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 
 check_mem
 check_version 
@@ -322,15 +302,17 @@ case $key in
    proxy_host)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_vpn_ip $key $value
+#       else
+ #         check_vpn_ip $key $value
        fi
        ;;	   
    db_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-	        check_postgres
+	    if [[ $installation_host_ip == "127.0.0.1" ]]; then
+		. "validation_scripts/remove_postgres.sh"
+	    fi
           check_db_naming $key $value
        fi
        ;;	   

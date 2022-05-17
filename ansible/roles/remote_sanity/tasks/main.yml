@@ -1,0 +1,46 @@
+- name: Stopping the service if they are running
+  become: true
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: stopped
+  loop:
+    - prometheus
+    - node_exporter
+    - grafana-server
+    - postgresql
+    - gunicorn
+    - keycloak
+    - kong
+  tags: install
+
+- name: Check if nifi is present in destination
+  stat:
+    path: "{{ base_dir }}/cqube/nifi/nifi"
+  register: status
+  tags: install
+
+- debug:
+    var: status
+  tags: install
+
+- name: stop nifi if its running
+  ansible.builtin.shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
+  when: status.stat.exists == true
+  tags: install
+
+- name: remove cQube directory if present
+  become: yes
+  ansible.builtin.shell: rm -rf {{ base_dir }}/cqube
+  ignore_errors: yes
+  args:
+    warn: false
+  tags: install
+
+- name: Transfer executable script script
+  copy: src=/home/ubuntu/cQube_Base/validation_scripts/remove_postgres.sh dest=/tmp/remove_postgres.sh 
+  tags: install
+
+- name: Remove postgres if installed
+  command: bash /tmp/remove_postgres.sh
+  tags: install 

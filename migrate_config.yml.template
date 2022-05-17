@@ -1,0 +1,13 @@
+---
+#------------------------------------------------------#
+#
+# cQube Installaion configuration parameters
+#
+# ALL VARIABLES ARE MANDATORY.
+# PLEASE FILL THOSE BEFORE RUNNING CORRESPONDING STEPS.
+#
+#------------------------------------------------------#
+
+#NOTE: Please fill the value with a space between ":" and the value.
+
+installation_host_ip:

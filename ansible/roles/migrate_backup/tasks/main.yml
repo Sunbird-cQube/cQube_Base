@@ -1,0 +1,39 @@
+- name: Copy postgres backup to remote machine
+  copy: src=/home/{{system_user_name}}/bk_db_name.tar dest=/tmp/bk_db_name.tar 
+  tags: install
+
+- name: Restore postgres backup to remote machine
+  shell: pg_restore --host localhost --port 5432 --username {{db_user}} --dbname {{db_name}} --verbose "/tmp/bk_db_name.tar" -c
+  tags: install
+  
+- name: Run a script to get configuration value
+  become: true
+  shell: bash validation_scripts/get_dir_config_values.sh
+  args:
+    chdir: /home/{{system_user_name}}/cQube_Base
+  delegate_to: 127.0.0.1
+  register: required_dir
+  tags: install
+
+- name: copying output files backup to remote machine
+  become: true
+  copy:
+    src: "{{required_dir.stdout}}"
+    dest: "{{output_directory}}"
+  when: storage_type == "local"
+  tags: [ install, update ]
+
+- name: Run a script to get configuration value
+  become: true
+  shell: bash validation_scripts/get_bucket_config_values.sh
+  args:
+    chdir: /home/{{system_user_name}}/cQube_Base
+  delegate_to: 127.0.0.1
+  when: storage_type == "s3"
+  register: required_bucket
+  tags: install
+  
+- name: Copying output files to s3 bucket
+  shell: aws s3 sync s3://{{required_bucket.stdout}} s3://{{s3_output_bucket}}
+  when: storage_type == "s3"
+  tags: install
