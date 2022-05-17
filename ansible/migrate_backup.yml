@@ -1,0 +1,12 @@
+---
+- name: Backing up output files to remote server
+  hosts: "{{my_hosts}}"
+  gather_facts: true
+  remote_user: root
+  become: true
+  vars_files:
+    - ../config.yml
+    - ../migrate_config.yml
+
+  roles:
+          - migrate_backup

@@ -70,6 +70,7 @@
   tags: [ install, update ]
 
 - name: Ensure the PostgreSQL service is running
+  become: true
   service: name=postgresql state=restarted enabled=yes
   tags: [ install, update ]
 
