@@ -13,7 +13,7 @@
 #1.12
 - name: Download NiFi
   get_url:
-    url: http://cqube_nifi/nifi-1.12.1-bin.tar.gz
+    url: https://archive.apache.org/dist/nifi/{{ nifi_version }}/nifi-{{ nifi_version }}-bin.tar.gz
     dest: ~/nifi
     mode: "0644"
   tags: install

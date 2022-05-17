@@ -302,8 +302,8 @@ case $key in
    proxy_host)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-#       else
- #         check_vpn_ip $key $value
+       else
+          check_vpn_ip $key $value
        fi
        ;;	   
    db_user)
