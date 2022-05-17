@@ -1,4 +1,3 @@
 ---
 nifi_version: 1.12.1
 nifi_port: 8096
-nifi_service: /etc/systemd/system/nifi.service
