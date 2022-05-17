@@ -74,7 +74,6 @@ if [[ $storage_type == "s3" ]]; then
 ansible-playbook ansible/upgrade.yml --tags "update" --extra-vars "@aws_s3_config.yml" \
                                                       --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
 													  --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
-
     if [ $? = 0 ]; then
         echo "cQube Base upgraded successfully!!"
     fi

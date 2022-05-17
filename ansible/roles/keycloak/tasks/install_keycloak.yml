@@ -18,6 +18,7 @@
   unarchive: 
     src: "/tmp/{{keycloak_archive}}"
     dest: "{{ base_dir }}/cqube"
+    remote_src: yes
   tags: install
 
 - name: Rename the extracted folder

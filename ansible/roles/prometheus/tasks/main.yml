@@ -20,6 +20,7 @@
   unarchive:
     src: "/tmp/prometheus-2.19.2.linux-amd64.tar.gz"
     dest: "{{ base_dir }}/cqube/admin_dashboard/"
+    remote_src: yes
   tags: install
 
 - name: Remove prometheus directory, if exists
@@ -49,6 +50,7 @@
   unarchive:
     src: "/tmp/node_exporter-1.0.1.linux-amd64.tar.gz"
     dest: "{{ base_dir }}/cqube/admin_dashboard/"
+    remote_src: yes
   tags: install
 
 - name: Remove node_exported directory, if exists

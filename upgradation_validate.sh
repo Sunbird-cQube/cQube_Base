@@ -242,7 +242,7 @@ java_arg_3: -Xmx${local_java_arg_3}m""" > memory_config.yml
 fi
 
 if [[ $mode_of_installation == "public" ]]; then
-    if [ $(( $mem_total / 1024 )) -ge 15 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
+    if [ $(( $mem_total / 1024 )) -ge 30 ] && [ $(($mem_total / 1024)) -le 60 ] ; then
         min_shared_mem=$(echo $mem_total*13/100 | bc)
         min_work_mem=$(echo $mem_total*2/100 | bc)
         min_java_arg_2=$(echo $mem_total*13/100 | bc)
@@ -313,7 +313,7 @@ storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.ym
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=3.4
+version_upgradable_from=3.5
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
@@ -355,13 +355,14 @@ case $key in
           check_vpn_ip $key $value
        fi
        ;;
-    proxy_host)
+   proxy_host)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_vpn_ip $key $value
        fi
-       ;;	   
+       ;;
+	   
    db_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
