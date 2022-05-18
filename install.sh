@@ -88,7 +88,7 @@ ansible-playbook -i hosts ansible/create_base.yml -e "my_hosts=$installation_hos
 if [[ $storage_type == "s3" ]]; then
 ansible-playbook -i hosts ansible/install.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@aws_s3_config.yml" \
                                                       --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
-													  --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml" --step
+													  --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
     if [ $? = 0 ]; then
         echo "cQube Base installed successfully!!"
     fi
