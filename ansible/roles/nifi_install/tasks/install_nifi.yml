@@ -24,10 +24,6 @@
   register: status
   tags: install
 
-- debug:
-    var: status
-  tags: install
-        
 - name: stop nifi if its running
   ansible.builtin.shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
   when: status.stat.exists == true

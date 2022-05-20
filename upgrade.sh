@@ -62,7 +62,7 @@ if [[ $storage_type == "local" ]]; then
        exit;
    fi
 fi
-ansible-playbook ansible/create_base.yml --tags "update" --extra-vars "@config.yml" 
+ansible-playbook ansible/create_base.yml -e "my_hosts=$installation_host_ip" --tags "update" --extra-vars "@config.yml" 
 
 if [ -e /etc/ansible/ansible.cfg ]; then
 	sudo sed -i 's/^#log_path/log_path/g' /etc/ansible/ansible.cfg
@@ -70,8 +70,10 @@ fi
 
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+installation_host_ip=$(awk ''/^installation_host_ip:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+
 if [[ $storage_type == "s3" ]]; then
-ansible-playbook ansible/upgrade.yml --tags "update" --extra-vars "@aws_s3_config.yml" \
+ansible-playbook ansible/upgrade.yml -e "my_hosts=$installation_host_ip" --tags "update" --extra-vars "@aws_s3_config.yml" \
                                                       --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
 													  --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
     if [ $? = 0 ]; then
@@ -79,7 +81,7 @@ ansible-playbook ansible/upgrade.yml --tags "update" --extra-vars "@aws_s3_confi
     fi
 fi
 if [[ $storage_type == "azure" ]]; then
-ansible-playbook ansible/upgrade.yml --tags "update" --extra-vars "azure_container_config.yml" \
+ansible-playbook ansible/upgrade.yml -e "my_hosts=$installation_host_ip" --tags "update" --extra-vars "azure_container_config.yml" \
                                                       --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
                                                       --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml"
     if [ $? = 0 ]; then
@@ -88,7 +90,7 @@ ansible-playbook ansible/upgrade.yml --tags "update" --extra-vars "azure_contain
 fi
 
 if [[ $storage_type == "local" ]]; then
-ansible-playbook ansible/upgrade.yml --tags "update" --extra-vars "@local_storage_config.yml" \
+ansible-playbook ansible/upgrade.yml -e "my_hosts=$installation_host_ip" --tags "update" --extra-vars "@local_storage_config.yml" \
                                                       --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml" \
 													  --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
     if [ $? = 0 ]; then
