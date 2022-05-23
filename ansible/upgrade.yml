@@ -1,6 +1,6 @@
 ---
 - name: Upgrading cQube
-  hosts: "{{my_hosts}}"
+  hosts: localhost
   gather_facts: true
   remote_user: root
   vars_files:
