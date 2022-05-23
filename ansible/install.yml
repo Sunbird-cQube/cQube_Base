@@ -1,12 +1,11 @@
 ---
 - name: Installing cQube
-  hosts: "{{ my_hosts }}"
+  hosts: localhost
   gather_facts: true
   remote_user: root
   become: true
   vars_files:
     - ../config.yml
-    - ../migrate_config.yml
     - ../memory_config.yml
     - ../.version
 
