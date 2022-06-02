@@ -5,7 +5,7 @@
   remote_user: root
   become: true
   vars_files:
-#    - ../config.yml
+    - ../config.yml
     - ../migrate_config.yml
 
   roles:
