@@ -17,27 +17,27 @@ if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
 fi
 }
 
-check_version(){
-if [[ ! "$base_dir" = /* ]] || [[ ! -d $base_dir ]]; then
-    echo "Error - Please enter the absolute path or make sure the directory is present.";
-    exit 1
-else
-   if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
-        installed_ver=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_VERSION )
-        installed_version=$(cut -d "=" -f2 <<< "$installed_ver")
-         echo "Currently cQube $installed_version version is installed in this machine. Follow Upgradtion process if you want to upgrade."
-         echo "If you re-run the installation, all data will be lost"
-	 while true; do
-             read -p "Do you still want to re-run the installation (yes/no)? " yn
-             case $yn in
-                 yes) break;;
-                 no) exit;;
-                 * ) echo "Please answer yes or no.";;
-             esac
-         done
-   fi
-fi
-}
+#check_version(){
+#if [[ ! "$base_dir" = /* ]] || [[ ! -d $base_dir ]]; then
+ #   echo "Error - Please enter the absolute path or make sure the directory is present.";
+#    exit 1
+#else
+ #  if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
+  #      installed_ver=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_VERSION )
+   #     installed_version=$(cut -d "=" -f2 <<< "$installed_ver")
+    #     echo "Currently cQube $installed_version version is installed in this machine. Follow Upgradtion process if you want to upgrade."
+     #    echo "If you re-run the installation, all data will be lost"
+#	 while true; do
+ #            read -p "Do you still want to re-run the installation (yes/no)? " yn
+  #           case $yn in
+   #              yes) break;;
+    #             no) exit;;
+     #            * ) echo "Please answer yes or no.";;
+      #       esac
+       #  done
+   #fi
+#fi
+#}
 
 check_kc_config_otp(){
 if ! [[ $2 == "true" || $2 == "false" ]]; then
@@ -322,8 +322,8 @@ case $key in
    proxy_host)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-         check_vpn_ip $key $value
+   #    else
+  #        check_vpn_ip $key $value
        fi
        ;;	   
    db_user)

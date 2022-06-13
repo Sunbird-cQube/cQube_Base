@@ -5,8 +5,9 @@
   remote_user: root
   become: true
   vars_files:
-    - ../config.yml
     - ../migrate_config.yml
-
+    - ../config.yml
+    - ../local_storage_config.yml  
+    - ../aws_s3_config.yml
   roles:
           - migrate_backup

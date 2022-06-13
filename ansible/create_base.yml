@@ -1,6 +1,6 @@
 ---
 - name: Creating cQube base directory
-  hosts: localhost
+  hosts: "{{my_hosts}}"
   remote_user: root
   become: true
   vars_files:
