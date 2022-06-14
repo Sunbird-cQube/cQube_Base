@@ -107,29 +107,39 @@ check_aws_default_region(){
     fi
 }
 check_directory(){
-if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
+if [[ ! "$2" = /* ]]; then
    echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
 fi
-  dir_owner=`stat -c '%U' $2`
+dir_owner=`stat -c '%U' $2`
 
-  #if ! [[ $dir_owner == $system_user_name ]]; then
- #   echo "Error - $1 directory owner not matchiing."; fail=1
-  #fi
-   if ! [[ -r "$2" ]];  then
-        echo "Error - '$1' please give read permission to directory."; fail=1
-   fi
-   if ! [[ -w "$2" ]];  then
-        echo "Error - '$1' please give write permission to directory."; fail=1
-   fi
-   if ! [[ -x "$2" ]]; then
-        echo "Error - '$1' please give execute permission to directory."; fail=1
-   fi
-   if ! [[ "$2" = */ ]]; then
-	echo "Error - $1 Please make sure the absolute path values should end with '/'"; fail=1
-   fi
+if ! [[ $dir_owner == $system_user_name ]]; then
+     echo "Error - $1 directory owner not matchiing."; fail=1
+fi
+if ! [[ -r "$2" ]];  then
+     echo "Error - '$1' please give read permission to directory."; fail=1
+fi
+if ! [[ -w "$2" ]];  then
+     echo "Error - '$1' please give write permission to directory."; fail=1
+fi
+if ! [[ -x "$2" ]]; then
+     echo "Error - '$1' please give execute permission to directory."; fail=1
+fi
+if ! [[ "$2" = */ ]]; then
+     echo "Error - $1 Please make sure the absolute path values should end with '/'"; fail=1
+fi
 
 }
 
+check_cqube_cloned_path(){
+if [[ ! "$2" = /* ]]; then
+   echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
+
+   if ! [[ "$2" = */ ]]; then
+     echo "Error - $1 Please make sure the absolute path values should end with '/'"; fail=1
+   fi
+fi
+
+}
 get_config_values(){
 key=$1
 vals[$key]=$(awk ''/^$key:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
@@ -158,16 +168,15 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("installation_host_ip" "system_user_name" "base_dir" "db_user" "db_name" "storage_type" "mode_of_installation" "s3_access_key" "s3_secret_key" "aws_default_region" "s3_output_bucket" "output_directory")
+declare -a arr=("remote_system_user_name" "base_dir" "remote_db_user" "remote_db_name" "remote_storage_type" "mode_of_installation" "s3_access_key" "s3_secret_key" "aws_default_region" "remote_s3_output_bucket" "remote_output_directory" "cqube_cloned_path")
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
 
-installation_host_ip=$(awk ''/^installation_host_ip:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+remote_system_user_name=$(awk ''/^remote_system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 mode_of_installation=$(awk ''/^mode_of_installation:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+remote_storage_type=$(awk ''/^remote_storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 
@@ -182,13 +191,6 @@ do
 key=$i
 value=${vals[$key]}
 case $key in
-   installation_host_ip)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_ip $key $value
-       fi
-       ;;	
    system_user_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
@@ -264,6 +266,13 @@ case $key in
           check_directory $key $value
        fi
        ;;
+   cqube_cloned_path)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_cqube_cloned_path $key $value
+       fi
+       ;;    
 
    *)
        if [[ $value == "" ]]; then
@@ -279,4 +288,3 @@ if [[ $fail -eq 1 ]]; then
 else
    echo -e "\e[0;32m${bold}Config file successfully validated${normal}"
 fi
-

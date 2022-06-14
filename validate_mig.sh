@@ -10,28 +10,6 @@ check_length(){
         return $len_status;
     fi
 }
-check_ip(){
-    local ip=$2
-    ip_stat=1
-    ip_pass=0
-
-    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-        OIFS=$IFS
-        IFS='.'
-        ip=($ip)
-        IFS=$OIFS
-        [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 \
-            && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
-        ip_stat=$?
-        if [[ ! $ip_stat == 0 ]]; then
-            echo "Error - Invalid value for $key"; fail=1
-            ip_pass=0
-        fi
-    else
-        echo "Error - Invalid value for $key"; fail=1
-    fi
-
-}
 
 check_base_dir(){
 if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
@@ -39,27 +17,6 @@ if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
 fi
 }
 
-check_version(){
-if [[ ! "$base_dir" = /* ]] || [[ ! -d $base_dir ]]; then
-    echo "Error - Please enter the absolute path or make sure the directory is present.";
-    exit 1
-else
-   if [[ -e "$base_dir/cqube/.cqube_config" ]]; then
-        installed_ver=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_VERSION )
-        installed_version=$(cut -d "=" -f2 <<< "$installed_ver")
-         echo "Currently cQube $installed_version version is installed in this machine. Follow Upgradtion process if you want to upgrade."
-         echo "If you re-run the installation, all data will be lost"
-	 while true; do
-             read -p "Do you still want to re-run the installation (yes/no)? " yn
-             case $yn in
-                 yes) break;;
-                 no) exit;;
-                 * ) echo "Please answer yes or no.";;
-             esac
-         done
-   fi
-fi
-}
 
 check_kc_config_otp(){
 if ! [[ $2 == "true" || $2 == "false" ]]; then
@@ -148,12 +105,7 @@ check_ip()
     local ip=$2
     ip_stat=1
     ip_pass=0
-if [[ $mode_of_installation == "localhost" ]]; then
-    if [[ ! $2 == "localhost" ]]; then
-        echo "Error - Please provide local ipv4 as localhost for localhost installation"; fail=1
-    fi
-fi
-if [[ $mode_of_installation == "public" ]]; then    
+
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -166,14 +118,10 @@ if [[ $mode_of_installation == "public" ]]; then
             echo "Error - Invalid value for $key"; fail=1
             ip_pass=0
         fi
-        is_local_ip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'` > /dev/null 2>&1
-        if [[ $ip_pass == 0 && $is_local_ip != *$2* ]]; then
-            echo "Error - Invalid value for $key. Please enter the local ip of this system."; fail=1 
-        fi
     else
         echo "Error - Invalid value for $key"; fail=1
-   fi
-fi    
+    fi
+
 }
 
 check_vpn_ip()
@@ -345,21 +293,20 @@ case $key in
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_vpn_ip $key $value
+          check_ip $key $value
        fi
-       ;;	   
+       ;;   
    proxy_host)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-         check_vpn_ip $key $value
+          check_vpn_ip $key $value
        fi
        ;;	   
    db_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-	  	check_postgres     
           check_db_naming $key $value
        fi
        ;;	   
