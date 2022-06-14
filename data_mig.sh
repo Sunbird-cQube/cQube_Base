@@ -31,7 +31,6 @@ output_bucket=$(awk ''/^s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_
 
 
 
-#export AWS_DEFAULT_REGION='$aws_default_region'
 export AWS_ACCESS_KEY_ID=$aws_access_key
 export AWS_SECRET_ACCESS_KEY=$aws_secret_key
 
