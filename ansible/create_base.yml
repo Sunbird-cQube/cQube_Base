@@ -4,9 +4,8 @@
   remote_user: root
   become: true
   vars_files:
+    - ../config.yml
     - ../memory_config.yml
     - ../.version
-	- ../config.yml
-
   roles:
           - create_base_dir
