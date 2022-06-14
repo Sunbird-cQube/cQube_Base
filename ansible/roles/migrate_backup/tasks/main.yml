@@ -3,7 +3,7 @@
   tags: install
 
 - name: Restore postgres backup to remote machine
-  shell: pg_restore --host localhost --port 5432 --username {{db_user}} --dbname {{db_name}} --verbose "/tmp/bk_db_name.tar" -c --if-exists
+  shell: pg_restore --host localhost --port 5432 --username {{remote_db_user}} --dbname {{remote_db_name}} --verbose "/tmp/bk_db_name.tar" -c --if-exists
   tags: install
 
 
