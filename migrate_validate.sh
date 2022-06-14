@@ -58,6 +58,18 @@ else
 fi
 }
 
+check_db_password(){
+    len="${#2}"
+    if test $len -ge 8 ; then
+        echo "$2" | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[@%^*!?]" > /dev/null 2>&1
+        if [[ ! $? -eq 0 ]]; then
+            echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
+        fi
+    else
+        echo "Error - $1 should contain atleast one uppercase, one lowercase, one special character and one number. And should be minimum of 8 characters."; fail=1
+    fi
+}
+
 check_storage_type(){
 if [[ $mode_of_installation == "localhost" ]]; then
     if [[ ! $2 == "local" ]]; then
@@ -168,7 +180,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("remote_system_user_name" "base_dir" "remote_db_user" "remote_db_name" "remote_storage_type" "mode_of_installation" "s3_access_key" "s3_secret_key" "aws_default_region" "remote_s3_output_bucket" "remote_output_directory" "cqube_cloned_path")
+declare -a arr=("remote_system_user_name" "base_dir" "remote_db_user" "remote_db_name" "remote_db_password" "remote_storage_type" "mode_of_installation" "s3_access_key" "s3_secret_key" "aws_default_region" "remote_s3_output_bucket" "remote_output_directory" "cqube_cloned_path")
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -217,6 +229,13 @@ case $key in
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_naming $key $value
+       fi
+       ;;
+   remote_db_password)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_db_password $key $value
        fi
        ;;
    storage_type)
