@@ -1,0 +1,33 @@
+
+- name: copying the install_pre remote host
+  copy: src=../../../../install_pre.sh dest=/home/{{remote_system_user_name}}/install_pre.sh
+  tags: install
+
+- name: copying config.yml to remote host
+  copy: src=../../../../config.yml dest=/home/{{remote_system_user_name}}/config.yml
+  tags: install
+
+- name: copying validate.sh to remote host
+  copy: src=../../../../validate_mig.sh dest=/home/{{remote_system_user_name}}/validate_mig.sh
+  tags: install
+
+- name: copying install_aws_cli.sh to remote host
+  copy: src=../../../../install_aws_cli.sh dest=/home/{{remote_system_user_name}}/install_aws_cli.sh
+  tags: install  
+
+- name: Running the base install_pre.sh
+  command: bash /home/{{remote_system_user_name}}/install_pre.sh
+  tags: install
+
+- name: copying the migrate_config remote host
+  copy: src=../../../../migrate_config.yml dest=/home/{{remote_system_user_name}}/migrate_config.yml
+  tags: install
+
+- name: copying the migrate_validate.sh to remote host
+  copy: src=../../../../migrate_validate.sh dest=/home/{{remote_system_user_name}}/migrate_validate.sh
+  tags: install
+
+- name: Running the data migration script
+  command: bash /home/{{remote_system_user_name}}/migrate_validate.sh
+  tags: install
+
