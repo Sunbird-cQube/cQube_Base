@@ -31,7 +31,6 @@ remote_output_directory=$(awk ''/^remote_output_directory:' /{ if ($2 !~ /#.*/) 
 
 sudo apt install awscli -y
 
-#export AWS_DEFAULT_REGION='$aws_default_region'
 export AWS_ACCESS_KEY_ID=$aws_access_key
 export AWS_SECRET_ACCESS_KEY=$aws_secret_key
 
