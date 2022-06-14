@@ -21,6 +21,7 @@ remote_db_user: cqube_db_user                     # Enter your remote machine us
 
 remote_db_name: cqube_db                          # Enter your remote machine database name for the cQube database
 
+remote_db_db_password:                            # # Create your own password to for the cQube database, password should contain atleast 1 lower,upper,number,special character (only @!%^*? allowed) and minimum 8 characters
 remote_storage_type:                             # enter `s3` or `local` (enter the same storage_type of the remote machine)
 
 remote_output_directory: /tmp/                    # enter your  remote machine output_directory path
