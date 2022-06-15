@@ -217,14 +217,14 @@ case $key in
           check_base_dir $key $value
        fi
        ;;
-   db_user)
+   remote_db_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_naming $key $value
        fi
        ;;	   
-   db_name)
+   remote_db_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
@@ -238,7 +238,7 @@ case $key in
           check_db_password $key $value
        fi
        ;;
-   storage_type)
+   remote_storage_type)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
@@ -271,14 +271,14 @@ case $key in
            check_aws_default_region
        fi
        ;;
-   s3_output_bucket)
+   remote_s3_output_bucket)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value
        fi
        ;;
-   output_directory)
+   remote_output_directory)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else

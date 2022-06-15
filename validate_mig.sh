@@ -44,7 +44,6 @@ if [ $temp == 0 ]; then
      fi
 fi
 }
-
 check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
