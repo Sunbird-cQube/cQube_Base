@@ -1,5 +1,5 @@
 
-- name: copying the install_pre remote host
+- name: copying the install_prerequisite remote host
   copy: src=../../../../install_pre.sh dest=/home/{{remote_system_user_name}}/install_pre.sh
   tags: install
 

@@ -122,23 +122,6 @@ check_directory(){
 if [[ ! "$2" = /* ]]; then
    echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
 fi
-dir_owner=`stat -c '%U' $2`
-
-if ! [[ $dir_owner == $system_user_name ]]; then
-     echo "Error - $1 directory owner not matchiing."; fail=1
-fi
-if ! [[ -r "$2" ]];  then
-     echo "Error - '$1' please give read permission to directory."; fail=1
-fi
-if ! [[ -w "$2" ]];  then
-     echo "Error - '$1' please give write permission to directory."; fail=1
-fi
-if ! [[ -x "$2" ]]; then
-     echo "Error - '$1' please give execute permission to directory."; fail=1
-fi
-if ! [[ "$2" = */ ]]; then
-     echo "Error - $1 Please make sure the absolute path values should end with '/'"; fail=1
-fi
 
 }
 
