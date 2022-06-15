@@ -24,11 +24,11 @@ remote_db_name: cqube_db                          # Enter your remote machine da
 remote_db_password:                            # # Create your own password to for the cQube database, password should contain atleast 1 lower,upper,number,special character (only @!%^*? allowed) and minimum 8 characters
 remote_storage_type:                             # enter `s3` or `local` (enter the same storage_type of the remote machine)
 
-remote_output_directory: /tmp/                    # enter your  remote machine output_directory path
+source_output_directory: /tmp/                    # enter your  remote machine output_directory path
 
 mode_of_installation:                      # enter `localhost` for demo installation in a single local machine, or `public` for installation in a server
 
-remote_s3_output_bucket: bucket_name              # enter your remote machine s3 output bucket name, to store the cQube processed output data ( Example: cqube-prod-output )
+source_s3_output_bucket: bucket_name              # enter your remote machine s3 output bucket name, to store the cQube processed output data ( Example: cqube-prod-output )
 
 s3_access_key: access_key                          # AWS Access key for creation of s3 bucket
 s3_secret_key: secret_key                            # AWS Secret key for creation of s3 bucket

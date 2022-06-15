@@ -24,9 +24,9 @@ base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.ym
 aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 aws_default_region=$(awk ''/^aws_default_region:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-remote_bucket=$(awk ''/^remote_s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+output_bucket=$(awk ''/^s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 output_directory=$(awk ''/^output_directory:' /{ if ($2 !~ /#.*/) {print $2}}' local_storage_config.yml)
-remote_output_directory=$(awk ''/^remote_output_directory:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+source_output_directory=$(awk ''/^source_output_directory:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 
 
 sudo apt install awscli -y
@@ -36,5 +36,5 @@ export AWS_SECRET_ACCESS_KEY=$aws_secret_key
 
 
 if [[ $storage_type = "local" ]] && [[ $remote_storage_type = "s3" ]]; then
-irbucket=$(aws s3 sync $output_directory s3://$remote_bucket)
+irbucket=$(aws s3 sync $source_output_directory s3://$output_bucket)
 fi

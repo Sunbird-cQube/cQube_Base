@@ -2,7 +2,7 @@
 
 
 remote_storage_type=$(awk ''/^remote_storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-remote_bucket=$(awk ''/^remote_s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+source_bucket=$(awk ''/^source_s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 remote_system_user_name=$(awk ''/^remote_system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)

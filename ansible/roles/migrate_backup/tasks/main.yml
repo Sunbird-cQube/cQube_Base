@@ -8,7 +8,7 @@
 
 
 - name: copying output files backup to remote machine
-  copy: src={{output_directory}} dest={{remote_output_directory}}
+  copy: src={{source_output_directory}} dest={{output_directory}}
   when: storage_type == "local" and remote_storage_type == "local"
   tags: install
 
