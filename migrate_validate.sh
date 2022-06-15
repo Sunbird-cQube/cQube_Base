@@ -217,14 +217,14 @@ case $key in
           check_base_dir $key $value
        fi
        ;;
-   db_user)
+   remote_db_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_naming $key $value
        fi
        ;;	   
-   db_name)
+   remote_db_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
