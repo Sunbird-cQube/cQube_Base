@@ -26,8 +26,12 @@ aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' migrat
 aws_default_region=$(awk ''/^aws_default_region:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 source_bucket=$(awk ''/^source_s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 output_directory=$(awk ''/^output_directory:' /{ if ($2 !~ /#.*/) {print $2}}' local_storage_config.yml)
+
 source_output_directory=$(awk ''/^source_output_directory:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+
+if [[ $remote_storage_type = "s3" ]]; then
 output_bucket=$(awk ''/^s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
+fi
 
 
 
