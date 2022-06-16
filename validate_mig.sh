@@ -263,15 +263,11 @@ case $key in
    system_user_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_sys_user $key $value
        fi
        ;;
    base_dir)	 
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_base_dir $key $value
        fi
        ;;
    local_ipv4_address)
