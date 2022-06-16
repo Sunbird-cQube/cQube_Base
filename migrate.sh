@@ -2,18 +2,15 @@
 
 
 remote_storage_type=$(awk ''/^remote_storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-remote_bucket=$(awk ''/^remote_s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+source_bucket=$(awk ''/^source_s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 remote_system_user_name=$(awk ''/^remote_system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
-database_user=$(awk ''/^db_user:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-database_name=$(awk ''/^db_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-
-remote_db_user=$(awk ''/^remote_db_user:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-remote_db_name=$(awk ''/^remote_db_name:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+database_user=$(awk ''/^source_db_user:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+database_name=$(awk ''/^source_db_name:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 installation_host_ip=$(awk ''/^installation_host_ip:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 cqube_cloned_path=$(awk ''/^cqube_cloned_path:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
@@ -36,8 +33,9 @@ if [[ $remote_storage_type == "local" ]]; then
 fi
 
 if [[ $remote_storage_type == "s3" ]]; then
-   pg_dump -h localhost -U $database_user -F t $database_name > /home/$system_user_name/bk_db_name.tar
+	pg_dump -h localhost -U $database_user -F t $database_name > /home/$system_user_name/bk_db_name.tar
 fi
+
 
 #Installing the cQube_Base and cQube_Workflow
 if [ $? = 0 ]; then
@@ -107,24 +105,24 @@ fi
 
 ## taking local storage and s3 output bucket backup
 if [ $? = 0 ]; then
-	if [[ $remote_storage_type == "s3" ]]; then
-	ansible-playbook -i hosts ansible/migrate_backup.yml -e "my_hosts=$installation_host_ip" --tags "install"
+	if [[ $storage_type == "s3" ]]; then
+	ansible-playbook -i hosts ansible/migrate_backup.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@aws_s3_config.yml"
 		if [ $? = 0 ]; then
         	echo "cQube Data base and output files are restored to remote server successfully!!"
     		fi
 	fi
 fi
 if [ $? = 0 ]; then
-	if [[ $remote_storage_type == "azure" ]]; then
-	ansible-playbook -i hosts ansible/migrate_backup.yml -e "my_hosts=$installation_host_ip" --tags "install"
+	if [[ $storage_type == "azure" ]]; then
+	ansible-playbook -i hosts ansible/migrate_backup.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@azure_container_config.yml"
 		if [ $? = 0 ]; then
         	echo "cQube Data base and output files are restored to remote server successfully!!"
     		fi
 	fi
 fi
 if [ $? = 0 ]; then
-	if [[ $remote_storage_type == "local" ]]; then
-	ansible-playbook -i hosts ansible/migrate_backup.yml -e "my_hosts=$installation_host_ip" --tags "install"
+	if [[ $storage_type == "local" ]]; then
+	ansible-playbook -i hosts ansible/migrate_backup.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@local_storage_config.yml"
 		if [ $? = 0 ]; then
         	echo "cQube Data base and output files are restored to remote server successfully!!"
     		fi

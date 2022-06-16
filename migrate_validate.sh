@@ -163,7 +163,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("remote_system_user_name" "base_dir" "remote_db_user" "remote_db_name" "remote_db_password" "remote_storage_type" "mode_of_installation" "s3_access_key" "s3_secret_key" "aws_default_region" "remote_s3_output_bucket" "remote_output_directory" "cqube_cloned_path")
+declare -a arr=("remote_system_user_name" "base_dir" "source_db_user" "source_db_name" "source_db_password" "remote_storage_type" "mode_of_installation" "s3_access_key" "s3_secret_key" "aws_default_region" "source_s3_output_bucket" "source_output_directory" "cqube_cloned_path")
 
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
@@ -186,7 +186,7 @@ do
 key=$i
 value=${vals[$key]}
 case $key in
-   system_user_name)
+   remote_system_user_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
@@ -200,21 +200,21 @@ case $key in
           check_base_dir $key $value
        fi
        ;;
-   remote_db_user)
+   source_db_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_naming $key $value
        fi
        ;;	   
-   remote_db_name)
+   source_db_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_db_naming $key $value
        fi
        ;;
-   remote_db_password)
+   source_db_password)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
@@ -254,14 +254,14 @@ case $key in
            check_aws_default_region
        fi
        ;;
-   remote_s3_output_bucket)
+   source_s3_output_bucket)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
           check_s3_bucket $key $value
        fi
        ;;
-   remote_output_directory)
+   source_output_directory)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
@@ -290,3 +290,4 @@ if [[ $fail -eq 1 ]]; then
 else
    echo -e "\e[0;32m${bold}Config file successfully validated${normal}"
 fi
+

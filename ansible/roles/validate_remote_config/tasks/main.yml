@@ -15,7 +15,7 @@
   copy: src=../../../../install_aws_cli.sh dest=/home/{{remote_system_user_name}}/install_aws_cli.sh
   tags: install  
 
-- name: Running the base install_pre.sh
+- name: Running the base install_prerequisite to remote machine
   command: bash /home/{{remote_system_user_name}}/install_pre.sh
   tags: install
 

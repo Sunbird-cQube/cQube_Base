@@ -3,12 +3,12 @@
   tags: install
 
 - name: Restore postgres backup to remote machine
-  shell: PGPASSWORD="{{db_password}}" pg_restore --host localhost --port 5432 --username {{remote_db_user}} --dbname {{remote_db_name}} --verbose "/tmp/bk_db_name.tar" -c --if-exists
+  shell: PGPASSWORD="{{db_password}}" pg_restore --host localhost --port 5432 --username {{db_user}} --dbname {{db_name}} --verbose "/tmp/bk_db_name.tar" -c --if-exists
   tags: install
 
 
 - name: copying output files backup to remote machine
-  copy: src={{output_directory}} dest={{remote_output_directory}}
+  copy: src={{source_output_directory}} dest={{output_directory}}
   when: storage_type == "local" and remote_storage_type == "local"
   tags: install
 
