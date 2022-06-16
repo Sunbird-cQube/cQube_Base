@@ -263,11 +263,15 @@ case $key in
    system_user_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
+	   else
+		  check_sys_user 	  
        fi
        ;;
    base_dir)	 
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
+	   else
+		  check_base_dir 	  
        fi
        ;;
    local_ipv4_address)
@@ -288,7 +292,7 @@ case $key in
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_ip $key $value
+          check_vpn_ip $key $value
        fi
        ;;   
    proxy_host)

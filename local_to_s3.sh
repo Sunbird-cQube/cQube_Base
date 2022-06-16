@@ -20,13 +20,11 @@ fi
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 remote_storage_type=$(awk ''/^remote_storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-aws_default_region=$(awk ''/^aws_default_region:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-output_bucket=$(awk ''/^s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
-source_output_directory=$(awk ''/^source_output_directory:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 
+output_bucket=$(awk ''/^s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
+
+dir=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_OUTPUT_DIRECTORY )
+source_output_directory=$(cut -d "=" -f2 <<< "$dir")
 
 sudo apt install awscli -y
 
