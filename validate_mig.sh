@@ -11,12 +11,6 @@ check_length(){
     fi
 }
 
-check_base_dir(){
-if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
-  echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
-fi
-}
-
 
 check_kc_config_otp(){
 if ! [[ $2 == "true" || $2 == "false" ]]; then
@@ -92,12 +86,6 @@ java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
 fi
 }
 
-check_sys_user(){
-    result=`who | head -1 | awk '{print $1}'`
-    if [[ `egrep -i ^$2: /etc/passwd ; echo $?` != 0 && $result != $2 ]]; then 
-        echo "Error - Please check the system_user_name."; fail=1
-    fi
-}
 
 check_ip()
 {
@@ -263,15 +251,11 @@ case $key in
    system_user_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-	   else
-		  check_sys_user 	  
        fi
        ;;
    base_dir)	 
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-	   else
-		  check_base_dir 	  
        fi
        ;;
    local_ipv4_address)
