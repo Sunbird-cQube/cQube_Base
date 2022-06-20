@@ -1,15 +1,16 @@
 #!/bin/bash
 
 
-remote_storage_type=$(awk ''/^remote_storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 source_bucket=$(awk ''/^source_s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
-remote_system_user_name=$(awk ''/^remote_system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 installation_host_ip=$(awk ''/^installation_host_ip:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+
+str_typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
+src_type=$(cut -d "=" -f2 <<< "$str_typ")
 
 db_usr=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_DB_USER )
 database_user=$(cut -d "=" -f2 <<< "$db_usr")
@@ -31,19 +32,19 @@ if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 
 ## taking the database backup in demo machine
 
-if [[ $remote_storage_type == "local" ]]; then
+if [[ $storage_type == "local" ]]; then
     pg_dump -h localhost -U $database_user -F t $database_name > $cqube_cloned_path/cQube_Base/bk_db_name.tar
 
 fi
 
-if [[ $remote_storage_type == "s3" ]]; then
+if [[ $storage_type == "s3" ]]; then
 	pg_dump -h localhost -U $database_user -F t $database_name > $cqube_cloned_path/cQube_Base/bk_db_name.tar
 fi
 
 
 #Installing the cQube_Base and cQube_Workflow
 if [ $? = 0 ]; then
-	if [[ $remote_storage_type == "s3" ]]; then
+	if [[ $storage_type == "s3" ]]; then
 	ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install"
 		if [ $? = 0 ]; then
         	 echo "migration remote_sanity file validated  successfully!!"
@@ -51,7 +52,7 @@ if [ $? = 0 ]; then
 	fi		
 fi
 if [ $? = 0 ]; then
-	if [[ $remote_storage_type == "azure" ]]; then
+	if [[ $storage_type == "azure" ]]; then
 	ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install"
 		if [ $? = 0 ]; then
       		echo "migration remote_sanity file validated  successfully!!"
@@ -59,7 +60,7 @@ if [ $? = 0 ]; then
 	fi
 fi
 if [ $? = 0 ]; then
-	if [[ $remote_storage_type == "local" ]]; then
+	if [[ $storage_type == "local" ]]; then
 	ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install"
 		if [ $? = 0 ]; then
        		echo "migration remote_sanity file validated  successfully!!"
@@ -67,7 +68,7 @@ if [ $? = 0 ]; then
 	fi
 fi	
 if [ $? = 0 ]; then
-	if [[ $remote_storage_type == "s3" ]]; then
+	if [[ $storage_type == "s3" ]]; then
 	ansible-playbook -i hosts ansible/validate_remote_config.yml -e "my_hosts=$installation_host_ip" --tags "install"
 		if [ $? = 0 ]; then
       		 echo "cQube migration config file validated  successfully!!"
@@ -75,7 +76,7 @@ if [ $? = 0 ]; then
 	fi	
 fi
 if [ $? = 0 ]; then
-	if [[ $remote_storage_type == "local" ]]; then
+	if [[ $storage_type == "local" ]]; then
 	ansible-playbook -i hosts ansible/validate_remote_config.yml -e "my_hosts=$installation_host_ip" --tags "install"
 		if [ $? = 0 ]; then
       		echo "cQube migration config file validated  successfully!!"
@@ -83,7 +84,7 @@ if [ $? = 0 ]; then
 	fi
 fi	
 if [ $? = 0 ]; then
-	if [[ $remote_storage_type == "azure" ]]; then
+	if [[ $storage_type == "azure" ]]; then
 	ansible-playbook -i hosts ansible/validate_remote_config.yml -e "my_hosts=$installation_host_ip" --tags "install"
 		if [ $? = 0 ]; then
       		echo "cQube migration config file validated  successfully!!"
@@ -134,7 +135,7 @@ if [ $? = 0 ]; then
 	fi
 fi
 if [ $? = 0 ]; then
-	if [[ $storage_type = "local" ]] && [[ $remote_storage_type = "s3" ]]; then
+	if [[ $src_type = "local" ]] && [[ $storage_type = "s3" ]]; then
 	. "local_to_s3.sh"
 		if [ $? = 0 ]; then
         	echo "cQube output directory files are restored to remote server successfully!!"

@@ -17,15 +17,16 @@ fi
 
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
-remote_storage_type=$(awk ''/^remote_storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+str_typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
+src_type=$(cut -d "=" -f2 <<< "$str_typ")
 
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
-if [[ $remote_storage_type = "local" ]]; then
+if [[ $storage_type = "local" ]]; then
 output_directory=$(awk ''/^output_directory:' /{ if ($2 !~ /#.*/) {print $2}}' local_storage_config.yml)
 fi
 
-if [[ $remote_storage_type = "s3" ]]; then
+if [[ $storage_type = "s3" ]]; then
 output_bucket=$(awk ''/^s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
@@ -39,11 +40,11 @@ source_bucket=$(cut -d "=" -f2 <<< "$bucket")
 export AWS_ACCESS_KEY_ID=$aws_access_key
 export AWS_SECRET_ACCESS_KEY=$aws_secret_key
 
-if [[ $storage_type = "s3" ]] && [[ $remote_storage_type = "s3" ]]; then
+if [[ $src_type = "s3" ]] && [[ $storage_type = "s3" ]]; then
 irbucket=$(aws s3 sync s3://$source_bucket s3://$output_bucket)
 fi
 
-if [[ $storage_type = "s3" ]] && [[ $remote_storage_type = "local" ]]; then
+if [[ $src_type = "s3" ]] && [[ $storage_type = "local" ]]; then
 
 irbucket=$(aws s3 sync s3://$source_bucket $output_directory)
 fi
