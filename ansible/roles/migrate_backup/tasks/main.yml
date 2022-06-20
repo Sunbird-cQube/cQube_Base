@@ -11,7 +11,7 @@
   become: true
   shell: bash validation_scripts/get_dir_config_values.sh
   args:
-    chdir: {{cqube_cloned_path}}/cQube_Base
+    chdir: "{{cqube_cloned_path}}/cQube_Base"
   delegate_to: 127.0.0.1
   register: required_dir
   tags: install
