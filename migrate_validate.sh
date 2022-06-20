@@ -1,19 +1,9 @@
 #!/bin/bash 
 
-check_storage_type(){
-    if ! [[ $2 == "s3" || $2 == "local" ]]; then
-        echo "Error - Please enter either s3 or local for $1"; fail=1
-    fi
-}
-
-
 check_cqube_cloned_path(){
 if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
    echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
 
-   if ! [[ "$2" = */ ]]; then
-     echo "Error - $1 Please make sure the absolute path values should end with '/'"; fail=1
-   fi
 fi
 
 }
@@ -35,11 +25,10 @@ echo -e "\e[0;33m${bold}Validating the migrate config file...${normal}"
 
 
 # An array of mandatory values
-declare -a arr=("remote_storage_type" "cqube_cloned_path")
+declare -a arr=("cqube_cloned_path")
 # Create and empty array which will store the key and value pair from config file
 declare -A vals
 
-remote_storage_type=$(awk ''/^remote_storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}
@@ -52,13 +41,6 @@ do
 key=$i
 value=${vals[$key]}
 case $key in
-   remote_storage_type)
-       if [[ $value == "" ]]; then
-          echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
-          check_storage_type $key $value
-       fi
-       ;;
    cqube_cloned_path)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1

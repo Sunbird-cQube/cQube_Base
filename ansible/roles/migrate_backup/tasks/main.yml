@@ -21,7 +21,7 @@
   copy:
     src: "{{required_dir.stdout}}"
     dest: "{{output_directory}}"
-  when: storage_type == "local" and remote_storage_type == "local"	
+  when: storage_type == "local"	
   tags: install
 
 - name: copying aws_s3_config.yml to remote host

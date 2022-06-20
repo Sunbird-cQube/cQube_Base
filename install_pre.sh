@@ -25,8 +25,9 @@ sudo apt install awscli -y
 chmod u+x validate_mig.sh
 
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-remote_storage_type=$(awk ''/^remote_storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 
+str_typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
+src_type=$(cut -d "=" -f2 <<< "$str_typ")
 . "install_aws_cli.sh"
 
 if [[ ! -f config.yml ]]; then
@@ -37,50 +38,42 @@ fi
 . "validate_mig.sh"
 
 
-if [[ $storage_type = "s3" ]] && [[ $remote_storage_type = "s3" ]]; then
-	if [[ $storage_type == "s3" ]]; then
+if [[ $src_type = "s3" ]] && [[ $storage_type = "s3" ]]; then
 	   if [[ -f aws_s3_config.yml ]]; then
     	. "$INS_DIR/aws_s3_validate.sh"
   	 	else
       		echo "ERROR: aws_s3_config.yml is not available. Please copy aws_s3_config.yml.template as aws_s3_config.yml and fill all the details."  
        exit;
    	   fi
-	fi
 fi
 
-if [[ $storage_type = "local" ]] && [[ $remote_storage_type = "local" ]]; then
-    if [[ $storage_type == "local" ]]; then
+if [[ $src_type = "local" ]] && [[ $storage_type = "local" ]]; then
         if [[ -f local_storage_config.yml ]]; then
          . "$INS_DIR/local_storage_validate.sh"
         else
             echo "ERROR: local_storage_config.yml is not available. Please copy local_storage_config.yml.template as local_storage_config.yml and fill all the details."
         exit;
         fi
-    fi
 fi
 
 
-if [[ $storage_type = "s3" ]] && [[ $remote_storage_type = "local" ]]; then
-	if [[ $storage_type == "local" ]]; then
+if [[ $src_type = "s3" ]] && [[ $storage_type = "local" ]]; then
    		if [[ -f local_storage_config.yml ]]; then
     	 . "$INS_DIR/local_storage_validate.sh"
     	else
         	echo "ERROR: local_storage_config.yml is not available. Please copy local_storage_config.yml.template as local_storage_config.yml and fill all the details."
         exit;
    		fi
-	fi
 fi
 	
 
-if [[ $storage_type = "local" ]] && [[ $remote_storage_type = "s3" ]]; then
-    if [[ $storage_type == "s3" ]]; then
+if [[ $src_type = "local" ]] && [[ $storage_type = "s3" ]]; then
        if [[ -f aws_s3_config.yml ]]; then
         . "$INS_DIR/aws_s3_validate.sh"
         else
             echo "ERROR: aws_s3_config.yml is not available. Please copy aws_s3_config.yml.template as aws_s3_config.yml and fill all the details."  
        exit;
        fi
-    fi
 fi
 
 

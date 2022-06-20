@@ -12,6 +12,3 @@
 
 cqube_cloned_path: /home/ubuntu/         #enter workflow directory path for remote installation
 
-remote_storage_type:                             # enter `s3` or `local` (enter the same storage_type of the remote machine)
-
-
