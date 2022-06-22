@@ -9,7 +9,7 @@
 
 - name: Run a script to get configuration value
   become: true
-  shell: bash validation_scripts/get_dir_config_values.sh
+  shell: bash validation_scripts/get_outputdir_config_values.sh
   args:
     chdir: "{{cqube_cloned_path}}/cQube_Base"
   delegate_to: 127.0.0.1
@@ -22,6 +22,40 @@
     src: "{{required_dir.stdout}}"
     dest: "{{output_directory}}"
   when: storage_type == "local"	
+  tags: install
+
+- name: Run a script to get configuration value
+  become: true
+  shell: bash validation_scripts/get_inputdir_config_values.sh
+  args:
+    chdir: "{{cqube_cloned_path}}/cQube_Base"
+  delegate_to: 127.0.0.1
+  register: required_dir
+  tags: install
+
+- name: copying output files backup to remote machine
+  become: true
+  copy:
+    src: "{{required_dir.stdout}}"
+    dest: "{{input_directory}}"
+  when: storage_type == "local"
+  tags: install
+
+- name: Run a script to get configuration value
+  become: true
+  shell: bash validation_scripts/get_emidir_config_values.sh
+  args:
+    chdir: "{{cqube_cloned_path}}/cQube_Base"
+  delegate_to: 127.0.0.1
+  register: required_dir
+  tags: install
+
+- name: copying output files backup to remote machine
+  become: true
+  copy:
+    src: "{{required_dir.stdout}}"
+    dest: "{{emission_directory}}"
+  when: storage_type == "local"
   tags: install
 
 - name: copying aws_s3_config.yml to remote host

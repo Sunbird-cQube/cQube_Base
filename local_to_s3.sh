@@ -22,12 +22,22 @@ src_type=$(cut -d "=" -f2 <<< "$str_typ")
 
 output_bucket=$(awk ''/^s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 
+input_bucket=$(awk ''/^s3_input_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
+
+emission_bucket=$(awk ''/^s3_emission_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
+
 aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 
 
 dir=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_OUTPUT_DIRECTORY )
 source_output_directory=$(cut -d "=" -f2 <<< "$dir")
+
+dir=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_INPUT_DIRECTORY )
+source_input_directory=$(cut -d "=" -f2 <<< "$dir")
+
+dir=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_EMISSION_DIRECTORY )
+source_emission_directory=$(cut -d "=" -f2 <<< "$dir")
 
 sudo apt install awscli -y
 
@@ -38,4 +48,9 @@ export AWS_SECRET_ACCESS_KEY=$aws_secret_key
 if [[ $src_type = "local" ]] && [[ $storage_type = "s3" ]]; then
 irbucket=$(aws s3 sync $source_output_directory s3://$output_bucket)
 fi
-
+if [[ $src_type = "local" ]] && [[ $storage_type = "s3" ]]; then
+irbucket=$(aws s3 sync $source_input_directory s3://$input_bucket)
+fi
+if [[ $src_type = "local" ]] && [[ $storage_type = "s3" ]]; then
+irbucket=$(aws s3 sync $source_emission_directory s3://$emission_bucket)
+fi
