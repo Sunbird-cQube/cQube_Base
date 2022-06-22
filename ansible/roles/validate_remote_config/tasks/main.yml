@@ -7,6 +7,10 @@
   copy: src=../../../../config.yml dest=/home/{{system_user_name}}/config.yml
   tags: install
 
+- name: copying .cqube_config to remote host
+  copy: src=/opt/cqube/.cqube_config dest=/home/{{system_user_name}}/config_config
+  tags: install
+
 - name: copying aws_s3_config.yml to remote host
   copy: src=../../../../aws_s3_config.yml dest=/home/{{system_user_name}}/aws_s3_config.yml
   when: storage_type == "s3"
