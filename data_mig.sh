@@ -17,7 +17,7 @@ fi
 system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
-str_typ=$(cat /home/$system_user_name/.cqube_config | grep CQUBE_STORAGE_TYPE )
+str_typ=$(cat /home/$system_user_name/config_config | grep CQUBE_STORAGE_TYPE )
 src_type=$(cut -d "=" -f2 <<< "$str_typ")
 
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
@@ -37,13 +37,13 @@ aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3
 aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 fi
 
-bucket=$(cat /home/$system_user_name/.cqube_config | grep CQUBE_S3_OUTPUT )
+bucket=$(cat /home/$system_user_name/config_config | grep CQUBE_S3_OUTPUT )
 out_bucket=$(cut -d "=" -f2 <<< "$bucket")
 
-bucket=$(cat /home/$system_user_name/.cqube_config | grep CQUBE_S3_INPUT )
+bucket=$(cat /home/$system_user_name/config_config | grep CQUBE_S3_INPUT )
 in_bucket=$(cut -d "=" -f2 <<< "$bucket")
 
-bucket=$(cat /home/$system_user_name/.cqube_config | grep CQUBE_S3_EMISSION )
+bucket=$(cat /home/$system_user_name/config_config | grep CQUBE_S3_EMISSION )
 emi_bucket=$(cut -d "=" -f2 <<< "$bucket")
 
 export AWS_ACCESS_KEY_ID=$aws_access_key
@@ -51,13 +51,21 @@ export AWS_SECRET_ACCESS_KEY=$aws_secret_key
 
 if [[ $src_type = "s3" ]] && [[ $storage_type = "s3" ]]; then
 irbucket=$(aws s3 sync s3://$out_bucket s3://$output_bucket)
+fi
+if [[ $src_type = "s3" ]] && [[ $storage_type = "s3" ]]; then
 irbucket=$(aws s3 sync s3://$in_bucket s3://$input_bucket)
+fi
+if [[ $src_type = "s3" ]] && [[ $storage_type = "s3" ]]; then
 irbucket=$(aws s3 sync s3://$emi_bucket s3://$emission_bucket)
 fi
 
 if [[ $src_type = "s3" ]] && [[ $storage_type = "local" ]]; then
 irbucket=$(aws s3 sync s3://$out_bucket $output_directory)
+fi
+if [[ $src_type = "s3" ]] && [[ $storage_type = "local" ]]; then
 irbucket=$(aws s3 sync s3://$in_bucket $input_directory)
+fi
+if [[ $src_type = "s3" ]] && [[ $storage_type = "local" ]]; then
 irbucket=$(aws s3 sync s3://$emi_bucket $emission_directory)
 fi
 

@@ -8,16 +8,16 @@ ansible-playbook -i hosts ansible/create_base.yml -e "my_hosts=$installation_hos
 
 if [[ $storage_type == "s3" ]]; then
 ansible-playbook -i hosts ansible/install.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@aws_s3_config.yml" \
-                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
-													  --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
+                                                      --extra-vars "@/tmp/cqube_migration/local_storage_config.yml" \
+													  --extra-vars "@/tmp/cqube_migration/azure_container_config.yml"
     if [ $? = 0 ]; then
         echo "cQube Base installed successfully!!"
     fi
 fi
 if [[ $storage_type == "azure" ]]; then
 ansible-playbook -i hosts ansible/install.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@azure_container_config.yml" \
-                                                      --extra-vars "@$base_dir/cqube/conf/local_storage_config.yml" \
-													  --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml"
+                                                      --extra-vars "@/tmp/cqube_migration/local_storage_config.yml" \
+													  --extra-vars "@/tmp/cqube_migration/aws_s3_config.yml"
     if [ $? = 0 ]; then
         echo "cQube Base installed successfully!!"
     fi
@@ -25,8 +25,8 @@ fi
 
 if [[ $storage_type == "local" ]]; then
 ansible-playbook -i hosts ansible/install.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@local_storage_config.yml" \
-                                                      --extra-vars "@$base_dir/cqube/conf/aws_s3_config.yml" \
-													  --extra-vars "@$base_dir/cqube/conf/azure_container_config.yml"
+                                                      --extra-vars "@/tmp/cqube_migration/aws_s3_config.yml" \
+													  --extra-vars "@/tmp/cqube_migration/azure_container_config.yml"
     if [ $? = 0 ]; then
         echo "cQube Base installed successfully!!"
     fi
