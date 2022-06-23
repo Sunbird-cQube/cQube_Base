@@ -1,0 +1,13 @@
+---
+- name: Remove cQube and postgres if its installed in remote machine
+  hosts: localhost
+  gather_facts: true
+  remote_user: root
+  become: true
+  vars_files:
+    - ../config.yml
+    - ../migrate_config.yml
+    - ../.version
+
+  roles:
+          - create_migrate_dir

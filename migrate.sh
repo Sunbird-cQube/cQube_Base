@@ -27,6 +27,8 @@ if [[ ! -f migrate_config.yml ]]; then
 fi
 . "migrate_validate.sh"
 
+ansible-playbook ansible/create_migrate_dir.yml --tags "install" --extra-vars "@config.yml"
+
 INS_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 
@@ -74,7 +76,7 @@ if [ $? = 0 ]; then
 fi
 
 if [ $? = 0 ]; then
-	  cd $cqube_cloned_path/cQube_Workflow/workflow_deploy/education_usecase && ./install_mig.sh && cd $cqube_cloned_path/cQube_Base
+	  cd $cqube_cloned_path/cQube_Workflow/workflow_deploy/education_usecase && ./install_migration.sh && cd $cqube_cloned_path/cQube_Base
    		if [ $? = 0 ]; then
  			echo "cQube Workflow installed successfully on remote host!!"
     	fi
