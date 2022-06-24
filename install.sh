@@ -15,6 +15,7 @@ if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 sudo apt-get install software-properties-common -y
 sudo apt-add-repository ppa:ansible/ansible-2.9 -y
 sudo apt update -y
+sudo apt upgrade -y
 sudo apt install ansible -y
 sudo apt install python -y
 sudo apt-get install python3-pip -y
