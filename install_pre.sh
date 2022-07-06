@@ -27,8 +27,9 @@ chmod u+x validate_mig.sh
 
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
-str_typ=$(cat /home/$system_user_name/.cqube_config | grep CQUBE_STORAGE_TYPE )
+str_typ=$(cat /home/$system_user_name/migration/cqube_config | grep CQUBE_STORAGE_TYPE )
 src_type=$(cut -d "=" -f2 <<< "$str_typ")
+
 . "install_aws_cli.sh"
 
 if [[ ! -f config.yml ]]; then

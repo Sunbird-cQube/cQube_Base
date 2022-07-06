@@ -2,16 +2,23 @@
   copy: src={{cqube_cloned_path}}/cQube_Base/bk_db_name.tar dest=/tmp/bk_db_name.tar
   tags: install
 
+- name: Copy keycloak backup to remote machine
+  copy: src={{cqube_cloned_path}}/cQube_Base/bk_keycloak.tar dest=/tmp/bk_keycloak.tar
+  tags: install
+
 - name: Restore postgres backup to remote machine
   shell: PGPASSWORD="{{db_password}}" pg_restore --host localhost --port 5432 --username {{db_user}} --dbname {{db_name}} --verbose "/tmp/bk_db_name.tar" -c --if-exists
   tags: install
 
+- name: Restore keycloak backup to remote machine
+  shell: PGPASSWORD="{{db_password}}" pg_restore --host localhost --port 5432 --username {{db_user}} --dbname keycloak --verbose "/tmp/bk_keycloak.tar" -c --if-exists
+  tags: install
 
 - name: Run a script to get configuration value
   become: true
   shell: bash validation_scripts/get_outputdir_config_values.sh
   args:
-    chdir: "{{cqube_cloned_path}}/cQube_Base"
+    chdir: "{{ cqube_cloned_path }}/cQube_Base"
   delegate_to: 127.0.0.1
   register: required_dir
   tags: install
@@ -19,8 +26,8 @@
 - name: copying output files backup to remote machine
   become: true
   copy:
-    src: "{{required_dir.stdout}}"
-    dest: "{{output_directory}}"
+    src: "{{ required_dir.stdout }}"
+    dest: "{{ output_directory }}"
   when: storage_type == "local"	
   tags: install
 
@@ -28,7 +35,7 @@
   become: true
   shell: bash validation_scripts/get_inputdir_config_values.sh
   args:
-    chdir: "{{cqube_cloned_path}}/cQube_Base"
+    chdir: "{{ cqube_cloned_path }}/cQube_Base"
   delegate_to: 127.0.0.1
   register: required_dir
   tags: install
@@ -36,8 +43,8 @@
 - name: copying output files backup to remote machine
   become: true
   copy:
-    src: "{{required_dir.stdout}}"
-    dest: "{{input_directory}}"
+    src: "{{ required_dir.stdout }}"
+    dest: "{{ input_directory }}"
   when: storage_type == "local"
   tags: install
 
@@ -45,7 +52,7 @@
   become: true
   shell: bash validation_scripts/get_emidir_config_values.sh
   args:
-    chdir: "{{cqube_cloned_path}}/cQube_Base"
+    chdir: "{{ cqube_cloned_path }}/cQube_Base"
   delegate_to: 127.0.0.1
   register: required_dir
   tags: install
@@ -53,25 +60,25 @@
 - name: copying output files backup to remote machine
   become: true
   copy:
-    src: "{{required_dir.stdout}}"
-    dest: "{{emission_directory}}"
+    src: "{{ required_dir.stdout }}"
+    dest: "{{ emission_directory }}"
   when: storage_type == "local"
   tags: install
 
 - name: copying aws_s3_config.yml to remote host
-  copy: src=../../../../aws_s3_config.yml dest=/home/{{system_user_name}}/aws_s3_config.yml
+  copy: src=../../../../aws_s3_config.yml dest=/home/{{system_user_name}}/migration/aws_s3_config.yml
   when: storage_type == "s3"
   tags: install
 
 - name: copying local_storage_config.yml to remote host
-  copy: src=../../../../local_storage_config.yml dest=/home/{{system_user_name}}/local_storage_config.yml
+  copy: src=../../../../local_storage_config.yml dest=/home/{{system_user_name}}/migration/local_storage_config.yml
   when: storage_type == "local"
   tags: install
 
 - name: copying the data migration script to remote host
-  copy: src=../../../../data_mig.sh dest=/home/{{system_user_name}}/data_mig.sh
+  copy: src=../../../../data_mig.sh dest=/home/{{system_user_name}}/migration/data_mig.sh
   tags: install
 
 - name: Running the data migration script
-  command: bash /home/{{system_user_name}}/data_mig.sh
+  command: bash /home/{{system_user_name}}/migration/data_mig.sh
   tags: install
