@@ -86,13 +86,17 @@ java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
 fi
 }
 
-
 check_ip()
 {
     local ip=$2
     ip_stat=1
     ip_pass=0
-
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "localhost" ]]; then
+        echo "Error - Please provide local ipv4 as localhost for localhost installation"; fail=1
+    fi
+fi
+if [[ $mode_of_installation == "public" ]]; then    
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -105,10 +109,14 @@ check_ip()
             echo "Error - Invalid value for $key"; fail=1
             ip_pass=0
         fi
+        is_local_ip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'` > /dev/null 2>&1
+        if [[ $ip_pass == 0 && $is_local_ip != *$2* ]]; then
+            echo "Error - Invalid value for $key. Please enter the local ip of this system."; fail=1 
+        fi
     else
         echo "Error - Invalid value for $key"; fail=1
-    fi
-
+   fi
+fi    
 }
 
 check_vpn_ip()
@@ -234,7 +242,7 @@ mode_of_installation=$(awk ''/^mode_of_installation:' /{ if ($2 !~ /#.*/) {print
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 check_mem
-check_version 
+#check_version 
 
 # Iterate the array and retrieve values for mandatory fields from config file
 for i in ${arr[@]}
@@ -275,7 +283,7 @@ case $key in
    installation_host_ip)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-       else
+	   else
           check_vpn_ip $key $value
        fi
        ;;   

@@ -10,28 +10,6 @@ check_length(){
         return $len_status;
     fi
 }
-check_ip(){
-    local ip=$2
-    ip_stat=1
-    ip_pass=0
-
-    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-        OIFS=$IFS
-        IFS='.'
-        ip=($ip)
-        IFS=$OIFS
-        [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 \
-            && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
-        ip_stat=$?
-        if [[ ! $ip_stat == 0 ]]; then
-            echo "Error - Invalid value for $key"; fail=1
-            ip_pass=0
-        fi
-    else
-        echo "Error - Invalid value for $key"; fail=1
-    fi
-
-}
 
 check_base_dir(){
 if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then

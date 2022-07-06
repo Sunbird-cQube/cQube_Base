@@ -11,7 +11,9 @@ ansible-playbook -i hosts ansible/install.yml -e "my_hosts=$installation_host_ip
                                                       --extra-vars "@/tmp/cqube_migration/local_storage_config.yml" \
 													  --extra-vars "@/tmp/cqube_migration/azure_container_config.yml"
     if [ $? = 0 ]; then
-        echo "cQube Base installed successfully!!"
+        echo "cQube Base installed successfully in remote machine!!"
+	else
+		exit;
     fi
 fi
 if [[ $storage_type == "azure" ]]; then
@@ -19,7 +21,10 @@ ansible-playbook -i hosts ansible/install.yml -e "my_hosts=$installation_host_ip
                                                       --extra-vars "@/tmp/cqube_migration/local_storage_config.yml" \
 													  --extra-vars "@/tmp/cqube_migration/aws_s3_config.yml"
     if [ $? = 0 ]; then
-        echo "cQube Base installed successfully!!"
+        echo "cQube Base installed successfully in remote machine!!"
+	else
+        exit;
+
     fi
 fi
 
@@ -28,7 +33,10 @@ ansible-playbook -i hosts ansible/install.yml -e "my_hosts=$installation_host_ip
                                                       --extra-vars "@/tmp/cqube_migration/aws_s3_config.yml" \
 													  --extra-vars "@/tmp/cqube_migration/azure_container_config.yml"
     if [ $? = 0 ]; then
-        echo "cQube Base installed successfully!!"
+        echo "cQube Base installed successfully in remote machine!!"
+	else
+        exit;
+
     fi
 fi
 
