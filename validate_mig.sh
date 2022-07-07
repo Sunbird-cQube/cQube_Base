@@ -283,8 +283,6 @@ case $key in
    installation_host_ip)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-	   else
-          check_vpn_ip $key $value
        fi
        ;;   
    proxy_host)
