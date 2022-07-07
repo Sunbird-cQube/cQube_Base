@@ -66,17 +66,23 @@
   tags: install
 
 - name: copying aws_s3_config.yml to remote host
-  copy: src=../../../../aws_s3_config.yml dest=/home/{{system_user_name}}/aws_s3_config.yml
+  synchronize:
+    src: "../../../../aws_s3_config.yml" 
+	dest: "/home/{{system_user_name}}/aws_s3_config.yml"
   when: (storage_type == "s3") or (storage_type != "s3")
   tags: install
 
 - name: copying local_storage_config.yml to remote host
-  copy: src=../../../../local_storage_config.yml dest=/home/{{system_user_name}}/local_storage_config.yml
+  synchronize:
+    src: "../../../../local_storage_config.yml" 
+	dest: "/home/{{system_user_name}}/local_storage_config.yml"
   when: storage_type == "local"
   tags: install
 
 - name: copying the data migration script to remote host
-  copy: src=../../../../data_mig.sh dest=/home/{{system_user_name}}/data_mig.sh
+  synchronize:
+    src: "../../../../data_mig.sh" 
+	dest: "/home/{{system_user_name}}/data_mig.sh"
   tags: install
 
 - name: Running the data migration script

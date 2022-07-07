@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e
 
 if [[ ! -f config.yml ]]; then
     tput setaf 1; echo "ERROR: config.yml is not available. Please copy config.yml.template as config.yml and fill all the details."; tput sgr0
@@ -34,10 +33,19 @@ cqube_cloned_path=$(awk ''/^cqube_cloned_path:' /{ if ($2 !~ /#.*/) {print $2}}'
 chmod u+x migrate_validate.sh
 
 if [[ $storage_type == "s3" ]]; then
-	if [[ ! -f aws_s3_config.yml ]]; then
-    	tput setaf 1; echo "ERROR: aws_s3_config.yml is not available. Please copy aws_s3_config.yml.template as aws_s3_config.yml and fill all the details."; tput sgr0
-    	exit;
-	fi
+   aws --version >/dev/null 2>&1
+   if [ $? -ne 0 ]; then
+     . "$INS_DIR/validation_scripts/install_aws_cli.sh"
+   fi
+fi
+
+if [[ $storage_type == "s3" ]]; then
+   if [[ -f aws_s3_config.yml ]]; then
+    . "$INS_DIR/aws_s3_validate.sh"
+   else
+        echo "ERROR: aws_s3_config.yml is not available. Please copy aws_s3_config.yml.template as aws_s3_config.yml and fill all the details."  
+       exit;
+   fi
 fi
 
 if [[ $storage_type == "local" ]]; then
@@ -46,6 +54,8 @@ if [[ $storage_type == "local" ]]; then
         exit;
     fi
 fi
+
+set -e
 
 . "migrate_validate.sh"
 

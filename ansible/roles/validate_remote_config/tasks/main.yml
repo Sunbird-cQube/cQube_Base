@@ -1,42 +1,59 @@
-
 - name: copying the install_prerequisite remote host
-  copy: src=../../../../install_pre.sh dest=/home/{{system_user_name}}/install_pre.sh
+  synchronize:      
+    src: "../../../../install_pre.sh" 
+    dest: "/home/{{system_user_name}}/install_pre.sh"
   tags: install
 
 - name: copying config.yml to remote host
-  copy: src=../../../../config.yml dest=/home/{{system_user_name}}/config.yml
+  synchronize:
+    src: "../../../../config.yml" 
+    dest: "/home/{{system_user_name}}/config.yml"
   tags: install
 
 - name: copying .cqube_config to remote host
-  copy: src=/opt/cqube/.cqube_config dest=/home/{{system_user_name}}/cqube_config
+  synchronize:
+    src: "/opt/cqube/.cqube_config" 
+    dest: "/home/{{system_user_name}}/cqube_config"
   tags: install
 
 - name: copying aws_s3_config.yml to remote host
-  copy: src=../../../../aws_s3_config.yml dest=/home/{{system_user_name}}/aws_s3_config.yml
+  synchronize:
+    src: "../../../../aws_s3_config.yml" 
+    dest: "/home/{{system_user_name}}/aws_s3_config.yml"
   when: storage_type == "s3"
   tags: install
 
 - name: copying local_storage_config.yml to remote host
-  copy: src=../../../../local_storage_config.yml dest=/home/{{system_user_name}}/local_storage_config.yml
+  synchronize:
+    src: "../../../../local_storage_config.yml" 
+    dest: "/home/{{system_user_name}}/local_storage_config.yml"
   when: storage_type == "local"
   tags: install
 
 - name: copying validate.sh to remote host
-  copy: src=../../../../validate_mig.sh dest=/home/{{system_user_name}}/validate_mig.sh
+  synchronize:
+    src: "../../../../validate_mig.sh" 
+    dest: "/home/{{system_user_name}}/validate_mig.sh"
   tags: install
 
 - name: copying aws_s3_validate.sh to remote host
-  copy: src=../../../../aws_s3_validate.sh dest=/home/{{system_user_name}}/aws_s3_validate.sh
+  synchronize:
+    src: "../../../../aws_s3_validate.sh" 
+    dest: "/home/{{system_user_name}}/aws_s3_validate.sh"
   when: storage_type == "s3"
   tags: install
 
 - name: copying local_storage_validate.sh to remote host
-  copy: src=../../../../local_storage_validate.sh dest=/home/{{system_user_name}}/local_storage_validate.sh
+  synchronize:
+    src: "../../../../local_storage_validate.sh" 
+    dest: "/home/{{system_user_name}}/local_storage_validate.sh"
   when: storage_type == "local"
   tags: install      
 
 - name: copying install_aws_cli.sh to remote host
-  copy: src=../../../../install_aws_cli.sh dest=/home/{{system_user_name}}/install_aws_cli.sh
+  synchronize:
+    src: "../../../../install_aws_cli.sh" 
+    dest: "/home/{{system_user_name}}/install_aws_cli.sh"
   tags: install  
 
 - name: Running the base install_prerequisite to remote machine
