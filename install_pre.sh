@@ -27,7 +27,7 @@ chmod u+x validate_mig.sh
 
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
-str_typ=$(cat /home/$system_user_name/migration/cqube_config | grep CQUBE_STORAGE_TYPE )
+str_typ=$(cat /home/$system_user_name/cqube_config | grep CQUBE_STORAGE_TYPE )
 src_type=$(cut -d "=" -f2 <<< "$str_typ")
 
 . "install_aws_cli.sh"
@@ -40,42 +40,9 @@ fi
 . "validate_mig.sh"
 
 
-if [[ $src_type = "s3" ]] && [[ $storage_type = "s3" ]]; then
-	   if [[ -f aws_s3_config.yml ]]; then
-    	. "$INS_DIR/aws_s3_validate.sh"
-  	 	else
-      		echo "ERROR: aws_s3_config.yml is not available. Please copy aws_s3_config.yml.template as aws_s3_config.yml and fill all the details."  
-       exit;
-   	   fi
-fi
 
-if [[ $src_type = "local" ]] && [[ $storage_type = "local" ]]; then
-        if [[ -f local_storage_config.yml ]]; then
-         . "$INS_DIR/local_storage_validate.sh"
-        else
-            echo "ERROR: local_storage_config.yml is not available. Please copy local_storage_config.yml.template as local_storage_config.yml and fill all the details."
-        exit;
-        fi
-fi
-
-
-if [[ $src_type = "s3" ]] && [[ $storage_type = "local" ]]; then
-   		if [[ -f local_storage_config.yml ]]; then
-    	 . "$INS_DIR/local_storage_validate.sh"
-    	else
-        	echo "ERROR: local_storage_config.yml is not available. Please copy local_storage_config.yml.template as local_storage_config.yml and fill all the details."
-        exit;
-   		fi
-fi
-	
-
-if [[ $src_type = "local" ]] && [[ $storage_type = "s3" ]]; then
-       if [[ -f aws_s3_config.yml ]]; then
-        . "$INS_DIR/aws_s3_validate.sh"
-        else
-            echo "ERROR: aws_s3_config.yml is not available. Please copy aws_s3_config.yml.template as aws_s3_config.yml and fill all the details."  
-       exit;
-       fi
+if [[ $storage_type = "local" ]]; then
+. "local_storage_validate.sh"
 fi
 
 

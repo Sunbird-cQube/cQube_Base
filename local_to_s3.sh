@@ -16,6 +16,7 @@ echo "Configuring aws cli ..."
 fi
 
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
+base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 str_typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
 src_type=$(cut -d "=" -f2 <<< "$str_typ")
