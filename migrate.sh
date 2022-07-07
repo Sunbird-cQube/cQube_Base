@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [[ ! -f config.yml ]]; then
     tput setaf 1; echo "ERROR: config.yml is not available. Please copy config.yml.template as config.yml and fill all the details."; tput sgr0
     exit;
@@ -59,9 +61,9 @@ pg_dump -h localhost -U $database_user -F t $database_name > $cqube_cloned_path/
 pg_dump -h localhost -U $database_user -F t keycloak > $cqube_cloned_path/cQube_Base/bk_keycloak.tar
 
 if [[ $storage_type == "s3" ]]; then
-	ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install"
+	ansible-playbook -i hosts ansible/validate_remote_config.yml -e "my_hosts=$installation_host_ip" --tags "install"
 		if [ $? = 0 ]; then
-			ansible-playbook -i hosts ansible/validate_remote_config.yml -e "my_hosts=$installation_host_ip" --tags "install"
+			ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install"
 				if [ $? = 0 ]; then
         	 		echo "migration remote_sanity and config files validated  successfully!!"
     			fi
@@ -69,9 +71,9 @@ if [[ $storage_type == "s3" ]]; then
 fi
 	
 if [[ $storage_type == "azure" ]]; then
-	ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install"
+	ansible-playbook -i hosts ansible/validate_remote_config.yml -e "my_hosts=$installation_host_ip" --tags "install"
 		if [ $? = 0 ]; then
-        	ansible-playbook -i hosts ansible/validate_remote_config.yml -e "my_hosts=$installation_host_ip" --tags "install"
+        	        ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install"
 				if [ $? = 0 ]; then
       				echo "migration remote_sanity and config files validated  successfully!!"
     			fi
@@ -79,9 +81,9 @@ if [[ $storage_type == "azure" ]]; then
 fi
 
 if [[ $storage_type == "local" ]]; then
-	ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install"
+	ansible-playbook -i hosts ansible/validate_remote_config.yml -e "my_hosts=$installation_host_ip" --tags "install"
 		if [ $? = 0 ]; then
-            ansible-playbook -i hosts ansible/validate_remote_config.yml -e "my_hosts=$installation_host_ip" --tags "install"	
+                        ansible-playbook -i hosts ansible/remote_sanity.yml -e "my_hosts=$installation_host_ip" --tags "install"	
 				if [ $? = 0 ]; then
        				echo "migration remote_sanity and config files validated  successfully!!"
     			fi

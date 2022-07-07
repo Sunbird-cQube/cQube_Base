@@ -26,8 +26,8 @@
 - name: copying output files backup to remote machine
   become: true
   copy:
-    src: "{{ required_dir.stdout }}"
-    dest: "{{ output_directory }}"
+    src: "{{required_dir.stdout}}"
+    dest: "{{output_directory}}"
   when: storage_type == "local"	
   tags: install
 
@@ -40,7 +40,7 @@
   register: required_dir
   tags: install
 
-- name: copying output files backup to remote machine
+- name: copying input files backup to remote machine
   become: true
   copy:
     src: "{{ required_dir.stdout }}"
@@ -57,28 +57,29 @@
   register: required_dir
   tags: install
 
-- name: copying output files backup to remote machine
+- name: copying emission files backup to remote machine
   become: true
   copy:
-    src: "{{ required_dir.stdout }}"
-    dest: "{{ emission_directory }}"
+    src: "{{required_dir.stdout}}"
+    dest: "{{emission_directory}}"
   when: storage_type == "local"
   tags: install
 
 - name: copying aws_s3_config.yml to remote host
-  copy: src=../../../../aws_s3_config.yml dest=/home/{{system_user_name}}/migration/aws_s3_config.yml
-  when: storage_type == "s3"
+  copy: src=../../../../aws_s3_config.yml dest=/home/{{system_user_name}}/aws_s3_config.yml
+  when: (storage_type == "s3") or (storage_type != "s3")
   tags: install
 
 - name: copying local_storage_config.yml to remote host
-  copy: src=../../../../local_storage_config.yml dest=/home/{{system_user_name}}/migration/local_storage_config.yml
+  copy: src=../../../../local_storage_config.yml dest=/home/{{system_user_name}}/local_storage_config.yml
   when: storage_type == "local"
   tags: install
 
 - name: copying the data migration script to remote host
-  copy: src=../../../../data_mig.sh dest=/home/{{system_user_name}}/migration/data_mig.sh
+  copy: src=../../../../data_mig.sh dest=/home/{{system_user_name}}/data_mig.sh
   tags: install
 
 - name: Running the data migration script
-  command: bash /home/{{system_user_name}}/migration/data_mig.sh
+  command: bash /home/{{system_user_name}}/data_mig.sh
   tags: install
+

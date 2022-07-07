@@ -1,58 +1,49 @@
 
-- name: Creating the Migration Directory for the installation
-  file:
-    path: /home/{{ system_user_name }}/migration
-    owner: "{{ system_user_name }}"
-    group: "{{ system_user_name }}"
-    recurse: yes
-    state: directory
-  tags: install
-
 - name: copying the install_prerequisite remote host
-  copy: src=../../../../install_pre.sh dest=/home/{{system_user_name}}/migration/install_pre.sh
+  copy: src=../../../../install_pre.sh dest=/home/{{system_user_name}}/install_pre.sh
   tags: install
 
 - name: copying config.yml to remote host
-  copy: src=../../../../config.yml dest=/home/{{system_user_name}}/migration/config.yml
+  copy: src=../../../../config.yml dest=/home/{{system_user_name}}/config.yml
   tags: install
 
 - name: copying .cqube_config to remote host
-  copy: src=/opt/cqube/.cqube_config dest=/home/{{system_user_name}}/migration/cqube_config
+  copy: src=/opt/cqube/.cqube_config dest=/home/{{system_user_name}}/cqube_config
   tags: install
 
 - name: copying aws_s3_config.yml to remote host
-  copy: src=../../../../aws_s3_config.yml dest=/home/{{system_user_name}}/migration/aws_s3_config.yml
+  copy: src=../../../../aws_s3_config.yml dest=/home/{{system_user_name}}/aws_s3_config.yml
   when: storage_type == "s3"
   tags: install
 
 - name: copying local_storage_config.yml to remote host
-  copy: src=../../../../local_storage_config.yml dest=/home/{{system_user_name}}/migration/local_storage_config.yml
+  copy: src=../../../../local_storage_config.yml dest=/home/{{system_user_name}}/local_storage_config.yml
   when: storage_type == "local"
   tags: install
 
 - name: copying validate.sh to remote host
-  copy: src=../../../../validate_mig.sh dest=/home/{{system_user_name}}/migration/validate_mig.sh
+  copy: src=../../../../validate_mig.sh dest=/home/{{system_user_name}}/validate_mig.sh
   tags: install
 
 - name: copying aws_s3_validate.sh to remote host
-  copy: src=../../../../aws_s3_validate.sh dest=/home/{{system_user_name}}/migration/aws_s3_validate.sh
+  copy: src=../../../../aws_s3_validate.sh dest=/home/{{system_user_name}}/aws_s3_validate.sh
   when: storage_type == "s3"
   tags: install
 
 - name: copying local_storage_validate.sh to remote host
-  copy: src=../../../../local_storage_validate.sh dest=/home/{{system_user_name}}/migration/local_storage_validate.sh
+  copy: src=../../../../local_storage_validate.sh dest=/home/{{system_user_name}}/local_storage_validate.sh
   when: storage_type == "local"
   tags: install      
 
 - name: copying install_aws_cli.sh to remote host
-  copy: src=../../../../install_aws_cli.sh dest=/home/{{system_user_name}}/migration/install_aws_cli.sh
+  copy: src=../../../../install_aws_cli.sh dest=/home/{{system_user_name}}/install_aws_cli.sh
   tags: install  
 
 - name: Running the base install_prerequisite to remote machine
-  command: bash /home/{{system_user_name}}/migration/install_pre.sh
+  command: bash /home/{{system_user_name}}/install_pre.sh
   tags: install
 
 - name: copying the migrate_config remote host
-  copy: src=../../../../migrate_config.yml dest=/home/{{system_user_name}}/migration/migrate_config.yml
+  copy: src=../../../../migrate_config.yml dest=/home/{{system_user_name}}/migrate_config.yml
   tags: install
 
