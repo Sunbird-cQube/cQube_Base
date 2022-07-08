@@ -1,0 +1,41 @@
+- name: clone cQube_Base from git
+  git: 
+    repo: 'https://github.com/Sunbird-cQube/cQube_Base.git'
+    dest: /home/{{system_user_name}}/cQube_Base
+    version: cQube-migration
+  tags: install  
+    
+- name: clone cQube_Workflow from git
+  git:     
+    repo: 'https://github.com/Sunbird-cQube/cQube_Workflow.git'
+    dest: /home/{{system_user_name}}/cQube_Workflow
+    version: cQube-migration
+  tags: install  
+
+
+- name: copying config.yml to remote host
+  synchronize:
+    src: "../../../../config.yml"
+    dest: "/home/{{system_user_name}}/cQube_Base/config.yml"
+  tags: install
+
+- name: copying aws_s3_config.yml to remote host
+  synchronize:
+    src: "../../../../aws_s3_config.yml"
+    dest: "/home/{{system_user_name}}/cQube_Base/aws_s3_config.yml"
+  when: storage_type == "s3"
+  tags: install    
+
+- name: copying local_storage_config.yml to remote host
+  synchronize:
+    src: "../../../../local_storage_config.yml"
+    dest: "/home/{{system_user_name}}/cQube_Base/local_storage_config.yml"
+  when: storage_type == "local"
+  tags: install 
+
+- name: copying Workflow config.yml to remote host
+  synchronize:
+    src: "{{cqube_cloned_path}}/cQube_Workflow/workflow_deploy/education_usecase/config.yml"
+    dest: "/home/{{system_user_name}}/cQube_Workflow/workflow_deploy/education_usecase/config.yml"
+  tags: install  
+

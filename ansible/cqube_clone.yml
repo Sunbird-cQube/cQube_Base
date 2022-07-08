@@ -1,0 +1,8 @@
+---
+- name: Backing up output files to remote server
+  hosts: "{{my_hosts}}"
+  gather_facts: true
+  remote_user: root
+  become: true
+  roles:
+          - cqube_clone
