@@ -10,5 +10,5 @@
 
 #NOTE: Please fill the value with a space between ":" and the value.
 
-cqube_cloned_path: /home/ubuntu/         #enter workflow directory path for remote installation
+cqube_cloned_path: /home/ubuntu         #enter cQube_workflow directory path for remote installation
 

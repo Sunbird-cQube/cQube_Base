@@ -11,6 +11,9 @@ if [[ ! -f migrate_config.yml ]]; then
     exit;
 fi
 
+INS_DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
+
 source_bucket=$(awk ''/^source_s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
@@ -61,8 +64,6 @@ set -e
 
 ansible-playbook ansible/create_migrate_dir.yml --tags "install" --extra-vars "@config.yml"
 
-INS_DIR="${BASH_SOURCE%/*}"
-if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 
 ## taking the database backup in demo machine
 
@@ -146,4 +147,5 @@ fi
 
 if [ $? = 0 ]; then
 	 ansible-playbook -i hosts ansible/cqube_clone.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@config.yml" \
-                                                                                                              --extra-vars "@migrate_config.yml"fi
+                                                                                                            --extra-vars "@migrate_config.yml"
+fi
