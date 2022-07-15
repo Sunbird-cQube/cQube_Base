@@ -6,6 +6,7 @@
 - 8 core CPU (minimum requirement)
 - Domain name (with SSL)
 - 1 TB Storage
+
 ### Reverse proxy rules (public routing)
 The following ports have to be configured in the nginix server with reverse proxy:
 
@@ -41,7 +42,6 @@ The following ports have to be configured in the nginix # server with reverse pr
 
 Note: For Installation: follow the below steps directly, for upgradation follow the Upgradation: steps mentioned in the last section.
 
-
 # Installation Steps:
 - Open Terminal
 - Navigate to the directory where cQube_Base has been downloaded or cloned 
@@ -49,6 +49,7 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
   cd cQube_Base/
   git checkout release-3.6
   git pull
+
   ```
 - Copy the config.yml.template to config.yml 
   ```
@@ -77,8 +78,12 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
   - Installs Keycloak
   - Installs Grafana
   - Installs Prometheus and node exporter
+
 - Save and Close the file
 
+- For more information to configure the weights & columns for udise/infrastucture, please refer operational document.
+
+- Update the diksha parameters(api_url,token,encryption key,dataset name channel_id,org_id) in the development/python/cQube-raw-data-fetch-parameters.txt
 
 - Give the following permission to the install.sh file
 
@@ -146,4 +151,3 @@ Start the upgradation by running upgrade.sh shell script file as mentioned below
 Configuration filled in config.yml will be validated first. If there is any error during validation, you will be prompted with the appropriate error message and the upgradation will be aborted. Refer the error message and solve the errors appropriately. Restart the upgradation process ```sudo ./upgrade.sh```
 
 Once upgradation is completed without any errors, you will be prompted the following message. ```**CQube upgraded successfully!!**```
-
