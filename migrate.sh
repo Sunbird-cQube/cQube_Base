@@ -69,8 +69,6 @@ ansible-playbook ansible/create_migrate_dir.yml --tags "install" --extra-vars "@
 
 pg_dump -h localhost -U $database_user -F t $database_name > $cqube_cloned_path/cQube_Base/bk_db_name.tar
 
-pg_dump -h localhost -U $database_user -F t keycloak > $cqube_cloned_path/cQube_Base/bk_keycloak.tar
-
 if [[ $storage_type == "s3" ]]; then
 	ansible-playbook -i hosts ansible/validate_remote_config.yml -e "my_hosts=$installation_host_ip" --tags "install"
 		if [ $? = 0 ]; then

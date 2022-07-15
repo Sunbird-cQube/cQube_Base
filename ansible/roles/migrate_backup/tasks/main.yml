@@ -2,16 +2,8 @@
   copy: src={{cqube_cloned_path}}/cQube_Base/bk_db_name.tar dest=/tmp/bk_db_name.tar
   tags: install
 
-- name: Copy keycloak backup to remote machine
-  copy: src={{cqube_cloned_path}}/cQube_Base/bk_keycloak.tar dest=/tmp/bk_keycloak.tar
-  tags: install
-
 - name: Restore postgres backup to remote machine
   shell: PGPASSWORD="{{db_password}}" pg_restore --host localhost --port 5432 --username {{db_user}} --dbname {{db_name}} --verbose "/tmp/bk_db_name.tar" -c --if-exists
-  tags: install
-
-- name: Restore keycloak backup to remote machine
-  shell: PGPASSWORD="{{db_password}}" pg_restore --host localhost --port 5432 --username {{db_user}} --dbname keycloak --verbose "/tmp/bk_keycloak.tar" -c --if-exists
   tags: install
 
 - name: Run a script to get configuration value
