@@ -65,26 +65,6 @@ if [ $temp == 0 ]; then
      fi
 fi
 }
-check_postgres(){
-echo "Checking for Postgres ..."
-temp=$(psql -V > /dev/null 2>&1; echo $?)
-
-if [ $temp == 0 ]; then
-    version=`psql -V | head -n1 | cut -d" " -f3`
-    if [[ $(echo "$version >= 10.12" | bc) == 1 ]]
-    then
-        echo "WARNING: Postgres found."
-        echo "Removing Postgres..."
-        sudo systemctl stop kong.service > /dev/null 2>&1
-        sleep 5
-        sudo systemctl stop keycloak.service > /dev/null 2>&1
-        sleep 5
-        sudo systemctl stop postgresql
-        sudo apt-get --purge remove postgresql* -y
-        echo "Done"
-     fi
-fi
-}
 check_mem(){
 mem_total_kb=`grep MemTotal /proc/meminfo | awk '{print $2}'`
 mem_total=$(($mem_total_kb/1024))
@@ -171,6 +151,11 @@ if [[ $mode_of_installation == "public" ]]; then
         echo "Error - Invalid value for $key"; fail=1
    fi
 fi    
+}
+check_host_ip(){
+if [[ ! $2 == "127.0.0.1" ]]; then
+        echo "Error - Please provide installation host ip as 127.0.0.1 for localhost installation"; fail=1
+    fi
 }
 
 check_vpn_ip()
@@ -341,6 +326,8 @@ case $key in
    installation_host_ip)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
+	   else
+		   check_host_ip $key $value	  
        fi
        ;;	   
    proxy_host)
