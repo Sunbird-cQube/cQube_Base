@@ -11,6 +11,11 @@ check_length(){
     fi
 }
 
+check_base_dir(){
+if [[ ! "$2" = /* ]] || [[ ! -d $2 ]]; then
+  echo "Error - $1 Please enter the absolute path or make sure the directory is present."; fail=1
+fi
+}
 
 check_kc_config_otp(){
 if ! [[ $2 == "true" || $2 == "false" ]]; then
@@ -86,6 +91,14 @@ java_arg_3: -Xmx${max_java_arg_3}m""" > memory_config.yml
 fi
 }
 
+check_sys_user(){
+    result=`who | head -1 | awk '{print $1}'`
+    if [[ `egrep -i ^$2: /etc/passwd ; echo $?` != 0 && $result != $2 ]]; then
+        echo "Error - Please check the system_user_name."; fail=1
+    fi
+}
+
+
 check_ip()
 {
     local ip=$2
@@ -117,6 +130,14 @@ if [[ $mode_of_installation == "public" ]]; then
         echo "Error - Invalid value for $key"; fail=1
    fi
 fi    
+}
+
+check_host_ip(){
+
+is_local_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}' )
+    if [[ $is_local_ip != $2 ]]; then
+          echo "Error - Invalid value for $key. Please enter the public ip of the migration remote system."; fail=1
+    fi
 }
 
 check_vpn_ip()
@@ -259,11 +280,16 @@ case $key in
    system_user_name)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_sys_user $key $value
        fi
        ;;
    base_dir)	 
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
+	   else
+          check_base_dir $key $value
+       fi	  
        fi
        ;;
    local_ipv4_address)
@@ -283,6 +309,8 @@ case $key in
    installation_host_ip)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
+	   else
+           check_host_ip $key $value	  
        fi
        ;;   
    proxy_host)
