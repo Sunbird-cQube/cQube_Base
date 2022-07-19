@@ -32,19 +32,9 @@ src_type=$(cut -d "=" -f2 <<< "$str_typ")
 
 . "install_aws_cli.sh"
 
-if [[ ! -f config.yml ]]; then
-    tput setaf 1; echo "ERROR: config.yml is not available. Please copy config.yml.template as config.yml and fill all the details."; tput sgr0
-    exit;
-fi
-
-. "validate_mig.sh"
-
-
-
 if [[ $storage_type = "local" ]]; then
 . "local_storage_validate.sh"
 fi
-
 
 if [ -e /etc/ansible/ansible.cfg ]; then
         sudo sed -i 's/^#log_path/log_path/g' /etc/ansible/ansible.cfg

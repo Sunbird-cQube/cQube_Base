@@ -98,18 +98,24 @@ check_sys_user(){
     fi
 }
 
-
-check_ip()
+check_pri_ip()
+{
+pri_ip=$(awk ''/^private_ip=' /{ if ($2 !~ /#.*/) {print $2}}' .remote_ip)
+if [[ ! $pri_ip = $2 ]]; then
+        echo "Error - Invalid value for $key. Please enter the private ip of the migration remote system."; fail=1
+fi
+}
+check_proxy_ip()
 {
     local ip=$2
     ip_stat=1
     ip_pass=0
 if [[ $mode_of_installation == "localhost" ]]; then
-    if [[ ! $2 == "localhost" ]]; then
-        echo "Error - Please provide local ipv4 as localhost for localhost installation"; fail=1
+    if [[ ! $2 == "127.0.0.1" ]]; then
+        echo "Error - Please provide proxy host ip as 127.0.0.1 for localhost installation"; fail=1
     fi
 fi
-if [[ $mode_of_installation == "public" ]]; then    
+ if [[ $mode_of_installation == "public" ]]; then
     if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
         OIFS=$IFS
         IFS='.'
@@ -122,23 +128,12 @@ if [[ $mode_of_installation == "public" ]]; then
             echo "Error - Invalid value for $key"; fail=1
             ip_pass=0
         fi
-        is_local_ip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'` > /dev/null 2>&1
-        if [[ $ip_pass == 0 && $is_local_ip != *$2* ]]; then
-            echo "Error - Invalid value for $key. Please enter the local ip of this system."; fail=1 
-        fi
     else
         echo "Error - Invalid value for $key"; fail=1
-   fi
-fi    
-}
-
-check_host_ip(){
-
-is_local_ip=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has" | awk '{print $4}' )
-    if [[ $is_local_ip != $2 ]]; then
-          echo "Error - Invalid value for $key. Please enter the public ip of the migration remote system."; fail=1
     fi
+ fi
 }
+
 
 check_vpn_ip()
 {
@@ -296,7 +291,7 @@ case $key in
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_ip $key $value
+          check_pri_ip $key $value
        fi
        ;;
    vpn_local_ipv4_address)
@@ -309,15 +304,13 @@ case $key in
    installation_host_ip)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-	   else
-           check_host_ip $key $value	  
        fi
        ;;   
    proxy_host)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_vpn_ip $key $value
+          check_proxy_ip $key $value
        fi
        ;;	   
    db_user)

@@ -1,16 +1,5 @@
 #!/bin/bash
 
-
-if [[ ! -f config.yml ]]; then
-    tput setaf 1; echo "ERROR: config.yml is not available. Please copy config.yml.template as config.yml and fill all the details."; tput sgr0
-    exit;
-fi
-
-if [[ ! -f migrate_config.yml ]]; then
-    tput setaf 1; echo "ERROR: migrate_config.yml is not available. Please copy migrate_config.yml.template as migrate_config.yml and fill all the details."; tput sgr0
-    exit;
-fi
-
 INS_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 
@@ -33,7 +22,23 @@ database_name=$(cut -d "=" -f2 <<< "$db_name")
 
 cqube_cloned_path=$(awk ''/^cqube_cloned_path:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 
+if [[ ! -f config.yml ]]; then
+    tput setaf 1; echo "ERROR: config.yml is not available. Please copy config.yml.template as config.yml and fill all the details."; tput sgr0
+    exit;
+fi
+
+ansible-playbook -i hosts ansible/get_remote_ip.yml -e "my_hosts=$installation_host_ip"
+
+. "validate_mig.sh"
+
+if [[ ! -f migrate_config.yml ]]; then
+    tput setaf 1; echo "ERROR: migrate_config.yml is not available. Please copy migrate_config.yml.template as migrate_config.yml and fill all the details."; tput sgr0
+    exit;
+fi
+
 chmod u+x migrate_validate.sh
+
+. "migrate_validate.sh"
 
 if [[ $storage_type == "s3" ]]; then
    aws --version >/dev/null 2>&1
@@ -59,8 +64,6 @@ if [[ $storage_type == "local" ]]; then
 fi
 
 set -e
-
-. "migrate_validate.sh"
 
 ansible-playbook ansible/create_migrate_dir.yml --tags "install" --extra-vars "@config.yml"
 
