@@ -134,6 +134,39 @@ fi
  fi
 }
 
+check_host_ip()
+{
+    local ip=$2
+    ip_stat=1
+    ip_pass=0
+if [[ $mode_of_installation == "localhost" ]]; then
+    if [[ ! $2 == "127.0.0.1" ]]; then
+        echo "Error - Please provide Installation host ip as 127.0.0.1 for localhost installation"; fail=1
+    fi
+fi
+ if [[ $mode_of_installation == "public" ]]; then
+    if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        OIFS=$IFS
+        IFS='.'
+        ip=($ip)
+        IFS=$OIFS
+        [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 \
+            && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
+        ip_stat=$?
+        if [[ ! $ip_stat == 0 ]]; then
+            echo "Error - Invalid value for $key"; fail=1
+            ip_pass=0
+        fi
+    else
+        echo "Error - Invalid value for $key"; fail=1
+    fi
+ fi
+pub_ip=$(awk '{print $1}}' hosts)
+
+ if [[ ! $2 == $pub_ip ]]; then
+	 echo "Error - Invalid value for $key"; fail=1
+ fi	 
+}
 
 check_vpn_ip()
 {
@@ -285,7 +318,6 @@ case $key in
 	   else
           check_base_dir $key $value
        fi	  
-       fi
        ;;
    local_ipv4_address)
        if [[ $value == "" ]]; then
@@ -304,6 +336,8 @@ case $key in
    installation_host_ip)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
+	   else
+		  check_host_ip $key $value 	  
        fi
        ;;   
    proxy_host)
