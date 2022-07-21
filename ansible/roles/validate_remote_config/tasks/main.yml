@@ -1,6 +1,6 @@
 - name: copying the install_prerequisite remote host
   synchronize:      
-    src: "../../../../install_pre.sh" 
+    src: "../../../../install_prerequisite.sh" 
     dest: "/home/{{system_user_name}}/install_pre.sh"
   tags: install
 
@@ -57,7 +57,7 @@
   tags: install  
 
 - name: Running the base install_prerequisite to remote machine
-  command: bash /home/{{system_user_name}}/install_pre.sh
+  command: bash /home/{{system_user_name}}/install_prerequisite.sh
   tags: install
 
 - name: copying the migrate_config remote host
