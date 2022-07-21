@@ -47,7 +47,7 @@ Note: For Installation: follow the below steps directly, for upgradation follow 
 - Navigate to the directory where cQube_Base has been downloaded or cloned 
   ```
   cd cQube_Base/
-  git checkout release-3.6
+  git checkout release-3.7
   git pull
   ```
 - Copy the config.yml.template to config.yml 
@@ -107,7 +107,7 @@ Once installation is completed without any errors, you will be prompted the foll
 - Navigate to the directory where cQube has been downloaded or cloned
   ```
   cd cQube_Base/
-  git checkout release-3.6
+  git checkout release-3.7
   git pull
   ```
 - Copy the config.yml.template to config.yml ```cp config.yml.template config.yml```
