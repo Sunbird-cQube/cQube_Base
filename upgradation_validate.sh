@@ -313,7 +313,7 @@ storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.ym
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=3.5
+version_upgradable_from=3.6
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
