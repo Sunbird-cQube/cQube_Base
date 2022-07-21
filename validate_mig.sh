@@ -161,7 +161,7 @@ fi
         echo "Error - Invalid value for $key"; fail=1
     fi
  fi
-pub_ip=$(awk '{print $1}}' hosts)
+pub_ip=$(awk '{print $1}' hosts)
 
  if [[ ! $2 == $pub_ip ]]; then
 	 echo "Error - Invalid value for $key"; fail=1
@@ -319,11 +319,11 @@ case $key in
           check_base_dir $key $value
        fi	  
        ;;
-   local_ipv4_address)
+   installation_host_ip)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
        else
-          check_pri_ip $key $value
+          check_host_ip $key $value
        fi
        ;;
    vpn_local_ipv4_address)
@@ -333,13 +333,13 @@ case $key in
           check_vpn_ip $key $value
        fi
        ;;
-   installation_host_ip)
+   local_ipv4_address)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
-	   else
-		  check_host_ip $key $value 	  
+       else
+          check_pri_ip $key $value
        fi
-       ;;   
+       ;;
    proxy_host)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1
