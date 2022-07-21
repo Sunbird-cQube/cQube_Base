@@ -1,7 +1,7 @@
 - name: copying the install_prerequisite remote host
   synchronize:      
     src: "../../../../install_prerequisite.sh" 
-    dest: "/home/{{system_user_name}}/install_pre.sh"
+    dest: "/home/{{system_user_name}}/install_prerequisite.sh"
   tags: install
 
 - name: copying config.yml to remote host
