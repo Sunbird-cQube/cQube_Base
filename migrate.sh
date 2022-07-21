@@ -3,6 +3,14 @@
 INS_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 
+if [[ ! -f migrate_config.yml ]]; then
+    tput setaf 1; echo "ERROR: migrate_config.yml is not available. Please copy migrate_config.yml.template as migrate_config.yml and fill all the details."; tput sgr0
+    exit;
+fi
+
+chmod u+x migrate_validate.sh
+
+. "migrate_validate.sh"
 
 cqube_cloned_path=$(awk ''/^cqube_cloned_path:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
 
@@ -29,14 +37,6 @@ ansible-playbook -i hosts ansible/get_remote_ip.yml -e "my_hosts=$installation_h
 
 . "validate_mig.sh"
 
-if [[ ! -f migrate_config.yml ]]; then
-    tput setaf 1; echo "ERROR: migrate_config.yml is not available. Please copy migrate_config.yml.template as migrate_config.yml and fill all the details."; tput sgr0
-    exit;
-fi
-
-chmod u+x migrate_validate.sh
-
-. "migrate_validate.sh"
 
 if [[ $storage_type == "s3" ]]; then
    aws --version >/dev/null 2>&1
