@@ -61,6 +61,14 @@ if [[ $storage_type == "local" ]]; then
     fi
 fi
 
+if [[ ! -f $cqube_cloned_path/cQube_Workflow/workflow_deploy/education_usecase/config.yml ]]; then
+    tput setaf 1; echo "ERROR:  cQube_Workflow config.yml is not available. Please copy config.yml.template as config.yml and fill all the details."; tput sgr0
+    exit;
+fi
+
+. "$cqube_cloned_path/cQube_Workflow/workflow_deploy/education_usecase/validate_migration.sh"
+
+
 set -e
 
 ansible-playbook ansible/create_migrate_dir.yml --tags "install" --extra-vars "@config.yml"
