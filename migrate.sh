@@ -3,11 +3,17 @@
 INS_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$INS_DIR" ]]; then INS_DIR="$PWD"; fi
 
-system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
+cqube_cloned_path=$(awk ''/^cqube_cloned_path:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
+
+if [[ ! -f config.yml ]]; then
+    tput setaf 1; echo "ERROR: config.yml is not available. Please copy config.yml.template as config.yml and fill all the details."; tput sgr0
+    exit;
+fi
+
+system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-
 installation_host_ip=$(awk ''/^installation_host_ip:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 
 str_typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
@@ -18,13 +24,6 @@ database_user=$(cut -d "=" -f2 <<< "$db_usr")
 
 db_name=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_DB_NAME )
 database_name=$(cut -d "=" -f2 <<< "$db_name")
-
-cqube_cloned_path=$(awk ''/^cqube_cloned_path:' /{ if ($2 !~ /#.*/) {print $2}}' migrate_config.yml)
-
-if [[ ! -f config.yml ]]; then
-    tput setaf 1; echo "ERROR: config.yml is not available. Please copy config.yml.template as config.yml and fill all the details."; tput sgr0
-    exit;
-fi
 
 ansible-playbook -i hosts ansible/get_remote_ip.yml -e "my_hosts=$installation_host_ip"
 
