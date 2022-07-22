@@ -61,7 +61,13 @@
   synchronize:
     src: "../../../../aws_s3_config.yml" 
     dest: "/home/{{system_user_name}}/aws_s3_config.yml"
-  when: (storage_type == "s3") or (storage_type != "s3")
+  when: storage_type == "s3"
+  tags: install
+
+- name: copying aws_s3_config.yml to remote host
+  synchronize:
+    src: "{{base_dir}}/cqube/conf/aws_s3_config.yml"
+    dest: "/home/{{system_user_name}}/aws_s3.yml"
   tags: install
 
 - name: copying local_storage_config.yml to remote host
