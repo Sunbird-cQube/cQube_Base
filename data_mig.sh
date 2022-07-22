@@ -28,14 +28,15 @@ input_directory=$(awk ''/^input_directory:' /{ if ($2 !~ /#.*/) {print $2}}' loc
 emission_directory=$(awk ''/^emission_directory:' /{ if ($2 !~ /#.*/) {print $2}}' local_storage_config.yml)
 fi
 
-if [[ $src_type = "s3" ]]; then
+if [[ $storage_type = "s3" ]]; then
 output_bucket=$(awk ''/^s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 input_bucket=$(awk ''/^s3_input_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 emission_bucket=$(awk ''/^s3_emission_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
-
 aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
 fi
+aws_access_key=$(awk ''/^s3_access_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3.yml)
+aws_secret_key=$(awk ''/^s3_secret_key:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3.yml)
 
 bucket=$(cat /home/$system_user_name/cqube_config | grep CQUBE_S3_OUTPUT )
 out_bucket=$(cut -d "=" -f2 <<< "$bucket")
