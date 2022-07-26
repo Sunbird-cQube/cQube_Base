@@ -115,7 +115,7 @@ fi
 }
 
 check_sys_user(){
-    if ! [[ `compgen -u $2` ]]; then 
+    if [[ ! `compgen -u $2` ]]; then 
         echo "Error - Please check the system_user_name."; fail=1
     fi
 }
