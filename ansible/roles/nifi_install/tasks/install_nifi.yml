@@ -25,13 +25,13 @@
   tags: install
 
 - name: stop nifi if its running
-  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
+  ansible.builtin.shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh stop"
   when: status.stat.exists == true
   tags: install
 
 - name: remove nifi directory if present
   become: yes
-  shell: rm -rf {{ base_dir }}/cqube/nifi/nifi
+  ansible.builtin.shell: rm -rf {{ base_dir }}/cqube/nifi/nifi
   ignore_errors: yes
   args:
     warn: false
@@ -41,10 +41,11 @@
   unarchive:
     src: ~/nifi/nifi-{{ nifi_version }}-bin.tar.gz
     dest: "{{ base_dir }}/cqube/nifi"
+    remote_src: yes
   tags: install
 
 - name: Rename the extracted folder
-  shell: mv {{ base_dir }}/cqube/nifi/nifi-* {{ base_dir }}/cqube/nifi/nifi
+  ansible.builtin.shell: mv {{ base_dir }}/cqube/nifi/nifi-* {{ base_dir }}/cqube/nifi/nifi
   tags: install
 
 - name: Creates directory
@@ -97,5 +98,5 @@
 #1.12 end
 
 - name: start NiFi
-  shell: "{{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
+  shell: "nohup {{ base_dir }}/cqube/nifi/nifi/bin/nifi.sh start"
   tags: install

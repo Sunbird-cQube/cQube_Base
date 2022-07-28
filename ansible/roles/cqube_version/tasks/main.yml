@@ -24,7 +24,6 @@
                CQUBE_OUTPUT_DIRECTORY={{ output_directory }}
                CQUBE_EMISSION_DIRECTORY={{ emission_directory }}
                CQUBE_API_ENDPOINT={{ api_endpoint }}
-
   tags: install
   
 - name: Updating the CQUBE_VERSION

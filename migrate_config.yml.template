@@ -1,0 +1,35 @@
+---
+#------------------------------------------------------#
+#
+# cQube Installaion configuration parameters
+#
+# ALL VARIABLES ARE MANDATORY.
+# PLEASE FILL THOSE BEFORE RUNNING CORRESPONDING STEPS.
+#
+#------------------------------------------------------#
+
+#NOTE: Please fill the value with a space between ":" and the value.
+
+installation_host_ip:          # enter your remote host public ip
+
+system_user_name:                    # Non-root username with sudo privileges. To find the username run `whoami` in the same server terminal
+
+base_dir: /opt                             # enter your remote machine base_dir path (provide the absolute path where cqube needs to be installed and served. Eg. /opt  ( in this case cqube will be installed under /opt/cqube))
+ 
+
+db_user: cqube_db_user                     # Enter your remote machine username for the cQube database
+
+db_name: cqube_db                          # Enter your remote machine database name for the cQube database
+
+storage_type:                              # enter `s3` or `local` (enter the same storage_type of the remote machine)
+
+output_directory: /tmp/                    # enter your  remote machine output_directory path
+
+mode_of_installation:                       # enter `localhost` for demo installation in a single local machine, or `public` for installation in a server
+
+s3_output_bucket: bucket_name              # enter your remote machine s3 output bucket name, to store the cQube processed output data ( Example: cqube-prod-output )
+
+s3_access_key: access_key                           # AWS Access key for creation of s3 bucket
+s3_secret_key: secret_key                             # AWS Secret key for creation of s3 bucket
+aws_default_region: 'ap-south-1'            # aws default region for creation of s3 bucket
+

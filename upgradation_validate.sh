@@ -206,8 +206,8 @@ check_length(){
 }
 
 check_mode_of_installation(){
-if ! [[ $2 == "public" ]]; then
-    echo "Error - Please enter public for $1"; fail=1
+if ! [[ $2 == "public" || $2 == "localhost" ]]; then
+    echo "Error - Please enter public or localhost for $1"; fail=1
 fi
 }
 
@@ -288,7 +288,7 @@ echo -e "\e[0;33m${bold}Validating the config file...${normal}"
 
 # An array of mandatory values
 declare -a arr=("system_user_name" "base_dir" "db_user" "db_name" "db_password" "storage_type" "mode_of_installation"  \
-	        "local_ipv4_address" "vpn_local_ipv4_address" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
+	        "local_ipv4_address" "vpn_local_ipv4_address" "proxy_host" "api_endpoint" "keycloak_adm_passwd" "keycloak_adm_user" \
 		"report_viewer_config_otp")
 
 # Create and empty array which will store the key and value pair from config file
@@ -313,7 +313,7 @@ storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.ym
 
 check_mem
 # Check the version before starting validation
-version_upgradable_from=3.1
+version_upgradable_from=3.5
 check_version
 
 # Iterate the array and retrieve values for mandatory fields from config file
@@ -355,6 +355,14 @@ case $key in
           check_vpn_ip $key $value
        fi
        ;;
+   proxy_host)
+       if [[ $value == "" ]]; then
+          echo "Error - in $key. Unable to get the value. Please check."; fail=1
+       else
+          check_vpn_ip $key $value
+       fi
+       ;;
+	   
    db_user)
        if [[ $value == "" ]]; then
           echo "Error - in $key. Unable to get the value. Please check."; fail=1

@@ -2,6 +2,7 @@
 - name: Creating cQube base directory
   hosts: localhost
   remote_user: root
+  become: true
   vars_files:
     - ../memory_config.yml
     - ../.version
