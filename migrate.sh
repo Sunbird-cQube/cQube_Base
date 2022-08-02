@@ -27,7 +27,7 @@ installation_host_ip=$(awk ''/^installation_host_ip:' /{ if ($2 !~ /#.*/) {print
 str_typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
 src_type=$(cut -d "=" -f2 <<< "$str_typ")
 
-db_usr=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_DB_USER )
+migrate_config.ymlif [[ ! -f config.yml ]]; thendb_usr=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_DB_USER )
 database_user=$(cut -d "=" -f2 <<< "$db_usr")
 
 db_name=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_DB_NAME )
@@ -53,6 +53,23 @@ if [[ $storage_type == "s3" ]]; then
        exit;
    fi
 fi
+
+if [[ $storage_type == "azure" ]]; then
+   az --version >/dev/null 2>&1
+   if [ $? -ne 0 ]; then
+     . "$INS_DIR/validation_scripts/install_azure_cli.sh"
+   fi
+fi
+
+if [[ $storage_type == "azure" ]]; then
+   if [[ -f azure_container_config.yml ]]; then
+    . "$INS_DIR/azure_container_validate.sh"
+   else
+    echo "ERROR: azure_container_config.yml is not available. Please copy azure_container_config.yml.template as azure_container_config.yml and fill all the details."
+       exit;
+   fi
+fi
+
 
 if [[ $storage_type == "local" ]]; then
     if [[ ! -f local_storage_config.yml ]]; then
@@ -151,6 +168,16 @@ if [ $? = 0 ]; then
     		fi
 	fi
 fi
+
+if [ $? = 0 ]; then
+    if [[ $src_type = "local" ]] && [[ $storage_type = "azure" ]]; then
+        . "local_to_azure.sh"
+            if [ $? = 0 ]; then
+                echo "cQube output directory files are restored to remote server successfully!!"
+            fi
+    fi
+fi
+
 
 if [ $? = 0 ]; then
 	 ansible-playbook -i hosts ansible/cqube_clone.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@config.yml" \
