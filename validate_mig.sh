@@ -227,8 +227,8 @@ if [[ $mode_of_installation == "localhost" ]]; then
     fi
 fi
 if [[ $mode_of_installation == "public" ]]; then
-    if ! [[ $2 == "s3" || $2 == "local" ]]; then
-        echo "Error - Please enter either s3 or local for $1"; fail=1
+    if ! [[ $2 == "s3" || $2 == "local" || $2 == "azure" ]]; then
+        echo "Error - Please enter either s3 or local or azure for $1"; fail=1
     fi
 fi    
 }
