@@ -30,6 +30,13 @@
   when: storage_type == "local"
   tags: install
 
+- name: copying azure_container_config.yml to remote host
+  synchronize:
+    src: "../../../../azure_container_config.yml"
+    dest: "/home/{{system_user_name}}/azure_container_config.yml"
+  when: storage_type == "azure"
+  tags: install
+
 - name: copying validate.sh to remote host
   synchronize:
     src: "../../../../validate_mig.sh" 

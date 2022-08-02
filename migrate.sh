@@ -27,7 +27,7 @@ installation_host_ip=$(awk ''/^installation_host_ip:' /{ if ($2 !~ /#.*/) {print
 str_typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
 src_type=$(cut -d "=" -f2 <<< "$str_typ")
 
-migrate_config.ymlif [[ ! -f config.yml ]]; thendb_usr=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_DB_USER )
+db_usr=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_DB_USER )
 database_user=$(cut -d "=" -f2 <<< "$db_usr")
 
 db_name=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_DB_NAME )
@@ -178,6 +178,14 @@ if [ $? = 0 ]; then
     fi
 fi
 
+if [ $? = 0 ]; then
+    if [[ $src_type = "azure" ]] && [[ $storage_type = "azure" ]]; then
+        . "azure_to_azure.sh"
+            if [ $? = 0 ]; then
+                echo "cQube output directory files are restored to remote server successfully!!"
+            fi
+    fi
+fi
 
 if [ $? = 0 ]; then
 	 ansible-playbook -i hosts ansible/cqube_clone.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@config.yml" \

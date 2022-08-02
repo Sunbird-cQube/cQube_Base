@@ -64,6 +64,13 @@
   when: storage_type == "s3"
   tags: install
 
+- name: copying azure_container_config.yml to remote host
+  synchronize:
+    src: "../../../../azure_container_config.yml"
+    dest: "/home/{{system_user_name}}/azure_container_config.yml"
+  when: storage_type == "azure"
+  tags: install
+
 - name: copying aws_s3_config.yml to remote host
   synchronize:
     src: "{{base_dir}}/cqube/conf/aws_s3_config.yml"
