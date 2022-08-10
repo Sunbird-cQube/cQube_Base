@@ -24,9 +24,9 @@
                CQUBE_OUTPUT_DIRECTORY={{ output_directory }}
                CQUBE_EMISSION_DIRECTORY={{ emission_directory }}
                CQUBE_API_ENDPOINT={{ api_endpoint }}
-			   CQUBE_AZURE_OUTPUT_STORAGE={{ azure_output_container }}
-			   CQUBE_AZURE_INPUT_STORAGE={{ azure_input_container }}
-			   CQUBE_AZURE_EMISSION_STORAGE={{ azure_emission_container }}
+               CQUBE_AZURE_OUTPUT_STORAGE={{ azure_output_container }}
+               CQUBE_AZURE_INPUT_STORAGE={{ azure_input_container }}
+               CQUBE_AZURE_EMISSION_STORAGE={{ azure_emission_container }}
   tags: install
   
 - name: Updating the CQUBE_VERSION
