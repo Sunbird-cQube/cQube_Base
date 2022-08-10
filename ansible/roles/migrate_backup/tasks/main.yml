@@ -93,15 +93,3 @@
 - name: Running the data migration script
   command: bash /home/{{system_user_name}}/data_mig.sh
   tags: install
-
-- name: Creating the Azure Input Directory for Migration
-  file:
-    path: "/home/{{system_user_name}}/azure_input"
-    owner: "{{ system_user_name }}"
-    group: "{{ system_user_name }}"
-    recurse: yes
-    state: directory
-  when: storage_type == "azure"	
-  tags: install
-
-  
