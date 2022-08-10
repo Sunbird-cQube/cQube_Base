@@ -188,6 +188,15 @@ if [ $? = 0 ]; then
 fi
 
 if [ $? = 0 ]; then
+    if [[ $src_type = "s3" ]] && [[ $storage_type = "azure" ]]; then
+        . "aws_to_azure.sh"
+            if [ $? = 0 ]; then
+                echo "cQube output directory files are restored to remote server successfully!!"
+            fi
+    fi
+fi
+
+if [ $? = 0 ]; then
 	 ansible-playbook -i hosts ansible/cqube_clone.yml -e "my_hosts=$installation_host_ip" --tags "install" --extra-vars "@config.yml" \
                                                                                                             --extra-vars "@migrate_config.yml"
 fi
