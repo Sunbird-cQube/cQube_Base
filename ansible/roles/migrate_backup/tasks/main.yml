@@ -93,4 +93,3 @@
 - name: Running the data migration script
   command: bash /home/{{system_user_name}}/data_mig.sh
   tags: install
-
