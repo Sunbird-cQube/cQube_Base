@@ -19,6 +19,10 @@ if [[ ! -f config.yml ]]; then
     exit;
 fi
 
+if [ -e /etc/ansible/ansible.cfg ]; then
+    sudo sed -i 's/^#deprecation_warnings = True/deprecation_warnings = False/g' /etc/ansible/ansible.cfg
+fi
+
 system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
@@ -87,7 +91,7 @@ chmod u+x $cqube_cloned_path/cQube_Workflow/workflow_deploy/education_usecase/va
 cd $cqube_cloned_path/cQube_Workflow/workflow_deploy/education_usecase && ./validate_migration.sh && cd $cqube_cloned_path/cQube_Base
 
 set -e
-
+echo '127.0.0.0' >> /etc/ansible/hosts
 ansible-playbook ansible/create_migrate_dir.yml --tags "install" --extra-vars "@config.yml"
 
 
