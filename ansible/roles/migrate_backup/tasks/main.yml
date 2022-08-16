@@ -1,18 +1,17 @@
 - name: Copy postgres backup to remote machine
-  copy: src=/home/{{system_user_name}}/bk_db_name.tar dest=/tmp/bk_db_name.tar 
+  copy: src={{cqube_cloned_path}}/cQube_Base/bk_db_name.tar dest=/tmp/bk_db_name.tar
   tags: install
 
 - name: Restore postgres backup to remote machine
-  shell: pg_restore --host localhost --port 5432 --username {{db_user}} --dbname {{db_name}} --verbose "/tmp/bk_db_name.tar" -c --if-exists
+  shell: PGPASSWORD="{{db_password}}" pg_restore --host localhost --port 5432 --username {{db_user}} --dbname {{db_name}} --verbose "/tmp/bk_db_name.tar" -c --if-exists
   tags: install
 
 - name: Run a script to get configuration value
   become: true
-  shell: bash validation_scripts/get_dir_config_values.sh
+  shell: bash validation_scripts/get_outputdir_config_values.sh
   args:
-    chdir: /home/{{system_user_name}}/cQube_Base
+    chdir: "{{ cqube_cloned_path }}/cQube_Base"
   delegate_to: 127.0.0.1
-  when: storage_type == "local"
   register: required_dir
   tags: install
 
@@ -21,5 +20,76 @@
   copy:
     src: "{{required_dir.stdout}}"
     dest: "{{output_directory}}"
+  when: storage_type == "local"	
+  tags: install
+
+- name: Run a script to get configuration value
+  become: true
+  shell: bash validation_scripts/get_inputdir_config_values.sh
+  args:
+    chdir: "{{ cqube_cloned_path }}/cQube_Base"
+  delegate_to: 127.0.0.1
+  register: required_dir
+  tags: install
+
+- name: copying input files backup to remote machine
+  become: true
+  copy:
+    src: "{{ required_dir.stdout }}"
+    dest: "{{ input_directory }}"
   when: storage_type == "local"
+  tags: install
+
+- name: Run a script to get configuration value
+  become: true
+  shell: bash validation_scripts/get_emidir_config_values.sh
+  args:
+    chdir: "{{ cqube_cloned_path }}/cQube_Base"
+  delegate_to: 127.0.0.1
+  register: required_dir
+  tags: install
+
+- name: copying emission files backup to remote machine
+  become: true
+  copy:
+    src: "{{required_dir.stdout}}"
+    dest: "{{emission_directory}}"
+  when: storage_type == "local"
+  tags: install
+
+- name: copying aws_s3_config.yml to remote host
+  synchronize:
+    src: "../../../../aws_s3_config.yml" 
+    dest: "/home/{{system_user_name}}/aws_s3_config.yml"
+  when: storage_type == "s3"
+  tags: install
+
+- name: copying azure_container_config.yml to remote host
+  synchronize:
+    src: "../../../../azure_container_config.yml"
+    dest: "/home/{{system_user_name}}/azure_container_config.yml"
+  when: storage_type == "azure"
+  tags: install
+
+- name: copying aws_s3_config.yml to remote host
+  synchronize:
+    src: "{{base_dir}}/cqube/conf/aws_s3_config.yml"
+    dest: "/home/{{system_user_name}}/aws_s3.yml"
+  tags: install
+
+- name: copying local_storage_config.yml to remote host
+  synchronize:
+    src: "../../../../local_storage_config.yml" 
+    dest: "/home/{{system_user_name}}/local_storage_config.yml"
+  when: storage_type == "local"
+  tags: install
+
+- name: copying the data migration script to remote host
+  synchronize:
+    src: "../../../../data_mig.sh"
+    dest: "/home/{{system_user_name}}/data_mig.sh"
+  tags: install
+
+- name: Running the data migration script
+  command: bash /home/{{system_user_name}}/data_mig.sh
   tags: install

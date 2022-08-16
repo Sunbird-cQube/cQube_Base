@@ -23,7 +23,7 @@
 - name: Installing dependency packages
   npm: name={{ item }} state=present global=yes
   with_items:
-    - "@angular/cli@10.0.1"
+    - "@angular/cli@10"
     - nodemon
     - pm2
     - http-server

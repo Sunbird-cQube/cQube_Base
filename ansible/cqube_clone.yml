@@ -1,0 +1,8 @@
+---
+- name: Cloning the cQube_Base and cQube_WOrkflow to remote server
+  hosts: "{{my_hosts}}"
+  gather_facts: true
+  remote_user: root
+  become: true
+  roles:
+          - cqube_clone

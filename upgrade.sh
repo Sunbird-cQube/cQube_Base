@@ -62,7 +62,8 @@ if [[ $storage_type == "local" ]]; then
        exit;
    fi
 fi
-ansible-playbook ansible/create_base.yml --tags "update" --extra-vars "@config.yml" 
+ansible-playbook ansible/create_base.yml --tags "update" --extra-vars "@config.yml" \
+                                                         --extra-vars "my_hosts=localhost" 
 
 if [ -e /etc/ansible/ansible.cfg ]; then
 	sudo sed -i 's/^#log_path/log_path/g' /etc/ansible/ansible.cfg

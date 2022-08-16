@@ -1,11 +1,11 @@
 ---
 - name: Creating cQube base directory
-  hosts: localhost
+  hosts: "{{my_hosts}}"
   remote_user: root
   become: true
   vars_files:
+    - ../config.yml
     - ../memory_config.yml
     - ../.version
-
   roles:
           - create_base_dir

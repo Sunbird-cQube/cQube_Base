@@ -1,0 +1,5 @@
+- name: gather remote ip
+  debug:
+    var: hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+- name: print
+  local_action: shell echo private_ip= "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}" > "{{ cqube_cloned_path }}/cQube_Base/.remote_ip"
