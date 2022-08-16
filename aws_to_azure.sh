@@ -16,12 +16,9 @@ echo "Configuring aws cli ..."
 fi
 system_user_name=$(awk ''/^system_user_name:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
 storage_type=$(awk ''/^storage_type:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-
-str_typ=$(cat /home/$system_user_name/cqube_config | grep CQUBE_STORAGE_TYPE )
-src_type=$(cut -d "=" -f2 <<< "$str_typ")
-
 base_dir=$(awk ''/^base_dir:' /{ if ($2 !~ /#.*/) {print $2}}' config.yml)
-
+str_typ=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_STORAGE_TYPE )
+src_type=$(cut -d "=" -f2 <<< "$str_typ")
 
 if [[ $src_type = "s3" ]]; then
 output_bucket=$(awk ''/^s3_output_bucket:' /{ if ($2 !~ /#.*/) {print $2}}' aws_s3_config.yml)
@@ -44,24 +41,24 @@ export AWS_ACCESS_KEY_ID=$aws_access_key
 export AWS_SECRET_ACCESS_KEY=$aws_secret_key
 
 if [[ $src_type = "s3" ]] && [[ $storage_type = "azure" ]]; then
-irbucket=$(aws s3 sync s3://$output_bucket /home/$system_user_name/azure_output)
+irbucket=$(aws s3 cp s3://$output_bucket /tmp/cqube_migration/azure_output)
 fi
 if [[ $src_type = "s3" ]] && [[ $storage_type = "azure" ]]; then
-irbucket=$(aws s3 sync s3://$input_bucket /home/$system_user_name/azure_input)
+irbucket=$(aws s3 cp s3://$input_bucket /tmp/cqube_migration/azure_input)
 fi
 if [[ $src_type = "s3" ]] && [[ $storage_type = "azure" ]]; then
-irbucket=$(aws s3 sync s3://$emission_bucket /home/$system_user_name/azure_emission)
+irbucket=$(aws s3 cp s3://$emission_bucket /tmp/cqube_migration/azure_emission)
 fi
 
 if [[ $src_type = "s3" ]] && [[ $storage_type = "azure" ]]; then
-sudo az storage blob upload-batch --connection-string "DefaultEndpointsProtocol=https;AccountName=$azure_account_name;AccountKey=$azure_account_key;EndpointSuffix=core.windows.net" --destination $azure_input_container --source /home/$system_user_name/azure_input > /dev/null 2>&1
+sudo az storage blob upload-batch --connection-string "DefaultEndpointsProtocol=https;AccountName=$azure_account_name;AccountKey=$azure_account_key;EndpointSuffix=core.windows.net" --destination $azure_input_container --source /tmp/cqube_migration/azure_input --overwrite > /dev/null 2>&1
 fi
 
 if [[ $src_type = "s3" ]] && [[ $storage_type = "azure" ]]; then
-sudo az storage blob upload-batch --connection-string "DefaultEndpointsProtocol=https;AccountName=$azure_account_name;AccountKey=$azure_account_key;EndpointSuffix=core.windows.net" --destination $azure_output_container --source /home/$system_user_name/azure_output > /dev/null 2>&1
+sudo az storage blob upload-batch --connection-string "DefaultEndpointsProtocol=https;AccountName=$azure_account_name;AccountKey=$azure_account_key;EndpointSuffix=core.windows.net" --destination $azure_output_container --source /tmp/cqube_migration/azure_output --overwrite > /dev/null 2>&1
 fi
-
 
 if [[ $src_type = "s3" ]] && [[ $storage_type = "azure" ]]; then
-sudo az storage blob upload-batch --connection-string "DefaultEndpointsProtocol=https;AccountName=$azure_account_name;AccountKey=$azure_account_key;EndpointSuffix=core.windows.net" --destination $azure_emission_container --source /home/$system_user_name/azure_emission > /dev/null 2>&1
+sudo az storage blob upload-batch --connection-string "DefaultEndpointsProtocol=https;AccountName=$azure_account_name;AccountKey=$azure_account_key;EndpointSuffix=core.windows.net" --destination $azure_emission_container --source /tmp/cqube_migration/azure_emission --overwrite > /dev/null 2>&1
 fi
+
