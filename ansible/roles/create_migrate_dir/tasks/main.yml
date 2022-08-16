@@ -107,3 +107,33 @@
     group: "{{ system_user_name }}"
   tags: install
   when: storage_type == "s3"
+
+- name: Creating the Azure Input Directory for Migration
+  file:
+    path: "/tmp/cqube_migration/azure_input"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  when: storage_type == "azure"
+  tags: install
+
+- name: Creating the Azure Output Directory for Migration
+  file:
+    path: "/tmp/cqube_migration/azure_output"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  when: storage_type == "azure"
+  tags: install
+
+- name: Creating the Azure Emission Directory for Migration
+  file:
+    path: "/tmp/cqube_migration/azure_emission"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  when: storage_type == "azure"
+  tags: install  

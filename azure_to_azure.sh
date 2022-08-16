@@ -17,7 +17,6 @@ azure_account_key==$(awk ''/^azure_account_key:' /{ if ($2 !~ /#.*/) {print $2}}
 azr=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_AZURE_OUTPUT_STORAGE )
 source_output_container=$(cut -d "=" -f2 <<< "$azr")
 
-echo "$source_output_container"
 azr=$(cat $base_dir/cqube/.cqube_config | grep CQUBE_AZURE_INPUT_STORAGE )
 source_input_container=$(cut -d "=" -f2 <<< "$azr")
 
@@ -31,13 +30,13 @@ src_type=$(cut -d "=" -f2 <<< "$str_typ")
 az login > /dev/null 2>&1
 
 if [[ $src_type = "azure" ]] && [[ $storage_type = "azure" ]]; then
-sudo az storage blob copy start-batch --account-key $azure_account_key --account-name $azure_account_name --destination-container $azure_output_container --source-account-key $azure_account_key --source-account-name $azure_account_name --source-container $source_output_container
+sudo az storage blob copy start-batch --account-key $azure_account_key --account-name $azure_account_name --destination-container $azure_output_container --source-account-key $azure_account_key --source-account-name $azure_account_name --source-container $source_output_container > /dev/null 2>&1
 fi
 
 if [[ $src_type = "azure" ]] && [[ $storage_type = "azure" ]]; then
-sudo az storage blob copy start-batch --account-key $azure_account_key --account-name $azure_account_name --destination-container $azure_input_container --source-account-key $azure_account_key --source-account-name $azure_account_name --source-container $source_input_container
+sudo az storage blob copy start-batch --account-key $azure_account_key --account-name $azure_account_name --destination-container $azure_input_container --source-account-key $azure_account_key --source-account-name $azure_account_name --source-container $source_input_container > /dev/null 2>&1
 fi
 
 if [[ $src_type = "azure" ]] && [[ $storage_type = "azure" ]]; then
-sudo az storage blob copy start-batch --account-key $azure_account_key --account-name $azure_account_name --destination-container $azure_emission_container --source-account-key $azure_account_key --source-account-name $azure_account_name --source-container $source_emission_container
+sudo az storage blob copy start-batch --account-key $azure_account_key --account-name $azure_account_name --destination-container $azure_emission_container --source-account-key $azure_account_key --source-account-name $azure_account_name --source-container $source_emission_container > /dev/null 2>&1
 fi

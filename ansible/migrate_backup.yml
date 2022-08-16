@@ -9,4 +9,3 @@
     - ../config.yml
   roles:
           - migrate_backup
-          - azure_migration 
