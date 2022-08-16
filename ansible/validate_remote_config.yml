@@ -1,11 +1,13 @@
 ---
-- name: Backing up output files to remote server
+- name: Validating remote server config file
   hosts: "{{my_hosts}}"
   gather_facts: true
   remote_user: root
   become: true
   vars_files:
     - ../migrate_config.yml
-    - ../config.yml
+    - ../config.yml  
+
   roles:
-          - migrate_backup
+          - validate_remote_config
+

@@ -1,6 +1,6 @@
 ---
 - name: Installing cQube
-  hosts: localhost
+  hosts: "{{my_hosts}}" 
   gather_facts: true
   remote_user: root
   become: true

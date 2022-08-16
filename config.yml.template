@@ -35,7 +35,9 @@ mode_of_installation:                       # enter `localhost` for demo install
 api_endpoint:                               # enter domain name if mode_of_installation is `public` ( Example: cqubeprojects.com ), if mode_of_installation is `localhost` then api_endpoint should be `localhost`
 local_ipv4_address:                         # enter the private ip of this server. To find the ip address. Use `ip addr` or `ifconfig`, if mode_of_installation is `public` then local_ipv4_address should be `private_ip`,, if mode_of_installation is `localhost` then local_ipv4_address should be `localhost`
 vpn_local_ipv4_address:                     # enter the private ip of vpn server. To find the ip address. Use `ip addr` or `ifconfig`
+installation_host_ip: 127.0.0.1             # If migration, then enter the public ip of remote server.
 proxy_host:                                 # enter the private ip of ngnix server. To find the ip address. Use `ip addr` or `ifconfig`
 keycloak_adm_user:                          # enter the keycloak admin user to be created 
 keycloak_adm_passwd:                        # enter the keycloak admin password. password should contain atleast 1 lower,upper,number,special character (only @!%^*? allowed)  and minimum 8 characters
 report_viewer_config_otp: false             # enter true or false to enable OTP authentication for all users (only applicable when auth_api is `cqube`)
+

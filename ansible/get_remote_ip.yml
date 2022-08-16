@@ -1,11 +1,11 @@
 ---
-- name: Backing up output files to remote server
+- name: Installing cQube
   hosts: "{{my_hosts}}"
   gather_facts: true
   remote_user: root
   become: true
   vars_files:
-    - ../migrate_config.yml
     - ../config.yml
+    - ../migrate_config.yml
   roles:
-          - migrate_backup
+          - get_remote_ip

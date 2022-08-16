@@ -1,0 +1,139 @@
+---
+- name: Creating the Base Directory for the installation
+  file:
+    path: /tmp/cqube_migration
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  tags: install
+
+- name: Copying the config.yml 
+  copy:
+    src: ../config.yml
+    dest: /tmp/cqube_migration
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install  
+
+- name: Copying the aws_s3_config.yml.template
+  copy:
+    src: ../aws_s3_config.yml.template
+    dest: /tmp/cqube_migration/aws_s3_config.yml
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "local"
+
+- name: Copying the aws_s3_config.yml.template
+  copy:
+    src: ../aws_s3_config.yml.template
+    dest: /tmp/cqube_migration/aws_s3_config.yml
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "azure"
+
+- name: Copying the aws_s3_config.yml
+  copy:
+    src: ../aws_s3_config.yml
+    dest: /tmp/cqube_migration/aws_s3_config.yml
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "s3"
+  
+- name: Copying the local_storage_config.yml.template 
+  copy:
+    src: ../local_storage_config.yml.template
+    dest: /tmp/cqube_migration/local_storage_config.yml
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "s3"
+
+- name: Copying the local_storage_config.yml.template
+  copy:
+    src: ../local_storage_config.yml.template
+    dest: /tmp/cqube_migration/local_storage_config.yml
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "azure"
+
+- name: Copying the local_storage_config.yml
+  copy:
+    src: ../local_storage_config.yml
+    dest: /tmp/cqube_migration/local_storage_config.yml
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "local"
+  
+
+- name: Copying the azure_container_config.yml
+  copy:
+    src: ../azure_container_config.yml
+    dest: /tmp/cqube_migration/azure_container_config.yml
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "azure"
+
+- name: Copying the azure_container_config.yml.template
+  copy:
+    src: ../azure_container_config.yml.template
+    dest: /tmp/cqube_migration/azure_container_config.yml
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "local"
+
+- name: Copying the azure_container_config.yml.template
+  copy:
+    src: ../azure_container_config.yml.template
+    dest: /tmp/cqube_migration/azure_container_config.yml
+    mode: '0644'
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+  tags: install
+  when: storage_type == "s3"
+
+- name: Creating the Azure Input Directory for Migration
+  file:
+    path: "/tmp/cqube_migration/azure_input"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  when: storage_type == "azure"
+  tags: install
+
+- name: Creating the Azure Output Directory for Migration
+  file:
+    path: "/tmp/cqube_migration/azure_output"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  when: storage_type == "azure"
+  tags: install
+
+- name: Creating the Azure Emission Directory for Migration
+  file:
+    path: "/tmp/cqube_migration/azure_emission"
+    owner: "{{ system_user_name }}"
+    group: "{{ system_user_name }}"
+    recurse: yes
+    state: directory
+  when: storage_type == "azure"
+  tags: install  

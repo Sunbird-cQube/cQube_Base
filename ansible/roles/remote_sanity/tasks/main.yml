@@ -1,27 +1,7 @@
-- name: Stopping the service if they are running
-  become: true
-  service:
-    name: "{{ item }}"
-    enabled: yes
-    state: stopped
-  loop:
-    - prometheus
-    - node_exporter
-    - grafana-server
-    - postgresql
-    - gunicorn
-    - keycloak
-    - kong
-  tags: install
-
 - name: Check if nifi is present in destination
   stat:
     path: "{{ base_dir }}/cqube/nifi/nifi"
   register: status
-  tags: install
-
-- debug:
-    var: status
   tags: install
 
 - name: stop nifi if its running
@@ -38,7 +18,7 @@
   tags: install
 
 - name: Transfer executable script script
-  copy: src=/home/ubuntu/cQube_Base/validation_scripts/remove_postgres.sh dest=/tmp/remove_postgres.sh 
+  copy: src=../../../../remove_postgres.sh dest=/tmp/remove_postgres.sh 
   tags: install
 
 - name: Remove postgres if installed
