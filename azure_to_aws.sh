@@ -55,15 +55,15 @@ src_type=$(cut -d "=" -f2 <<< "$str_typ")
 
 
 if [[ $src_type = "azure" ]] && [[ $storage_type = "s3" ]]; then
-sudo azcopy copy https://$azure_account_name.blob.core.windows.net/$azure_input_container/*$storage_account_sas_token /tmp/cqube_migration/azure_input --recursive
+sudo azcopy cp "https://$azure_account_name.blob.core.windows.net/$azure_input_container/*$storage_account_sas_token" /tmp/cqube_migration/azure_input --recursive
 fi
 
 if [[ $src_type = "azure" ]] && [[ $storage_type = "s3" ]]; then
-sudo azcopy copy https://$azure_account_name.blob.core.windows.net/$azure_output_container/*$storage_account_sas_token /tmp/cqube_migration/azure_output --recursive
+sudo azcopy cp "https://$azure_account_name.blob.core.windows.net/$azure_output_container/*$storage_account_sas_token" /tmp/cqube_migration/azure_output --recursive
 fi
 
 if [[ $src_type = "azure" ]] && [[ $storage_type = "s3" ]]; then
-sudo azcopy copy https://$azure_account_name.blob.core.windows.net/$azure_emission_container/*$storage_account_sas_token /tmp/cqube_migration/azure_emission --recursive
+sudo azcopy cp "https://$azure_account_name.blob.core.windows.net/$azure_emission_container/*$storage_account_sas_token" /tmp/cqube_migration/azure_emission --recursive
 fi
 
 
