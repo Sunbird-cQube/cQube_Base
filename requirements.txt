@@ -1,4 +1,4 @@
-wheel==0.34.2
+wheel==0.38.1
 boto3==1.13.16
 gunicorn==20.0.4
 Flask==1.1.2
